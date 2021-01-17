@@ -3,10 +3,13 @@ package EDGRRRR.DCE.Main.commands;
 import static EDGRRRR.DCE.Main.App.getCon;
 
 import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.command.CommandExecutor;
 
+/**
+ * A simple ping pong! command
+ */
 public class Ping implements CommandExecutor {
 
     @Override
@@ -15,7 +18,9 @@ public class Ping implements CommandExecutor {
             return true;
         }
 
-        getCon().info(sender, "Pong!");
+        Player player = (Player) sender;
+
+        getCon().info(player, "Pong!");
         return true;
-    }  
+    }
 }
