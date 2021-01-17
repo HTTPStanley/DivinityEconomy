@@ -8,3 +8,4 @@ DCE/pom.xml
 DCE/workspace.code-workspace
 DCE/src/main/resources/plugin.yml
 DCE/target/classes/plugin.yml
+DCE/target/maven-archiver/pom.properties
