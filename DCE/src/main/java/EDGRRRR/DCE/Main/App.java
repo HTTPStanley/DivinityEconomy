@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import EDGRRRR.DCE.Main.commands.Balance;
 import EDGRRRR.DCE.Main.commands.Ping;
 /**
  * The Main Class of the plugin
@@ -54,6 +55,8 @@ public class App extends JavaPlugin {
         try {
             // Register Ping class
             getCommand("ping").setExecutor(new Ping());
+            // Register Balance class
+            getCommand("balance").setExecutor(new Balance());
         } catch(Exception e) {
             con.warn("An error has occurred on command registry.");
             con.severe("Error: " + e);
