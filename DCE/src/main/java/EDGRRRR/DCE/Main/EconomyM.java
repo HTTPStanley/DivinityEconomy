@@ -1,5 +1,6 @@
 package EDGRRRR.DCE.Main;
 
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
 import net.milkbowl.vault.economy.Economy;
@@ -50,4 +51,14 @@ public class EconomyM {
     public Economy getEconomy() {
         return economy;
     }
+
+    /**
+     * Gets the players balance
+     * @param player
+     * @return Double
+     */
+    public Double getBalance(Player player) {
+        return getEconomy().getBalance(player);
+    }
+
 }
