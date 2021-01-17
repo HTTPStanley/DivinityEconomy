@@ -5,10 +5,8 @@ import java.util.logging.Logger;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import net.milkbowl.vault.economy.Economy;
 
 /**
  * The Main Class of the plugin
@@ -23,10 +21,10 @@ public class App extends JavaPlugin {
     public static App get() { return i; }
 
     // The economy
-    private static Economy econ = null;
+    protected static EconomyM eco = null;
 
     // The console
-    private static Console console = null;
+    protected static Console con = null;
 
     /** 
      * Called when the plugin is enabled
@@ -39,17 +37,17 @@ public class App extends JavaPlugin {
         i = this;
 
         if (!setupConsole()) {
-            log.severe("Console setup has failed.");
+            log.severe("Console setup failed.");
             exit();
             return;
         }
         if (!setupEconomy()) {
-            console.severe("Economy hook failed.");
+            con.severe("Economy setup failed.");
             exit();
             return;
         }
 
-        console.info("Plugin Enabled");
+        con.info("Plugin Enabled");
     }
 
     /** 
@@ -57,7 +55,7 @@ public class App extends JavaPlugin {
      */
     @Override
     public void onDisable() {
-        console.info("Plugin Disabled");
+        con.info("Plugin Disabled");
     }
 
     public boolean onCommand(CommandSender sender, Command command, String commandLabel, String[] args) {
@@ -67,7 +65,7 @@ public class App extends JavaPlugin {
 
         Player player = (Player) sender;
         
-        console.info(player.getName() + " said " + command.getName() + " " + interpret(args));
+        con.info(player.getName() + " said " + command.getName() + " " + interpret(args));
 
         return true;
     }
@@ -86,43 +84,50 @@ public class App extends JavaPlugin {
      * @return boolean
      */
     private boolean setupConsole() {
-        console = new Console();
-        return console != null;     
+        con = new Console();
+        return con != null;     
     }
 
     /** 
-     * Setup the economy and store in this.econ
+     * Setup the economy and store in this.eco
      * returns if it was successfull or not
      * @return boolean
      */
     private boolean setupEconomy() {
-        if (getServer().getPluginManager().getPlugin("Vault") == null) {
-            console.severe("No plugin 'Vault' detected.");
+        // Create the economy object
+        eco = new EconomyM();
+
+        // If eco is null, return false startup
+        if (eco == null) {
             return false;
         }
 
-        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
-        if (rsp == null) {
-            console.severe("Could not register Economy.");
+        // SetupEconomy - return false if fails.
+        if (eco.setupEconomy() == false) {
             return false;
         }
-        econ = rsp.getProvider();
-        return econ != null;
+        
+        // Return successful setup
+        return true;     
     }
+    
 
     /**
      * Returns the economy
      * @return Economy
      */
-    public static Economy getEconomy() {
-        return econ;
+    public static EconomyM getEco() {
+        return eco;
+    }
+    public static Console getCon() {
+        return con;
     }
 
     /**
      * Disables the plugin
      */
     private void exit() {
-        console.warn("Shutting down.");
+        con.warn("Shutting down.");
         getServer().getPluginManager().disablePlugin(this);
     }
 }
