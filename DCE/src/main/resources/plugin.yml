@@ -1,0 +1,77 @@
+name: DCE
+prefix: DCE
+main: EDGRRRR.DCE.Main.App
+version: 1.0.0
+author: EDGRRRR
+description: DivinityCraft Economy plugin, somewhat based around hyperconomy.
+api-version: 1.16
+depend: [Vault]
+soft-depend: [Essentials]
+load: STARTUP
+
+
+commands:
+  # Misc commands
+  ping:
+    description: Use it to find out.
+    aliases: []
+    permission: dce.ping
+    permission-message: You do not have the permission to use this command
+    usage: /ping
+  
+  # Money commands
+  balance:
+    description: Returns the amount of cash in the users account.
+    aliases: [bal, cash, money]
+    permission: dce.money.balance
+    permission-message: You do not have the permission to use this command
+    usage: /balance
+
+  sendcash:
+    description: Allows the user to transfer cash to another user.
+    aliases: [sc, send, transfer, trans]
+    permission: dce.money.sendcash
+    permission-message: You do not have the permission to use this command
+    usage: /sendcash <playername> <amount>
+
+  # Admin commands
+  editcash:
+    description: Allows the user to manipulate a users balance, including their own.
+    aliases: [ec]
+    permission: dce.admin.editcash
+    permission-message: You do not have the permission to use this command
+    usage: /editcash <playername> <amount>
+
+
+permissions:
+  # Misc
+  dce.ping:
+    description: Allows the user to use the ping command.
+    default: true
+  
+  # Main branch of permissions
+  dce.money:
+    description: Allows the user to use all commands under the money branch of permissions.
+    default: true
+    children:
+      dce.balance: true
+      dce.sendcash: true
+
+  dce.money.balance:
+    description: Allows the user to view their balance.
+    default: true
+
+  dce.money.sendcash:
+    description: Allows the user to send cash to others.
+    default: true
+  
+  # Admin commands
+  dce.admin:
+    description: Allows the user to use all commands under the admin branch of permissions.
+    default: op
+    children:
+      dce.admin.editcash: true
+
+  dce.admin.editcash:
+    description: Allows the user to give and take money to themselves and others.
+    default: op

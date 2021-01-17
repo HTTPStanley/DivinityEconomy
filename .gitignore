@@ -2,10 +2,8 @@
 DCE/.classpath
 DCE/.project
 *.prefs
-DCE/pom.xml
 *.class
 *.lst
 DCE/workspace.code-workspace
-DCE/src/main/resources/plugin.yml
-DCE/target/classes/plugin.yml
 DCE/target/maven-archiver/pom.properties
+DCE/target/classes/plugin.yml

@@ -1,0 +1,59 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>EDGRRRR.DCE.Main</groupId>
+    <artifactId>DCE</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <name>DCE</name>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+    </properties>
+  
+    <!-- The Bukkit Maven Repository -->
+    <repositories>
+        <repository>
+            <id>Bukkit Official</id>
+            <url>http://repo.bukkit.org/content/repositories/public</url>
+        </repository>
+    </repositories>
+
+    <dependencies>
+        <!-- Spigot API -->
+        <dependency>
+            <groupId>org.spigot</groupId>
+            <artifactId>spigot</artifactId>
+            <version>1.16.4</version>
+        </dependency>
+        <!-- Vault API -->
+        <dependency>
+            <groupId>net.milkbowl</groupId>
+            <artifactId>vault</artifactId>
+            <version>1.7.3</version>
+        </dependency>
+    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <release>8</release>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.3.1</version>
+                <configuration>
+                    <outputDirectory>C:/Users/Joshua/OneDrive/Code/Java/Minecraft/Server-1.16.4/plugins</outputDirectory>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
