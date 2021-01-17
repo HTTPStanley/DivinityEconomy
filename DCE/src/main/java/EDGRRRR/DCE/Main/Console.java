@@ -1,8 +1,11 @@
 package EDGRRRR.DCE.Main;
 
 import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
+/**
+ * Console class for sending uniform messages to players and the console.
+ */
 public class Console {
     private ChatColor infoColour = ChatColor.GREEN;
     private ChatColor warnColour = ChatColor.YELLOW;
@@ -50,7 +53,7 @@ public class Console {
      * @param player
      * @param message
      */
-    private void send(CommandSender player, String message) {
+    private void send(Player player, String message) {
         player.sendMessage(prefix + message);
     }
 
@@ -59,7 +62,7 @@ public class Console {
      * @param player
      * @param message
      */
-    public void info(CommandSender player, String message){
+    public void info(Player player, String message){
         send(player, infoColour + message);
     }
 
@@ -68,7 +71,7 @@ public class Console {
      * @param player
      * @param message
      */
-    public void warn(CommandSender player, String message){
+    public void warn(Player player, String message){
         send(player, warnColour + message);
     }
     /**
@@ -76,7 +79,7 @@ public class Console {
      * @param player
      * @param message
      */
-    public void severe(CommandSender player, String message){
+    public void severe(Player player, String message){
         send(player, severeColour + message);
     }
 
