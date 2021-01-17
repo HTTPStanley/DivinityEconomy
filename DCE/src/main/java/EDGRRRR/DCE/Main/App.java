@@ -7,7 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-
+import EDGRRRR.DCE.Main.commands.Ping;
 /**
  * The Main Class of the plugin
  * Hooks everything together
@@ -35,18 +35,31 @@ public class App extends JavaPlugin {
     public void onEnable() {
         // Maintains accessor method.
         i = this;
-
+        
+        // Setup the console class
         if (!setupConsole()) {
             log.severe("Console setup failed.");
             exit();
             return;
         }
+
+        // Setup the economy class
         if (!setupEconomy()) {
             con.severe("Economy setup failed.");
             exit();
             return;
         }
 
+        // Command registry
+        try {
+            // Register Ping class
+            getCommand("ping").setExecutor(new Ping());
+        } catch(Exception e) {
+            con.warn("An error has occurred on command registry.");
+            con.severe("Error: " + e);
+        }
+
+        // Done :)
         con.info("Plugin Enabled");
     }
 
