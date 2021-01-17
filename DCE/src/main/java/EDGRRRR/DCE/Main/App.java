@@ -2,13 +2,12 @@ package EDGRRRR.DCE.Main;
 
 import java.util.logging.Logger;
 
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import EDGRRRR.DCE.Main.commands.Balance;
+import EDGRRRR.DCE.Main.commands.EditCash;
 import EDGRRRR.DCE.Main.commands.Ping;
+import EDGRRRR.DCE.Main.commands.SendCash;
 /**
  * The Main Class of the plugin
  * Hooks everything together
@@ -16,10 +15,9 @@ import EDGRRRR.DCE.Main.commands.Ping;
 public class App extends JavaPlugin {
     // The logger
     private static final Logger log = Logger.getLogger("Minecraft");
-    
-    // Accessor method
+
+    // Accessor var
     private static App i;
-    public static App get() { return i; }
 
     // The economy
     protected static EconomyM eco = null;
@@ -27,7 +25,8 @@ public class App extends JavaPlugin {
     // The console
     protected static Console con = null;
 
-    /** 
+
+    /**
      * Called when the plugin is enabled
      * Setup console
      * Setup Economy
@@ -36,11 +35,11 @@ public class App extends JavaPlugin {
     public void onEnable() {
         // Maintains accessor method.
         i = this;
-        
+
         // Setup the console class
         if (!setupConsole()) {
             log.severe("Console setup failed.");
-            exit();
+            getServer().getPluginManager().disablePlugin(this);
             return;
         }
 
@@ -57,6 +56,10 @@ public class App extends JavaPlugin {
             getCommand("ping").setExecutor(new Ping());
             // Register Balance class
             getCommand("balance").setExecutor(new Balance());
+            // Register AddCash class
+            getCommand("editcash").setExecutor(new EditCash());
+            // Register SendCash class
+            getCommand("sendcash").setExecutor(new SendCash());
         } catch(Exception e) {
             con.warn("An error has occurred on command registry.");
             con.severe("Error: " + e);
@@ -66,32 +69,12 @@ public class App extends JavaPlugin {
         con.info("Plugin Enabled");
     }
 
-    /** 
+    /**
      * Called when the plugin is disabled
      */
     @Override
     public void onDisable() {
         con.info("Plugin Disabled");
-    }
-
-    public boolean onCommand(CommandSender sender, Command command, String commandLabel, String[] args) {
-        if (!(sender instanceof Player)) {
-            return true;
-        }
-
-        Player player = (Player) sender;
-        
-        con.info(player.getName() + " said " + command.getName() + " " + interpret(args));
-
-        return true;
-    }
-
-    public String interpret(String[] args) {
-        String argString = "";
-        for (String arg:args){
-            argString += arg + ", ";
-        }
-        return argString;
     }
 
     /**
@@ -100,11 +83,12 @@ public class App extends JavaPlugin {
      * @return boolean
      */
     private boolean setupConsole() {
+        // Create console
         con = new Console();
-        return con != null;     
+        return con != null;
     }
 
-    /** 
+    /**
      * Setup the economy and store in this.eco
      * returns if it was successfull or not
      * @return boolean
@@ -122,11 +106,11 @@ public class App extends JavaPlugin {
         if (eco.setupEconomy() == false) {
             return false;
         }
-        
+
         // Return successful setup
-        return true;     
+        return true;
     }
-    
+
 
     /**
      * Returns the economy
@@ -135,15 +119,30 @@ public class App extends JavaPlugin {
     public static EconomyM getEco() {
         return eco;
     }
+
+    /**
+     * Returns the console
+     * @return Console
+     */
     public static Console getCon() {
         return con;
+    }
+
+    /**
+     * Accessor method for getting App as a dependency
+     * @return App
+     */
+    public static App get() {
+        return i;
     }
 
     /**
      * Disables the plugin
      */
     private void exit() {
+        // Shutdown message
         con.warn("Shutting down.");
+        // Disable plugin
         getServer().getPluginManager().disablePlugin(this);
     }
 }
