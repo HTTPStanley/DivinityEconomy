@@ -1,8 +1,6 @@
 package EDGRRRR.DCE.Main.commands;
 
-import static EDGRRRR.DCE.Main.App.get;
-import static EDGRRRR.DCE.Main.App.getCon;
-import static EDGRRRR.DCE.Main.App.getEco;
+import EDGRRRR.DCE.Main.App;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -13,6 +11,11 @@ import org.bukkit.entity.Player;
  * Command executor for editing (adding or removing) cash to a player
  */
 public class EditCash implements CommandExecutor {
+    private App app;
+
+    public EditCash(App app) {
+        this.app = app;
+    }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -25,7 +28,7 @@ public class EditCash implements CommandExecutor {
 
         // Ensure two or more args
         if (!(args.length == 2)) {
-            getCon().warn(from, "Incorrect usage, see¬");
+            app.getCon().warn(from, "Incorrect usage, see¬");
             return false;
         }
 
@@ -37,11 +40,11 @@ public class EditCash implements CommandExecutor {
         Double amount = Double.parseDouble(args[1]);
 
         // Get player by <to> name
-        Player to = get().getServer().getPlayer(toName);
+        Player to = app.getServer().getPlayer(toName);
 
         // Ensure player found or just not null in general.
         if (to == null) {
-            getCon().warn(from, "Incorrect player name '" + toName + "', see¬");
+            app.getCon().warn(from, "Incorrect player name '" + toName + "', see¬");
             return false;
         }
         
@@ -49,16 +52,16 @@ public class EditCash implements CommandExecutor {
         // If amount is positive, will deposit cash to account
         if (amount >= 0) {
             transType = "deposited";
-            getEco().addCash(to, amount);
+            app.getEco().addCash(to, amount);
         } else {
             amount = -amount;
             transType = "withdrawn";
-            getEco().remCash(to, amount);
+            app.getEco().remCash(to, amount);
         }
 
         // Messages
-        getCon().info(from, "You have " + transType + " £" + amount + " to " + to.getName() + "'s account.");
-        getCon().info(to, "£" + amount + " was " + transType + " to your account. Your new balance is £" + getEco().getBalance(to));
+        app.getCon().info(from, "You have " + transType + " £" + amount + " to " + to.getName() + "'s account.");
+        app.getCon().info(to, "£" + amount + " was " + transType + " to your account. Your new balance is £" + app.getEco().getBalance(to));
 
         // Graceful exit
         return true;
