@@ -14,13 +14,12 @@ import EDGRRRR.DCE.Main.commands.SendCash;
  */
 public class App extends JavaPlugin {
     // The logger
-    private static final Logger log = Logger.getLogger("DCE");
+    private final Logger log = Logger.getLogger("DCE");
 
     // The economy
-    protected static EconomyM eco = null;
-
+    protected EconomyM eco = null;
     // The console
-    protected static Console con = null;
+    protected Console con = null;
 
 
     /**
@@ -30,34 +29,20 @@ public class App extends JavaPlugin {
      */
     @Override
     public void onEnable() {
-        // Setup the console class
-        if (!setupConsole()) {
-            log.severe("Console setup failed.");
-            getServer().getPluginManager().disablePlugin(this);
-            return;
-        }
+    	//Setup Managers
+    	this.con = new Console(this);
+    	this.eco = new EconomyM(this);
+    	
+    	
+        // Register Ping class
+        this.getCommand("ping").setExecutor(new Ping(this));
+        // Register Balance class
+        this.getCommand("balance").setExecutor(new Balance(this));
+        // Register AddCash class
+        this.getCommand("editcash").setExecutor(new EditCash(this));
+        // Register SendCash class
+        this.getCommand("sendcash").setExecutor(new SendCash(this));
 
-        // Setup the economy class
-        if (!setupEconomy()) {
-            con.severe("Economy setup failed.");
-            exit();
-            return;
-        }
-
-        // Command registry
-        try {
-            // Register Ping class
-            getCommand("ping").setExecutor(new Ping(this));
-            // Register Balance class
-            getCommand("balance").setExecutor(new Balance(this));
-            // Register AddCash class
-            getCommand("editcash").setExecutor(new EditCash(this));
-            // Register SendCash class
-            getCommand("sendcash").setExecutor(new SendCash(this));
-        } catch(Exception e) {
-            con.warn("An error has occurred on command registry.");
-            con.severe("Error: " + e);
-        }
 
         // Done :)
         con.info("Plugin Enabled");
@@ -71,39 +56,7 @@ public class App extends JavaPlugin {
         con.info("Plugin Disabled");
     }
 
-    /**
-     * Setup the console and store in this.console
-     * returns if it was successfull or not
-     * @return boolean
-     */
-    private boolean setupConsole() {
-        // Create console
-        con = new Console(this);
-        return con != null;
-    }
 
-    /**
-     * Setup the economy and store in this.eco
-     * returns if it was successfull or not
-     * @return boolean
-     */
-    private boolean setupEconomy() {
-        // Create the economy object
-        eco = new EconomyM(this);
-
-        // If eco is null, return false startup
-        if (eco == null) {
-            return false;
-        }
-
-        // SetupEconomy - return false if fails.
-        if (eco.setupEconomy() == false) {
-            return false;
-        }
-
-        // Return successful setup
-        return true;
-    }
 
 
     /**
@@ -122,13 +75,4 @@ public class App extends JavaPlugin {
         return con;
     }
 
-    /**
-     * Disables the plugin
-     */
-    private void exit() {
-        // Shutdown message
-        con.warn("Shutting down.");
-        // Disable plugin
-        getServer().getPluginManager().disablePlugin(this);
-    }
 }
