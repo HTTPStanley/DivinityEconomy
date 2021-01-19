@@ -7,12 +7,19 @@ import org.bukkit.entity.Player;
  * Console class for sending uniform messages to players and the console.
  */
 public class Console {
+    private App app;
     private ChatColor infoColour = ChatColor.GREEN;
     private ChatColor warnColour = ChatColor.YELLOW;
     private ChatColor severeColour = ChatColor.RED;
     private ChatColor prefixColour = ChatColor.AQUA;
-    private String prefix = prefixColour + "[DCE] - ";
-    private String conPrefix = prefixColour + "[DCE v" + App.get().getDescription().getVersion() + "] - ";
+    private String prefix;
+    private String conPrefix;
+
+    public Console(App app){
+        this.app = app;
+        this.prefix = prefixColour + "[DCE] - ";
+        this.conPrefix = prefixColour + "[DCE v" + app.getDescription().getVersion() + "] - ";
+    }
 
     // CONSOLE COMMANDS
     /**
@@ -20,7 +27,7 @@ public class Console {
      * @param message
      */
     private void send(String message) {
-        App.get().getServer().getConsoleSender().sendMessage(conPrefix + message);
+        app.getServer().getConsoleSender().sendMessage(conPrefix + message);
     }
     
     /**
