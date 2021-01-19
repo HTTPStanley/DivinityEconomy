@@ -74,7 +74,7 @@ public class EditBal implements CommandExecutor {
             response = app.getEco().addCash(to, amount);
             transType = "deposited to";
         } else if (amount < 0) {
-            response = app.getEco().remCash(to, amount);
+            response = app.getEco().remCash(to, -amount);
             transType = "withdrawn from";
         } else {
             response = new EconomyResponse(amount, app.getEco().getBalance(to), ResponseType.FAILURE, "No amount to add or remove.");
