@@ -25,7 +25,7 @@ commands:
     aliases: [bal, cash, money]
     permission: dce.money.balance
     permission-message: You do not have the permission to use this command
-    usage: /balance
+    usage: /balance or /balance <playername>
 
   sendcash:
     description: Allows the user to transfer cash to another user.
@@ -40,26 +40,32 @@ commands:
     # aliases: [eb]
     permission: dce.admin.editbal
     permission-message: You do not have the permission to use this command
-    usage: /editbal <playername> <amount>
+    usage: /editbal <playername> <amount> or /setbal <amount>
 
   setbal:
     description: Allows the user to set the balance of themselves and others.
     # aliases: [sb]
     permission: dce.admin.setbal
     permission-message: You do not have the permission to use this command
-    usage: /setbal <playername> <amount>
+    usage: /setbal <playername> <amount> or /setbal <amount>
 
   clearbal:
     description: Allows the user to clear the balance of themselves and others.
     # aliases: [cb]
     permission: dce.admin.clearbal
     permission-message: You do not have the permission to use this command
-    usage: /clearbal <playername> <amount>
+    usage: /clearbal <playername> or /clearbal
 
 
 permissions:
   # Misc
-  dce.ping:
+  dce.misc:
+    description: Allows the user to use miscellaneous commands.
+    default: false
+    children:
+      dce.misc.ping: true
+
+  dce.misc.ping:
     description: Allows the user to use the ping command.
     default: true
   
@@ -87,6 +93,8 @@ permissions:
       dce.admin.editbal: true
       dce.admin.setbal: true
       dce.admin.clearbal: true
+      dce.money: true
+      dce.misc: true
 
   dce.admin.editbal:
     description: Allows the user to give and take money to themselves and others.
