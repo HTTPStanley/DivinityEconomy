@@ -35,21 +35,21 @@ public class SetBal implements CommandExecutor {
         Double amount = null;
         
         switch (args.length) {
-            case 0:
-                // No args
-                app.getCon().usage(from, "Not enough arguments.", usage);
-                return true;
-
             case 1:
-                // Use case #1
+                // use case #1
                 to = from;
                 amount = Double.parseDouble(args[0]);
                 break;
-                
+
             case 2:
-                // Use case #2
+                // use case #2
                 to = app.getServer().getPlayer(args[0]);
                 amount = Double.parseDouble(args[1]);
+                break;
+
+            default:
+                // Incorrect number of args
+                app.getCon().usage(from, "Incorrect number of arguments.", usage);
                 break;
         }
 
@@ -72,9 +72,11 @@ public class SetBal implements CommandExecutor {
                 app.getCon().info(from, "Set " + to.getName() + "'s balance to £" + response.balance);
             }
             app.getCon().info(to, "Your balance was set to £" + response.balance);
+            app.getCon().info("Set Balance: " + from.getName() + " Set " + to.getName() + "'s balance to £" + response.balance);
 
         } else {
             app.getCon().warn(from, "An issue occurred. " + to.getName() + "'s balance remains £" + response.balance);
+            app.getCon().severe("Set Balance error: " + response.errorMessage);
         }   
 
         // Graceful exit
