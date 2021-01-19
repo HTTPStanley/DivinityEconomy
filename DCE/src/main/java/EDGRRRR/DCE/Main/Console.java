@@ -65,6 +65,16 @@ public class Console {
     }
 
     /**
+     * Sends a usage command to a player
+     * @param player
+     * @param message
+     */
+    public void usage(Player player, String errorMessage, String commandUsage){
+        warn(player, "Incorrect command usage: " + errorMessage);
+        warn(player, "Command Usage: "+ commandUsage);
+    }
+
+    /**
      * Sends an info message to a player
      * @param player
      * @param message
