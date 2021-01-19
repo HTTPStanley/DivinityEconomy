@@ -1,9 +1,5 @@
 package EDGRRRR.DCE.Main.commands;
 
-import static EDGRRRR.DCE.Main.App.get;
-import static EDGRRRR.DCE.Main.App.getCon;
-import static EDGRRRR.DCE.Main.App.getEco;
-
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -13,6 +9,11 @@ import org.bukkit.entity.Player;
  * Command executor for sending cashing between players
  */
 public class SendCash implements CommandExecutor {
+    private App app;
+
+    public SendCash(App app) {
+        this.app = app;
+    }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
