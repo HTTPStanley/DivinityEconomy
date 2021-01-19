@@ -43,7 +43,7 @@ public class EconomyM {
      */
     public boolean setupEconomy() {
         // Look for vault
-        if (app.get().getServer().getPluginManager().getPlugin("Vault") == null) {
+        if (app.getServer().getPluginManager().getPlugin("Vault") == null) {
             app.getCon().severe("No plugin 'Vault' detected.");
             return false;
         } else {
