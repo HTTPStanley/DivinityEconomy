@@ -4,7 +4,6 @@ import java.util.HashMap;
 
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.json.simple.JSONObject;
 
 import net.milkbowl.vault.economy.Economy;
@@ -21,28 +20,20 @@ public class EconomyM {
     private Economy economy;
 
     // Stores items
-    private HashMap<String, String> items;
-
     private HashMap<String, String> aliases;
-    private HashMap<String, ObjectForStoringMaterialBS> materials;
+    private HashMap<String, Object> materials;
 
-    private Double minSendAmount;
-    private String itemsFile;
+    // Settings
+    private Double minSendAmount = 0.01;
+    private String itemsFile = "items.json";
 
 
-    public EconomyM(JavaPlugin app) {
+    public EconomyM(App app) {
         this.app = app;
-        // Stores the Vault economy object
-        this.economy = null;
         // Items
-        this.items = null;
-        this.materials = null;
-
-        // Settings
-        this.minSendAmount = 0.01;
-        this.itemsFile = "items.json";
-    }
-    
+        this.aliases = null;
+        this.materials = null;        
+    }   
 
 
     /**
@@ -60,12 +51,12 @@ public class EconomyM {
         }
 
         // Get the service provider
-        RegisteredServiceProvider<Economy> rsp = App.get().getServer().getServicesManager().getRegistration(Economy.class);
+        RegisteredServiceProvider<Economy> rsp = app.getServer().getServicesManager().getRegistration(Economy.class);
         if (rsp == null) {
-            App.getCon().severe("Could not register Economy.");
+            app.getCon().severe("Could not register Economy.");
             return false;
         } else {
-            App.getCon().info("Registered Economy.");
+            app.getCon().info("Registered Economy.");
         }
 
         // return if economy was gotten successfully.
@@ -116,9 +107,6 @@ public class EconomyM {
      * @param amount
      */
     public void sendCash(Player from, Player to, Double amount) {
-        // Get App
-        App.get();
-
         // Stores if checks completed successfully
         boolean success = true;
         // Stores reason for failure
@@ -151,19 +139,19 @@ public class EconomyM {
                 // Send message to <from>
                 Double newFromBalance = getBalance(from);
                 Double newToBalance = getBalance(to);
-                App.getCon().info(from, "Successfully sent £" + amount + " to " + toName + ". Your new balance is £" + newFromBalance);
+                app.getCon().info(from, "Successfully sent £" + amount + " to " + toName + ". Your new balance is £" + newFromBalance);
                 // Send message to <to>
-                App.getCon().info(to, "Received £" + amount + " from " + fromName + ". Your new balance is £" + newToBalance);
+                app.getCon().info(to, "Received £" + amount + " from " + fromName + ". Your new balance is £" + newToBalance);
                 // Make Log
-                App.getCon().info(fromName + " sent £" + amount + " to " + toName + ". Their new balances are £" + newFromBalance + " | £" + newToBalance + " respectively.");
+                app.getCon().info(fromName + " sent £" + amount + " to " + toName + ". Their new balances are £" + newFromBalance + " | £" + newToBalance + " respectively.");
             } catch(Exception e) {
                 // If an error ocurred. Log it.
-                App.getCon().severe("A transaction error occurred when "+ fromName + " tried to send £" + amount + " to " + toName);
-                App.getCon().severe("Error: " + e);
+                app.getCon().severe("A transaction error occurred when "+ fromName + " tried to send £" + amount + " to " + toName);
+                app.getCon().severe("Error: " + e);
                 // Perhaps try reset bank values, but if an error occurred in this situ it's likely to reoccur.
             }
         } else {
-            App.getCon().warn(from, "Cannot send £" + amount + " to " + toName + " as " + reason);
+            app.getCon().warn(from, "Cannot send £" + amount + " to " + toName + " as " + reason);
         }
         // Return
         return;
@@ -172,6 +160,6 @@ public class EconomyM {
 
     // JSON STUFF
     private JSONObject readConfig() {
-
+        return null;
     }
 }
