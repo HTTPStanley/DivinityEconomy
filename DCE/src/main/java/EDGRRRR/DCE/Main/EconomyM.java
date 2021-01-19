@@ -1,7 +1,11 @@
 package EDGRRRR.DCE.Main;
 
+import java.util.HashMap;
+
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.json.simple.JSONObject;
 
 import net.milkbowl.vault.economy.Economy;
 
@@ -9,11 +13,36 @@ import net.milkbowl.vault.economy.Economy;
  * An economy manager to simplify tasks for managing the player economy, works with Vault Economy.
  */
 public class EconomyM {
-    // Stores the Vault economy object
-    private static Economy economy = null;
+    
+    // Stores the main app
+    private App app;
 
-    // Settings
-    private static Double minSendAmount = 0.01;
+    // Stores the Vault economy api
+    private Economy economy;
+
+    // Stores items
+    private HashMap<String, String> items;
+
+    private HashMap<String, String> aliases;
+    private HashMap<String, ObjectForStoringMaterialBS> materials;
+
+    private Double minSendAmount;
+    private String itemsFile;
+
+
+    public EconomyM(JavaPlugin app) {
+        this.app = app;
+        // Stores the Vault economy object
+        this.economy = null;
+        // Items
+        this.items = null;
+        this.materials = null;
+
+        // Settings
+        this.minSendAmount = 0.01;
+        this.itemsFile = "items.json";
+    }
+    
 
 
     /**
@@ -22,15 +51,12 @@ public class EconomyM {
      * @return boolean
      */
     public boolean setupEconomy() {
-        // Get the app
-        App.get();
-
         // Look for vault
-        if (App.get().getServer().getPluginManager().getPlugin("Vault") == null) {
-            App.getCon().severe("No plugin 'Vault' detected.");
+        if (app.get().getServer().getPluginManager().getPlugin("Vault") == null) {
+            app.getCon().severe("No plugin 'Vault' detected.");
             return false;
         } else {
-            App.getCon().info("Vault has been detected.");
+            app.getCon().info("Vault has been detected.");
         }
 
         // Get the service provider
@@ -141,6 +167,11 @@ public class EconomyM {
         }
         // Return
         return;
+
+    }
+
+    // JSON STUFF
+    private JSONObject readConfig() {
 
     }
 }

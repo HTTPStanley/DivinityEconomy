@@ -22,7 +22,7 @@ public class SendCash implements CommandExecutor {
         }
         Player from = (Player) sender;
 
-        // Ensure two or more args
+        // Ensure two args
         if (!(args.length == 2)) {
             getCon().warn(from, "Incorrect usage, see¬");
             return false;

@@ -14,7 +14,7 @@ import EDGRRRR.DCE.Main.commands.SendCash;
  */
 public class App extends JavaPlugin {
     // The logger
-    private static final Logger log = Logger.getLogger("Minecraft");
+    private static final Logger log = Logger.getLogger("DCE");
 
     // Accessor var
     private static App i;
