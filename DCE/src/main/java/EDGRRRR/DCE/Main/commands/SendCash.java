@@ -33,7 +33,7 @@ public class SendCash implements CommandExecutor {
         // First arg should be the <to> players name
         String toName = args[0];
         // Second arg should be the <amount>
-        Double amount = Double.parseDouble(args[1]);
+        double amount = Double.parseDouble(args[1]);
 
         // Get player by <to> name
         Player to = app.getServer().getPlayer(toName);
