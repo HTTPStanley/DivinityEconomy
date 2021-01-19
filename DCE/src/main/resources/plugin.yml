@@ -29,18 +29,32 @@ commands:
 
   sendcash:
     description: Allows the user to transfer cash to another user.
-    aliases: [sc, send, transfer, trans]
+    aliases: [transfer]
     permission: dce.money.sendcash
     permission-message: You do not have the permission to use this command
     usage: /sendcash <playername> <amount>
 
   # Admin commands
-  editcash:
+  editbal:
     description: Allows the user to manipulate a users balance, including their own.
-    aliases: [ec]
-    permission: dce.admin.editcash
+    # aliases: [eb]
+    permission: dce.admin.editbal
     permission-message: You do not have the permission to use this command
-    usage: /editcash <playername> <amount>
+    usage: /editbal <playername> <amount>
+
+  setbal:
+    description: Allows the user to set the balance of themselves and others.
+    # aliases: [sb]
+    permission: dce.admin.setbal
+    permission-message: You do not have the permission to use this command
+    usage: /setbal <playername> <amount>
+
+  clearbal:
+    description: Allows the user to clear the balance of themselves and others.
+    # aliases: [cb]
+    permission: dce.admin.clearbal
+    permission-message: You do not have the permission to use this command
+    usage: /clearbal <playername> <amount>
 
 
 permissions:
@@ -70,8 +84,18 @@ permissions:
     description: Allows the user to use all commands under the admin branch of permissions.
     default: op
     children:
-      dce.admin.editcash: true
+      dce.admin.editbal: true
+      dce.admin.setbal: true
+      dce.admin.clearbal: true
 
-  dce.admin.editcash:
+  dce.admin.editbal:
     description: Allows the user to give and take money to themselves and others.
+    default: op
+
+  dce.admin.setbal:
+    description: Allows the user to set the the balance of themselves or others.
+    default: op
+
+  dce.admin.clearbal:
+    description: Allows the user to clean the balance of themselves or others.
     default: op
