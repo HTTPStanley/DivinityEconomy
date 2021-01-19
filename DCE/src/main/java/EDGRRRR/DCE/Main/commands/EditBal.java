@@ -36,11 +36,6 @@ public class EditBal implements CommandExecutor {
         Double amount = null;
 
         switch (args.length) {
-            case 0:
-                // No args
-                app.getCon().usage(from, "Not enough arguments.", usage);
-                return true;
-
             case 1:
                 // use case #1
                 to = from;
@@ -51,6 +46,11 @@ public class EditBal implements CommandExecutor {
                 // use case #2
                 to = app.getServer().getPlayer(args[0]);
                 amount = Double.parseDouble(args[1]);
+                break;
+
+            default:
+                // Incorrect number of args
+                app.getCon().usage(from, "Incorrect number of arguments.", usage);
                 break;
         }
 
