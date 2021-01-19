@@ -16,9 +16,6 @@ public class App extends JavaPlugin {
     // The logger
     private static final Logger log = Logger.getLogger("DCE");
 
-    // Accessor var
-    private static App i;
-
     // The economy
     protected static EconomyM eco = null;
 
@@ -33,9 +30,6 @@ public class App extends JavaPlugin {
      */
     @Override
     public void onEnable() {
-        // Maintains accessor method.
-        i = this;
-
         // Setup the console class
         if (!setupConsole()) {
             log.severe("Console setup failed.");
@@ -53,13 +47,13 @@ public class App extends JavaPlugin {
         // Command registry
         try {
             // Register Ping class
-            getCommand("ping").setExecutor(new Ping());
+            getCommand("ping").setExecutor(new Ping(this));
             // Register Balance class
-            getCommand("balance").setExecutor(new Balance());
+            getCommand("balance").setExecutor(new Balance(this));
             // Register AddCash class
-            getCommand("editcash").setExecutor(new EditCash());
+            getCommand("editcash").setExecutor(new EditCash(this));
             // Register SendCash class
-            getCommand("sendcash").setExecutor(new SendCash());
+            getCommand("sendcash").setExecutor(new SendCash(this));
         } catch(Exception e) {
             con.warn("An error has occurred on command registry.");
             con.severe("Error: " + e);
@@ -84,7 +78,7 @@ public class App extends JavaPlugin {
      */
     private boolean setupConsole() {
         // Create console
-        con = new Console();
+        con = new Console(this);
         return con != null;
     }
 
@@ -95,7 +89,7 @@ public class App extends JavaPlugin {
      */
     private boolean setupEconomy() {
         // Create the economy object
-        eco = new EconomyM();
+        eco = new EconomyM(this);
 
         // If eco is null, return false startup
         if (eco == null) {
@@ -116,7 +110,7 @@ public class App extends JavaPlugin {
      * Returns the economy
      * @return Economy
      */
-    public static EconomyM getEco() {
+    public EconomyM getEco() {
         return eco;
     }
 
@@ -124,16 +118,8 @@ public class App extends JavaPlugin {
      * Returns the console
      * @return Console
      */
-    public static Console getCon() {
+    public Console getCon() {
         return con;
-    }
-
-    /**
-     * Accessor method for getting App as a dependency
-     * @return App
-     */
-    public static App get() {
-        return i;
     }
 
     /**
