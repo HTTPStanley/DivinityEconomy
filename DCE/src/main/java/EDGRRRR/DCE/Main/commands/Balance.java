@@ -1,17 +1,21 @@
 package EDGRRRR.DCE.Main.commands;
 
-import static EDGRRRR.DCE.Main.App.getCon;
-import static EDGRRRR.DCE.Main.App.getEco;
-
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import EDGRRRR.DCE.Main.App;
+
 /**
  * A command executor class for replying to /balance
  */
 public class Balance implements CommandExecutor {
+    private App app;
+
+    public Balance(App app) {
+        this.app = app;
+    }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -24,7 +28,7 @@ public class Balance implements CommandExecutor {
         Player player = (Player) sender;
 
         // Reply to player with their balance.
-        getCon().info(player, "Balance: £" + getEco().getBalance(player));
+        app.getCon().info(player, "Balance: £" + app.getEco().getBalance(player));
         // Graceful exit
         return true;
     }
