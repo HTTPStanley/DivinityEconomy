@@ -1,6 +1,6 @@
 package EDGRRRR.DCE.Main.commands;
 
-import static EDGRRRR.DCE.Main.App.getCon;
+import EDGRRRR.DCE.Main.App;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -11,6 +11,12 @@ import org.bukkit.entity.Player;
  * A simple ping pong! command
  */
 public class Ping implements CommandExecutor {
+    private App app;
+
+    public Ping(App app) {
+        this.app = app;
+    }
+
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -20,7 +26,7 @@ public class Ping implements CommandExecutor {
 
         Player player = (Player) sender;
 
-        getCon().info(player, "Pong!");
+        app.getCon().info(player, "Pong!");
         return true;
     }
 }
