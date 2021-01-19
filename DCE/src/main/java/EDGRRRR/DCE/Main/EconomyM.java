@@ -138,65 +138,6 @@ public class EconomyM {
         return response; 
     }
 
-    /**
-     * Moves cash <amount> from <from> to <to>
-     * Has a series of checks to ensure this is possible, also sends messages regarding the transfer
-     * @param from
-     * @param to
-     * @param amount
-     */
-    public void sendCash(Player from, Player to, double amount) {
-        // Stores if checks completed successfully
-        boolean success = true;
-        // Stores reason for failure
-        String reason = "";
-
-        // Stores repeated information - eases readibility and read calls.
-        double fromBal = getBalance(from);
-        String fromName = from.getName();
-        String toName = to.getName();
-
-        // Check <from> user has enough cash
-        if (fromBal < amount) {
-            // Set the reason and failure
-            reason = "you only have £" + fromBal;
-			success = false;
-        }
-        // Check <amount> is greater than minSendAmount
-        else if (amount < minSendAmount) {
-            // Set the reason and failure
-            reason = "the minimum send amount is £" + minSendAmount;
-            success = false;
-        }
-
-        if (success == true) {
-            try {
-                // Withdraw <amount> from <from>
-                economy.withdrawPlayer(from, amount);
-                // Deposity <amount> to <to>
-                economy.depositPlayer(to, amount);
-                // Send message to <from>
-                double newFromBalance = getBalance(from);
-                double newToBalance = getBalance(to);
-                app.getCon().info(from, "Successfully sent £" + amount + " to " + toName + ". Your new balance is £" + newFromBalance);
-                // Send message to <to>
-                app.getCon().info(to, "Received £" + amount + " from " + fromName + ". Your new balance is £" + newToBalance);
-                // Make Log
-                app.getCon().info(fromName + " sent £" + amount + " to " + toName + ". Their new balances are £" + newFromBalance + " | £" + newToBalance + " respectively.");
-            } catch(Exception e) {
-                // If an error ocurred. Log it.
-                app.getCon().severe("A transaction error occurred when "+ fromName + " tried to send £" + amount + " to " + toName);
-                app.getCon().severe("Error: " + e);
-                // Perhaps try reset bank values, but if an error occurred in this situ it's likely to reoccur.
-            }
-        } else {
-            app.getCon().warn(from, "Cannot send £" + amount + " to " + toName + " as " + reason);
-        }
-        // Return
-        return;
-
-    }
-
     // JSON STUFF
     private JSONObject readConfig() {
         return null;
