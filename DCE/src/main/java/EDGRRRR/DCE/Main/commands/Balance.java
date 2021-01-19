@@ -12,6 +12,7 @@ import EDGRRRR.DCE.Main.App;
  */
 public class Balance implements CommandExecutor {
     private App app;
+    private String usage = "/balance or /balance <username>";
 
     public Balance(App app) {
         this.app = app;
@@ -25,10 +26,38 @@ public class Balance implements CommandExecutor {
         }
 
         // Create player object
-        Player player = (Player) sender;
+        Player from = (Player) sender;
 
-        // Reply to player with their balance.
-        app.getCon().info(player, "Balance: £" + app.getEco().getBalance(player));
+        // Use case scenarios
+        // command - returns the callers balance.
+        // command <username> - returns the usernames balance.
+        Player to = null;
+
+        switch (args.length) {
+            case 0:
+                to = from;
+                break;
+
+            case 1:
+                to = app.getServer().getPlayer(args[0]);
+                break;
+
+            default:
+                to = from;
+                break;
+        }
+
+        if (to == null){
+            app.getCon().usage(from, "Invalid player name.", usage);
+            return true;
+        }
+
+        if (!(from == to)) {
+            app.getCon().info(from, to.getName() + "'s Balance: £" + app.getEco().getBalance(to));
+        } else {
+            app.getCon().info(from, "Balance: £" + app.getEco().getBalance(to));
+        }        
+
         // Graceful exit
         return true;
     }
