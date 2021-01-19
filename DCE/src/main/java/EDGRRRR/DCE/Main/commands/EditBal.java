@@ -85,11 +85,11 @@ public class EditBal implements CommandExecutor {
                 app.getCon().info(from, "You have " + transType + to.getName() + "'s account. New Balance: £" + response.balance);
             }
             app.getCon().info(to, "Your balance was " + transType + " by " + from.getName() + " the amount of £" + response.amount + ". New Balance: £" + response.balance);
-            app.getCon().info("Transaction: " + from.getName() + "(£" + app.getEco().getBalance(from) + ") -->  £" + response.amount + " -->" + to.getName() + "(£" + app.getEco().getBalance(to) + ")");
+            app.getCon().info("Edit Balance: " + from.getName() + " -->  £" + response.amount + " -->" + to.getName() + "(£" + app.getEco().getBalance(to) + ")");
 
         } else {
             app.getCon().warn(from, "An issue occurred. " + to.getName() + "'s balance remains £" + response.balance);
-            app.getCon().warn("Transaction error: " + response.errorMessage);
+            app.getCon().severe("Edit Balance error: " + response.errorMessage);
         }
 
         // Graceful exit
