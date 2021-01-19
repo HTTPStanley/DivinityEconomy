@@ -5,6 +5,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import EDGRRRR.DCE.Main.App;
+
 /**
  * Command executor for sending cashing between players
  */
@@ -25,7 +27,7 @@ public class SendCash implements CommandExecutor {
 
         // Ensure two args
         if (!(args.length == 2)) {
-            getCon().warn(from, "Incorrect usage, see¬");
+            app.getCon().warn(from, "Incorrect usage, see¬");
             return false;
         }
         // First arg should be the <to> players name
@@ -34,22 +36,22 @@ public class SendCash implements CommandExecutor {
         Double amount = Double.parseDouble(args[1]);
 
         // Get player by <to> name
-        Player to = get().getServer().getPlayer(toName);
+        Player to = app.getServer().getPlayer(toName);
 
         // Ensure player found or just not null in general.
         if (to == null) {
-            getCon().warn(from, "Incorrect player name '" + toName + "', see¬");
+            app.getCon().warn(from, "Incorrect player name '" + toName + "', see¬");
             return false;
         }
 
         // Ensure not sending to self
         if (to.getUniqueId() == from.getUniqueId()) {
-            getCon().warn(from, "You can't send money to yourself ¯\\_(ツ)_/¯");
+            app.getCon().warn(from, "You can't send money to yourself ¯\\_(ツ)_/¯");
             return true;
         }
 
         // And it just works.
-        getEco().sendCash(from, to, amount);
+        app.getEco().sendCash(from, to, amount);
 
         return true;
     }
