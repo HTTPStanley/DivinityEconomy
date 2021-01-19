@@ -1,6 +1,6 @@
 package EDGRRRR.DCE.Main.commands;
 
-import static EDGRRRR.DCE.Main.App.getCon;
+import EDGRRRR.DCE.Main.App;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -11,6 +11,11 @@ import org.bukkit.entity.Player;
  * A simple ping pong! command
  */
 public class SpawnItem implements CommandExecutor {
+    private App app;
+
+    public SpawnItem(App app) {
+        this.app = app;
+    }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -24,7 +29,7 @@ public class SpawnItem implements CommandExecutor {
 
         // Ensure two args
         if (!(args.length == 2)) {
-            getCon().warn(player, "Incorrect usage, see¬");
+            app.getCon().warn(player, "Incorrect usage, see¬");
             return false;
         }
 
