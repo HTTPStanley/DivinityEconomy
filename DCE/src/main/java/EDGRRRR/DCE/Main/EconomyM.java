@@ -7,6 +7,8 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.json.simple.JSONObject;
 
 import net.milkbowl.vault.economy.Economy;
+import net.milkbowl.vault.economy.EconomyResponse;
+import net.milkbowl.vault.economy.EconomyResponse.ResponseType;
 
 /**
  * An economy manager to simplify tasks for managing the player economy, works with Vault Economy.
@@ -24,8 +26,10 @@ public class EconomyM {
     private HashMap<String, Object> materials;
 
     // Settings
-    private Double minSendAmount = 0.01;
+    private double minSendAmount = 0.01;
     private String itemsFile = "items.json";
+    private boolean minAmountLimit = true;
+    private double minAmount = 0;
 
 
     public EconomyM(App app) {
@@ -75,19 +79,34 @@ public class EconomyM {
     /**
      * Gets the players balance
      * @param player
-     * @return Double
+     * @return double
      */
-    public Double getBalance(Player player) {
+    public double getBalance(Player player) {
         return economy.getBalance(player);
     }
+
+    /**
+     * Rounding
+     * @param amount
+     */
+
+     public double round(double amount) {
+        amount *= 100;
+        int intAmount = (int) amount;
+        amount = (double) intAmount;
+        return amount / 100;
+     }
 
     /**
      * Adds <amount> from <player>
      * @param player
      * @param amount
      */
-    public void addCash(Player player, Double amount) {
-        economy.depositPlayer(player, amount);
+    public EconomyResponse addCash(Player player, double amount) {
+        amount = round(amount);
+        EconomyResponse response = economy.depositPlayer(player, amount);
+        response = new EconomyResponse(response.amount, getBalance(player), response.type, response.errorMessage);
+        return response;
     }
 
     /**
@@ -95,8 +114,28 @@ public class EconomyM {
      * @param player
      * @param amount
      */
-    public void remCash(Player player, Double amount) {
-        economy.withdrawPlayer(player, amount);
+    public EconomyResponse remCash(Player player, double amount) {
+        amount = round(amount);
+        EconomyResponse response = economy.withdrawPlayer(player, amount);
+        response = new EconomyResponse(response.amount, getBalance(player), response.type, response.errorMessage);
+        return response;
+    }
+
+    public EconomyResponse setCash(Player player, double amount) {
+        amount = round(amount);
+        double balance = getBalance(player);
+        double difference = amount - balance;
+        EconomyResponse response = null;
+        if (difference < 0) {
+            response = this.remCash(player, -difference);
+        } else if (difference > 0) {
+            response = this.addCash(player, difference);
+        } else if (difference == 0) {
+            response = new EconomyResponse(difference, getBalance(player), ResponseType.SUCCESS, "");
+        }
+
+        response = new EconomyResponse(response.amount, getBalance(player), response.type, response.errorMessage);
+        return response; 
     }
 
     /**
@@ -106,14 +145,14 @@ public class EconomyM {
      * @param to
      * @param amount
      */
-    public void sendCash(Player from, Player to, Double amount) {
+    public void sendCash(Player from, Player to, double amount) {
         // Stores if checks completed successfully
         boolean success = true;
         // Stores reason for failure
         String reason = "";
 
         // Stores repeated information - eases readibility and read calls.
-        Double fromBal = getBalance(from);
+        double fromBal = getBalance(from);
         String fromName = from.getName();
         String toName = to.getName();
 
@@ -137,8 +176,8 @@ public class EconomyM {
                 // Deposity <amount> to <to>
                 economy.depositPlayer(to, amount);
                 // Send message to <from>
-                Double newFromBalance = getBalance(from);
-                Double newToBalance = getBalance(to);
+                double newFromBalance = getBalance(from);
+                double newToBalance = getBalance(to);
                 app.getCon().info(from, "Successfully sent £" + amount + " to " + toName + ". Your new balance is £" + newFromBalance);
                 // Send message to <to>
                 app.getCon().info(to, "Received £" + amount + " from " + fromName + ". Your new balance is £" + newToBalance);
