@@ -38,13 +38,13 @@ public class SetBal implements CommandExecutor {
             case 1:
                 // use case #1
                 to = from;
-                amount = Double.parseDouble(args[0]);
+                amount = app.getEco().getDouble(args[0]);
                 break;
 
             case 2:
                 // use case #2
                 to = app.getServer().getPlayer(args[0]);
-                amount = Double.parseDouble(args[1]);
+                amount = app.getEco().getDouble(args[1]);
                 break;
 
             default:
@@ -71,7 +71,7 @@ public class SetBal implements CommandExecutor {
             if (!(from == to)) {
                 app.getCon().info(from, "Set " + to.getName() + "'s balance to £" + response.balance);
             }
-            app.getCon().info(to, "Your balance was set to £" + response.balance);
+            app.getCon().info(to, "Your balance was set to £" + response.balance + " by " + from.getName());
             app.getCon().info("Set Balance: " + from.getName() + " Set " + to.getName() + "'s balance to £" + response.balance);
 
         } else {
