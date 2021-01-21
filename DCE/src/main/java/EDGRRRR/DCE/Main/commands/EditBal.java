@@ -39,13 +39,13 @@ public class EditBal implements CommandExecutor {
             case 1:
                 // use case #1
                 to = from;
-                amount = Double.parseDouble(args[0]);
+                amount = app.getEco().getDouble(args[0]);
                 break;
 
             case 2:
                 // use case #2
                 to = app.getServer().getPlayer(args[0]);
-                amount = Double.parseDouble(args[1]);
+                amount = app.getEco().getDouble(args[1]);
                 break;
 
             default:
@@ -66,25 +66,25 @@ public class EditBal implements CommandExecutor {
             return true;
         }
 
-        // Initializing before because VSCODE IS FUCKING WHINING ABOUT IT.
         EconomyResponse response = null;
         String transType = null;
+        double oldAmount = app.getEco().getBalance(to);
         // Edit cash
         if (amount > 0){
             response = app.getEco().addCash(to, amount);
-            transType = "deposited to";
+            transType = "+";
         } else if (amount < 0) {
             response = app.getEco().remCash(to, -amount);
-            transType = "withdrawn from";
+            transType = "-";
         } else {
             response = new EconomyResponse(amount, app.getEco().getBalance(to), ResponseType.FAILURE, "No amount to add or remove.");
         }
 
-        if (response.transactionSuccess() == true) {
+        if (response.type == ResponseType.SUCCESS) {
             if (!(from == to)) {
-                app.getCon().info(from, "You have " + transType + to.getName() + "'s account. New Balance: £" + response.balance);
+                app.getCon().info(from, "You have edited " + to.getName() + "'s balance. £" + oldAmount + transType + " £" + response.amount + " --> £" + response.balance);
             }
-            app.getCon().info(to, "Your balance was " + transType + " by " + from.getName() + " the amount of £" + response.amount + ". New Balance: £" + response.balance);
+            app.getCon().info(to, "Your balance was edited by " + from.getName() + ". £" + oldAmount + transType + " £" + response.amount + " --> £" + response.balance);
             app.getCon().info("Edit Balance: " + from.getName() + " -->  £" + response.amount + " -->" + to.getName() + "(£" + app.getEco().getBalance(to) + ")");
 
         } else {
