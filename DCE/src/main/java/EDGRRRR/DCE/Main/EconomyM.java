@@ -2,6 +2,7 @@ package EDGRRRR.DCE.Main;
 
 import java.util.HashMap;
 
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.json.simple.JSONObject;
@@ -26,10 +27,10 @@ public class EconomyM {
     private HashMap<String, Object> materials;
 
     // Settings
-    private double minSendAmount = 0.01;
+    public double minSendAmount = 0.01;
     private String itemsFile = "items.json";
-    private boolean minAmountLimit = true;
-    private double minAmount = 0;
+    public boolean minAmountLimit = true;
+    public double minAmount = 0;
 
 
     public EconomyM(App app) {
@@ -82,7 +83,11 @@ public class EconomyM {
      * @return double
      */
     public double getBalance(Player player) {
-        return economy.getBalance(player);
+        OfflinePlayer oPlayer = (OfflinePlayer) player;
+        return getBalance(oPlayer);
+    }
+    public double getBalance(OfflinePlayer oPlayer) {
+        return economy.getBalance(oPlayer);
     }
 
     /**
@@ -102,11 +107,16 @@ public class EconomyM {
      * @param player
      * @param amount
      */
-    public EconomyResponse addCash(Player player, double amount) {
+    public EconomyResponse addCash(OfflinePlayer oPlayer, double amount) {
         amount = round(amount);
-        EconomyResponse response = economy.depositPlayer(player, amount);
-        response = new EconomyResponse(response.amount, getBalance(player), response.type, response.errorMessage);
+        EconomyResponse response = economy.depositPlayer(oPlayer, amount);
+        response = new EconomyResponse(response.amount, getBalance(oPlayer), response.type, response.errorMessage);
         return response;
+    }
+
+    public EconomyResponse addCash(Player player, double amount) {
+        OfflinePlayer oPlayer = (OfflinePlayer) player;
+        return addCash(oPlayer, amount);
     }
 
     /**
@@ -114,32 +124,70 @@ public class EconomyM {
      * @param player
      * @param amount
      */
-    public EconomyResponse remCash(Player player, double amount) {
+    public EconomyResponse remCash(OfflinePlayer oPlayer, double amount) {
         amount = round(amount);
-        EconomyResponse response = economy.withdrawPlayer(player, amount);
-        response = new EconomyResponse(response.amount, getBalance(player), response.type, response.errorMessage);
+        EconomyResponse response = economy.withdrawPlayer(oPlayer, amount);
+        response = new EconomyResponse(response.amount, getBalance(oPlayer), response.type, response.errorMessage);
         return response;
     }
 
-    public EconomyResponse setCash(Player player, double amount) {
+    public EconomyResponse remCash(Player player, double amount) {
+        OfflinePlayer oPlayer = (OfflinePlayer) player;
+        return remCash(oPlayer, amount);
+    }
+
+    public EconomyResponse setCash(OfflinePlayer oPlayer, double amount) {
         amount = round(amount);
-        double balance = getBalance(player);
+        double balance = getBalance(oPlayer);
         double difference = amount - balance;
         EconomyResponse response = null;
         if (difference < 0) {
-            response = this.remCash(player, -difference);
+            response = remCash(oPlayer, -difference);
         } else if (difference > 0) {
-            response = this.addCash(player, difference);
+            response = addCash(oPlayer, difference);
         } else if (difference == 0) {
-            response = new EconomyResponse(difference, getBalance(player), ResponseType.SUCCESS, "");
+            response = new EconomyResponse(difference, getBalance(oPlayer), ResponseType.SUCCESS, "");
         }
 
-        response = new EconomyResponse(response.amount, getBalance(player), response.type, response.errorMessage);
+        response = new EconomyResponse(response.amount, getBalance(oPlayer), response.type, response.errorMessage);
         return response; 
     }
+    
+    public EconomyResponse setCash(Player player, double amount) {
+        OfflinePlayer oPlayer = (OfflinePlayer) player;
+        return setCash(oPlayer, amount);
+    }
 
-    // JSON STUFF
-    private JSONObject readConfig() {
-        return null;
+    public EconomyResponse sendCash(Player from, OfflinePlayer to, double amount) {  
+        double fromBalance = getBalance(from);
+        
+        EconomyResponse takeResponse = remCash(from, amount);
+        if (takeResponse.type == ResponseType.FAILURE) {
+            return takeResponse;
+        }
+
+        EconomyResponse sendResponse = addCash(to, amount);
+        if (sendResponse.type == ResponseType.FAILURE) {
+            // Since takeResponse was a success
+            setCash(from, fromBalance);
+            return sendResponse;
+        }
+
+        return new EconomyResponse(amount, fromBalance, ResponseType.SUCCESS, null);
+    }
+    public EconomyResponse sendCash(Player from, Player to, double amount) {
+        OfflinePlayer oPlayer = (OfflinePlayer) to;
+        return sendCash(from, oPlayer, amount);
+    }
+
+    public Double getDouble(String arg) {
+        Double amount = null;
+        try {
+            amount = Double.parseDouble(arg);
+        } catch (Exception e) {
+            amount = null;
+        }
+
+        return amount;
     }
 }
