@@ -1,5 +1,6 @@
 package EDGRRRR.DCE.Main.commands;
 
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -32,32 +33,39 @@ public class Balance implements CommandExecutor {
         // command - returns the callers balance.
         // command <username> - returns the usernames balance.
         Player to = null;
+        OfflinePlayer toOff = null;
 
         switch (args.length) {
-            case 0:
-                to = from;
-                break;
-
             case 1:
+                // Get online player
                 to = app.getServer().getPlayer(args[0]);
+                // If they aren't online or don't exist. Do the dirty offline call.
+                if (to == null){
+                    // Naughty naughty boy - allows fetching of non-seen players.
+                    toOff = app.getOfflinePlayer(args[0], true);
+                }
                 break;
 
             default:
+                // any number of args.. just return their own.
                 to = from;
                 break;
         }
 
-        if (to == null){
+        if (to == null && toOff == null){
             app.getCon().usage(from, "Invalid player name.", usage);
             return true;
         }
 
-        if (!(from == to)) {
-            app.getCon().info(from, to.getName() + "'s Balance: £" + app.getEco().getBalance(to));
+        if (!(to == null)) {
+            if (!(from == to)) {
+                app.getCon().info(from, to.getName() + "'s Balance: £" + app.getEco().getBalance(to));
+            } else {
+                app.getCon().info(from, "Balance: £" + app.getEco().getBalance(to));
+            }
         } else {
-            app.getCon().info(from, "Balance: £" + app.getEco().getBalance(to));
-        }        
-
+            app.getCon().info(from, toOff.getName() + "'s Balance: £" + app.getEco().getBalance(toOff));
+        }
         // Graceful exit
         return true;
     }
