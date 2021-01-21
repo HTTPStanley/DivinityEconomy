@@ -8,3 +8,4 @@ DCE/workspace.code-workspace
 DCE/target/maven-archiver/pom.properties
 DCE/target/classes/plugin.yml
 DCE/.vscode/settings.json
+.vscode/settings.json
