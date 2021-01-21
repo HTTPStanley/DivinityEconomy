@@ -2,6 +2,7 @@ package EDGRRRR.DCE.Main;
 
 import java.util.logging.Logger;
 
+import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import EDGRRRR.DCE.Main.commands.Balance;
@@ -68,9 +69,6 @@ public class App extends JavaPlugin {
         con.warn("Plugin Disabled");
     }
 
-
-
-
     /**
      * Returns the economy
      * @return Economy
@@ -85,6 +83,30 @@ public class App extends JavaPlugin {
      */
     public Console getCon() {
         return con;
+    }
+
+    /**
+     * Returns an offline player
+     * First scans local offline players
+     * @param name - name to scan for.
+     * @param allowFetch - Uses deprecated "bukkit.getOfflinePlayer", not reccommended.
+     * @return OfflinePlayer - the player corresponding to the name.
+     */
+    public OfflinePlayer getOfflinePlayer(String name, boolean allowFetch) {
+        OfflinePlayer[] oPlayers = getServer().getOfflinePlayers();
+        OfflinePlayer player = null;
+        for (OfflinePlayer oPlayer : oPlayers) {
+            if (oPlayer.getName() == name) {
+                player = oPlayer;
+                break;
+            }
+        }
+
+        if (allowFetch == true && player == null) {
+            player = getServer().getOfflinePlayer(name);
+        }
+
+        return player;
     }
 
 }
