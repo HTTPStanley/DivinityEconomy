@@ -8,8 +8,6 @@ import org.bukkit.entity.Player;
 
 import EDGRRRR.DCE.Main.App;
 import net.milkbowl.vault.economy.EconomyResponse;
-import net.milkbowl.vault.economy.EconomyResponse.ResponseType;
-import net.minecraft.server.v1_16_R3.PlayerChunk.Failure;
 
 /**
  * Command executor for sending cashing between players
@@ -59,7 +57,7 @@ public class SendCash implements CommandExecutor {
             app.getCon().usage(from, "Invalid player name.", usage);
             return true;
         }
-        // Ensure amount was parsed - isn't dead.
+        // Ensure amount was parsed
         // Ensure amount is greater than min send amount.
         if (amount == null) {
             app.getCon().usage(from, "Invalid amount.", usage);
