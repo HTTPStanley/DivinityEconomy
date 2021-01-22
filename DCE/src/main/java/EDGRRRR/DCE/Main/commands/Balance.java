@@ -42,7 +42,7 @@ public class Balance implements CommandExecutor {
                 // If they aren't online or don't exist. Do the dirty offline call.
                 if (to == null){
                     // Naughty naughty boy - allows fetching of non-seen players.
-                    toOff = app.getOfflinePlayer(args[0], true);
+                    toOff = app.getOfflinePlayer(args[0], false);
                 }
                 break;
 
