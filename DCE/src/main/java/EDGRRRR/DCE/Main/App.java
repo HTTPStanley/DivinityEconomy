@@ -1,8 +1,7 @@
 package EDGRRRR.DCE.Main;
 
-import java.util.logging.Logger;
-
 import org.bukkit.OfflinePlayer;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import EDGRRRR.DCE.Main.commands.Balance;
@@ -16,14 +15,34 @@ import EDGRRRR.DCE.Main.commands.SetBal;
  * Hooks everything together
  */
 public class App extends JavaPlugin {
-    // The logger
-    private final Logger log = Logger.getLogger("DCE");
-
     // The economy
-    protected EconomyM eco = null;
+    private EconomyM eco;
     // The console
-    protected Console con = null;
+    private Console con;
 
+    // Commands
+    private CommandExecutor ping;
+    public CommandExecutor getCommandPing() { return this.ping; }
+
+
+    private CommandExecutor balance;
+    public CommandExecutor getCommandBalance() { return this.balance; }
+
+
+    private CommandExecutor editbal;
+    public CommandExecutor getCommandEditBal() { return this.editbal; }
+
+
+    private CommandExecutor sendcash;
+    public CommandExecutor getCommandSendCash() { return this.sendcash; }
+
+
+    private CommandExecutor setbal;
+    public CommandExecutor getCommandSetBal() { return this.setbal; }
+
+
+    private CommandExecutor clearbal;
+    public CommandExecutor getCommandClearBal() { return this.clearbal; }
 
     /**
      * Called when the plugin is enabled
@@ -36,20 +55,22 @@ public class App extends JavaPlugin {
         this.con = new Console(this);
     	this.eco = new EconomyM(this);
         this.eco.setupEconomy();
+        // setup commands
+        this.ping = new Ping(this);
+        this.balance = new Balance(this);
+        this.editbal = new EditBal(this);
+        this.sendcash = new SendCash(this);
+        this.setbal = new SetBal(this);
+        this.clearbal = new ClearBal(this);
     	
     	try {
-            // Register Ping class
-            getCommand("ping").setExecutor(new Ping(this));
-            // Register Balance class
-            getCommand("balance").setExecutor(new Balance(this));
-            // Register AddCash class
-            getCommand("editbal").setExecutor(new EditBal(this));
-            // Register SendCash class
-            getCommand("sendcash").setExecutor(new SendCash(this));
-            // Register SetBal class
-            getCommand("setbal").setExecutor(new SetBal(this));
-            // Register ClearBal class
-            getCommand("clearbal").setExecutor(new ClearBal(this));
+            // Register commands
+            getCommand("ping").setExecutor(this.ping);
+            getCommand("balance").setExecutor(this.balance);
+            getCommand("editbal").setExecutor(this.editbal);
+            getCommand("sendcash").setExecutor(this.sendcash);
+            getCommand("setbal").setExecutor(this.setbal);
+            getCommand("clearbal").setExecutor(this.clearbal);
             } catch (Exception e){
                 e.printStackTrace();
                 con.severe("An error occurred on registry: " + e);
@@ -93,10 +114,12 @@ public class App extends JavaPlugin {
      * @return OfflinePlayer - the player corresponding to the name.
      */
     public OfflinePlayer getOfflinePlayer(String name, boolean allowFetch) {
+        name = name.trim().toLowerCase();
         OfflinePlayer[] oPlayers = getServer().getOfflinePlayers();
         OfflinePlayer player = null;
         for (OfflinePlayer oPlayer : oPlayers) {
-            if (oPlayer.getName() == name) {
+            String oPlayerName = oPlayer.getName().trim().toLowerCase();
+            if (oPlayerName.equals(name)) {
                 player = oPlayer;
                 break;
             }
