@@ -1,5 +1,6 @@
 package EDGRRRR.DCE.Main.commands;
 
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -7,7 +8,6 @@ import org.bukkit.entity.Player;
 
 import EDGRRRR.DCE.Main.App;
 import net.milkbowl.vault.economy.EconomyResponse;
-import net.milkbowl.vault.economy.EconomyResponse.ResponseType;
 
 /**
  * Command executor for editing (adding or removing) cash to a player
@@ -30,11 +30,12 @@ public class EditBal implements CommandExecutor {
         Player from = (Player) sender;
 
         // Use case scenarios
-        // command <amount> - applies amount to self
+        // command <amount> - applies ammount to self
         // command <player> <amount> - applies amount to player
         Player to = null;
+        OfflinePlayer toOff = null;
         Double amount = null;
-
+        
         switch (args.length) {
             case 1:
                 // use case #1
@@ -46,6 +47,9 @@ public class EditBal implements CommandExecutor {
                 // use case #2
                 to = app.getServer().getPlayer(args[0]);
                 amount = app.getEco().getDouble(args[1]);
+                if (to == null) {
+                    toOff = app.getOfflinePlayer(args[0], false);
+                }
                 break;
 
             default:
@@ -55,44 +59,67 @@ public class EditBal implements CommandExecutor {
         }
 
         // Ensure to player exists
-        if (to == null) {
-            app.getCon().usage(from, "Incorrect player name.", usage);
+        if (to == null && toOff == null){
+            app.getCon().usage(from, "Invalid player name.", usage);
             return true;
         }
-
+        
         // Ensure amount is not null
         if (amount == null) {
             app.getCon().usage(from, "Incorrect amount.", usage);
             return true;
         }
 
-        EconomyResponse response = null;
-        String transType = null;
-        double oldAmount = app.getEco().getBalance(to);
         // Edit cash
-        if (amount > 0){
+        EconomyResponse response = null;
+        String toName = null;
+        if (!(to == null) && (amount > 0)) {
+            // Online and add
+            toName = to.getName();
             response = app.getEco().addCash(to, amount);
-            transType = "+";
-        } else if (amount < 0) {
+        } else if ((to == null) && (amount > 0)) {
+            // Offline and add
+            toName = toOff.getName();
+            response = app.getEco().addCash(toOff, amount);
+        } else if (!(to == null) && (amount < 0)) {
+            // Online and remove (note the - on <amount> to invert to positive.)
+            toName = to.getName();
             response = app.getEco().remCash(to, -amount);
-            transType = "-";
-        } else {
-            response = new EconomyResponse(amount, app.getEco().getBalance(to), ResponseType.FAILURE, "No amount to add or remove.");
+        } else if ((to == null) && (amount < 0)) {
+            // Offline and remove (note the - on <amount> to invert to positive.)
+            toName = toOff.getName();
+            response = app.getEco().remCash(toOff, -amount);
         }
 
-        if (response.type == ResponseType.SUCCESS) {
-            if (!(from == to)) {
-                app.getCon().info(from, "You have edited " + to.getName() + "'s balance. £" + oldAmount + transType + " £" + response.amount + " --> £" + response.balance);
-            }
-            app.getCon().info(to, "Your balance was edited by " + from.getName() + ". £" + oldAmount + transType + " £" + response.amount + " --> £" + response.balance);
-            app.getCon().info("Edit Balance: " + from.getName() + " -->  £" + response.amount + " -->" + to.getName() + "(£" + app.getEco().getBalance(to) + ")");
 
-        } else {
-            app.getCon().warn(from, "An issue occurred. " + to.getName() + "'s balance remains £" + response.balance);
-            app.getCon().severe("Edit Balance error: " + response.errorMessage);
-        }
+        // Response messages
+        switch(response.type) {
+            case SUCCESS:
+                // If to != from, respond.
+                if (!(to == from)) {
+                    app.getCon().info(from, "You changed " + toName + "'s balance by £" + response.amount + " to £" + response.balance);
+                }   
 
-        // Graceful exit
+                // If online send message
+                if (!(to == null)) {
+                    app.getCon().info(to, from.getName() + "Changed your balance by £" + response.amount + " to £" + response.balance);
+
+                // If offline --
+                } else {
+                    // Perhaps send an ingame mail message to offlinePlayer ¯\_(ツ)_/¯
+                }
+
+                // Console feedback
+                app.getCon().info(from.getName() + "changed " + toName + "'s balance by £" + response.amount + " to £" + response.balance);
+                break;
+            
+            case FAILURE:
+                app.getCon().usage(from, response.errorMessage, usage);            
+
+            default:
+                app.getCon().warn("Balance Edit error (" + from.getName() + "-->" + toName + "): " + response.errorMessage);
+        } 
+
         return true;
     }
 }
