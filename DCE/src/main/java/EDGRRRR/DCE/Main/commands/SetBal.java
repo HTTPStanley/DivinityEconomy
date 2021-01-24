@@ -3,6 +3,7 @@ package EDGRRRR.DCE.Main.commands;
 import EDGRRRR.DCE.Main.App;
 import net.milkbowl.vault.economy.EconomyResponse;
 
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -32,6 +33,7 @@ public class SetBal implements CommandExecutor {
         // command <amount> - applies ammount to self
         // command <player> <amount> - applies amount to player
         Player to = null;
+        OfflinePlayer toOff = null;
         Double amount = null;
         
         switch (args.length) {
@@ -45,6 +47,9 @@ public class SetBal implements CommandExecutor {
                 // use case #2
                 to = app.getServer().getPlayer(args[0]);
                 amount = app.getEco().getDouble(args[1]);
+                if (to == null) {
+                    toOff = app.getOfflinePlayer(args[0], false);
+                }
                 break;
 
             default:
@@ -54,8 +59,8 @@ public class SetBal implements CommandExecutor {
         }
 
         // Ensure to player exists
-        if (to == null) {
-            app.getCon().usage(from, "Incorrect player name.", usage);
+        if (to == null && toOff == null){
+            app.getCon().usage(from, "Invalid player name.", usage);
             return true;
         }
         
@@ -64,20 +69,46 @@ public class SetBal implements CommandExecutor {
             app.getCon().usage(from, "Incorrect amount.", usage);
             return true;
         }
-        
-        // Set cash
-        EconomyResponse response = app.getEco().setCash(to, amount);
-        if (response.transactionSuccess() == true) {
-            if (!(from == to)) {
-                app.getCon().info(from, "Set " + to.getName() + "'s balance to £" + response.balance);
-            }
-            app.getCon().info(to, "Your balance was set to £" + response.balance + " by " + from.getName());
-            app.getCon().info("Set Balance: " + from.getName() + " Set " + to.getName() + "'s balance to £" + response.balance);
 
+        // Set cash
+        EconomyResponse response = null;
+        String toName = null;
+        if (!(to == null)) {
+            response = app.getEco().setCash(to, amount);
+            toName = to.getName();            
         } else {
-            app.getCon().warn(from, "An issue occurred. " + to.getName() + "'s balance remains £" + response.balance);
-            app.getCon().severe("Set Balance error: " + response.errorMessage);
-        }   
+            response = app.getEco().setCash(toOff, amount);
+            toName = toOff.getName();
+        }
+
+
+        // Response messages
+        switch(response.type) {
+            case SUCCESS:
+                // If to != from, respond.
+                if (!(to == from)) {
+                    app.getCon().info(from, "You set " + toName + "'s balance to £" + response.balance);
+                }   
+
+                // If online send message
+                if (!(to == null)) {
+                    app.getCon().info(to, "Your balance was set to £" + response.balance + " by " + from.getName());
+
+                // If offline --
+                } else {
+                    // Perhaps send an ingame mail message to offlinePlayer ¯\_(ツ)_/¯
+                }
+
+                // Console feedback
+                app.getCon().info(from.getName() + " set " + toName + "'s balance to £" + response.balance);
+                break;
+            
+            case FAILURE:
+                app.getCon().usage(from, response.errorMessage, usage);            
+
+            default:
+                app.getCon().warn("Balance Set error (" + from.getName() + "-->" + toName + "): " + response.errorMessage);
+        } 
 
         // Graceful exit
         return true;
