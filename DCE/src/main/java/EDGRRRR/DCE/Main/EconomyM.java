@@ -108,9 +108,11 @@ public class EconomyM {
      * @param amount
      */
     public EconomyResponse addCash(OfflinePlayer oPlayer, double amount) {
+        app.getCon().debug("ADD REQUEST '" + oPlayer.getName() + "' £" + amount);
         amount = round(amount);
         EconomyResponse response = economy.depositPlayer(oPlayer, amount);
         response = new EconomyResponse(response.amount, getBalance(oPlayer), response.type, response.errorMessage);
+        app.getCon().debug("ADD COMPLETE '" + oPlayer.getName() + "' £" + response.balance + "(£ " + response.amount + ")");
         return response;
     }
 
@@ -125,9 +127,11 @@ public class EconomyM {
      * @param amount
      */
     public EconomyResponse remCash(OfflinePlayer oPlayer, double amount) {
+        app.getCon().debug("SET REQUEST '" + oPlayer.getName() + "' £" + amount);
         amount = round(amount);
         EconomyResponse response = economy.withdrawPlayer(oPlayer, amount);
         response = new EconomyResponse(response.amount, getBalance(oPlayer), response.type, response.errorMessage);
+        app.getCon().debug("REM COMPLETE '" + oPlayer.getName() + "' £" + response.balance + "(£ " + response.amount + ")");
         return response;
     }
 
@@ -137,6 +141,7 @@ public class EconomyM {
     }
 
     public EconomyResponse setCash(OfflinePlayer oPlayer, double amount) {
+        app.getCon().debug("SET REQUEST '" + oPlayer.getName() + "' £" + amount);
         amount = round(amount);
         double balance = getBalance(oPlayer);
         double difference = amount - balance;
@@ -150,6 +155,7 @@ public class EconomyM {
         }
 
         response = new EconomyResponse(response.amount, getBalance(oPlayer), response.type, response.errorMessage);
+        app.getCon().debug("SET COMPLETE '" + oPlayer.getName() + "' £" + response.balance + "(£ " + response.amount + ")");
         return response; 
     }
     
