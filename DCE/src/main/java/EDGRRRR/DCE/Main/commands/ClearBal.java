@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
  */
 public class ClearBal implements CommandExecutor {
     private App app;
+    private String usage = "/clearbal <username> or /clearbal";
 
     public ClearBal(App app) {
         this.app = app;
@@ -25,19 +26,24 @@ public class ClearBal implements CommandExecutor {
         }
 
         Player from = (Player) sender;
+        String to = null;
 
-        // Ensure two or more args
-        if (!(args.length == 1)) {
-            app.getCon().warn(from, "Incorrect usage, see¬");
-            return false;
+        switch (args.length) {
+            case 0:
+                to = from.getName();
+                break;
+
+            case 1:
+                to = args[0];
+                break;
+
+            default:
+                app.getCon().usage(from, "Incorrect number of arguments.", usage);;
+                return true;
         }
 
-        // Adds 2nd arg for set cash
-        String[] argv = {args[0], "0"};
-
-        CommandExecutor cashSetter = new SetBal(this.app);
-        boolean response = cashSetter.onCommand(sender, command, label, argv);
-        return response;
+        String[] argv = {to, "0"};
+        return app.getCommandSetBal().onCommand(sender, command, label, argv);
     }
 }
 
