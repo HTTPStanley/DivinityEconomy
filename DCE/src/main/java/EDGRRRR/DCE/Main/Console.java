@@ -8,9 +8,11 @@ import org.bukkit.entity.Player;
  */
 public class Console {
     private App app;
+    private boolean debugMode = true;
     private ChatColor infoColour = ChatColor.GREEN;
     private ChatColor warnColour = ChatColor.YELLOW;
     private ChatColor severeColour = ChatColor.RED;
+    private ChatColor debugColour = ChatColor.DARK_PURPLE;
     private ChatColor prefixColour = ChatColor.AQUA;
     private String prefix;
     private String conPrefix;
@@ -36,6 +38,16 @@ public class Console {
      */
     public void info(String message) {
         send(infoColour + message);
+    }
+
+    /**
+     * Sends a (default green) message to the console
+     * @param message
+     */
+    public void debug(String message) {        
+        if (debugMode == true) {
+            send(debugColour + message);
+        }
     }
 
     /**
