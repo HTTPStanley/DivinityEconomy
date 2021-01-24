@@ -72,7 +72,7 @@ public class SendCash implements CommandExecutor {
         String toName = null;
         if (!(to == null)) {
             if (to == from) {
-                app.getCon().usage(from, "You can't send money to yourself ┗|｀O′|┛", usage);
+                app.getCon().usage(from, "You can't send money to yourself (╯°□°）╯︵ ┻━┻", usage);
                 return true;
             } else {
                 response = app.getEco().sendCash(from, to, amount);
@@ -104,5 +104,5 @@ public class SendCash implements CommandExecutor {
 
         // Graceful exit
         return true;
-    }
+    } 
 }
