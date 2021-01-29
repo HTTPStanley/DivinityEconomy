@@ -29,6 +29,12 @@ public class Balance implements CommandExecutor {
         // Create player object
         Player from = (Player) sender;
 
+        // Ensure command is enabled
+        if (!(app.getConfig().getBoolean(app.getConf().strComBalance))) {
+            app.getCon().severe(from, "This command is not enabled.");
+            return true;
+        }
+
         // Use case scenarios
         // command - returns the callers balance.
         // command <username> - returns the usernames balance.
