@@ -40,8 +40,6 @@ public class EconomyM {
         // settings
         this.minSendAmount = app.getConfig().getDouble(app.getConf().strEconMinSendAmount);
         this.roundingDigits = app.getConfig().getDouble(app.getConf().strEconRoundingDigits);
-        app.getLogger().info("Min send amount: " + minSendAmount);
-        app.getLogger().info("Rounding digits: " + roundingDigits);
     }
 
 
