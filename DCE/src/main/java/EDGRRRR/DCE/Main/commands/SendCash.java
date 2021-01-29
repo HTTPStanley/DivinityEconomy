@@ -96,7 +96,7 @@ public class SendCash implements CommandExecutor {
                 break;
 
             case FAILURE:
-                app.getCon().usage(from, response.errorMessage, usage);            
+                app.getCon().usage(from, response.errorMessage, usage);
 
             default:
                 app.getCon().warn("Transaction error (" + from.getName() + "-->" + toName + "): " + response.errorMessage);
@@ -104,5 +104,5 @@ public class SendCash implements CommandExecutor {
 
         // Graceful exit
         return true;
-    } 
+    }
 }

@@ -35,7 +35,7 @@ public class SetBal implements CommandExecutor {
         Player to = null;
         OfflinePlayer toOff = null;
         Double amount = null;
-        
+
         switch (args.length) {
             case 1:
                 // use case #1
@@ -63,7 +63,7 @@ public class SetBal implements CommandExecutor {
             app.getCon().usage(from, "Invalid player name.", usage);
             return true;
         }
-        
+
         // Ensure amount is not null
         if (amount == null) {
             app.getCon().usage(from, "Incorrect amount.", usage);
@@ -75,7 +75,7 @@ public class SetBal implements CommandExecutor {
         String toName = null;
         if (!(to == null)) {
             response = app.getEco().setCash(to, amount);
-            toName = to.getName();            
+            toName = to.getName();
         } else {
             response = app.getEco().setCash(toOff, amount);
             toName = toOff.getName();
@@ -88,7 +88,7 @@ public class SetBal implements CommandExecutor {
                 // If to != from, respond.
                 if (!(to == from)) {
                     app.getCon().info(from, "You set " + toName + "'s balance to £" + response.balance);
-                }   
+                }
 
                 // If online send message
                 if (!(to == null)) {
@@ -102,13 +102,13 @@ public class SetBal implements CommandExecutor {
                 // Console feedback
                 app.getCon().info(from.getName() + " set " + toName + "'s balance to £" + response.balance);
                 break;
-            
+
             case FAILURE:
-                app.getCon().usage(from, response.errorMessage, usage);            
+                app.getCon().usage(from, response.errorMessage, usage);
 
             default:
                 app.getCon().warn("Balance Set error (" + from.getName() + "-->" + toName + "): " + response.errorMessage);
-        } 
+        }
 
         // Graceful exit
         return true;

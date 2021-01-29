@@ -23,7 +23,7 @@ public class SpawnItem implements CommandExecutor {
         if (!(sender instanceof Player)) {
             return true;
         }
-        
+
         // Get player
         Player player = (Player) sender;
 
@@ -32,9 +32,7 @@ public class SpawnItem implements CommandExecutor {
             app.getCon().warn(player, "Incorrect usage, see¬");
             return false;
         }
-
         
-
         return true;
     }
 }

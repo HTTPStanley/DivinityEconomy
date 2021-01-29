@@ -35,7 +35,7 @@ public class EditBal implements CommandExecutor {
         Player to = null;
         OfflinePlayer toOff = null;
         Double amount = null;
-        
+
         switch (args.length) {
             case 1:
                 // use case #1
@@ -63,7 +63,7 @@ public class EditBal implements CommandExecutor {
             app.getCon().usage(from, "Invalid player name.", usage);
             return true;
         }
-        
+
         // Ensure amount is not null
         if (amount == null) {
             app.getCon().usage(from, "Incorrect amount.", usage);
@@ -98,7 +98,7 @@ public class EditBal implements CommandExecutor {
                 // If to != from, respond.
                 if (!(to == from)) {
                     app.getCon().info(from, "You changed " + toName + "'s balance by £" + response.amount + " to £" + response.balance);
-                }   
+                }
 
                 // If online send message
                 if (!(to == null)) {
@@ -112,13 +112,13 @@ public class EditBal implements CommandExecutor {
                 // Console feedback
                 app.getCon().info(from.getName() + "changed " + toName + "'s balance by £" + response.amount + " to £" + response.balance);
                 break;
-            
+
             case FAILURE:
-                app.getCon().usage(from, response.errorMessage, usage);            
+                app.getCon().usage(from, response.errorMessage, usage);
 
             default:
                 app.getCon().warn("Balance Edit error (" + from.getName() + "-->" + toName + "): " + response.errorMessage);
-        } 
+        }
 
         return true;
     }
