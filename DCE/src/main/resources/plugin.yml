@@ -15,7 +15,7 @@ commands:
   ping:
     description: Use it to find out.
     aliases: []
-    permission: dce.ping
+    permission: dce.misc.ping
     permission-message: You do not have the permission to use this command
     usage: /ping
   
