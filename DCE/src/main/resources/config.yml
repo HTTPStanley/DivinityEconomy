@@ -1,0 +1,32 @@
+# The main settings
+# debugMode: enables and disables debugging.
+# version: the version of the config file - do not touch!
+main:
+  debugMode: false
+  version: 1.0.1
+  
+# Chat settings
+# Colours can be found here: https://jd.bukkit.org/org/bukkit/ChatColor.html
+# chatDebug: The prefix for the plugin in chat
+# prefix: The prefix seperator for the plugin in chat
+# prefixSep: The colour of the prefix
+# prefixColour: The colour of the prefix seperator
+# prefixConsole:
+#   -The prefix for console messages
+#   -Codes: 
+#     -%V: version of the plugin
+#   -infoColour: The colour of general messages
+# warnColour: The colour of warn-level errors in console and to players
+# severeColour: The colour of severe-level errors in console (mostly)
+# debugColour: The colour of debug-level messages in console - only applies if debugMode is enabled or chatDebug is enabled.
+chat:
+  chatDebug: false
+  prefix: "[DCE]"
+  prefixSep: " - "
+  prefixColour: "AQUA"
+  prefixSepColour: "AQUA"
+  prefixConsole: "[DCE v%V]"
+  infoColour: "GREEN"
+  warnColour: "YELLOW"
+  severeColour: "RED"
+  debugColour: "DARK_PURPLE"
