@@ -38,7 +38,7 @@ public class ClearBal implements CommandExecutor {
                 break;
 
             default:
-                app.getCon().usage(from, "Incorrect number of arguments.", usage);;
+                app.getCon().usage(from, "Incorrect number of arguments.", usage);
                 return true;
         }
 
