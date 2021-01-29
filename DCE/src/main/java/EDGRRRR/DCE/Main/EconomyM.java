@@ -14,7 +14,7 @@ import net.milkbowl.vault.economy.EconomyResponse.ResponseType;
  * An economy manager to simplify tasks for managing the player economy, works with Vault Economy.
  */
 public class EconomyM {
-    
+
     // Stores the main app
     private App app;
 
@@ -26,18 +26,23 @@ public class EconomyM {
     private HashMap<String, Object> materials;
 
     // Settings
-    public double minSendAmount = 0.01;
+    private double minSendAmount;
+    private double roundingDigits;
     private String itemsFile = "items.json";
-    public boolean minAmountLimit = true;
-    public double minAmount = 0;
 
 
     public EconomyM(App app) {
         this.app = app;
         // Items
         this.aliases = null;
-        this.materials = null;        
-    }   
+        this.materials = null;
+
+        // settings
+        this.minSendAmount = app.getConfig().getDouble(app.getConf().strEconMinSendAmount);
+        this.roundingDigits = app.getConfig().getDouble(app.getConf().strEconRoundingDigits);
+        app.getLogger().info("Min send amount: " + minSendAmount);
+        app.getLogger().info("Rounding digits: " + roundingDigits);
+    }
 
 
     /**
@@ -95,11 +100,24 @@ public class EconomyM {
      */
 
      public double round(double amount) {
-        amount *= 100;
-        int intAmount = (int) amount;
-        amount = (double) intAmount;
-        return amount / 100;
-     }
+        // Rounds the amount to the number of digits specified
+        // Does this by 10**digits (100 or 10**2 = 2 digits)
+        double roundAmount = Math.pow(10, roundingDigits);
+        return Math.round(amount * roundAmount) / roundAmount;
+
+    }
+
+    // /**
+    //  * Lgeacy Rounding
+    //  * @param amount
+    //  */
+
+    //  public double legacyRound(double amount) {
+    //     amount *= 100;
+    //     int intAmount = (int) amount;
+    //     amount = (double) intAmount;
+    //     return amount / 100;
+    //  }
 
     /**
      * Adds <amount> from <player>
@@ -155,17 +173,17 @@ public class EconomyM {
 
         response = new EconomyResponse(response.amount, getBalance(oPlayer), response.type, response.errorMessage);
         app.getCon().debug("SET COMPLETE '" + oPlayer.getName() + "' £" + response.balance + "(£ " + response.amount + ")");
-        return response; 
+        return response;
     }
-    
+
     public EconomyResponse setCash(Player player, double amount) {
         OfflinePlayer oPlayer = (OfflinePlayer) player;
         return setCash(oPlayer, amount);
     }
 
-    public EconomyResponse sendCash(Player from, OfflinePlayer to, double amount) {  
+    public EconomyResponse sendCash(Player from, OfflinePlayer to, double amount) {
         double fromBalance = getBalance(from);
-        
+
         EconomyResponse takeResponse = remCash(from, amount);
         if (takeResponse.type == ResponseType.FAILURE) {
             return takeResponse;
