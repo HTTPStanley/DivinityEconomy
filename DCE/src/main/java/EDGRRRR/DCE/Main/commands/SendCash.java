@@ -29,11 +29,18 @@ public class SendCash implements CommandExecutor {
         // Cast player
         Player from = (Player) sender;
 
+        // Ensure command is enabled
+        if (!(app.getConfig().getBoolean(app.getConf().strComSendCash))) {
+            app.getCon().severe(from, "This command is not enabled.");
+            return true;
+        }
+
         // Use case scenarios
         // command <player> <amount>
         Player to = null;
         OfflinePlayer toOff = null;
         Double amount = null;
+        Double minSendAmount = app.getConfig().getDouble(app.getConf().strEconMinSendAmount);
 
         switch (args.length) {
             case 2:
@@ -62,8 +69,8 @@ public class SendCash implements CommandExecutor {
         if (amount == null) {
             app.getCon().usage(from, "Invalid amount.", usage);
             return true;
-        } else if (amount < app.getEco().minSendAmount) {
-            app.getCon().usage(from, "Invalid amount, needs to be greater than £" + app.getEco().minSendAmount, usage);
+        } else if (amount < minSendAmount) {
+            app.getCon().usage(from, "Invalid amount, needs to be greater than £" + minSendAmount, usage);
             return true;
         }
 
