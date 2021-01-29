@@ -15,32 +15,36 @@ import EDGRRRR.DCE.Main.commands.SetBal;
  * Hooks everything together
  */
 public class App extends JavaPlugin {
+    // The config
+    private ConfigM conf;
     // The economy
     private EconomyM eco;
     // The console
     private Console con;
 
     // Commands
+
+    // A simple ping command
     private CommandExecutor ping;
     public CommandExecutor getCommandPing() { return this.ping; }
 
-
+    // A command for getting the balance of a user
     private CommandExecutor balance;
     public CommandExecutor getCommandBalance() { return this.balance; }
 
-
+    // An admin command for adding and removing cash from accounts
     private CommandExecutor editbal;
     public CommandExecutor getCommandEditBal() { return this.editbal; }
 
-
+    // A command for sending cash between users
     private CommandExecutor sendcash;
     public CommandExecutor getCommandSendCash() { return this.sendcash; }
 
-
+    // A command for setting the balance of an account
     private CommandExecutor setbal;
     public CommandExecutor getCommandSetBal() { return this.setbal; }
 
-
+    // A command for clearing the balance of a user
     private CommandExecutor clearbal;
     public CommandExecutor getCommandClearBal() { return this.clearbal; }
 
@@ -51,7 +55,9 @@ public class App extends JavaPlugin {
      */
     @Override
     public void onEnable() {
-    	//Setup Managers
+        // Config
+        this.conf = new ConfigM(this);
+        //Setup Managers
         this.con = new Console(this);
     	this.eco = new EconomyM(this);
         this.eco.setupEconomy();
@@ -95,7 +101,7 @@ public class App extends JavaPlugin {
      * @return Economy
      */
     public EconomyM getEco() {
-        return eco;
+        return this.eco;
     }
 
     /**
@@ -103,7 +109,15 @@ public class App extends JavaPlugin {
      * @return Console
      */
     public Console getCon() {
-        return con;
+        return this.con;
+    }
+
+    /**
+     * Returns the config
+     * @return ConfigM
+     */
+    public ConfigM getConf() {
+        return this.conf;
     }
 
     /**
