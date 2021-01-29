@@ -29,6 +29,12 @@ public class SetBal implements CommandExecutor {
 
         Player from = (Player) sender;
 
+        // Ensure command is enabled
+        if (!(app.getConfig().getBoolean(app.getConf().strComSetBal))) {
+            app.getCon().severe(from, "This command is not enabled.");
+            return true;
+        }
+
         // Use case scenarios
         // command <amount> - applies ammount to self
         // command <player> <amount> - applies amount to player
@@ -55,7 +61,7 @@ public class SetBal implements CommandExecutor {
             default:
                 // Incorrect number of args
                 app.getCon().usage(from, "Incorrect number of arguments.", usage);
-                break;
+                return true;
         }
 
         // Ensure to player exists
