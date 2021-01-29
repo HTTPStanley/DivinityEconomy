@@ -28,6 +28,12 @@ public class ClearBal implements CommandExecutor {
         Player from = (Player) sender;
         String to = null;
 
+        // Ensure command is enabled
+        if (!(app.getConfig().getBoolean(app.getConf().strComClearBal))) {
+            app.getCon().severe(from, "This command is not enabled.");
+            return true;
+        }
+
         switch (args.length) {
             case 0:
                 to = from.getName();
