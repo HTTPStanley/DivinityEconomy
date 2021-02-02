@@ -1,0 +1,1145 @@
+﻿Stone,2.4,2.88
+Smooth Stone,4.08,4.896
+Granite,1,1.2
+Polished Granite,1.2,1.44
+Diorite,1,1.2
+Polished Diorite,1.2,1.44
+Andesite,1,1.2
+Polished Andesite,1.2,1.44
+Grass Block,1,1.2
+Dirt,0.5,0.6
+Coarse Dirt,0.6,0.72
+Podzol,2.5,3
+Cobblestone,1,1.2
+Oak Wood Planks,3,3.6
+Spruce Wood Planks,3,3.6
+Birch Wood Planks,3,3.6
+Jungle Wood Planks,3,3.6
+Acacia Wood Planks,3,3.6
+Dark Oak Wood Planks,3,3.6
+Oak Sapling,5,6
+Spruce Sapling,5,6
+Birch Sapling,5,6
+Jungle Sapling,5,6
+Acacia Sapling,5,6
+Dark Oak Sapling,5,6
+Bedrock,,
+Water,,
+Lava,,
+Sand,0.5,0.6
+Red Sand,1.5,1.8
+Gravel,0.5,0.6
+Gold Ore,50,60
+Iron Ore,15,18
+Coal Ore,10,12
+Oak Log,10,12
+Spruce Log,10,12
+Birch Log,10,12
+Jungle Log,10,12
+Acacia Log,,
+Dark Oak Log,,
+Stripped Oak Log,10,12
+Stripped Spruce Log,10,12
+Stripped Birch Log,10,12
+Stripped Jungle Log,10,12
+Oak Wood,16,19.2
+Spruce Wood,16,19.2
+Birch Wood,16,19.2
+Jungle Wood,16,19.2
+Stripped Oak Wood,10,12
+Stripped Spruce Wood,10,12
+Stripped Birch Wood,10,12
+Stripped Jungle Wood,10,12
+Oak Leaves,2,2.4
+Spruce Leaves,2,2.4
+Birch Leaves,2,2.4
+Jungle Leaves,2,2.4
+Acacia Leaves,,
+Dark Oak Leaves,,
+Sponge,13.2,15.84
+Wet Sponge,10,12
+Glass,1.8,2.16
+Lapis Lazuli Ore,20,24
+Lapis Lazuli Block,32.4,38.88
+Dispenser,26.256,31.5072
+Sandstone,2.4,2.88
+Chiseled Sandstone,3.456,4.1472
+Cut Sandstone,2.88,3.456
+Smooth Sandstone,4.08,4.896
+Note Block,32.4,38.88
+Bed (Block),,
+Powered Rail,74.4,89.28
+Detector Rail,24.792,29.7504
+Sticky Piston,62.688,75.2256
+Cobweb,2.25,2.7
+Tall Grass (Dead Shrub),,
+Tall Grass,0.2,0.24
+Tall Grass (Fern),0.2,0.24
+Dead Bush,3,3.6
+Piston,42.24,50.688
+Piston (Head),,
+Wool,5,6
+Orange Wool,6.864,8.2368
+Magenta Wool,8.3328,9.99936
+Light Blue Wool,9.024,10.8288
+Yellow Wool,6.72,8.064
+Lime Wool,12.696,15.2352
+Pink Wool,7.944,9.5328
+Gray Wool,10.104,12.1248
+Light Gray Wool,9.564,11.4768
+Cyan Wool,12.696,15.2352
+Purple Wool,13.2,15.84
+Blue Wool,8.52,10.224
+Brown Wool,13.2,15.84
+Green Wool,14.64,17.568
+Red Wool,6.72,8.064
+Black Wool,10.32,12.384
+Piston Moving Piece,,
+Dandelion,1,1.2
+Poppy,1,1.2
+Blue Orchid,2.5,3
+Allium,5,6
+Azure Bluet,1.75,2.1
+Red Tulip,1.75,2.1
+Orange Tulip,1.75,2.1
+White Tulip,1.75,2.1
+Pink Tulip,1.75,2.1
+Oxeye Daisy,1.5,1.8
+Cornflower,1.75,2.1
+Wither Rose,25,30
+Lily of the Valley,1.75,2.1
+Mushroom (Brown),1,1.2
+Mushroom (Red),1,1.2
+Block of Gold,660.96,793.152
+Block of Iron,207.36,248.832
+Stone Slab (Double),,
+Sandstone Slab (Double),,
+Wooden Slab (Double),,
+Cobblestone Slab (Double),,
+Bricks Slab (Double),,
+Stone Bricks Slab (Double),,
+Nether Brick Slab (Double),,
+Quartz Slab (Double),,
+"Stone Slab (Double, Smooth)",,
+"Stone Slab (Double, Cut, Sandstone)",,
+Smooth Stone Slab,2.448,2.9376
+Sandstone Slab,1.44,1.728
+Wooden Slab,,
+Cobblestone Slab,0.6,0.72
+Bricks Slab,13.824,16.5888
+Stone Bricks Slab,1.728,2.0736
+Nether Brick Slab,20.736,24.8832
+Quartz Slab,50.4,60.48
+Stone Slab,1.44,1.728
+Andesite Slab,0.6,0.72
+Polished Andesite Slab,0.72,0.864
+Diorite Slab,0.6,0.72
+Polished Diorite Slab,0.72,0.864
+Granite Slab,0.6,0.72
+Polished Granite Slab,0.72,0.864
+Mossy Stone Brick Slab,5.6736,6.80832
+Mossy Cobblestone Slab,4.32,5.184
+Smooth Sandstone Slab,2.448,2.9376
+Smooth Red Sandstone Slab,5.904,7.0848
+Smooth Quartz Slab,61.2,73.44
+Red Nether Brick Slab,23.76,28.512
+End Stone Brick Slab,35.831808,42.9981696
+Bricks (Block),23.04,27.648
+TNT,62.4,74.88
+Bookshelf,61.776,74.1312
+Moss Stone,7.2,8.64
+Obsidian,50,60
+Torch,2.94,3.528
+Fire,,
+Mob Spawner,,
+Oak Wood Stairs,5.4,6.48
+Chest,28.8,34.56
+Redstone (Wire),,
+Diamond Ore,505,606
+Block of Diamond,5400,6480
+Crafting Table,14.4,17.28
+Wheat (Crop),,
+Farmland,,
+Furnace,9.6,11.52
+Furnace (Smelting),,
+Sign (Block),,
+Wooden Door (Block),,
+Ladder,5.04,6.048
+Rail,8.775,10.53
+Cobblestone Stairs,1.8,2.16
+Sign (Wall Block),,
+Lever,3.36,4.032
+Pressure Plate (Stone),5.76,6.912
+Iron Door (Block),,
+Oak Pressure Plate,7.2,8.64
+Spruce Pressure Plate,7.2,8.64
+Birch Pressure Plate,7.2,8.64
+Jungle Pressure Plate,7.2,8.64
+Acacia Pressure Plate,7.2,8.64
+Dark Oak Pressure Plate,7.2,8.64
+Redstone Ore,15,18
+Redstone Ore (Glowing),,
+Redstone Torch (Off),,
+Redstone Torch,5.76,6.912
+Button (Stone),5.76,6.912
+Snow,,
+Ice,7,8.4
+Snow (Block),4.8,5.76
+Cactus,5,6
+Clay (Block),14.4,17.28
+Sugar Cane (Block),,
+Jukebox,628.8,754.56
+Oak Fence,6.24,7.488
+Pumpkin,5,6
+Carved Pumpkin,3,3.6
+Netherrack,5,6
+Soul Sand,10,12
+Glowstone,38.4,46.08
+Portal,,
+Jack o`Lantern,9.528,11.4336
+Cake (Block),,
+Redstone Repeater (Block Off),,
+Redstone Repeater (Block On),,
+White Stained Glass,2.46,2.952
+Orange Stained Glass,2.268,2.7216
+Magenta Stained Glass,2.4516,2.94192
+Light Blue Stained Glass,2.538,3.0456
+Yellow Stained Glass,2.25,2.7
+Lime Stained Glass,2.997,3.5964
+Pink Stained Glass,2.403,2.8836
+Gray Stained Glass,2.673,3.2076
+Light Gray Stained Glass,2.6055,3.1266
+Cyan Stained Glass,2.997,3.5964
+Purple Stained Glass,2.403,2.8836
+Blue Stained Glass,2.475,2.97
+Brown Stained Glass,3.06,3.672
+Green Stained Glass,3.24,3.888
+Red Stained Glass,2.25,2.7
+Black Stained Glass,2.7,3.24
+Oak Trapdoor,10.8,12.96
+Spruce Trapdoor,10.8,12.96
+Birch Trapdoor,10.8,12.96
+Jungle Trapdoor,10.8,12.96
+Acacia Trapdoor,10.8,12.96
+Dark Oak Trapdoor,10.8,12.96
+Stone Monster Egg,,
+Cobblestone Monster Egg,,
+Stone Brick Monster Egg,,
+Mossy Stone Brick Monster Egg,,
+Cracked Stone Monster Egg,,
+Chiseled Stone Monster Egg,,
+Stone Bricks,2.88,3.456
+Mossy Stone Bricks,9.456,11.3472
+Cracked Stone Bricks,4.656,5.5872
+Chiseled Stone Brick,4.1472,4.97664
+"Mushroom (Brown, Block)",2,2.4
+"Mushroom (Red, Block)",2,2.4
+Mushroom Stem,2,2.4
+Iron Bars,8.64,10.368
+Glass Pane,0.81,0.972
+Melon (Block),16.2,19.44
+Pumpkin Vine,,
+Melon Vine,,
+Vines,5,6
+Oak Fence Gate,15.84,19.008
+Brick Stairs,41.472,49.7664
+Stone Brick Stairs,5.184,6.2208
+Stone Stairs,4.32,5.184
+Andesite Stairs,1.8,2.16
+Polished Andesite Stairs,2.16,2.592
+Diorite Stairs,1.8,2.16
+Polished Diorite Stairs,2.16,2.592
+Granite Stairs,1.8,2.16
+Polished Granite Stairs,2.16,2.592
+Mossy Stone Brick Stairs,17.0208,20.42496
+Mossy Stone Stairs,12.96,15.552
+Smooth Sandstone Stairs,7.344,8.8128
+Smooth Red Sandstone Stairs,17.712,21.2544
+Smooth Quartz Stairs,183.6,220.32
+Red Nether Brick Stairs,71.28,85.536
+End Stone Brick Stairs,107.495424,128.9945088
+Mycelium,10,12
+Lily Pad,3,3.6
+Nether Brick (Block),34.56,41.472
+Cracked Nether Brick (Block),42.672,51.2064
+Chiseled Nether Brick (Block),49.7664,59.71968
+Nether Brick Fence,30.528,36.6336
+Nether Brick Stairs,62.208,74.6496
+Nether Wart,,
+Enchantment Table,1453.392,1744.0704
+Brewing Stand (Block),,
+Cauldron (Block),,
+End Portal,,
+End Portal Frame,,
+End Stone,10,12
+Dragon Egg,1000,1200
+Redstone Lamp,60.48,72.576
+Redstone Lamp (On),,
+Oak Wood Slab (Double),,
+Spruce Wood Slab (Double),,
+Birch Wood Slab (Double),,
+Jungle Wood Slab (Double),,
+Acacia Wood Slab (Double),,
+Dark Oak Wood Slab (Double),,
+Oak Wood Slab,1.8,2.16
+Spruce Wood Slab,1.8,2.16
+Birch Wood Slab,1.8,2.16
+Jungle Wood Slab,1.8,2.16
+Acacia Wood Slab,1.8,2.16
+Dark Oak Wood Slab,1.8,2.16
+Cocoa Plant,,
+Sandstone Stairs,0.9,1.08
+Emerald Ore,55,66
+Ender Chest,615.7152,738.85824
+Tripwire Hook,14.4,17.28
+Tripwire,,
+Block of Emerald,540,648
+Spruce Wood Stairs,5.4,6.48
+Birch Wood Stairs,5.4,6.48
+Jungle Wood Stairs,5.4,6.48
+Command Block,,
+Beacon,490.8,588.96
+Cobblestone Wall,1.2,1.44
+Mossy Cobblestone Wall,8.64,10.368
+Andesite Wall,1.2,1.44
+Diorite Wall,1.2,1.44
+Granite Wall,1.2,1.44
+Sandstone Wall,2.88,3.456
+Red Sandstone Wall,8.64,10.368
+Brick Wall,27.648,33.1776
+Stone Brick Wall,3.456,4.1472
+Mossy Stone Brick Wall,11.3472,13.61664
+Nether Brick Wall,41.472,49.7664
+Red Nether Brick Wall,47.52,57.024
+End Stone Brick Wall,71.663616,85.9963392
+Prismarine Wall,28.8,34.56
+Flower Pot (Block),,
+Carrot (Crop),,
+Potatoes (Crop),,
+Oak Button,3.6,4.32
+Spruce Button,3.6,4.32
+Birch Button,3.6,4.32
+Jungle Button,3.6,4.32
+Acacia Button,3.6,4.32
+Dark Oak Button,3.6,4.32
+Skeleton Skull (Block),,
+Wither Skeleton Skull (Block),,
+Zombie Head,,
+Head (Block),,
+Creeper Head (Block),,
+Anvil,838.656,1006.3872
+Slightly Damaged Anvil,419.328,503.1936
+Very Damaged Anvil,209.664,251.5968
+Trapped Chest,51.84,62.208
+Light Weighted Pressure Plate,146.88,176.256
+Heavy Weighted Pressure Plate,46.08,55.296
+Redstone Comparator (Off),,
+Redstone Comparator (On),,
+Daylight Sensor,75.96,91.152
+Block of Redstone,32.4,38.88
+Nether Quartz Ore,20,24
+Hopper,149.76,179.712
+Block of Quartz,84,100.8
+Chiseled Quartz Block,120.96,145.152
+Pillar Quartz Block,100.8,120.96
+Smooth Quartz Block,102,122.4
+Quartz Bricks,100.8,120.96
+Quartz Stairs,151.2,181.44
+Activator Rail,24.912,29.8944
+Dropper,12,14.4
+White Terracotta,22.446,26.9352
+Orange Terracotta,22.401,26.8812
+Magenta Terracotta,22.401,26.8812
+Light Blue Terracotta,29.088,34.9056
+Yellow Terracotta,22.266,26.7192
+Lime Terracotta,22.4235,26.9082
+Pink Terracotta,26.0856,31.30272
+Gray Terracotta,26.496,31.7952
+Light Gray Terracotta,24.372,29.2464
+Cyan Terracotta,22.266,26.7192
+Purple Terracotta,22.926,27.5112
+Blue Terracotta,22.491,26.9892
+Brown Terracotta,23.076,27.6912
+Green Terracotta,23.256,27.9072
+Red Terracotta,22.266,26.7192
+Black Terracotta,22.716,27.2592
+White Stained Glass Pane,0.6435,0.7722
+Orange Stained Glass Pane,0.54,0.648
+Magenta Stained Glass Pane,0.6318,0.75816
+Light Blue Stained Glass Pane,0.675,0.81
+Yellow Stained Glass Pane,0.531,0.6372
+Lime Stained Glass Pane,0.9045,1.0854
+Pink Stained Glass Pane,0.6075,0.729
+Gray Stained Glass Pane,0.7425,0.891
+Light Gray Stained Glass Pane,0.70875,0.8505
+Cyan Stained Glass Pane,0.9045,1.0854
+Purple Stained Glass Pane,0.6075,0.729
+Blue Stained Glass Pane,0.6435,0.7722
+Brown Stained Glass Pane,0.936,1.1232
+Green Stained Glass Pane,1.026,1.2312
+Red Stained Glass Pane,0.531,0.6372
+Black Stained Glass Pane,0.756,0.9072
+Acacia Leaves,2,2.4
+Dark Oak Leaves,2,2.4
+Acacia Log,10,12
+Dark Oak Log,10,12
+Stripped Acacia Log,10,12
+Stripped Dark Oak Log,10,12
+Acacia Wood,16,19.2
+Dark Oak Wood,16,19.2
+Stripped Acacia Wood,10,12
+Stripped Dark Oak Wood,10,12
+Acacia Wood Stairs,5.4,6.48
+Dark Oak Wood Stairs,5.4,6.48
+Slime Block,108,129.6
+Barrier,,
+Iron Trapdoor,92.16,110.592
+Prismarine,24,28.8
+Prismarine Bricks,54,64.8
+Dark Prismarine,52.32,62.784
+Prismarine Stairs,43.2,51.84
+Prismarine Brick Stairs,97.2,116.64
+Dark Prismarine Stairs,94.176,113.0112
+Prismarine Slab,14.4,17.28
+Prismarine Brick Slab,32.4,38.88
+Dark Prismarine Slab,31.392,37.6704
+Sea Lantern,69,82.8
+Hay Bale,32.4,38.88
+Carpet (White),12,14.4
+Orange Carpet,14.508,17.4096
+Magenta Carpet,14.6916,17.62992
+Light Blue Carpet,14.778,17.7336
+Yellow Carpet,14.49,17.388
+Lime Carpet,15.237,18.2844
+Pink Carpet,14.643,17.5716
+Gray Carpet,14.913,17.8956
+Light Gray Carpet,14.8455,17.8146
+Cyan Carpet,15.237,18.2844
+Purple Carpet,14.643,17.5716
+Blue Carpet,14.715,17.658
+Brown Carpet,15.3,18.36
+Green Carpet,15.48,18.576
+Red Carpet,14.49,17.388
+Black Carpet,14.94,17.928
+Terracotta,18.48,22.176
+Block of Coal,86.4,103.68
+Packed Ice,75.6,90.72
+Sunflower,3,3.6
+Lilac,2.5,3
+Double Tallgrass,,
+Large Fern,,
+Rose Bush,1,1.2
+Peony,1,1.2
+Red Sandstone,7.2,8.64
+Red Chiseled Sandstone,12.4416,14.92992
+Cut Red Sandstone,8.64,10.368
+Smooth Red Sandstone,9.84,11.808
+Red Sandstone Stairs,12.96,15.552
+Red Sandstone Slab (Double),,
+Red Sandstone Slab,5.184,6.2208
+Spruce Fence Gate,15.84,19.008
+Birch Fence Gate,15.84,19.008
+Jungle Fence Gate,15.84,19.008
+Dark Oak Fence Gate,15.84,19.008
+Acacia Fence Gate,15.84,19.008
+Spruce Fence,6.24,7.488
+Birch Fence,6.24,7.488
+Jungle Fence,6.24,7.488
+Dark Oak Fence,6.24,7.488
+Acacia Fence,6.24,7.488
+End Rod,32.16,38.592
+Chorus Plant,,
+Chorus Flower,25,30
+Purpur Block,34.56,41.472
+Purpur Pillar,49.7664,59.71968
+Purpur Stairs,62.208,74.6496
+Purpur Double Slab,,
+Purpur Slab,20.736,24.8832
+End Stone Bricks,59.71968,71.663616
+Grass Path,,
+End Gateway (Block),,
+Frosted Ice,,
+Magma Block,134.4,161.28
+Nether Wart Block,162,194.4
+Red Nether Bricks,39.6,47.52
+Bone Block,21.6,25.92
+Structure Void,,
+Observer,35.4,42.48
+Shulker Box,94.56,113.472
+White Shulker Box,115.872,139.0464
+Orange Shulker Box,114.336,137.2032
+Magenta Shulker Box,115.8048,138.96576
+Light Blue Shulker Box,116.496,139.7952
+Yellow Shulker Box,114.192,137.0304
+Lime Shulker Box,120.168,144.2016
+Pink Shulker Box,115.416,138.4992
+Gray Shulker Box,117.576,141.0912
+Light Gray Shulker Box,117.036,140.4432
+Cyan Shulker Box,120.168,144.2016
+Purple Shulker Box,115.416,138.4992
+Blue Shulker Box,115.992,139.1904
+Brown Shulker Box,120.672,144.8064
+Green Shulker Box,122.112,146.5344
+Red Shulker Box,114.192,137.0304
+Black Shulker Box,117.792,141.3504
+White Glazed Terracotta,28.1352,33.76224
+Orange Glazed Terracotta,28.0812,33.69744
+Magenta Glazed Terracotta,28.0812,33.69744
+Light Blue Glazed Terracotta,36.1056,43.32672
+Yellow Glazed Terracotta,27.9192,33.50304
+Lime Glazed Terracotta,28.1082,33.72984
+Pink Glazed Terracotta,32.50272,39.003264
+Gray Glazed Terracotta,32.9952,39.59424
+Light Gray Glazed Terracotta,30.4464,36.53568
+Cyan Glazed Terracotta,27.9192,33.50304
+Purple Glazed Terracotta,28.7112,34.45344
+Blue Glazed Terracotta,28.1892,33.82704
+Brown Glazed Terracotta,28.8912,34.66944
+Green Glazed Terracotta,29.1072,34.92864
+Red Glazed Terracotta,27.9192,33.50304
+Black Glazed Terracotta,28.4592,34.15104
+White Concrete,1.08,1.296
+Orange Concrete,0.8496,1.01952
+Magenta Concrete,1.06992,1.283904
+Light Blue Concrete,1.1736,1.40832
+Yellow Concrete,0.828,0.9936
+Lime Concrete,1.7244,2.06928
+Pink Concrete,1.0116,1.21392
+Gray Concrete,1.3356,1.60272
+Light Gray Concrete,1.2546,1.50552
+Cyan Concrete,1.7244,2.06928
+Purple Concrete,1.0116,1.21392
+Blue Concrete,1.098,1.3176
+Brown Concrete,1.8,2.16
+Green Concrete,2.016,2.4192
+Red Concrete,0.828,0.9936
+Black Concrete,1.368,1.6416
+White Concrete Powder,0.9,1.08
+Orange Concrete Powder,0.708,0.8496
+Magenta Concrete Powder,0.8916,1.06992
+Light Blue Concrete Powder,0.978,1.1736
+Yellow Concrete Powder,0.69,0.828
+Lime Concrete Powder,1.437,1.7244
+Pink Concrete Powder,0.843,1.0116
+Gray Concrete Powder,1.113,1.3356
+Light Gray Concrete Powder,1.0455,1.2546
+Cyan Concrete Powder,1.437,1.7244
+Purple Concrete Powder,0.843,1.0116
+Blue Concrete Powder,0.915,1.098
+Brown Concrete Powder,1.5,1.8
+Green Concrete Powder,1.68,2.016
+Red Concrete Powder,0.69,0.828
+Black Concrete Powder,1.14,1.368
+Structure Block,,
+Iron Shovel,27.36,32.832
+Iron Pickaxe,73.44,88.128
+Iron Axe,73.44,88.128
+Flint and Steel,23.64,28.368
+Apple,3,3.6
+Bow,11.88,14.256
+Arrow,0.84,1.008
+Coal,8,9.6
+Charcoal,13.2,15.84
+Diamond Gem,500,600
+Iron Ingot,19.2,23.04
+Gold Ingot,61.2,73.44
+Iron Sword,48.24,57.888
+Wooden Sword,9.36,11.232
+Wooden Shovel,7.92,9.504
+Wooden Pickaxe,15.12,18.144
+Wooden Axe,15.12,18.144
+Stone Sword,4.56,5.472
+Stone Shovel,5.52,6.624
+Stone Pickaxe,7.92,9.504
+Stone Axe,7.92,9.504
+Diamond Sword,1202.16,1442.592
+Diamond Shovel,604.32,725.184
+Diamond Pickaxe,1804.32,2165.184
+Diamond Axe,1804.32,2165.184
+Stick,1.8,2.16
+Bowl,2.7,3.24
+Mushroom Stew,5.64,6.768
+Golden Sword,149.04,178.848
+Golden Shovel,77.76,93.312
+Golden Pickaxe,224.64,269.568
+Golden Axe,224.64,269.568
+String,1.5,1.8
+Feather,0.5,0.6
+Gunpowder,10,12
+Wooden Hoe,11.52,13.824
+Stone Hoe,6.72,8.064
+Iron Hoe,50.4,60.48
+Diamond Hoe,1204.32,1445.184
+Golden Hoe,151.2,181.44
+Wheat Seeds,1,1.2
+Wheat,3,3.6
+Bread,10.8,12.96
+Leather Cap,45,54
+Leather Tunic,72,86.4
+Leather Pants,63,75.6
+Leather Boots,36,43.2
+Chainmail Helmet,300,360
+Chainmail Chestplate,650,780
+Chainmail Leggings,500,600
+Chainmail Boots,300,360
+Iron Helmet,115.2,138.24
+Iron Chestplate,184.32,221.184
+Iron Leggings,161.28,193.536
+Iron Boots,92.16,110.592
+Diamond Helmet,3000,3600
+Diamond Chestplate,4800,5760
+Diamond Leggings,4200,5040
+Diamond Boots,2400,2880
+Golden Helmet,367.2,440.64
+Golden Chestplate,587.52,705.024
+Golden Leggings,514.08,616.896
+Golden Boots,293.76,352.512
+Flint,0.5,0.6
+Raw Porkchop,4,4.8
+Cooked Porkchop,6,7.2
+Painting,23.28,27.936
+Gold Apple,81.936,98.3232
+Enchanted Golden Apple,6348.816,7618.5792
+Oak Sign,7.92,9.504
+Spruce Sign,7.92,9.504
+Birch Sign,7.92,9.504
+Jungle Sign,7.92,9.504
+Acacia Sign,7.92,9.504
+Dark Oak Sign,7.92,9.504
+Oak Door,7.2,8.64
+Bucket,69.12,82.944
+Pseudo Water,0.25,0.3
+Water Bucket,83.244,99.8928
+Pseudo Lava,1,1.2
+Lava Bucket,84.144,100.9728
+Minecart,115.2,138.24
+Saddle,100,120
+Iron Door,46.08,55.296
+Redstone (Dust),3,3.6
+Snowball,1,1.2
+Oak Boat,18,21.6
+Leather,7.5,9
+Pseudo Milk,0.5,0.6
+Milk Bucket,83.544,100.2528
+Brick (Item),4.8,5.76
+Clay Ball,3,3.6
+Sugar Canes (Item),0.5,0.6
+Paper,0.6,0.72
+Book,11.16,13.392
+Slimeball,10,12
+Minecart with Chest,172.8,207.36
+Minecart with Furnace,149.76,179.712
+Egg,0.5,0.6
+Compass,187.92,225.504
+Fishing Rod,10.08,12.096
+Clock,297.36,356.832
+Glowstone Dust,8,9.6
+Raw Fish,3,3.6
+Raw Salmon,3.25,3.9
+Clownfish,1.5,1.8
+Pufferfish,5,6
+Cooked Fish,4.8,5.76
+Cooked Salmon,5.1,6.12
+Ink Sac,3,3.6
+Rose Red,0.6,0.72
+Cactus Green,7.2,8.64
+Cocoa Beans,5,6
+Lapis Lazuli,3,3.6
+Purple Dye,1.62,1.944
+Cyan Dye,5.58,6.696
+Light Gray Dye,2.97,3.564
+Gray Dye,3.42,4.104
+Pink Dye,1.62,1.944
+Lime Dye,5.58,6.696
+Dandelion Yellow,0.6,0.72
+Light Blue Dye,2.52,3.024
+Magenta Dye,1.944,2.3328
+Orange Dye,0.72,0.864
+Bone Meal,2,2.4
+Black Dye,3.6,4.32
+Brown Dye,6,7.2
+Blue Dye,2.1,2.52
+White Dye,2.1,2.52
+Bone,5,6
+Sugar,0.6,0.72
+Cake,14.64,17.568
+Bed,28.8,34.56
+Redstone Repeater,26.064,31.2768
+Cookie,1.65,1.98
+Map,,
+Exploration Map (Ocean),800,960
+Exploration Map (Woodland),1100,1320
+Exploration Map (Buried Treasure),1000,1200
+Shears,46.08,55.296
+Melon (Slice),1.5,1.8
+Pumpkin Seeds,1.5,1.8
+Melon Seeds,1.8,2.16
+Raw Beef,5,6
+Steak,7.2,8.64
+Raw Chicken,2.5,3
+Cooked Chicken,4.2,5.04
+Rotten Flesh,1,1.2
+Ender Pearl,50,60
+Blaze Rod,100,120
+Ghast Tear,75,90
+Gold Nugget,8.16,9.792
+Nether Wart (Seeds),15,18
+Water Bottle,2.592,3.1104
+Awkward Potion,24.7104,29.65248
+Thick Potion,16.3104,19.57248
+Mundane Potion,10.3104,12.37248
+Uncraftable Potion,,
+Potion of Regeneration (0:45),123.25248,147.902976
+Potion of Swiftness (3:00),33.97248,40.766976
+Potion of Fire Resistance (3:00),66.85248,80.222976
+Potion of Poison (0:45),36.85248,44.222976
+Potion of Healing,47.16288,56.595456
+Potion of Night Vision (3:00),128.33568,154.002816
+Potion of Weakness (1:30),13.3344,16.00128
+Potion of Strength (3:00),105.25248,126.302976
+Potion of Slowness (1:30),90.446976,108.5363712
+Potion of Leaping (3:00),57.25248,68.702976
+Potion of Harming,54.446976,65.3363712
+Potion of Water Breathing (3:00),39.25248,47.102976
+Potion of Invisibility (3:00),164.226816,197.0721792
+Potion of Turtle Master (1:00),93.25248,111.902976
+Potion of Slow Falling (1:30),39.25248,47.102976
+"Potion of Regeneration (II, 0:22)",161.102976,193.3235712
+"Potion of Swiftness (II, 1:30)",53.966976,64.7603712
+"Potion of Poison (II, 0:22)",57.422976,68.9075712
+Potion of Healing (II),69.795456,83.7545472
+"Potion of Strength (II, 1:30)",139.502976,167.4035712
+"Potion of Leaping (II, 1:30)",81.902976,98.2835712
+Potion of Harming (II),78.5363712,94.24364544
+"Potion of Turtle Master (II, 0:30)",125.102976,150.1235712
+Potion of Regeneration (2:00),155.102976,186.1235712
+Potion of Swiftness (8:00),47.966976,57.5603712
+Potion of Fire Resistance (8:00),87.422976,104.9075712
+Potion of Poison (2:00),51.422976,61.7075712
+Potion of Night Vision (8:00),161.202816,193.4433792
+Potion of Weakness (4:00),22.59648,27.115776
+Potion of Strength (8:00),133.502976,160.2035712
+Potion of Slowness (4:00),115.1315712,138.1578854
+Potion of Water Breathing (8:00),54.302976,65.1635712
+Potion of Invisibility (8:00),204.2721792,245.126615
+Potion of Turtle Master (3:00),119.102976,142.9235712
+Potion of Slow Falling (4:00),54.302976,65.1635712
+Potion of Luck (5:00),100,120
+"Potion of Regeneration (II, 1:00)",,
+"Potion of Swiftness (II, 4:00)",,
+"Potion of Poison (II, 1:00)",,
+"Potion of Strength (II, 4:00)",,
+Glass Bottle,2.16,2.592
+Spider Eye,3,3.6
+Fermented Spider Eye,5.52,6.624
+Blaze Powder,60,72
+Magma Cream,28,33.6
+Brewing Stand,123.6,148.32
+Cauldron,161.28,193.536
+Eye of Ender,132,158.4
+Glistering Melon Slice,11.592,13.9104
+Elder Guardian Spawn Egg,,
+Wither Skeleton Spawn Egg,,
+Stray Spawn Egg,,
+Husk Spawn Egg,,
+Zombie Villager Spawn Egg,,
+Skeleton Horse Spawn Egg,,
+Zombie Horse Spawn Egg,,
+Donkey Spawn Egg,,
+Mule Spawn Egg,,
+Evoker Spawn Egg,,
+Vex Spawn Egg,,
+Vindicator Spawn Egg,,
+Creeper Spawn Egg,,
+Skeleton Spawn Egg,,
+Spider Spawn Egg,,
+Zombie Spawn Egg,,
+Slime Spawn Egg,,
+Ghast Spawn Egg,,
+Zombie Pigman Spawn Egg,,
+Enderman Spawn Egg,,
+Cave Spider Spawn Egg,,
+Silverfish Spawn Egg,,
+Blaze Spawn Egg,,
+Magma Cube Spawn Egg,,
+Bat Spawn Egg,,
+Witch Spawn Egg,,
+Endermite Spawn Egg,,
+Guardian Spawn Egg,,
+Shulker Spawn Egg,,
+Pig Spawn Egg,,
+Sheep Spawn Egg,,
+Cow Spawn Egg,,
+Chicken Spawn Egg,,
+Squid Spawn Egg,,
+Wolf Spawn Egg,,
+Mooshroom Spawn Egg,,
+Ocelot Spawn Egg,,
+Horse Spawn Egg,,
+Rabbit Spawn Egg,,
+Polar Bear Spawn Egg,,
+Llama Spawn Egg,,
+Parrot Spawn Egg,,
+Villager Spawn Egg,,
+Drowned Spawn Egg,,
+Phantom Spawn Egg,,
+Turtle Spawn Egg,,
+Cod Spawn Egg,,
+Salmon Spawn Egg,,
+Puffer Fish Spawn Egg,,
+Tropical Fish Spawn Egg,,
+Dolphin Spawn Egg,,
+Illager Beast Spawn Egg,,
+Panda Spawn Egg,,
+Pillager Spawn Egg,,
+Wandering Trader Spawn Egg,,
+Trader Llama Spawn Egg,,
+Fox Spawn Egg,,
+Bee Spawn Egg,,
+Hoglin Spawn Egg,,
+Piglin Spawn Egg,,
+Strider Spawn Egg,,
+Zoglin Spawn Egg,,
+Piglin Brute Spawn Egg,,
+Bottle o` Enchanting,350,420
+Fire Charge,93.6,112.32
+Book and Quill,17.592,21.1104
+Written Book,,0
+Emerald,50,60
+Item Frame,26.28,31.536
+Flower Pot (Item),17.28,20.736
+Carrot,0.75,0.9
+Potato,0.5,0.6
+Baked Potato,1.8,2.16
+Poisonous Potato,0.25,0.3
+Empty Map,231.264,277.5168
+Golden Carrot,79.236,95.0832
+Head (Skeleton),250,300
+Head (Wither),50,60
+Head (Zombie),250,300
+Head (Steve),,
+Head (Creeper),250,300
+Dragon Head,1000,1200
+Carrot on a Stick,12.996,15.5952
+Nether Star,250,300
+Pumpkin Pie,7.32,8.784
+Firework Rocket,,
+Firework Star,,
+Enchanted Book,,
+Redstone Comparator,444.096,532.9152
+Nether Brick (Item),7.2,8.64
+Nether Quartz,17.5,21
+Minecart with TNT,213.12,255.744
+Minecart with Hopper,317.952,381.5424
+Prismarine Shard,5,6
+Prismarine Crystals,7.5,9
+Raw Rabbit,1.5,1.8
+Cooked Rabbit,3,3.6
+Rabbit Stew,11.1,13.32
+Rabbit`s Foot,20,24
+Rabbit Hide,1.5,1.8
+Armor Stand,13.68,16.416
+Iron Horse Armor,120,144
+Golden Horse Armor,350,420
+Diamond Horse Armor,3000,3600
+Leather Horse Armor,45,54
+Lead,9.6,11.52
+Name Tag,50,60
+Minecart with Command Block,,
+Raw Mutton,1,1.2
+Cooked Mutton,2.4,2.88
+Black Banner,76.464,91.7568
+Red Banner,50.544,60.6528
+Green Banner,107.568,129.0816
+Brown Banner,97.2,116.64
+Blue Banner,63.504,76.2048
+Purple Banner,97.2,116.64
+Cyan Banner,93.5712,112.28544
+Light Gray Banner,71.0208,85.22496
+Gray Banner,74.9088,89.89056
+Pink Banner,59.3568,71.22816
+Lime Banner,93.5712,112.28544
+Yellow Banner,50.544,60.6528
+Light Blue Banner,67.1328,80.55936
+Magenta Banner,62.15616,74.587392
+Orange Banner,51.5808,61.89696
+White Banner,38.16,45.792
+Banner Pattern (Flower Charge),2.52,3.024
+Banner Pattern (Creeper Charge),300.72,360.864
+Banner Pattern (Skull Charge),60.72,72.864
+Banner Pattern (Thing),7619.2992,9143.15904
+Banner Pattern (Globe),400,480
+Banner Pattern (Snout),500,600
+End crystal,263.52,316.224
+Spruce Door,7.2,8.64
+Birch Door,7.2,8.64
+Jungle Door,7.2,8.64
+Acacia Door,7.2,8.64
+Dark Oak Door,7.2,8.64
+Chorus Fruit,5,6
+Popped Chorus Fruit,7.2,8.64
+Beetroot,0.6,0.72
+Beetroot Seeds,0.2,0.24
+Beetroot Soup,7.56,9.072
+Dragon`s Breath,100,120
+Water Splash Potion,18.7104,22.45248
+Awkward Splash Potion,45.25248,54.302976
+Thick Splash Potion,35.17248,42.206976
+Mundane Splash Potion,27.97248,33.566976
+Splash Potion of Regeneration (0:33),163.502976,196.2035712
+Splash Potion of Swiftness (2:15),56.366976,67.6403712
+Splash Potion of Fire Resistance (2:15),95.822976,114.9875712
+Splash Potion of Poison (0:33),59.822976,71.7875712
+Splash Potion of Healing,72.195456,86.6345472
+Splash Potion of Night Vision (2:15),169.602816,203.5233792
+Splash Potion of Weakness (1:07),31.60128,37.921536
+Splash Potion of Strength (2:15),141.902976,170.2835712
+Splash Potion of Slowness (1:07),124.1363712,148.9636454
+Splash Potion of Leaping (2:15),84.302976,101.1635712
+Splash Potion of Harming,80.9363712,97.12364544
+Splash Potion of Water Breathing (2:15),62.702976,75.2435712
+Splash Potion of Invisibility (2:15),212.6721792,255.206615
+Splash Potion of Turtle Master (0:45),127.502976,153.0035712
+Splash Potion of Slow Falling (1:07),62.702976,75.2435712
+"Splash Potion of Regeneration (II, 0:16)",208.9235712,250.7082854
+"Splash Potion of Swiftness (II, 1:07)",80.3603712,96.43244544
+"Splash Potion of Poison (II, 0:16)",84.5075712,101.4090854
+Splash Potion of Healing (II),99.3545472,119.2254566
+"Splash Potion of Strength (II, 1:07)",183.0035712,219.6042854
+"Splash Potion of Leaping (II, 1:07)",113.8835712,136.6602854
+Splash Potion of Harming (II),109.8436454,131.8123745
+"Splash Potion of Turtle Master (II, 0:23)",165.7235712,198.8682854
+Splash Potion of Regeneration (1:30),201.7235712,242.0682854
+Splash Potion of Swiftness (6:00),73.1603712,87.79244544
+Splash Potion of Fire Resistance (6:00),120.5075712,144.6090854
+Splash Potion of Poison (1:30),77.3075712,92.76908544
+Splash Potion of Night Vision (6:00),209.0433792,250.852055
+Splash Potion of Weakness (3:00),42.715776,51.2589312
+Splash Potion of Strenght (6:00),175.8035712,210.9642854
+Splash Potion of Slowness (3:00),153.7578854,184.5094625
+Splash Potion of Water Breathing (6:00),62.702976,75.2435712
+Splash Potion of Invisibility (6:00),260.726615,312.871938
+Splash Potion of Turtle Master (2:15),158.5235712,190.2282854
+Splash Potion of Slow Falling (3:00),80.7635712,96.91628544
+"Splash Potion of Regeneration (II, 0:45)",,
+"Splash Potion of Swiftness (II, 3:00)",,
+"Splash Potion of Poison (II, 0:45)",,
+"Splash Potion of Strength (II, 3:00)",,
+Splash Potion of Luck (3:45),135.6,162.72
+Spectral Arrow,19.704,23.6448
+Arrow of Regeneration,48.97853568,58.77424282
+Arrow of Swiftness,29.69405568,35.63286682
+Arrow of Fire Resistance,36.79613568,44.15536282
+Arrow of Healing,32.54318208,39.0518185
+Arrow of Night Vision,50.07650688,60.09180826
+Arrow of Strength,45.09053568,54.10864282
+Arrow of Leaping,34.72253568,41.66704282
+Arrow of Invisibility,57.82899226,69.39479071
+Arrow of Poison,30.31613568,36.37936282
+Arrow of Weakness,25.2362304,30.28347648
+Arrow of Slowness,41.89254682,50.27105618
+Arrow of Harming,34.11654682,40.93985618
+Arrow of Water Breathing,30.83453568,37.00144282
+Arrow of Luck,43.956,52.7472
+Arrow of Turtle Master,42.49853568,50.99824282
+Arrow of Slow Falling,30.83453568,37.00144282
+Awkward Lingering Potion,177.902976,213.4835712
+Thick Lingering Potion,165.806976,198.9683712
+Mundane Lingering Potion,157.166976,188.6003712
+Lingering Potion of Regeneration,319.8035712,383.7642854
+Lingering Potion of Swiftness,191.2403712,229.4884454
+Lingering Potion of Fire Resistance,238.5875712,286.3050854
+Lingering Potion of Poison,195.3875712,234.4650854
+Lingering Potion of Healing,210.2345472,252.2814566
+Lingering Potion of Night Vision,327.1233792,392.548055
+Lingering Potion of Weakness,161.521536,193.8258432
+Lingering Potion of Strength,293.8835712,352.6602854
+Lingering Potion of Slowness,272.5636454,327.0763745
+Lingering Potion of Leaping,224.7635712,269.7162854
+Lingering Potion of Harming,220.7236454,264.8683745
+Lingering Potion of Water Breathing,198.8435712,238.6122854
+Lingering Potion of Invisibility,378.806615,454.567938
+Lingering Potion of Luck,286.32,343.584
+Lingering Potion of Turtle Master,276.6035712,331.9242854
+Lingering Potion of Slow Falling,198.8435712,238.6122854
+Shield,44.64,53.568
+Elytra,1000,1200
+Spruce Boat,18,21.6
+Birch Boat,18,21.6
+Jungle Boat,18,21.6
+Acacia Boat,18,21.6
+Dark Oak Boat,18,21.6
+Totem of Undying,500,600
+Shulker Shell,25,30
+Iron Nugget,2,2.4
+Knowledge Book,,
+Kelp,1,1.2
+Dried Kelp,2.4,2.88
+Dried Kelp Block,25.92,31.104
+Sea Grass,2.5,3
+Turtle Egg,5,6
+Trident,100,120
+Scute,10,12
+Turtle Shell,50,60
+Bucket of Cod,86.544,103.8528
+Bucket of Salmon,86.844,104.2128
+Bucket of Tropical Fish,84.744,101.6928
+Bucket of Puffer Fish,88.944,106.7328
+Tube Coral Block,10,12
+Brain Coral Block,10,12
+Bubble Coral Block,10,12
+Fire Coral Block,10,12
+Horn Coral Block,10,12
+Dead Tube Coral Block,3,3.6
+Dead Brain Coral Block,3,3.6
+Dead Bubble Coral Block,3,3.6
+Dead Fire Coral Block,3,3.6
+Dead Horn Coral Block,3,3.6
+Tube Coral,3,3.6
+Brain Coral,3,3.6
+Bubble Coral,3,3.6
+Fire Coral,3,3.6
+Horn Coral,3,3.6
+Dead Tube Coral,1,1.2
+Dead Brain Coral,1,1.2
+Dead Bubble Coral,1,1.2
+Dead Fire Coral,1,1.2
+Dead Horn Coral,1,1.2
+Tube Coral Fan,3,3.6
+Brain Coral Fan,3,3.6
+Bubble Coral Fan,3,3.6
+Fire Coral Fan,3,3.6
+Horn Coral Fan,3,3.6
+Dead Tube Coral Fan,1,1.2
+Dead Brain Coral Fan,1,1.2
+Dead Bubble Coral Fan,1,1.2
+Dead Fire Coral Fan,1,1.2
+Dead Horn Coral Fan,1,1.2
+Phantom Membrane,5,6
+Sea Pickle,3,3.6
+Blue Ice,816.48,979.776
+Heart of the Sea,1000,1200
+Nautilus Shell,50,60
+Conduit,1680,2016
+Bamboo,0.1,0.12
+Loom,10.8,12.96
+Crossbow,50.4,60.48
+Suspicious Stew,10,12
+Barrel,25.92,31.104
+Bell,1800,2160
+Blast Furnace,141.408,169.6896
+Smoker,25.92,31.104
+Cartography Table,15.84,19.008
+Fletching Table,15.6,18.72
+Smithing Table,60.48,72.576
+Stonecutter,31.68,38.016
+Grindstone,15.408,18.4896
+Lectern,82.7712,99.32544
+Scaffolding,2.52,3.024
+Lantern,22.728,27.2736
+Jigsaw Block,,
+Sweet Berries,0.5,0.6
+Campfire,26.88,32.256
+Composter,15.12,18.144
+Soul Campfire,66.6,79.92
+Bee Nest,10,12
+Beehive,25.2,30.24
+Pseudo Honey,1,1.2
+Honey Bottle,3.792,4.5504
+Honeycomb,1,1.2
+Honey Block,4.8,5.76
+Honeycomb Block,4.8,5.76
+Ancient Debris,700,840
+Netherite Scrap,841.2,1009.44
+Netherite Ingot,4331.52,5197.824
+Netherite Block,46780.416,56136.4992
+Basalt,10,12
+Polished Basalt,12,14.4
+Crimson Fungus,1.25,1.5
+Warped Fungus,1.25,1.5
+Crimson Stem,12.5,15
+Warped Stem,12.5,15
+Stripped Crimson Stem,12.5,15
+Stripped Warped Stem,12.5,15
+Crimson Hyphae,20,24
+Warped Hyphae,20,24
+Stripped Crimson Hyphae,12.5,15
+Stripped Warped Hyphae,12.5,15
+Crimson Planks,3.75,4.5
+Crimson Slab,2.25,2.7
+Crimson Stairs,6.75,8.1
+Crimson Fence,7.44,8.928
+Crimson Fence Gate,17.64,21.168
+Crimson Pressure Plate,9,10.8
+Crimson Button,4.5,5.4
+Crimson Door,9,10.8
+Crimson Trapdoor,13.5,16.2
+Crimson Sign,9.72,11.664
+Warped Planks,3.75,4.5
+Warped Slab,2.25,2.7
+Warped Stairs,6.75,8.1
+Warped Fence,7.44,8.928
+Warped Fence Gate,17.64,21.168
+Warped Pressure Plate,9,10.8
+Warped Button,4.5,5.4
+Warped Door,9,10.8
+Warped Trapdoor,13.5,16.2
+Warped Sign,9.72,11.664
+Crimson Nylium,10,12
+Warped Nylium,10,12
+Nether Sprouts,0.25,0.3
+Shroomlight,15,18
+Crimson Roots,0.25,0.3
+Warped Roots,0.25,0.3
+Soul Soil,10,12
+Soul Torch,14.16,16.992
+Soul Lantern,36.192,43.4304
+Warped Wart Block,15,18
+Weeping Vines,5,6
+Netherite Helmet,8797.824,10557.3888
+Netherite Chestplate,10957.824,13149.3888
+Netherite Leggings,10237.824,12285.3888
+Netherite Boots,8077.824,9693.3888
+Netherite Sword,6640.416,7968.4992
+Netherite Shovel,5923.008,7107.6096
+Netherite Pickaxe,7363.008,8835.6096
+Netherite Axe,7363.008,8835.6096
+Netherite Hoe,6643.008,7971.6096
+Crying Obsidian,100,120
+Target,159.12,190.944
+Nether Gold Ore,50,60
+Twisting Vines,5,6
+Respawn Anchor,858.24,1029.888
+Lodestone,5237.63712,6285.164544
+Warped Fungus on a Stick,13.596,16.3152
+Blackstone,1.5,1.8
+Polished Blackstone,1.8,2.16
+Chiseled Polished Blackstone,2.592,3.1104
+Blackstone Slab,0.9,1.08
+Polished Blackstone Slab,1.08,1.296
+Polished Blackstone Bricks Slab,1.296,1.5552
+Polished Blackstone Bricks,2.16,2.592
+Cracked Polished Blackstone Bricks,3.792,4.5504
+Blackstone Stairs,2.7,3.24
+Polished Blackstone Stairs,3.24,3.888
+Polished Blackstone Bricks Stairs,3.888,4.6656
+Blackstone Wall,1.8,2.16
+Polished Blackstone Wall,2.16,2.592
+Polished Blackstone Bricks Wall,2.592,3.1104
+Polished Blackstone Button,2.16,2.592
+Polished Blackstone Pressure Plate,4.32,5.184
+Gilded Blackstone,25,30
+Chain,27.84,33.408
+Music Disk (13),100,120
+Music Disk (Cat),100,120
+Music Disk (Blocks),100,120
+Music Disk (Chirp),100,120
+Music Disk (Far),100,120
+Music Disk (Mall),100,120
+Music Disk (Mellohi),100,120
+Music Disk (Stal),100,120
+Music Disk (Strad),100,120
+Music Disk (Ward),100,120
+Music Disk (11),100,120
+Music Disk (Wait),100,120
+Music Disk (Pigstep),250,300
