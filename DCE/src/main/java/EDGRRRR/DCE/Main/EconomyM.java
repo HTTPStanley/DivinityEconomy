@@ -21,21 +21,12 @@ public class EconomyM {
     // Stores the Vault economy api
     private Economy economy;
 
-    // Stores items
-    private HashMap<String, String> aliases;
-    private HashMap<String, Object> materials;
-
     // Settings
     private double minSendAmount;
     private double roundingDigits;
-    private String itemsFile = "items.json";
-
 
     public EconomyM(App app) {
         this.app = app;
-        // Items
-        this.aliases = null;
-        this.materials = null;
 
         // settings
         this.minSendAmount = app.getConfig().getDouble(app.getConf().strEconMinSendAmount);
