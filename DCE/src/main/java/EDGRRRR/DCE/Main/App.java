@@ -21,6 +21,8 @@ public class App extends JavaPlugin {
     private EconomyM eco;
     // The console
     private Console con;
+    // The material manager
+    private MaterialM mat;
 
     // Commands
 
@@ -61,6 +63,9 @@ public class App extends JavaPlugin {
         this.con = new Console(this);
     	this.eco = new EconomyM(this);
         this.eco.setupEconomy();
+        this.mat = new MaterialM(this);
+        this.mat.loadAliases();
+        this.mat.loadMaterials();
         // setup commands
         this.ping = new Ping(this);
         this.balance = new Balance(this);
@@ -118,6 +123,14 @@ public class App extends JavaPlugin {
      */
     public ConfigM getConf() {
         return this.conf;
+    }
+
+    /**
+     * Returns the Material Manager
+     * @return MaterialM
+     */
+    public MaterialM getMat() {
+        return this.mat;
     }
 
     /**
