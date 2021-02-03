@@ -17,3 +17,9 @@ DCE/target/classes/items.yml
 DCE/target/classes/itemsConverter.py
 DCE/target/classes/materials.yml
 DCE/target/classes/priceConverter.py
+DCE/src/main/resources/__pycache__/priceConverter.cpython-39.pyc
+DCE/src/main/resources/materials2.yml
+DCE/target/classes/__pycache__/priceConverter.cpython-39.pyc
+DCE/target/classes/materials2.yml
+DCE/src/main/resources/data.csv
+DCE/target/classes/materialData.yml

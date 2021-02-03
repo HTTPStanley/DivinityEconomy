@@ -1,24 +1,52 @@
-import yaml, tqdm
+import yaml
+
+def banned(key, bnd=[], match=[]):
+    flag = False
+    if key in bnd:
+        flag = True
+
+    for i in match:
+        if i in key:
+            flag = True
+            break
+        
+    return flag
 
 # load file
-with open("items.yml", "r", encoding="utf8") as inFile:
+with open(r"src\main\resources\items.yml", "r", encoding="utf8") as inFile:
     data = yaml.load(inFile)
     
 unique = []
+removed = []
 # store materials/aliases
 materials = {}
 aliases = {}
 
-for key in tqdm.tqdm(data.keys(), desc="Converting..."):
+for key in data.keys():
     obj = data[key]
     if type(obj) == str:
-        aliases[key] = obj.upper()
+        if not(banned(obj.upper())):
+            aliases[key] = obj.upper()
+
+        else:
+            removed.append(obj)
 
     elif type(obj) == dict:
-        materials[key.upper()] = obj
+        if not(banned(obj["material"].upper())):
+            materials[key.upper()] = obj
 
-with open("aliases.yml", "w", encoding="utf8") as aliasesFile:
+        else:
+            removed.append(obj)
+        
+
+with open(r"src\main\resources\aliases.yml", "w", encoding="utf8") as aliasesFile:
     yaml.dump(aliases, aliasesFile)
 
-with open("materials.yml", "w", encoding="utf8") as materialsFile:
+with open(r"src\main\resources\materialData.yml", "w", encoding="utf8") as materialsFile:
     yaml.dump(materials, materialsFile)
+
+
+for i in removed:
+    print(i)
+
+print(f"Removed {len(removed)} items")
