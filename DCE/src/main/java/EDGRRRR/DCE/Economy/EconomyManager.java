@@ -1,11 +1,10 @@
-package EDGRRRR.DCE.Main;
-
-import java.util.HashMap;
+package EDGRRRR.DCE.Economy;
 
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
+import EDGRRRR.DCE.Main.DCEPlugin;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import net.milkbowl.vault.economy.EconomyResponse.ResponseType;
@@ -13,10 +12,10 @@ import net.milkbowl.vault.economy.EconomyResponse.ResponseType;
 /**
  * An economy manager to simplify tasks for managing the player economy, works with Vault Economy.
  */
-public class EconomyM {
+public class EconomyManager {
 
     // Stores the main app
-    private App app;
+    private DCEPlugin app;
 
     // Stores the Vault economy api
     private Economy economy;
@@ -25,7 +24,7 @@ public class EconomyM {
     private double minSendAmount;
     private double roundingDigits;
 
-    public EconomyM(App app) {
+    public EconomyManager(DCEPlugin app) {
         this.app = app;
 
         // settings
@@ -79,6 +78,12 @@ public class EconomyM {
         OfflinePlayer oPlayer = (OfflinePlayer) player;
         return getBalance(oPlayer);
     }
+
+    /**
+     * Gets the players balance
+     * @param player
+     * @return double
+     */
     public double getBalance(OfflinePlayer oPlayer) {
         return economy.getBalance(oPlayer);
     }
@@ -96,20 +101,8 @@ public class EconomyM {
 
     }
 
-    // /**
-    //  * Lgeacy Rounding
-    //  * @param amount
-    //  */
-
-    //  public double legacyRound(double amount) {
-    //     amount *= 100;
-    //     int intAmount = (int) amount;
-    //     amount = (double) intAmount;
-    //     return amount / 100;
-    //  }
-
     /**
-     * Adds <amount> from <player>
+     * Adds <amount> to <player>
      * @param player
      * @param amount
      */
@@ -122,6 +115,11 @@ public class EconomyM {
         return response;
     }
 
+    /**
+     * Adds <amount> to <player>
+     * @param player
+     * @param amount
+     */
     public EconomyResponse addCash(Player player, double amount) {
         OfflinePlayer oPlayer = (OfflinePlayer) player;
         return addCash(oPlayer, amount);
@@ -141,11 +139,22 @@ public class EconomyM {
         return response;
     }
 
+    /**
+     * Removes <amount> from <player>
+     * @param player
+     * @param amount
+     */
     public EconomyResponse remCash(Player player, double amount) {
         OfflinePlayer oPlayer = (OfflinePlayer) player;
         return remCash(oPlayer, amount);
     }
 
+    /**
+     * Sets the balance of a player to the amount provided
+     * @param oPlayer
+     * @param amount
+     * @return
+     */
     public EconomyResponse setCash(OfflinePlayer oPlayer, double amount) {
         app.getCon().debug("SET REQUEST '" + oPlayer.getName() + "' £" + amount);
         amount = round(amount);
@@ -165,11 +174,28 @@ public class EconomyM {
         return response;
     }
 
+    /**
+     * Sets the balance of a player to the amount provided
+     * @param oPlayer
+     * @param amount
+     * @return
+     */
     public EconomyResponse setCash(Player player, double amount) {
         OfflinePlayer oPlayer = (OfflinePlayer) player;
         return setCash(oPlayer, amount);
     }
 
+    /**
+     * Removes amount <amount> from <from>
+     * Adds amount <amount> to <to>
+     * Can fail if criteria aren't met:
+     * -minimumSendAmount <
+     * -<from> has <amount> to send
+     * @param from
+     * @param to
+     * @param amount
+     * @return
+     */
     public EconomyResponse sendCash(Player from, OfflinePlayer to, double amount) {
         double fromBalance = getBalance(from);
 
@@ -181,19 +207,42 @@ public class EconomyM {
         EconomyResponse sendResponse = addCash(to, amount);
         if (sendResponse.type == ResponseType.FAILURE) {
             // Since takeResponse was a success
+            // We have to reset their balance
             setCash(from, fromBalance);
             return sendResponse;
         }
 
         return new EconomyResponse(amount, fromBalance, ResponseType.SUCCESS, null);
     }
+
+    /**
+     * Removes amount <amount> from <from>
+     * Adds amount <amount> to <to>
+     * Can fail if criteria aren't met:
+     * -minimumSendAmount <
+     * -<from> has <amount> to send
+     * @param from
+     * @param to
+     * @param amount
+     * @return
+     */
     public EconomyResponse sendCash(Player from, Player to, double amount) {
         OfflinePlayer oPlayer = (OfflinePlayer) to;
         return sendCash(from, oPlayer, amount);
     }
 
+    /**
+     * A function for extracting a double from a String
+     * will return null if an error occurrs (such as the string not containing a double)
+     * @param arg
+     * @return
+     */
     public Double getDouble(String arg) {
+        // Instantiate amount
         Double amount = null;
+
+        // Try to parse the double
+        // Catch the error and set to null
         try {
             amount = Double.parseDouble(arg);
         } catch (Exception e) {

@@ -1,4 +1,4 @@
-package EDGRRRR.DCE.Main.commands;
+package EDGRRRR.DCE.Commands;
 
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -6,16 +6,16 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import EDGRRRR.DCE.Main.App;
+import EDGRRRR.DCE.Main.DCEPlugin;
 
 /**
  * A command executor class for replying to /balance
  */
 public class Balance implements CommandExecutor {
-    private App app;
+    private DCEPlugin app;
     private String usage = "/balance or /balance <username>";
 
-    public Balance(App app) {
+    public Balance(DCEPlugin app) {
         this.app = app;
     }
 

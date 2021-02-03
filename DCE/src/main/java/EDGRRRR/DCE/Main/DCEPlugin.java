@@ -4,25 +4,27 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import EDGRRRR.DCE.Main.commands.Balance;
-import EDGRRRR.DCE.Main.commands.ClearBal;
-import EDGRRRR.DCE.Main.commands.EditBal;
-import EDGRRRR.DCE.Main.commands.Ping;
-import EDGRRRR.DCE.Main.commands.SendCash;
-import EDGRRRR.DCE.Main.commands.SetBal;
+import EDGRRRR.DCE.Commands.Balance;
+import EDGRRRR.DCE.Commands.ClearBal;
+import EDGRRRR.DCE.Commands.EditBal;
+import EDGRRRR.DCE.Commands.Ping;
+import EDGRRRR.DCE.Commands.SendCash;
+import EDGRRRR.DCE.Commands.SetBal;
+import EDGRRRR.DCE.Economy.Materials.MaterialManager;
+import EDGRRRR.DCE.Economy.EconomyManager;
 /**
  * The Main Class of the plugin
  * Hooks everything together
  */
-public class App extends JavaPlugin {
+public class DCEPlugin extends JavaPlugin {
     // The config
-    private ConfigM conf;
+    private ConfigManager conf;
     // The economy
-    private EconomyM eco;
+    private EconomyManager eco;
     // The console
-    private Console con;
+    private ConsoleManager con;
     // The material manager
-    private MaterialM mat;
+    private MaterialManager mat;
 
     // Commands
 
@@ -58,12 +60,12 @@ public class App extends JavaPlugin {
     @Override
     public void onEnable() {
         // Config
-        this.conf = new ConfigM(this);
+        this.conf = new ConfigManager(this);
         //Setup Managers
-        this.con = new Console(this);
-    	this.eco = new EconomyM(this);
+        this.con = new ConsoleManager(this);
+    	this.eco = new EconomyManager(this);
         this.eco.setupEconomy();
-        this.mat = new MaterialM(this);
+        this.mat = new MaterialManager(this);
         this.mat.loadAliases();
         this.mat.loadMaterials();
         // setup commands
@@ -105,7 +107,7 @@ public class App extends JavaPlugin {
      * Returns the economy
      * @return Economy
      */
-    public EconomyM getEco() {
+    public EconomyManager getEco() {
         return this.eco;
     }
 
@@ -113,7 +115,7 @@ public class App extends JavaPlugin {
      * Returns the console
      * @return Console
      */
-    public Console getCon() {
+    public ConsoleManager getCon() {
         return this.con;
     }
 
@@ -121,7 +123,7 @@ public class App extends JavaPlugin {
      * Returns the config
      * @return ConfigM
      */
-    public ConfigM getConf() {
+    public ConfigManager getConf() {
         return this.conf;
     }
 
@@ -129,7 +131,7 @@ public class App extends JavaPlugin {
      * Returns the Material Manager
      * @return MaterialM
      */
-    public MaterialM getMat() {
+    public MaterialManager getMat() {
         return this.mat;
     }
 

@@ -1,4 +1,4 @@
-package EDGRRRR.DCE.Main.commands;
+package EDGRRRR.DCE.Commands;
 
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -6,17 +6,17 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import EDGRRRR.DCE.Main.App;
+import EDGRRRR.DCE.Main.DCEPlugin;
 import net.milkbowl.vault.economy.EconomyResponse;
 
 /**
  * Command executor for sending cashing between players
  */
 public class SendCash implements CommandExecutor {
-    private App app;
+    private DCEPlugin app;
     private String usage = "/sendcash <username> <amount>";
 
-    public SendCash(App app) {
+    public SendCash(DCEPlugin app) {
         this.app = app;
     }
 

@@ -1,4 +1,7 @@
-package EDGRRRR.DCE.Main.commands;
+package EDGRRRR.DCE.Commands;
+
+import EDGRRRR.DCE.Main.DCEPlugin;
+import net.milkbowl.vault.economy.EconomyResponse;
 
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -6,17 +9,14 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import EDGRRRR.DCE.Main.App;
-import net.milkbowl.vault.economy.EconomyResponse;
-
 /**
  * Command executor for editing (adding or removing) cash to a player
  */
-public class EditBal implements CommandExecutor {
-    private App app;
-    private String usage = "/editbal <username> <amount> or /editbal <amount>";
+public class SetBal implements CommandExecutor {
+    private DCEPlugin app;
+    private String usage = "/setbal <username> <amount> or /setbal <amount>";
 
-    public EditBal(App app) {
+    public SetBal(DCEPlugin app) {
         this.app = app;
     }
 
@@ -30,7 +30,7 @@ public class EditBal implements CommandExecutor {
         Player from = (Player) sender;
 
         // Ensure command is enabled
-        if (!(app.getConfig().getBoolean(app.getConf().strComEditBal))) {
+        if (!(app.getConfig().getBoolean(app.getConf().strComSetBal))) {
             app.getCon().severe(from, "This command is not enabled.");
             return true;
         }
@@ -76,25 +76,15 @@ public class EditBal implements CommandExecutor {
             return true;
         }
 
-        // Edit cash
+        // Set cash
         EconomyResponse response = null;
         String toName = null;
-        if (!(to == null) && (amount > 0)) {
-            // Online and add
+        if (!(to == null)) {
+            response = app.getEco().setCash(to, amount);
             toName = to.getName();
-            response = app.getEco().addCash(to, amount);
-        } else if ((to == null) && (amount > 0)) {
-            // Offline and add
+        } else {
+            response = app.getEco().setCash(toOff, amount);
             toName = toOff.getName();
-            response = app.getEco().addCash(toOff, amount);
-        } else if (!(to == null) && (amount < 0)) {
-            // Online and remove (note the - on <amount> to invert to positive.)
-            toName = to.getName();
-            response = app.getEco().remCash(to, -amount);
-        } else if ((to == null) && (amount < 0)) {
-            // Offline and remove (note the - on <amount> to invert to positive.)
-            toName = toOff.getName();
-            response = app.getEco().remCash(toOff, -amount);
         }
 
 
@@ -103,12 +93,12 @@ public class EditBal implements CommandExecutor {
             case SUCCESS:
                 // If to != from, respond.
                 if (!(to == from)) {
-                    app.getCon().info(from, "You changed " + toName + "'s balance by £" + response.amount + " to £" + response.balance);
+                    app.getCon().info(from, "You set " + toName + "'s balance to £" + response.balance);
                 }
 
                 // If online send message
                 if (!(to == null)) {
-                    app.getCon().info(to, from.getName() + "Changed your balance by £" + response.amount + " to £" + response.balance);
+                    app.getCon().info(to, "Your balance was set to £" + response.balance + " by " + from.getName());
 
                 // If offline --
                 } else {
@@ -116,16 +106,17 @@ public class EditBal implements CommandExecutor {
                 }
 
                 // Console feedback
-                app.getCon().info(from.getName() + "changed " + toName + "'s balance by £" + response.amount + " to £" + response.balance);
+                app.getCon().info(from.getName() + " set " + toName + "'s balance to £" + response.balance);
                 break;
 
             case FAILURE:
                 app.getCon().usage(from, response.errorMessage, usage);
 
             default:
-                app.getCon().warn("Balance Edit error (" + from.getName() + "-->" + toName + "): " + response.errorMessage);
+                app.getCon().warn("Balance Set error (" + from.getName() + "-->" + toName + "): " + response.errorMessage);
         }
 
+        // Graceful exit
         return true;
     }
 }

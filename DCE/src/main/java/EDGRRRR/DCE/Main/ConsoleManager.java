@@ -8,8 +8,8 @@ import org.bukkit.entity.Player;
 /**
  * Console class for sending uniform messages to players and the console.
  */
-public class Console {
-    private App app;
+public class ConsoleManager {
+    private DCEPlugin app;
 
     // Settings
     private boolean debugMode;
@@ -25,7 +25,7 @@ public class Console {
     // Colours
     private HashMap<String, ChatColor> colourMap;
 
-    public Console(App app){
+    public ConsoleManager(DCEPlugin app){
         this.app = app;
 
         // Colours :D

@@ -2,8 +2,8 @@ package EDGRRRR.DCE.Main;
 /**
  * Console class for sending uniform messages to players and the console.
  */
-public class ConfigM {
-    private App app;
+public class ConfigManager {
+    private DCEPlugin app;
 
     // Prefixes for settings
     public String strMainPrefix = "main";
@@ -40,7 +40,7 @@ public class ConfigM {
     public String strComSetBal = strComPrefix + ".setBal";
 
 
-    public ConfigM(App app){
+    public ConfigManager(DCEPlugin app){
         this.app = app;
         // Saves the .Jar config to the folder, if it doesn't exist.
         app.saveDefaultConfig();

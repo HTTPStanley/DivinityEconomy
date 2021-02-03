@@ -1,6 +1,6 @@
-package EDGRRRR.DCE.Main.commands;
+package EDGRRRR.DCE.Commands;
 
-import EDGRRRR.DCE.Main.App;
+import EDGRRRR.DCE.Main.DCEPlugin;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -11,9 +11,9 @@ import org.bukkit.entity.Player;
  * A simple ping pong! command
  */
 public class Ping implements CommandExecutor {
-    private App app;
+    private DCEPlugin app;
 
-    public Ping(App app) {
+    public Ping(DCEPlugin app) {
         this.app = app;
     }
 

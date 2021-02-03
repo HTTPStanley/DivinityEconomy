@@ -1,6 +1,6 @@
-package EDGRRRR.DCE.Main.commands;
+package EDGRRRR.DCE.Commands;
 
-import EDGRRRR.DCE.Main.App;
+import EDGRRRR.DCE.Main.DCEPlugin;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -11,10 +11,10 @@ import org.bukkit.entity.Player;
  * Command executor for editing (adding or removing) cash to a player
  */
 public class ClearBal implements CommandExecutor {
-    private App app;
+    private DCEPlugin app;
     private String usage = "/clearbal <username> or /clearbal";
 
-    public ClearBal(App app) {
+    public ClearBal(DCEPlugin app) {
         this.app = app;
     }
 

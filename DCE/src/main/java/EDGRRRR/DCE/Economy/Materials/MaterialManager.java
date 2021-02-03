@@ -1,4 +1,4 @@
-package EDGRRRR.DCE.Main;
+package EDGRRRR.DCE.Economy.Materials;
 
 import java.io.File;
 import java.util.HashMap;
@@ -8,9 +8,11 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.craftbukkit.libs.jline.internal.InputStreamReader;
 
-public class MaterialM {
+import EDGRRRR.DCE.Main.DCEPlugin;
+
+public class MaterialManager {
     // Link back to Main
-    private App app;
+    private DCEPlugin app;
 
     // Stores items
     private HashMap<String, String> aliases;
@@ -26,7 +28,7 @@ public class MaterialM {
      * You will likely need to call loadMaterials and loadAliases to populate the aliases and materials with data from the program.
      * @param app
      */
-    public MaterialM(App app) {
+    public MaterialManager(DCEPlugin app) {
         this.app = app;
     }
 
