@@ -16,7 +16,7 @@ public class ConfigManager {
     public String strMainVersion = strMainPrefix + ".version";
 
     // Chat settings
-    public String strChatDebug = strChatPrefix + ".version";
+    public String strChatDebug = strChatPrefix + ".chatDebug";
     public String strChatMsgPfx = strChatPrefix + ".prefix";
     public String strChatPfxSep = strChatPrefix + ".prefixSep";
     public String strChatPfxClr = strChatPrefix + ".prefixColour";
@@ -30,6 +30,8 @@ public class ConfigManager {
     // Economy settings
     public String strEconMinSendAmount = strEconPrefix + ".minSendAmount";
     public String strEconRoundingDigits = strEconPrefix + ".roundingDigits";
+    public String strEconBaseQuantity = strEconPrefix + ".baseQuantity";
+    public String strEconTaxScale = strEconPrefix + ".tax";
 
     // Commands settings
     public String strComBalance = strComPrefix + ".balance";
