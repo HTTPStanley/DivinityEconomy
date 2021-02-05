@@ -61,6 +61,8 @@ for key in matData:
     matData[key]["SELL_PRICE"] = round(float(matData[key].get("SELL_PRICE", 0)), 2)
     matData[key]["QUANTITY"] = int(matData[key].get("QUANTITY", 0))
     matData[key]["ALLOWED"] = bool(matData[key].get("ALLOWED", False))
+    if "fallbacks" in matData[key]:
+        matData[key].pop("fallbacks")
 
 
 with open(r"src\main\resources\materials.yml", "w", encoding="utf8") as newStream:

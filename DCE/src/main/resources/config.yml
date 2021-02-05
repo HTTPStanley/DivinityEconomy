@@ -46,6 +46,8 @@ chat:
 economy:
   minSendAmount: 0.01
   roundingDigits: 2
+  baseQuantity: 1000000
+  tax: 1.2
 commands:
   balance: true
   clearBal: true

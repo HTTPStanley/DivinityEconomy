@@ -12,6 +12,14 @@ def banned(key, bnd=[], match=[]):
         
     return flag
 
+def clean(key):
+    key = key.replace("  ", " ")
+    key = key.replace("_", " ")
+    key = key.lower()
+    key = key.strip("")
+    key = key.strip(" ")
+    return key
+
 # load file
 with open(r"src\main\resources\items.yml", "r", encoding="utf8") as inFile:
     data = yaml.load(inFile)
@@ -34,6 +42,7 @@ for key in data.keys():
     elif type(obj) == dict:
         if not(banned(obj["material"].upper())):
             materials[key.upper()] = obj
+            aliases[clean(key)] = obj["material"]
 
         else:
             removed.append(obj)

@@ -170,6 +170,21 @@ abarelog: STRIPPED_ACACIA_LOG
 abarewood: STRIPPED_ACACIA_WOOD
 aboat: ACACIA_BOAT
 abutton: ACACIA_BUTTON
+acacia boat: ACACIA_BOAT
+acacia button: ACACIA_BUTTON
+acacia door: ACACIA_DOOR
+acacia fence: ACACIA_FENCE
+acacia fence gate: ACACIA_FENCE_GATE
+acacia leaves: ACACIA_LEAVES
+acacia log: ACACIA_LOG
+acacia planks: ACACIA_PLANKS
+acacia pressure plate: ACACIA_PRESSURE_PLATE
+acacia sapling: ACACIA_SAPLING
+acacia sign: ACACIA_SIGN
+acacia slab: ACACIA_SLAB
+acacia stairs: ACACIA_STAIRS
+acacia trapdoor: ACACIA_TRAPDOOR
+acacia wood: ACACIA_WOOD
 acaciabarelog: STRIPPED_ACACIA_LOG
 acaciabarewood: STRIPPED_ACACIA_WOOD
 acaciaboat: ACACIA_BOAT
@@ -424,6 +439,7 @@ actdoor: ACACIA_TRAPDOOR
 activaterail: ACTIVATOR_RAIL
 activaterails: ACTIVATOR_RAIL
 activatetrack: ACTIVATOR_RAIL
+activator rail: ACTIVATOR_RAIL
 activatorrail: ACTIVATOR_RAIL
 activatorrails: ACTIVATOR_RAIL
 activatortrack: ACTIVATOR_RAIL
@@ -476,20 +492,27 @@ afencegate: ACACIA_FENCE_GATE
 agate: ACACIA_FENCE_GATE
 ahalfblock: ACACIA_SLAB
 ahatch: ACACIA_TRAPDOOR
+air: AIR
 aleaf: ACACIA_LEAVES
 aleave: ACACIA_LEAVES
 aleaves: ACACIA_LEAVES
+allium: ALLIUM
 alog: ACACIA_LOG
 alogall: ACACIA_WOOD
 alogleaf: ACACIA_LEAVES
 alogleave: ACACIA_LEAVES
 alogleaves: ACACIA_LEAVES
 alogsapling: ACACIA_SAPLING
+ancient debris: ANCIENT_DEBRIS
 ancientdebris: ANCIENT_DEBRIS
 and: ANDESITE
 andb: ANDESITE
 andbl: ANDESITE
 andblock: ANDESITE
+andesite: ANDESITE
+andesite slab: ANDESITE_SLAB
+andesite stairs: ANDESITE_STAIRS
+andesite wall: ANDESITE_WALL
 andesiteb: ANDESITE
 andesitebl: ANDESITE
 andesiteblock: ANDESITE
@@ -525,6 +548,7 @@ angrypigsegg: HOGLIN_SPAWN_EGG
 angrypigspawn: HOGLIN_SPAWN_EGG
 angrypigspawnegg: HOGLIN_SPAWN_EGG
 angrypigspawner: HOGLIN_SPAWNER
+anvil: ANVIL
 aoepotacid: POISON_LINGERING_POTION
 aoepotacid2: LONG_POISON_LINGERING_POTION
 aoepotacidex: LONG_POISON_LINGERING_POTION
@@ -1287,6 +1311,7 @@ aplankwood: ACACIA_PLANKS
 aplankwooden: ACACIA_PLANKS
 aplate: ACACIA_PRESSURE_PLATE
 applate: ACACIA_PRESSURE_PLATE
+apple: APPLE
 apressplate: ACACIA_PRESSURE_PLATE
 apressureplate: ACACIA_PRESSURE_PLATE
 araft: ACACIA_BOAT
@@ -2048,7 +2073,9 @@ areapotweex: LONG_WEAKNESS_LINGERING_POTION
 areapotweextended: LONG_WEAKNESS_LINGERING_POTION
 areapotwelevel2: LONG_WEAKNESS_LINGERING_POTION
 areapotwelong: LONG_WEAKNESS_LINGERING_POTION
+armor stand: ARMOR_STAND
 armorstand: ARMOR_STAND
+arrow: ARROW
 arrowacid: POISON_TIPPED_ARROW
 arrowacid2: LONG_POISON_TIPPED_ARROW
 arrowacidex: LONG_POISON_TIPPED_ARROW
@@ -2459,6 +2486,10 @@ atrunkleave: ACACIA_LEAVES
 atrunkleaves: ACACIA_LEAVES
 atrunksapling: ACACIA_SAPLING
 awhalfblock: ACACIA_SLAB
+awkward lingering potion: LINGERING_POTION
+awkward potion: POTION
+awkward splash potion: SPLASH_POTION
+awkward tipped arrow: TIPPED_ARROW
 awkwardaoepoiont: AWKWARD_LINGERING_POTION
 awkwardaoepot: AWKWARD_LINGERING_POTION
 awkwardareapot: AWKWARD_LINGERING_POTION
@@ -2496,8 +2527,11 @@ awslab: ACACIA_SLAB
 awstair: ACACIA_STAIRS
 awstairs: ACACIA_STAIRS
 awstep: ACACIA_SLAB
+azure bluet: AZURE_BLUET
 azurebluet: AZURE_BLUET
+baked potato: BAKED_POTATO
 bakedpotato: BAKED_POTATO
+bamboo: BAMBOO
 bareacacialogall: STRIPPED_ACACIA_WOOD
 bareacaciatree: STRIPPED_ACACIA_LOG
 bareacaciatreeall: STRIPPED_ACACIA_WOOD
@@ -2641,9 +2675,12 @@ bariron: IRON_INGOT
 barneth: NETHERITE_INGOT
 barnether: NETHERITE_INGOT
 barnetherite: NETHERITE_INGOT
+barrel: BARREL
+barrier: BARRIER
 bars: IRON_INGOT
 barst: IRON_INGOT
 barsteel: IRON_INGOT
+basalt: BASALT
 basaltb: BASALT
 basaltbl: BASALT
 basaltblock: BASALT
@@ -2655,6 +2692,8 @@ bast: BASALT
 bastb: BASALT
 bastbl: BASALT
 bastblock: BASALT
+bat spawn egg: BAT_SPAWN_EGG
+bat spawner: SPAWNER
 batcage: BAT_SPAWNER
 bategg: BAT_SPAWN_EGG
 batmcage: BAT_SPAWNER
@@ -2693,8 +2732,14 @@ bdoor: BIRCH_DOOR
 bdoort: BIRCH_TRAPDOOR
 bdoortrap: BIRCH_TRAPDOOR
 bdtrap: BIRCH_TRAPDOOR
+beacon: BEACON
+bedrock: BEDROCK
+bee nest: BEE_NEST
+bee spawn egg: BEE_SPAWN_EGG
+bee spawner: SPAWNER
 beecage: BEE_SPAWNER
 beeegg: BEE_SPAWN_EGG
+beef: BEEF
 beefbbq: COOKED_BEEF
 beefc: COOKED_BEEF
 beefcook: COOKED_BEEF
@@ -2706,6 +2751,7 @@ beefro: COOKED_BEEF
 beefroast: COOKED_BEEF
 beefroasted: COOKED_BEEF
 beeftoasted: COOKED_BEEF
+beehive: BEEHIVE
 beemcage: BEE_SPAWNER
 beemobcage: BEE_SPAWNER
 beemobspawner: BEE_SPAWNER
@@ -2717,13 +2763,32 @@ beesegg: BEE_SPAWN_EGG
 beespawn: BEE_SPAWN_EGG
 beespawnegg: BEE_SPAWN_EGG
 beespawner: BEE_SPAWNER
+beetroot: BEETROOT
+beetroot seeds: BEETROOT_SEEDS
+beetroot soup: BEETROOT_SOUP
 beetrootseeds: BEETROOT_SEEDS
 beetrootsoup: BEETROOT_SOUP
+bell: BELL
 bfence: BIRCH_FENCE
 bfencegate: BIRCH_FENCE_GATE
 bgate: BIRCH_FENCE_GATE
 bhalfblock: BIRCH_SLAB
 bhatch: BIRCH_TRAPDOOR
+birch boat: BIRCH_BOAT
+birch button: BIRCH_BUTTON
+birch door: BIRCH_DOOR
+birch fence: BIRCH_FENCE
+birch fence gate: BIRCH_FENCE_GATE
+birch leaves: BIRCH_LEAVES
+birch log: BIRCH_LOG
+birch planks: BIRCH_PLANKS
+birch pressure plate: BIRCH_PRESSURE_PLATE
+birch sapling: BIRCH_SAPLING
+birch sign: BIRCH_SIGN
+birch slab: BIRCH_SLAB
+birch stairs: BIRCH_STAIRS
+birch trapdoor: BIRCH_TRAPDOOR
+birch wood: BIRCH_WOOD
 birchbarelog: STRIPPED_BIRCH_LOG
 birchbarewood: STRIPPED_BIRCH_WOOD
 birchboat: BIRCH_BOAT
@@ -2842,6 +2907,18 @@ blabanner: BLACK_BANNER
 blabed: BLACK_BED
 blacarpet: BLACK_CARPET
 blacdust: BLACK_CONCRETE_POWDER
+black banner: BLACK_BANNER
+black bed: BLACK_BED
+black carpet: BLACK_CARPET
+black concrete: BLACK_CONCRETE
+black concrete powder: BLACK_CONCRETE_POWDER
+black dye: BLACK_DYE
+black glazed terracotta: BLACK_GLAZED_TERRACOTTA
+black shulker box: BLACK_SHULKER_BOX
+black stained glass: BLACK_STAINED_GLASS
+black stained glass pane: BLACK_STAINED_GLASS_PANE
+black terracotta: BLACK_TERRACOTTA
+black wool: BLACK_WOOL
 blackbanner: BLACK_BANNER
 blackbed: BLACK_BED
 blackcarpet: BLACK_CARPET
@@ -2885,6 +2962,10 @@ blackshulkerbox: BLACK_SHULKER_BOX
 blackstainedclay: BLACK_TERRACOTTA
 blackstainedglass: BLACK_STAINED_GLASS
 blackstainedglasspane: BLACK_STAINED_GLASS_PANE
+blackstone: BLACKSTONE
+blackstone slab: BLACKSTONE_SLAB
+blackstone stairs: BLACKSTONE_STAIRS
+blackstone wall: BLACKSTONE_WALL
 blackstoneb: BLACKSTONE
 blackstonebl: BLACKSTONE
 blackstoneblock: BLACKSTONE
@@ -2923,6 +3004,7 @@ blasclay: BLACK_TERRACOTTA
 blasglass: BLACK_STAINED_GLASS
 blasglasspane: BLACK_STAINED_GLASS_PANE
 blashulkerbox: BLACK_SHULKER_BOX
+blast furnace: BLAST_FURNACE
 blastainedclay: BLACK_TERRACOTTA
 blastainedglass: BLACK_STAINED_GLASS
 blastainedglasspane: BLACK_STAINED_GLASS_PANE
@@ -2932,6 +3014,10 @@ blaterra: BLACK_TERRACOTTA
 blaterracota: BLACK_TERRACOTTA
 blaterracotta: BLACK_TERRACOTTA
 blawool: BLACK_WOOL
+blaze powder: BLAZE_POWDER
+blaze rod: BLAZE_ROD
+blaze spawn egg: BLAZE_SPAWN_EGG
+blaze spawner: SPAWNER
 blazecage: BLAZE_SPAWNER
 blazeegg: BLAZE_SPAWN_EGG
 blazemcage: BLAZE_SPAWNER
@@ -3037,6 +3123,20 @@ blucotton: BLUE_WOOL
 blucp: BLUE_CONCRETE_POWDER
 blucpowder: BLUE_CONCRETE_POWDER
 bludye: BLUE_DYE
+blue banner: BLUE_BANNER
+blue bed: BLUE_BED
+blue carpet: BLUE_CARPET
+blue concrete: BLUE_CONCRETE
+blue concrete powder: BLUE_CONCRETE_POWDER
+blue dye: BLUE_DYE
+blue glazed terracotta: BLUE_GLAZED_TERRACOTTA
+blue ice: BLUE_ICE
+blue orchid: BLUE_ORCHID
+blue shulker box: BLUE_SHULKER_BOX
+blue stained glass: BLUE_STAINED_GLASS
+blue stained glass pane: BLUE_STAINED_GLASS_PANE
+blue terracotta: BLUE_TERRACOTTA
+blue wool: BLUE_WOOL
 bluebanner: BLUE_BANNER
 bluebed: BLUE_BED
 bluecarpet: BLUE_CARPET
@@ -3142,6 +3242,9 @@ bombcart: TNT_MINECART
 bombmc: TNT_MINECART
 bombmcart: TNT_MINECART
 bombminecart: TNT_MINECART
+bone: BONE
+bone block: BONE_BLOCK
+bone meal: BONE_MEAL
 boneblock: BONE_BLOCK
 bonehorsecage: SKELETON_HORSE_SPAWNER
 bonehorseegg: SKELETON_HORSE_SPAWN_EGG
@@ -3156,12 +3259,16 @@ bonehorsespawn: SKELETON_HORSE_SPAWN_EGG
 bonehorsespawnegg: SKELETON_HORSE_SPAWN_EGG
 bonehorsespawner: SKELETON_HORSE_SPAWNER
 bonemeal: BONE_MEAL
+book: BOOK
+bookshelf: BOOKSHELF
 boosterrail: POWERED_RAIL
 boosterrails: POWERED_RAIL
 boostertrack: POWERED_RAIL
 boostrail: POWERED_RAIL
 boostrails: POWERED_RAIL
 boosttrack: POWERED_RAIL
+bow: BOW
+bowl: BOWL
 bplank: BIRCH_PLANKS
 bplankw: BIRCH_PLANKS
 bplankwood: BIRCH_PLANKS
@@ -3173,6 +3280,9 @@ bpressureplate: BIRCH_PRESSURE_PLATE
 braft: BIRCH_BOAT
 brail: POWERED_RAIL
 brails: POWERED_RAIL
+brain coral: BRAIN_CORAL
+brain coral block: BRAIN_CORAL_BLOCK
+brain coral fan: BRAIN_CORAL_FAN
 braincoral: BRAIN_CORAL
 braincoralblock: BRAIN_CORAL_BLOCK
 braincoralfan: BRAIN_CORAL_FAN
@@ -3189,6 +3299,7 @@ brcotton: BROWN_WOOL
 brcp: BROWN_CONCRETE_POWDER
 brcpowder: BROWN_CONCRETE_POWDER
 brdye: BROWN_DYE
+bread: BREAD
 breath2pot: LONG_WATER_BREATHING_POTION
 breath2potion: LONG_WATER_BREATHING_POTION
 breath2splashpot: LONG_WATER_BREATHING_SPLASH_POTION
@@ -3369,6 +3480,7 @@ breathsplashpotion: WATER_BREATHING_SPLASH_POTION
 breathtarr: WATER_BREATHING_TIPPED_ARROW
 breathtarrow: WATER_BREATHING_TIPPED_ARROW
 breathtippedarrow: WATER_BREATHING_TIPPED_ARROW
+brewing stand: BREWING_STAND
 brewingstand: BREWING_STAND
 brfloor: BROWN_CARPET
 brglass: BROWN_STAINED_GLASS
@@ -3380,6 +3492,11 @@ brglazedterracotta: BROWN_GLAZED_TERRACOTTA
 brgpane: BROWN_STAINED_GLASS_PANE
 brgtcotta: BROWN_GLAZED_TERRACOTTA
 brgterra: BROWN_GLAZED_TERRACOTTA
+brick: BRICK
+brick slab: BRICK_SLAB
+brick stairs: BRICK_STAIRS
+brick wall: BRICK_WALL
+bricks: BRICKS
 brickslab: BRICK_SLAB
 brickstairs: BRICK_STAIRS
 brickwall: BRICK_WALL
@@ -3418,6 +3535,20 @@ brotcota: BROWN_TERRACOTTA
 broterra: BROWN_TERRACOTTA
 broterracota: BROWN_TERRACOTTA
 broterracotta: BROWN_TERRACOTTA
+brown banner: BROWN_BANNER
+brown bed: BROWN_BED
+brown carpet: BROWN_CARPET
+brown concrete: BROWN_CONCRETE
+brown concrete powder: BROWN_CONCRETE_POWDER
+brown dye: BROWN_DYE
+brown glazed terracotta: BROWN_GLAZED_TERRACOTTA
+brown mushroom: BROWN_MUSHROOM
+brown mushroom block: BROWN_MUSHROOM_BLOCK
+brown shulker box: BROWN_SHULKER_BOX
+brown stained glass: BROWN_STAINED_GLASS
+brown stained glass pane: BROWN_STAINED_GLASS_PANE
+brown terracotta: BROWN_TERRACOTTA
+brown wool: BROWN_WOOL
 brownbanner: BROWN_BANNER
 brownbed: BROWN_BED
 browncarpet: BROWN_CARPET
@@ -3492,9 +3623,13 @@ btrunkleaf: BIRCH_LEAVES
 btrunkleave: BIRCH_LEAVES
 btrunkleaves: BIRCH_LEAVES
 btrunksapling: BIRCH_SAPLING
+bubble coral: BUBBLE_CORAL
+bubble coral block: BUBBLE_CORAL_BLOCK
+bubble coral fan: BUBBLE_CORAL_FAN
 bubblecoral: BUBBLE_CORAL
 bubblecoralblock: BUBBLE_CORAL_BLOCK
 bubblecoralfan: BUBBLE_CORAL_FAN
+bucket: BUCKET
 bucketocod: COD_BUCKET
 bucketopfish: PUFFERFISH_BUCKET
 bucketopuffer: PUFFERFISH_BUCKET
@@ -3561,10 +3696,19 @@ bwslab: BIRCH_SLAB
 bwstair: BIRCH_STAIRS
 bwstairs: BIRCH_STAIRS
 bwstep: BIRCH_SLAB
+cactus: CACTUS
+cake: CAKE
+campfire: CAMPFIRE
+carrot: CARROT
+carrot on a stick: CARROT_ON_A_STICK
 carrotonastick: CARROT_ON_A_STICK
 cart: MINECART
+cartography table: CARTOGRAPHY_TABLE
 cartographytable: CARTOGRAPHY_TABLE
+carved pumpkin: CARVED_PUMPKIN
 carvedpumpkin: CARVED_PUMPKIN
+cat spawn egg: CAT_SPAWN_EGG
+cat spawner: SPAWNER
 catcage: CAT_SPAWNER
 catcd: MUSIC_DISC_CAT
 catdisc: MUSIC_DISC_CAT
@@ -3589,6 +3733,9 @@ catsegg: CAT_SPAWN_EGG
 catspawn: CAT_SPAWN_EGG
 catspawnegg: CAT_SPAWN_EGG
 catspawner: CAT_SPAWNER
+cauldron: CAULDRON
+cave spider spawn egg: CAVE_SPIDER_SPAWN_EGG
+cave spider spawner: SPAWNER
 cave_spidercage: CAVE_SPIDER_SPAWNER
 cave_spideregg: CAVE_SPIDER_SPAWN_EGG
 cave_spidermcage: CAVE_SPIDER_SPAWNER
@@ -3657,6 +3804,8 @@ cglazedterracotta: CYAN_GLAZED_TERRACOTTA
 cgpane: CYAN_STAINED_GLASS_PANE
 cgtcotta: CYAN_GLAZED_TERRACOTTA
 cgterra: CYAN_GLAZED_TERRACOTTA
+chain: CHAIN
+chain command block: CHAIN_COMMAND_BLOCK
 chainboots: CHAINMAIL_BOOTS
 chainchestplate: CHAINMAIL_CHESTPLATE
 chaincoif: CHAINMAIL_HELMET
@@ -3666,6 +3815,10 @@ chainhelm: CHAINMAIL_HELMET
 chainhelmet: CHAINMAIL_HELMET
 chainleggings: CHAINMAIL_LEGGINGS
 chainlegs: CHAINMAIL_LEGGINGS
+chainmail boots: CHAINMAIL_BOOTS
+chainmail chestplate: CHAINMAIL_CHESTPLATE
+chainmail helmet: CHAINMAIL_HELMET
+chainmail leggings: CHAINMAIL_LEGGINGS
 chainmailboots: CHAINMAIL_BOOTS
 chainmailchestplate: CHAINMAIL_CHESTPLATE
 chainmailcoif: CHAINMAIL_HELMET
@@ -3700,12 +3853,18 @@ chainplatebody: CHAINMAIL_CHESTPLATE
 chainshirt: CHAINMAIL_CHESTPLATE
 chainshoes: CHAINMAIL_BOOTS
 chaintunic: CHAINMAIL_CHESTPLATE
+charcoal: CHARCOAL
 chare: COOKED_RABBIT
 chasenpfeffer: COOKED_RABBIT
+chest: CHEST
+chest minecart: CHEST_MINECART
 chestcart: CHEST_MINECART
 chestmc: CHEST_MINECART
 chestmcart: CHEST_MINECART
 chestminecart: CHEST_MINECART
+chicken: CHICKEN
+chicken spawn egg: CHICKEN_SPAWN_EGG
+chicken spawner: SPAWNER
 chickenbbq: COOKED_CHICKEN
 chickenc: COOKED_CHICKEN
 chickencage: CHICKEN_SPAWNER
@@ -3729,6 +3888,7 @@ chickenspawn: CHICKEN_SPAWN_EGG
 chickenspawnegg: CHICKEN_SPAWN_EGG
 chickenspawner: CHICKEN_SPAWNER
 chickentoasted: COOKED_CHICKEN
+chipped anvil: CHIPPED_ANVIL
 chippedanvil: CHIPPED_ANVIL
 chirpcd: MUSIC_DISC_CHIRP
 chirpdisc: MUSIC_DISC_CHIRP
@@ -3742,6 +3902,12 @@ chirpmusicdisc: MUSIC_DISC_CHIRP
 chirpmusicdisk: MUSIC_DISC_CHIRP
 chirpmusicrecord: MUSIC_DISC_CHIRP
 chirprecord: MUSIC_DISC_CHIRP
+chiseled nether bricks: CHISELED_NETHER_BRICKS
+chiseled polished blackstone: CHISELED_POLISHED_BLACKSTONE
+chiseled quartz block: CHISELED_QUARTZ_BLOCK
+chiseled red sandstone: CHISELED_RED_SANDSTONE
+chiseled sandstone: CHISELED_SANDSTONE
+chiseled stone bricks: CHISELED_STONE_BRICKS
 chiseledfishst: INFESTED_CHISELED_STONE_BRICKS
 chiseledfishstone: INFESTED_CHISELED_STONE_BRICKS
 chiseledinfestedst: INFESTED_CHISELED_STONE_BRICKS
@@ -3832,6 +3998,9 @@ chiseledstone: CHISELED_STONE_BRICKS
 chiseledstonebricks: CHISELED_STONE_BRICKS
 chiseledtrapst: INFESTED_CHISELED_STONE_BRICKS
 chiseledtrapstone: INFESTED_CHISELED_STONE_BRICKS
+chorus flower: CHORUS_FLOWER
+chorus fruit: CHORUS_FRUIT
+chorus plant: CHORUS_PLANT
 chorusflower: CHORUS_FLOWER
 chorusfruit: CHORUS_FRUIT
 chorusplant: CHORUS_PLANT
@@ -4011,8 +4180,11 @@ cist: CHISELED_STONE_BRICKS
 cistone: CHISELED_STONE_BRICKS
 citrapst: INFESTED_CHISELED_STONE_BRICKS
 citrapstone: INFESTED_CHISELED_STONE_BRICKS
+clay: CLAY
+clay ball: CLAY_BALL
 clayball: CLAY_BALL
 clfish: TROPICAL_FISH
+clock: CLOCK
 cloudpotacid: POISON_LINGERING_POTION
 cloudpotacid2: LONG_POISON_LINGERING_POTION
 cloudpotacidex: LONG_POISON_LINGERING_POTION
@@ -4834,9 +5006,13 @@ cmusicdisk: MUSIC_DISC_11
 cmusicrecord: MUSIC_DISC_11
 cmutton: COOKED_MUTTON
 co: COAL_ORE
+coal: COAL
+coal block: COAL_BLOCK
+coal ore: COAL_ORE
 coalblock: COAL_BLOCK
 coalo: COAL_ORE
 coalore: COAL_ORE
+coarse dirt: COARSE_DIRT
 coarsedirt: COARSE_DIRT
 cobble: COBBLESTONE
 cobbleb: COBBLESTONE
@@ -4846,6 +5022,10 @@ cobblehalfblock: COBBLESTONE_SLAB
 cobblestair: COBBLESTONE_STAIRS
 cobblestairs: COBBLESTONE_STAIRS
 cobblestep: COBBLESTONE_SLAB
+cobblestone: COBBLESTONE
+cobblestone slab: COBBLESTONE_SLAB
+cobblestone stairs: COBBLESTONE_STAIRS
+cobblestone wall: COBBLESTONE_WALL
 cobblestoneaxe: STONE_AXE
 cobblestoneb: COBBLESTONE
 cobblestonebl: COBBLESTONE
@@ -4863,7 +5043,13 @@ cobblestonestep: COBBLESTONE_SLAB
 cobblestonesword: STONE_SWORD
 cobblestonewall: COBBLESTONE_WALL
 cobblewall: COBBLESTONE_WALL
+cobweb: COBWEB
+cocoa beans: COCOA_BEANS
 cocoabeans: COCOA_BEANS
+cod: COD
+cod bucket: COD_BUCKET
+cod spawn egg: COD_SPAWN_EGG
+cod spawner: SPAWNER
 codbbq: COOKED_COD
 codbucket: COD_BUCKET
 codbukkit: COD_BUCKET
@@ -4890,6 +5076,8 @@ codspawn: COD_SPAWN_EGG
 codspawnegg: COD_SPAWN_EGG
 codspawner: COD_SPAWNER
 codtoasted: COOKED_COD
+command block: COMMAND_BLOCK
+command block minecart: COMMAND_BLOCK_MINECART
 commandblock: COMMAND_BLOCK
 commandblockcart: COMMAND_BLOCK_MINECART
 commandblockmc: COMMAND_BLOCK_MINECART
@@ -4899,10 +5087,21 @@ commandcart: COMMAND_BLOCK_MINECART
 commandmc: COMMAND_BLOCK_MINECART
 commandmcart: COMMAND_BLOCK_MINECART
 commandminecart: COMMAND_BLOCK_MINECART
+comparator: COMPARATOR
+compass: COMPASS
+composter: COMPOSTER
+conduit: CONDUIT
 cookbeef: COOKED_BEEF
 cookchicken: COOKED_CHICKEN
 cookcod: COOKED_COD
 cookcowmeat: COOKED_BEEF
+cooked beef: COOKED_BEEF
+cooked chicken: COOKED_CHICKEN
+cooked cod: COOKED_COD
+cooked mutton: COOKED_MUTTON
+cooked porkchop: COOKED_PORKCHOP
+cooked rabbit: COOKED_RABBIT
+cooked salmon: COOKED_SALMON
 cookedbeef: COOKED_BEEF
 cookedchicken: COOKED_CHICKEN
 cookedcod: COOKED_COD
@@ -4924,6 +5123,7 @@ cookfish: COOKED_COD
 cookfishs: COOKED_SALMON
 cookhare: COOKED_RABBIT
 cookhasenpfeffer: COOKED_RABBIT
+cookie: COOKIE
 cookmutton: COOKED_MUTTON
 cookpork: COOKED_PORKCHOP
 cookporkchop: COOKED_PORKCHOP
@@ -4934,6 +5134,9 @@ cooksfish: COOKED_SALMON
 cooksheepmeat: COOKED_MUTTON
 cooksteak: COOKED_BEEF
 core: COAL_ORE
+cornflower: CORNFLOWER
+cow spawn egg: COW_SPAWN_EGG
+cow spawner: SPAWNER
 cowcage: COW_SPAWNER
 cowegg: COW_SPAWN_EGG
 cowmcage: COW_SPAWNER
@@ -4964,6 +5167,9 @@ crabbit: COOKED_RABBIT
 crackcd: MUSIC_DISC_11
 crackdisc: MUSIC_DISC_11
 crackdisk: MUSIC_DISC_11
+cracked nether bricks: CRACKED_NETHER_BRICKS
+cracked polished blackstone bricks: CRACKED_POLISHED_BLACKSTONE_BRICKS
+cracked stone bricks: CRACKED_STONE_BRICKS
 crackedcd: MUSIC_DISC_11
 crackeddisc: MUSIC_DISC_11
 crackeddisk: MUSIC_DISC_11
@@ -5056,6 +5262,7 @@ crackst: CRACKED_STONE_BRICKS
 crackstone: CRACKED_STONE_BRICKS
 cracktrapst: INFESTED_CRACKED_STONE_BRICKS
 cracktrapstone: INFESTED_CRACKED_STONE_BRICKS
+crafting table: CRAFTING_TABLE
 craftingtable: CRAFTING_TABLE
 crbarelog: STRIPPED_CRIMSON_STEM
 crbutton: CRIMSON_BUTTON
@@ -5065,6 +5272,10 @@ crdoort: CRIMSON_TRAPDOOR
 crdoortrap: CRIMSON_TRAPDOOR
 crdtrap: CRIMSON_TRAPDOOR
 crecord: MUSIC_DISC_11
+creeper banner pattern: CREEPER_BANNER_PATTERN
+creeper head: CREEPER_HEAD
+creeper spawn egg: CREEPER_SPAWN_EGG
+creeper spawner: SPAWNER
 creeperbannerpattern: CREEPER_BANNER_PATTERN
 creepercage: CREEPER_SPAWNER
 creeperegg: CREEPER_SPAWN_EGG
@@ -5118,6 +5329,21 @@ crimroot: CRIMSON_ROOTS
 crimroots: CRIMSON_ROOTS
 crimsign: CRIMSON_SIGN
 crimsoil: CRIMSON_NYLIUM
+crimson button: CRIMSON_BUTTON
+crimson door: CRIMSON_DOOR
+crimson fence: CRIMSON_FENCE
+crimson fence gate: CRIMSON_FENCE_GATE
+crimson fungus: CRIMSON_FUNGUS
+crimson hyphae: CRIMSON_HYPHAE
+crimson nylium: CRIMSON_NYLIUM
+crimson planks: CRIMSON_PLANKS
+crimson pressure plate: CRIMSON_PRESSURE_PLATE
+crimson roots: CRIMSON_ROOTS
+crimson sign: CRIMSON_SIGN
+crimson slab: CRIMSON_SLAB
+crimson stairs: CRIMSON_STAIRS
+crimson stem: CRIMSON_STEM
+crimson trapdoor: CRIMSON_TRAPDOOR
 crimsonbarelog: STRIPPED_CRIMSON_STEM
 crimsonbutton: CRIMSON_BUTTON
 crimsondoor: CRIMSON_DOOR
@@ -5223,6 +5449,7 @@ crnethbrick: CRACKED_NETHER_BRICKS
 crnetherbr: CRACKED_NETHER_BRICKS
 crnetherbrick: CRACKED_NETHER_BRICKS
 crnylium: CRIMSON_NYLIUM
+crossbow: CROSSBOW
 crpblackstone: CRACKED_POLISHED_BLACKSTONE_BRICKS
 crpblst: CRACKED_POLISHED_BLACKSTONE_BRICKS
 crpblstone: CRACKED_POLISHED_BLACKSTONE_BRICKS
@@ -5280,6 +5507,7 @@ crwslab: CRIMSON_SLAB
 crwstair: CRIMSON_STAIRS
 crwstairs: CRIMSON_STAIRS
 crwstep: CRIMSON_SLAB
+crying obsidian: CRYING_OBSIDIAN
 cryingobsidian: CRYING_OBSIDIAN
 crystalarmor: DIAMOND_HORSE_ARMOR
 crystalaxe: DIAMOND_AXE
@@ -5390,6 +5618,10 @@ ctcota: CYAN_TERRACOTTA
 cterra: CYAN_TERRACOTTA
 cterracota: CYAN_TERRACOTTA
 cterracotta: CYAN_TERRACOTTA
+cut red sandstone: CUT_RED_SANDSTONE
+cut red sandstone slab: CUT_RED_SANDSTONE_SLAB
+cut sandstone: CUT_SANDSTONE
+cut sandstone slab: CUT_SANDSTONE_SLAB
 cutredsandst: CUT_RED_SANDSTONE
 cutredsandstb: CUT_RED_SANDSTONE
 cutredsandstbl: CUT_RED_SANDSTONE
@@ -5429,6 +5661,18 @@ cutsndstblock: CUT_SANDSTONE
 cutsndsthalfblock: CUT_SANDSTONE_SLAB
 cutsndststep: CUT_SANDSTONE_SLAB
 cwool: CYAN_WOOL
+cyan banner: CYAN_BANNER
+cyan bed: CYAN_BED
+cyan carpet: CYAN_CARPET
+cyan concrete: CYAN_CONCRETE
+cyan concrete powder: CYAN_CONCRETE_POWDER
+cyan dye: CYAN_DYE
+cyan glazed terracotta: CYAN_GLAZED_TERRACOTTA
+cyan shulker box: CYAN_SHULKER_BOX
+cyan stained glass: CYAN_STAINED_GLASS
+cyan stained glass pane: CYAN_STAINED_GLASS_PANE
+cyan terracotta: CYAN_TERRACOTTA
+cyan wool: CYAN_WOOL
 cyanbanner: CYAN_BANNER
 cyanbed: CYAN_BED
 cyancarpet: CYAN_CARPET
@@ -5517,6 +5761,7 @@ damagecloudpotionlevelii: STRONG_HARMING_LINGERING_POTION
 damagecloudpotionstrong: STRONG_HARMING_LINGERING_POTION
 damagecloudpotlevelii: STRONG_HARMING_LINGERING_POTION
 damagecloudpotstrong: STRONG_HARMING_LINGERING_POTION
+damaged anvil: DAMAGED_ANVIL
 damagedanvil: DAMAGED_ANVIL
 damageiipot: STRONG_HARMING_POTION
 damageiipotion: STRONG_HARMING_POTION
@@ -5550,6 +5795,7 @@ damagestrongtippedarrow: STRONG_HARMING_TIPPED_ARROW
 damagetarr: HARMING_TIPPED_ARROW
 damagetarrow: HARMING_TIPPED_ARROW
 damagetippedarrow: HARMING_TIPPED_ARROW
+dandelion: DANDELION
 daoepoiont: HARMING_LINGERING_POTION
 daoepoiontii: STRONG_HARMING_LINGERING_POTION
 daoepoiontlevelii: STRONG_HARMING_LINGERING_POTION
@@ -5566,6 +5812,24 @@ dareapotionlevelii: STRONG_HARMING_LINGERING_POTION
 dareapotionstrong: STRONG_HARMING_LINGERING_POTION
 dareapotlevelii: STRONG_HARMING_LINGERING_POTION
 dareapotstrong: STRONG_HARMING_LINGERING_POTION
+dark oak boat: DARK_OAK_BOAT
+dark oak button: DARK_OAK_BUTTON
+dark oak door: DARK_OAK_DOOR
+dark oak fence: DARK_OAK_FENCE
+dark oak fence gate: DARK_OAK_FENCE_GATE
+dark oak leaves: DARK_OAK_LEAVES
+dark oak log: DARK_OAK_LOG
+dark oak planks: DARK_OAK_PLANKS
+dark oak pressure plate: DARK_OAK_PRESSURE_PLATE
+dark oak sapling: DARK_OAK_SAPLING
+dark oak sign: DARK_OAK_SIGN
+dark oak slab: DARK_OAK_SLAB
+dark oak stairs: DARK_OAK_STAIRS
+dark oak trapdoor: DARK_OAK_TRAPDOOR
+dark oak wood: DARK_OAK_WOOD
+dark prismarine: DARK_PRISMARINE
+dark prismarine slab: DARK_PRISMARINE_SLAB
+dark prismarine stairs: DARK_PRISMARINE_STAIRS
 dark_oakbarelog: STRIPPED_DARK_OAK_LOG
 dark_oakbarewood: STRIPPED_DARK_OAK_WOOD
 dark_oakboat: DARK_OAK_BOAT
@@ -6223,6 +6487,7 @@ darrowii: STRONG_HARMING_TIPPED_ARROW
 darrowlevelii: STRONG_HARMING_TIPPED_ARROW
 darrowstrong: STRONG_HARMING_TIPPED_ARROW
 daxe: DIAMOND_AXE
+daylight detector: DAYLIGHT_DETECTOR
 daylightdetector: DAYLIGHT_DETECTOR
 dbarelog: STRIPPED_SPRUCE_LOG
 dbarewood: STRIPPED_SPRUCE_WOOD
@@ -6245,6 +6510,22 @@ ddoor: SPRUCE_DOOR
 ddoort: SPRUCE_TRAPDOOR
 ddoortrap: SPRUCE_TRAPDOOR
 ddtrap: SPRUCE_TRAPDOOR
+dead brain coral: DEAD_BRAIN_CORAL
+dead brain coral block: DEAD_BRAIN_CORAL_BLOCK
+dead brain coral fan: DEAD_BRAIN_CORAL_FAN
+dead bubble coral: DEAD_BUBBLE_CORAL
+dead bubble coral block: DEAD_BUBBLE_CORAL_BLOCK
+dead bubble coral fan: DEAD_BUBBLE_CORAL_FAN
+dead bush: DEAD_BUSH
+dead fire coral: DEAD_FIRE_CORAL
+dead fire coral block: DEAD_FIRE_CORAL_BLOCK
+dead fire coral fan: DEAD_FIRE_CORAL_FAN
+dead horn coral: DEAD_HORN_CORAL
+dead horn coral block: DEAD_HORN_CORAL_BLOCK
+dead horn coral fan: DEAD_HORN_CORAL_FAN
+dead tube coral: DEAD_TUBE_CORAL
+dead tube coral block: DEAD_TUBE_CORAL_BLOCK
+dead tube coral fan: DEAD_TUBE_CORAL_FAN
 deadbraincoral: DEAD_BRAIN_CORAL
 deadbraincoralblock: DEAD_BRAIN_CORAL_BLOCK
 deadbraincoralfan: DEAD_BRAIN_CORAL_FAN
@@ -6289,10 +6570,12 @@ deathqo: NETHER_QUARTZ_ORE
 deathqore: NETHER_QUARTZ_ORE
 deathquartzo: NETHER_QUARTZ_ORE
 deathquartzore: NETHER_QUARTZ_ORE
+debug stick: DEBUG_STICK
 debugstick: DEBUG_STICK
 detectingrail: DETECTOR_RAIL
 detectingrails: DETECTOR_RAIL
 detectingtrack: DETECTOR_RAIL
+detector rail: DETECTOR_RAIL
 detectorrail: DETECTOR_RAIL
 detectorrails: DETECTOR_RAIL
 detectortrack: DETECTOR_RAIL
@@ -6530,6 +6813,19 @@ dhorsespawn: ZOMBIE_HORSE_SPAWN_EGG
 dhorsespawnegg: ZOMBIE_HORSE_SPAWN_EGG
 dhorsespawner: ZOMBIE_HORSE_SPAWNER
 di: DIORITE
+diamond: DIAMOND
+diamond axe: DIAMOND_AXE
+diamond block: DIAMOND_BLOCK
+diamond boots: DIAMOND_BOOTS
+diamond chestplate: DIAMOND_CHESTPLATE
+diamond helmet: DIAMOND_HELMET
+diamond hoe: DIAMOND_HOE
+diamond horse armor: DIAMOND_HORSE_ARMOR
+diamond leggings: DIAMOND_LEGGINGS
+diamond ore: DIAMOND_ORE
+diamond pickaxe: DIAMOND_PICKAXE
+diamond shovel: DIAMOND_SHOVEL
+diamond sword: DIAMOND_SWORD
 diamondarmor: DIAMOND_HORSE_ARMOR
 diamondaxe: DIAMOND_AXE
 diamondblock: DIAMOND_BLOCK
@@ -6568,6 +6864,10 @@ diisplashpotion: STRONG_HARMING_SPLASH_POTION
 diitarr: STRONG_HARMING_TIPPED_ARROW
 diitarrow: STRONG_HARMING_TIPPED_ARROW
 diitippedarrow: STRONG_HARMING_TIPPED_ARROW
+diorite: DIORITE
+diorite slab: DIORITE_SLAB
+diorite stairs: DIORITE_STAIRS
+diorite wall: DIORITE_WALL
 dioriteb: DIORITE
 dioritebl: DIORITE
 dioriteblock: DIORITE
@@ -6577,6 +6877,7 @@ dioritestair: DIORITE_STAIRS
 dioritestairs: DIORITE_STAIRS
 dioritestep: DIORITE_SLAB
 dioritewall: DIORITE_WALL
+dirt: DIRT
 disc1: MUSIC_DISC_13
 disc10: MUSIC_DISC_WARD
 disc11: MUSIC_DISC_11
@@ -6603,6 +6904,7 @@ disk6: MUSIC_DISC_MALL
 disk7: MUSIC_DISC_MELLOHI
 disk8: MUSIC_DISC_STAL
 disk9: MUSIC_DISC_STRAD
+dispenser: DISPENSER
 distair: DIORITE_STAIRS
 distairs: DIORITE_STAIRS
 distep: DIORITE_SLAB
@@ -6802,6 +7104,8 @@ dologleaf: DARK_OAK_LEAVES
 dologleave: DARK_OAK_LEAVES
 dologleaves: DARK_OAK_LEAVES
 dologsapling: DARK_OAK_SAPLING
+dolphin spawn egg: DOLPHIN_SPAWN_EGG
+dolphin spawner: SPAWNER
 dolphincage: DOLPHIN_SPAWNER
 dolphinegg: DOLPHIN_SPAWN_EGG
 dolphinmcage: DOLPHIN_SPAWNER
@@ -6814,6 +7118,8 @@ dolphinsegg: DOLPHIN_SPAWN_EGG
 dolphinspawn: DOLPHIN_SPAWN_EGG
 dolphinspawnegg: DOLPHIN_SPAWN_EGG
 dolphinspawner: DOLPHIN_SPAWNER
+donkey spawn egg: DONKEY_SPAWN_EGG
+donkey spawner: SPAWNER
 donkeycage: DONKEY_SPAWNER
 donkeyegg: DONKEY_SPAWN_EGG
 donkeymcage: DONKEY_SPAWNER
@@ -6918,6 +7224,9 @@ dqore: NETHER_QUARTZ_ORE
 dquartzo: NETHER_QUARTZ_ORE
 dquartzore: NETHER_QUARTZ_ORE
 draft: SPRUCE_BOAT
+dragon breath: DRAGON_BREATH
+dragon egg: DRAGON_EGG
+dragon head: DRAGON_HEAD
 dragonbreath: DRAGON_BREATH
 dragoncage: ENDER_DRAGON_SPAWNER
 dragonegg: DRAGON_EGG
@@ -6931,8 +7240,13 @@ dragonmspawner: ENDER_DRAGON_SPAWNER
 dragonspawner: ENDER_DRAGON_SPAWNER
 drail: DETECTOR_RAIL
 drails: DETECTOR_RAIL
+dried kelp: DRIED_KELP
+dried kelp block: DRIED_KELP_BLOCK
 driedkelp: DRIED_KELP
 driedkelpblock: DRIED_KELP_BLOCK
+dropper: DROPPER
+drowned spawn egg: DROWNED_SPAWN_EGG
+drowned spawner: SPAWNER
 drownedcage: DROWNED_SPAWNER
 drownedegg: DROWNED_SPAWN_EGG
 drownedmcage: DROWNED_SPAWNER
@@ -7164,6 +7478,7 @@ edragonmonstercage: ENDER_DRAGON_SPAWNER
 edragonmonsterspawner: ENDER_DRAGON_SPAWNER
 edragonmspawner: ENDER_DRAGON_SPAWNER
 edragonspawner: ENDER_DRAGON_SPAWNER
+egg: EGG
 eggangrypig: HOGLIN_SPAWN_EGG
 eggbat: BAT_SPAWN_EGG
 eggbee: BEE_SPAWN_EGG
@@ -7310,6 +7625,8 @@ eguardiansegg: ELDER_GUARDIAN_SPAWN_EGG
 eguardianspawn: ELDER_GUARDIAN_SPAWN_EGG
 eguardianspawnegg: ELDER_GUARDIAN_SPAWN_EGG
 eguardianspawner: ELDER_GUARDIAN_SPAWNER
+elder guardian spawn egg: ELDER_GUARDIAN_SPAWN_EGG
+elder guardian spawner: SPAWNER
 elder_guardiancage: ELDER_GUARDIAN_SPAWNER
 elder_guardianegg: ELDER_GUARDIAN_SPAWN_EGG
 elder_guardianmcage: ELDER_GUARDIAN_SPAWNER
@@ -7323,8 +7640,12 @@ elder_guardianspawn: ELDER_GUARDIAN_SPAWN_EGG
 elder_guardianspawnegg: ELDER_GUARDIAN_SPAWN_EGG
 elder_guardianspawner: ELDER_GUARDIAN_SPAWNER
 elderguardianspawnegg: ELDER_GUARDIAN_SPAWN_EGG
+elytra: ELYTRA
 emc: FURNACE_MINECART
 emcart: FURNACE_MINECART
+emerald: EMERALD
+emerald block: EMERALD_BLOCK
+emerald ore: EMERALD_ORE
 emeraldblock: EMERALD_BLOCK
 emeraldo: EMERALD_ORE
 emeraldore: EMERALD_ORE
@@ -7341,10 +7662,29 @@ emitesegg: ENDERMITE_SPAWN_EGG
 emitespawn: ENDERMITE_SPAWN_EGG
 emitespawnegg: ENDERMITE_SPAWN_EGG
 emitespawner: ENDERMITE_SPAWNER
+empty lingering potion: LINGERING_POTION
+empty potion: POTION
+empty splash potion: SPLASH_POTION
+empty tipped arrow: TIPPED_ARROW
+enchanted book: ENCHANTED_BOOK
+enchanted golden apple: ENCHANTED_GOLDEN_APPLE
 enchantedbook: ENCHANTED_BOOK
 enchantedgoldenapple: ENCHANTED_GOLDEN_APPLE
+enchanting table: ENCHANTING_TABLE
 enchantingtable: ENCHANTING_TABLE
+end crystal: END_CRYSTAL
+end portal frame: END_PORTAL_FRAME
+end rod: END_ROD
+end stone: END_STONE
+end stone brick slab: END_STONE_BRICK_SLAB
+end stone brick stairs: END_STONE_BRICK_STAIRS
+end stone brick wall: END_STONE_BRICK_WALL
+end stone bricks: END_STONE_BRICKS
 endcrystal: END_CRYSTAL
+ender chest: ENDER_CHEST
+ender dragon spawner: SPAWNER
+ender eye: ENDER_EYE
+ender pearl: ENDER_PEARL
 ender_dragoncage: ENDER_DRAGON_SPAWNER
 ender_dragonmcage: ENDER_DRAGON_SPAWNER
 ender_dragonmobcage: ENDER_DRAGON_SPAWNER
@@ -7355,6 +7695,8 @@ ender_dragonmspawner: ENDER_DRAGON_SPAWNER
 ender_dragonspawner: ENDER_DRAGON_SPAWNER
 enderchest: ENDER_CHEST
 endereye: ENDER_EYE
+enderman spawn egg: ENDERMAN_SPAWN_EGG
+enderman spawner: SPAWNER
 endermancage: ENDERMAN_SPAWNER
 endermanegg: ENDERMAN_SPAWN_EGG
 endermanmcage: ENDERMAN_SPAWNER
@@ -7367,6 +7709,8 @@ endermansegg: ENDERMAN_SPAWN_EGG
 endermanspawn: ENDERMAN_SPAWN_EGG
 endermanspawnegg: ENDERMAN_SPAWN_EGG
 endermanspawner: ENDERMAN_SPAWNER
+endermite spawn egg: ENDERMITE_SPAWN_EGG
+endermite spawner: SPAWNER
 endermitecage: ENDERMITE_SPAWNER
 endermiteegg: ENDERMITE_SPAWN_EGG
 endermitemcage: ENDERMITE_SPAWNER
@@ -7410,6 +7754,8 @@ enginemcart: FURNACE_MINECART
 engineminecart: FURNACE_MINECART
 eo: EMERALD_ORE
 eore: EMERALD_ORE
+evoker spawn egg: EVOKER_SPAWN_EGG
+evoker spawner: SPAWNER
 evokercage: EVOKER_SPAWNER
 evokeregg: EVOKER_SPAWN_EGG
 evokermcage: EVOKER_SPAWNER
@@ -7422,6 +7768,7 @@ evokersegg: EVOKER_SPAWN_EGG
 evokerspawn: EVOKER_SPAWN_EGG
 evokerspawnegg: EVOKER_SPAWN_EGG
 evokerspawner: EVOKER_SPAWNER
+experience bottle: EXPERIENCE_BOTTLE
 experiencebottle: EXPERIENCE_BOTTLE
 farcd: MUSIC_DISC_FAR
 fardisc: MUSIC_DISC_FAR
@@ -7429,6 +7776,7 @@ fardisk: MUSIC_DISC_FAR
 farmcd: MUSIC_DISC_FAR
 farmdisc: MUSIC_DISC_FAR
 farmdisk: MUSIC_DISC_FAR
+farmland: FARMLAND
 farmrecord: MUSIC_DISC_FAR
 farmusiccd: MUSIC_DISC_FAR
 farmusicdisc: MUSIC_DISC_FAR
@@ -7444,19 +7792,31 @@ fdoor: JUNGLE_DOOR
 fdoort: JUNGLE_TRAPDOOR
 fdoortrap: JUNGLE_TRAPDOOR
 fdtrap: JUNGLE_TRAPDOOR
+feather: FEATHER
 fencenbr: NETHER_BRICK_FENCE
 fencenbrick: NETHER_BRICK_FENCE
 fencenethbr: NETHER_BRICK_FENCE
 fencenethbrick: NETHER_BRICK_FENCE
 fencenetherbr: NETHER_BRICK_FENCE
 fencenetherbrick: NETHER_BRICK_FENCE
+fermented spider eye: FERMENTED_SPIDER_EYE
 fermentedspidereye: FERMENTED_SPIDER_EYE
+fern: FERN
 ffence: JUNGLE_FENCE
 ffencegate: JUNGLE_FENCE_GATE
 fgate: JUNGLE_FENCE_GATE
 fhalfblock: JUNGLE_SLAB
 fhatch: JUNGLE_TRAPDOOR
+filled map: FILLED_MAP
 filledmap: FILLED_MAP
+fire charge: FIRE_CHARGE
+fire coral: FIRE_CORAL
+fire coral block: FIRE_CORAL_BLOCK
+fire coral fan: FIRE_CORAL_FAN
+fire resistance lingering potion: LINGERING_POTION
+fire resistance potion: POTION
+fire resistance splash potion: SPLASH_POTION
+fire resistance tipped arrow: TIPPED_ARROW
 firecharge: FIRE_CHARGE
 firecoral: FIRE_CORAL
 firecoralblock: FIRE_CORAL_BLOCK
@@ -7731,6 +8091,8 @@ fireressplashpotion: FIRE_RESISTANCE_SPLASH_POTION
 firerestarr: FIRE_RESISTANCE_TIPPED_ARROW
 firerestarrow: FIRE_RESISTANCE_TIPPED_ARROW
 firerestippedarrow: FIRE_RESISTANCE_TIPPED_ARROW
+firework rocket: FIREWORK_ROCKET
+firework star: FIREWORK_STAR
 fireworkrocket: FIREWORK_ROCKET
 fireworkstar: FIREWORK_STAR
 fish: COD
@@ -7774,6 +8136,7 @@ fishcstoneblock: INFESTED_COBBLESTONE
 fishg: COOKED_COD
 fishgrill: COOKED_COD
 fishgrilled: COOKED_COD
+fishing rod: FISHING_ROD
 fishingrod: FISHING_ROD
 fishmossst: INFESTED_MOSSY_STONE_BRICKS
 fishmossstone: INFESTED_MOSSY_STONE_BRICKS
@@ -7817,7 +8180,10 @@ fishtoasted: COOKED_COD
 fleaf: JUNGLE_LEAVES
 fleave: JUNGLE_LEAVES
 fleaves: JUNGLE_LEAVES
+fletching table: FLETCHING_TABLE
 fletchingtable: FLETCHING_TABLE
+flint: FLINT
+flint and steel: FLINT_AND_STEEL
 flintandsteel: FLINT_AND_STEEL
 flog: JUNGLE_LOG
 flogall: JUNGLE_WOOD
@@ -7825,6 +8191,8 @@ flogleaf: JUNGLE_LEAVES
 flogleave: JUNGLE_LEAVES
 flogleaves: JUNGLE_LEAVES
 flogsapling: JUNGLE_SAPLING
+flower banner pattern: FLOWER_BANNER_PATTERN
+flower pot: FLOWER_POT
 flowerbannerpattern: FLOWER_BANNER_PATTERN
 flowerpot: FLOWER_POT
 fmc: FURNACE_MINECART
@@ -7905,6 +8273,8 @@ forestwslab: JUNGLE_SLAB
 forestwstair: JUNGLE_STAIRS
 forestwstairs: JUNGLE_STAIRS
 forestwstep: JUNGLE_SLAB
+fox spawn egg: FOX_SPAWN_EGG
+fox spawner: SPAWNER
 foxcage: FOX_SPAWNER
 foxegg: FOX_SPAWN_EGG
 foxmcage: FOX_SPAWNER
@@ -7947,6 +8317,8 @@ ftrunkleaf: JUNGLE_LEAVES
 ftrunkleave: JUNGLE_LEAVES
 ftrunkleaves: JUNGLE_LEAVES
 ftrunksapling: JUNGLE_SAPLING
+furnace: FURNACE
+furnace minecart: FURNACE_MINECART
 furnacecart: FURNACE_MINECART
 furnacemc: FURNACE_MINECART
 furnacemcart: FURNACE_MINECART
@@ -8020,6 +8392,9 @@ gfishs: COOKED_SALMON
 ghare: COOKED_RABBIT
 gharmor: GOLDEN_HORSE_ARMOR
 ghasenpfeffer: COOKED_RABBIT
+ghast spawn egg: GHAST_SPAWN_EGG
+ghast spawner: SPAWNER
+ghast tear: GHAST_TEAR
 ghastcage: GHAST_SPAWNER
 ghastegg: GHAST_SPAWN_EGG
 ghastmcage: GHAST_SPAWNER
@@ -8039,6 +8414,7 @@ ghelmet: GOLDEN_HELMET
 ghoe: GOLDEN_HOE
 ghorsearmor: GOLDEN_HORSE_ARMOR
 gi: GOLD_INGOT
+giant spawner: SPAWNER
 giantcage: GIANT_SPAWNER
 giantmcage: GIANT_SPAWNER
 giantmobcage: GIANT_SPAWNER
@@ -8059,23 +8435,35 @@ gildblstone: GILDED_BLACKSTONE
 gildblstoneb: GILDED_BLACKSTONE
 gildblstonebl: GILDED_BLACKSTONE
 gildblstoneblock: GILDED_BLACKSTONE
+gilded blackstone: GILDED_BLACKSTONE
 gildedblackstone: GILDED_BLACKSTONE
 gildedblackstoneb: GILDED_BLACKSTONE
 gildedblackstonebl: GILDED_BLACKSTONE
 gildedblackstoneblock: GILDED_BLACKSTONE
 gingot: GOLD_INGOT
+glass: GLASS
+glass bottle: GLASS_BOTTLE
+glass pane: GLASS_PANE
 glassbottle: GLASS_BOTTLE
 glasspane: GLASS_PANE
 gleggings: GOLDEN_LEGGINGS
 glegs: GOLDEN_LEGGINGS
+glistering melon slice: GLISTERING_MELON_SLICE
 glisteringmelonslice: GLISTERING_MELON_SLICE
+globe banner pattern: GLOBE_BANNER_PATTERN
 globebannerpattern: GLOBE_BANNER_PATTERN
+glowstone: GLOWSTONE
+glowstone dust: GLOWSTONE_DUST
 glowstonedust: GLOWSTONE_DUST
 gmutton: COOKED_MUTTON
 go: GOLD_ORE
 gocd: MUSIC_DISC_13
 godisc: MUSIC_DISC_13
 godisk: MUSIC_DISC_13
+gold block: GOLD_BLOCK
+gold ingot: GOLD_INGOT
+gold nugget: GOLD_NUGGET
+gold ore: GOLD_ORE
 goldarmor: GOLDEN_HORSE_ARMOR
 goldaxe: GOLDEN_AXE
 goldbar: GOLD_INGOT
@@ -8086,6 +8474,18 @@ goldchestplate: GOLDEN_CHESTPLATE
 goldcoif: GOLDEN_HELMET
 golddisc: MUSIC_DISC_13
 golddisk: MUSIC_DISC_13
+golden apple: GOLDEN_APPLE
+golden axe: GOLDEN_AXE
+golden boots: GOLDEN_BOOTS
+golden carrot: GOLDEN_CARROT
+golden chestplate: GOLDEN_CHESTPLATE
+golden helmet: GOLDEN_HELMET
+golden hoe: GOLDEN_HOE
+golden horse armor: GOLDEN_HORSE_ARMOR
+golden leggings: GOLDEN_LEGGINGS
+golden pickaxe: GOLDEN_PICKAXE
+golden shovel: GOLDEN_SHOVEL
+golden sword: GOLDEN_SWORD
 goldenapple: GOLDEN_APPLE
 goldenaxe: GOLDEN_AXE
 goldenboots: GOLDEN_BOOTS
@@ -8173,6 +8573,10 @@ graglazedterracotta: GRAY_GLAZED_TERRACOTTA
 gragpane: GRAY_STAINED_GLASS_PANE
 gragtcotta: GRAY_GLAZED_TERRACOTTA
 gragterra: GRAY_GLAZED_TERRACOTTA
+granite: GRANITE
+granite slab: GRANITE_SLAB
+granite stairs: GRANITE_STAIRS
+granite wall: GRANITE_WALL
 graniteb: GRANITE
 granitebl: GRANITE
 graniteblock: GRANITE
@@ -8187,6 +8591,9 @@ grasclay: GRAY_TERRACOTTA
 grasglass: GRAY_STAINED_GLASS
 grasglasspane: GRAY_STAINED_GLASS_PANE
 grashulkerbox: GRAY_SHULKER_BOX
+grass: GRASS
+grass block: GRASS_BLOCK
+grass path: GRASS_PATH
 grassblock: GRASS_BLOCK
 grasspath: GRASS_PATH
 grastainedclay: GRAY_TERRACOTTA
@@ -8196,7 +8603,20 @@ gratcota: GRAY_TERRACOTTA
 graterra: GRAY_TERRACOTTA
 graterracota: GRAY_TERRACOTTA
 graterracotta: GRAY_TERRACOTTA
+gravel: GRAVEL
 grawool: GRAY_WOOL
+gray banner: GRAY_BANNER
+gray bed: GRAY_BED
+gray carpet: GRAY_CARPET
+gray concrete: GRAY_CONCRETE
+gray concrete powder: GRAY_CONCRETE_POWDER
+gray dye: GRAY_DYE
+gray glazed terracotta: GRAY_GLAZED_TERRACOTTA
+gray shulker box: GRAY_SHULKER_BOX
+gray stained glass: GRAY_STAINED_GLASS
+gray stained glass pane: GRAY_STAINED_GLASS_PANE
+gray terracotta: GRAY_TERRACOTTA
+gray wool: GRAY_WOOL
 graybanner: GRAY_BANNER
 graybed: GRAY_BED
 graycarpet: GRAY_CARPET
@@ -8252,6 +8672,18 @@ grecotton: GREEN_WOOL
 grecp: GREEN_CONCRETE_POWDER
 grecpowder: GREEN_CONCRETE_POWDER
 gredye: GREEN_DYE
+green banner: GREEN_BANNER
+green bed: GREEN_BED
+green carpet: GREEN_CARPET
+green concrete: GREEN_CONCRETE
+green concrete powder: GREEN_CONCRETE_POWDER
+green dye: GREEN_DYE
+green glazed terracotta: GREEN_GLAZED_TERRACOTTA
+green shulker box: GREEN_SHULKER_BOX
+green stained glass: GREEN_STAINED_GLASS
+green stained glass pane: GREEN_STAINED_GLASS_PANE
+green terracotta: GREEN_TERRACOTTA
+green wool: GREEN_WOOL
 greenbanner: GREEN_BANNER
 greenbed: GREEN_BED
 greencarpet: GREEN_CARPET
@@ -8394,6 +8826,7 @@ grillsalmonfish: COOKED_SALMON
 grillsfish: COOKED_SALMON
 grillsheepmeat: COOKED_MUTTON
 grillsteak: COOKED_BEEF
+grindstone: GRINDSTONE
 grmcd: MUSIC_DISC_CAT
 grmdisc: MUSIC_DISC_CAT
 grmdisk: MUSIC_DISC_CAT
@@ -8429,6 +8862,8 @@ gsword: GOLDEN_SWORD
 gtunic: GOLDEN_CHESTPLATE
 guardcage: GUARDIAN_SPAWNER
 guardegg: GUARDIAN_SPAWN_EGG
+guardian spawn egg: GUARDIAN_SPAWN_EGG
+guardian spawner: SPAWNER
 guardiancage: GUARDIAN_SPAWNER
 guardianegg: GUARDIAN_SPAWN_EGG
 guardianmcage: GUARDIAN_SPAWNER
@@ -8451,6 +8886,7 @@ guardsegg: GUARDIAN_SPAWN_EGG
 guardspawn: GUARDIAN_SPAWN_EGG
 guardspawnegg: GUARDIAN_SPAWN_EGG
 guardspawner: GUARDIAN_SPAWNER
+gunpowder: GUNPOWDER
 haoepoiont: HEALING_LINGERING_POTION
 haoepoiontii: STRONG_HEALING_LINGERING_POTION
 haoepoiontlevelii: STRONG_HEALING_LINGERING_POTION
@@ -8485,6 +8921,10 @@ hareskin: RABBIT_HIDE
 haresoup: RABBIT_STEW
 harestew: RABBIT_STEW
 haretoasted: COOKED_RABBIT
+harming lingering potion: LINGERING_POTION
+harming potion: POTION
+harming splash potion: SPLASH_POTION
+harming tipped arrow: TIPPED_ARROW
 harmingaoepoiont: HARMING_LINGERING_POTION
 harmingaoepoiontii: STRONG_HARMING_LINGERING_POTION
 harmingaoepoiontlevelii: STRONG_HARMING_LINGERING_POTION
@@ -8567,6 +9007,7 @@ hasenpfefferskin: RABBIT_HIDE
 hasenpfeffersoup: RABBIT_STEW
 hasenpfefferstew: RABBIT_STEW
 hasenpfeffertoasted: COOKED_RABBIT
+hay block: HAY_BLOCK
 hayblock: HAY_BLOCK
 hcart: HOPPER_MINECART
 hcloudpot: HEALING_LINGERING_POTION
@@ -8619,6 +9060,10 @@ healiisplashpotion: STRONG_HEALING_SPLASH_POTION
 healiitarr: STRONG_HEALING_TIPPED_ARROW
 healiitarrow: STRONG_HEALING_TIPPED_ARROW
 healiitippedarrow: STRONG_HEALING_TIPPED_ARROW
+healing lingering potion: LINGERING_POTION
+healing potion: POTION
+healing splash potion: SPLASH_POTION
+healing tipped arrow: TIPPED_ARROW
 healingaoepoiont: HEALING_LINGERING_POTION
 healingaoepoiontii: STRONG_HEALING_LINGERING_POTION
 healingaoepoiontlevelii: STRONG_HEALING_LINGERING_POTION
@@ -8704,7 +9149,9 @@ healstrongtippedarrow: STRONG_HEALING_TIPPED_ARROW
 healtarr: HEALING_TIPPED_ARROW
 healtarrow: HEALING_TIPPED_ARROW
 healtippedarrow: HEALING_TIPPED_ARROW
+heart of the sea: HEART_OF_THE_SEA
 heartofthesea: HEART_OF_THE_SEA
+heavy weighted pressure plate: HEAVY_WEIGHTED_PRESSURE_PLATE
 heavyweightedpressureplate: HEAVY_WEIGHTED_PRESSURE_PLATE
 hellaxe: NETHERITE_AXE
 hellbar: NETHERITE_INGOT
@@ -8759,6 +9206,8 @@ hlingerpotstrong: STRONG_HEALING_LINGERING_POTION
 hmc: HOPPER_MINECART
 hmcart: HOPPER_MINECART
 hminecart: HOPPER_MINECART
+hoglin spawn egg: HOGLIN_SPAWN_EGG
+hoglin spawner: SPAWNER
 hoglincage: HOGLIN_SPAWNER
 hoglinegg: HOGLIN_SPAWN_EGG
 hoglinmcage: HOGLIN_SPAWNER
@@ -8771,20 +9220,31 @@ hoglinsegg: HOGLIN_SPAWN_EGG
 hoglinspawn: HOGLIN_SPAWN_EGG
 hoglinspawnegg: HOGLIN_SPAWN_EGG
 hoglinspawner: HOGLIN_SPAWNER
+honey block: HONEY_BLOCK
+honey bottle: HONEY_BOTTLE
 honeyblock: HONEY_BLOCK
 honeybottle: HONEY_BOTTLE
+honeycomb: HONEYCOMB
+honeycomb block: HONEYCOMB_BLOCK
 honeycombblock: HONEYCOMB_BLOCK
 hopcart: HOPPER_MINECART
 hopmc: HOPPER_MINECART
 hopmcart: HOPPER_MINECART
 hopminecart: HOPPER_MINECART
+hopper: HOPPER
+hopper minecart: HOPPER_MINECART
 hoppercart: HOPPER_MINECART
 hoppermc: HOPPER_MINECART
 hoppermcart: HOPPER_MINECART
 hopperminecart: HOPPER_MINECART
+horn coral: HORN_CORAL
+horn coral block: HORN_CORAL_BLOCK
+horn coral fan: HORN_CORAL_FAN
 horncoral: HORN_CORAL
 horncoralblock: HORN_CORAL_BLOCK
 horncoralfan: HORN_CORAL_FAN
+horse spawn egg: HORSE_SPAWN_EGG
+horse spawner: SPAWNER
 horsecage: HORSE_SPAWNER
 horseegg: HORSE_SPAWN_EGG
 horsemcage: HORSE_SPAWNER
@@ -8815,6 +9275,8 @@ hstrongtippedarrow: STRONG_HEALING_TIPPED_ARROW
 htarr: HEALING_TIPPED_ARROW
 htarrow: HEALING_TIPPED_ARROW
 htippedarrow: HEALING_TIPPED_ARROW
+husk spawn egg: HUSK_SPAWN_EGG
+husk spawner: SPAWNER
 huskcage: HUSK_SPAWNER
 huskegg: HUSK_SPAWN_EGG
 huskmcage: HUSK_SPAWNER
@@ -8832,6 +9294,7 @@ iaxe: IRON_AXE
 ibar: IRON_INGOT
 iblock: IRON_BLOCK
 iboots: IRON_BOOTS
+ice: ICE
 ichestplate: IRON_CHESTPLATE
 icoif: IRON_HELMET
 idoor: IRON_DOOR
@@ -8861,6 +9324,7 @@ iingot: IRON_INGOT
 iiron: IRON_INGOT
 ileggings: IRON_LEGGINGS
 ilegs: IRON_LEGGINGS
+illusioner spawner: SPAWNER
 illusionercage: ILLUSIONER_SPAWNER
 illusionermcage: ILLUSIONER_SPAWNER
 illusionermobcage: ILLUSIONER_SPAWNER
@@ -8904,6 +9368,12 @@ infestcstone: INFESTED_COBBLESTONE
 infestcstoneb: INFESTED_COBBLESTONE
 infestcstonebl: INFESTED_COBBLESTONE
 infestcstoneblock: INFESTED_COBBLESTONE
+infested chiseled stone bricks: INFESTED_CHISELED_STONE_BRICKS
+infested cobblestone: INFESTED_COBBLESTONE
+infested cracked stone bricks: INFESTED_CRACKED_STONE_BRICKS
+infested mossy stone bricks: INFESTED_MOSSY_STONE_BRICKS
+infested stone: INFESTED_STONE
+infested stone bricks: INFESTED_STONE_BRICKS
 infestedchiseledst: INFESTED_CHISELED_STONE_BRICKS
 infestedchiseledstone: INFESTED_CHISELED_STONE_BRICKS
 infestedchiseledstonebricks: INFESTED_CHISELED_STONE_BRICKS
@@ -8988,6 +9458,7 @@ ingotnetherite: NETHERITE_INGOT
 ingots: IRON_INGOT
 ingotst: IRON_INGOT
 ingotsteel: IRON_INGOT
+ink sac: INK_SAC
 inksac: INK_SAC
 instantdamageaoepoiont: HARMING_LINGERING_POTION
 instantdamageaoepoiontii: STRONG_HARMING_LINGERING_POTION
@@ -9235,6 +9706,10 @@ invisextendedtarr: LONG_INVISIBILITY_TIPPED_ARROW
 invisextendedtarrow: LONG_INVISIBILITY_TIPPED_ARROW
 invisextendedtippedarrow: LONG_INVISIBILITY_TIPPED_ARROW
 invisextippedarrow: LONG_INVISIBILITY_TIPPED_ARROW
+invisibility lingering potion: LINGERING_POTION
+invisibility potion: POTION
+invisibility splash potion: SPLASH_POTION
+invisibility tipped arrow: TIPPED_ARROW
 invisibility2pot: LONG_INVISIBILITY_POTION
 invisibility2potion: LONG_INVISIBILITY_POTION
 invisibility2splashpot: LONG_INVISIBILITY_SPLASH_POTION
@@ -9476,6 +9951,24 @@ ipick: IRON_PICKAXE
 ipickaxe: IRON_PICKAXE
 iplate: IRON_CHESTPLATE
 iplatebody: IRON_CHESTPLATE
+iron axe: IRON_AXE
+iron bars: IRON_BARS
+iron block: IRON_BLOCK
+iron boots: IRON_BOOTS
+iron chestplate: IRON_CHESTPLATE
+iron door: IRON_DOOR
+iron golem spawner: SPAWNER
+iron helmet: IRON_HELMET
+iron hoe: IRON_HOE
+iron horse armor: IRON_HORSE_ARMOR
+iron ingot: IRON_INGOT
+iron leggings: IRON_LEGGINGS
+iron nugget: IRON_NUGGET
+iron ore: IRON_ORE
+iron pickaxe: IRON_PICKAXE
+iron shovel: IRON_SHOVEL
+iron sword: IRON_SWORD
+iron trapdoor: IRON_TRAPDOOR
 iron_golemcage: IRON_GOLEM_SPAWNER
 iron_golemmcage: IRON_GOLEM_SPAWNER
 iron_golemmobcage: IRON_GOLEM_SPAWNER
@@ -9533,10 +10026,12 @@ ist: IRON_INGOT
 isteel: IRON_INGOT
 isword: IRON_SWORD
 itdoor: IRON_TRAPDOOR
+item frame: ITEM_FRAME
 itemframe: ITEM_FRAME
 itrapd: IRON_TRAPDOOR
 itrapdoor: IRON_TRAPDOOR
 itunic: IRON_CHESTPLATE
+jack o lantern: JACK_O_LANTERN
 jackolantern: JACK_O_LANTERN
 jbarelog: STRIPPED_JUNGLE_LOG
 jbarewood: STRIPPED_JUNGLE_WOOD
@@ -9551,6 +10046,7 @@ jfencegate: JUNGLE_FENCE_GATE
 jgate: JUNGLE_FENCE_GATE
 jhalfblock: JUNGLE_SLAB
 jhatch: JUNGLE_TRAPDOOR
+jigsaw: JIGSAW
 jleaf: JUNGLE_LEAVES
 jleave: JUNGLE_LEAVES
 jleaves: JUNGLE_LEAVES
@@ -9590,6 +10086,7 @@ jtrunkleaf: JUNGLE_LEAVES
 jtrunkleave: JUNGLE_LEAVES
 jtrunkleaves: JUNGLE_LEAVES
 jtrunksapling: JUNGLE_SAPLING
+jukebox: JUKEBOX
 jump2pot: LONG_LEAPING_POTION
 jump2potion: LONG_LEAPING_POTION
 jump2splashpot: LONG_LEAPING_SPLASH_POTION
@@ -9725,6 +10222,21 @@ jumpstrongtippedarrow: STRONG_LEAPING_TIPPED_ARROW
 jumptarr: LEAPING_TIPPED_ARROW
 jumptarrow: LEAPING_TIPPED_ARROW
 jumptippedarrow: LEAPING_TIPPED_ARROW
+jungle boat: JUNGLE_BOAT
+jungle button: JUNGLE_BUTTON
+jungle door: JUNGLE_DOOR
+jungle fence: JUNGLE_FENCE
+jungle fence gate: JUNGLE_FENCE_GATE
+jungle leaves: JUNGLE_LEAVES
+jungle log: JUNGLE_LOG
+jungle planks: JUNGLE_PLANKS
+jungle pressure plate: JUNGLE_PRESSURE_PLATE
+jungle sapling: JUNGLE_SAPLING
+jungle sign: JUNGLE_SIGN
+jungle slab: JUNGLE_SLAB
+jungle stairs: JUNGLE_STAIRS
+jungle trapdoor: JUNGLE_TRAPDOOR
+jungle wood: JUNGLE_WOOD
 junglebarelog: STRIPPED_JUNGLE_LOG
 junglebarewood: STRIPPED_JUNGLE_WOOD
 jungleboat: JUNGLE_BOAT
@@ -9826,7 +10338,14 @@ jwslab: JUNGLE_SLAB
 jwstair: JUNGLE_STAIRS
 jwstairs: JUNGLE_STAIRS
 jwstep: JUNGLE_SLAB
+kelp: KELP
+knowledge book: KNOWLEDGE_BOOK
 knowledgebook: KNOWLEDGE_BOOK
+ladder: LADDER
+lantern: LANTERN
+lapis block: LAPIS_BLOCK
+lapis lazuli: LAPIS_LAZULI
+lapis ore: LAPIS_ORE
 lapisblock: LAPIS_BLOCK
 lapislazuli: LAPIS_LAZULI
 lapislazuliblock: LAPIS_BLOCK
@@ -9834,8 +10353,10 @@ lapislazulio: LAPIS_ORE
 lapislazuliore: LAPIS_ORE
 lapiso: LAPIS_ORE
 lapisore: LAPIS_ORE
+large fern: LARGE_FERN
 largefern: LARGE_FERN
 larmor: LEATHER_HORSE_ARMOR
+lava bucket: LAVA_BUCKET
 lavabucket: LAVA_BUCKET
 lavacubecage: MAGMA_CUBE_SPAWNER
 lavacubeegg: MAGMA_CUBE_SPAWN_EGG
@@ -9994,6 +10515,7 @@ ldoort: BIRCH_TRAPDOOR
 ldoortrap: BIRCH_TRAPDOOR
 ldtrap: BIRCH_TRAPDOOR
 ldye: LIME_DYE
+lead: LEAD
 leafa: ACACIA_LEAVES
 leafac: ACACIA_LEAVES
 leafacacia: ACACIA_LEAVES
@@ -10110,6 +10632,10 @@ leapiisplashpotion: STRONG_LEAPING_SPLASH_POTION
 leapiitarr: STRONG_LEAPING_TIPPED_ARROW
 leapiitarrow: STRONG_LEAPING_TIPPED_ARROW
 leapiitippedarrow: STRONG_LEAPING_TIPPED_ARROW
+leaping lingering potion: LINGERING_POTION
+leaping potion: POTION
+leaping splash potion: SPLASH_POTION
+leaping tipped arrow: TIPPED_ARROW
 leaping2pot: LONG_LEAPING_POTION
 leaping2potion: LONG_LEAPING_POTION
 leaping2splashpot: LONG_LEAPING_SPLASH_POTION
@@ -10289,6 +10815,12 @@ leapstrongtippedarrow: STRONG_LEAPING_TIPPED_ARROW
 leaptarr: LEAPING_TIPPED_ARROW
 leaptarrow: LEAPING_TIPPED_ARROW
 leaptippedarrow: LEAPING_TIPPED_ARROW
+leather: LEATHER
+leather boots: LEATHER_BOOTS
+leather chestplate: LEATHER_CHESTPLATE
+leather helmet: LEATHER_HELMET
+leather horse armor: LEATHER_HORSE_ARMOR
+leather leggings: LEATHER_LEGGINGS
 leatherarmor: LEATHER_HORSE_ARMOR
 leatherboots: LEATHER_BOOTS
 leatherchestplate: LEATHER_CHESTPLATE
@@ -10331,6 +10863,8 @@ leavess: SPRUCE_LEAVES
 leavesspruce: SPRUCE_LEAVES
 leavesw: BIRCH_LEAVES
 leaveswhite: BIRCH_LEAVES
+lectern: LECTERN
+lever: LEVER
 lfence: BIRCH_FENCE
 lfencegate: BIRCH_FENCE_GATE
 lfloor: LIME_CARPET
@@ -10650,6 +11184,31 @@ lifestrongtippedarrow: STRONG_HEALING_TIPPED_ARROW
 lifetarr: HEALING_TIPPED_ARROW
 lifetarrow: HEALING_TIPPED_ARROW
 lifetippedarrow: HEALING_TIPPED_ARROW
+light blue banner: LIGHT_BLUE_BANNER
+light blue bed: LIGHT_BLUE_BED
+light blue carpet: LIGHT_BLUE_CARPET
+light blue concrete: LIGHT_BLUE_CONCRETE
+light blue concrete powder: LIGHT_BLUE_CONCRETE_POWDER
+light blue dye: LIGHT_BLUE_DYE
+light blue glazed terracotta: LIGHT_BLUE_GLAZED_TERRACOTTA
+light blue shulker box: LIGHT_BLUE_SHULKER_BOX
+light blue stained glass: LIGHT_BLUE_STAINED_GLASS
+light blue stained glass pane: LIGHT_BLUE_STAINED_GLASS_PANE
+light blue terracotta: LIGHT_BLUE_TERRACOTTA
+light blue wool: LIGHT_BLUE_WOOL
+light gray banner: LIGHT_GRAY_BANNER
+light gray bed: LIGHT_GRAY_BED
+light gray carpet: LIGHT_GRAY_CARPET
+light gray concrete: LIGHT_GRAY_CONCRETE
+light gray concrete powder: LIGHT_GRAY_CONCRETE_POWDER
+light gray dye: LIGHT_GRAY_DYE
+light gray glazed terracotta: LIGHT_GRAY_GLAZED_TERRACOTTA
+light gray shulker box: LIGHT_GRAY_SHULKER_BOX
+light gray stained glass: LIGHT_GRAY_STAINED_GLASS
+light gray stained glass pane: LIGHT_GRAY_STAINED_GLASS_PANE
+light gray terracotta: LIGHT_GRAY_TERRACOTTA
+light gray wool: LIGHT_GRAY_WOOL
+light weighted pressure plate: LIGHT_WEIGHTED_PRESSURE_PLATE
 light_bluebanner: LIGHT_BLUE_BANNER
 light_bluebed: LIGHT_BLUE_BED
 light_bluecarpet: LIGHT_BLUE_CARPET
@@ -11074,8 +11633,23 @@ lightwslab: BIRCH_SLAB
 lightwstair: BIRCH_STAIRS
 lightwstairs: BIRCH_STAIRS
 lightwstep: BIRCH_SLAB
+lilac: LILAC
+lily of the valley: LILY_OF_THE_VALLEY
+lily pad: LILY_PAD
 lilyofthevalley: LILY_OF_THE_VALLEY
 lilypad: LILY_PAD
+lime banner: LIME_BANNER
+lime bed: LIME_BED
+lime carpet: LIME_CARPET
+lime concrete: LIME_CONCRETE
+lime concrete powder: LIME_CONCRETE_POWDER
+lime dye: LIME_DYE
+lime glazed terracotta: LIME_GLAZED_TERRACOTTA
+lime shulker box: LIME_SHULKER_BOX
+lime stained glass: LIME_STAINED_GLASS
+lime stained glass pane: LIME_STAINED_GLASS_PANE
+lime terracotta: LIME_TERRACOTTA
+lime wool: LIME_WOOL
 limebanner: LIME_BANNER
 limebed: LIME_BED
 limecarpet: LIME_CARPET
@@ -11112,6 +11686,7 @@ limeterra: LIME_TERRACOTTA
 limeterracota: LIME_TERRACOTTA
 limeterracotta: LIME_TERRACOTTA
 limewool: LIME_WOOL
+lingering potion: LINGERING_POTION
 lingeringpotion: LINGERING_POTION
 lingerpotacid: POISON_LINGERING_POTION
 lingerpotacid2: LONG_POISON_LINGERING_POTION
@@ -11491,6 +12066,8 @@ lingerpotweex: LONG_WEAKNESS_LINGERING_POTION
 lingerpotweextended: LONG_WEAKNESS_LINGERING_POTION
 lingerpotwelevel2: LONG_WEAKNESS_LINGERING_POTION
 lingerpotwelong: LONG_WEAKNESS_LINGERING_POTION
+llama spawn egg: LLAMA_SPAWN_EGG
+llama spawner: SPAWNER
 llamacage: LLAMA_SPAWNER
 llamaegg: LLAMA_SPAWN_EGG
 llamamcage: LLAMA_SPAWNER
@@ -11515,6 +12092,7 @@ llogleave: BIRCH_LEAVES
 llogleaves: BIRCH_LEAVES
 llogsapling: BIRCH_SAPLING
 lo: LAPIS_ORE
+lodestone: LODESTONE
 loga: ACACIA_LOG
 logac: ACACIA_LOG
 logacacia: ACACIA_LOG
@@ -11575,6 +12153,59 @@ logwarpstripped: STRIPPED_WARPED_STEM
 logwhite: BIRCH_LOG
 logwhitestripped: STRIPPED_BIRCH_LOG
 logwstripped: STRIPPED_BIRCH_LOG
+long fire resistance lingering potion: LINGERING_POTION
+long fire resistance potion: POTION
+long fire resistance splash potion: SPLASH_POTION
+long fire resistance tipped arrow: TIPPED_ARROW
+long invisibility lingering potion: LINGERING_POTION
+long invisibility potion: POTION
+long invisibility splash potion: SPLASH_POTION
+long invisibility tipped arrow: TIPPED_ARROW
+long leaping lingering potion: LINGERING_POTION
+long leaping potion: POTION
+long leaping splash potion: SPLASH_POTION
+long leaping tipped arrow: TIPPED_ARROW
+long night vision lingering potion: LINGERING_POTION
+long night vision potion: POTION
+long night vision splash potion: SPLASH_POTION
+long night vision tipped arrow: TIPPED_ARROW
+long poison lingering potion: LINGERING_POTION
+long poison potion: POTION
+long poison splash potion: SPLASH_POTION
+long poison tipped arrow: TIPPED_ARROW
+long regeneration lingering potion: LINGERING_POTION
+long regeneration potion: POTION
+long regeneration splash potion: SPLASH_POTION
+long regeneration tipped arrow: TIPPED_ARROW
+long slow falling lingering potion: LINGERING_POTION
+long slow falling potion: POTION
+long slow falling splash potion: SPLASH_POTION
+long slow falling tipped arrow: TIPPED_ARROW
+long slowness lingering potion: LINGERING_POTION
+long slowness potion: POTION
+long slowness splash potion: SPLASH_POTION
+long slowness tipped arrow: TIPPED_ARROW
+long strength lingering potion: LINGERING_POTION
+long strength potion: POTION
+long strength splash potion: SPLASH_POTION
+long strength tipped arrow: TIPPED_ARROW
+long swiftness lingering potion: LINGERING_POTION
+long swiftness potion: POTION
+long swiftness splash potion: SPLASH_POTION
+long swiftness tipped arrow: TIPPED_ARROW
+long turtle master lingering potion: LINGERING_POTION
+long turtle master potion: POTION
+long turtle master splash potion: SPLASH_POTION
+long turtle master tipped arrow: TIPPED_ARROW
+long water breathing lingering potion: LINGERING_POTION
+long water breathing potion: POTION
+long water breathing splash potion: SPLASH_POTION
+long water breathing tipped arrow: TIPPED_ARROW
+long weakness lingering potion: LINGERING_POTION
+long weakness potion: POTION
+long weakness splash potion: SPLASH_POTION
+long weakness tipped arrow: TIPPED_ARROW
+loom: LOOM
 lore: LAPIS_ORE
 lpants: LEATHER_LEGGINGS
 lplank: BIRCH_PLANKS
@@ -11623,6 +12254,10 @@ ltrunkleave: BIRCH_LEAVES
 ltrunkleaves: BIRCH_LEAVES
 ltrunksapling: BIRCH_SAPLING
 ltunic: LEATHER_CHESTPLATE
+luck lingering potion: LINGERING_POTION
+luck potion: POTION
+luck splash potion: SPLASH_POTION
+luck tipped arrow: TIPPED_ARROW
 luckaoepoiont: LUCK_LINGERING_POTION
 luckaoepot: LUCK_LINGERING_POTION
 luckareapot: LUCK_LINGERING_POTION
@@ -11677,6 +12312,18 @@ lwslab: BIRCH_SLAB
 lwstair: BIRCH_STAIRS
 lwstairs: BIRCH_STAIRS
 lwstep: BIRCH_SLAB
+magenta banner: MAGENTA_BANNER
+magenta bed: MAGENTA_BED
+magenta carpet: MAGENTA_CARPET
+magenta concrete: MAGENTA_CONCRETE
+magenta concrete powder: MAGENTA_CONCRETE_POWDER
+magenta dye: MAGENTA_DYE
+magenta glazed terracotta: MAGENTA_GLAZED_TERRACOTTA
+magenta shulker box: MAGENTA_SHULKER_BOX
+magenta stained glass: MAGENTA_STAINED_GLASS
+magenta stained glass pane: MAGENTA_STAINED_GLASS_PANE
+magenta terracotta: MAGENTA_TERRACOTTA
+magenta wool: MAGENTA_WOOL
 magentabanner: MAGENTA_BANNER
 magentabed: MAGENTA_BED
 magentacarpet: MAGENTA_CARPET
@@ -11713,6 +12360,10 @@ magentaterra: MAGENTA_TERRACOTTA
 magentaterracota: MAGENTA_TERRACOTTA
 magentaterracotta: MAGENTA_TERRACOTTA
 magentawool: MAGENTA_WOOL
+magma block: MAGMA_BLOCK
+magma cream: MAGMA_CREAM
+magma cube spawn egg: MAGMA_CUBE_SPAWN_EGG
+magma cube spawner: SPAWNER
 magma_cubecage: MAGMA_CUBE_SPAWNER
 magma_cubeegg: MAGMA_CUBE_SPAWN_EGG
 magma_cubemcage: MAGMA_CUBE_SPAWNER
@@ -11752,6 +12403,7 @@ mallmusicdisc: MUSIC_DISC_MALL
 mallmusicdisk: MUSIC_DISC_MALL
 mallmusicrecord: MUSIC_DISC_MALL
 mallrecord: MUSIC_DISC_MALL
+map: MAP
 mbanner: MAGENTA_BANNER
 mbed: MAGENTA_BED
 mc: MINECART
@@ -11964,6 +12616,9 @@ mellohimusicdisc: MUSIC_DISC_MELLOHI
 mellohimusicdisk: MUSIC_DISC_MELLOHI
 mellohimusicrecord: MUSIC_DISC_MELLOHI
 mellohirecord: MUSIC_DISC_MELLOHI
+melon: MELON
+melon seeds: MELON_SEEDS
+melon slice: MELON_SLICE
 melonseeds: MELON_SEEDS
 melonslice: MELON_SLICE
 memossst: INFESTED_MOSSY_STONE_BRICKS
@@ -11997,7 +12652,9 @@ mglazedterracotta: MAGENTA_GLAZED_TERRACOTTA
 mgpane: MAGENTA_STAINED_GLASS_PANE
 mgtcotta: MAGENTA_GLAZED_TERRACOTTA
 mgterra: MAGENTA_GLAZED_TERRACOTTA
+milk bucket: MILK_BUCKET
 milkbucket: MILK_BUCKET
+minecart: MINECART
 minecartrail: RAIL
 minecartrails: RAIL
 minecarttrack: RAIL
@@ -12987,6 +13644,7 @@ mmest: INFESTED_MOSSY_STONE_BRICKS
 mmestone: INFESTED_MOSSY_STONE_BRICKS
 mmonstereggst: INFESTED_MOSSY_STONE_BRICKS
 mmonstereggstone: INFESTED_MOSSY_STONE_BRICKS
+mojang banner pattern: MOJANG_BANNER_PATTERN
 mojangbannerpattern: MOJANG_BANNER_PATTERN
 monstereggchiseledst: INFESTED_CHISELED_STONE_BRICKS
 monstereggchiseledstone: INFESTED_CHISELED_STONE_BRICKS
@@ -13039,6 +13697,7 @@ monstereggstoneblock: INFESTED_STONE
 monstereggstonebr: INFESTED_STONE_BRICKS
 monstereggstonebrick: INFESTED_STONE_BRICKS
 monstereggstonebricks: INFESTED_STONE_BRICKS
+mooshroom spawn egg: MOOSHROOM_SPAWN_EGG
 mooshroomcage: MUSHROOM_COW_SPAWNER
 mooshroomegg: MOOSHROOM_SPAWN_EGG
 mooshroommcage: MUSHROOM_COW_SPAWNER
@@ -13128,6 +13787,14 @@ mossststep: MOSSY_STONE_BRICK_SLAB
 mossstwall: MOSSY_STONE_BRICK_WALL
 mosstrapst: INFESTED_MOSSY_STONE_BRICKS
 mosstrapstone: INFESTED_MOSSY_STONE_BRICKS
+mossy cobblestone: MOSSY_COBBLESTONE
+mossy cobblestone slab: MOSSY_COBBLESTONE_SLAB
+mossy cobblestone stairs: MOSSY_COBBLESTONE_STAIRS
+mossy cobblestone wall: MOSSY_COBBLESTONE_WALL
+mossy stone brick slab: MOSSY_STONE_BRICK_SLAB
+mossy stone brick stairs: MOSSY_STONE_BRICK_STAIRS
+mossy stone brick wall: MOSSY_STONE_BRICK_WALL
+mossy stone bricks: MOSSY_STONE_BRICKS
 mossycobble: MOSSY_COBBLESTONE
 mossycobbleb: MOSSY_COBBLESTONE
 mossycobblebl: MOSSY_COBBLESTONE
@@ -13255,6 +13922,8 @@ mterracota: MAGENTA_TERRACOTTA
 mterracotta: MAGENTA_TERRACOTTA
 mtrapst: INFESTED_MOSSY_STONE_BRICKS
 mtrapstone: INFESTED_MOSSY_STONE_BRICKS
+mule spawn egg: MULE_SPAWN_EGG
+mule spawner: SPAWNER
 mulecage: MULE_SPAWNER
 muleegg: MULE_SPAWN_EGG
 mulemcage: MULE_SPAWNER
@@ -13267,6 +13936,10 @@ mulesegg: MULE_SPAWN_EGG
 mulespawn: MULE_SPAWN_EGG
 mulespawnegg: MULE_SPAWN_EGG
 mulespawner: MULE_SPAWNER
+mundane lingering potion: LINGERING_POTION
+mundane potion: POTION
+mundane splash potion: SPLASH_POTION
+mundane tipped arrow: TIPPED_ARROW
 mundaneaoepoiont: MUNDANE_LINGERING_POTION
 mundaneaoepot: MUNDANE_LINGERING_POTION
 mundaneareapot: MUNDANE_LINGERING_POTION
@@ -13282,6 +13955,9 @@ mundanesplashpotion: MUNDANE_SPLASH_POTION
 mundanetarr: MUNDANE_TIPPED_ARROW
 mundanetarrow: MUNDANE_TIPPED_ARROW
 mundanetippedarrow: MUNDANE_TIPPED_ARROW
+mushroom cow spawner: SPAWNER
+mushroom stem: MUSHROOM_STEM
+mushroom stew: MUSHROOM_STEW
 mushroom_cowcage: MUSHROOM_COW_SPAWNER
 mushroom_cowegg: MOOSHROOM_SPAWN_EGG
 mushroom_cowmcage: MUSHROOM_COW_SPAWNER
@@ -13320,6 +13996,19 @@ mushroomspawnegg: MOOSHROOM_SPAWN_EGG
 mushroomspawner: MUSHROOM_COW_SPAWNER
 mushroomstem: MUSHROOM_STEM
 mushroomstew: MUSHROOM_STEW
+music disc 11: MUSIC_DISC_11
+music disc 13: MUSIC_DISC_13
+music disc blocks: MUSIC_DISC_BLOCKS
+music disc cat: MUSIC_DISC_CAT
+music disc chirp: MUSIC_DISC_CHIRP
+music disc far: MUSIC_DISC_FAR
+music disc mall: MUSIC_DISC_MALL
+music disc mellohi: MUSIC_DISC_MELLOHI
+music disc pigstep: MUSIC_DISC_PIGSTEP
+music disc stal: MUSIC_DISC_STAL
+music disc strad: MUSIC_DISC_STRAD
+music disc wait: MUSIC_DISC_WAIT
+music disc ward: MUSIC_DISC_WARD
 musiccd1: MUSIC_DISC_13
 musiccd10: MUSIC_DISC_WARD
 musiccd11: MUSIC_DISC_11
@@ -13384,6 +14073,7 @@ musicrecord6: MUSIC_DISC_MALL
 musicrecord7: MUSIC_DISC_MELLOHI
 musicrecord8: MUSIC_DISC_STAL
 musicrecord9: MUSIC_DISC_STRAD
+mutton: MUTTON
 muttonbbq: COOKED_MUTTON
 muttonc: COOKED_MUTTON
 muttoncook: COOKED_MUTTON
@@ -13396,7 +14086,10 @@ muttonroast: COOKED_MUTTON
 muttonroasted: COOKED_MUTTON
 muttontoasted: COOKED_MUTTON
 mwool: MAGENTA_WOOL
+mycelium: MYCELIUM
+name tag: NAME_TAG
 nametag: NAME_TAG
+nautilus shell: NAUTILUS_SHELL
 nautilusshell: NAUTILUS_SHELL
 nbr: NETHER_BRICKS
 nbrfence: NETHER_BRICK_FENCE
@@ -13436,6 +14129,18 @@ nethchestplate: NETHERITE_CHESTPLATE
 nethcoif: NETHERITE_HELMET
 nethdisc: MUSIC_DISC_PIGSTEP
 nethdisk: MUSIC_DISC_PIGSTEP
+nether brick: NETHER_BRICK
+nether brick fence: NETHER_BRICK_FENCE
+nether brick slab: NETHER_BRICK_SLAB
+nether brick stairs: NETHER_BRICK_STAIRS
+nether brick wall: NETHER_BRICK_WALL
+nether bricks: NETHER_BRICKS
+nether gold ore: NETHER_GOLD_ORE
+nether quartz ore: NETHER_QUARTZ_ORE
+nether sprouts: NETHER_SPROUTS
+nether star: NETHER_STAR
+nether wart: NETHER_WART
+nether wart block: NETHER_WART_BLOCK
 nether_goldo: NETHER_GOLD_ORE
 nether_goldore: NETHER_GOLD_ORE
 nether_quartzo: NETHER_QUARTZ_ORE
@@ -13472,6 +14177,18 @@ netherhelmet: NETHERITE_HELMET
 netherhoe: NETHERITE_HOE
 netheri: NETHERITE_INGOT
 netheringot: NETHERITE_INGOT
+netherite axe: NETHERITE_AXE
+netherite block: NETHERITE_BLOCK
+netherite boots: NETHERITE_BOOTS
+netherite chestplate: NETHERITE_CHESTPLATE
+netherite helmet: NETHERITE_HELMET
+netherite hoe: NETHERITE_HOE
+netherite ingot: NETHERITE_INGOT
+netherite leggings: NETHERITE_LEGGINGS
+netherite pickaxe: NETHERITE_PICKAXE
+netherite scrap: NETHERITE_SCRAP
+netherite shovel: NETHERITE_SHOVEL
+netherite sword: NETHERITE_SWORD
 netheriteaxe: NETHERITE_AXE
 netheritebar: NETHERITE_INGOT
 netheriteblock: NETHERITE_BLOCK
@@ -13527,6 +14244,7 @@ netherquartzpillar: QUARTZ_PILLAR
 netherquartzstair: QUARTZ_STAIRS
 netherquartzstairs: QUARTZ_STAIRS
 netherquartzstep: QUARTZ_SLAB
+netherrack: NETHERRACK
 netherrecord: MUSIC_DISC_PIGSTEP
 netherscrap: NETHERITE_SCRAP
 nethershirt: NETHERITE_CHESTPLATE
@@ -13573,6 +14291,10 @@ nethtunic: NETHERITE_CHESTPLATE
 nfish: TROPICAL_FISH
 ngo: NETHER_GOLD_ORE
 ngore: NETHER_GOLD_ORE
+night vision lingering potion: LINGERING_POTION
+night vision potion: POTION
+night vision splash potion: SPLASH_POTION
+night vision tipped arrow: TIPPED_ARROW
 nightv2pot: LONG_NIGHT_VISION_POTION
 nightv2potion: LONG_NIGHT_VISION_POTION
 nightv2splashpot: LONG_NIGHT_VISION_SPLASH_POTION
@@ -13753,6 +14475,7 @@ nightvsplashpotion: NIGHT_VISION_SPLASH_POTION
 nightvtarr: NIGHT_VISION_TIPPED_ARROW
 nightvtarrow: NIGHT_VISION_TIPPED_ARROW
 nightvtippedarrow: NIGHT_VISION_TIPPED_ARROW
+note block: NOTE_BLOCK
 noteblock: NOTE_BLOCK
 nq: QUARTZ_BLOCK
 nqb: QUARTZ_BLOCK
@@ -13948,6 +14671,21 @@ nvsplashpotion: NIGHT_VISION_SPLASH_POTION
 nvtarr: NIGHT_VISION_TIPPED_ARROW
 nvtarrow: NIGHT_VISION_TIPPED_ARROW
 nvtippedarrow: NIGHT_VISION_TIPPED_ARROW
+oak boat: OAK_BOAT
+oak button: OAK_BUTTON
+oak door: OAK_DOOR
+oak fence: OAK_FENCE
+oak fence gate: OAK_FENCE_GATE
+oak leaves: OAK_LEAVES
+oak log: OAK_LOG
+oak planks: OAK_PLANKS
+oak pressure plate: OAK_PRESSURE_PLATE
+oak sapling: OAK_SAPLING
+oak sign: OAK_SIGN
+oak slab: OAK_SLAB
+oak stairs: OAK_STAIRS
+oak trapdoor: OAK_TRAPDOOR
+oak wood: OAK_WOOD
 oakbarelog: STRIPPED_OAK_LOG
 oakbarewood: STRIPPED_OAK_WOOD
 oakboat: OAK_BOAT
@@ -14031,10 +14769,14 @@ obarelog: STRIPPED_OAK_LOG
 obarewood: STRIPPED_OAK_WOOD
 obed: ORANGE_BED
 oboat: OAK_BOAT
+observer: OBSERVER
+obsidian: OBSIDIAN
 obutton: OAK_BUTTON
 oc: COAL_ORE
 ocarpet: ORANGE_CARPET
 ocdust: ORANGE_CONCRETE_POWDER
+ocelot spawn egg: OCELOT_SPAWN_EGG
+ocelot spawner: SPAWNER
 ocelotcage: OCELOT_SPAWNER
 ocelotegg: OCELOT_SPAWN_EGG
 ocelotmcage: OCELOT_SPAWNER
@@ -14126,6 +14868,19 @@ oq: NETHER_QUARTZ_ORE
 oquartz: NETHER_QUARTZ_ORE
 or: REDSTONE_ORE
 oraft: OAK_BOAT
+orange banner: ORANGE_BANNER
+orange bed: ORANGE_BED
+orange carpet: ORANGE_CARPET
+orange concrete: ORANGE_CONCRETE
+orange concrete powder: ORANGE_CONCRETE_POWDER
+orange dye: ORANGE_DYE
+orange glazed terracotta: ORANGE_GLAZED_TERRACOTTA
+orange shulker box: ORANGE_SHULKER_BOX
+orange stained glass: ORANGE_STAINED_GLASS
+orange stained glass pane: ORANGE_STAINED_GLASS_PANE
+orange terracotta: ORANGE_TERRACOTTA
+orange tulip: ORANGE_TULIP
+orange wool: ORANGE_WOOL
 orangebanner: ORANGE_BANNER
 orangebed: ORANGE_BED
 orangecarpet: ORANGE_CARPET
@@ -14293,6 +15048,7 @@ owslab: OAK_SLAB
 owstair: OAK_STAIRS
 owstairs: OAK_STAIRS
 owstep: OAK_SLAB
+oxeye daisy: OXEYE_DAISY
 oxeyedaisy: OXEYE_DAISY
 p2pot: LONG_POISON_POTION
 p2potion: LONG_POISON_POTION
@@ -14301,8 +15057,12 @@ p2splashpotion: LONG_POISON_SPLASH_POTION
 p2tarr: LONG_POISON_TIPPED_ARROW
 p2tarrow: LONG_POISON_TIPPED_ARROW
 p2tippedarrow: LONG_POISON_TIPPED_ARROW
+packed ice: PACKED_ICE
 packedice: PACKED_ICE
+painting: PAINTING
 pand: POLISHED_ANDESITE
+panda spawn egg: PANDA_SPAWN_EGG
+panda spawner: SPAWNER
 pandacage: PANDA_SPAWNER
 pandaegg: PANDA_SPAWN_EGG
 pandamcage: PANDA_SPAWNER
@@ -14356,6 +15116,7 @@ paoepotlevel2: LONG_POISON_LINGERING_POTION
 paoepotlevelii: STRONG_POISON_LINGERING_POTION
 paoepotlong: LONG_POISON_LINGERING_POTION
 paoepotstrong: STRONG_POISON_LINGERING_POTION
+paper: PAPER
 pareapot: POISON_LINGERING_POTION
 pareapot2: LONG_POISON_LINGERING_POTION
 pareapotex: LONG_POISON_LINGERING_POTION
@@ -14374,6 +15135,8 @@ pareapotlevel2: LONG_POISON_LINGERING_POTION
 pareapotlevelii: STRONG_POISON_LINGERING_POTION
 pareapotlong: LONG_POISON_LINGERING_POTION
 pareapotstrong: STRONG_POISON_LINGERING_POTION
+parrot spawn egg: PARROT_SPAWN_EGG
+parrot spawner: SPAWNER
 parrotcage: PARROT_SPAWNER
 parrotegg: PARROT_SPAWN_EGG
 parrotmcage: PARROT_SPAWNER
@@ -14583,6 +15346,8 @@ pdstonestair: POLISHED_DIORITE_STAIRS
 pdstonestairs: POLISHED_DIORITE_STAIRS
 pdstonestep: POLISHED_DIORITE_SLAB
 pdtrap: SPRUCE_TRAPDOOR
+peony: PEONY
+petrified oak slab: PETRIFIED_OAK_SLAB
 petrifiedoakslab: PETRIFIED_OAK_SLAB
 pexpot: LONG_POISON_POTION
 pexpotion: LONG_POISON_POTION
@@ -14642,6 +15407,9 @@ pgstonestair: POLISHED_GRANITE_STAIRS
 pgstonestairs: POLISHED_GRANITE_STAIRS
 pgstonestep: POLISHED_GRANITE_SLAB
 phalfblock: SPRUCE_SLAB
+phantom membrane: PHANTOM_MEMBRANE
+phantom spawn egg: PHANTOM_SPAWN_EGG
+phantom spawner: SPAWNER
 phantomcage: PHANTOM_SPAWNER
 phantomegg: PHANTOM_SPAWN_EGG
 phantommcage: PHANTOM_SPAWNER
@@ -14673,6 +15441,8 @@ pidisc: MUSIC_DISC_MELLOHI
 pidisk: MUSIC_DISC_MELLOHI
 pidye: PINK_DYE
 pifloor: PINK_CARPET
+pig spawn egg: PIG_SPAWN_EGG
+pig spawner: SPAWNER
 pigbrcage: PIGLIN_BRUTE_SPAWNER
 pigbregg: PIGLIN_BRUTE_SPAWN_EGG
 pigbrmcage: PIGLIN_BRUTE_SPAWNER
@@ -14708,6 +15478,11 @@ piglazedtcota: PINK_GLAZED_TERRACOTTA
 piglazedterra: PINK_GLAZED_TERRACOTTA
 piglazedterracota: PINK_GLAZED_TERRACOTTA
 piglazedterracotta: PINK_GLAZED_TERRACOTTA
+piglin banner pattern: PIGLIN_BANNER_PATTERN
+piglin brute spawn egg: PIGLIN_BRUTE_SPAWN_EGG
+piglin brute spawner: SPAWNER
+piglin spawn egg: PIGLIN_SPAWN_EGG
+piglin spawner: SPAWNER
 piglin_brutecage: PIGLIN_BRUTE_SPAWNER
 piglin_bruteegg: PIGLIN_BRUTE_SPAWN_EGG
 piglin_brutemcage: PIGLIN_BRUTE_SPAWNER
@@ -14821,6 +15596,8 @@ piisplashpotion: STRONG_POISON_SPLASH_POTION
 piitarr: STRONG_POISON_TIPPED_ARROW
 piitarrow: STRONG_POISON_TIPPED_ARROW
 piitippedarrow: STRONG_POISON_TIPPED_ARROW
+pillager spawn egg: PILLAGER_SPAWN_EGG
+pillager spawner: SPAWNER
 pillagercage: PILLAGER_SPAWNER
 pillageregg: PILLAGER_SPAWN_EGG
 pillagermcage: PILLAGER_SPAWNER
@@ -14916,6 +15693,19 @@ pinewslab: SPRUCE_SLAB
 pinewstair: SPRUCE_STAIRS
 pinewstairs: SPRUCE_STAIRS
 pinewstep: SPRUCE_SLAB
+pink banner: PINK_BANNER
+pink bed: PINK_BED
+pink carpet: PINK_CARPET
+pink concrete: PINK_CONCRETE
+pink concrete powder: PINK_CONCRETE_POWDER
+pink dye: PINK_DYE
+pink glazed terracotta: PINK_GLAZED_TERRACOTTA
+pink shulker box: PINK_SHULKER_BOX
+pink stained glass: PINK_STAINED_GLASS
+pink stained glass pane: PINK_STAINED_GLASS_PANE
+pink terracotta: PINK_TERRACOTTA
+pink tulip: PINK_TULIP
+pink wool: PINK_WOOL
 pinkbanner: PINK_BANNER
 pinkbed: PINK_BED
 pinkcarpet: PINK_CARPET
@@ -14974,6 +15764,7 @@ pishulkerbox: PINK_SHULKER_BOX
 pistainedclay: PINK_TERRACOTTA
 pistainedglass: PINK_STAINED_GLASS
 pistainedglasspane: PINK_STAINED_GLASS_PANE
+piston: PISTON
 pitcota: PINK_TERRACOTTA
 piterra: PINK_TERRACOTTA
 piterracota: PINK_TERRACOTTA
@@ -15046,6 +15837,7 @@ platew: BIRCH_PRESSURE_PLATE
 platewarp: WARPED_PRESSURE_PLATE
 platewarped: WARPED_PRESSURE_PLATE
 platewhite: BIRCH_PRESSURE_PLATE
+player head: PLAYER_HEAD
 playerhead: PLAYER_HEAD
 pleaf: SPRUCE_LEAVES
 pleave: SPRUCE_LEAVES
@@ -15101,6 +15893,11 @@ pmanspawner: PIGLIN_SPAWNER
 pmc: FURNACE_MINECART
 pmcart: FURNACE_MINECART
 pminecart: FURNACE_MINECART
+podzol: PODZOL
+poison lingering potion: LINGERING_POTION
+poison potion: POTION
+poison splash potion: SPLASH_POTION
+poison tipped arrow: TIPPED_ARROW
 poison2pot: LONG_POISON_POTION
 poison2potion: LONG_POISON_POTION
 poison2splashpot: LONG_POISON_SPLASH_POTION
@@ -15222,6 +16019,7 @@ poisonlongsplashpotion: LONG_POISON_SPLASH_POTION
 poisonlongtarr: LONG_POISON_TIPPED_ARROW
 poisonlongtarrow: LONG_POISON_TIPPED_ARROW
 poisonlongtippedarrow: LONG_POISON_TIPPED_ARROW
+poisonous potato: POISONOUS_POTATO
 poisonouspotato: POISONOUS_POTATO
 poisonpot: POISON_POTION
 poisonpotion: POISON_POTION
@@ -15237,6 +16035,8 @@ poisonstrongtippedarrow: STRONG_POISON_TIPPED_ARROW
 poisontarr: POISON_TIPPED_ARROW
 poisontarrow: POISON_TIPPED_ARROW
 poisontippedarrow: POISON_TIPPED_ARROW
+polar bear spawn egg: POLAR_BEAR_SPAWN_EGG
+polar bear spawner: SPAWNER
 polar_bearcage: POLAR_BEAR_SPAWNER
 polar_bearegg: POLAR_BEAR_SPAWN_EGG
 polar_bearmcage: POLAR_BEAR_SPAWNER
@@ -15262,6 +16062,26 @@ polarsegg: POLAR_BEAR_SPAWN_EGG
 polarspawn: POLAR_BEAR_SPAWN_EGG
 polarspawnegg: POLAR_BEAR_SPAWN_EGG
 polarspawner: POLAR_BEAR_SPAWNER
+polished andesite: POLISHED_ANDESITE
+polished andesite slab: POLISHED_ANDESITE_SLAB
+polished andesite stairs: POLISHED_ANDESITE_STAIRS
+polished basalt: POLISHED_BASALT
+polished blackstone: POLISHED_BLACKSTONE
+polished blackstone brick slab: POLISHED_BLACKSTONE_BRICK_SLAB
+polished blackstone brick stairs: POLISHED_BLACKSTONE_BRICK_STAIRS
+polished blackstone brick wall: POLISHED_BLACKSTONE_BRICK_WALL
+polished blackstone bricks: POLISHED_BLACKSTONE_BRICKS
+polished blackstone button: POLISHED_BLACKSTONE_BUTTON
+polished blackstone pressure plate: POLISHED_BLACKSTONE_PRESSURE_PLATE
+polished blackstone slab: POLISHED_BLACKSTONE_SLAB
+polished blackstone stairs: POLISHED_BLACKSTONE_STAIRS
+polished blackstone wall: POLISHED_BLACKSTONE_WALL
+polished diorite: POLISHED_DIORITE
+polished diorite slab: POLISHED_DIORITE_SLAB
+polished diorite stairs: POLISHED_DIORITE_STAIRS
+polished granite: POLISHED_GRANITE
+polished granite slab: POLISHED_GRANITE_SLAB
+polished granite stairs: POLISHED_GRANITE_STAIRS
 polishedand: POLISHED_ANDESITE
 polishedandb: POLISHED_ANDESITE
 polishedandbl: POLISHED_ANDESITE
@@ -15477,10 +16297,13 @@ polishedgstonehalfblock: POLISHED_GRANITE_SLAB
 polishedgstonestair: POLISHED_GRANITE_STAIRS
 polishedgstonestairs: POLISHED_GRANITE_STAIRS
 polishedgstonestep: POLISHED_GRANITE_SLAB
+popped chorus fruit: POPPED_CHORUS_FRUIT
 poppedchorusfruit: POPPED_CHORUS_FRUIT
+poppy: POPPY
 pork: PORKCHOP
 porkbbq: COOKED_PORKCHOP
 porkc: COOKED_PORKCHOP
+porkchop: PORKCHOP
 porkchopbbq: COOKED_PORKCHOP
 porkchopc: COOKED_PORKCHOP
 porkchopcook: COOKED_PORKCHOP
@@ -15501,6 +16324,8 @@ porkro: COOKED_PORKCHOP
 porkroast: COOKED_PORKCHOP
 porkroasted: COOKED_PORKCHOP
 porktoasted: COOKED_PORKCHOP
+potato: POTATO
+potion: POTION
 potionofacid: POISON_POTION
 potionofacid2: LONG_POISON_POTION
 potionofacidex: LONG_POISON_POTION
@@ -16258,6 +17083,7 @@ potofweextended: LONG_WEAKNESS_POTION
 potofwelevel2: LONG_WEAKNESS_POTION
 potofwelong: LONG_WEAKNESS_POTION
 powercart: FURNACE_MINECART
+powered rail: POWERED_RAIL
 poweredcart: FURNACE_MINECART
 poweredmc: FURNACE_MINECART
 poweredmcart: FURNACE_MINECART
@@ -16310,6 +17136,15 @@ prisbrstairs: PRISMARINE_BRICK_STAIRS
 priscrystal: PRISMARINE_CRYSTALS
 priscrystals: PRISMARINE_CRYSTALS
 prisfragment: PRISMARINE_SHARD
+prismarine: PRISMARINE
+prismarine brick slab: PRISMARINE_BRICK_SLAB
+prismarine brick stairs: PRISMARINE_BRICK_STAIRS
+prismarine bricks: PRISMARINE_BRICKS
+prismarine crystals: PRISMARINE_CRYSTALS
+prismarine shard: PRISMARINE_SHARD
+prismarine slab: PRISMARINE_SLAB
+prismarine stairs: PRISMARINE_STAIRS
+prismarine wall: PRISMARINE_WALL
 prismarine_brick: PRISMARINE_BRICKS
 prismarine_bricksl: PRISMARINE_BRICK_SLAB
 prismarine_brickslab: PRISMARINE_BRICK_SLAB
@@ -16405,6 +17240,10 @@ pufferbucket: PUFFERFISH_BUCKET
 pufferbukkit: PUFFERFISH_BUCKET
 puffercage: PUFFERFISH_SPAWNER
 pufferegg: PUFFERFISH_SPAWN_EGG
+pufferfish: PUFFERFISH
+pufferfish bucket: PUFFERFISH_BUCKET
+pufferfish spawn egg: PUFFERFISH_SPAWN_EGG
+pufferfish spawner: SPAWNER
 pufferfishbucket: PUFFERFISH_BUCKET
 pufferfishbukkit: PUFFERFISH_BUCKET
 pufferfishcage: PUFFERFISH_SPAWNER
@@ -16445,6 +17284,9 @@ pugterra: PURPLE_GLAZED_TERRACOTTA
 pumcd: MUSIC_DISC_MALL
 pumdisc: MUSIC_DISC_MALL
 pumdisk: MUSIC_DISC_MALL
+pumpkin: PUMPKIN
+pumpkin pie: PUMPKIN_PIE
+pumpkin seeds: PUMPKIN_SEEDS
 pumpkinpie: PUMPKIN_PIE
 pumpkinseeds: PUMPKIN_SEEDS
 pumrecord: MUSIC_DISC_MALL
@@ -16453,6 +17295,18 @@ pumusicdisc: MUSIC_DISC_MALL
 pumusicdisk: MUSIC_DISC_MALL
 pumusicrecord: MUSIC_DISC_MALL
 purecord: MUSIC_DISC_MALL
+purple banner: PURPLE_BANNER
+purple bed: PURPLE_BED
+purple carpet: PURPLE_CARPET
+purple concrete: PURPLE_CONCRETE
+purple concrete powder: PURPLE_CONCRETE_POWDER
+purple dye: PURPLE_DYE
+purple glazed terracotta: PURPLE_GLAZED_TERRACOTTA
+purple shulker box: PURPLE_SHULKER_BOX
+purple stained glass: PURPLE_STAINED_GLASS
+purple stained glass pane: PURPLE_STAINED_GLASS_PANE
+purple terracotta: PURPLE_TERRACOTTA
+purple wool: PURPLE_WOOL
 purplebanner: PURPLE_BANNER
 purplebed: PURPLE_BED
 purplecarpet: PURPLE_CARPET
@@ -16501,6 +17355,10 @@ purpleterra: PURPLE_TERRACOTTA
 purpleterracota: PURPLE_TERRACOTTA
 purpleterracotta: PURPLE_TERRACOTTA
 purplewool: PURPLE_WOOL
+purpur block: PURPUR_BLOCK
+purpur pillar: PURPUR_PILLAR
+purpur slab: PURPUR_SLAB
+purpur stairs: PURPUR_STAIRS
 purpurblock: PURPUR_BLOCK
 purpurpillar: PURPUR_PILLAR
 purpurslab: PURPUR_SLAB
@@ -16572,6 +17430,12 @@ quarpillar: QUARTZ_PILLAR
 quarstair: QUARTZ_STAIRS
 quarstairs: QUARTZ_STAIRS
 quarstep: QUARTZ_SLAB
+quartz: QUARTZ
+quartz block: QUARTZ_BLOCK
+quartz bricks: QUARTZ_BRICKS
+quartz pillar: QUARTZ_PILLAR
+quartz slab: QUARTZ_SLAB
+quartz stairs: QUARTZ_STAIRS
 quartzb: QUARTZ_BLOCK
 quartzbl: QUARTZ_BLOCK
 quartzblock: QUARTZ_BLOCK
@@ -16587,6 +17451,12 @@ quartzslab: QUARTZ_SLAB
 quartzstair: QUARTZ_STAIRS
 quartzstairs: QUARTZ_STAIRS
 quartzstep: QUARTZ_SLAB
+rabbit: RABBIT
+rabbit foot: RABBIT_FOOT
+rabbit hide: RABBIT_HIDE
+rabbit spawn egg: RABBIT_SPAWN_EGG
+rabbit spawner: SPAWNER
+rabbit stew: RABBIT_STEW
 rabbitbbq: COOKED_RABBIT
 rabbitc: COOKED_RABBIT
 rabbitcage: RABBIT_SPAWNER
@@ -16632,6 +17502,7 @@ rafishs: SALMON
 rafisht: TROPICAL_FISH
 rahare: RABBIT
 rahasenpfeffer: RABBIT
+rail: RAIL
 rails: RAIL
 ramutton: MUTTON
 ranemo: TROPICAL_FISH
@@ -16649,6 +17520,8 @@ rasheepmeat: MUTTON
 rasteak: BEEF
 ratfish: TROPICAL_FISH
 ratropical_fish: TROPICAL_FISH
+ravager spawn egg: RAVAGER_SPAWN_EGG
+ravager spawner: SPAWNER
 ravagercage: RAVAGER_SPAWNER
 ravageregg: RAVAGER_SPAWN_EGG
 ravagermcage: RAVAGER_SPAWNER
@@ -16720,6 +17593,30 @@ record6: MUSIC_DISC_MALL
 record7: MUSIC_DISC_MELLOHI
 record8: MUSIC_DISC_STAL
 record9: MUSIC_DISC_STRAD
+red banner: RED_BANNER
+red bed: RED_BED
+red carpet: RED_CARPET
+red concrete: RED_CONCRETE
+red concrete powder: RED_CONCRETE_POWDER
+red dye: RED_DYE
+red glazed terracotta: RED_GLAZED_TERRACOTTA
+red mushroom: RED_MUSHROOM
+red mushroom block: RED_MUSHROOM_BLOCK
+red nether brick slab: RED_NETHER_BRICK_SLAB
+red nether brick stairs: RED_NETHER_BRICK_STAIRS
+red nether brick wall: RED_NETHER_BRICK_WALL
+red nether bricks: RED_NETHER_BRICKS
+red sand: RED_SAND
+red sandstone: RED_SANDSTONE
+red sandstone slab: RED_SANDSTONE_SLAB
+red sandstone stairs: RED_SANDSTONE_STAIRS
+red sandstone wall: RED_SANDSTONE_WALL
+red shulker box: RED_SHULKER_BOX
+red stained glass: RED_STAINED_GLASS
+red stained glass pane: RED_STAINED_GLASS_PANE
+red terracotta: RED_TERRACOTTA
+red tulip: RED_TULIP
+red wool: RED_WOOL
 redbanner: RED_BANNER
 redbed: RED_BED
 redblock: REDSTONE_BLOCK
@@ -16828,6 +17725,11 @@ redsore: REDSTONE_ORE
 redstainedclay: RED_TERRACOTTA
 redstainedglass: RED_STAINED_GLASS
 redstainedglasspane: RED_STAINED_GLASS_PANE
+redstone: REDSTONE
+redstone block: REDSTONE_BLOCK
+redstone lamp: REDSTONE_LAMP
+redstone ore: REDSTONE_ORE
+redstone torch: REDSTONE_TORCH
 redstoneblock: REDSTONE_BLOCK
 redstonelamp: REDSTONE_LAMP
 redstoneo: REDSTONE_ORE
@@ -17044,6 +17946,10 @@ regeneratestrongtippedarrow: STRONG_REGENERATION_TIPPED_ARROW
 regeneratetarr: REGENERATION_TIPPED_ARROW
 regeneratetarrow: REGENERATION_TIPPED_ARROW
 regeneratetippedarrow: REGENERATION_TIPPED_ARROW
+regeneration lingering potion: LINGERING_POTION
+regeneration potion: POTION
+regeneration splash potion: SPLASH_POTION
+regeneration tipped arrow: TIPPED_ARROW
 regeneration2pot: LONG_REGENERATION_POTION
 regeneration2potion: LONG_REGENERATION_POTION
 regeneration2splashpot: LONG_REGENERATION_SPLASH_POTION
@@ -17252,8 +18158,11 @@ remusiccd: MUSIC_DISC_CHIRP
 remusicdisc: MUSIC_DISC_CHIRP
 remusicdisk: MUSIC_DISC_CHIRP
 remusicrecord: MUSIC_DISC_CHIRP
+repeater: REPEATER
+repeating command block: REPEATING_COMMAND_BLOCK
 repeatingcommandblock: REPEATING_COMMAND_BLOCK
 rerecord: MUSIC_DISC_CHIRP
+respawn anchor: RESPAWN_ANCHOR
 respawnanchor: RESPAWN_ANCHOR
 rfloor: RED_CARPET
 rglass: RED_STAINED_GLASS
@@ -17339,10 +18248,12 @@ rorabbit: COOKED_RABBIT
 rore: REDSTONE_ORE
 rosalmon: COOKED_SALMON
 rosalmonfish: COOKED_SALMON
+rose bush: ROSE_BUSH
 rosebush: ROSE_BUSH
 rosfish: COOKED_SALMON
 rosheepmeat: COOKED_MUTTON
 rosteak: COOKED_BEEF
+rotten flesh: ROTTEN_FLESH
 rottenflesh: ROTTEN_FLESH
 rottypigcage: ZOGLIN_SPAWNER
 rottypigegg: ZOGLIN_SPAWN_EGG
@@ -17375,6 +18286,11 @@ rterra: RED_TERRACOTTA
 rterracota: RED_TERRACOTTA
 rterracotta: RED_TERRACOTTA
 rwool: RED_WOOL
+saddle: SADDLE
+salmon: SALMON
+salmon bucket: SALMON_BUCKET
+salmon spawn egg: SALMON_SPAWN_EGG
+salmon spawner: SPAWNER
 salmonbbq: COOKED_SALMON
 salmonbucket: SALMON_BUCKET
 salmonbukkit: SALMON_BUCKET
@@ -17413,11 +18329,16 @@ salmonspawn: SALMON_SPAWN_EGG
 salmonspawnegg: SALMON_SPAWN_EGG
 salmonspawner: SALMON_SPAWNER
 salmontoasted: COOKED_SALMON
+sand: SAND
 sandst: SANDSTONE
 sandstb: SANDSTONE
 sandstbl: SANDSTONE
 sandstblock: SANDSTONE
 sandsthalfblock: SANDSTONE_SLAB
+sandstone: SANDSTONE
+sandstone slab: SANDSTONE_SLAB
+sandstone stairs: SANDSTONE_STAIRS
+sandstone wall: SANDSTONE_WALL
 sandstoneb: SANDSTONE
 sandstonebl: SANDSTONE
 sandstoneblock: SANDSTONE
@@ -17440,14 +18361,18 @@ sblock: IRON_BLOCK
 sboat: SPRUCE_BOAT
 sboots: IRON_BOOTS
 sbutton: SPRUCE_BUTTON
+scaffolding: SCAFFOLDING
 scart: CHEST_MINECART
 schestplate: IRON_CHESTPLATE
 scoif: IRON_HELMET
+scute: SCUTE
 sdoor: SPRUCE_DOOR
 sdoort: SPRUCE_TRAPDOOR
 sdoortrap: SPRUCE_TRAPDOOR
 sdtrap: SPRUCE_TRAPDOOR
 sea: PRISMARINE
+sea lantern: SEA_LANTERN
+sea pickle: SEA_PICKLE
 seablock: PRISMARINE
 seabr: PRISMARINE_BRICKS
 seabrick: PRISMARINE_BRICKS
@@ -17470,6 +18395,7 @@ seabrstairs: PRISMARINE_BRICK_STAIRS
 seacrystal: PRISMARINE_CRYSTALS
 seacrystals: PRISMARINE_CRYSTALS
 seafragment: PRISMARINE_SHARD
+seagrass: SEAGRASS
 sealantern: SEA_LANTERN
 seapickle: SEA_PICKLE
 seashard: PRISMARINE_SHARD
@@ -17843,6 +18769,9 @@ shalfblock: SPRUCE_SLAB
 sharmor: IRON_HORSE_ARMOR
 shat: IRON_HELMET
 shatch: SPRUCE_TRAPDOOR
+shears: SHEARS
+sheep spawn egg: SHEEP_SPAWN_EGG
+sheep spawner: SPAWNER
 sheepcage: SHEEP_SPAWNER
 sheepegg: SHEEP_SPAWN_EGG
 sheepmcage: SHEEP_SPAWNER
@@ -17869,6 +18798,7 @@ sheepspawnegg: SHEEP_SPAWN_EGG
 sheepspawner: SHEEP_SPAWNER
 shelm: IRON_HELMET
 shelmet: IRON_HELMET
+shield: SHIELD
 shoe: STONE_HOE
 shorsearmor: IRON_HORSE_ARMOR
 shorsecage: SKELETON_HORSE_SPAWNER
@@ -17883,8 +18813,13 @@ shorsesegg: SKELETON_HORSE_SPAWN_EGG
 shorsespawn: SKELETON_HORSE_SPAWN_EGG
 shorsespawnegg: SKELETON_HORSE_SPAWN_EGG
 shorsespawner: SKELETON_HORSE_SPAWNER
+shroomlight: SHROOMLIGHT
 shulkcage: SHULKER_SPAWNER
 shulkegg: SHULKER_SPAWN_EGG
+shulker box: SHULKER_BOX
+shulker shell: SHULKER_SHELL
+shulker spawn egg: SHULKER_SPAWN_EGG
+shulker spawner: SPAWNER
 shulkerbox: SHULKER_BOX
 shulkercage: SHULKER_SPAWNER
 shulkeregg: SHULKER_SPAWN_EGG
@@ -17982,6 +18917,8 @@ silvercotton: LIGHT_GRAY_WOOL
 silvercp: LIGHT_GRAY_CONCRETE_POWDER
 silvercpowder: LIGHT_GRAY_CONCRETE_POWDER
 silverdye: LIGHT_GRAY_DYE
+silverfish spawn egg: SILVERFISH_SPAWN_EGG
+silverfish spawner: SPAWNER
 silverfishcage: SILVERFISH_SPAWNER
 silverfishchiseledst: INFESTED_CHISELED_STONE_BRICKS
 silverfishchiseledstone: INFESTED_CHISELED_STONE_BRICKS
@@ -18084,6 +19021,11 @@ siterracotta: LIGHT_GRAY_TERRACOTTA
 siwool: LIGHT_GRAY_WOOL
 skcage: SKELETON_SPAWNER
 skegg: SKELETON_SPAWN_EGG
+skeleton horse spawn egg: SKELETON_HORSE_SPAWN_EGG
+skeleton horse spawner: SPAWNER
+skeleton skull: SKELETON_SKULL
+skeleton spawn egg: SKELETON_SPAWN_EGG
+skeleton spawner: SPAWNER
 skeleton_horsecage: SKELETON_HORSE_SPAWNER
 skeleton_horseegg: SKELETON_HORSE_SPAWN_EGG
 skeleton_horsemcage: SKELETON_HORSE_SPAWNER
@@ -18139,12 +19081,17 @@ skskull: SKELETON_SKULL
 skspawn: SKELETON_SPAWN_EGG
 skspawnegg: SKELETON_SPAWN_EGG
 skspawner: SKELETON_SPAWNER
+skull banner pattern: SKULL_BANNER_PATTERN
 skullbannerpattern: SKULL_BANNER_PATTERN
 sleaf: SPRUCE_LEAVES
 sleave: SPRUCE_LEAVES
 sleaves: SPRUCE_LEAVES
 sleggings: IRON_LEGGINGS
 slegs: IRON_LEGGINGS
+slime ball: SLIME_BALL
+slime block: SLIME_BLOCK
+slime spawn egg: SLIME_SPAWN_EGG
+slime spawner: SPAWNER
 slimeball: SLIME_BALL
 slimeblock: SLIME_BLOCK
 slimecage: SLIME_SPAWNER
@@ -18165,6 +19112,10 @@ slogleaf: SPRUCE_LEAVES
 slogleave: SPRUCE_LEAVES
 slogleaves: SPRUCE_LEAVES
 slogsapling: SPRUCE_SAPLING
+slow falling lingering potion: LINGERING_POTION
+slow falling potion: POTION
+slow falling splash potion: SPLASH_POTION
+slow falling tipped arrow: TIPPED_ARROW
 slow2pot: LONG_SLOWNESS_POTION
 slow2potion: LONG_SLOWNESS_POTION
 slow2splashpot: LONG_SLOWNESS_SPLASH_POTION
@@ -18466,6 +19417,10 @@ slowlongsplashpotion: LONG_SLOWNESS_SPLASH_POTION
 slowlongtarr: LONG_SLOWNESS_TIPPED_ARROW
 slowlongtarrow: LONG_SLOWNESS_TIPPED_ARROW
 slowlongtippedarrow: LONG_SLOWNESS_TIPPED_ARROW
+slowness lingering potion: LINGERING_POTION
+slowness potion: POTION
+slowness splash potion: SPLASH_POTION
+slowness tipped arrow: TIPPED_ARROW
 slowness2pot: LONG_SLOWNESS_POTION
 slowness2potion: LONG_SLOWNESS_POTION
 slowness2splashpot: LONG_SLOWNESS_SPLASH_POTION
@@ -18618,7 +19573,20 @@ slowtippedarrow: SLOWNESS_TIPPED_ARROW
 smc: CHEST_MINECART
 smcart: CHEST_MINECART
 sminecart: CHEST_MINECART
+smithing table: SMITHING_TABLE
 smithingtable: SMITHING_TABLE
+smoker: SMOKER
+smooth quartz: SMOOTH_QUARTZ
+smooth quartz slab: SMOOTH_QUARTZ_SLAB
+smooth quartz stairs: SMOOTH_QUARTZ_STAIRS
+smooth red sandstone: SMOOTH_RED_SANDSTONE
+smooth red sandstone slab: SMOOTH_RED_SANDSTONE_SLAB
+smooth red sandstone stairs: SMOOTH_RED_SANDSTONE_STAIRS
+smooth sandstone: SMOOTH_SANDSTONE
+smooth sandstone slab: SMOOTH_SANDSTONE_SLAB
+smooth sandstone stairs: SMOOTH_SANDSTONE_STAIRS
+smooth stone: SMOOTH_STONE
+smooth stone slab: SMOOTH_STONE_SLAB
 smoothq: SMOOTH_QUARTZ
 smoothqb: SMOOTH_QUARTZ
 smoothqbl: SMOOTH_QUARTZ
@@ -18800,6 +19768,9 @@ sndststair: SANDSTONE_STAIRS
 sndststairs: SANDSTONE_STAIRS
 sndststep: SANDSTONE_SLAB
 sndstwall: SANDSTONE_WALL
+snow: SNOW
+snow block: SNOW_BLOCK
+snowball: SNOWBALL
 snowblock: SNOW_BLOCK
 snowgolemcage: SNOWMAN_SPAWNER
 snowgolemmcage: SNOWMAN_SPAWNER
@@ -18809,6 +19780,7 @@ snowgolemmonstercage: SNOWMAN_SPAWNER
 snowgolemmonsterspawner: SNOWMAN_SPAWNER
 snowgolemmspawner: SNOWMAN_SPAWNER
 snowgolemspawner: SNOWMAN_SPAWNER
+snowman spawner: SPAWNER
 snowmancage: SNOWMAN_SPAWNER
 snowmanmcage: SNOWMAN_SPAWNER
 snowmanmobcage: SNOWMAN_SPAWNER
@@ -18819,6 +19791,11 @@ snowmanmspawner: SNOWMAN_SPAWNER
 snowmanspawner: SNOWMAN_SPAWNER
 so: IRON_ORE
 sore: IRON_ORE
+soul campfire: SOUL_CAMPFIRE
+soul lantern: SOUL_LANTERN
+soul sand: SOUL_SAND
+soul soil: SOUL_SOIL
+soul torch: SOUL_TORCH
 soulcampfire: SOUL_CAMPFIRE
 soullantern: SOUL_LANTERN
 soulsand: SOUL_SAND
@@ -18988,6 +19965,7 @@ spawnelder_guardian: ELDER_GUARDIAN_SPAWN_EGG
 spawnemite: ENDERMITE_SPAWN_EGG
 spawnenderman: ENDERMAN_SPAWN_EGG
 spawnendermite: ENDERMITE_SPAWN_EGG
+spawner: SPAWNER
 spawnevoker: EVOKER_SPAWN_EGG
 spawnfox: FOX_SPAWN_EGG
 spawnghast: GHAST_SPAWN_EGG
@@ -19093,6 +20071,7 @@ spawnzpigmen: ZOMBIFIED_PIGLIN_SPAWN_EGG
 spawnzpman: ZOMBIFIED_PIGLIN_SPAWN_EGG
 spawnzvill: ZOMBIE_VILLAGER_SPAWN_EGG
 spawnzvillager: ZOMBIE_VILLAGER_SPAWN_EGG
+spectral arrow: SPECTRAL_ARROW
 spectralarrow: SPECTRAL_ARROW
 speed2pot: LONG_SWIFTNESS_POTION
 speed2potion: LONG_SWIFTNESS_POTION
@@ -19233,6 +20212,9 @@ spick: STONE_PICKAXE
 spickaxe: STONE_PICKAXE
 spidcage: SPIDER_SPAWNER
 spidegg: SPIDER_SPAWN_EGG
+spider eye: SPIDER_EYE
+spider spawn egg: SPIDER_SPAWN_EGG
+spider spawner: SPAWNER
 spidercage: SPIDER_SPAWNER
 spideregg: SPIDER_SPAWN_EGG
 spidereye: SPIDER_EYE
@@ -19278,6 +20260,7 @@ splank: SPRUCE_PLANKS
 splankw: SPRUCE_PLANKS
 splankwood: SPRUCE_PLANKS
 splankwooden: SPRUCE_PLANKS
+splash potion: SPLASH_POTION
 splashacid2pot: LONG_POISON_SPLASH_POTION
 splashacid2potion: LONG_POISON_SPLASH_POTION
 splashacidexpot: LONG_POISON_SPLASH_POTION
@@ -20775,9 +21758,25 @@ splwelongpot: LONG_WEAKNESS_SPLASH_POTION
 splwelongpotion: LONG_WEAKNESS_SPLASH_POTION
 splwepot: WEAKNESS_SPLASH_POTION
 splwepotion: WEAKNESS_SPLASH_POTION
+sponge: SPONGE
 spplate: SPRUCE_PRESSURE_PLATE
 spressplate: SPRUCE_PRESSURE_PLATE
 spressureplate: SPRUCE_PRESSURE_PLATE
+spruce boat: SPRUCE_BOAT
+spruce button: SPRUCE_BUTTON
+spruce door: SPRUCE_DOOR
+spruce fence: SPRUCE_FENCE
+spruce fence gate: SPRUCE_FENCE_GATE
+spruce leaves: SPRUCE_LEAVES
+spruce log: SPRUCE_LOG
+spruce planks: SPRUCE_PLANKS
+spruce pressure plate: SPRUCE_PRESSURE_PLATE
+spruce sapling: SPRUCE_SAPLING
+spruce sign: SPRUCE_SIGN
+spruce slab: SPRUCE_SLAB
+spruce stairs: SPRUCE_STAIRS
+spruce trapdoor: SPRUCE_TRAPDOOR
+spruce wood: SPRUCE_WOOD
 sprucebarelog: STRIPPED_SPRUCE_LOG
 sprucebarewood: STRIPPED_SPRUCE_WOOD
 spruceboat: SPRUCE_BOAT
@@ -20856,6 +21855,8 @@ sprucewslab: SPRUCE_SLAB
 sprucewstair: SPRUCE_STAIRS
 sprucewstairs: SPRUCE_STAIRS
 sprucewstep: SPRUCE_SLAB
+squid spawn egg: SQUID_SPAWN_EGG
+squid spawner: SPAWNER
 squidcage: SQUID_SPAWNER
 squidegg: SQUID_SPAWN_EGG
 squidmcage: SQUID_SPAWNER
@@ -20978,11 +21979,27 @@ sthelmet: IRON_HELMET
 sthoe: IRON_HOE
 sthorsearmor: IRON_HORSE_ARMOR
 sti: IRON_INGOT
+stick: STICK
+sticky piston: STICKY_PISTON
 stickypiston: STICKY_PISTON
 stingot: IRON_INGOT
 stleggings: IRON_LEGGINGS
 stlegs: IRON_LEGGINGS
 sto: IRON_ORE
+stone: STONE
+stone axe: STONE_AXE
+stone brick slab: STONE_BRICK_SLAB
+stone brick stairs: STONE_BRICK_STAIRS
+stone brick wall: STONE_BRICK_WALL
+stone bricks: STONE_BRICKS
+stone button: STONE_BUTTON
+stone hoe: STONE_HOE
+stone pickaxe: STONE_PICKAXE
+stone pressure plate: STONE_PRESSURE_PLATE
+stone shovel: STONE_SHOVEL
+stone slab: STONE_SLAB
+stone stairs: STONE_STAIRS
+stone sword: STONE_SWORD
 stoneaxe: STONE_AXE
 stonebr: STONE_BRICKS
 stonebrhalfblock: STONE_BRICK_SLAB
@@ -20999,6 +22016,7 @@ stonebrstairs: STONE_BRICK_STAIRS
 stonebrstep: STONE_BRICK_SLAB
 stonebrwall: STONE_BRICK_WALL
 stonebutton: STONE_BUTTON
+stonecutter: STONECUTTER
 stonehoe: STONE_HOE
 stonepick: STONE_PICKAXE
 stonepickaxe: STONE_PICKAXE
@@ -21090,6 +22108,8 @@ strarrowlevelii: STRONG_STRENGTH_TIPPED_ARROW
 strarrowlong: LONG_STRENGTH_TIPPED_ARROW
 strarrowstrong: STRONG_STRENGTH_TIPPED_ARROW
 strawood: STRIPPED_ACACIA_WOOD
+stray spawn egg: STRAY_SPAWN_EGG
+stray spawner: SPAWNER
 straycage: STRAY_SPAWNER
 strayegg: STRAY_SPAWN_EGG
 straymcage: STRAY_SPAWNER
@@ -21148,6 +22168,10 @@ streeleaf: SPRUCE_LEAVES
 streeleave: SPRUCE_LEAVES
 streeleaves: SPRUCE_LEAVES
 streesapling: SPRUCE_SAPLING
+strength lingering potion: LINGERING_POTION
+strength potion: POTION
+strength splash potion: SPLASH_POTION
+strength tipped arrow: TIPPED_ARROW
 strength2pot: LONG_STRENGTH_POTION
 strength2potion: LONG_STRENGTH_POTION
 strength2splashpot: LONG_STRENGTH_SPLASH_POTION
@@ -21301,6 +22325,8 @@ strflog: STRIPPED_JUNGLE_LOG
 strforestlog: STRIPPED_JUNGLE_LOG
 strforestwood: STRIPPED_JUNGLE_WOOD
 strfwood: STRIPPED_JUNGLE_WOOD
+strider spawn egg: STRIDER_SPAWN_EGG
+strider spawner: SPAWNER
 stridercage: STRIDER_SPAWNER
 strideregg: STRIDER_SPAWN_EGG
 stridermcage: STRIDER_SPAWNER
@@ -21320,6 +22346,23 @@ striisplashpotion: STRONG_STRENGTH_SPLASH_POTION
 striitarr: STRONG_STRENGTH_TIPPED_ARROW
 striitarrow: STRONG_STRENGTH_TIPPED_ARROW
 striitippedarrow: STRONG_STRENGTH_TIPPED_ARROW
+string: STRING
+stripped acacia log: STRIPPED_ACACIA_LOG
+stripped acacia wood: STRIPPED_ACACIA_WOOD
+stripped birch log: STRIPPED_BIRCH_LOG
+stripped birch wood: STRIPPED_BIRCH_WOOD
+stripped crimson hyphae: STRIPPED_CRIMSON_HYPHAE
+stripped crimson stem: STRIPPED_CRIMSON_STEM
+stripped dark oak log: STRIPPED_DARK_OAK_LOG
+stripped dark oak wood: STRIPPED_DARK_OAK_WOOD
+stripped jungle log: STRIPPED_JUNGLE_LOG
+stripped jungle wood: STRIPPED_JUNGLE_WOOD
+stripped oak log: STRIPPED_OAK_LOG
+stripped oak wood: STRIPPED_OAK_WOOD
+stripped spruce log: STRIPPED_SPRUCE_LOG
+stripped spruce wood: STRIPPED_SPRUCE_WOOD
+stripped warped hyphae: STRIPPED_WARPED_HYPHAE
+stripped warped stem: STRIPPED_WARPED_STEM
 strippedacacialog: STRIPPED_ACACIA_LOG
 strippedacacialogall: STRIPPED_ACACIA_WOOD
 strippedacaciatree: STRIPPED_ACACIA_LOG
@@ -21556,6 +22599,42 @@ strlwood: STRIPPED_BIRCH_WOOD
 stroaklog: STRIPPED_OAK_LOG
 stroakwood: STRIPPED_OAK_WOOD
 strolog: STRIPPED_OAK_LOG
+strong harming lingering potion: LINGERING_POTION
+strong harming potion: POTION
+strong harming splash potion: SPLASH_POTION
+strong harming tipped arrow: TIPPED_ARROW
+strong healing lingering potion: LINGERING_POTION
+strong healing potion: POTION
+strong healing splash potion: SPLASH_POTION
+strong healing tipped arrow: TIPPED_ARROW
+strong leaping lingering potion: LINGERING_POTION
+strong leaping potion: POTION
+strong leaping splash potion: SPLASH_POTION
+strong leaping tipped arrow: TIPPED_ARROW
+strong poison lingering potion: LINGERING_POTION
+strong poison potion: POTION
+strong poison splash potion: SPLASH_POTION
+strong poison tipped arrow: TIPPED_ARROW
+strong regeneration lingering potion: LINGERING_POTION
+strong regeneration potion: POTION
+strong regeneration splash potion: SPLASH_POTION
+strong regeneration tipped arrow: TIPPED_ARROW
+strong slowness lingering potion: LINGERING_POTION
+strong slowness potion: POTION
+strong slowness splash potion: SPLASH_POTION
+strong slowness tipped arrow: TIPPED_ARROW
+strong strength lingering potion: LINGERING_POTION
+strong strength potion: POTION
+strong strength splash potion: SPLASH_POTION
+strong strength tipped arrow: TIPPED_ARROW
+strong swiftness lingering potion: LINGERING_POTION
+strong swiftness potion: POTION
+strong swiftness splash potion: SPLASH_POTION
+strong swiftness tipped arrow: TIPPED_ARROW
+strong turtle master lingering potion: LINGERING_POTION
+strong turtle master potion: POTION
+strong turtle master splash potion: SPLASH_POTION
+strong turtle master tipped arrow: TIPPED_ARROW
 strong2pot: LONG_STRENGTH_POTION
 strong2potion: LONG_STRENGTH_POTION
 strong2splashpot: LONG_STRENGTH_SPLASH_POTION
@@ -21714,6 +22793,8 @@ strswood: STRIPPED_SPRUCE_WOOD
 strtarr: STRENGTH_TIPPED_ARROW
 strtarrow: STRENGTH_TIPPED_ARROW
 strtippedarrow: STRENGTH_TIPPED_ARROW
+structure block: STRUCTURE_BLOCK
+structure void: STRUCTURE_VOID
 structureblock: STRUCTURE_BLOCK
 structurevoid: STRUCTURE_VOID
 strunk: SPRUCE_LOG
@@ -21740,8 +22821,13 @@ sttrapd: IRON_TRAPDOOR
 sttrapdoor: IRON_TRAPDOOR
 sttunic: IRON_CHESTPLATE
 stunic: IRON_CHESTPLATE
+sugar: SUGAR
+sugar cane: SUGAR_CANE
 sugarcane: SUGAR_CANE
+sunflower: SUNFLOWER
+suspicious stew: SUSPICIOUS_STEW
 suspiciousstew: SUSPICIOUS_STEW
+sweet berries: SWEET_BERRIES
 sweetberries: SWEET_BERRIES
 swhalfblock: SPRUCE_SLAB
 swift2pot: LONG_SWIFTNESS_POTION
@@ -21865,6 +22951,10 @@ swiftlongsplashpotion: LONG_SWIFTNESS_SPLASH_POTION
 swiftlongtarr: LONG_SWIFTNESS_TIPPED_ARROW
 swiftlongtarrow: LONG_SWIFTNESS_TIPPED_ARROW
 swiftlongtippedarrow: LONG_SWIFTNESS_TIPPED_ARROW
+swiftness lingering potion: LINGERING_POTION
+swiftness potion: POTION
+swiftness splash potion: SPLASH_POTION
+swiftness tipped arrow: TIPPED_ARROW
 swiftness2pot: LONG_SWIFTNESS_POTION
 swiftness2potion: LONG_SWIFTNESS_POTION
 swiftness2splashpot: LONG_SWIFTNESS_SPLASH_POTION
@@ -22048,8 +23138,11 @@ swslab: SPRUCE_SLAB
 swstair: SPRUCE_STAIRS
 swstairs: SPRUCE_STAIRS
 swstep: SPRUCE_SLAB
+tall grass: TALL_GRASS
 tallgrass: TALL_GRASS
+target: TARGET
 tcart: TNT_MINECART
+terracotta: TERRACOTTA
 tfish: TROPICAL_FISH
 tfishbucket: TROPICAL_FISH_BUCKET
 tfishbukkit: TROPICAL_FISH_BUCKET
@@ -22066,6 +23159,10 @@ tfishsegg: TROPICAL_FISH_SPAWN_EGG
 tfishspawn: TROPICAL_FISH_SPAWN_EGG
 tfishspawnegg: TROPICAL_FISH_SPAWN_EGG
 tfishspawner: TROPICAL_FISH_SPAWNER
+thick lingering potion: LINGERING_POTION
+thick potion: POTION
+thick splash potion: SPLASH_POTION
+thick tipped arrow: TIPPED_ARROW
 thickaoepoiont: THICK_LINGERING_POTION
 thickaoepot: THICK_LINGERING_POTION
 thickareapot: THICK_LINGERING_POTION
@@ -22081,6 +23178,7 @@ thicksplashpotion: THICK_SPLASH_POTION
 thicktarr: THICK_TIPPED_ARROW
 thicktarrow: THICK_TIPPED_ARROW
 thicktippedarrow: THICK_TIPPED_ARROW
+tipped arrow: TIPPED_ARROW
 tippedarrow: TIPPED_ARROW
 tllamacage: TRADER_LLAMA_SPAWNER
 tllamaegg: TRADER_LLAMA_SPAWN_EGG
@@ -22232,6 +23330,8 @@ tmstrongtippedarrow: STRONG_TURTLE_MASTER_TIPPED_ARROW
 tmtarr: TURTLE_MASTER_TIPPED_ARROW
 tmtarrow: TURTLE_MASTER_TIPPED_ARROW
 tmtippedarrow: TURTLE_MASTER_TIPPED_ARROW
+tnt: TNT
+tnt minecart: TNT_MINECART
 tntcart: TNT_MINECART
 tntmc: TNT_MINECART
 tntmcart: TNT_MINECART
@@ -22253,8 +23353,12 @@ toastedsalmonfish: COOKED_SALMON
 toastedsfish: COOKED_SALMON
 toastedsheepmeat: COOKED_MUTTON
 toastedsteak: COOKED_BEEF
+torch: TORCH
+totem of undying: TOTEM_OF_UNDYING
 totemofundying: TOTEM_OF_UNDYING
 track: RAIL
+trader llama spawn egg: TRADER_LLAMA_SPAWN_EGG
+trader llama spawner: SPAWNER
 trader_llamacage: TRADER_LLAMA_SPAWNER
 trader_llamaegg: TRADER_LLAMA_SPAWN_EGG
 trader_llamamcage: TRADER_LLAMA_SPAWNER
@@ -22320,6 +23424,7 @@ trapmossyst: INFESTED_MOSSY_STONE_BRICKS
 trapmossystone: INFESTED_MOSSY_STONE_BRICKS
 trapmst: INFESTED_MOSSY_STONE_BRICKS
 trapmstone: INFESTED_MOSSY_STONE_BRICKS
+trapped chest: TRAPPED_CHEST
 trappedchest: TRAPPED_CHEST
 trapst: INFESTED_STONE
 trapstb: INFESTED_STONE
@@ -22334,10 +23439,16 @@ trapstoneblock: INFESTED_STONE
 trapstonebr: INFESTED_STONE_BRICKS
 trapstonebrick: INFESTED_STONE_BRICKS
 trapstonebricks: INFESTED_STONE_BRICKS
+trident: TRIDENT
 triggerrail: ACTIVATOR_RAIL
 triggerrails: ACTIVATOR_RAIL
 triggertrack: ACTIVATOR_RAIL
+tripwire hook: TRIPWIRE_HOOK
 tripwirehook: TRIPWIRE_HOOK
+tropical fish: TROPICAL_FISH
+tropical fish bucket: TROPICAL_FISH_BUCKET
+tropical fish spawn egg: TROPICAL_FISH_SPAWN_EGG
+tropical fish spawner: SPAWNER
 tropical_fishbucket: TROPICAL_FISH_BUCKET
 tropical_fishbukkit: TROPICAL_FISH_BUCKET
 tropical_fishcage: TROPICAL_FISH_SPAWNER
@@ -22360,9 +23471,20 @@ trrail: ACTIVATOR_RAIL
 trrails: ACTIVATOR_RAIL
 trtrack: ACTIVATOR_RAIL
 ttrack: ACTIVATOR_RAIL
+tube coral: TUBE_CORAL
+tube coral block: TUBE_CORAL_BLOCK
+tube coral fan: TUBE_CORAL_FAN
 tubecoral: TUBE_CORAL
 tubecoralblock: TUBE_CORAL_BLOCK
 tubecoralfan: TUBE_CORAL_FAN
+turtle egg: TURTLE_EGG
+turtle helmet: TURTLE_HELMET
+turtle master lingering potion: LINGERING_POTION
+turtle master potion: POTION
+turtle master splash potion: SPLASH_POTION
+turtle master tipped arrow: TIPPED_ARROW
+turtle spawn egg: TURTLE_SPAWN_EGG
+turtle spawner: SPAWNER
 turtle2pot: LONG_TURTLE_MASTER_POTION
 turtle2potion: LONG_TURTLE_MASTER_POTION
 turtle2splashpot: LONG_TURTLE_MASTER_SPLASH_POTION
@@ -22646,6 +23768,7 @@ turtlestrongtippedarrow: STRONG_TURTLE_MASTER_TIPPED_ARROW
 turtletarr: TURTLE_MASTER_TIPPED_ARROW
 turtletarrow: TURTLE_MASTER_TIPPED_ARROW
 turtletippedarrow: TURTLE_MASTER_TIPPED_ARROW
+twisting vines: TWISTING_VINES
 twistingvines: TWISTING_VINES
 uncookedbeef: BEEF
 uncookedchicken: CHICKEN
@@ -22693,6 +23816,8 @@ uncraftablesplashpotion: EMPTY_SPLASH_POTION
 uncraftabletarr: EMPTY_TIPPED_ARROW
 uncraftabletarrow: EMPTY_TIPPED_ARROW
 uncraftabletippedarrow: EMPTY_TIPPED_ARROW
+vex spawn egg: VEX_SPAWN_EGG
+vex spawner: SPAWNER
 vexcage: VEX_SPAWNER
 vexegg: VEX_SPAWN_EGG
 vexmcage: VEX_SPAWNER
@@ -22705,6 +23830,8 @@ vexsegg: VEX_SPAWN_EGG
 vexspawn: VEX_SPAWN_EGG
 vexspawnegg: VEX_SPAWN_EGG
 vexspawner: VEX_SPAWNER
+villager spawn egg: VILLAGER_SPAWN_EGG
+villager spawner: SPAWNER
 villagercage: VILLAGER_SPAWNER
 villageregg: VILLAGER_SPAWN_EGG
 villagermcage: VILLAGER_SPAWNER
@@ -22731,6 +23858,8 @@ villspawnegg: VILLAGER_SPAWN_EGG
 villspawner: VILLAGER_SPAWNER
 vindcage: VINDICATOR_SPAWNER
 vindegg: VINDICATOR_SPAWN_EGG
+vindicator spawn egg: VINDICATOR_SPAWN_EGG
+vindicator spawner: SPAWNER
 vindicatorcage: VINDICATOR_SPAWNER
 vindicatoregg: VINDICATOR_SPAWN_EGG
 vindicatormcage: VINDICATOR_SPAWNER
@@ -22753,6 +23882,7 @@ vindsegg: VINDICATOR_SPAWN_EGG
 vindspawn: VINDICATOR_SPAWN_EGG
 vindspawnegg: VINDICATOR_SPAWN_EGG
 vindspawner: VINDICATOR_SPAWNER
+vine: VINE
 waitcd: MUSIC_DISC_WAIT
 waitdisc: MUSIC_DISC_WAIT
 waitdisk: MUSIC_DISC_WAIT
@@ -22847,6 +23977,8 @@ wallstbrick: STONE_BRICK_WALL
 wallstonebr: STONE_BRICK_WALL
 wallstonebrick: STONE_BRICK_WALL
 wallwhstbr: END_STONE_BRICK_WALL
+wandering trader spawn egg: WANDERING_TRADER_SPAWN_EGG
+wandering trader spawner: SPAWNER
 wandering_tradercage: WANDERING_TRADER_SPAWNER
 wandering_traderegg: WANDERING_TRADER_SPAWN_EGG
 wandering_tradermcage: WANDERING_TRADER_SPAWNER
@@ -22878,6 +24010,23 @@ warpdoor: WARPED_DOOR
 warpdoort: WARPED_TRAPDOOR
 warpdoortrap: WARPED_TRAPDOOR
 warpdtrap: WARPED_TRAPDOOR
+warped button: WARPED_BUTTON
+warped door: WARPED_DOOR
+warped fence: WARPED_FENCE
+warped fence gate: WARPED_FENCE_GATE
+warped fungus: WARPED_FUNGUS
+warped fungus on a stick: WARPED_FUNGUS_ON_A_STICK
+warped hyphae: WARPED_HYPHAE
+warped nylium: WARPED_NYLIUM
+warped planks: WARPED_PLANKS
+warped pressure plate: WARPED_PRESSURE_PLATE
+warped roots: WARPED_ROOTS
+warped sign: WARPED_SIGN
+warped slab: WARPED_SLAB
+warped stairs: WARPED_STAIRS
+warped stem: WARPED_STEM
+warped trapdoor: WARPED_TRAPDOOR
+warped wart block: WARPED_WART_BLOCK
 warpedbarelog: STRIPPED_WARPED_STEM
 warpedbutton: WARPED_BUTTON
 warpeddoor: WARPED_DOOR
@@ -22994,6 +24143,15 @@ warpwslab: WARPED_SLAB
 warpwstair: WARPED_STAIRS
 warpwstairs: WARPED_STAIRS
 warpwstep: WARPED_SLAB
+water breathing lingering potion: LINGERING_POTION
+water breathing potion: POTION
+water breathing splash potion: SPLASH_POTION
+water breathing tipped arrow: TIPPED_ARROW
+water bucket: WATER_BUCKET
+water lingering potion: LINGERING_POTION
+water potion: POTION
+water splash potion: SPLASH_POTION
+water tipped arrow: TIPPED_ARROW
 wateraoepoiont: WATER_LINGERING_POTION
 wateraoepot: WATER_LINGERING_POTION
 waterareapot: WATER_LINGERING_POTION
@@ -23392,6 +24550,10 @@ weaklongsplashpotion: LONG_WEAKNESS_SPLASH_POTION
 weaklongtarr: LONG_WEAKNESS_TIPPED_ARROW
 weaklongtarrow: LONG_WEAKNESS_TIPPED_ARROW
 weaklongtippedarrow: LONG_WEAKNESS_TIPPED_ARROW
+weakness lingering potion: LINGERING_POTION
+weakness potion: POTION
+weakness splash potion: SPLASH_POTION
+weakness tipped arrow: TIPPED_ARROW
 weakness2pot: LONG_WEAKNESS_POTION
 weakness2potion: LONG_WEAKNESS_POTION
 weakness2splashpot: LONG_WEAKNESS_SPLASH_POTION
@@ -23531,6 +24693,7 @@ wecloudpotionlevel2: LONG_WEAKNESS_LINGERING_POTION
 wecloudpotionlong: LONG_WEAKNESS_LINGERING_POTION
 wecloudpotlevel2: LONG_WEAKNESS_LINGERING_POTION
 wecloudpotlong: LONG_WEAKNESS_LINGERING_POTION
+weeping vines: WEEPING_VINES
 weepingvines: WEEPING_VINES
 weexpot: LONG_WEAKNESS_POTION
 weexpotion: LONG_WEAKNESS_POTION
@@ -23570,6 +24733,7 @@ wepot: WEAKNESS_POTION
 wepotion: WEAKNESS_POTION
 wesplashpot: WEAKNESS_SPLASH_POTION
 wesplashpotion: WEAKNESS_SPLASH_POTION
+wet sponge: WET_SPONGE
 wetarr: WEAKNESS_TIPPED_ARROW
 wetarrow: WEAKNESS_TIPPED_ARROW
 wetippedarrow: WEAKNESS_TIPPED_ARROW
@@ -23592,7 +24756,22 @@ whatch: BIRCH_TRAPDOOR
 whcd: MUSIC_DISC_STRAD
 whdisc: MUSIC_DISC_STRAD
 whdisk: MUSIC_DISC_STRAD
+wheat: WHEAT
+wheat seeds: WHEAT_SEEDS
 wheatseeds: WHEAT_SEEDS
+white banner: WHITE_BANNER
+white bed: WHITE_BED
+white carpet: WHITE_CARPET
+white concrete: WHITE_CONCRETE
+white concrete powder: WHITE_CONCRETE_POWDER
+white dye: WHITE_DYE
+white glazed terracotta: WHITE_GLAZED_TERRACOTTA
+white shulker box: WHITE_SHULKER_BOX
+white stained glass: WHITE_STAINED_GLASS
+white stained glass pane: WHITE_STAINED_GLASS_PANE
+white terracotta: WHITE_TERRACOTTA
+white tulip: WHITE_TULIP
+white wool: WHITE_WOOL
 whitebanner: WHITE_BANNER
 whitebarelog: STRIPPED_BIRCH_LOG
 whitebarewood: STRIPPED_BIRCH_WOOD
@@ -23749,6 +24928,8 @@ wildcatsegg: OCELOT_SPAWN_EGG
 wildcatspawn: OCELOT_SPAWN_EGG
 wildcatspawnegg: OCELOT_SPAWN_EGG
 wildcatspawner: OCELOT_SPAWNER
+witch spawn egg: WITCH_SPAWN_EGG
+witch spawner: SPAWNER
 witchcage: WITCH_SPAWNER
 witchegg: WITCH_SPAWN_EGG
 witchmcage: WITCH_SPAWNER
@@ -23761,6 +24942,11 @@ witchsegg: WITCH_SPAWN_EGG
 witchspawn: WITCH_SPAWN_EGG
 witchspawnegg: WITCH_SPAWN_EGG
 witchspawner: WITCH_SPAWNER
+wither rose: WITHER_ROSE
+wither skeleton skull: WITHER_SKELETON_SKULL
+wither skeleton spawn egg: WITHER_SKELETON_SPAWN_EGG
+wither skeleton spawner: SPAWNER
+wither spawner: SPAWNER
 wither_skeletoncage: WITHER_SKELETON_SPAWNER
 wither_skeletonegg: WITHER_SKELETON_SPAWN_EGG
 wither_skeletonhead: WITHER_SKELETON_SKULL
@@ -23829,6 +25015,8 @@ wlogleaf: BIRCH_LEAVES
 wlogleave: BIRCH_LEAVES
 wlogleaves: BIRCH_LEAVES
 wlogsapling: BIRCH_SAPLING
+wolf spawn egg: WOLF_SPAWN_EGG
+wolf spawner: SPAWNER
 wolfcage: WOLF_SPAWNER
 wolfegg: WOLF_SPAWN_EGG
 wolfmcage: WOLF_SPAWNER
@@ -23864,6 +25052,11 @@ wooddoak: DARK_OAK_WOOD
 wooddoakstripped: STRIPPED_DARK_OAK_WOOD
 wooddostripped: STRIPPED_DARK_OAK_WOOD
 wooddstripped: STRIPPED_SPRUCE_WOOD
+wooden axe: WOODEN_AXE
+wooden hoe: WOODEN_HOE
+wooden pickaxe: WOODEN_PICKAXE
+wooden shovel: WOODEN_SHOVEL
+wooden sword: WOODEN_SWORD
 woodenaxe: WOODEN_AXE
 woodenhoe: WOODEN_HOE
 woodenpick: WOODEN_PICKAXE
@@ -23916,7 +25109,9 @@ wpplate: BIRCH_PRESSURE_PLATE
 wpressplate: BIRCH_PRESSURE_PLATE
 wpressureplate: BIRCH_PRESSURE_PLATE
 wraft: BIRCH_BOAT
+writable book: WRITABLE_BOOK
 writablebook: WRITABLE_BOOK
+written book: WRITTEN_BOOK
 writtenbook: WRITTEN_BOOK
 wsapling: BIRCH_SAPLING
 wsbox: WHITE_SHULKER_BOX
@@ -24023,6 +25218,18 @@ ycotton: YELLOW_WOOL
 ycp: YELLOW_CONCRETE_POWDER
 ycpowder: YELLOW_CONCRETE_POWDER
 ydye: YELLOW_DYE
+yellow banner: YELLOW_BANNER
+yellow bed: YELLOW_BED
+yellow carpet: YELLOW_CARPET
+yellow concrete: YELLOW_CONCRETE
+yellow concrete powder: YELLOW_CONCRETE_POWDER
+yellow dye: YELLOW_DYE
+yellow glazed terracotta: YELLOW_GLAZED_TERRACOTTA
+yellow shulker box: YELLOW_SHULKER_BOX
+yellow stained glass: YELLOW_STAINED_GLASS
+yellow stained glass pane: YELLOW_STAINED_GLASS_PANE
+yellow terracotta: YELLOW_TERRACOTTA
+yellow wool: YELLOW_WOOL
 yellowbanner: YELLOW_BANNER
 yellowbed: YELLOW_BED
 yellowcarpet: YELLOW_CARPET
@@ -24102,6 +25309,8 @@ zmobspawner: ZOMBIE_SPAWNER
 zmonstercage: ZOMBIE_SPAWNER
 zmonsterspawner: ZOMBIE_SPAWNER
 zmspawner: ZOMBIE_SPAWNER
+zoglin spawn egg: ZOGLIN_SPAWN_EGG
+zoglin spawner: SPAWNER
 zoglincage: ZOGLIN_SPAWNER
 zoglinegg: ZOGLIN_SPAWN_EGG
 zoglinmcage: ZOGLIN_SPAWNER
@@ -24116,6 +25325,13 @@ zoglinspawnegg: ZOGLIN_SPAWN_EGG
 zoglinspawner: ZOGLIN_SPAWNER
 zombcage: ZOMBIE_SPAWNER
 zombegg: ZOMBIE_SPAWN_EGG
+zombie head: ZOMBIE_HEAD
+zombie horse spawn egg: ZOMBIE_HORSE_SPAWN_EGG
+zombie horse spawner: SPAWNER
+zombie spawn egg: ZOMBIE_SPAWN_EGG
+zombie spawner: SPAWNER
+zombie villager spawn egg: ZOMBIE_VILLAGER_SPAWN_EGG
+zombie villager spawner: SPAWNER
 zombie_horsecage: ZOMBIE_HORSE_SPAWNER
 zombie_horseegg: ZOMBIE_HORSE_SPAWN_EGG
 zombie_horsemcage: ZOMBIE_HORSE_SPAWNER
@@ -24247,6 +25463,8 @@ zombiespawn: ZOMBIE_SPAWN_EGG
 zombiespawnegg: ZOMBIE_SPAWN_EGG
 zombiespawner: ZOMBIE_SPAWNER
 zombievillagerspawnegg: ZOMBIE_VILLAGER_SPAWN_EGG
+zombified piglin spawn egg: ZOMBIFIED_PIGLIN_SPAWN_EGG
+zombified piglin spawner: SPAWNER
 zombified_piglincage: ZOMBIFIED_PIGLIN_SPAWNER
 zombified_piglinegg: ZOMBIFIED_PIGLIN_SPAWN_EGG
 zombified_piglinmcage: ZOMBIFIED_PIGLIN_SPAWNER
