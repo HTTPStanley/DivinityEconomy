@@ -102,9 +102,7 @@ public class ConsoleManager {
      * @param message
      */
     public void debug(String message) {
-        if (debugMode == true) {
-            send(debugColour + message);
-        }
+        if (debugMode) send(debugColour + message);
     }
 
     /**
