@@ -21,15 +21,19 @@ public class EconomyManager {
     private Economy economy;
 
     // Settings
-    private double minSendAmount;
-    private double roundingDigits;
+    public double minSendAmount;
+    public int roundingDigits;
+    public int baseQuantity;
+    public double tax;
 
     public EconomyManager(DCEPlugin app) {
         this.app = app;
 
         // settings
         this.minSendAmount = app.getConfig().getDouble(app.getConf().strEconMinSendAmount);
-        this.roundingDigits = app.getConfig().getDouble(app.getConf().strEconRoundingDigits);
+        this.tax = app.getConfig().getDouble(app.getConf().strEconTaxScale);
+        this.roundingDigits = app.getConfig().getInt(app.getConf().strEconRoundingDigits);
+        this.baseQuantity = app.getConfig().getInt(app.getConf().strEconBaseQuantity);
     }
 
 
@@ -94,11 +98,14 @@ public class EconomyManager {
      */
 
      public double round(double amount) {
+        return round(amount, this.roundingDigits);
+    }
+
+    public double round(double amount, int roundingDigits) {
         // Rounds the amount to the number of digits specified
         // Does this by 10**digits (100 or 10**2 = 2 digits)
         double roundAmount = Math.pow(10, roundingDigits);
         return Math.round(amount * roundAmount) / roundAmount;
-
     }
 
     /**
