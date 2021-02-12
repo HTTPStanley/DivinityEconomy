@@ -56,13 +56,13 @@ public class Value implements CommandExecutor {
 
         MaterialData material = app.getMat().getMaterial(materialName);
         if (material == null) {
-            app.getCon().usage(from, "Unknown Item: " + materialName, "");
+            app.getCon().usage(from, "Unknown Item: " + materialName, usage);
         } else {
             EconomyResponse priceResponse = app.getMat().getMaterialPrice(material, amount, 1.2, true);
             if (priceResponse.type == ResponseType.SUCCESS) {
                 app.getCon().info(from, amount + " * " + material.getCleanName() + " costs £" + priceResponse.balance);
             } else {
-                app.getCon().warn(from, "Couldn't determine price of " + material.getCleanName() + " * " + amount + " because " + priceResponse.errorMessage);
+                app.getCon().usage(from, "Couldn't determine price of " + material.getCleanName() + " * " + amount + " because " + priceResponse.errorMessage, usage);
             }
         }
 
