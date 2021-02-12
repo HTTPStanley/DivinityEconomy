@@ -25,6 +25,7 @@ public class EconomyManager {
     public int roundingDigits;
     public int baseQuantity;
     public double tax;
+    public double minAccountBalance;
 
     public EconomyManager(DCEPlugin app) {
         this.app = app;
@@ -34,6 +35,7 @@ public class EconomyManager {
         this.tax = app.getConfig().getDouble(app.getConf().strEconTaxScale);
         this.roundingDigits = app.getConfig().getInt(app.getConf().strEconRoundingDigits);
         this.baseQuantity = app.getConfig().getInt(app.getConf().strEconBaseQuantity);
+        this.minAccountBalance = app.getConfig().getDouble(app.getConf().strEconMinAccountBalance);
     }
 
 
@@ -253,7 +255,7 @@ public class EconomyManager {
         try {
             amount = Double.parseDouble(arg);
         } catch (Exception e) {
-            amount = null;
+            amount = 0.0;
         }
 
         return amount;
