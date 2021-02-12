@@ -14,6 +14,7 @@ public class ConfigManager {
     // Main settings
     public String strMainDebugMode = strMainPrefix + ".debugMode";
     public String strMainVersion = strMainPrefix + ".version";
+    public String strMainSaveTimer = strMainPrefix + ".saveTimer";
 
     // Chat settings
     public String strChatDebug = strChatPrefix + ".chatDebug";
@@ -40,6 +41,10 @@ public class ConfigManager {
     public String strComPing = strComPrefix + ".ping";
     public String strComSendCash = strComPrefix + ".sendCash";
     public String strComSetBal = strComPrefix + ".setBal";
+    public String strComBuyItem = strComPrefix + ".buyItem";
+    public String strComValue = strComPrefix + ".value";
+    public String strComSearch = strComPrefix + ".search";
+    public String strComInfo = strComPrefix + ".info";
 
 
     public ConfigManager(DCEPlugin app){
