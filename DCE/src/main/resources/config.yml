@@ -1,6 +1,7 @@
 # Main settings
 #   debugMode: enables and disables debugging.
 #   version: the version of the config file - do not touch!
+#   saveTimer: The time in miliseconds between saving the economy data
 # 
 # Chat settings
 #   Colours can be found here: https://jd.bukkit.org/org/bukkit/ChatColor.html
@@ -20,6 +21,8 @@
 # Economy
 #   minSendAmount - The minimum amount of money a user can send to another users
 #   roundingDigits - The level of resolution to use when rounding.
+#   baseQuantity - The base quantity of items for something worth £1
+#   tax - The tax levl
 # 
 # Commands
 #   balance - returns the users balance
@@ -28,10 +31,12 @@
 #   ping - A test command
 #   sendCash - lets users send cash to one another
 #   setBal - #ADMIN# sets a users balance
+#   buyItem - lets users purchase items from the market
 
 main:
   debugMode: false
   version: "1.0.1"
+  saveTimer: 5000 
 chat:
   chatDebug: false
   prefix: "[DCE]"
@@ -44,6 +49,7 @@ chat:
   severeColour: "RED"
   debugColour: "DARK_PURPLE"
 economy:
+  minAccountBalance: 0
   minSendAmount: 0.01
   roundingDigits: 2
   baseQuantity: 1000000
@@ -55,3 +61,5 @@ commands:
   ping: true
   sendCash: true
   setBal: true
+  buyItem: true
+  value: true

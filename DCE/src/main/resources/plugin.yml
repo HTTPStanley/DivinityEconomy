@@ -3,10 +3,10 @@ prefix: DCE
 main: EDGRRRR.DCE.Main.DCEPlugin
 version: 1.0.1
 author: EDGRRRR
-description: DivinityCraft Economy plugin, somewhat based around hyperconomy.
+description: DivinityCraft Economy plugin.
 api-version: 1.16
 depend: [Vault]
-soft-depend: [Essentials]
+soft-depend: []
 load: STARTUP
 
 
@@ -33,6 +33,42 @@ commands:
     permission: dce.money.sendcash
     permission-message: You do not have the permission to use this command
     usage: /sendcash <playername> <amount>
+
+  # Market commands
+  buy:
+    description: Allows the user to purchase items from the market.
+    aliases: [purchase, b]
+    permission: dce.market.buy
+    permission-message: You do not have permission to use this command
+    usage: ""
+
+  sell:
+    description: Allows the user to sell items to the market.
+    aliases: []
+    permission: dce.market.sell
+    permission-message: You do not have permission to use this command
+    usage: ""
+
+  value:
+    description: Allows the user to check the value of an item.
+    aliases: [val]
+    permission: dce.market.value
+    permission-message: You do not have permission to use this command
+    usage: ""
+
+  search:
+    description: Allows the user to search for items in the market
+    aliases: [find, lookup]
+    permission: dce.market.search
+    permission-message: You do not have permission to use this command
+    usage: ""
+
+  information:
+    description: 
+    aliases: [describe, info, ilookup]
+    permission: dce.market.information
+    permission-message: You do not have permission to use this command
+    usage: ""
 
   # Admin commands
   editbal:
@@ -69,7 +105,7 @@ permissions:
     description: Allows the user to use the ping command.
     default: true
   
-  # Main branch of permissions
+  # Money branch of permissions
   dce.money:
     description: Allows the user to use all commands under the money branch of permissions.
     default: true
@@ -83,6 +119,37 @@ permissions:
 
   dce.money.sendcash:
     description: Allows the user to send cash to others.
+    default: true
+
+  # Market branch of permissions
+  dce.market:
+    description: Allows the user to use all commands under the market branch of permissions
+    default: true
+    children:
+      dce.market.buy: true
+      dce.market.sell: true
+      dce.market.search: true
+      dce.market.information: true
+      dce.market.value: true
+
+  dce.market.buy:
+    description: Allows the user to purchase items from the market
+    default: true
+
+  dce.market.sell:
+    description: Allows the user to sell items to the market
+    default: true
+
+  dce.market.search:
+    description: Allows the user search for items in the market
+    default: true
+
+  dce.market.information:
+    description: Allows the user to get information about items in the market
+    default: true
+
+  dce.market.value:
+    description: Allows the user to value items in the market
     default: true
   
   # Admin commands
