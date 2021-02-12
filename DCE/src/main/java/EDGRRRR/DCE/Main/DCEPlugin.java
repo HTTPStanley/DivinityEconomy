@@ -8,6 +8,7 @@ import EDGRRRR.DCE.Commands.Balance;
 import EDGRRRR.DCE.Commands.BuyItem;
 import EDGRRRR.DCE.Commands.ClearBal;
 import EDGRRRR.DCE.Commands.EditBal;
+import EDGRRRR.DCE.Commands.Info;
 import EDGRRRR.DCE.Commands.Ping;
 import EDGRRRR.DCE.Commands.SendCash;
 import EDGRRRR.DCE.Commands.SetBal;
@@ -59,9 +60,13 @@ public class DCEPlugin extends JavaPlugin {
     public CommandExecutor getCommandBuyItem() { return this.buyItem; }
 
 
-    // A command for buying items from the market
+    // A command for valuing items from the market
     private CommandExecutor value;
     public CommandExecutor getCommandValue() { return this.value; }
+
+    // A command for getting item information from the market
+    private CommandExecutor info;
+    public CommandExecutor getCommandInfo() { return this.info; }
 
     /**
      * Called when the plugin is enabled
@@ -88,6 +93,7 @@ public class DCEPlugin extends JavaPlugin {
         this.clearbal = new ClearBal(this);
         this.buyItem = new BuyItem(this);
         this.value = new Value(this);
+        this.info = new Info(this);
     	
     	try {
             // Register commands
@@ -99,6 +105,7 @@ public class DCEPlugin extends JavaPlugin {
             getCommand("clearbal").setExecutor(this.clearbal);
             getCommand("buy").setExecutor(this.buyItem);
             getCommand("value").setExecutor(this.value);
+            getCommand("information").setExecutor(this.info);
             } catch (Exception e){
                 e.printStackTrace();
                 con.severe("An error occurred on registry: " + e);
