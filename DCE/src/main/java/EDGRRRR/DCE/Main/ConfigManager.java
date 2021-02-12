@@ -33,6 +33,7 @@ public class ConfigManager {
     public String strEconRoundingDigits = strEconPrefix + ".roundingDigits";
     public String strEconBaseQuantity = strEconPrefix + ".baseQuantity";
     public String strEconTaxScale = strEconPrefix + ".tax";
+    public String strEconMinAccountBalance = strEconPrefix + ".minAccountBalance";
 
     // Commands settings
     public String strComBalance = strComPrefix + ".balance";
