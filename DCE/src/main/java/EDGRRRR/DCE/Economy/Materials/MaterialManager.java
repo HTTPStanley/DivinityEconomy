@@ -89,6 +89,7 @@ public class MaterialManager {
         // Get the stock
         // If amount is greater than stock then return such
         int stock = materialD.getQuantity();
+        int materials = totalMaterials;
         if (stock < amount)
             return new EconomyResponse(amount, 0.0, ResponseType.FAILURE, "Not enough stock: " + stock);
 
@@ -99,15 +100,19 @@ public class MaterialManager {
         // if purchase = false
         // add 1 stock to simulate increase
         for (int i = 1; i <= amount; i++) {
-            value += getPrice(stock, scale);
-            if (purchase)
+            value += getPrice(stock, scale, getInflation(baseTotalMaterials, materials));
+            if (purchase) {
                 stock -= 1;
-            else
+                materials -= 1;
+            }
+            else {
                 stock += 1;
+                materials += 1;
+            }
         }
 
         // Rounding
-        value = app.getEco().round(value);
+        value = app.getEco().round(value, 2);
 
         return new EconomyResponse(amount, value, ResponseType.SUCCESS, "");
     }
@@ -120,7 +125,7 @@ public class MaterialManager {
      * @param scale
      * @return
      */
-    private double getPrice(int stock, double scale) {
+    private double getPrice(int stock, double scale, double inflation) {
         // Price breakdown
         // Prices were balanced in data.csv
         // Prices are determined by quantity
@@ -131,11 +136,15 @@ public class MaterialManager {
         // Inflation works by calculating the default total items and dividing it by the new total items
         // This results in an increase in price when there are less items in the market than default
         // Or a decrease in price when there are more items in the market than default
-        return app.getEco().round((app.getEco().baseQuantity / stock) * scale * getInflation());
+        return app.getEco().round((app.getEco().baseQuantity / stock) * scale * inflation);
     }
 
     public double getInflation() {
-        return baseTotalMaterials / totalMaterials;
+        return getInflation(baseTotalMaterials, totalMaterials);
+    }
+
+    public double getInflation(int baseQuantity, int actualQuantity) {
+        return baseQuantity / actualQuantity;
     }
 
     /**
@@ -146,7 +155,7 @@ public class MaterialManager {
      * @return
      */
     public double getMarketPrice(int stock) {
-        return getPrice(stock, 1.0);
+        return getPrice(stock, 1.0, getInflation());
     }
 
     /**
@@ -157,7 +166,7 @@ public class MaterialManager {
      * @return
      */
     public double getUserPrice(int stock) {
-        return getPrice(stock, app.getEco().tax);
+        return getPrice(stock, app.getEco().tax, getInflation());
     }
 
     /**
