@@ -5,11 +5,13 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import EDGRRRR.DCE.Commands.Balance;
+import EDGRRRR.DCE.Commands.BuyItem;
 import EDGRRRR.DCE.Commands.ClearBal;
 import EDGRRRR.DCE.Commands.EditBal;
 import EDGRRRR.DCE.Commands.Ping;
 import EDGRRRR.DCE.Commands.SendCash;
 import EDGRRRR.DCE.Commands.SetBal;
+import EDGRRRR.DCE.Commands.Value;
 import EDGRRRR.DCE.Economy.Materials.MaterialManager;
 import EDGRRRR.DCE.Economy.EconomyManager;
 /**
@@ -52,6 +54,15 @@ public class DCEPlugin extends JavaPlugin {
     private CommandExecutor clearbal;
     public CommandExecutor getCommandClearBal() { return this.clearbal; }
 
+    // A command for buying items from the market
+    private CommandExecutor buyItem;
+    public CommandExecutor getCommandBuyItem() { return this.buyItem; }
+
+
+    // A command for buying items from the market
+    private CommandExecutor value;
+    public CommandExecutor getCommandValue() { return this.value; }
+
     /**
      * Called when the plugin is enabled
      * Setup console
@@ -75,6 +86,8 @@ public class DCEPlugin extends JavaPlugin {
         this.sendcash = new SendCash(this);
         this.setbal = new SetBal(this);
         this.clearbal = new ClearBal(this);
+        this.buyItem = new BuyItem(this);
+        this.value = new Value(this);
     	
     	try {
             // Register commands
@@ -84,6 +97,8 @@ public class DCEPlugin extends JavaPlugin {
             getCommand("sendcash").setExecutor(this.sendcash);
             getCommand("setbal").setExecutor(this.setbal);
             getCommand("clearbal").setExecutor(this.clearbal);
+            getCommand("buy").setExecutor(this.buyItem);
+            getCommand("value").setExecutor(this.value);
             } catch (Exception e){
                 e.printStackTrace();
                 con.severe("An error occurred on registry: " + e);
@@ -92,6 +107,7 @@ public class DCEPlugin extends JavaPlugin {
             }
 
         // Done :)
+        describe();
         con.info("Plugin Enabled");
     }
 
@@ -100,7 +116,18 @@ public class DCEPlugin extends JavaPlugin {
      */
     @Override
     public void onDisable() {
+        if (!(mat == null)) {
+            mat.saveAll();
+        }
         con.warn("Plugin Disabled");
+    }
+
+    public void describe() {
+        con.debug("Materials: " + mat.materials.size());
+        con.debug("Aliases: " + mat.aliases.size());
+        con.debug("Starting Items: " + mat.baseTotalMaterials);
+        con.debug("Actual Items: " + mat.totalMaterials);
+        con.debug("Inflation: " + eco.round(mat.getInflation(),2) + "%");
     }
 
     /**
