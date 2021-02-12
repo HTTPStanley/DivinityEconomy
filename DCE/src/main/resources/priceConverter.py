@@ -16,11 +16,18 @@ def clean(dtr):
 
     return new
 
-def getQuantity(price, default=1000000):
-    return int(default / price)
+def userify(dtr):
+    dtr = dtr.lower()
+    dtr = dtr.strip(" ")
+    dtr = dtr.replace("_", " ")
+    dtr = dtr.title()
+    return dtr
 
-taxRate = 20#%
-tax = 1 + (taxRate / 100)
+def getQuantity(price, default=1000000):
+    if price > 0:
+        return int(default / price)
+    else:
+        return 0
 
 with open(r"src\main\resources\data.csv", "r") as stream:
     with open(r"src\main\resources\materialData.yml", "r") as matStream:
@@ -32,19 +39,11 @@ with open(r"src\main\resources\data.csv", "r") as stream:
 
     for name, price, allowed in csvData:
         name = clean(name)
-        if name in matKeys and not(price == ""):
-            matData[name]["BUY_PRICE"] = float(price) * tax
-            matData[name]["SELL_PRICE"] = float(price)
-            matData[name]["QUANTITY"] = getQuantity(float(price) * tax)
-            matData[name]["ALLOWED"] = bool(allowed)
-
-        elif name in matKeys and price=="":
-            matData[name]["BUY_PRICE"] = 0
-            matData[name]["SELL_PRICE"] = 0
-            matData[name]["QUANTITY"] = 0
-            matData[name]["ALLOWED"] = False
-
         if name in matKeys:
+            price = 0 if price == "" else price
+            matData[name]["QUANTITY"] = getQuantity(float(price))
+            matData[name]["ALLOWED"] = bool(True if allowed == "TRUE" else False)
+
             if name in unknown:
                 print(f"Found: {name}")
                 unknown.remove(name)
@@ -57,12 +56,20 @@ with open(r"src\main\resources\data.csv", "r") as stream:
 
 
 for key in matData:
-    matData[key]["BUY_PRICE"] = round(float(matData[key].get("BUY_PRICE", 0)), 2)
-    matData[key]["SELL_PRICE"] = round(float(matData[key].get("SELL_PRICE", 0)), 2)
     matData[key]["QUANTITY"] = int(matData[key].get("QUANTITY", 0))
     matData[key]["ALLOWED"] = bool(matData[key].get("ALLOWED", False))
+    matData[key]["CLEAN_NAME"] = str(userify(key))
+    matData[key]["MATERIAL"] = str(matData[key].get("material", key))
+    matData[key]["POTION_DATA"] = matData[key].get("potionData", None)
+    matData[key]["ENTITY"] = matData[key].get("entity", None)
     if "fallbacks" in matData[key]:
         matData[key].pop("fallbacks")
+    if "potionData" in matData[key]:
+        matData[key].pop("potionData")
+    if "material" in matData[key]: 
+        matData[key].pop("material")
+    if "entity" in matData[key]: 
+        matData[key].pop("entity")
 
 
 with open(r"src\main\resources\materials.yml", "w", encoding="utf8") as newStream:
