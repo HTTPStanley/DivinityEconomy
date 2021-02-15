@@ -84,10 +84,8 @@ public class Info implements CommandExecutor {
             app.getCon().info(from, "==[" + material.getCleanName() + "]==");
             app.getCon().info(from, "ID: " + material.getMaterialID());
             app.getCon().info(from, "Material Type: " + material.getType());
-            app.getCon().info(from, "User Price(x" + userAmount + "): " + userPrice);
-            app.getCon().info(from, "Market Price(x" + marketAmount+ "): " + marketPrice);
-            app.getCon().info(from, "Inflation: " + inflation + "%");
-            app.getCon().info(from, "Base Quantity: " + material.getDefaultQuantity());
+            app.getCon().info(from, "Buy Price(x" + userAmount + "): " + userPrice);
+            app.getCon().info(from, "Sell Price(x" + marketAmount+ "): " + marketPrice);
             app.getCon().info(from, "Current Quantity: " + material.getQuantity());
             app.getCon().info(from, "Is Banned: " + !(material.getAllowed()));
             if (material.getEntityName() != null) app.getCon().info(from, "Entity Name: " + material.getEntityName());
