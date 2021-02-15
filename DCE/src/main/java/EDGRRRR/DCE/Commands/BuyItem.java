@@ -16,7 +16,7 @@ import org.bukkit.inventory.ItemStack;
  */
 public class BuyItem implements CommandExecutor {
     private DCEPlugin app;
-    private String usage = "/buy <itemName> <amountToBuy>";
+    private String usage = "/buy <itemName> <amountToBuy> or /buy <itemName>";
 
     public BuyItem(DCEPlugin app) {
         this.app = app;
@@ -40,8 +40,14 @@ public class BuyItem implements CommandExecutor {
         String materialName = null;
         Integer amount = null;
         switch (args.length) {
+            // Just material, used default amount of 1
+            case 1:
+                materialName = args[0];
+                amount = 1;
+                break;
+
+            // Material & Amount
             case 2:
-                // Get the material args
                 materialName = args[0];
                 amount = (int) (double) app.getEco().getDouble(args[1]);
                 break;
