@@ -35,7 +35,7 @@ public class Value implements CommandExecutor {
             app.getCon().severe(from, "This command is not enabled.");
             return true;
         }
-        
+
         String materialName = null;
         Integer amount = null;
         switch (args.length) {
@@ -43,7 +43,7 @@ public class Value implements CommandExecutor {
                 amount = 1;
                 materialName = args[0];
                 break;
-                                
+
             case 2:
                 materialName = args[0];
                 amount = (int) (double) app.getEco().getDouble(args[1]);
@@ -58,11 +58,16 @@ public class Value implements CommandExecutor {
         if (material == null) {
             app.getCon().usage(from, "Unknown Item: " + materialName, usage);
         } else {
-            EconomyResponse priceResponse = app.getMat().getMaterialPrice(material, amount, 1.2, true);
-            if (priceResponse.type == ResponseType.SUCCESS) {
-                app.getCon().info(from, amount + " * " + material.getCleanName() + " costs £" + app.getEco().round(priceResponse.balance));
+            EconomyResponse priceResponse = app.getMat().getMaterialPrice(material, amount, app.getEco().tax, true);
+            EconomyResponse secondPriceResponse = app.getMat().getMaterialPrice(material, amount, 1.0, false);
+            if (priceResponse.type == ResponseType.SUCCESS && secondPriceResponse.type == ResponseType.SUCCESS) {
+                app.getCon().info(from, "Buy: " + amount + " * " + material.getCleanName() + " costs £" + app.getEco().round(priceResponse.balance));
+                app.getCon().info(from, "Sell: " + amount + " * " + material.getCleanName() + " costs £" + app.getEco().round(secondPriceResponse.balance));
             } else {
-                app.getCon().usage(from, "Couldn't determine price of " + material.getCleanName() + " * " + amount + " because " + priceResponse.errorMessage, usage);
+                String error = null;
+                if (!(priceResponse.type == ResponseType.SUCCESS)) error = priceResponse.errorMessage;
+                else error = secondPriceResponse.errorMessage;
+                app.getCon().usage(from, "Couldn't determine price of " + material.getCleanName() + " * " + amount + " because " + error, usage);
             }
         }
 
