@@ -87,18 +87,19 @@ public class SetBal implements CommandExecutor {
             toName = toOff.getName();
         }
 
+        double balance = app.getEco().round(response.balance);
 
         // Response messages
         switch(response.type) {
             case SUCCESS:
                 // If to != from, respond.
                 if (!(to == from)) {
-                    app.getCon().info(from, "You set " + toName + "'s balance to £" + response.balance);
+                    app.getCon().info(from, "You set " + toName + "'s balance to £" + balance);
                 }
 
                 // If online send message
                 if (!(to == null)) {
-                    app.getCon().info(to, "Your balance was set to £" + response.balance + " by " + from.getName());
+                    app.getCon().info(to, "Your balance was set to £" + balance + " by " + from.getName());
 
                 // If offline --
                 } else {
@@ -106,7 +107,7 @@ public class SetBal implements CommandExecutor {
                 }
 
                 // Console feedback
-                app.getCon().info(from.getName() + " set " + toName + "'s balance to £" + response.balance);
+                app.getCon().info(from.getName() + " set " + toName + "'s balance to £" + balance);
                 break;
 
             case FAILURE:

@@ -111,9 +111,6 @@ public class MaterialManager {
             }
         }
 
-        // Rounding
-        value = app.getEco().round(value, 2);
-
         return new EconomyResponse(amount, value, ResponseType.SUCCESS, "");
     }
 
@@ -136,7 +133,7 @@ public class MaterialManager {
         // Inflation works by calculating the default total items and dividing it by the new total items
         // This results in an increase in price when there are less items in the market than default
         // Or a decrease in price when there are more items in the market than default
-        return app.getEco().round((app.getEco().baseQuantity / stock) * scale * inflation);
+        return (app.getEco().baseQuantity / stock) * scale * inflation;
     }
 
     public double getInflation() {

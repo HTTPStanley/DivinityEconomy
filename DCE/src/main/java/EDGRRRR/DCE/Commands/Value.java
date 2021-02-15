@@ -60,7 +60,7 @@ public class Value implements CommandExecutor {
         } else {
             EconomyResponse priceResponse = app.getMat().getMaterialPrice(material, amount, 1.2, true);
             if (priceResponse.type == ResponseType.SUCCESS) {
-                app.getCon().info(from, amount + " * " + material.getCleanName() + " costs £" + priceResponse.balance);
+                app.getCon().info(from, amount + " * " + material.getCleanName() + " costs £" + app.getEco().round(priceResponse.balance));
             } else {
                 app.getCon().usage(from, "Couldn't determine price of " + material.getCleanName() + " * " + amount + " because " + priceResponse.errorMessage, usage);
             }

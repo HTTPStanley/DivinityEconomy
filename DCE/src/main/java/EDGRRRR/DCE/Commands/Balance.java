@@ -62,14 +62,17 @@ public class Balance implements CommandExecutor {
             return true;
         }
 
+        double balance = 0.0;
         if (!(to == null)) {
+            balance = app.getEco().round(app.getEco().getBalance(to));
             if (!(from == to)) {
-                app.getCon().info(from, to.getName() + "'s Balance: £" + app.getEco().getBalance(to));
+                app.getCon().info(from, to.getName() + "'s Balance: £" + balance);
             } else {
-                app.getCon().info(from, "Balance: £" + app.getEco().getBalance(to));
+                app.getCon().info(from, "Balance: £" + balance);
             }
         } else {
-            app.getCon().info(from, toOff.getName() + "'s Balance: £" + app.getEco().getBalance(toOff));
+            balance = app.getEco().round(app.getEco().getBalance(toOff));
+            app.getCon().info(from, toOff.getName() + "'s Balance: £" + balance);
         }
         // Graceful exit
         return true;

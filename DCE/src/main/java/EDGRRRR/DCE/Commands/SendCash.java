@@ -90,16 +90,18 @@ public class SendCash implements CommandExecutor {
             toName = toOff.getName();
         }
 
+        double cost = app.getEco().round(response.amount);
+
 
         switch(response.type) {
             case SUCCESS:
-                app.getCon().info(from, "You sent £" + response.amount + " to " + toName + ". New Balance: £" + app.getEco().getBalance(from));
+                app.getCon().info(from, "You sent £" + cost + " to " + toName + ". New Balance: £" + app.getEco().round(app.getEco().getBalance(from)));
                 if (!(to == null)) {
-                    app.getCon().info(to, "You received £" + response.amount + " from " + from.getName() + ". New Balance: £" + app.getEco().getBalance(to));
+                    app.getCon().info(to, "You received £" + cost + " from " + from.getName() + ". New Balance: £" + app.getEco().round(app.getEco().getBalance(to)));
                 } else {
                     // Perhaps send an ingame mail message to offlinePlayer ¯\_(ツ)_/¯
                 }
-                app.getCon().info(from.getName() + " sent £" + response.amount + " to " + toName);
+                app.getCon().info(from.getName() + " sent £" + cost + " to " + toName);
                 break;
 
             case FAILURE:

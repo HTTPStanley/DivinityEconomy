@@ -62,8 +62,10 @@ public class BuyItem implements CommandExecutor {
                 ItemStack iStack = material.getItemStack(amount);
                 from.getInventory().addItem(iStack);
                 material.remQuantity(amount);
-                app.getCon().info(from, "You bought " + amount + " of " + material.getCleanName() + " for £" + saleResponse.amount + ". New Balance: £" + saleResponse.balance);
-                app.getCon().info(from.getName() + "Bought " + amount + " of " + material.getCleanName() + " for £" + saleResponse.amount);
+                double cost = app.getEco().round(saleResponse.amount);
+                double balance = app.getEco().round(saleResponse.balance);
+                app.getCon().info(from, "You bought " + amount + " of " + material.getCleanName() + " for £" + cost + ". New Balance: £" + balance);
+                app.getCon().info(from.getName() + "Bought " + amount + " of " + material.getCleanName() + " for £" + cost);
             }
             else {
                 String errorMessage = null;

@@ -97,18 +97,21 @@ public class EditBal implements CommandExecutor {
             response = app.getEco().remCash(toOff, -amount);
         }
 
+        double cost = app.getEco().round(response.amount);
+        double balance = app.getEco().round(response.balance);
+
 
         // Response messages
         switch(response.type) {
             case SUCCESS:
                 // If to != from, respond.
                 if (!(to == from)) {
-                    app.getCon().info(from, "You changed " + toName + "'s balance by £" + response.amount + " to £" + response.balance);
+                    app.getCon().info(from, "You changed " + toName + "'s balance by £" + cost + " to £" + balance);
                 }
 
                 // If online send message
                 if (!(to == null)) {
-                    app.getCon().info(to, from.getName() + "Changed your balance by £" + response.amount + " to £" + response.balance);
+                    app.getCon().info(to, from.getName() + "Changed your balance by £" + cost + " to £" + balance);
 
                 // If offline --
                 } else {
@@ -116,7 +119,7 @@ public class EditBal implements CommandExecutor {
                 }
 
                 // Console feedback
-                app.getCon().info(from.getName() + "changed " + toName + "'s balance by £" + response.amount + " to £" + response.balance);
+                app.getCon().info(from.getName() + "changed " + toName + "'s balance by £" + cost + " to £" + balance);
                 break;
 
             case FAILURE:

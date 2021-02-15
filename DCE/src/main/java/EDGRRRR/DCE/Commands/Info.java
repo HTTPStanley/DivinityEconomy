@@ -65,7 +65,6 @@ public class Info implements CommandExecutor {
             double marketPrice = 0.0;
             int userAmount = amount;
             int marketAmount = amount;
-            double inflation = app.getMat().getInflation();
 
             if (userPriceResponse.type == ResponseType.SUCCESS) {
                 userPrice = userPriceResponse.balance;
@@ -81,6 +80,9 @@ public class Info implements CommandExecutor {
                 marketAmount = 1;
             }
 
+            userPrice = app.getEco().round(userPrice);
+            marketPrice = app.getEco().round(marketPrice);
+
             app.getCon().info(from, "==[" + material.getCleanName() + "]==");
             app.getCon().info(from, "ID: " + material.getMaterialID());
             app.getCon().info(from, "Material Type: " + material.getType());
@@ -94,8 +96,7 @@ public class Info implements CommandExecutor {
                 app.getCon().info(from, "Potion type: " + pData.getType());
                 app.getCon().info(from, "Upgraded potion: " + pData.getUpgraded());
                 app.getCon().info(from, "Extended potion: " + pData.getExtended());
-            }
-            
+            }            
         }
 
         return true;
