@@ -43,6 +43,7 @@ public class ConfigManager {
     public String strComSendCash = strComPrefix + ".sendCash";
     public String strComSetBal = strComPrefix + ".setBal";
     public String strComBuyItem = strComPrefix + ".buyItem";
+    public String strComSellItem = strComPrefix + ".sellItem";
     public String strComValue = strComPrefix + ".value";
     public String strComSearch = strComPrefix + ".search";
     public String strComInfo = strComPrefix + ".info";
