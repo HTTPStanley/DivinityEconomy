@@ -66,6 +66,7 @@ public class SellItem implements CommandExecutor {
             ItemStack iStack = material.getItemStack(amount);
             if (from.getInventory().contains(iStack)) {
                 from.getInventory().remove(iStack);
+                material.addQuantity(amount);
                 app.getEco().addCash(from, priceResponse.amount);
                 app.getCon().info(from, "You have sold " + amount + " * " + material.getCleanName() + " for £" + app.getEco().round(priceResponse.amount) + ". New balance: £" + app.getEco().round(app.getEco().getBalance(from)));
             } else {
