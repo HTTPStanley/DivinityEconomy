@@ -62,5 +62,6 @@ commands:
   sendCash: true
   setBal: true
   buyItem: true
+  sellItem: true
   value: true
   info: true
