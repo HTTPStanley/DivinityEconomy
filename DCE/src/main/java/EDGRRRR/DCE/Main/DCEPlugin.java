@@ -6,6 +6,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import EDGRRRR.DCE.Commands.Balance;
 import EDGRRRR.DCE.Commands.BuyItem;
+import EDGRRRR.DCE.Commands.SellItem;
 import EDGRRRR.DCE.Commands.ClearBal;
 import EDGRRRR.DCE.Commands.EditBal;
 import EDGRRRR.DCE.Commands.Info;
@@ -59,6 +60,10 @@ public class DCEPlugin extends JavaPlugin {
     private CommandExecutor buyItem;
     public CommandExecutor getCommandBuyItem() { return this.buyItem; }
 
+    // A command for selling items from the market
+    private CommandExecutor sellItem;
+    public CommandExecutor getCommandSellItem() { return this.sellItem; }
+
 
     // A command for valuing items from the market
     private CommandExecutor value;
@@ -92,6 +97,7 @@ public class DCEPlugin extends JavaPlugin {
         this.setbal = new SetBal(this);
         this.clearbal = new ClearBal(this);
         this.buyItem = new BuyItem(this);
+        this.sellItem = new SellItem(this);
         this.value = new Value(this);
         this.info = new Info(this);
     	
@@ -104,6 +110,7 @@ public class DCEPlugin extends JavaPlugin {
             getCommand("setbal").setExecutor(this.setbal);
             getCommand("clearbal").setExecutor(this.clearbal);
             getCommand("buy").setExecutor(this.buyItem);
+            getCommand("sell").setExecutor(this.sellItem);
             getCommand("value").setExecutor(this.value);
             getCommand("information").setExecutor(this.info);
             } catch (Exception e){
