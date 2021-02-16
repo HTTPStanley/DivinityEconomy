@@ -32,11 +32,11 @@ public class Info implements CommandExecutor {
         Player from = (Player) sender;
 
         // Ensure command is enabled
-        if (!(app.getConfig().getBoolean(app.getConf().strComInfo))) {
-            app.getCon().severe(from, "This command is not enabled.");
+        if (!(this.app.getConfig().getBoolean(this.app.getConf().strComInfo))) {
+            this.app.getCon().severe(from, "This command is not enabled.");
             return true;
         }
-        
+
         String materialName = null;
         Integer amount = null;
         switch (args.length) {
@@ -44,23 +44,23 @@ public class Info implements CommandExecutor {
                 amount = 1;
                 materialName = args[0];
                 break;
-                                
+
             case 2:
                 materialName = args[0];
-                amount = (int) (double) app.getEco().getDouble(args[1]);
+                amount = (int) (double) this.app.getEco().getDouble(args[1]);
                 break;
 
             default:
-                app.getCon().usage(from, "Invalid number of arguments.", usage);
+                this.app.getCon().usage(from, "Invalid number of arguments.", usage);
                 return true;
         }
 
-        MaterialData material = app.getMat().getMaterial(materialName);
+        MaterialData material = this.app.getMat().getMaterial(materialName);
         if (material == null) {
-            app.getCon().usage(from, "Unknown Item: " + materialName, usage);
+            this.app.getCon().usage(from, "Unknown Item: " + materialName, usage);
         } else {
-            EconomyResponse userPriceResponse = app.getMat().getMaterialPrice(material, amount, 1.2, true);
-            EconomyResponse marketPriceResponse = app.getMat().getMaterialPrice(material, amount, 1.0, false);
+            EconomyResponse userPriceResponse = this.app.getMat().getMaterialPrice(material, amount, 1.2, true);
+            EconomyResponse marketPriceResponse = this.app.getMat().getMaterialPrice(material, amount, 1.0, false);
             double userPrice = 0.0;
             double marketPrice = 0.0;
             int userAmount = amount;
@@ -80,23 +80,23 @@ public class Info implements CommandExecutor {
                 marketAmount = 1;
             }
 
-            userPrice = app.getEco().round(userPrice);
-            marketPrice = app.getEco().round(marketPrice);
+            userPrice = this.app.getEco().round(userPrice);
+            marketPrice = this.app.getEco().round(marketPrice);
 
-            app.getCon().info(from, "==[" + material.getCleanName() + "]==");
-            app.getCon().info(from, "ID: " + material.getMaterialID());
-            app.getCon().info(from, "Material Type: " + material.getType());
-            app.getCon().info(from, "Buy Price(x" + userAmount + "): " + userPrice);
-            app.getCon().info(from, "Sell Price(x" + marketAmount+ "): " + marketPrice);
-            app.getCon().info(from, "Current Quantity: " + material.getQuantity());
-            app.getCon().info(from, "Is Banned: " + !(material.getAllowed()));
-            if (material.getEntityName() != null) app.getCon().info(from, "Entity Name: " + material.getEntityName());
+            this.app.getCon().info(from, "==[" + material.getCleanName() + "]==");
+            this.app.getCon().info(from, "ID: " + material.getMaterialID());
+            this.app.getCon().info(from, "Material Type: " + material.getType());
+            this.app.getCon().info(from, "Buy Price(x" + userAmount + "): " + userPrice);
+            this.app.getCon().info(from, "Sell Price(x" + marketAmount+ "): " + marketPrice);
+            this.app.getCon().info(from, "Current Quantity: " + material.getQuantity());
+            this.app.getCon().info(from, "Is Banned: " + !(material.getAllowed()));
+            if (material.getEntityName() != null) this.app.getCon().info(from, "Entity Name: " + material.getEntityName());
             MaterialPotionData pData = material.getPotionData();
             if (pData != null) {
-                app.getCon().info(from, "Potion type: " + pData.getType());
-                app.getCon().info(from, "Upgraded potion: " + pData.getUpgraded());
-                app.getCon().info(from, "Extended potion: " + pData.getExtended());
-            }            
+                this.app.getCon().info(from, "Potion type: " + pData.getType());
+                this.app.getCon().info(from, "Upgraded potion: " + pData.getUpgraded());
+                this.app.getCon().info(from, "Extended potion: " + pData.getExtended());
+            }
         }
 
         return true;

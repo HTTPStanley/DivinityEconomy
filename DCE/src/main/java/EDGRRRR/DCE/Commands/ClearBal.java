@@ -29,8 +29,8 @@ public class ClearBal implements CommandExecutor {
         String to = null;
 
         // Ensure command is enabled
-        if (!(app.getConfig().getBoolean(app.getConf().strComClearBal))) {
-            app.getCon().severe(from, "This command is not enabled.");
+        if (!(this.app.getConfig().getBoolean(this.app.getConf().strComClearBal))) {
+            this.app.getCon().severe(from, "This command is not enabled.");
             return true;
         }
 
@@ -44,12 +44,12 @@ public class ClearBal implements CommandExecutor {
                 break;
 
             default:
-                app.getCon().usage(from, "Incorrect number of arguments.", usage);
+                this.app.getCon().usage(from, "Incorrect number of arguments.", usage);
                 return true;
         }
 
         String[] argv = {to, "0"};
-        return app.getCommandSetBal().onCommand(sender, command, label, argv);
+        return this.app.getCommandSetBal().onCommand(sender, command, label, argv);
     }
 }
 

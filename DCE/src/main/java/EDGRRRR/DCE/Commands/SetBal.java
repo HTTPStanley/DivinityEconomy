@@ -30,8 +30,8 @@ public class SetBal implements CommandExecutor {
         Player from = (Player) sender;
 
         // Ensure command is enabled
-        if (!(app.getConfig().getBoolean(app.getConf().strComSetBal))) {
-            app.getCon().severe(from, "This command is not enabled.");
+        if (!(this.app.getConfig().getBoolean(this.app.getConf().strComSetBal))) {
+            this.app.getCon().severe(from, "This command is not enabled.");
             return true;
         }
 
@@ -46,33 +46,33 @@ public class SetBal implements CommandExecutor {
             case 1:
                 // use case #1
                 to = from;
-                amount = app.getEco().getDouble(args[0]);
+                amount = this.app.getEco().getDouble(args[0]);
                 break;
 
             case 2:
                 // use case #2
-                to = app.getServer().getPlayer(args[0]);
-                amount = app.getEco().getDouble(args[1]);
+                to = this.app.getServer().getPlayer(args[0]);
+                amount = this.app.getEco().getDouble(args[1]);
                 if (to == null) {
-                    toOff = app.getOfflinePlayer(args[0], false);
+                    toOff = this.app.getOfflinePlayer(args[0], false);
                 }
                 break;
 
             default:
                 // Incorrect number of args
-                app.getCon().usage(from, "Incorrect number of arguments.", usage);
+                this.app.getCon().usage(from, "Incorrect number of arguments.", usage);
                 return true;
         }
 
         // Ensure to player exists
         if (to == null && toOff == null){
-            app.getCon().usage(from, "Invalid player name.", usage);
+            this.app.getCon().usage(from, "Invalid player name.", usage);
             return true;
         }
 
         // Ensure amount is not null
         if (amount == null) {
-            app.getCon().usage(from, "Incorrect amount.", usage);
+            this.app.getCon().usage(from, "Incorrect amount.", usage);
             return true;
         }
 
@@ -80,26 +80,26 @@ public class SetBal implements CommandExecutor {
         EconomyResponse response = null;
         String toName = null;
         if (!(to == null)) {
-            response = app.getEco().setCash(to, amount);
+            response = this.app.getEco().setCash(to, amount);
             toName = to.getName();
         } else {
-            response = app.getEco().setCash(toOff, amount);
+            response = this.app.getEco().setCash(toOff, amount);
             toName = toOff.getName();
         }
 
-        double balance = app.getEco().round(response.balance);
+        double balance = this.app.getEco().round(response.balance);
 
         // Response messages
         switch(response.type) {
             case SUCCESS:
                 // If to != from, respond.
                 if (!(to == from)) {
-                    app.getCon().info(from, "You set " + toName + "'s balance to £" + balance);
+                    this.app.getCon().info(from, "You set " + toName + "'s balance to £" + balance);
                 }
 
                 // If online send message
                 if (!(to == null)) {
-                    app.getCon().info(to, "Your balance was set to £" + balance + " by " + from.getName());
+                    this.app.getCon().info(to, "Your balance was set to £" + balance + " by " + from.getName());
 
                 // If offline --
                 } else {
@@ -107,14 +107,14 @@ public class SetBal implements CommandExecutor {
                 }
 
                 // Console feedback
-                app.getCon().info(from.getName() + " set " + toName + "'s balance to £" + balance);
+                this.app.getCon().info(from.getName() + " set " + toName + "'s balance to £" + balance);
                 break;
 
             case FAILURE:
-                app.getCon().usage(from, response.errorMessage, usage);
+                this.app.getCon().usage(from, response.errorMessage, usage);
 
             default:
-                app.getCon().warn("Balance Set error (" + from.getName() + "-->" + toName + "): " + response.errorMessage);
+                this.app.getCon().warn("Balance Set error (" + from.getName() + "-->" + toName + "): " + response.errorMessage);
         }
 
         // Graceful exit

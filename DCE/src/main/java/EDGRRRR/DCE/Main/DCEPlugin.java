@@ -100,29 +100,29 @@ public class DCEPlugin extends JavaPlugin {
         this.sellItem = new SellItem(this);
         this.value = new Value(this);
         this.info = new Info(this);
-    	
+
     	try {
             // Register commands
-            getCommand("ping").setExecutor(this.ping);
-            getCommand("balance").setExecutor(this.balance);
-            getCommand("editbal").setExecutor(this.editbal);
-            getCommand("sendcash").setExecutor(this.sendcash);
-            getCommand("setbal").setExecutor(this.setbal);
-            getCommand("clearbal").setExecutor(this.clearbal);
-            getCommand("buy").setExecutor(this.buyItem);
-            getCommand("sell").setExecutor(this.sellItem);
-            getCommand("value").setExecutor(this.value);
-            getCommand("information").setExecutor(this.info);
+            this.getCommand("ping").setExecutor(this.ping);
+            this.getCommand("balance").setExecutor(this.balance);
+            this.getCommand("editbal").setExecutor(this.editbal);
+            this.getCommand("sendcash").setExecutor(this.sendcash);
+            this.getCommand("setbal").setExecutor(this.setbal);
+            this.getCommand("clearbal").setExecutor(this.clearbal);
+            this.getCommand("buy").setExecutor(this.buyItem);
+            this.getCommand("sell").setExecutor(this.sellItem);
+            this.getCommand("value").setExecutor(this.value);
+            this.getCommand("information").setExecutor(this.info);
             } catch (Exception e){
                 e.printStackTrace();
-                con.severe("An error occurred on registry: " + e);
-                getServer().getPluginManager().disablePlugin(this);
+                this.con.severe("An error occurred on registry: " + e);
+                this.getServer().getPluginManager().disablePlugin(this);
                 return;
             }
 
         // Done :)
-        describe();
-        con.info("Plugin Enabled");
+        this.describe();
+        this.con.info("Plugin Enabled");
     }
 
     /**
@@ -130,18 +130,18 @@ public class DCEPlugin extends JavaPlugin {
      */
     @Override
     public void onDisable() {
-        if (!(mat == null)) {
-            mat.saveAll();
+        if (!(this.mat == null)) {
+            this.mat.saveAll();
         }
-        con.warn("Plugin Disabled");
+        this.con.warn("Plugin Disabled");
     }
 
     public void describe() {
-        con.debug("Materials: " + mat.materials.size());
-        con.debug("Aliases: " + mat.aliases.size());
-        con.debug("Starting Items: " + mat.baseTotalMaterials);
-        con.debug("Actual Items: " + mat.totalMaterials);
-        con.debug("Inflation: " + eco.round(mat.getInflation(),2) + "%");
+        this.con.debug("Materials: " + this.mat.materials.size());
+        this.con.debug("Aliases: " + this.mat.aliases.size());
+        this.con.debug("Starting Items: " + this.mat.baseTotalMaterials);
+        this.con.debug("Actual Items: " + this.mat.totalMaterials);
+        this.con.debug("Inflation: " + this.eco.round(this.mat.getInflation(),2) + "%");
     }
 
     /**
@@ -196,7 +196,7 @@ public class DCEPlugin extends JavaPlugin {
         }
 
         if (allowFetch == true && player == null) {
-            player = getServer().getOfflinePlayer(name);
+            player = this.getServer().getOfflinePlayer(name);
         }
 
         return player;

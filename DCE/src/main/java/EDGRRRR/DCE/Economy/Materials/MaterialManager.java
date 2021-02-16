@@ -40,7 +40,7 @@ public class MaterialManager {
      */
     public MaterialManager(DCEPlugin app) {
         this.app = app;
-        int timer = app.getConfig().getInt(app.getConf().strMainSaveTimer);
+        int timer = this.app.getConfig().getInt(this.app.getConf().strMainSaveTimer);
         new BukkitRunnable() {
             public void run() {
                 saveAll();
@@ -61,7 +61,7 @@ public class MaterialManager {
         String matID = aliases.get(alias);
         if (matID == null)
             matID = alias;
-        MaterialData material = materials.get(matID);
+        MaterialData material = this.materials.get(matID);
         return material;
     }
 
@@ -100,7 +100,7 @@ public class MaterialManager {
         // if purchase = false
         // add 1 stock to simulate increase
         for (int i = 1; i <= amount; i++) {
-            value += getPrice(stock, scale, getInflation(baseTotalMaterials, materials));
+            value += this.getPrice(stock, scale, this.getInflation(this.baseTotalMaterials, materials));
             if (purchase) {
                 stock -= 1;
                 materials -= 1;
@@ -133,11 +133,11 @@ public class MaterialManager {
         // Inflation works by calculating the default total items and dividing it by the new total items
         // This results in an increase in price when there are less items in the market than default
         // Or a decrease in price when there are more items in the market than default
-        return (app.getEco().baseQuantity / stock) * scale * inflation;
+        return (this.app.getEco().baseQuantity / stock) * scale * inflation;
     }
 
     public double getInflation() {
-        return getInflation(baseTotalMaterials, totalMaterials);
+        return this.getInflation(this.baseTotalMaterials, this.totalMaterials);
     }
 
     public double getInflation(int baseQuantity, int actualQuantity) {
@@ -152,7 +152,7 @@ public class MaterialManager {
      * @return
      */
     public double getMarketPrice(int stock) {
-        return getPrice(stock, 1.0, getInflation());
+        return this.getPrice(stock, 1.0, this.getInflation());
     }
 
     /**
@@ -163,21 +163,21 @@ public class MaterialManager {
      * @return
      */
     public double getUserPrice(int stock) {
-        return getPrice(stock, app.getEco().tax, getInflation());
+        return this.getPrice(stock, this.app.getEco().tax, this.getInflation());
     }
 
     /**
      * Loads aliases from the aliases file into the aliases variable
      */
     public void loadAliases() {
-        FileConfiguration config = loadFile(aliasesFile);
+        FileConfiguration config = this.loadFile(this.aliasesFile);
         HashMap<String, String> values = new HashMap<String, String>();
         for (String key : config.getKeys(false)) {
             String value = config.getString(key);
             values.put(key, value);
         }
         this.aliases = values;
-        app.getCon().info("Loaded " + values.size() + " aliases from " + aliasesFile);
+        this.app.getCon().info("Loaded " + values.size() + " aliases from " + this.aliasesFile);
     }
 
     /**
@@ -185,11 +185,11 @@ public class MaterialManager {
      */
     public void loadMaterials() {
         // Load the config
-        this.config = loadFile(materialsFile);
-        FileConfiguration defaultConf = loadDefaultConfig(materialsFile);
+        this.config = this.loadFile(this.materialsFile);
+        FileConfiguration defaultConf = this.loadDefaultConfig(this.materialsFile);
         // Set material counts
-        baseTotalMaterials = 0;
-        totalMaterials = 0;
+        this.baseTotalMaterials = 0;
+        this.totalMaterials = 0;
         // Create a HashMap to store the values
         HashMap<String, MaterialData> values = new HashMap<String, MaterialData>();
         // Loop through keys and get data
@@ -198,13 +198,13 @@ public class MaterialManager {
             ConfigurationSection data = this.config.getConfigurationSection(key);
             ConfigurationSection defaultData = defaultConf.getConfigurationSection(key);
             MaterialData mData = new MaterialData(this, data, defaultData);
-            baseTotalMaterials += mData.getDefaultQuantity();
-            totalMaterials += mData.getQuantity();
+            this.baseTotalMaterials += mData.getDefaultQuantity();
+            this.totalMaterials += mData.getQuantity();
             values.put(key, mData);
         }
         // Copy values into materials
         this.materials = values;
-        app.getCon().info("Loaded " + values.size() + "(" + totalMaterials + "/" + baseTotalMaterials + ") materials from " + materialsFile);
+        this.app.getCon().info("Loaded " + values.size() + "(" + this.totalMaterials + "/" + this.baseTotalMaterials + ") materials from " + this.materialsFile);
     }
 
     /**
@@ -213,7 +213,7 @@ public class MaterialManager {
      * @return
      * @throws IOException
      */
-    private FileConfiguration loadDefaultConfig(String file) {return YamlConfiguration.loadConfiguration(new InputStreamReader(app.getResource(file)));}
+    private FileConfiguration loadDefaultConfig(String file) {return YamlConfiguration.loadConfiguration(new InputStreamReader(this.app.getResource(file)));}
 
     /**
      *
@@ -221,7 +221,7 @@ public class MaterialManager {
      * @return
      * @throws IOException
      */
-    private FileConfiguration loadConfig(String file) {return YamlConfiguration.loadConfiguration(new File(app.getDataFolder(), file));}
+    private FileConfiguration loadConfig(String file) {return YamlConfiguration.loadConfiguration(new File(this.app.getDataFolder(), file));}
 
     /**
      * Loads the default and current config files If the config file is empty or
@@ -244,12 +244,12 @@ public class MaterialManager {
             if (config.getValues(false).size() == 0) {
                 config.setDefaults(defConfig);
                 config.options().copyDefaults(true);
-                config.save(new File(app.getDataFolder(), file));
+                config.save(new File(this.app.getDataFolder(), file));
             }
         } catch (Exception e) {
             // I don't know why this would happen but ¯\_(ツ)_/¯
-            app.getCon().severe("Couldn't handle " + file + " :" + e.getMessage());
-            app.getServer().getPluginManager().disablePlugin(app);
+            this.app.getCon().severe("Couldn't handle " + file + " :" + e.getMessage());
+            this.app.getServer().getPluginManager().disablePlugin(this.app);
         }
 
         return config;
@@ -269,7 +269,7 @@ public class MaterialManager {
      * @param material
      */
     public void saveMaterial(MaterialData material) {
-        setData(material.getMaterialID(), material.getConfigData());
+        this.setData(material.getMaterialID(), material.getConfigData());
     }
 
     /**
@@ -277,12 +277,12 @@ public class MaterialManager {
      * Then saves the config to the config file
      */
     public void saveAll() {
-        app.getCon().info("Saving materials.");
+        this.app.getCon().info("Saving materials.");
         for (MaterialData materialD : materials.values()) {
-            saveMaterial(materialD);
+            this.saveMaterial(materialD);
         }
-        saveMaterials();
-        app.getCon().info("Materials saved.");
+        this.saveMaterials();
+        this.app.getCon().info("Materials saved.");
     }
 
     /**
@@ -290,14 +290,14 @@ public class MaterialManager {
      */
     public void saveMaterials() {
         try {
-            this.config.save(new File(app.getDataFolder(), materialsFile));
+            this.config.save(new File(this.app.getDataFolder(), this.materialsFile));
         }
         catch (Exception e) {
-            app.getCon().severe("Couldn't handle " + materialsFile + " :" + e.getMessage());
+            this.app.getCon().severe("Couldn't handle " + this.materialsFile + " :" + e.getMessage());
         }
     }
 
     public void editItems(int amount) {
-        totalMaterials += amount;
+        this.totalMaterials += amount;
     }
 }

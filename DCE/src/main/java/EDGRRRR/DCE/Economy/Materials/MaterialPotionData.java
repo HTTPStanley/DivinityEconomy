@@ -27,7 +27,7 @@ public class MaterialPotionData {
      * @return
      */
     public boolean getExtended() {
-        return potionData.getBoolean(strExtended);
+        return this.potionData.getBoolean(this.strExtended);
     }
 
     /**
@@ -35,7 +35,7 @@ public class MaterialPotionData {
      * @return
      */
     public String getType() {
-        return potionData.getString(strType);
+        return this.potionData.getString(this.strType);
     }
 
     /**
@@ -43,7 +43,7 @@ public class MaterialPotionData {
      * @return
      */
     public boolean getUpgraded() {
-        return potionData.getBoolean(strUpgraded);
+        return this.potionData.getBoolean(this.strUpgraded);
     }
 
     /**

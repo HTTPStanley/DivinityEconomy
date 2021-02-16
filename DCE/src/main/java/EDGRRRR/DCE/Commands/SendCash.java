@@ -30,8 +30,8 @@ public class SendCash implements CommandExecutor {
         Player from = (Player) sender;
 
         // Ensure command is enabled
-        if (!(app.getConfig().getBoolean(app.getConf().strComSendCash))) {
-            app.getCon().severe(from, "This command is not enabled.");
+        if (!(this.app.getConfig().getBoolean(this.app.getConf().strComSendCash))) {
+            this.app.getCon().severe(from, "This command is not enabled.");
             return true;
         }
 
@@ -40,37 +40,37 @@ public class SendCash implements CommandExecutor {
         Player to = null;
         OfflinePlayer toOff = null;
         Double amount = null;
-        Double minSendAmount = app.getConfig().getDouble(app.getConf().strEconMinSendAmount);
+        Double minSendAmount = this.app.getConfig().getDouble(app.getConf().strEconMinSendAmount);
 
         switch (args.length) {
             case 2:
                 // Get online player
-                to = app.getServer().getPlayer(args[0]);
-                amount = app.getEco().getDouble(args[1]);
+                to = this.app.getServer().getPlayer(args[0]);
+                amount = this.app.getEco().getDouble(args[1]);
                 // If they aren't online or don't exist. Do the dirty offline call.
                 if (to == null) {
                     // Naughty naughty boy - doesn't allow fetching of non-seen players.
-                    toOff = app.getOfflinePlayer(args[0], false);
+                    toOff = this.app.getOfflinePlayer(args[0], false);
                 }
                 break;
 
             default:
-                app.getCon().usage(from, "Invalid number of arguments.", usage);
+                this.app.getCon().usage(from, "Invalid number of arguments.", usage);
                 return true;
         }
 
         // Ensure online or offline player exists.
         if (to == null && toOff == null) {
-            app.getCon().usage(from, "Invalid player name.", usage);
+            this.app.getCon().usage(from, "Invalid player name.", usage);
             return true;
         }
         // Ensure amount was parsed
         // Ensure amount is greater than min send amount.
         if (amount == null) {
-            app.getCon().usage(from, "Invalid amount.", usage);
+            this.app.getCon().usage(from, "Invalid amount.", usage);
             return true;
         } else if (amount < minSendAmount) {
-            app.getCon().usage(from, "Invalid amount, needs to be greater than £" + minSendAmount, usage);
+            this.app.getCon().usage(from, "Invalid amount, needs to be greater than £" + minSendAmount, usage);
             return true;
         }
 
@@ -79,36 +79,36 @@ public class SendCash implements CommandExecutor {
         String toName = null;
         if (!(to == null)) {
             if (to == from) {
-                app.getCon().usage(from, "You can't send money to yourself (╯°□°）╯︵ ┻━┻", usage);
+                this.app.getCon().usage(from, "You can't send money to yourself (╯°□°）╯︵ ┻━┻", usage);
                 return true;
             } else {
-                response = app.getEco().sendCash(from, to, amount);
+                response = this.app.getEco().sendCash(from, to, amount);
                 toName = to.getName();
             }
         } else {
-            response = app.getEco().sendCash(from, toOff, amount);
+            response = this.app.getEco().sendCash(from, toOff, amount);
             toName = toOff.getName();
         }
 
-        double cost = app.getEco().round(response.amount);
+        double cost = this.app.getEco().round(response.amount);
 
 
         switch(response.type) {
             case SUCCESS:
-                app.getCon().info(from, "You sent £" + cost + " to " + toName + ". New Balance: £" + app.getEco().round(app.getEco().getBalance(from)));
+                    this.app.getCon().info(from, "You sent £" + cost + " to " + toName + ". New Balance: £" + this.app.getEco().round(this.app.getEco().getBalance(from)));
                 if (!(to == null)) {
-                    app.getCon().info(to, "You received £" + cost + " from " + from.getName() + ". New Balance: £" + app.getEco().round(app.getEco().getBalance(to)));
+                    this.app.getCon().info(to, "You received £" + cost + " from " + from.getName() + ". New Balance: £" + this.app.getEco().round(this.app.getEco().getBalance(to)));
                 } else {
                     // Perhaps send an ingame mail message to offlinePlayer ¯\_(ツ)_/¯
                 }
-                app.getCon().info(from.getName() + " sent £" + cost + " to " + toName);
+                this.app.getCon().info(from.getName() + " sent £" + cost + " to " + toName);
                 break;
 
             case FAILURE:
-                app.getCon().usage(from, response.errorMessage, usage);
+                this.app.getCon().usage(from, response.errorMessage, usage);
 
             default:
-                app.getCon().warn("Transaction error (" + from.getName() + "-->" + toName + "): " + response.errorMessage);
+                this.app.getCon().warn("Transaction error (" + from.getName() + "-->" + toName + "): " + response.errorMessage);
         }
 
         // Graceful exit

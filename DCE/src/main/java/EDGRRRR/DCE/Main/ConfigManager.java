@@ -52,18 +52,18 @@ public class ConfigManager {
     public ConfigManager(DCEPlugin app){
         this.app = app;
         // Saves the .Jar config to the folder, if it doesn't exist.
-        app.saveDefaultConfig();
+        this.app.saveDefaultConfig();
         // Get the config and plugin versions
-        String configVersion = app.getConfig().getString(strMainVersion);
-        String pluginVersion = app.getDescription().getVersion();
-        app.getLogger().info("Detected Config Version: " + configVersion + " & Plugin Version: " + pluginVersion);
+        String configVersion = this.app.getConfig().getString(strMainVersion);
+        String pluginVersion = this.app.getDescription().getVersion();
+        this.app.getLogger().info("Detected Config Version: " + configVersion + " & Plugin Version: " + pluginVersion);
         // Updates the config by copying defaults over
         // updates the version and saves.
         if (!(configVersion.matches(pluginVersion))) {
-            app.getLogger().info("Updating config with defaults, your settings may need updating.");
-            app.getConfig().options().copyDefaults(true);
-            app.getConfig().set(strMainVersion, pluginVersion);
-            app.saveConfig();
+            this.app.getLogger().info("Updating config with defaults, your settings may need updating.");
+            this.app.getConfig().options().copyDefaults(true);
+            this.app.getConfig().set(strMainVersion, pluginVersion);
+            this.app.saveConfig();
             // app.reloadConfig();
         }
     }

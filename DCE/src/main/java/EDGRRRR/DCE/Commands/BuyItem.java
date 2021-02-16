@@ -32,8 +32,8 @@ public class BuyItem implements CommandExecutor {
         Player from = (Player) sender;
 
         // Ensure command is enabled
-        if (!(app.getConfig().getBoolean(app.getConf().strComBuyItem))) {
-            app.getCon().severe(from, "This command is not enabled.");
+        if (!(this.app.getConfig().getBoolean(this.app.getConf().strComBuyItem))) {
+            this.app.getCon().severe(from, "This command is not enabled.");
             return true;
         }
 
@@ -49,29 +49,29 @@ public class BuyItem implements CommandExecutor {
             // Material & Amount
             case 2:
                 materialName = args[0];
-                amount = (int) (double) app.getEco().getDouble(args[1]);
+                amount = (int) (double) this.app.getEco().getDouble(args[1]);
                 break;
 
             default:
-                app.getCon().usage(from, "Invalid number of arguments.", usage);
+            this.app.getCon().usage(from, "Invalid number of arguments.", usage);
                 return true;
         }
 
-        MaterialData material = app.getMat().getMaterial(materialName);
+        MaterialData material = this.app.getMat().getMaterial(materialName);
         if (material == null) {
-            app.getCon().usage(from, "Unknown Item: '" + materialName + "'", "");
+            this.app.getCon().usage(from, "Unknown Item: '" + materialName + "'", "");
             return true;
         } else {
-            EconomyResponse priceResponse = app.getMat().getMaterialPrice(material, amount, app.getEco().tax, true);
-            EconomyResponse saleResponse = app.getEco().remCash(from, priceResponse.balance);
+            EconomyResponse priceResponse = this.app.getMat().getMaterialPrice(material, amount, this.app.getEco().tax, true);
+            EconomyResponse saleResponse = this.app.getEco().remCash(from, priceResponse.balance);
             if (saleResponse.type == ResponseType.SUCCESS && priceResponse.type == ResponseType.SUCCESS) {
                 ItemStack iStack = material.getItemStack(amount);
                 from.getInventory().addItem(iStack);
                 material.remQuantity(amount);
-                double cost = app.getEco().round(saleResponse.amount);
-                double balance = app.getEco().round(saleResponse.balance);
-                app.getCon().info(from, "You bought " + amount + " of " + material.getCleanName() + " for £" + cost + ". New Balance: £" + balance);
-                app.getCon().info(from.getName() + "Bought " + amount + " of " + material.getCleanName() + " for £" + cost);
+                double cost = this.app.getEco().round(saleResponse.amount);
+                double balance = this.app.getEco().round(saleResponse.balance);
+                this.app.getCon().info(from, "You bought " + amount + " of " + material.getCleanName() + " for £" + cost + ". New Balance: £" + balance);
+                this.app.getCon().info(from.getName() + "Bought " + amount + " of " + material.getCleanName() + " for £" + cost);
             }
             else {
                 String errorMessage = null;
@@ -79,8 +79,8 @@ public class BuyItem implements CommandExecutor {
                 else if (priceResponse.type == ResponseType.FAILURE) errorMessage = priceResponse.errorMessage;
                 else errorMessage = "¯\\_(ツ)_/¯";
 
-                app.getCon().usage(from, "Couldn't buy " + amount + " of " + material.getCleanName() + " for £" + saleResponse.amount + " because " + errorMessage, usage);
-                app.getCon().warn(from.getName() + " couldn't buy " + amount + " of " + material.getCleanName() + " for £" + saleResponse.amount + " because " + errorMessage);
+                this.app.getCon().usage(from, "Couldn't buy " + amount + " of " + material.getCleanName() + " for £" + saleResponse.amount + " because " + errorMessage, usage);
+                this.app.getCon().warn(from.getName() + " couldn't buy " + amount + " of " + material.getCleanName() + " for £" + saleResponse.amount + " because " + errorMessage);
             }
         }
 

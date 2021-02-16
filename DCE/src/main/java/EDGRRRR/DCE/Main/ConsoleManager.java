@@ -50,16 +50,16 @@ public class ConsoleManager {
 
 
         // Get settings
-        this.debugMode = (app.getConfig().getBoolean(app.getConf().strChatDebug) || app.getConfig().getBoolean(app.getConf().strMainDebugMode));
-        this.infoColour = getColour(app.getConf().strChatInfClr);
-        this.warnColour = getColour(app.getConf().strChatWrnClr);
-        this.severeColour = getColour(app.getConf().strChatSvrClr);
-        this.debugColour = getColour(app.getConf().strChatDbgClr);
-        this.prefixColour = getColour(app.getConf().strChatPfxClr);
-        this.prefixSepColour = getColour(app.getConf().strChatPfxSepClr);
-        String prefix = app.getConfig().getString(app.getConf().strChatMsgPfx);
-        String conPrefix = app.getConfig().getString(app.getConf().strChatConsPfx).replace("%V", app.getDescription().getVersion());
-        String prefixSep = app.getConfig().getString(app.getConf().strChatPfxSep);
+        this.debugMode = (this.app.getConfig().getBoolean(this.app.getConf().strChatDebug) || this.app.getConfig().getBoolean(this.app.getConf().strMainDebugMode));
+        this.infoColour = this.getColour(this.app.getConf().strChatInfClr);
+        this.warnColour = this.getColour(this.app.getConf().strChatWrnClr);
+        this.severeColour = this.getColour(this.app.getConf().strChatSvrClr);
+        this.debugColour = this.getColour(this.app.getConf().strChatDbgClr);
+        this.prefixColour = this.getColour(this.app.getConf().strChatPfxClr);
+        this.prefixSepColour = this.getColour(this.app.getConf().strChatPfxSepClr);
+        String prefix = this.app.getConfig().getString(this.app.getConf().strChatMsgPfx);
+        String conPrefix = this.app.getConfig().getString(this.app.getConf().strChatConsPfx).replace("%V", this.app.getDescription().getVersion());
+        String prefixSep = this.app.getConfig().getString(this.app.getConf().strChatPfxSep);
         this.prefix = prefixColour + prefix + prefixSepColour + prefixSep;
         this.conPrefix = prefixColour + conPrefix + prefixSepColour + prefixSep;
     }
@@ -70,11 +70,11 @@ public class ConsoleManager {
      * @return
      */
     private ChatColor getColour(String optionName) {
-        String option = app.getConfig().getString(optionName);
-        String defaultOption = app.getConfig().getDefaults().getString(optionName);
-        ChatColor colour = colourMap.get(option);
+        String option = this.app.getConfig().getString(optionName);
+        String defaultOption = this.app.getConfig().getDefaults().getString(optionName);
+        ChatColor colour = this.colourMap.get(option);
         if (colour == null) {
-            colour = colourMap.get(defaultOption);
+            colour = this.colourMap.get(defaultOption);
         }
 
         return colour;
@@ -86,7 +86,7 @@ public class ConsoleManager {
      * @param message
      */
     private void send(String message) {
-        app.getServer().getConsoleSender().sendMessage(conPrefix + message);
+        this.app.getServer().getConsoleSender().sendMessage(conPrefix + message);
     }
 
     /**
@@ -94,7 +94,7 @@ public class ConsoleManager {
      * @param message
      */
     public void info(String message) {
-        send(infoColour + message);
+        this.send(infoColour + message);
     }
 
     /**
@@ -102,7 +102,7 @@ public class ConsoleManager {
      * @param message
      */
     public void debug(String message) {
-        if (debugMode) send(debugColour + message);
+        if (debugMode) this.send(debugColour + message);
     }
 
     /**
@@ -110,7 +110,7 @@ public class ConsoleManager {
      * @param message
      */
     public void warn(String message) {
-        send(warnColour + message);
+        this.send(warnColour + message);
     }
 
     /**
@@ -118,7 +118,7 @@ public class ConsoleManager {
      * @param message
      */
     public void severe(String message) {
-        send(severeColour + message);
+        this.send(severeColour + message);
     }
 
     // PLAYER
@@ -137,8 +137,8 @@ public class ConsoleManager {
      * @param message
      */
     public void usage(Player player, String errorMessage, String commandUsage){
-        warn(player, "Incorrect command usage: " + errorMessage);
-        warn(player, "Command Usage: "+ commandUsage);
+        this.warn(player, "Incorrect command usage: " + errorMessage);
+        this.warn(player, "Command Usage: "+ commandUsage);
     }
 
     /**
@@ -147,7 +147,7 @@ public class ConsoleManager {
      * @param message
      */
     public void info(Player player, String message){
-        send(player, infoColour + message);
+        this.send(player, infoColour + message);
     }
 
     /**
@@ -156,7 +156,7 @@ public class ConsoleManager {
      * @param message
      */
     public void warn(Player player, String message){
-        send(player, warnColour + message);
+        this.send(player, warnColour + message);
     }
     /**
      * Sends a severe message to a player
@@ -164,7 +164,7 @@ public class ConsoleManager {
      * @param message
      */
     public void severe(Player player, String message){
-        send(player, severeColour + message);
+        this.send(player, severeColour + message);
     }
 
 

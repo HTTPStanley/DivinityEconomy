@@ -44,7 +44,7 @@ public class MaterialData {
         this.manager = manager;
         this.configData = configData;
         this.defaultConfigData = defaultConfigData;
-        ConfigurationSection pData = configData.getConfigurationSection(strPotionData);
+        ConfigurationSection pData = configData.getConfigurationSection(this.strPotionData);
         if (pData == null) {
             this.potionData = null;
         } else {
@@ -66,7 +66,7 @@ public class MaterialData {
      * @return
      */
     public String getCleanName() {
-        return configData.getString(strCleanName);
+        return this.configData.getString(this.strCleanName);
     }
 
     /**
@@ -74,11 +74,11 @@ public class MaterialData {
      * @return
      */
     public int getQuantity() {
-        return configData.getInt(strQuantity);
+        return this.configData.getInt(this.strQuantity);
     }
 
     public int getDefaultQuantity() {
-        return defaultConfigData.getInt(strQuantity);
+        return this.defaultConfigData.getInt(this.strQuantity);
     }
 
     /**
@@ -87,7 +87,7 @@ public class MaterialData {
      * @return
      */
     public double getMarketPrice() {
-        return manager.getMarketPrice(getQuantity());
+        return this.manager.getMarketPrice(this.getQuantity());
     }
 
     /**
@@ -96,7 +96,7 @@ public class MaterialData {
      * @return
      */
     public double getUserPrice() {
-        return manager.getUserPrice(getQuantity());
+        return this.manager.getUserPrice(this.getQuantity());
     }
 
     /**
@@ -106,7 +106,7 @@ public class MaterialData {
      * @return
      */
     public boolean getAllowed() {
-        return configData.getBoolean(strAllowed);
+        return this.configData.getBoolean(this.strAllowed);
     }
 
     /**
@@ -115,7 +115,7 @@ public class MaterialData {
      * @return
      */
     public String getMaterialID() {
-        return configData.getString(strMaterialID);
+        return this.configData.getString(this.strMaterialID);
     }
 
     /**
@@ -132,7 +132,7 @@ public class MaterialData {
      * @return
      */
     public Material getMaterial() {
-        return Material.getMaterial(getMaterialID());
+        return Material.getMaterial(this.getMaterialID());
     }
 
     /**
@@ -140,7 +140,7 @@ public class MaterialData {
      * @return
      */
     public String getEntityName() {
-        return configData.getString(strEntity);
+        return this.configData.getString(this.strEntity);
     }
 
     /**
@@ -155,15 +155,15 @@ public class MaterialData {
         String type = null;
         // If potion
         if (!(potionData == null)) {
-            type = strTypePotion;
+            type = this.strTypePotion;
         }
         // If entity
-        else if (!(getEntityName() == null)) {
-            type = strTypeEntity;
+        else if (!(this.getEntityName() == null)) {
+            type = this.strTypeEntity;
         }
         // Else is material
         else {
-            type = strTypeMaterial;
+            type = this.strTypeMaterial;
         }
         return type;
     }
@@ -175,9 +175,9 @@ public class MaterialData {
      */
     public ItemStack getItemStack(int amount) {
         // Create the itemStack of <material> of <amount>
-        ItemStack iStack = new ItemStack(getMaterial(), amount);
+        ItemStack iStack = new ItemStack(this.getMaterial(), amount);
         // If potion, set meta data
-        if (getType() == strTypePotion) {
+        if (this.getType() == this.strTypePotion) {
             PotionMeta meta = (PotionMeta) iStack.getItemMeta();
             meta.setBasePotionData(new PotionData(PotionType.valueOf(potionData.getType()), potionData.getExtended(), potionData.getUpgraded()));
             iStack.setItemMeta(meta);
@@ -190,10 +190,10 @@ public class MaterialData {
      * @param amount
      */
     public void setQuantity(int amount) {
-        int oldQuantity = getQuantity();
-        setData(strQuantity, amount);
+        int oldQuantity = this.getQuantity();
+        setData(this.strQuantity, amount);
         int change = oldQuantity - amount;
-        manager.editItems(change);
+        this.manager.editItems(change);
     }
 
     /**
@@ -201,8 +201,8 @@ public class MaterialData {
      * @param amount
      */
     public void addQuantity(int amount) {
-        setData(strQuantity, getQuantity() + amount);
-        manager.editItems(amount);
+        setData(this.strQuantity, this.getQuantity() + amount);
+        this.manager.editItems(amount);
     }
 
     /**
@@ -210,8 +210,8 @@ public class MaterialData {
      * @param amount
      */
     public void remQuantity(int amount) {
-        setData(strQuantity, getQuantity() - amount);
-        manager.editItems(amount);
+        setData(this.strQuantity, this.getQuantity() - amount);
+        this.manager.editItems(amount);
     }
 
     /**
@@ -220,6 +220,6 @@ public class MaterialData {
      * @param value
      */
     private void setData(String key, Object value) {
-        configData.set(key, value);
+        this.configData.set(key, value);
     }
 }

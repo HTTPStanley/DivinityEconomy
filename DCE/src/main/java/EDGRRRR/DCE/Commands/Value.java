@@ -31,8 +31,8 @@ public class Value implements CommandExecutor {
         Player from = (Player) sender;
 
         // Ensure command is enabled
-        if (!(app.getConfig().getBoolean(app.getConf().strComValue))) {
-            app.getCon().severe(from, "This command is not enabled.");
+        if (!(this.app.getConfig().getBoolean(this.app.getConf().strComValue))) {
+            this.app.getCon().severe(from, "This command is not enabled.");
             return true;
         }
 
@@ -46,28 +46,28 @@ public class Value implements CommandExecutor {
 
             case 2:
                 materialName = args[0];
-                amount = (int) (double) app.getEco().getDouble(args[1]);
+                amount = (int) (double) this.app.getEco().getDouble(args[1]);
                 break;
 
             default:
-                app.getCon().usage(from, "Invalid number of arguments.", usage);
+                this.app.getCon().usage(from, "Invalid number of arguments.", usage);
                 return true;
         }
 
-        MaterialData material = app.getMat().getMaterial(materialName);
+        MaterialData material = this.app.getMat().getMaterial(materialName);
         if (material == null) {
-            app.getCon().usage(from, "Unknown Item: " + materialName, usage);
+            this.app.getCon().usage(from, "Unknown Item: " + materialName, usage);
         } else {
-            EconomyResponse priceResponse = app.getMat().getMaterialPrice(material, amount, app.getEco().tax, true);
-            EconomyResponse secondPriceResponse = app.getMat().getMaterialPrice(material, amount, 1.0, false);
+            EconomyResponse priceResponse = this.app.getMat().getMaterialPrice(material, amount, this.app.getEco().tax, true);
+            EconomyResponse secondPriceResponse = this.app.getMat().getMaterialPrice(material, amount, 1.0, false);
             if (priceResponse.type == ResponseType.SUCCESS && secondPriceResponse.type == ResponseType.SUCCESS) {
-                app.getCon().info(from, "Buy: " + amount + " * " + material.getCleanName() + " costs £" + app.getEco().round(priceResponse.balance));
-                app.getCon().info(from, "Sell: " + amount + " * " + material.getCleanName() + " costs £" + app.getEco().round(secondPriceResponse.balance));
+                this.app.getCon().info(from, "Buy: " + amount + " * " + material.getCleanName() + " costs £" + this.app.getEco().round(priceResponse.balance));
+                this.app.getCon().info(from, "Sell: " + amount + " * " + material.getCleanName() + " costs £" + this.app.getEco().round(secondPriceResponse.balance));
             } else {
                 String error = null;
                 if (!(priceResponse.type == ResponseType.SUCCESS)) error = priceResponse.errorMessage;
                 else error = secondPriceResponse.errorMessage;
-                app.getCon().usage(from, "Couldn't determine price of " + material.getCleanName() + " * " + amount + " because " + error, usage);
+                this.app.getCon().usage(from, "Couldn't determine price of " + material.getCleanName() + " * " + amount + " because " + error, usage);
             }
         }
 

@@ -30,8 +30,8 @@ public class Balance implements CommandExecutor {
         Player from = (Player) sender;
 
         // Ensure command is enabled
-        if (!(app.getConfig().getBoolean(app.getConf().strComBalance))) {
-            app.getCon().severe(from, "This command is not enabled.");
+        if (!(this.app.getConfig().getBoolean(this.app.getConf().strComBalance))) {
+            this.app.getCon().severe(from, "This command is not enabled.");
             return true;
         }
 
@@ -44,10 +44,10 @@ public class Balance implements CommandExecutor {
         switch (args.length) {
             case 1:
                 // Get online player
-                to = app.getServer().getPlayer(args[0]);
+                to = this.app.getServer().getPlayer(args[0]);
                 // If they aren't online or don't exist. Do the dirty offline call.
                 if (to == null){
-                    toOff = app.getOfflinePlayer(args[0], false);
+                    toOff = this.app.getOfflinePlayer(args[0], false);
                 }
                 break;
 
@@ -58,21 +58,21 @@ public class Balance implements CommandExecutor {
         }
 
         if (to == null && toOff == null){
-            app.getCon().usage(from, "Invalid player name.", usage);
+            this.app.getCon().usage(from, "Invalid player name.", usage);
             return true;
         }
 
         double balance = 0.0;
         if (!(to == null)) {
-            balance = app.getEco().round(app.getEco().getBalance(to));
+            balance = this.app.getEco().round(this.app.getEco().getBalance(to));
             if (!(from == to)) {
-                app.getCon().info(from, to.getName() + "'s Balance: £" + balance);
+                this.app.getCon().info(from, to.getName() + "'s Balance: £" + balance);
             } else {
-                app.getCon().info(from, "Balance: £" + balance);
+                this.app.getCon().info(from, "Balance: £" + balance);
             }
         } else {
-            balance = app.getEco().round(app.getEco().getBalance(toOff));
-            app.getCon().info(from, toOff.getName() + "'s Balance: £" + balance);
+            balance = this.app.getEco().round(this.app.getEco().getBalance(toOff));
+            this.app.getCon().info(from, toOff.getName() + "'s Balance: £" + balance);
         }
         // Graceful exit
         return true;
