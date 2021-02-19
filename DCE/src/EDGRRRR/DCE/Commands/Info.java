@@ -16,7 +16,7 @@ import org.bukkit.entity.Player;
  */
 public class Info implements CommandExecutor {
     private DCEPlugin app;
-    private String usage = "/info <materialName> <amount> or /info <materialName>";
+    private String usage = "/info <materialName> <amount> | /info <materialName>";
 
     public Info(DCEPlugin app) {
         this.app = app;
