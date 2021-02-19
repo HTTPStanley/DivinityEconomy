@@ -81,7 +81,7 @@ public class SellItem implements CommandExecutor {
 
             EconomyResponse priceResponse = this.app.getMat().getMaterialPrice(material, amount, 1.0, false);
             if (userAmount >= amount) {
-                this.app.getMat().removeMaterialsFromPlayer(itemStacks, material.getMaterial(), amount);
+                this.app.getMat().removeMaterialsFromPlayer(itemStacks, amount);
                 material.addQuantity(amount);
                 this.app.getEco().addCash(from, priceResponse.balance);
                 this.app.getCon().info(from, "Sold " + amount + " " + material.getCleanName() + " for £" + app.getEco().round(priceResponse.balance) + ". New balance: £" + this.app.getEco().round(app.getEco().getBalance(from)));
