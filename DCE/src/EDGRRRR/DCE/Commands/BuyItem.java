@@ -16,7 +16,7 @@ import org.bukkit.inventory.ItemStack;
  */
 public class BuyItem implements CommandExecutor {
     private DCEPlugin app;
-    private String usage = "/buy <itemName> <amountToBuy> or /buy <itemName>";
+    private String usage = "/buy <itemName> <amountToBuy> | /buy <itemName>";
 
     public BuyItem(DCEPlugin app) {
         this.app = app;
