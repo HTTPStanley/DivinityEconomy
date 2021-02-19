@@ -14,7 +14,7 @@ import org.bukkit.entity.Player;
  */
 public class SetBal implements CommandExecutor {
     private DCEPlugin app;
-    private String usage = "/setbal <username> <amount> or /setbal <amount>";
+    private String usage = "/setbal <username> <amount> | /setbal <amount>";
 
     public SetBal(DCEPlugin app) {
         this.app = app;
