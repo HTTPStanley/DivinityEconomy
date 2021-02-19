@@ -92,7 +92,7 @@ public class HandSell implements CommandExecutor {
                 return true;
             }
 
-            this.app.getMat().removeMaterialsFromPlayer(itemStacks, material, amountToSell);
+            this.app.getMat().removeMaterialsFromPlayer(itemStacks, amountToSell);
             mData.addQuantity(amountToSell);
             EconomyResponse response = this.app.getMat().getMaterialPrice(mData, amountToSell, 1.0, false);
             this.app.getEco().addCash(player, response.balance);
