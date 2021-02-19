@@ -12,7 +12,7 @@ import org.bukkit.entity.Player;
  */
 public class ClearBal implements CommandExecutor {
     private DCEPlugin app;
-    private String usage = "/clearbal <username> or /clearbal";
+    private String usage = "/clearbal <username> | /clearbal";
 
     public ClearBal(DCEPlugin app) {
         this.app = app;
