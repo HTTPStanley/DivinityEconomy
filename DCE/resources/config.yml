@@ -65,3 +65,5 @@ commands:
   sellItem: true
   value: true
   info: true
+  handSell: true
+  handBuy: true

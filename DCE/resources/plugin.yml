@@ -49,6 +49,20 @@ commands:
     permission-message: You do not have permission to use this command
     usage: ""
 
+  handBuy:
+    description: Allows the user to purchase items from the market.
+    aliases: [hb]
+    permission: dce.market.handBuy
+    permission-message: You do not have permission to use this command
+    usage: ""
+
+  handSell:
+    description: Allows the user to sell items to the market.
+    aliases: [hs]
+    permission: dce.market.handSell
+    permission-message: You do not have permission to use this command
+    usage: ""
+
   value:
     description: Allows the user to check the value of an item.
     aliases: [val]
@@ -127,7 +141,9 @@ permissions:
     default: true
     children:
       dce.market.buy: true
+      dce.market.handBuy: true
       dce.market.sell: true
+      dce.market.handSell: true
       dce.market.search: true
       dce.market.information: true
       dce.market.value: true
@@ -137,6 +153,14 @@ permissions:
     default: true
 
   dce.market.sell:
+    description: Allows the user to sell items to the market
+    default: true
+
+  dce.market.handBuy:
+    description: Allows the user to purchase items from the market
+    default: true
+
+  dce.market.handSell:
     description: Allows the user to sell items to the market
     default: true
 

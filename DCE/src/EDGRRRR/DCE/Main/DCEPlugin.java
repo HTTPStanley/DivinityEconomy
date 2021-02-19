@@ -9,6 +9,7 @@ import EDGRRRR.DCE.Commands.BuyItem;
 import EDGRRRR.DCE.Commands.SellItem;
 import EDGRRRR.DCE.Commands.ClearBal;
 import EDGRRRR.DCE.Commands.EditBal;
+import EDGRRRR.DCE.Commands.HandSell;
 import EDGRRRR.DCE.Commands.Info;
 import EDGRRRR.DCE.Commands.Ping;
 import EDGRRRR.DCE.Commands.SendCash;
@@ -73,6 +74,10 @@ public class DCEPlugin extends JavaPlugin {
     private CommandExecutor info;
     public CommandExecutor getCommandInfo() { return this.info; }
 
+    // A command for selling items in hand
+    private CommandExecutor handSell;
+    public CommandExecutor getCommandHandSell() { return this.handSell; }
+
     /**
      * Called when the plugin is enabled
      * Setup console
@@ -100,6 +105,7 @@ public class DCEPlugin extends JavaPlugin {
         this.sellItem = new SellItem(this);
         this.value = new Value(this);
         this.info = new Info(this);
+        this.handSell = new HandSell(this);
 
     	try {
             // Register commands
@@ -113,6 +119,7 @@ public class DCEPlugin extends JavaPlugin {
             this.getCommand("sell").setExecutor(this.sellItem);
             this.getCommand("value").setExecutor(this.value);
             this.getCommand("information").setExecutor(this.info);
+            this.getCommand("handSell").setExecutor(this.handSell);
             } catch (Exception e){
                 e.printStackTrace();
                 this.con.severe("An error occurred on registry: " + e);
