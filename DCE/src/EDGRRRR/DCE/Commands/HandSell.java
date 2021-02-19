@@ -3,6 +3,7 @@ package EDGRRRR.DCE.Commands;
 import EDGRRRR.DCE.Main.DCEPlugin;
 import EDGRRRR.DCE.Economy.Materials.MaterialData;
 
+import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -17,7 +18,7 @@ import java.util.HashMap;
  */
 public class HandSell implements CommandExecutor {
     private DCEPlugin app;
-    private String usage = "/hs or /hs <amount> or /hs max";
+    private String usage = "/hs | /hs <amount> | /hs max";
 
     public HandSell(DCEPlugin app) {
         this.app = app;
@@ -38,19 +39,20 @@ public class HandSell implements CommandExecutor {
             return true;
         }
 
-        int amountToSell = 0;
+        int amountToSell = 1;
         boolean sellAll = false;
+        boolean sellHand = false;
 
         switch (args.length) {
             case 0:
-                amountToSell = 1;
+                sellHand = true;
                 break;
 
             case 1:
-                if (args[1] == "max") {
+                if (args[0].equals("max")) {
                     sellAll = true;
                 } else {
-                    amountToSell = (int) (double) this.app.getEco().getDouble(args[1]);
+                    amountToSell = (int) (double) this.app.getEco().getDouble(args[0]);
                 }
                 break;
 
@@ -59,17 +61,43 @@ public class HandSell implements CommandExecutor {
                 return true;
         }
 
+        if (amountToSell < 1) {
+            this.app.getCon().usage(player, "Cannot sell less than 1 item", this.usage);
+            return true;
+        }
+
         int slotIdx = player.getInventory().getHeldItemSlot();
         ItemStack iStack = player.getInventory().getItem(slotIdx);
 
         if (iStack == null) {
             this.app.getCon().usage(player, "You are not holding any item.", this.usage);
+            return true;
         } else {
-            int amount = iStack.getAmount();
             Material material = iStack.getType();
-            String name = material.name();
-            MaterialData mData = this.app.getMat().getMaterial(name);
-            HashMap<Integer, ? extends ItemStack> inventory = player.getInventory().all(material);
+            String materialName = material.name();
+            MaterialData mData = this.app.getMat().getMaterial(materialName);
+            ItemStack[] itemStacks = this.app.getMat().getMaterialSlots(player, material);
+            int materialCount = this.app.getMat().getMaterialCount(itemStacks);
+
+            if (sellAll) {
+                amountToSell = materialCount;
+            }
+
+            if (sellHand) {
+                amountToSell = iStack.getAmount();
+            }
+
+            if (materialCount < amountToSell) {
+                this.app.getCon().usage(player, "Cannot sell " + amountToSell + " " + mData.getCleanName() + " when you only have " + materialCount, this.usage);
+                return true;
+            }
+
+            this.app.getMat().removeMaterialsFromPlayer(itemStacks, material, amountToSell);
+            mData.addQuantity(amountToSell);
+            EconomyResponse response = this.app.getMat().getMaterialPrice(mData, amountToSell, 1.0, false);
+            this.app.getEco().addCash(player, response.balance);
+
+            this.app.getCon().info(player, "Sold " + amountToSell + " " + mData.getCleanName() + " for £" + app.getEco().round(response.balance) + ". New Balance: £" + app.getEco().round(app.getEco().getBalance(player)));
         }
 
 
