@@ -15,7 +15,7 @@ import org.bukkit.entity.Player;
  */
 public class Value implements CommandExecutor {
     private DCEPlugin app;
-    private String usage = "/value <materialName> <amount> or /value <materialName>";
+    private String usage = "/value <materialName> <amount> | /value <materialName>";
 
     public Value(DCEPlugin app) {
         this.app = app;
