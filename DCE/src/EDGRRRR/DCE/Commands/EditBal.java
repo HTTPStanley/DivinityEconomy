@@ -14,7 +14,7 @@ import net.milkbowl.vault.economy.EconomyResponse;
  */
 public class EditBal implements CommandExecutor {
     private DCEPlugin app;
-    private String usage = "/editbal <username> <amount> or /editbal <amount>";
+    private String usage = "/editbal <username> <amount> | /editbal <amount>";
 
     public EditBal(DCEPlugin app) {
         this.app = app;
