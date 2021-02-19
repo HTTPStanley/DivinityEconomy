@@ -148,7 +148,7 @@ public class DCEPlugin extends JavaPlugin {
         this.con.debug("Aliases: " + this.mat.aliases.size());
         this.con.debug("Starting Items: " + this.mat.baseTotalMaterials);
         this.con.debug("Actual Items: " + this.mat.totalMaterials);
-        this.con.debug("Inflation: " + this.eco.round(this.mat.getInflation(),2) + "%");
+        this.con.debug("Inflation: " + this.mat.getInflation() + "%");
     }
 
     /**
