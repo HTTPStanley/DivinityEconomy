@@ -13,7 +13,7 @@ import EDGRRRR.DCE.Main.DCEPlugin;
  */
 public class Balance implements CommandExecutor {
     private DCEPlugin app;
-    private String usage = "/balance or /balance <username>";
+    private String usage = "/balance | /balance <username>";
 
     public Balance(DCEPlugin app) {
         this.app = app;
