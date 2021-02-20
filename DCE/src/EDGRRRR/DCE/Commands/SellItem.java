@@ -74,18 +74,23 @@ public class SellItem implements CommandExecutor {
                     amount = userAmount;
                 }
 
-                EconomyResponse priceResponse = this.app.getMat().getMaterialPrice(material, amount, 1.0, false);
-                double cost = app.getEco().round(priceResponse.balance);
-                double balance = this.app.getEco().round(app.getEco().getBalance(from));
-                if (userAmount >= amount) {
-                    this.app.getMat().removeMaterialsFromPlayer(itemStacks, amount);
-                    material.addQuantity(amount);
-                    this.app.getEco().addCash(from, priceResponse.balance);
-                    this.app.getCon().info(from, "Sold " + amount + " " + material.getCleanName() + " for £" + cost + ". New balance: £" + balance);
-                    this.app.getCon().info(from.getName() + " sold " + amount + " " + material.getMaterialID() + " for £" + cost);
+                if (!material.getAllowed()) {
+                    this.app.getCon().usage(from, "Cannot sell " + material.getCleanName() + " because it is not allowed to be bought or sold", this.usage);
+                    this.app.getCon().warn(from.getName() + " couldn't sell " + material.getMaterialID() + " because it is not allowed to be bought or sold");
                 } else {
-                    this.app.getCon().usage(from, "You do not have " + amount + " " + material.getCleanName(), usage);
-                    this.app.getCon().warn(from.getName() + " couldn't sell " + amount + " " + material.getMaterialID() + " for £" + cost + " because they did not have enough of that item.");
+                    EconomyResponse priceResponse = this.app.getMat().getMaterialPrice(material, amount, 1.0, false);
+                    double cost = app.getEco().round(priceResponse.balance);
+                    double balance = this.app.getEco().round(app.getEco().getBalance(from));
+                    if (userAmount >= amount) {
+                        this.app.getMat().removeMaterialsFromPlayer(itemStacks, amount);
+                        material.addQuantity(amount);
+                        this.app.getEco().addCash(from, priceResponse.balance);
+                        this.app.getCon().info(from, "Sold " + amount + " " + material.getCleanName() + " for £" + cost + ". New balance: £" + balance);
+                        this.app.getCon().info(from.getName() + " sold " + amount + " " + material.getMaterialID() + " for £" + cost);
+                    } else {
+                        this.app.getCon().usage(from, "You do not have " + amount + " " + material.getCleanName(), usage);
+                        this.app.getCon().warn(from.getName() + " couldn't sell " + amount + " " + material.getMaterialID() + " for £" + cost + " because they only had " + userAmount + " / " + amount);
+                    }
                 }
             }
         }
