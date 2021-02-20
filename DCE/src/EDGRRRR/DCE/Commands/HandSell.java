@@ -11,14 +11,12 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.HashMap;
-
 /**
  * A simple ping pong! command
  */
 public class HandSell implements CommandExecutor {
-    private DCEPlugin app;
-    private String usage = "/hs | /hs <amount> | /hs max";
+    private final DCEPlugin app;
+    private final String usage = "/hs | /hs <amount> | /hs max";
 
     public HandSell(DCEPlugin app) {
         this.app = app;

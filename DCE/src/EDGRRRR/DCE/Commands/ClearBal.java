@@ -11,8 +11,8 @@ import org.bukkit.entity.Player;
  * Command executor for editing (adding or removing) cash to a player
  */
 public class ClearBal implements CommandExecutor {
-    private DCEPlugin app;
-    private String usage = "/clearbal <username> | /clearbal";
+    private final DCEPlugin app;
+    private final String usage = "/clearbal <username> | /clearbal";
 
     public ClearBal(DCEPlugin app) {
         this.app = app;
@@ -26,7 +26,7 @@ public class ClearBal implements CommandExecutor {
         }
 
         Player from = (Player) sender;
-        String to = null;
+        String to;
 
         // Ensure command is enabled
         if (!(this.app.getConfig().getBoolean(this.app.getConf().strComClearBal))) {

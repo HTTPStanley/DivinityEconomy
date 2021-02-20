@@ -18,7 +18,7 @@ import net.milkbowl.vault.economy.EconomyResponse.ResponseType;
 
 public class MaterialManager {
     // Link back to Main
-    private DCEPlugin app;
+    private final DCEPlugin app;
 
     // Stores items
     private FileConfiguration config;
@@ -34,7 +34,7 @@ public class MaterialManager {
     /**
      * Constructor You will likely need to call loadMaterials and loadAliases to
      * populate the aliases and materials with data from the program
-     * @param app
+     * @param app - The plugin
      */
     public MaterialManager(DCEPlugin app) {
         this.app = app;
@@ -83,7 +83,7 @@ public class MaterialManager {
         int amountLeft = amount;
         for (ItemStack itemStack : itemStacks) {
             int stackAmount = itemStack.getAmount();
-            int amountRemoved = 0;
+            int amountRemoved;
             if (amountLeft > stackAmount) {
                 amountRemoved = stackAmount;
                 itemStack.setAmount(0);
@@ -96,6 +96,21 @@ public class MaterialManager {
             if (amountLeft == 0) {
                 break;
             }
+        }
+    }
+
+    public void addMaterialToPlayer(Player player, Material material, int amount) {
+        for (int i=0; i < amount;) {
+            ItemStack newStack = new ItemStack(material);
+            int amountLeft = amount - i;
+            if (amountLeft > material.getMaxStackSize()) {
+                newStack.setAmount(material.getMaxStackSize());
+                i += material.getMaxStackSize();
+            } else {
+                newStack.setAmount(amountLeft);
+                i += amountLeft;
+            }
+            player.getInventory().addItem(newStack);
         }
     }
 
@@ -306,7 +321,7 @@ public class MaterialManager {
      */
     public void loadAliases() {
         FileConfiguration config = this.loadFile(this.aliasesFile);
-        HashMap<String, String> values = new HashMap<String, String>();
+        HashMap<String, String> values = new HashMap<>();
         for (String key : config.getKeys(false)) {
             String value = config.getString(key);
             values.put(key, value);
@@ -326,7 +341,7 @@ public class MaterialManager {
         this.baseTotalMaterials = 0;
         this.totalMaterials = 0;
         // Create a HashMap to store the values
-        HashMap<String, MaterialData> values = new HashMap<String, MaterialData>();
+        HashMap<String, MaterialData> values = new HashMap<>();
         // Loop through keys and get data
         // Add data to a MaterialData and put in HashMap under key
         for (String key : this.config.getKeys(false)) {
@@ -364,7 +379,7 @@ public class MaterialManager {
      */
     public FileConfiguration loadFile(String file) {
         // Instantiate default and user config
-        FileConfiguration defConfig = null;
+        FileConfiguration defConfig;
         FileConfiguration config = null;
         try {
             // Load default and user config

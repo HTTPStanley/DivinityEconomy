@@ -187,7 +187,7 @@ public class DCEPlugin extends JavaPlugin {
      * Returns an offline player
      * First scans local offline players
      * @param name - name to scan for.
-     * @param allowFetch - Uses deprecated "bukkit.getOfflinePlayer", not reccommended.
+     * @param allowFetch - Uses deprecated "bukkit.getOfflinePlayer", not recommended.
      * @return OfflinePlayer - the player corresponding to the name.
      */
     public OfflinePlayer getOfflinePlayer(String name, boolean allowFetch) {
@@ -202,7 +202,7 @@ public class DCEPlugin extends JavaPlugin {
             }
         }
 
-        if (allowFetch == true && player == null) {
+        if (allowFetch && player == null) {
             player = this.getServer().getOfflinePlayer(name);
         }
 

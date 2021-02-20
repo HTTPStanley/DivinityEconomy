@@ -12,33 +12,33 @@ import org.bukkit.potion.PotionType;
  */
 public class MaterialData {
     // The material manager
-    private MaterialManager manager;
+    private final MaterialManager manager;
     // The configuration section for this material
-    private ConfigurationSection configData;
+    private final ConfigurationSection configData;
     // The configuration section for this material
-    private ConfigurationSection defaultConfigData;
+    private final ConfigurationSection defaultConfigData;
     // The potionData for this material
-    private MaterialPotionData potionData;
+    private final MaterialPotionData potionData;
 
     // String key names for values
-    private String strAllowed = "ALLOWED";
-    private String strQuantity = "QUANTITY";
-    private String strMaterialID = "MATERIAL";
-    private String strPotionData = "POTION_DATA";
-    private String strCleanName = "CLEAN_NAME";
-    private String strEntity = "ENTITY";
-    private String strTypeMaterial = "MATERIAL";
-    private String strTypeEntity = "ENTITY";
-    private String strTypePotion = "POTION";
-    private String strPotionUpgraded = "upgraded";
-    private String strPotionExtended = "extended";
-    private String strPotionType = "type";
+    private final String strAllowed = "ALLOWED";
+    private final String strQuantity = "QUANTITY";
+    private final String strMaterialID = "MATERIAL";
+    private final String strPotionData = "POTION_DATA";
+    private final String strCleanName = "CLEAN_NAME";
+    private final String strEntity = "ENTITY";
+    private final String strTypeMaterial = "MATERIAL";
+    private final String strTypeEntity = "ENTITY";
+    private final String strTypePotion = "POTION";
+    private final String strPotionUpgraded = "upgraded";
+    private final String strPotionExtended = "extended";
+    private final String strPotionType = "type";
 
 
     /**
      * Constructor
-     * @param manager
-     * @param configData
+     * @param manager - The material manager
+     * @param configData - The config section containing the data for this material
      */
     public MaterialData(MaterialManager manager, ConfigurationSection configData, ConfigurationSection defaultConfigData) {
         this.manager = manager;
@@ -54,7 +54,7 @@ public class MaterialData {
 
     /**
      * Returns the config section
-     * @return
+     * @return ConfigurationSection - Returns the config data section for this material
      */
     public ConfigurationSection getConfigData() {
         return this.configData;
@@ -63,7 +63,7 @@ public class MaterialData {
     /**
      * Returns the clean name for the material.
      * Ideal for messaging or returning to the user.
-     * @return
+     * @return String - Returns the clean name for this item
      */
     public String getCleanName() {
         return this.configData.getString(this.strCleanName);
@@ -71,12 +71,16 @@ public class MaterialData {
 
     /**
      * Returns the quantity of this material in the market
-     * @return
+     * @return int - The quantity of this item in stock
      */
     public int getQuantity() {
         return this.configData.getInt(this.strQuantity);
     }
 
+    /**
+     * Returns the default quantity of this material from the config
+     * @return int - The default quantity of this item in stock
+     */
     public int getDefaultQuantity() {
         return this.defaultConfigData.getInt(this.strQuantity);
     }
@@ -84,7 +88,7 @@ public class MaterialData {
     /**
      * Returns the market price of this item
      * Market price = price for server (user sell price)
-     * @return
+     * @return double - The market (sell) price of this item
      */
     public double getMarketPrice() {
         return this.manager.getMarketPrice(this.getQuantity());
@@ -93,7 +97,7 @@ public class MaterialData {
     /**
      * Returns the user price of this item
      * User price = price for user (user buy price)
-     * @return
+     * @return double - The user (buy) price of this item
      */
     public double getUserPrice() {
         return this.manager.getUserPrice(this.getQuantity());
@@ -103,7 +107,7 @@ public class MaterialData {
      * Returns the banned state of the material
      * True means the item is allowed
      * False means the item is banned
-     * @return
+     * @return boolean - Whether the item is allowed to be bought/sold or not
      */
     public boolean getAllowed() {
         return this.configData.getBoolean(this.strAllowed);
@@ -112,7 +116,7 @@ public class MaterialData {
     /**
      * Returns the material ID
      * Examples: "AIR", "OAK_WOOD_PLANKS"
-     * @return
+     * @return String - The internal material name
      */
     public String getMaterialID() {
         return this.configData.getString(this.strMaterialID);
@@ -121,7 +125,7 @@ public class MaterialData {
     /**
      * Returns the potiondata for the material
      * Is null if the material is not a potion
-     * @return
+     * @return MaterialPotionData - The potion data for this material, if not potion may be null.
      */
     public MaterialPotionData getPotionData() {
         return this.potionData;
@@ -129,7 +133,7 @@ public class MaterialData {
 
     /**
      * Returns the internal Material from the materialID
-     * @return
+     * @return Material - Returns the material object for this material.
      */
     public Material getMaterial() {
         return Material.getMaterial(this.getMaterialID());
@@ -137,7 +141,7 @@ public class MaterialData {
 
     /**
      * Returns the internal Entity name
-     * @return
+     * @return String - The entity name of this material if an entity.
      */
     public String getEntityName() {
         return this.configData.getString(this.strEntity);
@@ -149,10 +153,10 @@ public class MaterialData {
      *  MATERIAL = block/item
      *  POTION = a potion that requires potionData
      *  ENTITY = an entity based item
-     * @return
+     * @return String - The type of object this is.
      */
     public String getType() {
-        String type = null;
+        String type;
         // If potion
         if (!(potionData == null)) {
             type = this.strTypePotion;
@@ -170,14 +174,14 @@ public class MaterialData {
 
     /**
      * Returns an itemStack containing <amount> of this material
-     * @param amount
-     * @return
+     * @param amount - The amount to set the stack to
+     * @return ItemStack - The item stack
      */
     public ItemStack getItemStack(int amount) {
         // Create the itemStack of <material> of <amount>
         ItemStack iStack = new ItemStack(this.getMaterial(), amount);
         // If potion, set meta data
-        if (this.getType() == this.strTypePotion) {
+        if (this.getType().equals(this.strTypePotion)) {
             PotionMeta meta = (PotionMeta) iStack.getItemMeta();
             meta.setBasePotionData(new PotionData(PotionType.valueOf(potionData.getType()), potionData.getExtended(), potionData.getUpgraded()));
             iStack.setItemMeta(meta);
@@ -187,7 +191,7 @@ public class MaterialData {
 
     /**
      * Sets the quantity to <amount>
-     * @param amount
+     * @param amount - The amount to set the internal stock of this item to
      */
     public void setQuantity(int amount) {
         int oldQuantity = this.getQuantity();
@@ -198,7 +202,7 @@ public class MaterialData {
 
     /**
      * Adds the quantity <amount>
-     * @param amount
+     * @param amount - The amount of stock to add to the pile
      */
     public void addQuantity(int amount) {
         setData(this.strQuantity, this.getQuantity() + amount);
@@ -207,7 +211,7 @@ public class MaterialData {
 
     /**
      * Removes the quantity <amount>
-     * @param amount
+     * @param amount - The amount of stock to remove from the pile
      */
     public void remQuantity(int amount) {
         setData(this.strQuantity, this.getQuantity() - amount);
@@ -216,8 +220,8 @@ public class MaterialData {
 
     /**
      * Sets a data key to value
-     * @param key
-     * @param value
+     * @param key - The key
+     * @param value - The value
      */
     private void setData(String key, Object value) {
         this.configData.set(key, value);

@@ -9,27 +9,27 @@ import org.bukkit.entity.Player;
  * Console class for sending uniform messages to players and the console.
  */
 public class ConsoleManager {
-    private DCEPlugin app;
+    private final DCEPlugin app;
 
     // Settings
-    private boolean debugMode;
-    private ChatColor infoColour;
-    private ChatColor warnColour;
-    private ChatColor severeColour;
-    private ChatColor debugColour;
-    private ChatColor prefixColour;
-    private ChatColor prefixSepColour;
-    private String prefix;
-    private String conPrefix;
+    private final boolean debugMode;
+    private final ChatColor infoColour;
+    private final ChatColor warnColour;
+    private final ChatColor severeColour;
+    private final ChatColor debugColour;
+    private final ChatColor prefixColour;
+    private final ChatColor prefixSepColour;
+    private final String prefix;
+    private final String conPrefix;
 
     // Colours
-    private HashMap<String, ChatColor> colourMap;
+    private final HashMap<String, ChatColor> colourMap;
 
     public ConsoleManager(DCEPlugin app){
         this.app = app;
 
         // Colours :D
-        this.colourMap = new HashMap<String, ChatColor>();
+        this.colourMap = new HashMap<>();
         this.colourMap.put("AQUA", ChatColor.AQUA);
         this.colourMap.put("BLACK", ChatColor.BLACK);
         this.colourMap.put("BLUE", ChatColor.BLUE);
@@ -67,7 +67,7 @@ public class ConsoleManager {
     /**
      * Resolves string colours to the corresponding ChatColor object
      * @param optionName - The config option name
-     * @return
+     * @return ChatColour - The colour
      */
     private ChatColor getColour(String optionName) {
         String option = this.app.getConfig().getString(optionName);
@@ -83,7 +83,7 @@ public class ConsoleManager {
     // CONSOLE COMMANDS
     /**
      * Sends a message to the console
-     * @param message
+     * @param message - The message to send
      */
     private void send(String message) {
         this.app.getServer().getConsoleSender().sendMessage(conPrefix + message);
@@ -91,7 +91,7 @@ public class ConsoleManager {
 
     /**
      * Sends a (default green) message to the console
-     * @param message
+     * @param message - The message to send
      */
     public void info(String message) {
         this.send(infoColour + message);
@@ -99,7 +99,7 @@ public class ConsoleManager {
 
     /**
      * Sends a (default green) message to the console
-     * @param message
+     * @param message - The message to send
      */
     public void debug(String message) {
         if (debugMode) this.send(debugColour + message);
@@ -107,7 +107,7 @@ public class ConsoleManager {
 
     /**
      * Sends a (default yellow) message to the console
-     * @param message
+     * @param message - The message to send
      */
     public void warn(String message) {
         this.send(warnColour + message);
@@ -115,7 +115,7 @@ public class ConsoleManager {
 
     /**
      * Sends a (default red) message to the console
-     * @param message
+     * @param message - The message to send
      */
     public void severe(String message) {
         this.send(severeColour + message);
@@ -124,8 +124,8 @@ public class ConsoleManager {
     // PLAYER
     /**
      * Sends a message to a player
-     * @param player
-     * @param message
+     * @param player - The player to send to
+     * @param message - The message to send
      */
     private void send(Player player, String message) {
         player.sendMessage(prefix + message);
@@ -133,8 +133,9 @@ public class ConsoleManager {
 
     /**
      * Sends a usage command to a player
-     * @param player
-     * @param message
+     * @param player - The player to send to
+     * @param errorMessage - The message to send
+     * @param commandUsage - The usage of the command
      */
     public void usage(Player player, String errorMessage, String commandUsage){
         this.warn(player, "Incorrect command usage: " + errorMessage);
@@ -143,8 +144,8 @@ public class ConsoleManager {
 
     /**
      * Sends an info message to a player
-     * @param player
-     * @param message
+     * @param player - The player to send to
+     * @param message - The message to send
      */
     public void info(Player player, String message){
         this.send(player, infoColour + message);
@@ -152,16 +153,16 @@ public class ConsoleManager {
 
     /**
      * Sends a warning message to a player
-     * @param player
-     * @param message
+     * @param player - The player to send to
+     * @param message - The message to send
      */
     public void warn(Player player, String message){
         this.send(player, warnColour + message);
     }
     /**
      * Sends a severe message to a player
-     * @param player
-     * @param message
+     * @param player - The player to send to
+     * @param message - The message to send
      */
     public void severe(Player player, String message){
         this.send(player, severeColour + message);

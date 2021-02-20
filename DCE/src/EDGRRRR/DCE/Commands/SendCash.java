@@ -13,8 +13,8 @@ import net.milkbowl.vault.economy.EconomyResponse;
  * Command executor for sending cashing between players
  */
 public class SendCash implements CommandExecutor {
-    private DCEPlugin app;
-    private String usage = "/sendcash <username> <amount>";
+    private final DCEPlugin app;
+    private final String usage = "/sendcash <username> <amount>";
 
     public SendCash(DCEPlugin app) {
         this.app = app;
@@ -37,10 +37,10 @@ public class SendCash implements CommandExecutor {
 
         // Use case scenarios
         // command <player> <amount>
-        Player to = null;
+        Player to;
         OfflinePlayer toOff = null;
-        Double amount = null;
-        Double minSendAmount = this.app.getConfig().getDouble(app.getConf().strEconMinSendAmount);
+        Double amount;
+        double minSendAmount = this.app.getConfig().getDouble(app.getConf().strEconMinSendAmount);
 
         switch (args.length) {
             case 2:
@@ -75,8 +75,8 @@ public class SendCash implements CommandExecutor {
         }
 
 
-        EconomyResponse response = null;
-        String toName = null;
+        EconomyResponse response;
+        String toName;
         if (!(to == null)) {
             if (to == from) {
                 this.app.getCon().usage(from, "You can't send money to yourself (╯°□°）╯︵ ┻━┻", usage);

@@ -15,8 +15,8 @@ import org.bukkit.entity.Player;
  * A simple ping pong! command
  */
 public class Info implements CommandExecutor {
-    private DCEPlugin app;
-    private String usage = "/info <materialName> <amount> | /info <materialName>";
+    private final DCEPlugin app;
+    private final String usage = "/info <materialName> <amount> | /info <materialName>";
 
     public Info(DCEPlugin app) {
         this.app = app;
@@ -37,8 +37,8 @@ public class Info implements CommandExecutor {
             return true;
         }
 
-        String materialName = null;
-        Integer amount = null;
+        String materialName;
+        int amount;
         switch (args.length) {
             case 1:
                 amount = 1;
@@ -61,8 +61,8 @@ public class Info implements CommandExecutor {
         } else {
             EconomyResponse userPriceResponse = this.app.getMat().getMaterialPrice(material, amount, 1.2, true);
             EconomyResponse marketPriceResponse = this.app.getMat().getMaterialPrice(material, amount, 1.0, false);
-            double userPrice = 0.0;
-            double marketPrice = 0.0;
+            double userPrice;
+            double marketPrice;
             int userAmount = amount;
             int marketAmount = amount;
 

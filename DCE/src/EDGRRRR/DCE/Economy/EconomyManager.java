@@ -15,7 +15,7 @@ import net.milkbowl.vault.economy.EconomyResponse.ResponseType;
 public class EconomyManager {
 
     // Stores the main app
-    private DCEPlugin app;
+    private final DCEPlugin app;
 
     // Stores the Vault economy api
     private Economy economy;
@@ -42,13 +42,12 @@ public class EconomyManager {
     /**
      * Sets up the vault economy object
      * Returns if it was successful or not.
-     * @return boolean
      */
-    public boolean setupEconomy() {
+    public void setupEconomy() {
         // Look for vault
         if (this.app.getServer().getPluginManager().getPlugin("Vault") == null) {
             this.app.getCon().severe("No plugin 'Vault' detected.");
-            return false;
+            return;
         } else {
             this.app.getCon().info("Vault has been detected.");
         }
@@ -57,14 +56,13 @@ public class EconomyManager {
         RegisteredServiceProvider<Economy> rsp = this.app.getServer().getServicesManager().getRegistration(Economy.class);
         if (rsp == null) {
             this.app.getCon().severe("Could not register Economy.");
-            return false;
+            return;
         } else {
             this.app.getCon().info("Registered Economy.");
         }
 
         // return if economy was gotten successfully.
         this.economy = rsp.getProvider();
-        return this.economy != null;
     }
 
     /**
@@ -77,17 +75,15 @@ public class EconomyManager {
 
     /**
      * Gets the players balance
-     * @param player
+     * @param player - The player
      * @return double
      */
     public double getBalance(Player player) {
-        OfflinePlayer oPlayer = (OfflinePlayer) player;
-        return this.getBalance(oPlayer);
+        return this.getBalance((OfflinePlayer) player);
     }
 
     /**
      * Gets the players balance
-     * @param player
      * @return double
      */
     public double getBalance(OfflinePlayer oPlayer) {
@@ -96,7 +92,7 @@ public class EconomyManager {
 
     /**
      * Rounding
-     * @param amount
+     * @param amount - The amount
      */
 
      public double round(double amount) {
@@ -106,14 +102,20 @@ public class EconomyManager {
     public double round(double amount, int roundingDigits) {
         // Rounds the amount to the number of digits specified
         // Does this by 10**digits (100 or 10**2 = 2 digits)
-        double roundAmount = Math.pow(10, roundingDigits);
-        return Math.round(amount * roundAmount) / roundAmount;
+        try {
+            double roundAmount = Math.pow(10, roundingDigits);
+            return Math.round(amount * roundAmount) / roundAmount;
+        } catch (Exception e) {
+            this.app.getCon().severe("Rounding error for value (" + amount + " (" + roundingDigits + ")): " + e.getMessage());
+            return amount;
+        }
+
     }
 
     /**
      * Adds <amount> to <player>
-     * @param player
-     * @param amount
+     * @param oPlayer - The offline player
+     * @param amount - The amount
      */
     public EconomyResponse addCash(OfflinePlayer oPlayer, double amount) {
         this.app.getCon().debug("ADD REQUEST '" + oPlayer.getName() + "' £" + amount);
@@ -125,18 +127,17 @@ public class EconomyManager {
 
     /**
      * Adds <amount> to <player>
-     * @param player
-     * @param amount
+     * @param player - The player
+     * @param amount - The amount
      */
     public EconomyResponse addCash(Player player, double amount) {
-        OfflinePlayer oPlayer = (OfflinePlayer) player;
-        return this.addCash(oPlayer, amount);
+        return this.addCash((OfflinePlayer) player, amount);
     }
 
     /**
      * Removes <amount> from <player>
-     * @param player
-     * @param amount
+     * @param oPlayer - The offline player
+     * @param amount - The amount
      */
     public EconomyResponse remCash(OfflinePlayer oPlayer, double amount) {
         this.app.getCon().debug("SET REQUEST '" + oPlayer.getName() + "' £" + amount);
@@ -148,19 +149,18 @@ public class EconomyManager {
 
     /**
      * Removes <amount> from <player>
-     * @param player
-     * @param amount
+     * @param player - The player
+     * @param amount - The amount
      */
     public EconomyResponse remCash(Player player, double amount) {
-        OfflinePlayer oPlayer = (OfflinePlayer) player;
-        return this.remCash(oPlayer, amount);
+        return this.remCash((OfflinePlayer) player, amount);
     }
 
     /**
      * Sets the balance of a player to the amount provided
-     * @param oPlayer
-     * @param amount
-     * @return
+     * @param oPlayer - The offline player
+     * @param amount - The amount
+     * @return EconomyResponse - The result of the function
      */
     public EconomyResponse setCash(OfflinePlayer oPlayer, double amount) {
         this.app.getCon().debug("SET REQUEST '" + oPlayer.getName() + "' £" + amount);
@@ -182,13 +182,12 @@ public class EconomyManager {
 
     /**
      * Sets the balance of a player to the amount provided
-     * @param oPlayer
-     * @param amount
-     * @return
+     * @param player - The player
+     * @param amount - The amount
+     * @return EconomyResponse - The result of the command
      */
     public EconomyResponse setCash(Player player, double amount) {
-        OfflinePlayer oPlayer = (OfflinePlayer) player;
-        return this.setCash(oPlayer, amount);
+        return this.setCash((OfflinePlayer) player, amount);
     }
 
     /**
@@ -197,10 +196,10 @@ public class EconomyManager {
      * Can fail if criteria aren't met:
      * -minimumSendAmount <
      * -<from> has <amount> to send
-     * @param from
-     * @param to
-     * @param amount
-     * @return
+     * @param from - The source player of cash
+     * @param to - The result player of cash
+     * @param amount - The amount of cash
+     * @return EconomyResponse - The result of the function
      */
     public EconomyResponse sendCash(Player from, OfflinePlayer to, double amount) {
         double fromBalance = this.getBalance(from);
@@ -227,25 +226,24 @@ public class EconomyManager {
      * Can fail if criteria aren't met:
      * -minimumSendAmount <
      * -<from> has <amount> to send
-     * @param from
-     * @param to
-     * @param amount
-     * @return
+     * @param from - The source player of cash
+     * @param to - The result player of cash
+     * @param amount - The amount of cash
+     * @return EconomyResponse - The result of the function
      */
     public EconomyResponse sendCash(Player from, Player to, double amount) {
-        OfflinePlayer oPlayer = (OfflinePlayer) to;
-        return this.sendCash(from, oPlayer, amount);
+        return this.sendCash(from, (OfflinePlayer) to, amount);
     }
 
     /**
      * A function for extracting a double from a String
-     * will return null if an error occurrs (such as the string not containing a double)
-     * @param arg
-     * @return
+     * will return null if an error occurs (such as the string not containing a double)
+     * @param arg - A string to convert to a double
+     * @return double - A potentially converted double
      */
-    public Double getDouble(String arg) {
+    public double getDouble(String arg) {
         // Instantiate amount
-        Double amount = null;
+        double amount;
 
         // Try to parse the double
         // Catch the error and set to null

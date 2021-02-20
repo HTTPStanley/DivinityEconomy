@@ -12,8 +12,8 @@ import EDGRRRR.DCE.Main.DCEPlugin;
  * A command executor class for replying to /balance
  */
 public class Balance implements CommandExecutor {
-    private DCEPlugin app;
-    private String usage = "/balance | /balance <username>";
+    private final DCEPlugin app;
+    private final String usage = "/balance | /balance <username>";
 
     public Balance(DCEPlugin app) {
         this.app = app;
@@ -38,7 +38,7 @@ public class Balance implements CommandExecutor {
         // Use case scenarios
         // command - returns the callers balance.
         // command <username> - returns the usernames balance.
-        Player to = null;
+        Player to;
         OfflinePlayer toOff = null;
 
         switch (args.length) {
@@ -62,8 +62,8 @@ public class Balance implements CommandExecutor {
             return true;
         }
 
-        double balance = 0.0;
-        if (!(to == null)) {
+        double balance;
+        if (to != null) {
             balance = this.app.getEco().round(this.app.getEco().getBalance(to));
             if (!(from == to)) {
                 this.app.getCon().info(from, to.getName() + "'s Balance: £" + balance);
@@ -74,7 +74,6 @@ public class Balance implements CommandExecutor {
             balance = this.app.getEco().round(this.app.getEco().getBalance(toOff));
             this.app.getCon().info(from, toOff.getName() + "'s Balance: £" + balance);
         }
-        // Graceful exit
         return true;
     }
 }

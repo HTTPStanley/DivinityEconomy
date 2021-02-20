@@ -13,8 +13,8 @@ import net.milkbowl.vault.economy.EconomyResponse;
  * Command executor for editing (adding or removing) cash to a player
  */
 public class EditBal implements CommandExecutor {
-    private DCEPlugin app;
-    private String usage = "/editbal <username> <amount> | /editbal <amount>";
+    private final DCEPlugin app;
+    private final String usage = "/editbal <username> <amount> | /editbal <amount>";
 
     public EditBal(DCEPlugin app) {
         this.app = app;
@@ -36,11 +36,11 @@ public class EditBal implements CommandExecutor {
         }
 
         // Use case scenarios
-        // command <amount> - applies ammount to self
+        // command <amount> - applies amount to self
         // command <player> <amount> - applies amount to player
-        Player to = null;
+        Player to;
         OfflinePlayer toOff = null;
-        Double amount = null;
+        Double amount;
 
         switch (args.length) {
             case 1:

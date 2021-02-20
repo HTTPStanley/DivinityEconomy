@@ -3,7 +3,7 @@ package EDGRRRR.DCE.Main;
  * Console class for sending uniform messages to players and the console.
  */
 public class ConfigManager {
-    private DCEPlugin app;
+    private final DCEPlugin app;
 
     // Prefixes for settings
     public String strMainPrefix = "main";

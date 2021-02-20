@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
  * A simple ping pong! command
  */
 public class Ping implements CommandExecutor {
-    private DCEPlugin app;
+    private final DCEPlugin app;
 
     public Ping(DCEPlugin app) {
         this.app = app;
