@@ -3,11 +3,9 @@ package EDGRRRR.DCE.Commands;
 import EDGRRRR.DCE.Economy.Materials.MaterialData;
 import EDGRRRR.DCE.Main.DCEPlugin;
 import net.milkbowl.vault.economy.EconomyResponse;
-
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -15,8 +13,8 @@ import org.bukkit.inventory.ItemStack;
  * A command for buying items from the market
  */
 public class SellItem implements CommandExecutor {
-    private DCEPlugin app;
-    private String usage = "/sell <itemName> <amountToSell> | /sell <itemName> | /sell <itemName> max";
+    private final DCEPlugin app;
+    private final String usage = "/sell <itemName> <amountToSell> | /sell <itemName> | /sell <itemName> max";
 
     public SellItem(DCEPlugin app) {
         this.app = app;
@@ -37,7 +35,7 @@ public class SellItem implements CommandExecutor {
             return true;
         }
 
-        String materialName = null;
+        String materialName;
         boolean sellAll = false;
         int amount = 1;
 
@@ -64,32 +62,33 @@ public class SellItem implements CommandExecutor {
 
         if (amount < 1) {
             this.app.getCon().usage(from, "Cannot sell less than 1 item", this.usage);
-            return true;
-        }
-
-        MaterialData material = this.app.getMat().getMaterial(materialName);
-        if (material == null) {
-            this.app.getCon().usage(from, "Unknown Item: '" + materialName + "'", "");
-            return true;
         } else {
-            ItemStack[] itemStacks = this.app.getMat().getMaterialSlots(from, material.getMaterial());
-            int userAmount = this.app.getMat().getMaterialCount(itemStacks);
-
-            if (sellAll) {
-                amount = userAmount;
-            }
-
-            EconomyResponse priceResponse = this.app.getMat().getMaterialPrice(material, amount, 1.0, false);
-            if (userAmount >= amount) {
-                this.app.getMat().removeMaterialsFromPlayer(itemStacks, amount);
-                material.addQuantity(amount);
-                this.app.getEco().addCash(from, priceResponse.balance);
-                this.app.getCon().info(from, "Sold " + amount + " " + material.getCleanName() + " for £" + app.getEco().round(priceResponse.balance) + ". New balance: £" + this.app.getEco().round(app.getEco().getBalance(from)));
+            MaterialData material = this.app.getMat().getMaterial(materialName);
+            if (material == null) {
+                this.app.getCon().usage(from, "Unknown Item: '" + materialName + "'", "");
             } else {
-                this.app.getCon().usage(from, "You do not have " + amount + " " + material.getCleanName(), usage);
+                ItemStack[] itemStacks = this.app.getMat().getMaterialSlots(from, material.getMaterial());
+                int userAmount = this.app.getMat().getMaterialCount(itemStacks);
+
+                if (sellAll) {
+                    amount = userAmount;
+                }
+
+                EconomyResponse priceResponse = this.app.getMat().getMaterialPrice(material, amount, 1.0, false);
+                double cost = app.getEco().round(priceResponse.balance);
+                double balance = this.app.getEco().round(app.getEco().getBalance(from));
+                if (userAmount >= amount) {
+                    this.app.getMat().removeMaterialsFromPlayer(itemStacks, amount);
+                    material.addQuantity(amount);
+                    this.app.getEco().addCash(from, priceResponse.balance);
+                    this.app.getCon().info(from, "Sold " + amount + " " + material.getCleanName() + " for £" + cost + ". New balance: £" + balance);
+                    this.app.getCon().info(from.getName() + " sold " + amount + " " + material.getMaterialID() + " for £" + cost);
+                } else {
+                    this.app.getCon().usage(from, "You do not have " + amount + " " + material.getCleanName(), usage);
+                    this.app.getCon().warn(from.getName() + " couldn't sell " + amount + " " + material.getMaterialID() + " for £" + cost + " because they did not have enough of that item.");
+                }
             }
         }
-
         return true;
     }
 }
