@@ -50,7 +50,7 @@ public class HandSell implements CommandExecutor {
                 if (args[0].equals("max")) {
                     sellAll = true;
                 } else {
-                    amountToSell = (int) (double) this.app.getEco().getDouble(args[0]);
+                    amountToSell = (int) this.app.getEco().getDouble(args[0]);
                 }
                 break;
 
@@ -61,44 +61,47 @@ public class HandSell implements CommandExecutor {
 
         if (amountToSell < 1) {
             this.app.getCon().usage(player, "Invalid amount.", this.usage);
-            return true;
-        }
-
-        int slotIdx = player.getInventory().getHeldItemSlot();
-        ItemStack iStack = player.getInventory().getItem(slotIdx);
-
-        if (iStack == null) {
-            this.app.getCon().usage(player, "You are not holding any item.", this.usage);
-            return true;
         } else {
-            Material material = iStack.getType();
-            String materialName = material.name();
-            MaterialData mData = this.app.getMat().getMaterial(materialName);
-            ItemStack[] itemStacks = this.app.getMat().getMaterialSlots(player, material);
-            int materialCount = this.app.getMat().getMaterialCount(itemStacks);
+            int slotIdx = player.getInventory().getHeldItemSlot();
+            ItemStack iStack = player.getInventory().getItem(slotIdx);
 
-            if (sellAll) {
-                amountToSell = materialCount;
+            if (iStack == null) {
+                this.app.getCon().usage(player, "You are not holding any item.", this.usage);
+            } else {
+                Material material = iStack.getType();
+                String materialName = material.name();
+                MaterialData mData = this.app.getMat().getMaterial(materialName);
+                ItemStack[] itemStacks = this.app.getMat().getMaterialSlots(player, material);
+                int materialCount = this.app.getMat().getMaterialCount(itemStacks);
+
+                if (sellAll) {
+                    amountToSell = materialCount;
+                }
+
+                if (sellHand) {
+                    amountToSell = iStack.getAmount();
+                }
+                if (!mData.getAllowed()) {
+                    this.app.getCon().usage(player, "Cannot sell" + mData.getCleanName() + " when it is not allowed to be bought or sold", this.usage);
+                    this.app.getCon().warn(player.getName() + " couldn't sell " + mData.getMaterialID() + " when it is not allowed to be bought or sold");
+                } else {
+                    if (materialCount < amountToSell) {
+                        this.app.getCon().usage(player, "Cannot sell " + amountToSell + " " + mData.getCleanName() + " when you only have " + materialCount, this.usage);
+                        this.app.getCon().warn(player.getName() + " couldn't sell " + amountToSell + " " + mData.getMaterialID() + " because they only have " + materialCount + " / " + amountToSell);
+                    } else {
+                        this.app.getMat().removeMaterialsFromPlayer(itemStacks, amountToSell);
+                        mData.addQuantity(amountToSell);
+                        EconomyResponse response = this.app.getMat().getMaterialPrice(mData, amountToSell, 1.0, false);
+                        this.app.getEco().addCash(player, response.balance);
+                        double cost = app.getEco().round(response.balance);
+                        double balance = app.getEco().round(app.getEco().getBalance(player));
+
+                        this.app.getCon().info(player, "Sold " + amountToSell + " " + mData.getCleanName() + " for £" + cost + ". New Balance: £" + balance);
+                        this.app.getCon().info(player.getName() + " sold " + amountToSell + " " + mData.getMaterialID() + " for £" + cost);
+                    }
+                }
             }
-
-            if (sellHand) {
-                amountToSell = iStack.getAmount();
-            }
-
-            if (materialCount < amountToSell) {
-                this.app.getCon().usage(player, "Cannot sell " + amountToSell + " " + mData.getCleanName() + " when you only have " + materialCount, this.usage);
-                return true;
-            }
-
-            this.app.getMat().removeMaterialsFromPlayer(itemStacks, amountToSell);
-            mData.addQuantity(amountToSell);
-            EconomyResponse response = this.app.getMat().getMaterialPrice(mData, amountToSell, 1.0, false);
-            this.app.getEco().addCash(player, response.balance);
-
-            this.app.getCon().info(player, "Sold " + amountToSell + " " + mData.getCleanName() + " for £" + app.getEco().round(response.balance) + ". New Balance: £" + app.getEco().round(app.getEco().getBalance(player)));
         }
-
-
         return true;
     }
 }
