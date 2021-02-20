@@ -56,7 +56,7 @@ public class BuyItem implements CommandExecutor {
         }
 
         if (amount < 1) {
-            this.app.getCon().usage(from, "Cannot buy less than 1 item", this.usage);
+            this.app.getCon().usage(from, "Invalid amount.", this.usage);
         } else {
             MaterialData material = this.app.getMat().getMaterial(materialName);
             if (material == null) {
