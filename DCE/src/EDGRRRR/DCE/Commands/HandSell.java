@@ -60,7 +60,7 @@ public class HandSell implements CommandExecutor {
         }
 
         if (amountToSell < 1) {
-            this.app.getCon().usage(player, "Cannot sell less than 1 item", this.usage);
+            this.app.getCon().usage(player, "Invalid amount.", this.usage);
             return true;
         }
 
