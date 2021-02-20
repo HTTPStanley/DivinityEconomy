@@ -51,7 +51,7 @@ public class SellItem implements CommandExecutor {
                 if (args[1].equals("max")) {
                     sellAll = true;
                 } else {
-                    amount = (int) (double) this.app.getEco().getDouble(args[1]);
+                    amount = (int) this.app.getEco().getDouble(args[1]);
                 }
                 break;
 
@@ -61,7 +61,7 @@ public class SellItem implements CommandExecutor {
         }
 
         if (amount < 1) {
-            this.app.getCon().usage(from, "Cannot sell less than 1 item", this.usage);
+            this.app.getCon().usage(from, "Invalid amount.", this.usage);
         } else {
             MaterialData material = this.app.getMat().getMaterial(materialName);
             if (material == null) {
