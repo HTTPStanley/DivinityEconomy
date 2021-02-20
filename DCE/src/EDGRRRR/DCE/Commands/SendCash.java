@@ -39,7 +39,7 @@ public class SendCash implements CommandExecutor {
         // command <player> <amount>
         Player to;
         OfflinePlayer toOff = null;
-        Double amount;
+        double amount;
         double minSendAmount = this.app.getConfig().getDouble(app.getConf().strEconMinSendAmount);
 
         switch (args.length) {
@@ -66,7 +66,7 @@ public class SendCash implements CommandExecutor {
         }
         // Ensure amount was parsed
         // Ensure amount is greater than min send amount.
-        if (amount == null) {
+        if (amount < 1) {
             this.app.getCon().usage(from, "Invalid amount.", usage);
             return true;
         } else if (amount < minSendAmount) {
