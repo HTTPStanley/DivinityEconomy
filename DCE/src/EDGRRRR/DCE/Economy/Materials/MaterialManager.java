@@ -83,15 +83,15 @@ public class MaterialManager {
         int amountLeft = amount;
         for (ItemStack itemStack : itemStacks) {
             int stackAmount = itemStack.getAmount();
-            int amountRemoved;
+            int amountRemoved = 0;
             if (amountLeft > stackAmount) {
                 amountRemoved = stackAmount;
                 itemStack.setAmount(0);
             } else {
-                amountRemoved = stackAmount - amountLeft;
-                itemStack.setAmount(amountRemoved);
+                int change = stackAmount - amountLeft;
+                amountRemoved = amountLeft;
+                itemStack.setAmount(change);
             }
-
             amountLeft -= amountRemoved;
             if (amountLeft == 0) {
                 break;
