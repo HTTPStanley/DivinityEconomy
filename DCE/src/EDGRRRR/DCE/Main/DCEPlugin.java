@@ -1,20 +1,10 @@
 package EDGRRRR.DCE.Main;
 
+import EDGRRRR.DCE.Commands.*;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import EDGRRRR.DCE.Commands.Balance;
-import EDGRRRR.DCE.Commands.BuyItem;
-import EDGRRRR.DCE.Commands.SellItem;
-import EDGRRRR.DCE.Commands.ClearBal;
-import EDGRRRR.DCE.Commands.EditBal;
-import EDGRRRR.DCE.Commands.HandSell;
-import EDGRRRR.DCE.Commands.Info;
-import EDGRRRR.DCE.Commands.Ping;
-import EDGRRRR.DCE.Commands.SendCash;
-import EDGRRRR.DCE.Commands.SetBal;
-import EDGRRRR.DCE.Commands.Value;
 import EDGRRRR.DCE.Economy.Materials.MaterialManager;
 import EDGRRRR.DCE.Economy.EconomyManager;
 /**
@@ -78,6 +68,10 @@ public class DCEPlugin extends JavaPlugin {
     private CommandExecutor handSell;
     public CommandExecutor getCommandHandSell() { return this.handSell; }
 
+    // A command for buying items in hand
+    private CommandExecutor handBuy;
+    public CommandExecutor getCommandHandBuy() { return this.handBuy; }
+
     /**
      * Called when the plugin is enabled
      * Setup console
@@ -106,6 +100,7 @@ public class DCEPlugin extends JavaPlugin {
         this.value = new Value(this);
         this.info = new Info(this);
         this.handSell = new HandSell(this);
+        this.handBuy = new HandBuy(this);
 
     	try {
             // Register commands
@@ -120,6 +115,7 @@ public class DCEPlugin extends JavaPlugin {
             this.getCommand("value").setExecutor(this.value);
             this.getCommand("information").setExecutor(this.info);
             this.getCommand("handSell").setExecutor(this.handSell);
+            this.getCommand("handBuy").setExecutor(this.handBuy);
             } catch (Exception e){
                 e.printStackTrace();
                 this.con.severe("An error occurred on registry: " + e);
