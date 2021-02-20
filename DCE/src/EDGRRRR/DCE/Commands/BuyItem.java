@@ -9,14 +9,13 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 /**
  * A command for buying items from the market
  */
 public class BuyItem implements CommandExecutor {
-    private DCEPlugin app;
-    private String usage = "/buy <itemName> <amountToBuy> | /buy <itemName>";
+    private final DCEPlugin app;
+    private final String usage = "/buy <itemName> <amountToBuy> | /buy <itemName>";
 
     public BuyItem(DCEPlugin app) {
         this.app = app;
@@ -37,13 +36,12 @@ public class BuyItem implements CommandExecutor {
             return true;
         }
 
-        String materialName = null;
-        Integer amount = null;
+        String materialName;
+        int amount = 1;
         switch (args.length) {
             // Just material, used default amount of 1
             case 1:
                 materialName = args[0];
-                amount = 1;
                 break;
 
             // Material & Amount
@@ -53,37 +51,42 @@ public class BuyItem implements CommandExecutor {
                 break;
 
             default:
-            this.app.getCon().usage(from, "Invalid number of arguments.", usage);
+                this.app.getCon().usage(from, "Invalid number of arguments.", this.usage);
                 return true;
         }
 
-        MaterialData material = this.app.getMat().getMaterial(materialName);
-        if (material == null) {
-            this.app.getCon().usage(from, "Unknown Item: '" + materialName + "'", "");
-            return true;
+        if (amount < 1) {
+            this.app.getCon().usage(from, "Cannot buy less than 1 item", this.usage);
         } else {
-            EconomyResponse priceResponse = this.app.getMat().getMaterialPrice(material, amount, this.app.getEco().tax, true);
-            EconomyResponse saleResponse = this.app.getEco().remCash(from, priceResponse.balance);
-            if (saleResponse.type == ResponseType.SUCCESS && priceResponse.type == ResponseType.SUCCESS) {
-                ItemStack iStack = material.getItemStack(amount);
-                from.getInventory().addItem(iStack);
-                material.remQuantity(amount);
-                double cost = this.app.getEco().round(saleResponse.amount);
-                double balance = this.app.getEco().round(saleResponse.balance);
-                this.app.getCon().info(from, "You bought " + amount + " of " + material.getCleanName() + " for £" + cost + ". New Balance: £" + balance);
-                this.app.getCon().info(from.getName() + "Bought " + amount + " of " + material.getCleanName() + " for £" + cost);
-            }
-            else {
-                String errorMessage = null;
-                if (saleResponse.type == ResponseType.FAILURE) errorMessage = saleResponse.errorMessage;
-                else if (priceResponse.type == ResponseType.FAILURE) errorMessage = priceResponse.errorMessage;
-                else errorMessage = "¯\\_(ツ)_/¯";
+            MaterialData material = this.app.getMat().getMaterial(materialName);
+            if (material == null) {
+                this.app.getCon().usage(from, "Unknown Item: '" + materialName + "'", "");
+            } else {
+                int availableSpace = this.app.getMat().getAvailableSpace(from, material.getMaterial());
+                if (amount > availableSpace) {
+                    this.app.getCon().usage(from, "You only have space for " + availableSpace + " " + material.getCleanName(), this.usage);
+                } else {
+                    EconomyResponse priceResponse = this.app.getMat().getMaterialPrice(material, amount, this.app.getEco().tax, true);
+                    EconomyResponse saleResponse = this.app.getEco().remCash(from, priceResponse.balance);
+                    double cost = this.app.getEco().round(saleResponse.amount);
+                    double balance = this.app.getEco().round(saleResponse.balance);
+                    if (saleResponse.type == ResponseType.SUCCESS && priceResponse.type == ResponseType.SUCCESS) {
+                        this.app.getMat().addMaterialToPlayer(from, material.getMaterial(), amount);
+                        material.remQuantity(amount);
+                        this.app.getCon().info(from, "Bought " + amount + " " + material.getCleanName() + " for £" + cost + ". New Balance: £" + balance);
+                        this.app.getCon().info(from.getName() + " Bought " + amount + " " + material.getMaterialID() + " for £" + cost);
+                    } else {
+                        String errorMessage;
+                        if (saleResponse.type == ResponseType.FAILURE) errorMessage = saleResponse.errorMessage;
+                        else if (priceResponse.type == ResponseType.FAILURE) errorMessage = priceResponse.errorMessage;
+                        else errorMessage = "¯\\_(ツ)_/¯";
 
-                this.app.getCon().usage(from, "Couldn't buy " + amount + " of " + material.getCleanName() + " for £" + saleResponse.amount + " because " + errorMessage, usage);
-                this.app.getCon().warn(from.getName() + " couldn't buy " + amount + " of " + material.getCleanName() + " for £" + saleResponse.amount + " because " + errorMessage);
+                        this.app.getCon().usage(from, "Couldn't buy " + amount + " " + material.getCleanName() + " for £" + cost + " because " + errorMessage, this.usage);
+                        this.app.getCon().warn(from.getName() + " couldn't buy " + amount + " " + material.getMaterialID() + " for £" + cost + " because " + errorMessage);
+                    }
+                }
             }
         }
-
         return true;
     }
 }
