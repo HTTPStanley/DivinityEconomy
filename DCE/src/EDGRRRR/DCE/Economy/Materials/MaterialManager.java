@@ -121,7 +121,8 @@ public class MaterialManager {
      */
     public int getEmptySlots(Player player) {
         int count = 0;
-        ItemStack[] inventory = player.getInventory().getContents();
+        ItemStack[] inventory = player.getInventory().getStorageContents();
+
         for (ItemStack iStack : inventory) {
             if (iStack == null) {
                 count += 1;
