@@ -47,7 +47,7 @@ public class BuyItem implements CommandExecutor {
             // Material & Amount
             case 2:
                 materialName = args[0];
-                amount = (int) (double) this.app.getEco().getDouble(args[1]);
+                amount = (int) this.app.getEco().getDouble(args[1]);
                 break;
 
             default:
@@ -62,27 +62,34 @@ public class BuyItem implements CommandExecutor {
             if (material == null) {
                 this.app.getCon().usage(from, "Unknown Item: '" + materialName + "'", "");
             } else {
-                int availableSpace = this.app.getMat().getAvailableSpace(from, material.getMaterial());
-                if (amount > availableSpace) {
-                    this.app.getCon().usage(from, "You only have space for " + availableSpace + " " + material.getCleanName(), this.usage);
+                if (!material.getAllowed()) {
+                    this.app.getCon().usage(from, "Cannot buy " + material.getCleanName() + " because it is not allowed to be bought or sold", this.usage);
+                    this.app.getCon().warn(from.getName() + " couldn't buy " + material.getMaterialID() + " because it is not allowed to be bought or sold");
                 } else {
-                    EconomyResponse priceResponse = this.app.getMat().getMaterialPrice(material, amount, this.app.getEco().tax, true);
-                    EconomyResponse saleResponse = this.app.getEco().remCash(from, priceResponse.balance);
-                    double cost = this.app.getEco().round(saleResponse.amount);
-                    double balance = this.app.getEco().round(saleResponse.balance);
-                    if (saleResponse.type == ResponseType.SUCCESS && priceResponse.type == ResponseType.SUCCESS) {
-                        this.app.getMat().addMaterialToPlayer(from, material.getMaterial(), amount);
-                        material.remQuantity(amount);
-                        this.app.getCon().info(from, "Bought " + amount + " " + material.getCleanName() + " for £" + cost + ". New Balance: £" + balance);
-                        this.app.getCon().info(from.getName() + " Bought " + amount + " " + material.getMaterialID() + " for £" + cost);
+                    int availableSpace = this.app.getMat().getAvailableSpace(from, material.getMaterial());
+                    if (amount > availableSpace) {
+                        this.app.getCon().usage(from, "You only have space for " + availableSpace + " " + material.getCleanName(), this.usage);
+                        this.app.getCon().info(from.getName() + " couldn't buy " + material.getMaterialID() + " because missing inventory space " + availableSpace + " / " + amount);
                     } else {
-                        String errorMessage;
-                        if (saleResponse.type == ResponseType.FAILURE) errorMessage = saleResponse.errorMessage;
-                        else if (priceResponse.type == ResponseType.FAILURE) errorMessage = priceResponse.errorMessage;
-                        else errorMessage = "¯\\_(ツ)_/¯";
+                        EconomyResponse priceResponse = this.app.getMat().getMaterialPrice(material, amount, this.app.getEco().tax, true);
+                        EconomyResponse saleResponse = this.app.getEco().remCash(from, priceResponse.balance);
+                        double cost = this.app.getEco().round(saleResponse.amount);
+                        double balance = this.app.getEco().round(saleResponse.balance);
+                        if (saleResponse.type == ResponseType.SUCCESS && priceResponse.type == ResponseType.SUCCESS) {
+                            this.app.getMat().addMaterialToPlayer(from, material.getMaterial(), amount);
+                            material.remQuantity(amount);
+                            this.app.getCon().info(from, "Bought " + amount + " " + material.getCleanName() + " for £" + cost + ". New Balance: £" + balance);
+                            this.app.getCon().info(from.getName() + " Bought " + amount + " " + material.getMaterialID() + " for £" + cost);
+                        } else {
+                            String errorMessage;
+                            if (saleResponse.type == ResponseType.FAILURE) errorMessage = saleResponse.errorMessage;
+                            else if (priceResponse.type == ResponseType.FAILURE)
+                                errorMessage = priceResponse.errorMessage;
+                            else errorMessage = "¯\\_(ツ)_/¯";
 
-                        this.app.getCon().usage(from, "Couldn't buy " + amount + " " + material.getCleanName() + " for £" + cost + " because " + errorMessage, this.usage);
-                        this.app.getCon().warn(from.getName() + " couldn't buy " + amount + " " + material.getMaterialID() + " for £" + cost + " because " + errorMessage);
+                            this.app.getCon().usage(from, "Couldn't buy " + amount + " " + material.getCleanName() + " for £" + cost + " because " + errorMessage, this.usage);
+                            this.app.getCon().warn(from.getName() + " couldn't buy " + amount + " " + material.getMaterialID() + " for £" + cost + " because " + errorMessage);
+                        }
                     }
                 }
             }
