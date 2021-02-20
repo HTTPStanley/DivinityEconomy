@@ -62,53 +62,51 @@ public class SendCash implements CommandExecutor {
         // Ensure online or offline player exists.
         if (to == null && toOff == null) {
             this.app.getCon().usage(from, "Invalid player name.", usage);
-            return true;
-        }
-        // Ensure amount was parsed
-        // Ensure amount is greater than min send amount.
-        if (amount < 1) {
-            this.app.getCon().usage(from, "Invalid amount.", usage);
-            return true;
-        } else if (amount < minSendAmount) {
-            this.app.getCon().usage(from, "Invalid amount, needs to be greater than £" + minSendAmount, usage);
-            return true;
-        }
-
-
-        EconomyResponse response;
-        String toName;
-        if (!(to == null)) {
-            if (to == from) {
-                this.app.getCon().usage(from, "You can't send money to yourself (╯°□°）╯︵ ┻━┻", usage);
-                return true;
-            } else {
-                response = this.app.getEco().sendCash(from, to, amount);
-                toName = to.getName();
-            }
         } else {
-            response = this.app.getEco().sendCash(from, toOff, amount);
-            toName = toOff.getName();
-        }
+            // Ensure amount was parsed
+            // Ensure amount is greater than min send amount.
+            if (amount < 1) {
+                this.app.getCon().usage(from, "Invalid amount.", usage);
+            } else if (amount < minSendAmount) {
+                this.app.getCon().usage(from, "Invalid amount, needs to be greater than £" + minSendAmount, usage);
+            } else {
 
-        double cost = this.app.getEco().round(response.amount);
-
-
-        switch(response.type) {
-            case SUCCESS:
-                    this.app.getCon().info(from, "You sent £" + cost + " to " + toName + ". New Balance: £" + this.app.getEco().round(this.app.getEco().getBalance(from)));
+                EconomyResponse response;
+                String toName;
                 if (!(to == null)) {
-                    this.app.getCon().info(to, "You received £" + cost + " from " + from.getName() + ". New Balance: £" + this.app.getEco().round(this.app.getEco().getBalance(to)));
+                    if (to == from) {
+                        this.app.getCon().usage(from, "You can't send money to yourself (╯°□°）╯︵ ┻━┻", usage);
+                        return true;
+                    } else {
+                        response = this.app.getEco().sendCash(from, to, amount);
+                        toName = to.getName();
+                    }
                 } else {
-                    // Perhaps send an ingame mail message to offlinePlayer ¯\_(ツ)_/¯
+                    response = this.app.getEco().sendCash(from, toOff, amount);
+                    toName = toOff.getName();
                 }
-                this.app.getCon().info(from.getName() + " sent £" + cost + " to " + toName);
-                break;
 
-            case FAILURE:
-                this.app.getCon().usage(from, response.errorMessage, usage);
+                double cost = this.app.getEco().round(response.amount);
 
-            default:
-                this.app.getCon().warn("Transaction error (" + from.getName() + "-->" + toName + "): " + response.errorMessage);
+
+                switch (response.type) {
+                    case SUCCESS:
+                        this.app.getCon().info(from, "You sent £" + cost + " to " + toName + ". New Balance: £" + this.app.getEco().round(this.app.getEco().getBalance(from)));
+                        if (!(to == null)) {
+                            this.app.getCon().info(to, "You received £" + cost + " from " + from.getName() + ". New Balance: £" + this.app.getEco().round(this.app.getEco().getBalance(to)));
+                        } else {
+                            // Perhaps send an ingame mail message to offlinePlayer ¯\_(ツ)_/¯
+                        }
+                        this.app.getCon().info(from.getName() + " sent £" + cost + " to " + toName);
+                        break;
+
+                    case FAILURE:
+                        this.app.getCon().usage(from, response.errorMessage, usage);
+
+                    default:
+                        this.app.getCon().warn("Transaction error (" + from.getName() + "-->" + toName + "): " + response.errorMessage);
+                }
+            }
         }
 
         // Graceful exit
