@@ -30,8 +30,8 @@ public class Balance implements CommandExecutor {
         Player from = (Player) sender;
 
         // Ensure command is enabled
-        if (!(this.app.getConfig().getBoolean(this.app.getConf().strComBalance))) {
-            this.app.getCon().severe(from, "This command is not enabled.");
+        if (!(this.app.getConfig().getBoolean(this.app.getConfigManager().strComBalance))) {
+            this.app.getConsoleManager().severe(from, "This command is not enabled.");
             return true;
         }
 
@@ -47,7 +47,7 @@ public class Balance implements CommandExecutor {
                 to = this.app.getServer().getPlayer(args[0]);
                 // If they aren't online or don't exist. Do the dirty offline call.
                 if (to == null){
-                    toOff = this.app.getOfflinePlayer(args[0], false);
+                    toOff = this.app.getPlayerManager().getOfflinePlayer(args[0], false);
                 }
                 break;
 
@@ -58,21 +58,21 @@ public class Balance implements CommandExecutor {
         }
 
         if (to == null && toOff == null){
-            this.app.getCon().usage(from, "Invalid player name.", usage);
+            this.app.getConsoleManager().usage(from, "Invalid player name.", usage);
             return true;
         }
 
         double balance;
         if (to != null) {
-            balance = this.app.getEco().round(this.app.getEco().getBalance(to));
+            balance = this.app.getEconomyManager().round(this.app.getEconomyManager().getBalance(to));
             if (!(from == to)) {
-                this.app.getCon().info(from, to.getName() + "'s Balance: £" + balance);
+                this.app.getConsoleManager().info(from, to.getName() + "'s Balance: £" + balance);
             } else {
-                this.app.getCon().info(from, "Balance: £" + balance);
+                this.app.getConsoleManager().info(from, "Balance: £" + balance);
             }
         } else {
-            balance = this.app.getEco().round(this.app.getEco().getBalance(toOff));
-            this.app.getCon().info(from, toOff.getName() + "'s Balance: £" + balance);
+            balance = this.app.getEconomyManager().round(this.app.getEconomyManager().getBalance(toOff));
+            this.app.getConsoleManager().info(from, toOff.getName() + "'s Balance: £" + balance);
         }
         return true;
     }

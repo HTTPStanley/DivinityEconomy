@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
 import EDGRRRR.DCE.Main.DCEPlugin;
+import EDGRRRR.DCE.Math.Math;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import net.milkbowl.vault.economy.EconomyResponse.ResponseType;
@@ -31,11 +32,11 @@ public class EconomyManager {
         this.app = app;
 
         // settings
-        this.minSendAmount = this.app.getConfig().getDouble(this.app.getConf().strEconMinSendAmount);
-        this.tax = this.app.getConfig().getDouble(this.app.getConf().strEconTaxScale);
-        this.roundingDigits = this.app.getConfig().getInt(this.app.getConf().strEconRoundingDigits);
-        this.baseQuantity = this.app.getConfig().getInt(this.app.getConf().strEconBaseQuantity);
-        this.minAccountBalance = this.app.getConfig().getDouble(this.app.getConf().strEconMinAccountBalance);
+        this.minSendAmount = this.app.getConfig().getDouble(this.app.getConfigManager().strEconMinSendAmount);
+        this.tax = this.app.getConfig().getDouble(this.app.getConfigManager().strEconTaxScale);
+        this.roundingDigits = this.app.getConfig().getInt(this.app.getConfigManager().strEconRoundingDigits);
+        this.baseQuantity = this.app.getConfig().getInt(this.app.getConfigManager().strEconBaseQuantity);
+        this.minAccountBalance = this.app.getConfig().getDouble(this.app.getConfigManager().strEconMinAccountBalance);
     }
 
 
@@ -46,19 +47,19 @@ public class EconomyManager {
     public void setupEconomy() {
         // Look for vault
         if (this.app.getServer().getPluginManager().getPlugin("Vault") == null) {
-            this.app.getCon().severe("No plugin 'Vault' detected.");
+            this.app.getConsoleManager().severe("No plugin 'Vault' detected.");
             return;
         } else {
-            this.app.getCon().info("Vault has been detected.");
+            this.app.getConsoleManager().info("Vault has been detected.");
         }
 
         // Get the service provider
         RegisteredServiceProvider<Economy> rsp = this.app.getServer().getServicesManager().getRegistration(Economy.class);
         if (rsp == null) {
-            this.app.getCon().severe("Could not register Economy.");
+            this.app.getConsoleManager().severe("Could not register Economy.");
             return;
         } else {
-            this.app.getCon().info("Registered Economy.");
+            this.app.getConsoleManager().info("Registered Economy.");
         }
 
         // return if economy was gotten successfully.
@@ -94,23 +95,11 @@ public class EconomyManager {
      * Rounding
      * @param amount - The amount
      */
-
      public double round(double amount) {
-        return this.round(amount, this.roundingDigits);
+        return Math.round(amount, this.roundingDigits);
     }
 
-    public double round(double amount, int roundingDigits) {
-        // Rounds the amount to the number of digits specified
-        // Does this by 10**digits (100 or 10**2 = 2 digits)
-        try {
-            double roundAmount = Math.pow(10, roundingDigits);
-            return Math.round(amount * roundAmount) / roundAmount;
-        } catch (Exception e) {
-            this.app.getCon().severe("Rounding error for value (" + amount + " (" + roundingDigits + ")): " + e.getMessage());
-            return amount;
-        }
 
-    }
 
     /**
      * Adds <amount> to <player>
@@ -118,10 +107,10 @@ public class EconomyManager {
      * @param amount - The amount
      */
     public EconomyResponse addCash(OfflinePlayer oPlayer, double amount) {
-        this.app.getCon().debug("ADD REQUEST '" + oPlayer.getName() + "' £" + amount);
+        this.app.getConsoleManager().debug("ADD REQUEST '" + oPlayer.getName() + "' £" + amount);
         EconomyResponse response = this.economy.depositPlayer(oPlayer, amount);
         response = new EconomyResponse(response.amount, this.getBalance(oPlayer), response.type, response.errorMessage);
-        this.app.getCon().debug("ADD COMPLETE '" + oPlayer.getName() + "' £" + response.balance + "(£ " + response.amount + ")");
+        this.app.getConsoleManager().debug("ADD COMPLETE '" + oPlayer.getName() + "' £" + response.balance + "(£ " + response.amount + ")");
         return response;
     }
 
@@ -140,10 +129,10 @@ public class EconomyManager {
      * @param amount - The amount
      */
     public EconomyResponse remCash(OfflinePlayer oPlayer, double amount) {
-        this.app.getCon().debug("SET REQUEST '" + oPlayer.getName() + "' £" + amount);
+        this.app.getConsoleManager().debug("SET REQUEST '" + oPlayer.getName() + "' £" + amount);
         EconomyResponse response = this.economy.withdrawPlayer(oPlayer, amount);
         response = new EconomyResponse(response.amount, this.getBalance(oPlayer), response.type, response.errorMessage);
-        this.app.getCon().debug("REM COMPLETE '" + oPlayer.getName() + "' £" + response.balance + "(£ " + response.amount + ")");
+        this.app.getConsoleManager().debug("REM COMPLETE '" + oPlayer.getName() + "' £" + response.balance + "(£ " + response.amount + ")");
         return response;
     }
 
@@ -163,7 +152,7 @@ public class EconomyManager {
      * @return EconomyResponse - The result of the function
      */
     public EconomyResponse setCash(OfflinePlayer oPlayer, double amount) {
-        this.app.getCon().debug("SET REQUEST '" + oPlayer.getName() + "' £" + amount);
+        this.app.getConsoleManager().debug("SET REQUEST '" + oPlayer.getName() + "' £" + amount);
         double balance = this.getBalance(oPlayer);
         double difference = amount - balance;
         EconomyResponse response = null;
@@ -176,7 +165,7 @@ public class EconomyManager {
         }
 
         response = new EconomyResponse(response.amount, this.getBalance(oPlayer), response.type, response.errorMessage);
-        this.app.getCon().debug("SET COMPLETE '" + oPlayer.getName() + "' £" + response.balance + "(£ " + response.amount + ")");
+        this.app.getConsoleManager().debug("SET COMPLETE '" + oPlayer.getName() + "' £" + response.balance + "(£ " + response.amount + ")");
         return response;
     }
 
@@ -233,26 +222,5 @@ public class EconomyManager {
      */
     public EconomyResponse sendCash(Player from, Player to, double amount) {
         return this.sendCash(from, (OfflinePlayer) to, amount);
-    }
-
-    /**
-     * A function for extracting a double from a String
-     * will return null if an error occurs (such as the string not containing a double)
-     * @param arg - A string to convert to a double
-     * @return double - A potentially converted double
-     */
-    public double getDouble(String arg) {
-        // Instantiate amount
-        double amount;
-
-        // Try to parse the double
-        // Catch the error and set to null
-        try {
-            amount = Double.parseDouble(arg);
-        } catch (Exception e) {
-            amount = 0.0;
-        }
-
-        return amount;
     }
 }

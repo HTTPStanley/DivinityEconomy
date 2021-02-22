@@ -50,16 +50,16 @@ public class ConsoleManager {
 
 
         // Get settings
-        this.debugMode = (this.app.getConfig().getBoolean(this.app.getConf().strChatDebug) || this.app.getConfig().getBoolean(this.app.getConf().strMainDebugMode));
-        this.infoColour = this.getColour(this.app.getConf().strChatInfClr);
-        this.warnColour = this.getColour(this.app.getConf().strChatWrnClr);
-        this.severeColour = this.getColour(this.app.getConf().strChatSvrClr);
-        this.debugColour = this.getColour(this.app.getConf().strChatDbgClr);
-        this.prefixColour = this.getColour(this.app.getConf().strChatPfxClr);
-        this.prefixSepColour = this.getColour(this.app.getConf().strChatPfxSepClr);
-        String prefix = this.app.getConfig().getString(this.app.getConf().strChatMsgPfx);
-        String conPrefix = this.app.getConfig().getString(this.app.getConf().strChatConsPfx).replace("%V", this.app.getDescription().getVersion());
-        String prefixSep = this.app.getConfig().getString(this.app.getConf().strChatPfxSep);
+        this.debugMode = (this.app.getConfig().getBoolean(this.app.getConfigManager().strChatDebug) || this.app.getConfig().getBoolean(this.app.getConfigManager().strMainDebugMode));
+        this.infoColour = this.getColour(this.app.getConfigManager().strChatInfClr);
+        this.warnColour = this.getColour(this.app.getConfigManager().strChatWrnClr);
+        this.severeColour = this.getColour(this.app.getConfigManager().strChatSvrClr);
+        this.debugColour = this.getColour(this.app.getConfigManager().strChatDbgClr);
+        this.prefixColour = this.getColour(this.app.getConfigManager().strChatPfxClr);
+        this.prefixSepColour = this.getColour(this.app.getConfigManager().strChatPfxSepClr);
+        String prefix = this.app.getConfig().getString(this.app.getConfigManager().strChatMsgPfx);
+        String conPrefix = this.app.getConfig().getString(this.app.getConfigManager().strChatConsPfx).replace("%V", this.app.getDescription().getVersion());
+        String prefixSep = this.app.getConfig().getString(this.app.getConfigManager().strChatPfxSep);
         this.prefix = prefixColour + prefix + prefixSepColour + prefixSep;
         this.conPrefix = prefixColour + conPrefix + prefixSepColour + prefixSep;
     }

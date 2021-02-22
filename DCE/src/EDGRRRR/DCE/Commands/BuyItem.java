@@ -1,7 +1,8 @@
 package EDGRRRR.DCE.Commands;
 
-import EDGRRRR.DCE.Economy.Materials.MaterialData;
+import EDGRRRR.DCE.Materials.MaterialData;
 import EDGRRRR.DCE.Main.DCEPlugin;
+import EDGRRRR.DCE.Math.Math;
 import net.milkbowl.vault.economy.EconomyResponse;
 import net.milkbowl.vault.economy.EconomyResponse.ResponseType;
 
@@ -31,8 +32,8 @@ public class BuyItem implements CommandExecutor {
         Player from = (Player) sender;
 
         // Ensure command is enabled
-        if (!(this.app.getConfig().getBoolean(this.app.getConf().strComBuyItem))) {
-            this.app.getCon().severe(from, "This command is not enabled.");
+        if (!(this.app.getConfig().getBoolean(this.app.getConfigManager().strComBuyItem))) {
+            this.app.getConsoleManager().severe(from, "This command is not enabled.");
             return true;
         }
 
@@ -47,39 +48,39 @@ public class BuyItem implements CommandExecutor {
             // Material & Amount
             case 2:
                 materialName = args[0];
-                amount = (int) this.app.getEco().getDouble(args[1]);
+                amount = Math.getInt(args[1]);
                 break;
 
             default:
-                this.app.getCon().usage(from, "Invalid number of arguments.", this.usage);
+                this.app.getConsoleManager().usage(from, "Invalid number of arguments.", this.usage);
                 return true;
         }
 
         if (amount < 1) {
-            this.app.getCon().usage(from, "Invalid amount.", this.usage);
+            this.app.getConsoleManager().usage(from, "Invalid amount.", this.usage);
         } else {
-            MaterialData material = this.app.getMat().getMaterial(materialName);
+            MaterialData material = this.app.getMaterialManager().getMaterial(materialName);
             if (material == null) {
-                this.app.getCon().usage(from, "Unknown Item: '" + materialName + "'", "");
+                this.app.getConsoleManager().usage(from, "Unknown Item: '" + materialName + "'", "");
             } else {
                 if (!material.getAllowed()) {
-                    this.app.getCon().usage(from, "Cannot buy " + material.getCleanName() + " because it is not allowed to be bought or sold", this.usage);
-                    this.app.getCon().warn(from.getName() + " couldn't buy " + material.getMaterialID() + " because it is not allowed to be bought or sold");
+                    this.app.getConsoleManager().usage(from, "Cannot buy " + material.getCleanName() + " because it is not allowed to be bought or sold", this.usage);
+                    this.app.getConsoleManager().warn(from.getName() + " couldn't buy " + material.getMaterialID() + " because it is not allowed to be bought or sold");
                 } else {
-                    int availableSpace = this.app.getMat().getAvailableSpace(from, material.getMaterial());
+                    int availableSpace = this.app.getPlayerInventoryManager().getAvailableSpace(from, material.getMaterial());
                     if (amount > availableSpace) {
-                        this.app.getCon().usage(from, "You only have space for " + availableSpace + " " + material.getCleanName(), this.usage);
-                        this.app.getCon().info(from.getName() + " couldn't buy " + material.getMaterialID() + " because missing inventory space " + availableSpace + " / " + amount);
+                        this.app.getConsoleManager().usage(from, "You only have space for " + availableSpace + " " + material.getCleanName(), this.usage);
+                        this.app.getConsoleManager().info(from.getName() + " couldn't buy " + material.getMaterialID() + " because missing inventory space " + availableSpace + " / " + amount);
                     } else {
-                        EconomyResponse priceResponse = this.app.getMat().getMaterialPrice(material, amount, this.app.getEco().tax, true);
-                        EconomyResponse saleResponse = this.app.getEco().remCash(from, priceResponse.balance);
-                        double cost = this.app.getEco().round(saleResponse.amount);
-                        double balance = this.app.getEco().round(saleResponse.balance);
+                        EconomyResponse priceResponse = this.app.getMaterialManager().getMaterialPrice(material, amount, this.app.getEconomyManager().tax, true);
+                        EconomyResponse saleResponse = this.app.getEconomyManager().remCash(from, priceResponse.balance);
+                        double cost = this.app.getEconomyManager().round(saleResponse.amount);
+                        double balance = this.app.getEconomyManager().round(saleResponse.balance);
                         if (saleResponse.type == ResponseType.SUCCESS && priceResponse.type == ResponseType.SUCCESS) {
-                            this.app.getMat().addMaterialToPlayer(from, material.getMaterial(), amount);
+                            this.app.getPlayerInventoryManager().addMaterialToPlayer(from, material.getMaterial(), amount);
                             material.remQuantity(amount);
-                            this.app.getCon().info(from, "Bought " + amount + " " + material.getCleanName() + " for £" + cost + ". New Balance: £" + balance);
-                            this.app.getCon().info(from.getName() + " Bought " + amount + " " + material.getMaterialID() + " for £" + cost);
+                            this.app.getConsoleManager().info(from, "Bought " + amount + " " + material.getCleanName() + " for £" + cost + ". New Balance: £" + balance);
+                            this.app.getConsoleManager().info(from.getName() + " Bought " + amount + " " + material.getMaterialID() + " for £" + cost);
                         } else {
                             String errorMessage;
                             if (saleResponse.type == ResponseType.FAILURE) errorMessage = saleResponse.errorMessage;
@@ -87,8 +88,8 @@ public class BuyItem implements CommandExecutor {
                                 errorMessage = priceResponse.errorMessage;
                             else errorMessage = "¯\\_(ツ)_/¯";
 
-                            this.app.getCon().usage(from, "Couldn't buy " + amount + " " + material.getCleanName() + " for £" + cost + " because " + errorMessage, this.usage);
-                            this.app.getCon().warn(from.getName() + " couldn't buy " + amount + " " + material.getMaterialID() + " for £" + cost + " because " + errorMessage);
+                            this.app.getConsoleManager().usage(from, "Couldn't buy " + amount + " " + material.getCleanName() + " for £" + cost + " because " + errorMessage, this.usage);
+                            this.app.getConsoleManager().warn(from.getName() + " couldn't buy " + amount + " " + material.getMaterialID() + " for £" + cost + " because " + errorMessage);
                         }
                     }
                 }

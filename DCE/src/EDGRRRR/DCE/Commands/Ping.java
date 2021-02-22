@@ -27,12 +27,12 @@ public class Ping implements CommandExecutor {
         Player player = (Player) sender;
 
         // Ensure command is enabled
-        if (!(this.app.getConfig().getBoolean(this.app.getConf().strComPing))) {
-            this.app.getCon().severe(player, "This command is not enabled.");
+        if (!(this.app.getConfig().getBoolean(this.app.getConfigManager().strComPing))) {
+            this.app.getConsoleManager().severe(player, "This command is not enabled.");
             return true;
         }
 
-        this.app.getCon().info(player, "Pong!");
+        this.app.getConsoleManager().info(player, "Pong!");
         return true;
     }
 }

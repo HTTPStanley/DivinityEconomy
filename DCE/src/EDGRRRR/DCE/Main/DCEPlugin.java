@@ -1,11 +1,16 @@
 package EDGRRRR.DCE.Main;
 
 import EDGRRRR.DCE.Commands.*;
-import org.bukkit.OfflinePlayer;
+import EDGRRRR.DCE.Events.MailEvent;
+import EDGRRRR.DCE.Events.UUIDFetchEvent;
+import EDGRRRR.DCE.Mail.MailManager;
+import EDGRRRR.DCE.PlayerManager.PlayerInventoryManager;
+import EDGRRRR.DCE.PlayerManager.PlayerManager;
 import org.bukkit.command.CommandExecutor;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import EDGRRRR.DCE.Economy.Materials.MaterialManager;
+import EDGRRRR.DCE.Materials.MaterialManager;
 import EDGRRRR.DCE.Economy.EconomyManager;
 /**
  * The Main Class of the plugin
@@ -13,64 +18,79 @@ import EDGRRRR.DCE.Economy.EconomyManager;
  */
 public class DCEPlugin extends JavaPlugin {
     // The config
-    private ConfigManager conf;
+    private ConfigManager configManager;
     // The economy
-    private EconomyManager eco;
+    private EconomyManager economyManager;
     // The console
-    private ConsoleManager con;
+    private ConsoleManager consoleManager;
     // The material manager
-    private MaterialManager mat;
+    private MaterialManager materialManager;
+    // The mail manager
+    private MailManager mailManager;
+    // The player manager
+    private PlayerManager playerManager;
+    // The player inventory manager
+    private PlayerInventoryManager playerInventoryManager;
+
+    // Events
+
+    // Handles on-join mail events
+    private MailEvent mailEvent;
+    public MailEvent getMailEvent() {return this.mailEvent;}
+
+    // Fetches and prints user UUIDS for debugging
+    // private UUIDFetchEvent uuidFetchEvent;
+    // public UUIDFetchEvent getUuidFetchEvent() {return this.uuidFetchEvent;}
 
     // Commands
 
     // A simple ping command
-    private CommandExecutor ping;
-    public CommandExecutor getCommandPing() { return this.ping; }
+    private CommandExecutor pingCommand;
+    public CommandExecutor getCommandPing() { return this.pingCommand; }
 
     // A command for getting the balance of a user
-    private CommandExecutor balance;
-    public CommandExecutor getCommandBalance() { return this.balance; }
+    private CommandExecutor balanceCommand;
+    public CommandExecutor getCommandBalance() { return this.balanceCommand; }
 
     // An admin command for adding and removing cash from accounts
-    private CommandExecutor editbal;
-    public CommandExecutor getCommandEditBal() { return this.editbal; }
+    private CommandExecutor editbalCommand;
+    public CommandExecutor getCommandEditBal() { return this.editbalCommand; }
 
     // A command for sending cash between users
-    private CommandExecutor sendcash;
-    public CommandExecutor getCommandSendCash() { return this.sendcash; }
+    private CommandExecutor sendcashCommand;
+    public CommandExecutor getCommandSendCash() { return this.sendcashCommand; }
 
     // A command for setting the balance of an account
-    private CommandExecutor setbal;
-    public CommandExecutor getCommandSetBal() { return this.setbal; }
+    private CommandExecutor setbalCommand;
+    public CommandExecutor getCommandSetBal() { return this.setbalCommand; }
 
     // A command for clearing the balance of a user
-    private CommandExecutor clearbal;
-    public CommandExecutor getCommandClearBal() { return this.clearbal; }
+    private CommandExecutor clearbalCommand;
+    public CommandExecutor getCommandClearBal() { return this.clearbalCommand; }
 
     // A command for buying items from the market
-    private CommandExecutor buyItem;
-    public CommandExecutor getCommandBuyItem() { return this.buyItem; }
+    private CommandExecutor buyItemCommand;
+    public CommandExecutor getCommandBuyItem() { return this.buyItemCommand; }
 
     // A command for selling items from the market
-    private CommandExecutor sellItem;
-    public CommandExecutor getCommandSellItem() { return this.sellItem; }
-
+    private CommandExecutor sellItemCommand;
+    public CommandExecutor getCommandSellItem() { return this.sellItemCommand; }
 
     // A command for valuing items from the market
-    private CommandExecutor value;
-    public CommandExecutor getCommandValue() { return this.value; }
+    private CommandExecutor valueCommand;
+    public CommandExecutor getCommandValue() { return this.valueCommand; }
 
     // A command for getting item information from the market
-    private CommandExecutor info;
-    public CommandExecutor getCommandInfo() { return this.info; }
+    private CommandExecutor infoCommand;
+    public CommandExecutor getCommandInfo() { return this.infoCommand; }
 
     // A command for selling items in hand
-    private CommandExecutor handSell;
-    public CommandExecutor getCommandHandSell() { return this.handSell; }
+    private CommandExecutor handSellCommand;
+    public CommandExecutor getCommandHandSell() { return this.handSellCommand; }
 
     // A command for buying items in hand
-    private CommandExecutor handBuy;
-    public CommandExecutor getCommandHandBuy() { return this.handBuy; }
+    private CommandExecutor handBuyCommand;
+    public CommandExecutor getCommandHandBuy() { return this.handBuyCommand; }
 
     /**
      * Called when the plugin is enabled
@@ -80,52 +100,76 @@ public class DCEPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         // Config
-        this.conf = new ConfigManager(this);
+        this.configManager = new ConfigManager(this);
         //Setup Managers
-        this.con = new ConsoleManager(this);
-    	this.eco = new EconomyManager(this);
-        this.eco.setupEconomy();
-        this.mat = new MaterialManager(this);
-        this.mat.loadAliases();
-        this.mat.loadMaterials();
+        this.consoleManager = new ConsoleManager(this);
+    	this.economyManager = new EconomyManager(this);
+        this.economyManager.setupEconomy();
+        this.materialManager = new MaterialManager(this);
+        this.materialManager.loadAliases();
+        this.materialManager.loadMaterials();
+        this.playerManager = new PlayerManager(this);
+        this.playerInventoryManager = new PlayerInventoryManager(this);
+        this.mailManager = new MailManager(this);
+        this.mailManager.setupMailFile();
+        this.mailManager.loadAllMail();
+
+        // setup events
+        try {
+            // Create events
+            // this.UUIDFetchEvent = new UUIDFetchEvent(this);
+            this.mailEvent = new MailEvent(this);
+
+            // Register events
+            PluginManager pm = this.getServer().getPluginManager();
+            // pm.registerEvents(this.getUuidFetchEvent(), this);
+            pm.registerEvents(this.getMailEvent(), this);
+        } catch (Exception e){
+            e.printStackTrace();
+            this.consoleManager.severe("An error occurred on event creation: " + e);
+            this.getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
+
+
         // setup commands
-        this.ping = new Ping(this);
-        this.balance = new Balance(this);
-        this.editbal = new EditBal(this);
-        this.sendcash = new SendCash(this);
-        this.setbal = new SetBal(this);
-        this.clearbal = new ClearBal(this);
-        this.buyItem = new BuyItem(this);
-        this.sellItem = new SellItem(this);
-        this.value = new Value(this);
-        this.info = new Info(this);
-        this.handSell = new HandSell(this);
-        this.handBuy = new HandBuy(this);
+        this.pingCommand = new Ping(this);
+        this.balanceCommand = new Balance(this);
+        this.editbalCommand = new EditBal(this);
+        this.sendcashCommand = new SendCash(this);
+        this.setbalCommand = new SetBal(this);
+        this.clearbalCommand = new ClearBal(this);
+        this.buyItemCommand = new BuyItem(this);
+        this.sellItemCommand = new SellItem(this);
+        this.valueCommand = new Value(this);
+        this.infoCommand = new Info(this);
+        this.handSellCommand = new HandSell(this);
+        this.handBuyCommand = new HandBuy(this);
 
     	try {
             // Register commands
-            this.getCommand("ping").setExecutor(this.ping);
-            this.getCommand("balance").setExecutor(this.balance);
-            this.getCommand("editbal").setExecutor(this.editbal);
-            this.getCommand("sendcash").setExecutor(this.sendcash);
-            this.getCommand("setbal").setExecutor(this.setbal);
-            this.getCommand("clearbal").setExecutor(this.clearbal);
-            this.getCommand("buy").setExecutor(this.buyItem);
-            this.getCommand("sell").setExecutor(this.sellItem);
-            this.getCommand("value").setExecutor(this.value);
-            this.getCommand("information").setExecutor(this.info);
-            this.getCommand("handSell").setExecutor(this.handSell);
-            this.getCommand("handBuy").setExecutor(this.handBuy);
+            this.getCommand("ping").setExecutor(this.pingCommand);
+            this.getCommand("balance").setExecutor(this.balanceCommand);
+            this.getCommand("editbal").setExecutor(this.editbalCommand);
+            this.getCommand("sendcash").setExecutor(this.sendcashCommand);
+            this.getCommand("setbal").setExecutor(this.setbalCommand);
+            this.getCommand("clearbal").setExecutor(this.clearbalCommand);
+            this.getCommand("buy").setExecutor(this.buyItemCommand);
+            this.getCommand("sell").setExecutor(this.sellItemCommand);
+            this.getCommand("value").setExecutor(this.valueCommand);
+            this.getCommand("information").setExecutor(this.infoCommand);
+            this.getCommand("handSell").setExecutor(this.handSellCommand);
+            this.getCommand("handBuy").setExecutor(this.handBuyCommand);
             } catch (Exception e){
                 e.printStackTrace();
-                this.con.severe("An error occurred on registry: " + e);
+                this.consoleManager.severe("An error occurred on registry: " + e);
                 this.getServer().getPluginManager().disablePlugin(this);
                 return;
             }
 
         // Done :)
         this.describe();
-        this.con.info("Plugin Enabled");
+        this.consoleManager.info("Plugin Enabled");
     }
 
     /**
@@ -133,76 +177,69 @@ public class DCEPlugin extends JavaPlugin {
      */
     @Override
     public void onDisable() {
-        if (!(this.mat == null)) {
-            this.mat.saveAll();
+        if (!(this.materialManager == null)) {
+            this.materialManager.saveAll();
         }
-        this.con.warn("Plugin Disabled");
+        this.consoleManager.warn("Plugin Disabled");
     }
 
     public void describe() {
-        this.con.debug("Materials: " + this.mat.materials.size());
-        this.con.debug("Aliases: " + this.mat.aliases.size());
-        this.con.debug("Starting Items: " + this.mat.baseTotalMaterials);
-        this.con.debug("Actual Items: " + this.mat.totalMaterials);
-        this.con.debug("Inflation: " + this.mat.getInflation() + "%");
+        this.consoleManager.debug("Materials: " + this.materialManager.materials.size());
+        this.consoleManager.debug("Aliases: " + this.materialManager.aliases.size());
+        this.consoleManager.debug("Starting Items: " + this.materialManager.baseTotalMaterials);
+        this.consoleManager.debug("Actual Items: " + this.materialManager.totalMaterials);
+        this.consoleManager.debug("Inflation: " + this.materialManager.getInflation() + "%");
     }
 
     /**
-     * Returns the economy
-     * @return Economy
+     * Returns the economy manager
+     * @return EconomyManager
      */
-    public EconomyManager getEco() {
-        return this.eco;
+    public EconomyManager getEconomyManager() {
+        return this.economyManager;
     }
 
     /**
      * Returns the console
-     * @return Console
+     * @return ConsoleManager
      */
-    public ConsoleManager getCon() {
-        return this.con;
+    public ConsoleManager getConsoleManager() {
+        return this.consoleManager;
     }
 
     /**
-     * Returns the config
-     * @return ConfigM
+     * Returns the config manager
+     * @return ConfigManager
      */
-    public ConfigManager getConf() {
-        return this.conf;
+    public ConfigManager getConfigManager() {
+        return this.configManager;
     }
 
     /**
      * Returns the Material Manager
-     * @return MaterialM
+     * @return MaterialManager
      */
-    public MaterialManager getMat() {
-        return this.mat;
+    public MaterialManager getMaterialManager() {
+        return this.materialManager;
     }
 
     /**
-     * Returns an offline player
-     * First scans local offline players
-     * @param name - name to scan for.
-     * @param allowFetch - Uses deprecated "bukkit.getOfflinePlayer", not recommended.
-     * @return OfflinePlayer - the player corresponding to the name.
+     * Returns the mail manager
+     * @return MailManager
      */
-    public OfflinePlayer getOfflinePlayer(String name, boolean allowFetch) {
-        name = name.trim().toLowerCase();
-        OfflinePlayer[] oPlayers = getServer().getOfflinePlayers();
-        OfflinePlayer player = null;
-        for (OfflinePlayer oPlayer : oPlayers) {
-            String oPlayerName = oPlayer.getName().trim().toLowerCase();
-            if (oPlayerName.equals(name)) {
-                player = oPlayer;
-                break;
-            }
-        }
-
-        if (allowFetch && player == null) {
-            player = this.getServer().getOfflinePlayer(name);
-        }
-
-        return player;
+    public MailManager getMailManager() {
+        return this.mailManager;
     }
 
+    /**
+     * Returns the player manager
+     * @return PlayerManager
+     */
+    public PlayerManager getPlayerManager() {
+        return this.playerManager;
+    }
+
+    public PlayerInventoryManager getPlayerInventoryManager() {
+        return this.playerInventoryManager;
+    }
 }

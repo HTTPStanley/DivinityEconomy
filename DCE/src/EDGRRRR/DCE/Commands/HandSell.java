@@ -1,8 +1,9 @@
 package EDGRRRR.DCE.Commands;
 
 import EDGRRRR.DCE.Main.DCEPlugin;
-import EDGRRRR.DCE.Economy.Materials.MaterialData;
+import EDGRRRR.DCE.Materials.MaterialData;
 
+import EDGRRRR.DCE.Math.Math;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -32,8 +33,8 @@ public class HandSell implements CommandExecutor {
         Player player = (Player) sender;
 
         // Ensure command is enabled
-        if (!(this.app.getConfig().getBoolean(this.app.getConf().strComHandSell))) {
-            this.app.getCon().severe(player, "This command is not enabled.");
+        if (!(this.app.getConfig().getBoolean(this.app.getConfigManager().strComHandSell))) {
+            this.app.getConsoleManager().severe(player, "This command is not enabled.");
             return true;
         }
 
@@ -50,29 +51,29 @@ public class HandSell implements CommandExecutor {
                 if (args[0].equals("max")) {
                     sellAll = true;
                 } else {
-                    amountToSell = (int) this.app.getEco().getDouble(args[0]);
+                    amountToSell = Math.getInt(args[0]);
                 }
                 break;
 
             default:
-                this.app.getCon().usage(player, "Invalid number of arguments.", this.usage);
+                this.app.getConsoleManager().usage(player, "Invalid number of arguments.", this.usage);
                 return true;
         }
 
         if (amountToSell < 1) {
-            this.app.getCon().usage(player, "Invalid amount.", this.usage);
+            this.app.getConsoleManager().usage(player, "Invalid amount.", this.usage);
         } else {
             int slotIdx = player.getInventory().getHeldItemSlot();
             ItemStack iStack = player.getInventory().getItem(slotIdx);
 
             if (iStack == null) {
-                this.app.getCon().usage(player, "You are not holding any item.", this.usage);
+                this.app.getConsoleManager().usage(player, "You are not holding any item.", this.usage);
             } else {
                 Material material = iStack.getType();
                 String materialName = material.name();
-                MaterialData mData = this.app.getMat().getMaterial(materialName);
-                ItemStack[] itemStacks = this.app.getMat().getMaterialSlots(player, material);
-                int materialCount = this.app.getMat().getMaterialCount(itemStacks);
+                MaterialData mData = this.app.getMaterialManager().getMaterial(materialName);
+                ItemStack[] itemStacks = this.app.getPlayerInventoryManager().getMaterialSlots(player, material);
+                int materialCount = this.app.getPlayerInventoryManager().getMaterialCount(itemStacks);
 
                 if (sellAll) {
                     amountToSell = materialCount;
@@ -82,22 +83,22 @@ public class HandSell implements CommandExecutor {
                     amountToSell = iStack.getAmount();
                 }
                 if (!mData.getAllowed()) {
-                    this.app.getCon().usage(player, "Cannot sell" + mData.getCleanName() + " when it is not allowed to be bought or sold", this.usage);
-                    this.app.getCon().warn(player.getName() + " couldn't sell " + mData.getMaterialID() + " when it is not allowed to be bought or sold");
+                    this.app.getConsoleManager().usage(player, "Cannot sell" + mData.getCleanName() + " when it is not allowed to be bought or sold", this.usage);
+                    this.app.getConsoleManager().warn(player.getName() + " couldn't sell " + mData.getMaterialID() + " when it is not allowed to be bought or sold");
                 } else {
                     if (materialCount < amountToSell) {
-                        this.app.getCon().usage(player, "Cannot sell " + amountToSell + " " + mData.getCleanName() + " when you only have " + materialCount, this.usage);
-                        this.app.getCon().warn(player.getName() + " couldn't sell " + amountToSell + " " + mData.getMaterialID() + " because they only have " + materialCount + " / " + amountToSell);
+                        this.app.getConsoleManager().usage(player, "Cannot sell " + amountToSell + " " + mData.getCleanName() + " when you only have " + materialCount, this.usage);
+                        this.app.getConsoleManager().warn(player.getName() + " couldn't sell " + amountToSell + " " + mData.getMaterialID() + " because they only have " + materialCount + " / " + amountToSell);
                     } else {
-                        this.app.getMat().removeMaterialsFromPlayer(itemStacks, amountToSell);
+                        this.app.getPlayerInventoryManager().removeMaterialsFromPlayer(itemStacks, amountToSell);
                         mData.addQuantity(amountToSell);
-                        EconomyResponse response = this.app.getMat().getMaterialPrice(mData, amountToSell, 1.0, false);
-                        this.app.getEco().addCash(player, response.balance);
-                        double cost = app.getEco().round(response.balance);
-                        double balance = app.getEco().round(app.getEco().getBalance(player));
+                        EconomyResponse response = this.app.getMaterialManager().getMaterialPrice(mData, amountToSell, 1.0, false);
+                        this.app.getEconomyManager().addCash(player, response.balance);
+                        double cost = app.getEconomyManager().round(response.balance);
+                        double balance = app.getEconomyManager().round(app.getEconomyManager().getBalance(player));
 
-                        this.app.getCon().info(player, "Sold " + amountToSell + " " + mData.getCleanName() + " for £" + cost + ". New Balance: £" + balance);
-                        this.app.getCon().info(player.getName() + " sold " + amountToSell + " " + mData.getMaterialID() + " for £" + cost);
+                        this.app.getConsoleManager().info(player, "Sold " + amountToSell + " " + mData.getCleanName() + " for £" + cost + ". New Balance: £" + balance);
+                        this.app.getConsoleManager().info(player.getName() + " sold " + amountToSell + " " + mData.getMaterialID() + " for £" + cost);
                     }
                 }
             }

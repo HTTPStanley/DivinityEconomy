@@ -1,7 +1,8 @@
 package EDGRRRR.DCE.Commands;
 
-import EDGRRRR.DCE.Economy.Materials.MaterialData;
+import EDGRRRR.DCE.Materials.MaterialData;
 import EDGRRRR.DCE.Main.DCEPlugin;
+import EDGRRRR.DCE.Math.Math;
 import net.milkbowl.vault.economy.EconomyResponse;
 import net.milkbowl.vault.economy.EconomyResponse.ResponseType;
 
@@ -14,8 +15,8 @@ import org.bukkit.entity.Player;
  * A simple ping pong! command
  */
 public class Value implements CommandExecutor {
-    private DCEPlugin app;
-    private String usage = "/value <materialName> <amount> | /value <materialName>";
+    private final DCEPlugin app;
+    private final String usage = "/value <materialName> <amount> | /value <materialName>";
 
     public Value(DCEPlugin app) {
         this.app = app;
@@ -31,43 +32,42 @@ public class Value implements CommandExecutor {
         Player from = (Player) sender;
 
         // Ensure command is enabled
-        if (!(this.app.getConfig().getBoolean(this.app.getConf().strComValue))) {
-            this.app.getCon().severe(from, "This command is not enabled.");
+        if (!(this.app.getConfig().getBoolean(this.app.getConfigManager().strComValue))) {
+            this.app.getConsoleManager().severe(from, "This command is not enabled.");
             return true;
         }
 
-        String materialName = null;
-        Integer amount = null;
+        String materialName;
+        int amount = 1;
         switch (args.length) {
             case 1:
-                amount = 1;
                 materialName = args[0];
                 break;
 
             case 2:
                 materialName = args[0];
-                amount = (int) (double) this.app.getEco().getDouble(args[1]);
+                amount = Math.getInt(args[1]);
                 break;
 
             default:
-                this.app.getCon().usage(from, "Invalid number of arguments.", usage);
+                this.app.getConsoleManager().usage(from, "Invalid number of arguments.", usage);
                 return true;
         }
 
-        MaterialData material = this.app.getMat().getMaterial(materialName);
+        MaterialData material = this.app.getMaterialManager().getMaterial(materialName);
         if (material == null) {
-            this.app.getCon().usage(from, "Unknown Item: " + materialName, usage);
+            this.app.getConsoleManager().usage(from, "Unknown Item: " + materialName, usage);
         } else {
-            EconomyResponse priceResponse = this.app.getMat().getMaterialPrice(material, amount, this.app.getEco().tax, true);
-            EconomyResponse secondPriceResponse = this.app.getMat().getMaterialPrice(material, amount, 1.0, false);
+            EconomyResponse priceResponse = this.app.getMaterialManager().getMaterialPrice(material, amount, this.app.getEconomyManager().tax, true);
+            EconomyResponse secondPriceResponse = this.app.getMaterialManager().getMaterialPrice(material, amount, 1.0, false);
             if (priceResponse.type == ResponseType.SUCCESS && secondPriceResponse.type == ResponseType.SUCCESS) {
-                this.app.getCon().info(from, "Buy: " + amount + " * " + material.getCleanName() + " costs £" + this.app.getEco().round(priceResponse.balance));
-                this.app.getCon().info(from, "Sell: " + amount + " * " + material.getCleanName() + " costs £" + this.app.getEco().round(secondPriceResponse.balance));
+                this.app.getConsoleManager().info(from, "Buy: " + amount + " * " + material.getCleanName() + " costs £" + this.app.getEconomyManager().round(priceResponse.balance));
+                this.app.getConsoleManager().info(from, "Sell: " + amount + " * " + material.getCleanName() + " costs £" + this.app.getEconomyManager().round(secondPriceResponse.balance));
             } else {
-                String error = null;
+                String error;
                 if (!(priceResponse.type == ResponseType.SUCCESS)) error = priceResponse.errorMessage;
                 else error = secondPriceResponse.errorMessage;
-                this.app.getCon().usage(from, "Couldn't determine price of " + material.getCleanName() + " * " + amount + " because " + error, usage);
+                this.app.getConsoleManager().usage(from, "Couldn't determine price of " + material.getCleanName() + " * " + amount + " because " + error, usage);
             }
         }
 

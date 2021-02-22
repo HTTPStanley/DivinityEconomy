@@ -1,8 +1,9 @@
 package EDGRRRR.DCE.Commands;
 
-import EDGRRRR.DCE.Economy.Materials.MaterialData;
-import EDGRRRR.DCE.Economy.Materials.MaterialPotionData;
+import EDGRRRR.DCE.Materials.MaterialData;
+import EDGRRRR.DCE.Materials.MaterialPotionData;
 import EDGRRRR.DCE.Main.DCEPlugin;
+import EDGRRRR.DCE.Math.Math;
 import net.milkbowl.vault.economy.EconomyResponse;
 import net.milkbowl.vault.economy.EconomyResponse.ResponseType;
 
@@ -32,35 +33,34 @@ public class Info implements CommandExecutor {
         Player from = (Player) sender;
 
         // Ensure command is enabled
-        if (!(this.app.getConfig().getBoolean(this.app.getConf().strComInfo))) {
-            this.app.getCon().severe(from, "This command is not enabled.");
+        if (!(this.app.getConfig().getBoolean(this.app.getConfigManager().strComInfo))) {
+            this.app.getConsoleManager().severe(from, "This command is not enabled.");
             return true;
         }
 
         String materialName;
-        int amount;
+        int amount = 1;
         switch (args.length) {
             case 1:
-                amount = 1;
                 materialName = args[0];
                 break;
 
             case 2:
                 materialName = args[0];
-                amount = (int) (double) this.app.getEco().getDouble(args[1]);
+                amount = Math.getInt(args[1]);
                 break;
 
             default:
-                this.app.getCon().usage(from, "Invalid number of arguments.", usage);
+                this.app.getConsoleManager().usage(from, "Invalid number of arguments.", usage);
                 return true;
         }
 
-        MaterialData material = this.app.getMat().getMaterial(materialName);
+        MaterialData material = this.app.getMaterialManager().getMaterial(materialName);
         if (material == null) {
-            this.app.getCon().usage(from, "Unknown Item: " + materialName, usage);
+            this.app.getConsoleManager().usage(from, "Unknown Item: " + materialName, usage);
         } else {
-            EconomyResponse userPriceResponse = this.app.getMat().getMaterialPrice(material, amount, 1.2, true);
-            EconomyResponse marketPriceResponse = this.app.getMat().getMaterialPrice(material, amount, 1.0, false);
+            EconomyResponse userPriceResponse = this.app.getMaterialManager().getMaterialPrice(material, amount, 1.2, true);
+            EconomyResponse marketPriceResponse = this.app.getMaterialManager().getMaterialPrice(material, amount, 1.0, false);
             double userPrice;
             double marketPrice;
             int userAmount = amount;
@@ -80,22 +80,22 @@ public class Info implements CommandExecutor {
                 marketAmount = 1;
             }
 
-            userPrice = this.app.getEco().round(userPrice);
-            marketPrice = this.app.getEco().round(marketPrice);
+            userPrice = this.app.getEconomyManager().round(userPrice);
+            marketPrice = this.app.getEconomyManager().round(marketPrice);
 
-            this.app.getCon().info(from, "==[" + material.getCleanName() + "]==");
-            this.app.getCon().info(from, "ID: " + material.getMaterialID());
-            this.app.getCon().info(from, "Material Type: " + material.getType());
-            this.app.getCon().info(from, "Buy Price(x" + userAmount + "): " + userPrice);
-            this.app.getCon().info(from, "Sell Price(x" + marketAmount+ "): " + marketPrice);
-            this.app.getCon().info(from, "Current Quantity: " + material.getQuantity());
-            this.app.getCon().info(from, "Is Banned: " + !(material.getAllowed()));
-            if (material.getEntityName() != null) this.app.getCon().info(from, "Entity Name: " + material.getEntityName());
+            this.app.getConsoleManager().info(from, "==[" + material.getCleanName() + "]==");
+            this.app.getConsoleManager().info(from, "ID: " + material.getMaterialID());
+            this.app.getConsoleManager().info(from, "Material Type: " + material.getType());
+            this.app.getConsoleManager().info(from, "Buy Price(x" + userAmount + "): " + userPrice);
+            this.app.getConsoleManager().info(from, "Sell Price(x" + marketAmount+ "): " + marketPrice);
+            this.app.getConsoleManager().info(from, "Current Quantity: " + material.getQuantity());
+            this.app.getConsoleManager().info(from, "Is Banned: " + !(material.getAllowed()));
+            if (material.getEntityName() != null) this.app.getConsoleManager().info(from, "Entity Name: " + material.getEntityName());
             MaterialPotionData pData = material.getPotionData();
             if (pData != null) {
-                this.app.getCon().info(from, "Potion type: " + pData.getType());
-                this.app.getCon().info(from, "Upgraded potion: " + pData.getUpgraded());
-                this.app.getCon().info(from, "Extended potion: " + pData.getExtended());
+                this.app.getConsoleManager().info(from, "Potion type: " + pData.getType());
+                this.app.getConsoleManager().info(from, "Upgraded potion: " + pData.getUpgraded());
+                this.app.getConsoleManager().info(from, "Extended potion: " + pData.getExtended());
             }
         }
 

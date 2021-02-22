@@ -1,4 +1,4 @@
-package EDGRRRR.DCE.Economy.Materials;
+package EDGRRRR.DCE.Materials;
 
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
