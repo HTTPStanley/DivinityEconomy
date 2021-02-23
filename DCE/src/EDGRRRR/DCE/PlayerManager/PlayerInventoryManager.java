@@ -4,6 +4,7 @@ import EDGRRRR.DCE.Main.DCEPlugin;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.HashMap;
 
@@ -16,42 +17,81 @@ public class PlayerInventoryManager {
 
     /**
      * Removes the specified number of materials from the players inventory
-     * @param player - The player to remove from
-     * @param material - The material to remove
+     * The players inventory is parsed via itemStacks
      * @param amount - The amount to remove
      */
     public void removeMaterialsFromPlayer(Player player, Material material, int amount) {
-        ItemStack[] itemStacks = this.getMaterialSlots(player, material);
-        this.removeMaterialsFromPlayer(itemStacks, amount);
+        ItemStack[] itemStacks = this.getMaterialSlotsToCount(player, material, amount);
+        this.removeMaterialsFromPlayer(itemStacks);
     }
 
     /**
-     * Removes the specified number of materials from the players inventory
-     * The players inventory is parsed via itemStacks
-     * @param itemStacks - The players inventory
-     * @param amount - The amount to remove
+     * Loops through the items and removes them from the players inventory
+     * @param itemStacks - The items to remove
      */
-    public void removeMaterialsFromPlayer(ItemStack[] itemStacks, int amount) {
-        int amountLeft = amount;
+    public void removeMaterialsFromPlayer(ItemStack[] itemStacks) {
         for (ItemStack itemStack : itemStacks) {
+            itemStack.setAmount(0);
+        }
+    }
+
+    /**
+     * gets the specified materials of the specified amount from the specified player
+     * Note if the player does not have enough, it will return all of their materials of this type
+     * @param player - The player
+     * @param material - The material
+     * @param amount - The amount
+     * @return ItemStack[]
+     */
+    public ItemStack[] getMaterialSlotsToCount(Player player, Material material, int amount) {
+        ItemStack[] materialStacks = this.getMaterialSlots(player, material);
+        ItemStack[] itemStacks = new ItemStack[this.getStackCount(material, amount)];
+        int amountLeft = amount;
+        int idx = 0;
+        for (ItemStack itemStack : materialStacks) {
             int stackAmount = itemStack.getAmount();
             int amountRemoved;
             if (amountLeft > stackAmount) {
                 amountRemoved = stackAmount;
-                itemStack.setAmount(0);
             } else {
                 int change = stackAmount - amountLeft;
                 amountRemoved = amountLeft;
+                ItemMeta meta = itemStack.getItemMeta();
                 itemStack.setAmount(change);
+                itemStack = new ItemStack(material, amountLeft);
+                itemStack.setItemMeta(meta);
             }
+            itemStacks[idx] = itemStack;
             amountLeft -= amountRemoved;
             if (amountLeft == 0) {
                 break;
             }
+            idx += 1;
         }
+
+        return itemStacks;
     }
 
-    public void addMaterialToPlayer(Player player, Material material, int amount) {
+    /**
+     * Returns the amount of slots an amount of materials will take up
+     * @param material - The material to calculate for
+     * @param amount - The amount of that material
+     * @return int
+     */
+    public int getStackCount(Material material, int amount) {
+        int itemPerStack = material.getMaxStackSize();
+        return (int) Math.ceil(amount / (double) itemPerStack);
+    }
+
+    /**
+     * Creates an array of ItemStacks of material with the correct amount in each stack.
+     * @param material - The material to create for
+     * @param amount - The amount to get
+     * @return ItemStack[]
+     */
+    public ItemStack[] createItemStacks(Material material, int amount) {
+        ItemStack[] itemStacks = new ItemStack[this.getStackCount(material, amount)];
+        int idx = 0;
         for (int i=0; i < amount;) {
             ItemStack newStack = new ItemStack(material);
             int amountLeft = amount - i;
@@ -62,7 +102,36 @@ public class PlayerInventoryManager {
                 newStack.setAmount(amountLeft);
                 i += amountLeft;
             }
-            player.getInventory().addItem(newStack);
+            itemStacks[idx] = newStack;
+            idx += 1;
+        }
+
+        return itemStacks;
+    }
+
+    /**
+     * Adds the specified amount of the specified material to the specified player
+     * Note that this does not calculate if all of the materials will fit in the players inventory
+     * @param player - The player to add the materials to
+     * @param material - The material to add
+     * @param amount - The amount to add
+     * @return
+     */
+    public ItemStack[] addItemsToPlayer(Player player, Material material, int amount) {
+        ItemStack[] itemStacks = this.createItemStacks(material, amount);
+        this.addItemsToPlayer(player, itemStacks);
+        return itemStacks;
+    }
+
+    /**
+     * Adds the itemstacks in itemStacks to player
+     * Note that this does not calculate if all of the materials will fit in the players inventory
+     * @param player - The player to add the materials to
+     * @param itemStacks - The itemStacks to add
+     */
+    public void addItemsToPlayer(Player player, ItemStack[] itemStacks) {
+        for (ItemStack itemStack : itemStacks) {
+            player.getInventory().addItem(itemStack);
         }
     }
 
