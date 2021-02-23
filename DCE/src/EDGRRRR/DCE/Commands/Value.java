@@ -1,16 +1,15 @@
 package EDGRRRR.DCE.Commands;
 
-import EDGRRRR.DCE.Materials.MaterialData;
 import EDGRRRR.DCE.Main.DCEPlugin;
+import EDGRRRR.DCE.Materials.MaterialData;
+import EDGRRRR.DCE.Materials.MaterialValue;
 import EDGRRRR.DCE.Math.Math;
-import net.milkbowl.vault.economy.EconomyResponse;
 import net.milkbowl.vault.economy.EconomyResponse.ResponseType;
-
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
+import org.bukkit.inventory.ItemStack;
 /**
  * A simple ping pong! command
  */
@@ -54,20 +53,23 @@ public class Value implements CommandExecutor {
                 return true;
         }
 
-        MaterialData material = this.app.getMaterialManager().getMaterial(materialName);
-        if (material == null) {
+        MaterialData materialData = this.app.getMaterialManager().getMaterial(materialName);
+        if (materialData == null) {
             this.app.getConsoleManager().usage(from, "Unknown Item: " + materialName, usage);
         } else {
-            EconomyResponse priceResponse = this.app.getMaterialManager().getMaterialPrice(material, amount, this.app.getEconomyManager().tax, true);
-            EconomyResponse secondPriceResponse = this.app.getMaterialManager().getMaterialPrice(material, amount, 1.0, false);
-            if (priceResponse.type == ResponseType.SUCCESS && secondPriceResponse.type == ResponseType.SUCCESS) {
-                this.app.getConsoleManager().info(from, "Buy: " + amount + " * " + material.getCleanName() + " costs £" + this.app.getEconomyManager().round(priceResponse.balance));
-                this.app.getConsoleManager().info(from, "Sell: " + amount + " * " + material.getCleanName() + " costs £" + this.app.getEconomyManager().round(secondPriceResponse.balance));
+            ItemStack[] itemStacks = this.app.getPlayerInventoryManager().createItemStacks(materialData.getMaterial(), amount);
+            MaterialValue priceResponse = this.app.getMaterialManager().getBuyValue(itemStacks);
+            MaterialValue secondPriceResponse = this.app.getMaterialManager().getSellValue(itemStacks);
+
+            if (priceResponse.getResponseType() == ResponseType.SUCCESS && secondPriceResponse.getResponseType() == ResponseType.SUCCESS) {
+                this.app.getConsoleManager().info(from, "Buy: " + amount + " * " + materialData.getCleanName() + " costs £" + this.app.getEconomyManager().round(priceResponse.getValue()));
+                this.app.getConsoleManager().info(from, "Sell: " + amount + " * " + materialData.getCleanName() + " costs £" + this.app.getEconomyManager().round(secondPriceResponse.getValue()));
+
             } else {
                 String error;
-                if (!(priceResponse.type == ResponseType.SUCCESS)) error = priceResponse.errorMessage;
-                else error = secondPriceResponse.errorMessage;
-                this.app.getConsoleManager().usage(from, "Couldn't determine price of " + material.getCleanName() + " * " + amount + " because " + error, usage);
+                if (!(priceResponse.getResponseType() == ResponseType.SUCCESS)) error = priceResponse.getErrorMessage();
+                else error = secondPriceResponse.getErrorMessage();
+                this.app.getConsoleManager().usage(from, "Couldn't determine price of " + materialData.getCleanName() + " * " + amount + " because " + error, usage);
             }
         }
 
