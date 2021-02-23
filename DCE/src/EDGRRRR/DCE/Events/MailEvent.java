@@ -1,6 +1,5 @@
 package EDGRRRR.DCE.Events;
 
-import EDGRRRR.DCE.Mail.Mail;
 import EDGRRRR.DCE.Mail.MailList;
 import EDGRRRR.DCE.Main.DCEPlugin;
 import org.bukkit.entity.Player;
