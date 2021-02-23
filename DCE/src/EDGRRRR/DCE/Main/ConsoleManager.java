@@ -1,9 +1,9 @@
 package EDGRRRR.DCE.Main;
 
-import java.util.HashMap;
-
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+
+import java.util.HashMap;
 
 /**
  * Console class for sending uniform messages to players and the console.
