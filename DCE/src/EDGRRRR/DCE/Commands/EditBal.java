@@ -1,14 +1,13 @@
 package EDGRRRR.DCE.Commands;
 
+import EDGRRRR.DCE.Main.DCEPlugin;
 import EDGRRRR.DCE.Math.Math;
+import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import EDGRRRR.DCE.Main.DCEPlugin;
-import net.milkbowl.vault.economy.EconomyResponse;
 
 /**
  * Command executor for editing (adding or removing) cash to a player
