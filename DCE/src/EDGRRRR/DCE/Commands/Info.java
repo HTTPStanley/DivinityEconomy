@@ -1,12 +1,11 @@
 package EDGRRRR.DCE.Commands;
 
+import EDGRRRR.DCE.Main.DCEPlugin;
 import EDGRRRR.DCE.Materials.MaterialData;
 import EDGRRRR.DCE.Materials.MaterialPotionData;
-import EDGRRRR.DCE.Main.DCEPlugin;
+import EDGRRRR.DCE.Materials.MaterialValue;
 import EDGRRRR.DCE.Math.Math;
-import net.milkbowl.vault.economy.EconomyResponse;
 import net.milkbowl.vault.economy.EconomyResponse.ResponseType;
-
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -59,22 +58,23 @@ public class Info implements CommandExecutor {
         if (material == null) {
             this.app.getConsoleManager().usage(from, "Unknown Item: " + materialName, usage);
         } else {
-            EconomyResponse userPriceResponse = this.app.getMaterialManager().getMaterialPrice(material, amount, 1.2, true);
-            EconomyResponse marketPriceResponse = this.app.getMaterialManager().getMaterialPrice(material, amount, 1.0, false);
+            MaterialValue userResponse = this.app.getMaterialManager().getBuyValue(this.app.getPlayerInventoryManager().createItemStacks(material.getMaterial(), amount));
+            MaterialValue marketResponse = this.app.getMaterialManager().getSellValue(this.app.getPlayerInventoryManager().createItemStacks(material.getMaterial(), amount));
+
             double userPrice;
             double marketPrice;
             int userAmount = amount;
             int marketAmount = amount;
 
-            if (userPriceResponse.type == ResponseType.SUCCESS) {
-                userPrice = userPriceResponse.balance;
+            if (userResponse.getResponseType() == ResponseType.SUCCESS) {
+                userPrice = userResponse.getValue();
             } else {
                 userPrice = material.getUserPrice();
                 userAmount = 1;
             }
 
-            if (marketPriceResponse.type == ResponseType.SUCCESS) {
-                marketPrice = marketPriceResponse.balance;
+            if (marketResponse.getResponseType() == ResponseType.SUCCESS) {
+                marketPrice = marketResponse.getValue();
             } else {
                 marketPrice = material.getMarketPrice();
                 marketAmount = 1;
