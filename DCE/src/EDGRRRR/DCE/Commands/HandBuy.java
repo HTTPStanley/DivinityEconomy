@@ -1,7 +1,8 @@
 package EDGRRRR.DCE.Commands;
 
-import EDGRRRR.DCE.Materials.MaterialData;
 import EDGRRRR.DCE.Main.DCEPlugin;
+import EDGRRRR.DCE.Materials.MaterialData;
+import EDGRRRR.DCE.Materials.MaterialValue;
 import EDGRRRR.DCE.Math.Math;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.command.Command;
@@ -62,35 +63,40 @@ public class HandBuy implements CommandExecutor {
             if (iStack == null) {
                 this.app.getConsoleManager().usage(player, "You are not holding any item.", this.usage);
             } else {
-                MaterialData material = this.app.getMaterialManager().getMaterial(iStack.getType().name());
-                if (!material.getAllowed()) {
-                    this.app.getConsoleManager().usage(player, "Cannot buy " + material.getCleanName() + " because it is not allowed to be bought or sold", this.usage);
-                    this.app.getConsoleManager().warn(player.getName() + " couldn't buy " + material.getMaterialID() + " because it is not allowed to be bought or sold");
+                MaterialData materialData = this.app.getMaterialManager().getMaterial(iStack.getType().name());
+
+                if (!materialData.getAllowed()) {
+                    this.app.getConsoleManager().usage(player, "Cannot buy " + materialData.getCleanName() + " because it is not allowed to be bought or sold", this.usage);
+                    this.app.getConsoleManager().warn(player.getName() + " couldn't buy " + materialData.getMaterialID() + " because it is not allowed to be bought or sold");
+
                 } else {
-                    int availableSpace = this.app.getPlayerInventoryManager().getAvailableSpace(player, material.getMaterial());
+                    int availableSpace = this.app.getPlayerInventoryManager().getAvailableSpace(player, materialData.getMaterial());
                     if (amountToBuy > availableSpace) {
-                        this.app.getConsoleManager().usage(player, "You only have space for " + availableSpace + " " + material.getCleanName(), this.usage);
-                        this.app.getConsoleManager().info(player.getName() + " couldn't buy " + material.getMaterialID() + " because missing inventory space " + availableSpace + " / " + amountToBuy);
+                        this.app.getConsoleManager().usage(player, "You only have space for " + availableSpace + " " + materialData.getCleanName(), this.usage);
+                        this.app.getConsoleManager().info(player.getName() + " couldn't buy " + materialData.getMaterialID() + " because missing inventory space " + availableSpace + " / " + amountToBuy);
+
                     } else {
-                        EconomyResponse priceResponse = this.app.getMaterialManager().getMaterialPrice(material, amountToBuy, this.app.getEconomyManager().tax, true);
-                        EconomyResponse saleResponse = this.app.getEconomyManager().remCash(player, priceResponse.balance);
+                        ItemStack[] itemStacks = this.app.getPlayerInventoryManager().createItemStacks(materialData.getMaterial(), amountToBuy);
+                        MaterialValue priceResponse = this.app.getMaterialManager().getBuyValue(itemStacks);
+                        EconomyResponse saleResponse = this.app.getEconomyManager().remCash(player, priceResponse.getValue());
                         double cost = this.app.getEconomyManager().round(saleResponse.amount);
                         double balance = this.app.getEconomyManager().round(saleResponse.balance);
-                        if (saleResponse.type == EconomyResponse.ResponseType.SUCCESS && priceResponse.type == EconomyResponse.ResponseType.SUCCESS) {
-                            this.app.getPlayerInventoryManager().addMaterialToPlayer(player, material.getMaterial(), amountToBuy);
-                            material.remQuantity(amountToBuy);
-                            this.app.getConsoleManager().info(player, "Bought " + amountToBuy + " " + material.getCleanName() + " for £" + cost + ". New Balance: £" + balance);
-                            this.app.getConsoleManager().info(player.getName() + " Bought " + amountToBuy + " " + material.getMaterialID() + " for £" + cost);
+                        if (saleResponse.type == EconomyResponse.ResponseType.SUCCESS && priceResponse.getResponseType() == EconomyResponse.ResponseType.SUCCESS) {
+                            this.app.getPlayerInventoryManager().addItemsToPlayer(player, itemStacks);
+                            materialData.remQuantity(amountToBuy);
+                            this.app.getConsoleManager().info(player, "Bought " + amountToBuy + " " + materialData.getCleanName() + " for £" + cost + ". New Balance: £" + balance);
+                            this.app.getConsoleManager().info(player.getName() + " Bought " + amountToBuy + " " + materialData.getMaterialID() + " for £" + cost);
+
                         } else {
                             String errorMessage;
                             if (saleResponse.type == EconomyResponse.ResponseType.FAILURE)
                                 errorMessage = saleResponse.errorMessage;
-                            else if (priceResponse.type == EconomyResponse.ResponseType.FAILURE)
-                                errorMessage = priceResponse.errorMessage;
+                            else if (priceResponse.getResponseType() == EconomyResponse.ResponseType.FAILURE)
+                                errorMessage = priceResponse.getErrorMessage();
                             else errorMessage = "¯\\_(ツ)_/¯";
 
-                            this.app.getConsoleManager().usage(player, "Couldn't buy " + amountToBuy + " " + material.getCleanName() + " for £" + cost + " because " + errorMessage, this.usage);
-                            this.app.getConsoleManager().warn(player.getName() + " couldn't buy " + amountToBuy + " " + material.getMaterialID() + " for £" + cost + " because " + errorMessage);
+                            this.app.getConsoleManager().usage(player, "Couldn't buy " + amountToBuy + " " + materialData.getCleanName() + " for £" + cost + " because " + errorMessage, this.usage);
+                            this.app.getConsoleManager().warn(player.getName() + " couldn't buy " + amountToBuy + " " + materialData.getMaterialID() + " for £" + cost + " because " + errorMessage);
                         }
                     }
                 }
