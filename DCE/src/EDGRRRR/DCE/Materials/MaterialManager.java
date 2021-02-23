@@ -1,22 +1,21 @@
 package EDGRRRR.DCE.Materials;
 
-import java.util.HashMap;
-
+import EDGRRRR.DCE.Main.DCEPlugin;
 import EDGRRRR.DCE.Math.Math;
-import org.bukkit.Material;
+import net.milkbowl.vault.economy.EconomyResponse.ResponseType;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import EDGRRRR.DCE.Main.DCEPlugin;
-import net.milkbowl.vault.economy.EconomyResponse;
-import net.milkbowl.vault.economy.EconomyResponse.ResponseType;
+import java.util.HashMap;
 
 public class MaterialManager {
     // Link back to Main
     private final DCEPlugin app;
+    private final BukkitRunnable saveTimer;
 
     // Stores items
     private FileConfiguration config;
@@ -37,11 +36,13 @@ public class MaterialManager {
     public MaterialManager(DCEPlugin app) {
         this.app = app;
         int timer = this.app.getConfig().getInt(this.app.getConfigManager().strMainSaveTimer);
-        new BukkitRunnable() {
+        this.saveTimer = new BukkitRunnable() {
+            @Override
             public void run() {
                 saveAll();
             }
-          }.runTaskTimer(this.app, timer, timer);
+        };
+        this.saveTimer.runTaskTimer(this.app, timer, timer);
     }
 
     /**
@@ -61,39 +62,146 @@ public class MaterialManager {
     }
 
     /**
-     * Adds <amount> of <material> to <player>
-     * @param player - The player to add the material to
-     * @param material - The material to add
-     * @param amount - The amount to add
-     * @return EconomyResponse - ADD DESCRIPTION
+     * Returns the scaling of price for an item, based on its durability and damage.
+     * @param itemStack - The itemstack containing the material with the specified damage.
+     * @return double - The level of price scaling to apply. For example .9 = 90% of full price. Maximum value is 1 for undamaged.
      */
-    public EconomyResponse addMaterial(Player player, Material material, int amount) {
-        player.getInventory().addItem(new ItemStack(material, amount));
-        return new EconomyResponse(1.0, 1.0, ResponseType.SUCCESS, "");
+    private double getDamageValue(ItemStack itemStack) {
+        // Instantiate damage value
+        double damageValue = 1.0;
+
+        // Get meta and cast to damageable, for getting the items durability
+        // Get durability and max durability
+        Damageable dmg = (Damageable)itemStack.getItemMeta();
+        double durability = dmg.getDamage();
+        double maxDurability = itemStack.getType().getMaxDurability();
+
+        // If max durability > 0 - Meaning the item is damageable (aka a tool)
+        // Adjust damage value to be the percentage of health left on the item.
+        // 50% damaged = .5 scaling (50% of full price)
+        // Durability is in the form of 1 = 1 damage (if item has 10 health, 1 durability = 9 health)
+        // Hence maxDura - dura / maxDura
+        if (maxDurability > 0) {
+            damageValue = (maxDurability - durability) / maxDurability;
+        }
+        return damageValue;
     }
 
     /**
-     * Gets the price of a material
-     * @param materialD - The materialData
-     * @param amount    - The amount of the material to buy
-     * @param scale     - The scaling to apply to the final price. For example 1.2 =
-     *                  20% ontop for tax reasons
-     * @param purchase  - Whether this is a user purchase or sale.
-     * @return EconomyResponse - ADD DESCRIPTION
+     * Returns the combined sell value of all the items given
+     * @param itemStacks - The items to calculate the price for
+     * @return MaterialValue - The value of the items, or not if an error occurred.
      */
-    public EconomyResponse getMaterialPrice(MaterialData materialD, int amount, double scale, boolean purchase) {
+    public MaterialValue getSellValue(ItemStack[] itemStacks) {
+        double value = 0.0;
+
+        // Loop through items and add up the sell value of each item
+        for (ItemStack itemStack : itemStacks) {
+            MaterialValue mv = this.getSellValue(itemStack);
+            if (mv.getResponseType() == ResponseType.SUCCESS) {
+                value += mv.getValue();
+            } else {
+                return new MaterialValue(0.0, mv.getErrorMessage(), mv.getResponseType());
+            }
+        }
+
+        return new MaterialValue(value, "", ResponseType.SUCCESS);
+    }
+
+    /**
+     * Returns the sell value for a single stack of items.
+     * @param itemStack - The itemStack to get the value of
+     * @return MaterialValue - The price of the itemstack if no errors occurred.
+     */
+    public MaterialValue getSellValue(ItemStack itemStack) {
+        ItemMeta meta = itemStack.getItemMeta();
+        double scale = 1.0;
+        MaterialValue response;
+
+        if (meta != null) {
+            if (meta.getEnchants().size() > 0) {
+                response = new MaterialValue(0.0, "Cannot sell enchanted items.", ResponseType.FAILURE);
+            } else {
+                MaterialData materialData = this.getMaterial(itemStack.getType().name());
+                if (materialData == null) {
+                    response = new MaterialValue(0.0, "Item cannot be found.", ResponseType.FAILURE);
+                } else {
+                    response = new MaterialValue(this.calculatePrice(itemStack.getAmount(), materialData.getQuantity(), (scale * this.getDamageValue(itemStack)), false), "", ResponseType.SUCCESS);
+                }
+            }
+        } else {
+            response = new MaterialValue(0.0, "Item is not supported.", ResponseType.FAILURE);
+        }
+        return response;
+    }
+
+    /**
+     * Returns the price of buying the given items.
+     * @param itemStacks - The items to get the price for
+     * @return MaterialValue
+     */
+    public MaterialValue getBuyValue(ItemStack[] itemStacks) {
+        double value = 0.0;
+        for (ItemStack itemStack : itemStacks) {
+            MaterialValue mv = this.getBuyValue(itemStack);
+            if (mv.getResponseType() == ResponseType.SUCCESS) {
+                value += mv.getValue();
+            } else {
+                return new MaterialValue(0.0, mv.getErrorMessage(), mv.getResponseType());
+            }
+        }
+
+        return new MaterialValue(value, "", ResponseType.SUCCESS);
+    }
+
+    /**
+     * Returns the value of an itemstack
+     * @param itemStack - The item stack to get the value of
+     * @return MaterialValue
+     */
+    public MaterialValue getBuyValue(ItemStack itemStack) {
+        double scale = this.app.getEconomyManager().tax;
+        MaterialValue response;
+
+        MaterialData materialData = this.getMaterial(itemStack.getType().name());
+        if (materialData == null) {
+            response = new MaterialValue(0.0, "Item cannot be found.", ResponseType.FAILURE);
+        } else {
+            response = new MaterialValue(this.calculatePrice(itemStack.getAmount(), materialData.getQuantity(), scale, true), "", ResponseType.SUCCESS);
+        }
+        return response;
+    }
+
+    /**
+     * Returns the market price based on stock
+     * @param stock - The stock of the material
+     * @return double
+     */
+    public double getMarketPrice(int stock) {
+        return this.calculatePrice(1, stock, 1.0, false);
+    }
+
+
+    /**
+     * Returns the user price based on stock
+     * @param stock - The stock of the material
+     * @return double
+     */
+    public double getUserPrice(int stock) {
+        return this.calculatePrice(1, stock, this.app.getEconomyManager().tax, true);
+    }
+
+    /**
+     * Calculates the price of a material
+     * @param amount - The amount to calculate the price for
+     * @param stock - The stock of the material
+     * @param scale - The scaling to apply, such as tax
+     * @param purchase - Whether this is a purchase from or sale to the market
+     * @return double
+     */
+    private double calculatePrice(int amount, int stock, double scale, boolean purchase) {
         double value = 0;
-
-        // If name is unknown return such
-        if (materialD == null)
-            return new EconomyResponse(amount, 0.0, ResponseType.FAILURE, "Unknown item: ");
-
-        // Get the stock
-        // If amount is greater than stock then return such
-        int stock = materialD.getQuantity();
-        int materials = totalMaterials;
-        if (stock < amount)
-            return new EconomyResponse(amount, 0.0, ResponseType.FAILURE, "Not enough stock: " + stock);
+        int materials = this.totalMaterials;
 
         // Loop for amount
         // Get the price and add it to the value
@@ -102,7 +210,7 @@ public class MaterialManager {
         // if purchase = false
         // add 1 stock to simulate increase
         for (int i = 1; i <= amount; i++) {
-            value += this.getPrice(stock, scale, Math.getInflation(this.baseTotalMaterials, materials));
+            value += this.calculatePrice(stock, scale, Math.getInflation(this.baseTotalMaterials, materials));
             if (purchase) {
                 stock -= 1;
                 materials -= 1;
@@ -113,7 +221,7 @@ public class MaterialManager {
             }
         }
 
-        return new EconomyResponse(amount, value, ResponseType.SUCCESS, "");
+        return value;
     }
 
     /**
@@ -125,7 +233,7 @@ public class MaterialManager {
      * @param inflation - The level of inflation
      * @return double - The price of the material
      */
-    private double getPrice(int stock, double scale, double inflation) {
+    private double calculatePrice(int stock, double scale, double inflation) {
         // Price breakdown
         // Prices were balanced in data.csv
         // Prices are determined by quantity
@@ -145,29 +253,6 @@ public class MaterialManager {
      */
     public double getInflation() {
         return Math.getInflation(this.baseTotalMaterials, this.totalMaterials);
-    }
-
-
-    /**
-     * Returns the market price of a product Market price = exact price (scale of
-     * 1.0)
-     *
-     * @param stock - The stock of the product
-     * @return double - The market (sell) price of the product
-     */
-    public double getMarketPrice(int stock) {
-        return this.getPrice(stock, 1.0, this.getInflation());
-    }
-
-    /**
-     * Returns the user price of a product User price = price * tax (scale of 1.2
-     * default)
-     *
-     * @param stock - The stock of the product
-     * @return double - The user (buy) price of the product
-     */
-    public double getUserPrice(int stock) {
-        return this.getPrice(stock, this.app.getEconomyManager().tax, this.getInflation());
     }
 
     /**
@@ -242,7 +327,6 @@ public class MaterialManager {
      * Then saves the config to the config file
      */
     public void saveAll() {
-        this.app.getConsoleManager().info("Saving materials.");
         for (MaterialData materialD : materials.values()) {
             this.saveMaterial(materialD);
         }
