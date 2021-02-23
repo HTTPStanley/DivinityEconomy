@@ -1,17 +1,15 @@
 package EDGRRRR.DCE.Main;
 
 import EDGRRRR.DCE.Commands.*;
+import EDGRRRR.DCE.Economy.EconomyManager;
 import EDGRRRR.DCE.Events.MailEvent;
-import EDGRRRR.DCE.Events.UUIDFetchEvent;
 import EDGRRRR.DCE.Mail.MailManager;
+import EDGRRRR.DCE.Materials.MaterialManager;
 import EDGRRRR.DCE.PlayerManager.PlayerInventoryManager;
 import EDGRRRR.DCE.PlayerManager.PlayerManager;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import EDGRRRR.DCE.Materials.MaterialManager;
-import EDGRRRR.DCE.Economy.EconomyManager;
 /**
  * The Main Class of the plugin
  * Hooks everything together
@@ -179,6 +177,9 @@ public class DCEPlugin extends JavaPlugin {
     public void onDisable() {
         if (!(this.materialManager == null)) {
             this.materialManager.saveAll();
+        }
+        if (!(this.mailManager == null)) {
+            this.mailManager.saveMail();
         }
         this.consoleManager.warn("Plugin Disabled");
     }
