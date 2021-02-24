@@ -55,7 +55,7 @@ public class MailManager {
         for (String userID : this.configuration.getKeys(false)) {
             ConfigurationSection mailListSection = this.configuration.getConfigurationSection(userID);
             OfflinePlayer player = this.app.getPlayerManager().getOfflinePlayerByUUID(userID, true);
-            MailList mailList = new MailList(player, mailListSection);
+            MailList mailList = new MailList(this, player, mailListSection);
             this.addMailList(player, mailList);
             userCount += 1;
             mailCount += mailList.getMailIDs().size();
@@ -81,7 +81,7 @@ public class MailManager {
      */
     public MailList addPlayer(OfflinePlayer player) {
         ConfigurationSection mailSection = this.createMailListSection(player);
-        MailList mailList = new MailList(player, mailSection);
+        MailList mailList = new MailList(this, player, mailSection);
         this.addMailList(player, mailList);
         return mailList;
     }
