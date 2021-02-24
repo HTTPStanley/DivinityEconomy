@@ -1,8 +1,10 @@
 package EDGRRRR.DCE.Mail;
 
 import org.bukkit.OfflinePlayer;
+import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -10,16 +12,33 @@ public class MailList {
     // Where the mail is stored
     private HashMap<String, Mail> mail;
 
+    private ConfigurationSection configurationSection;
+
     // The player this mail list belongs to
     private OfflinePlayer player;
+
+    // Variables for the dictionary keys
+    public final String strAmount = "amount";
+    public final String strBalance = "balance";
+    public final String strDate = "date";
+    public final String strMessage = "message";
+    public final String strSource = "source";
+    public final String strRead = "read";
 
     /**
      * Constructor
      * @param player - The player this mail list belongs to
      */
-    public MailList(OfflinePlayer player) {
+    public MailList(OfflinePlayer player, ConfigurationSection configurationSection) {
         this.player = player;
+        this.configurationSection = configurationSection;
         this.mail = new HashMap<>();
+
+        for (String mailID : this.configurationSection.getKeys(false)) {
+            ConfigurationSection mailSection = this.configurationSection.getConfigurationSection(mailID);
+            Mail mail = new Mail(this, mailSection);
+            this.addMail(mail);
+        }
     }
 
     /**
@@ -115,6 +134,38 @@ public class MailList {
         return mailID;
     }
 
+    public String addMail(int amount, double balance, String message, Calendar date, OfflinePlayer source, boolean read) {
+        Mail mail = this.createMail(amount, balance, message, date, source, read);
+        return mail.getID();
+    }
+
+    public ConfigurationSection createMailSection(String name) {
+        return this.configurationSection.createSection(name);
+    }
+
+    public ConfigurationSection createTempMailSection() {
+        return this.createMailSection("temp");
+    }
+
+    public void removeTempMailSection() {
+        this.setData("temp", null);
+    }
+
+    public Mail createMail(double amount, double balance, String message, Calendar date, OfflinePlayer source, boolean read) {
+        ConfigurationSection tempSection = this.createTempMailSection();
+        tempSection.set(strAmount, amount);
+        tempSection.set(strBalance, balance);
+        tempSection.set(strMessage, message);
+        tempSection.set(strDate, date.getTimeInMillis());
+        tempSection.set(strSource, source);
+        tempSection.set(strRead, read);
+        Mail mail = new Mail(this, tempSection);
+        this.addMail(mail);
+        this.setData(mail.getID(), mail.getConfigurationSection());
+        this.removeTempMailSection();
+        return mail;
+    }
+
     /**
      * Puts mail into internal mail storage under given ID
      * @param mailID - The id to store the mail under
@@ -143,6 +194,20 @@ public class MailList {
                 this.mail.remove(mailID);
                 break;
             }
+        }
+    }
+
+    public ConfigurationSection getConfigurationSection() {
+        return this.configurationSection;
+    }
+
+    private void setData(String key, Object value) {
+        this.configurationSection.set(key, value);
+    }
+
+    public void saveAllMail() {
+        for (Mail mail : this.getAllMail().values()) {
+            this.setData(mail.getID(), mail.getConfigurationSection());
         }
     }
 }
