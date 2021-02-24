@@ -1,40 +1,23 @@
 package EDGRRRR.DCE.Mail;
 
 import org.bukkit.OfflinePlayer;
+import org.bukkit.configuration.ConfigurationSection;
 
 import java.time.Duration;
 import java.util.Calendar;
 
 public class Mail {
-    // Stores the mail message
-    private final String message;
-    // Stores when the mail was created
-    private final Calendar dateFrom;
-    // Stores the amount of cash transferred
-    private final double amount;
-    // Stores the new balance of the user
-    private final double newBalance;
-    // Stores the source of the cash (could also be where the cash went)
-    private final OfflinePlayer source;
-    // Stores whether this mail has been read or not
-    private boolean read;
+    private final MailList mailList;
+    private final ConfigurationSection configurationSection;
 
     /**
      * Constructor
-     * @param message - The mail message
-     * @param dateFrom - The date when the mail was created
-     * @param amount - The amount transferred
-     * @param newBalance - The new balance of the user
-     * @param source - The source or direction the cash came from/went to
-     * @param read - Whether this mail has been read or not
+     * @param configurationSection
+     * @param mailList
      */
-    public Mail(String message, Calendar dateFrom, double amount, double newBalance, OfflinePlayer source, boolean read) {
-        this.message = message;
-        this.dateFrom = dateFrom;
-        this.amount = amount;
-        this.newBalance = newBalance;
-        this.source = source;
-        this.read = read;
+    public Mail(MailList mailList, ConfigurationSection configurationSection) {
+        this.mailList = mailList;
+        this.configurationSection = configurationSection;
     }
 
     /**
@@ -42,7 +25,7 @@ public class Mail {
      * @return String - Unique ID of mail
      */
     public String getID() {
-        return String.valueOf(this.dateFrom.getTimeInMillis());
+        return String.valueOf(this.getDateFrom().getTimeInMillis());
     }
 
     /**
@@ -50,7 +33,7 @@ public class Mail {
      * @return String - The message of the mail
      */
     public String getMessage() {
-        return this.message;
+        return this.configurationSection.getString(this.mailList.strMessage);
     }
 
     /**
@@ -58,7 +41,9 @@ public class Mail {
      * @return Calendar - The creation date of the mail
      */
     public Calendar getDateFrom() {
-        return this.dateFrom;
+        Calendar date = Calendar.getInstance();
+        date.setTimeInMillis(this.configurationSection.getLong(this.mailList.strDate));
+        return date;
     }
 
     /**
@@ -67,7 +52,7 @@ public class Mail {
      */
     public Duration getTimeSince() {
         Calendar currentDate = Calendar.getInstance();
-        return Duration.between(this.dateFrom.toInstant(), currentDate.toInstant());
+        return Duration.between(this.getDateFrom().toInstant(), currentDate.toInstant());
     }
 
     /**
@@ -83,7 +68,7 @@ public class Mail {
      * @return double - The cash amount transferred
      */
     public double getAmount() {
-        return amount;
+        return this.configurationSection.getDouble(this.mailList.strAmount);
     }
 
     /**
@@ -91,7 +76,7 @@ public class Mail {
      * @return double - New balance of user
      */
     public double getNewBalance() {
-        return newBalance;
+        return this.configurationSection.getDouble(this.mailList.strBalance);
     }
 
     /**
@@ -99,7 +84,7 @@ public class Mail {
      * @return double - The old balance of the user
      */
     public double getOldBalance() {
-        return this.newBalance - this.amount;
+        return this.getNewBalance() - this.getAmount();
     }
 
     /**
@@ -107,7 +92,7 @@ public class Mail {
      * @return OfflinePlayer - The player
      */
     public OfflinePlayer getSource() {
-        return this.source;
+        return this.configurationSection.getOfflinePlayer(this.mailList.strSource);
     }
 
     /**
@@ -115,7 +100,7 @@ public class Mail {
      * @return boolean - is read
      */
     public boolean getRead() {
-        return this.read;
+        return this.configurationSection.getBoolean(this.mailList.strRead);
     }
 
     /**
@@ -123,6 +108,10 @@ public class Mail {
      * @param state - The read state
      */
     public void setRead(boolean state) {
-        this.read = state;
+        this.configurationSection.set(this.mailList.strRead, state);
+    }
+
+    public ConfigurationSection getConfigurationSection() {
+        return configurationSection;
     }
 }
