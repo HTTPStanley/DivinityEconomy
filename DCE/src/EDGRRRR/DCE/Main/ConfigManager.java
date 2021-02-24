@@ -58,7 +58,7 @@ public class ConfigManager {
     public String strComInfo = strComPrefix + ".info";
 
 
-    public ConfigManager(DCEPlugin app){
+    public ConfigManager(DCEPlugin app) {
         this.app = app;
         // Saves the .Jar config to the folder, if it doesn't exist.
         this.app.saveDefaultConfig();
@@ -79,15 +79,17 @@ public class ConfigManager {
 
     /**
      * Reads and loads the default config
+     *
      * @param file - The filename of the file
      * @return FileConfiguration - The file config
      */
-    public FileConfiguration readResource(String file){
+    public FileConfiguration readResource(String file) {
         return YamlConfiguration.loadConfiguration(new InputStreamReader(this.app.getResource(file)));
     }
 
     /**
      * Reads and loads the config
+     *
      * @param file - The filename of the file
      * @return FileConfiguration - The file config
      */
@@ -98,6 +100,7 @@ public class ConfigManager {
     /**
      * Loads the default and current config files If the config file is empty or
      * non-existent, it will be overwritten with the default config And returned
+     *
      * @param file - The file to load
      * @return FileConfiguration - The file config
      */
@@ -128,7 +131,8 @@ public class ConfigManager {
 
     /**
      * Saves a file to a file path
-     * @param file - The file config to save
+     *
+     * @param file     - The file config to save
      * @param fileName - The file name to save to
      */
     public void saveFile(FileConfiguration file, String fileName) {

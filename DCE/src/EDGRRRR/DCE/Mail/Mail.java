@@ -11,6 +11,7 @@ public class Mail {
 
     /**
      * Constructor
+     *
      * @param configurationSection
      * @param mailList
      */
@@ -21,6 +22,7 @@ public class Mail {
 
     /**
      * Returns the Unique ID of the mail
+     *
      * @return String - Unique ID of mail
      */
     public String getID() {
@@ -29,6 +31,7 @@ public class Mail {
 
     /**
      * Returns the message of this mail
+     *
      * @return String - The message of the mail
      */
     public String getMessage() {
@@ -37,6 +40,7 @@ public class Mail {
 
     /**
      * Returns the date from when the mail was created
+     *
      * @return Calendar - The creation date of the mail
      */
     public Calendar getDateFrom() {
@@ -47,6 +51,7 @@ public class Mail {
 
     /**
      * Returns the time delta between the creation date and now
+     *
      * @return Duration - The time delta
      */
     public Duration getTimeSince() {
@@ -56,6 +61,7 @@ public class Mail {
 
     /**
      * Returns the number of days between the creation date and now
+     *
      * @return int - The number of days
      */
     public int getDaysSince() {
@@ -64,6 +70,7 @@ public class Mail {
 
     /**
      * Returns the amount of cash transferred, can be negative
+     *
      * @return double - The cash amount transferred
      */
     public double getAmount() {
@@ -72,6 +79,7 @@ public class Mail {
 
     /**
      * Returns the new balance of the mail owner after the transaction
+     *
      * @return double - New balance of user
      */
     public double getNewBalance() {
@@ -80,6 +88,7 @@ public class Mail {
 
     /**
      * Returns the old (balance before transaction) balance of the mail owner
+     *
      * @return double - The old balance of the user
      */
     public double getOldBalance() {
@@ -88,6 +97,7 @@ public class Mail {
 
     /**
      * Returns the source or destination of where the cash came from or went to
+     *
      * @return OfflinePlayer - The player
      */
     public String getSourceUUID() {
@@ -96,6 +106,7 @@ public class Mail {
 
     /**
      * Returns if this mail has been read or not
+     *
      * @return boolean - is read
      */
     public boolean getRead() {
@@ -104,6 +115,7 @@ public class Mail {
 
     /**
      * Sets the read state of the mail
+     *
      * @param state - The read state
      */
     public void setRead(boolean state) {

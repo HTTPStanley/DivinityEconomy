@@ -45,7 +45,7 @@ public class Balance implements CommandExecutor {
                 // Get online player
                 to = this.app.getServer().getPlayer(args[0]);
                 // If they aren't online or don't exist. Do the dirty offline call.
-                if (to == null){
+                if (to == null) {
                     toOff = this.app.getPlayerManager().getOfflinePlayer(args[0], false);
                 }
                 break;
@@ -56,7 +56,7 @@ public class Balance implements CommandExecutor {
                 break;
         }
 
-        if (to == null && toOff == null){
+        if (to == null && toOff == null) {
             this.app.getConsoleManager().usage(from, "Invalid player name.", usage);
             return true;
         }

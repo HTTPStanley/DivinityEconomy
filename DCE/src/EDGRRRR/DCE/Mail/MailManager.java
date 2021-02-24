@@ -20,6 +20,7 @@ public class MailManager {
     /**
      * Constructor
      * Use loadAllMail() after constructor for setup and reading of mail.
+     *
      * @param app - The java plugin
      */
     public MailManager(DCEPlugin app) {
@@ -35,6 +36,7 @@ public class MailManager {
 
     /**
      * Reads and returns the mail file
+     *
      * @return FileConfiguration - The contents of the mail file
      */
     public FileConfiguration readMailFile() {
@@ -64,7 +66,8 @@ public class MailManager {
 
     /**
      * Adds a mail list and stores it against the player
-     * @param player - The player to store the mail list for
+     *
+     * @param player   - The player to store the mail list for
      * @param mailList - The mail list to store
      */
     public void addMailList(OfflinePlayer player, MailList mailList) {
@@ -73,6 +76,7 @@ public class MailManager {
 
     /**
      * Creates an empty mail list for a player
+     *
      * @param player - The player to store the mail for
      */
     public MailList addPlayer(OfflinePlayer player) {
@@ -89,6 +93,7 @@ public class MailManager {
     /**
      * Returns a players mail list
      * If the user does not have one, it will create an empty mail list and return it.
+     *
      * @param player - The player to get the mail list for
      * @return MailList - The mail list for this player
      */

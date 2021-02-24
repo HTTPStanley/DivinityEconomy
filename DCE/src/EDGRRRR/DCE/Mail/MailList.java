@@ -9,14 +9,6 @@ import java.util.HashMap;
 import java.util.Set;
 
 public class MailList {
-    // Where the mail is stored
-    private HashMap<String, Mail> mail;
-
-    private ConfigurationSection configurationSection;
-
-    // The player this mail list belongs to
-    private OfflinePlayer player;
-
     // Variables for the dictionary keys
     public final String strAmount = "amount";
     public final String strBalance = "balance";
@@ -24,9 +16,15 @@ public class MailList {
     public final String strMessage = "message";
     public final String strSource = "source";
     public final String strRead = "read";
+    // Where the mail is stored
+    private final HashMap<String, Mail> mail;
+    private final ConfigurationSection configurationSection;
+    // The player this mail list belongs to
+    private final OfflinePlayer player;
 
     /**
      * Constructor
+     *
      * @param player - The player this mail list belongs to
      */
     public MailList(OfflinePlayer player, ConfigurationSection configurationSection) {
@@ -43,6 +41,7 @@ public class MailList {
 
     /**
      * Returns all mail IDs for which the mail has been read.
+     *
      * @return ArrayList<String> - A list of mailIDS that have been read.
      */
     public ArrayList<String> getReadMail() {
@@ -58,6 +57,7 @@ public class MailList {
 
     /**
      * Returns all mail IDs for which the mail has not been read
+     *
      * @return ArrayList<String> - A list of mailIDs that have not been read
      */
     public ArrayList<String> getUnreadMail() {
@@ -74,6 +74,7 @@ public class MailList {
     /**
      * Returns the mail that corresponds to the passed ID
      * If the ID does not exist, will return null
+     *
      * @param mailID - The mail id to get
      * @return Mail - The mail that belongs to this ID
      */
@@ -83,6 +84,7 @@ public class MailList {
 
     /**
      * Returns all the mail ids within this mail list
+     *
      * @return Set<String> - A list of mail ids
      */
     public Set<String> getMailIDs() {
@@ -91,6 +93,7 @@ public class MailList {
 
     /**
      * Returns the internal mail storage
+     *
      * @return HashMap<String, Mail> - The internal mail storage
      */
     public HashMap<String, Mail> getAllMail() {
@@ -99,6 +102,7 @@ public class MailList {
 
     /**
      * Returns the player this mail list belongs to
+     *
      * @return OfflinePlayer - The player this mail list belongs to
      */
     public OfflinePlayer getPlayer() {
@@ -108,6 +112,7 @@ public class MailList {
     /**
      * Returns true if the number of mail is greater than 0.
      * Else false.
+     *
      * @return boolean - If the user has mail
      */
     public boolean hasMail() {
@@ -117,6 +122,7 @@ public class MailList {
     /**
      * Returns true if the number of unread mail is greater than 0.
      * Else false.
+     *
      * @return boolean - If the user has unread mail
      */
     public boolean hasNewMail() {
@@ -125,6 +131,7 @@ public class MailList {
 
     /**
      * Adds a mail object to the internal mail storage.
+     *
      * @param mail - The mail to add
      * @return mailID - The ID of the mail added
      */
@@ -168,8 +175,9 @@ public class MailList {
 
     /**
      * Puts mail into internal mail storage under given ID
+     *
      * @param mailID - The id to store the mail under
-     * @param mail - The mail to store
+     * @param mail   - The mail to store
      */
     public void setMail(String mailID, Mail mail) {
         this.mail.put(mailID, mail);
@@ -177,6 +185,7 @@ public class MailList {
 
     /**
      * Removes mail with given id
+     *
      * @param mailID - The mailID to remove
      */
     public void removeMail(String mailID) {
@@ -185,6 +194,7 @@ public class MailList {
 
     /**
      * Removes the given mail from the storage
+     *
      * @param mail - The mail to remove
      */
     public void removeMail(Mail mail) {

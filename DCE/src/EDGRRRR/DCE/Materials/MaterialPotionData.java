@@ -16,6 +16,7 @@ public class MaterialPotionData {
 
     /**
      * Constructor
+     *
      * @param potionData - The potion data
      */
     public MaterialPotionData(ConfigurationSection potionData) {
@@ -24,6 +25,7 @@ public class MaterialPotionData {
 
     /**
      * Returns the extended variable
+     *
      * @return boolean - Whether the potion is extended or not
      */
     public boolean getExtended() {
@@ -32,6 +34,7 @@ public class MaterialPotionData {
 
     /**
      * Returns the type variable
+     *
      * @return String - The type of potion
      */
     public String getType() {
@@ -40,6 +43,7 @@ public class MaterialPotionData {
 
     /**
      * Returns the upgraded variable
+     *
      * @return boolean - Whether the potion is upgraded or not
      */
     public boolean getUpgraded() {
@@ -48,6 +52,7 @@ public class MaterialPotionData {
 
     /**
      * Returns the configuration section
+     *
      * @return ConfigurationSection - Returns the config section for the potion data
      */
     public ConfigurationSection getPotionData() {

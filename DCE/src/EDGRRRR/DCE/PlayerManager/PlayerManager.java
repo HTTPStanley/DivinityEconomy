@@ -16,7 +16,8 @@ public class PlayerManager {
      * Returns an offline player
      * Scans local offline players
      * If allow fetch is enabled, then will find fetch player from the web.
-     * @param name - name to scan for.
+     *
+     * @param name       - name to scan for.
      * @param allowFetch - Uses deprecated "bukkit.getOfflinePlayer".
      * @return OfflinePlayer - the player corresponding to the name.
      */
@@ -40,7 +41,8 @@ public class PlayerManager {
     /**
      * Gets an offline player by their UUID
      * Scans only local players unless allowFetch is enabled, which will allow it to scan the web
-     * @param uuid - The uuid the find
+     *
+     * @param uuid       - The uuid the find
      * @param allowFetch - Whether to scan the web or not
      * @return OfflinePlayer - can be null.
      */
@@ -51,7 +53,8 @@ public class PlayerManager {
     /**
      * Gets an offline player by their UUID
      * Scans only local players unless allowFetch is enabled, which will allow it to scan the web
-     * @param uuid - The uuid the find
+     *
+     * @param uuid       - The uuid the find
      * @param allowFetch - Whether to scan the web or not
      * @return OfflinePlayer - can be null.
      */

@@ -65,7 +65,7 @@ public class SetBal implements CommandExecutor {
         }
 
         // Ensure to player exists
-        if (to == null && toOff == null){
+        if (to == null && toOff == null) {
             this.app.getConsoleManager().usage(from, "Invalid player name.", usage);
         } else {
 

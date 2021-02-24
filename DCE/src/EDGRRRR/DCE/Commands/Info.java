@@ -87,10 +87,11 @@ public class Info implements CommandExecutor {
             this.app.getConsoleManager().info(from, "ID: " + material.getMaterialID());
             this.app.getConsoleManager().info(from, "Material Type: " + material.getType());
             this.app.getConsoleManager().info(from, "Buy Price(x" + userAmount + "): " + userPrice);
-            this.app.getConsoleManager().info(from, "Sell Price(x" + marketAmount+ "): " + marketPrice);
+            this.app.getConsoleManager().info(from, "Sell Price(x" + marketAmount + "): " + marketPrice);
             this.app.getConsoleManager().info(from, "Current Quantity: " + material.getQuantity());
             this.app.getConsoleManager().info(from, "Is Banned: " + !(material.getAllowed()));
-            if (material.getEntityName() != null) this.app.getConsoleManager().info(from, "Entity Name: " + material.getEntityName());
+            if (material.getEntityName() != null)
+                this.app.getConsoleManager().info(from, "Entity Name: " + material.getEntityName());
             MaterialPotionData pData = material.getPotionData();
             if (pData != null) {
                 this.app.getConsoleManager().info(from, "Potion type: " + pData.getType());

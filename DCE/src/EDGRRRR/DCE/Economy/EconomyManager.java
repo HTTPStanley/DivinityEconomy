@@ -16,16 +16,14 @@ public class EconomyManager {
 
     // Stores the main app
     private final DCEPlugin app;
-
-    // Stores the Vault economy api
-    private Economy economy;
-
     // Settings
     public double minSendAmount;
     public int roundingDigits;
     public int baseQuantity;
     public double tax;
     public double minAccountBalance;
+    // Stores the Vault economy api
+    private Economy economy;
 
     public EconomyManager(DCEPlugin app) {
         this.app = app;
@@ -67,6 +65,7 @@ public class EconomyManager {
 
     /**
      * Returns the vault economy api
+     *
      * @return Economy
      */
     public Economy getEconomy() {
@@ -75,6 +74,7 @@ public class EconomyManager {
 
     /**
      * Gets the players balance
+     *
      * @param player - The player
      * @return double
      */
@@ -84,6 +84,7 @@ public class EconomyManager {
 
     /**
      * Gets the players balance
+     *
      * @return double
      */
     public double getBalance(OfflinePlayer oPlayer) {
@@ -92,18 +93,19 @@ public class EconomyManager {
 
     /**
      * Rounding
+     *
      * @param amount - The amount
      */
-     public double round(double amount) {
+    public double round(double amount) {
         return Math.round(amount, this.roundingDigits);
     }
 
 
-
     /**
      * Adds <amount> to <player>
+     *
      * @param oPlayer - The offline player
-     * @param amount - The amount
+     * @param amount  - The amount
      */
     public EconomyResponse addCash(OfflinePlayer oPlayer, double amount) {
         this.app.getConsoleManager().debug("ADD REQUEST '" + oPlayer.getName() + "' £" + amount);
@@ -115,6 +117,7 @@ public class EconomyManager {
 
     /**
      * Adds <amount> to <player>
+     *
      * @param player - The player
      * @param amount - The amount
      */
@@ -124,8 +127,9 @@ public class EconomyManager {
 
     /**
      * Removes <amount> from <player>
+     *
      * @param oPlayer - The offline player
-     * @param amount - The amount
+     * @param amount  - The amount
      */
     public EconomyResponse remCash(OfflinePlayer oPlayer, double amount) {
         this.app.getConsoleManager().debug("SET REQUEST '" + oPlayer.getName() + "' £" + amount);
@@ -137,6 +141,7 @@ public class EconomyManager {
 
     /**
      * Removes <amount> from <player>
+     *
      * @param player - The player
      * @param amount - The amount
      */
@@ -146,8 +151,9 @@ public class EconomyManager {
 
     /**
      * Sets the balance of a player to the amount provided
+     *
      * @param oPlayer - The offline player
-     * @param amount - The amount
+     * @param amount  - The amount
      * @return EconomyResponse - The result of the function
      */
     public EconomyResponse setCash(OfflinePlayer oPlayer, double amount) {
@@ -170,6 +176,7 @@ public class EconomyManager {
 
     /**
      * Sets the balance of a player to the amount provided
+     *
      * @param player - The player
      * @param amount - The amount
      * @return EconomyResponse - The result of the command
@@ -184,8 +191,9 @@ public class EconomyManager {
      * Can fail if criteria aren't met:
      * -minimumSendAmount <
      * -<from> has <amount> to send
-     * @param from - The source player of cash
-     * @param to - The result player of cash
+     *
+     * @param from   - The source player of cash
+     * @param to     - The result player of cash
      * @param amount - The amount of cash
      * @return EconomyResponse - The result of the function
      */
@@ -214,8 +222,9 @@ public class EconomyManager {
      * Can fail if criteria aren't met:
      * -minimumSendAmount <
      * -<from> has <amount> to send
-     * @param from - The source player of cash
-     * @param to - The result player of cash
+     *
+     * @param from   - The source player of cash
+     * @param to     - The result player of cash
      * @param amount - The amount of cash
      * @return EconomyResponse - The result of the function
      */

@@ -18,6 +18,7 @@ public class PlayerInventoryManager {
     /**
      * Removes the specified number of materials from the players inventory
      * The players inventory is parsed via itemStacks
+     *
      * @param amount - The amount to remove
      */
     public void removeMaterialsFromPlayer(Player player, Material material, int amount) {
@@ -27,6 +28,7 @@ public class PlayerInventoryManager {
 
     /**
      * Loops through the items and removes them from the players inventory
+     *
      * @param itemStacks - The items to remove
      */
     public void removeMaterialsFromPlayer(ItemStack[] itemStacks) {
@@ -38,9 +40,10 @@ public class PlayerInventoryManager {
     /**
      * gets the specified materials of the specified amount from the specified player
      * Note if the player does not have enough, it will return all of their materials of this type
-     * @param player - The player
+     *
+     * @param player   - The player
      * @param material - The material
-     * @param amount - The amount
+     * @param amount   - The amount
      * @return ItemStack[]
      */
     public ItemStack[] getMaterialSlotsToCount(Player player, Material material, int amount) {
@@ -74,8 +77,9 @@ public class PlayerInventoryManager {
 
     /**
      * Returns the amount of slots an amount of materials will take up
+     *
      * @param material - The material to calculate for
-     * @param amount - The amount of that material
+     * @param amount   - The amount of that material
      * @return int
      */
     public int getStackCount(Material material, int amount) {
@@ -85,14 +89,15 @@ public class PlayerInventoryManager {
 
     /**
      * Creates an array of ItemStacks of material with the correct amount in each stack.
+     *
      * @param material - The material to create for
-     * @param amount - The amount to get
+     * @param amount   - The amount to get
      * @return ItemStack[]
      */
     public ItemStack[] createItemStacks(Material material, int amount) {
         ItemStack[] itemStacks = new ItemStack[this.getStackCount(material, amount)];
         int idx = 0;
-        for (int i=0; i < amount;) {
+        for (int i = 0; i < amount; ) {
             ItemStack newStack = new ItemStack(material);
             int amountLeft = amount - i;
             if (amountLeft > material.getMaxStackSize()) {
@@ -112,9 +117,10 @@ public class PlayerInventoryManager {
     /**
      * Adds the specified amount of the specified material to the specified player
      * Note that this does not calculate if all of the materials will fit in the players inventory
-     * @param player - The player to add the materials to
+     *
+     * @param player   - The player to add the materials to
      * @param material - The material to add
-     * @param amount - The amount to add
+     * @param amount   - The amount to add
      * @return
      */
     public ItemStack[] addItemsToPlayer(Player player, Material material, int amount) {
@@ -126,7 +132,8 @@ public class PlayerInventoryManager {
     /**
      * Adds the itemstacks in itemStacks to player
      * Note that this does not calculate if all of the materials will fit in the players inventory
-     * @param player - The player to add the materials to
+     *
+     * @param player     - The player to add the materials to
      * @param itemStacks - The itemStacks to add
      */
     public void addItemsToPlayer(Player player, ItemStack[] itemStacks) {
@@ -137,6 +144,7 @@ public class PlayerInventoryManager {
 
     /**
      * Returns the number of empty slots in a players inventory.
+     *
      * @param player - The player to check
      * @return int - The number of empty slots
      */
@@ -155,7 +163,8 @@ public class PlayerInventoryManager {
 
     /**
      * Returns the ItemStacks of a specific material in a player
-     * @param player - The player to check
+     *
+     * @param player   - The player to check
      * @param material - The material to check
      * @return ItemStack[] - An array of the ItemStack's in the player of material
      */
@@ -173,7 +182,8 @@ public class PlayerInventoryManager {
 
     /**
      * Returns the total count of a material in a player
-     * @param player - The player to check
+     *
+     * @param player   - The player to check
      * @param material - The material to check
      * @return int - Total count of materials
      */
@@ -183,6 +193,7 @@ public class PlayerInventoryManager {
 
     /**
      * Calculates the total count of all materials in the ItemStacks
+     *
      * @param iStacks - The array of item stacks
      * @return int - Total count of materials
      */
@@ -197,7 +208,8 @@ public class PlayerInventoryManager {
 
     /**
      * Calculates the total available space for a material in the players inventory
-     * @param player - The player to check
+     *
+     * @param player   - The player to check
      * @param material - The material to check
      * @return int - The total space that can be further occupied by a material
      */

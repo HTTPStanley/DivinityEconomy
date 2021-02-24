@@ -25,7 +25,7 @@ public class ConsoleManager {
     // Colours
     private final HashMap<String, ChatColor> colourMap;
 
-    public ConsoleManager(DCEPlugin app){
+    public ConsoleManager(DCEPlugin app) {
         this.app = app;
 
         // Colours :D
@@ -66,6 +66,7 @@ public class ConsoleManager {
 
     /**
      * Resolves string colours to the corresponding ChatColor object
+     *
      * @param optionName - The config option name
      * @return ChatColour - The colour
      */
@@ -81,8 +82,10 @@ public class ConsoleManager {
     }
 
     // CONSOLE COMMANDS
+
     /**
      * Sends a message to the console
+     *
      * @param message - The message to send
      */
     private void send(String message) {
@@ -91,6 +94,7 @@ public class ConsoleManager {
 
     /**
      * Sends a (default green) message to the console
+     *
      * @param message - The message to send
      */
     public void info(String message) {
@@ -99,6 +103,7 @@ public class ConsoleManager {
 
     /**
      * Sends a (default green) message to the console
+     *
      * @param message - The message to send
      */
     public void debug(String message) {
@@ -107,6 +112,7 @@ public class ConsoleManager {
 
     /**
      * Sends a (default yellow) message to the console
+     *
      * @param message - The message to send
      */
     public void warn(String message) {
@@ -115,6 +121,7 @@ public class ConsoleManager {
 
     /**
      * Sends a (default red) message to the console
+     *
      * @param message - The message to send
      */
     public void severe(String message) {
@@ -122,9 +129,11 @@ public class ConsoleManager {
     }
 
     // PLAYER
+
     /**
      * Sends a message to a player
-     * @param player - The player to send to
+     *
+     * @param player  - The player to send to
      * @param message - The message to send
      */
     private void send(Player player, String message) {
@@ -133,38 +142,43 @@ public class ConsoleManager {
 
     /**
      * Sends a usage command to a player
-     * @param player - The player to send to
+     *
+     * @param player       - The player to send to
      * @param errorMessage - The message to send
      * @param commandUsage - The usage of the command
      */
-    public void usage(Player player, String errorMessage, String commandUsage){
+    public void usage(Player player, String errorMessage, String commandUsage) {
         this.warn(player, "Incorrect command usage: " + errorMessage);
-        this.warn(player, "Command Usage: "+ commandUsage);
+        this.warn(player, "Command Usage: " + commandUsage);
     }
 
     /**
      * Sends an info message to a player
-     * @param player - The player to send to
+     *
+     * @param player  - The player to send to
      * @param message - The message to send
      */
-    public void info(Player player, String message){
+    public void info(Player player, String message) {
         this.send(player, infoColour + message);
     }
 
     /**
      * Sends a warning message to a player
-     * @param player - The player to send to
+     *
+     * @param player  - The player to send to
      * @param message - The message to send
      */
-    public void warn(Player player, String message){
+    public void warn(Player player, String message) {
         this.send(player, warnColour + message);
     }
+
     /**
      * Sends a severe message to a player
-     * @param player - The player to send to
+     *
+     * @param player  - The player to send to
      * @param message - The message to send
      */
-    public void severe(Player player, String message){
+    public void severe(Player player, String message) {
         this.send(player, severeColour + message);
     }
 

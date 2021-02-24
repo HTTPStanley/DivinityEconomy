@@ -16,21 +16,20 @@ public class MaterialManager {
     // Link back to Main
     private final DCEPlugin app;
     private final BukkitRunnable saveTimer;
-
-    // Stores items
-    private FileConfiguration config;
+    // Stores the default items.json file location
+    private final String materialsFile = "materials.yml";
+    private final String aliasesFile = "aliases.yml";
     public HashMap<String, String> aliases;
     public HashMap<String, MaterialData> materials;
     public int totalMaterials;
     public int baseTotalMaterials;
-
-    // Stores the default items.json file location
-    private final String materialsFile = "materials.yml";
-    private final String aliasesFile = "aliases.yml";
+    // Stores items
+    private FileConfiguration config;
 
     /**
      * Constructor You will likely need to call loadMaterials and loadAliases to
      * populate the aliases and materials with data from the program
+     *
      * @param app - The plugin
      */
     public MaterialManager(DCEPlugin app) {
@@ -48,6 +47,7 @@ public class MaterialManager {
     /**
      * Returns a material from the materialData HashMap Will be none if no alias or
      * direct name is found.
+     *
      * @param alias - The alias or name of the material to get.
      * @return MaterialData - Returns the material data corresponding to the string supplied.
      */
@@ -63,6 +63,7 @@ public class MaterialManager {
 
     /**
      * Returns the scaling of price for an item, based on its durability and damage.
+     *
      * @param itemStack - The itemstack containing the material with the specified damage.
      * @return double - The level of price scaling to apply. For example .9 = 90% of full price. Maximum value is 1 for undamaged.
      */
@@ -72,7 +73,7 @@ public class MaterialManager {
 
         // Get meta and cast to damageable, for getting the items durability
         // Get durability and max durability
-        Damageable dmg = (Damageable)itemStack.getItemMeta();
+        Damageable dmg = (Damageable) itemStack.getItemMeta();
         double durability = dmg.getDamage();
         double maxDurability = itemStack.getType().getMaxDurability();
 
@@ -89,6 +90,7 @@ public class MaterialManager {
 
     /**
      * Returns the combined sell value of all the items given
+     *
      * @param itemStacks - The items to calculate the price for
      * @return MaterialValue - The value of the items, or not if an error occurred.
      */
@@ -110,6 +112,7 @@ public class MaterialManager {
 
     /**
      * Returns the sell value for a single stack of items.
+     *
      * @param itemStack - The itemStack to get the value of
      * @return MaterialValue - The price of the itemstack if no errors occurred.
      */
@@ -137,6 +140,7 @@ public class MaterialManager {
 
     /**
      * Returns the price of buying the given items.
+     *
      * @param itemStacks - The items to get the price for
      * @return MaterialValue
      */
@@ -156,6 +160,7 @@ public class MaterialManager {
 
     /**
      * Returns the value of an itemstack
+     *
      * @param itemStack - The item stack to get the value of
      * @return MaterialValue
      */
@@ -174,6 +179,7 @@ public class MaterialManager {
 
     /**
      * Returns the market price based on stock
+     *
      * @param stock - The stock of the material
      * @return double
      */
@@ -184,6 +190,7 @@ public class MaterialManager {
 
     /**
      * Returns the user price based on stock
+     *
      * @param stock - The stock of the material
      * @return double
      */
@@ -193,9 +200,10 @@ public class MaterialManager {
 
     /**
      * Calculates the price of a material
-     * @param amount - The amount to calculate the price for
-     * @param stock - The stock of the material
-     * @param scale - The scaling to apply, such as tax
+     *
+     * @param amount   - The amount to calculate the price for
+     * @param stock    - The stock of the material
+     * @param scale    - The scaling to apply, such as tax
      * @param purchase - Whether this is a purchase from or sale to the market
      * @return double
      */
@@ -214,8 +222,7 @@ public class MaterialManager {
             if (purchase) {
                 stock -= 1;
                 materials -= 1;
-            }
-            else {
+            } else {
                 stock += 1;
                 materials += 1;
             }
@@ -228,8 +235,8 @@ public class MaterialManager {
      * Returns the price for an item based on it's stock and the scale to apply
      * Scale of 1.2 = 20% additive Scale of .8 = 20% reduction
      *
-     * @param stock - The stock of the material
-     * @param scale - The scaling to apply to the price
+     * @param stock     - The stock of the material
+     * @param scale     - The scaling to apply to the price
      * @param inflation - The level of inflation
      * @return double - The price of the material
      */
@@ -249,6 +256,7 @@ public class MaterialManager {
 
     /**
      * Gets the market-wide level of inflation
+     *
      * @return double - The level of inflation
      */
     public double getInflation() {
@@ -258,6 +266,7 @@ public class MaterialManager {
     /**
      * Adds or removes the amount from the stock
      * Used to track inflation
+     *
      * @param amount - The amount to add or remove. Negative to remove.
      */
     public void editItems(int amount) {
@@ -307,7 +316,8 @@ public class MaterialManager {
 
     /**
      * Saves a value to a key
-     * @param key - The map key
+     *
+     * @param key   - The map key
      * @param value - The map value
      */
     private void setData(String key, Object value) {
@@ -316,6 +326,7 @@ public class MaterialManager {
 
     /**
      * Saves the material data to the config
+     *
      * @param material - The material to save
      */
     public void saveMaterial(MaterialData material) {

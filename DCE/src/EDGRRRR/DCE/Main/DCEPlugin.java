@@ -10,6 +10,7 @@ import EDGRRRR.DCE.PlayerManager.PlayerManager;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+
 /**
  * The Main Class of the plugin
  * Hooks everything together
@@ -34,61 +35,88 @@ public class DCEPlugin extends JavaPlugin {
 
     // Handles on-join mail events
     private MailEvent mailEvent;
-    public MailEvent getMailEvent() {return this.mailEvent;}
+    // A simple ping command
+    private CommandExecutor pingCommand;
 
     // Fetches and prints user UUIDS for debugging
     // private UUIDFetchEvent uuidFetchEvent;
     // public UUIDFetchEvent getUuidFetchEvent() {return this.uuidFetchEvent;}
 
     // Commands
-
-    // A simple ping command
-    private CommandExecutor pingCommand;
-    public CommandExecutor getCommandPing() { return this.pingCommand; }
-
     // A command for getting the balance of a user
     private CommandExecutor balanceCommand;
-    public CommandExecutor getCommandBalance() { return this.balanceCommand; }
-
     // An admin command for adding and removing cash from accounts
     private CommandExecutor editbalCommand;
-    public CommandExecutor getCommandEditBal() { return this.editbalCommand; }
-
     // A command for sending cash between users
     private CommandExecutor sendcashCommand;
-    public CommandExecutor getCommandSendCash() { return this.sendcashCommand; }
-
     // A command for setting the balance of an account
     private CommandExecutor setbalCommand;
-    public CommandExecutor getCommandSetBal() { return this.setbalCommand; }
-
     // A command for clearing the balance of a user
     private CommandExecutor clearbalCommand;
-    public CommandExecutor getCommandClearBal() { return this.clearbalCommand; }
-
     // A command for buying items from the market
     private CommandExecutor buyItemCommand;
-    public CommandExecutor getCommandBuyItem() { return this.buyItemCommand; }
-
     // A command for selling items from the market
     private CommandExecutor sellItemCommand;
-    public CommandExecutor getCommandSellItem() { return this.sellItemCommand; }
-
     // A command for valuing items from the market
     private CommandExecutor valueCommand;
-    public CommandExecutor getCommandValue() { return this.valueCommand; }
-
     // A command for getting item information from the market
     private CommandExecutor infoCommand;
-    public CommandExecutor getCommandInfo() { return this.infoCommand; }
-
     // A command for selling items in hand
     private CommandExecutor handSellCommand;
-    public CommandExecutor getCommandHandSell() { return this.handSellCommand; }
-
     // A command for buying items in hand
     private CommandExecutor handBuyCommand;
-    public CommandExecutor getCommandHandBuy() { return this.handBuyCommand; }
+
+    public MailEvent getMailEvent() {
+        return this.mailEvent;
+    }
+
+    public CommandExecutor getCommandPing() {
+        return this.pingCommand;
+    }
+
+    public CommandExecutor getCommandBalance() {
+        return this.balanceCommand;
+    }
+
+    public CommandExecutor getCommandEditBal() {
+        return this.editbalCommand;
+    }
+
+    public CommandExecutor getCommandSendCash() {
+        return this.sendcashCommand;
+    }
+
+    public CommandExecutor getCommandSetBal() {
+        return this.setbalCommand;
+    }
+
+    public CommandExecutor getCommandClearBal() {
+        return this.clearbalCommand;
+    }
+
+    public CommandExecutor getCommandBuyItem() {
+        return this.buyItemCommand;
+    }
+
+    public CommandExecutor getCommandSellItem() {
+        return this.sellItemCommand;
+    }
+
+    public CommandExecutor getCommandValue() {
+        return this.valueCommand;
+    }
+
+    public CommandExecutor getCommandInfo() {
+        return this.infoCommand;
+    }
+
+    public CommandExecutor getCommandHandSell() {
+        return this.handSellCommand;
+    }
+
+    public CommandExecutor getCommandHandBuy() {
+        return this.handBuyCommand;
+    }
 
     /**
      * Called when the plugin is enabled
@@ -101,7 +129,7 @@ public class DCEPlugin extends JavaPlugin {
         this.configManager = new ConfigManager(this);
         //Setup Managers
         this.consoleManager = new ConsoleManager(this);
-    	this.economyManager = new EconomyManager(this);
+        this.economyManager = new EconomyManager(this);
         this.economyManager.setupEconomy();
         this.materialManager = new MaterialManager(this);
         this.materialManager.loadAliases();
@@ -122,7 +150,7 @@ public class DCEPlugin extends JavaPlugin {
             PluginManager pm = this.getServer().getPluginManager();
             // pm.registerEvents(this.getUuidFetchEvent(), this);
             pm.registerEvents(this.getMailEvent(), this);
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             this.consoleManager.severe("An error occurred on event creation: " + e);
             this.getServer().getPluginManager().disablePlugin(this);
@@ -144,7 +172,7 @@ public class DCEPlugin extends JavaPlugin {
         this.handSellCommand = new HandSell(this);
         this.handBuyCommand = new HandBuy(this);
 
-    	try {
+        try {
             // Register commands
             this.getCommand("ping").setExecutor(this.pingCommand);
             this.getCommand("balance").setExecutor(this.balanceCommand);
@@ -158,12 +186,12 @@ public class DCEPlugin extends JavaPlugin {
             this.getCommand("information").setExecutor(this.infoCommand);
             this.getCommand("handSell").setExecutor(this.handSellCommand);
             this.getCommand("handBuy").setExecutor(this.handBuyCommand);
-            } catch (Exception e){
-                e.printStackTrace();
-                this.consoleManager.severe("An error occurred on registry: " + e);
-                this.getServer().getPluginManager().disablePlugin(this);
-                return;
-            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            this.consoleManager.severe("An error occurred on registry: " + e);
+            this.getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
 
         // Done :)
         this.describe();
@@ -194,6 +222,7 @@ public class DCEPlugin extends JavaPlugin {
 
     /**
      * Returns the economy manager
+     *
      * @return EconomyManager
      */
     public EconomyManager getEconomyManager() {
@@ -202,6 +231,7 @@ public class DCEPlugin extends JavaPlugin {
 
     /**
      * Returns the console
+     *
      * @return ConsoleManager
      */
     public ConsoleManager getConsoleManager() {
@@ -210,6 +240,7 @@ public class DCEPlugin extends JavaPlugin {
 
     /**
      * Returns the config manager
+     *
      * @return ConfigManager
      */
     public ConfigManager getConfigManager() {
@@ -218,6 +249,7 @@ public class DCEPlugin extends JavaPlugin {
 
     /**
      * Returns the Material Manager
+     *
      * @return MaterialManager
      */
     public MaterialManager getMaterialManager() {
@@ -226,6 +258,7 @@ public class DCEPlugin extends JavaPlugin {
 
     /**
      * Returns the mail manager
+     *
      * @return MailManager
      */
     public MailManager getMailManager() {
@@ -234,6 +267,7 @@ public class DCEPlugin extends JavaPlugin {
 
     /**
      * Returns the player manager
+     *
      * @return PlayerManager
      */
     public PlayerManager getPlayerManager() {

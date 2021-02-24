@@ -4,7 +4,8 @@ public class Math {
 
     /**
      * A rounding function for rounding double
-     * @param amount - The amount to round
+     *
+     * @param amount         - The amount to round
      * @param roundingDigits - The number of digits to round to
      * @return double - The rounded number
      */
@@ -22,6 +23,7 @@ public class Math {
     /**
      * A function for extracting a double from a String
      * will return null if an error occurs (such as the string not containing a double)
+     *
      * @param arg - A string to convert to a double
      * @return double - A potentially converted double
      */
@@ -47,7 +49,8 @@ public class Math {
 
     /**
      * Gets the level of inflation based on the parameters supplied
-     * @param baseQuantity - The base quantity of materials in the market
+     *
+     * @param baseQuantity   - The base quantity of materials in the market
      * @param actualQuantity - The actual current quantity of materials in the market
      * @return double - The level of inflation
      */

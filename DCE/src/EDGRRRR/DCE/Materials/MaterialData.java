@@ -37,7 +37,8 @@ public class MaterialData {
 
     /**
      * Constructor
-     * @param manager - The material manager
+     *
+     * @param manager    - The material manager
      * @param configData - The config section containing the data for this material
      */
     public MaterialData(MaterialManager manager, ConfigurationSection configData, ConfigurationSection defaultConfigData) {
@@ -54,6 +55,7 @@ public class MaterialData {
 
     /**
      * Returns the config section
+     *
      * @return ConfigurationSection - Returns the config data section for this material
      */
     public ConfigurationSection getConfigData() {
@@ -63,6 +65,7 @@ public class MaterialData {
     /**
      * Returns the clean name for the material.
      * Ideal for messaging or returning to the user.
+     *
      * @return String - Returns the clean name for this item
      */
     public String getCleanName() {
@@ -71,6 +74,7 @@ public class MaterialData {
 
     /**
      * Returns the quantity of this material in the market
+     *
      * @return int - The quantity of this item in stock
      */
     public int getQuantity() {
@@ -78,7 +82,20 @@ public class MaterialData {
     }
 
     /**
+     * Sets the quantity to <amount>
+     *
+     * @param amount - The amount to set the internal stock of this item to
+     */
+    public void setQuantity(int amount) {
+        int oldQuantity = this.getQuantity();
+        this.setData(this.strQuantity, amount);
+        int change = oldQuantity - amount;
+        this.manager.editItems(change);
+    }
+
+    /**
      * Returns the default quantity of this material from the config
+     *
      * @return int - The default quantity of this item in stock
      */
     public int getDefaultQuantity() {
@@ -88,6 +105,7 @@ public class MaterialData {
     /**
      * Returns the market price of this item
      * Market price = price for server (user sell price)
+     *
      * @return double - The market (sell) price of this item
      */
     public double getMarketPrice() {
@@ -97,6 +115,7 @@ public class MaterialData {
     /**
      * Returns the user price of this item
      * User price = price for user (user buy price)
+     *
      * @return double - The user (buy) price of this item
      */
     public double getUserPrice() {
@@ -107,6 +126,7 @@ public class MaterialData {
      * Returns the banned state of the material
      * True means the item is allowed
      * False means the item is banned
+     *
      * @return boolean - Whether the item is allowed to be bought/sold or not
      */
     public boolean getAllowed() {
@@ -116,6 +136,7 @@ public class MaterialData {
     /**
      * Returns the material ID
      * Examples: "AIR", "OAK_WOOD_PLANKS"
+     *
      * @return String - The internal material name
      */
     public String getMaterialID() {
@@ -125,6 +146,7 @@ public class MaterialData {
     /**
      * Returns the potiondata for the material
      * Is null if the material is not a potion
+     *
      * @return MaterialPotionData - The potion data for this material, if not potion may be null.
      */
     public MaterialPotionData getPotionData() {
@@ -133,6 +155,7 @@ public class MaterialData {
 
     /**
      * Returns the internal Material from the materialID
+     *
      * @return Material - Returns the material object for this material.
      */
     public Material getMaterial() {
@@ -141,6 +164,7 @@ public class MaterialData {
 
     /**
      * Returns the internal Entity name
+     *
      * @return String - The entity name of this material if an entity.
      */
     public String getEntityName() {
@@ -150,9 +174,10 @@ public class MaterialData {
     /**
      * Returns the type of material
      * Examples:
-     *  MATERIAL = block/item
-     *  POTION = a potion that requires potionData
-     *  ENTITY = an entity based item
+     * MATERIAL = block/item
+     * POTION = a potion that requires potionData
+     * ENTITY = an entity based item
+     *
      * @return String - The type of object this is.
      */
     public String getType() {
@@ -174,6 +199,7 @@ public class MaterialData {
 
     /**
      * Returns an itemStack containing <amount> of this material
+     *
      * @param amount - The amount to set the stack to
      * @return ItemStack - The item stack
      */
@@ -190,18 +216,8 @@ public class MaterialData {
     }
 
     /**
-     * Sets the quantity to <amount>
-     * @param amount - The amount to set the internal stock of this item to
-     */
-    public void setQuantity(int amount) {
-        int oldQuantity = this.getQuantity();
-        this.setData(this.strQuantity, amount);
-        int change = oldQuantity - amount;
-        this.manager.editItems(change);
-    }
-
-    /**
      * Adds the quantity <amount>
+     *
      * @param amount - The amount of stock to add to the pile
      */
     public void addQuantity(int amount) {
@@ -211,6 +227,7 @@ public class MaterialData {
 
     /**
      * Removes the quantity <amount>
+     *
      * @param amount - The amount of stock to remove from the pile
      */
     public void remQuantity(int amount) {
@@ -220,7 +237,8 @@ public class MaterialData {
 
     /**
      * Sets a data key to value
-     * @param key - The key
+     *
+     * @param key   - The key
      * @param value - The value
      */
     private void setData(String key, Object value) {
