@@ -5,7 +5,6 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 
-import java.util.Calendar;
 import java.util.HashMap;
 
 public class MailManager {
@@ -14,14 +13,8 @@ public class MailManager {
     private final String mailFile = "mail.yml";
     // Where mail is stored against the player
     private HashMap<OfflinePlayer, MailList> mailMap;
-
-    // Variables for the yaml keys
-    private final String strAmount = "amount";
-    private final String strBalance = "balance";
-    private final String strDate = "date";
-    private final String strMessage = "message";
-    private final String strSource = "from";
-    private final String strRead = "read";
+    // Where the config is stored
+    private FileConfiguration configuration;
 
 
     /**
@@ -53,43 +46,20 @@ public class MailManager {
      * Mail cannot be read unless this is called!
      */
     public void loadAllMail() {
-        FileConfiguration mailFile = readMailFile();
-        // Create the mail map
+        this.configuration = this.app.getConfigManager().loadConfig(this.mailFile);
         this.mailMap = new HashMap<>();
-        // Counters for useful messaging
-        int count = 0;
-        int users = 0;
-
-        // Loop through users in mail file
-        for (String stringUUID : mailFile.getKeys(false)) {
-            // Get player the mail belongs to
-            // Create their maillist
-            // Loop through their mail in the mail file
-            OfflinePlayer player = this.app.getPlayerManager().getOfflinePlayerByUUID(stringUUID, true);
-            MailList mailList = this.addPlayer(player);
-            ConfigurationSection playerMail = mailFile.getConfigurationSection(stringUUID);
-
-            // Creates all mail and stores in the mail list
-            for (String mailID : playerMail.getKeys(false)) {
-                ConfigurationSection thisMail = playerMail.getConfigurationSection(mailID);
-                double amount = thisMail.getDouble(this.strAmount);
-                double balance = thisMail.getDouble(this.strBalance);
-                Calendar date = Calendar.getInstance();
-                date.setTimeInMillis(thisMail.getLong(this.strDate));
-                String message = thisMail.getString(this.strMessage);
-                boolean read = thisMail.getBoolean(this.strRead);
-                OfflinePlayer moneyFrom = this.app.getPlayerManager().getOfflinePlayerByUUID(thisMail.getString(this.strSource), true);
-                Mail mail = new Mail(message, date, amount, balance, moneyFrom, read);
-                mailList.setMail(mailID, mail);
-                count += 1;
-            }
-
-            // Save mail list for player
+        int userCount = 0;
+        int mailCount = 0;
+        for (String userID : this.configuration.getKeys(false)) {
+            ConfigurationSection mailListSection = this.configuration.getConfigurationSection(userID);
+            OfflinePlayer player = this.app.getPlayerManager().getOfflinePlayerByUUID(userID, true);
+            MailList mailList = new MailList(player, mailListSection);
             this.addMailList(player, mailList);
-            users += 1;
+            userCount += 1;
+            mailCount += mailList.getMailIDs().size();
         }
-        // Done :)
-        this.app.getConsoleManager().info("Loaded " + count + " mail for " + users + " players");
+
+        this.app.getConsoleManager().info("Read " + mailCount + " mail for " + userCount + " users.");
     }
 
     /**
@@ -106,9 +76,14 @@ public class MailManager {
      * @param player - The player to store the mail for
      */
     public MailList addPlayer(OfflinePlayer player) {
-        MailList mailList = new MailList(player);
+        ConfigurationSection mailSection = this.createMailListSection(player);
+        MailList mailList = new MailList(player, mailSection);
         this.addMailList(player, mailList);
         return mailList;
+    }
+
+    public ConfigurationSection createMailListSection(OfflinePlayer player) {
+        return this.configuration.createSection(player.getUniqueId().toString());
     }
 
     /**
@@ -124,32 +99,32 @@ public class MailManager {
         return this.mailMap.get(player);
     }
 
+    private void setData(String key, Object value) {
+        this.configuration.set(key, value);
+    }
+
+    public void saveMailList(MailList mailList) {
+        mailList.saveAllMail();
+        this.setData(mailList.getPlayer().getUniqueId().toString(), mailList.getConfigurationSection());
+    }
+
+    private void saveMailFile() {
+        this.app.getConfigManager().saveFile(this.configuration, this.mailFile);
+    }
+
     /**
      * Saves all players mail lists to the mail file
      */
-    public void saveMail() {
-        FileConfiguration mailFile = this.app.getConfigManager().loadConfig(this.mailFile);
-        int count = 0;
-        int users = 0;
-        for (OfflinePlayer player : this.mailMap.keySet()) {
-            ConfigurationSection mailListSection = mailFile.createSection(player.getUniqueId().toString());
-            MailList mailList = this.mailMap.get(player);
-
-            for (String mailID : mailList.getMailIDs()) {
-                Mail mail = mailList.getMail(mailID);
-                ConfigurationSection mailSection = mailListSection.createSection(mailID);
-                mailSection.set(this.strAmount, mail.getAmount());
-                mailSection.set(this.strMessage, mail.getMessage());
-                mailSection.set(this.strSource, mail.getSource().getUniqueId().toString());
-                mailSection.set(this.strDate, mail.getDateFrom().getTimeInMillis());
-                mailSection.set(this.strBalance, mail.getNewBalance());
-                mailSection.set(this.strRead, mail.getRead());
-                count += 1;
-            }
-            users += 1;
+    public void saveAllMail() {
+        int userCount = 0;
+        int mailCount = 0;
+        for (MailList mailList : this.mailMap.values()) {
+            saveMailList(mailList);
+            userCount += 1;
+            mailCount += mailList.getMailIDs().size();
         }
 
-        this.app.getConfigManager().saveFile(mailFile, this.mailFile);
-        this.app.getConsoleManager().info("Saved " + count + " mail for " + users + " players");
+        this.saveMailFile();
+        this.app.getConsoleManager().info("Saved " + mailCount + " mail for " + userCount + " users");
     }
 }
