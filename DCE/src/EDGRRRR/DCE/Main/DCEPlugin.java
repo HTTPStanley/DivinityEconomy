@@ -179,7 +179,7 @@ public class DCEPlugin extends JavaPlugin {
             this.materialManager.saveAll();
         }
         if (!(this.mailManager == null)) {
-            this.mailManager.saveMail();
+            this.mailManager.saveAllMail();
         }
         this.consoleManager.warn("Plugin Disabled");
     }
