@@ -195,7 +195,7 @@ public class MaterialData {
      */
     public void setQuantity(int amount) {
         int oldQuantity = this.getQuantity();
-        setData(this.strQuantity, amount);
+        this.setData(this.strQuantity, amount);
         int change = oldQuantity - amount;
         this.manager.editItems(change);
     }
@@ -205,7 +205,7 @@ public class MaterialData {
      * @param amount - The amount of stock to add to the pile
      */
     public void addQuantity(int amount) {
-        setData(this.strQuantity, this.getQuantity() + amount);
+        this.setData(this.strQuantity, this.getQuantity() + amount);
         this.manager.editItems(amount);
     }
 
@@ -214,7 +214,7 @@ public class MaterialData {
      * @param amount - The amount of stock to remove from the pile
      */
     public void remQuantity(int amount) {
-        setData(this.strQuantity, this.getQuantity() - amount);
+        this.setData(this.strQuantity, this.getQuantity() - amount);
         this.manager.editItems(amount);
     }
 
