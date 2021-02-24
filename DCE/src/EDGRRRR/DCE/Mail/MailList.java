@@ -134,8 +134,8 @@ public class MailList {
         return mailID;
     }
 
-    public String addMail(int amount, double balance, String message, Calendar date, OfflinePlayer source, boolean read) {
-        Mail mail = this.createMail(amount, balance, message, date, source, read);
+    public String addMail(int amount, double balance, String message, Calendar date, String sourceUUID, boolean read) {
+        Mail mail = this.createMail(amount, balance, message, date, sourceUUID, read);
         return mail.getID();
     }
 
@@ -151,13 +151,13 @@ public class MailList {
         this.setData("temp", null);
     }
 
-    public Mail createMail(double amount, double balance, String message, Calendar date, OfflinePlayer source, boolean read) {
+    public Mail createMail(double amount, double balance, String message, Calendar date, String sourceUUID, boolean read) {
         ConfigurationSection tempSection = this.createTempMailSection();
         tempSection.set(strAmount, amount);
         tempSection.set(strBalance, balance);
         tempSection.set(strMessage, message);
         tempSection.set(strDate, date.getTimeInMillis());
-        tempSection.set(strSource, source);
+        tempSection.set(strSource, sourceUUID);
         tempSection.set(strRead, read);
         Mail mail = new Mail(this, tempSection);
         this.addMail(mail);

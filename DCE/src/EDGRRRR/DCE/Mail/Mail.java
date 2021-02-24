@@ -1,6 +1,5 @@
 package EDGRRRR.DCE.Mail;
 
-import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.time.Duration;
@@ -91,8 +90,8 @@ public class Mail {
      * Returns the source or destination of where the cash came from or went to
      * @return OfflinePlayer - The player
      */
-    public OfflinePlayer getSource() {
-        return this.configurationSection.getOfflinePlayer(this.mailList.strSource);
+    public String getSourceUUID() {
+        return (this.configurationSection.getString(this.mailList.strSource));
     }
 
     /**
