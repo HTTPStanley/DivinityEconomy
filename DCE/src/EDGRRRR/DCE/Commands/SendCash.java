@@ -1,5 +1,7 @@
 package EDGRRRR.DCE.Commands;
 
+import EDGRRRR.DCE.Mail.Mail;
+import EDGRRRR.DCE.Mail.MailList;
 import EDGRRRR.DCE.Main.DCEPlugin;
 import EDGRRRR.DCE.Math.Math;
 import net.milkbowl.vault.economy.EconomyResponse;
@@ -8,6 +10,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.util.Calendar;
 
 /**
  * Command executor for sending cashing between players
@@ -37,20 +41,20 @@ public class SendCash implements CommandExecutor {
 
         // Use case scenarios
         // command <player> <amount>
-        Player to;
-        OfflinePlayer toOff = null;
+        OfflinePlayer to;
+        boolean playerIsOffline = false;
         double amount;
-        double minSendAmount = this.app.getConfig().getDouble(app.getConfigManager().strEconMinSendAmount);
+        double minSendAmount = this.app.getEconomyManager().minSendAmount;
 
         switch (args.length) {
             case 2:
                 // Get online player
                 to = this.app.getServer().getPlayer(args[0]);
                 amount = Math.getDouble(args[1]);
-                // If they aren't online or don't exist. Do the dirty offline call.
+                // If they aren't online or don't exist.
                 if (to == null) {
-                    // Naughty naughty boy - doesn't allow fetching of non-seen players.
-                    toOff = this.app.getPlayerManager().getOfflinePlayer(args[0], false);
+                    to = this.app.getPlayerManager().getOfflinePlayer(args[0], false);
+                    playerIsOffline = true;
                 }
                 break;
 
@@ -60,51 +64,48 @@ public class SendCash implements CommandExecutor {
         }
 
         // Ensure online or offline player exists.
-        if (to == null && toOff == null) {
+        if (to == null) {
             this.app.getConsoleManager().usage(from, "Invalid player name.", usage);
+
         } else {
             // Ensure amount was parsed
             // Ensure amount is greater than min send amount.
-            if (amount < 1) {
-                this.app.getConsoleManager().usage(from, "Invalid amount.", usage);
-            } else if (amount < minSendAmount) {
+            if (amount < 1 && amount < minSendAmount) {
                 this.app.getConsoleManager().usage(from, "Invalid amount, needs to be greater than £" + minSendAmount, usage);
+
             } else {
 
                 EconomyResponse response;
-                String toName;
-                if (!(to == null)) {
-                    if (to == from) {
-                        this.app.getConsoleManager().usage(from, "You can't send money to yourself (╯°□°）╯︵ ┻━┻", usage);
-                        return true;
-                    } else {
-                        response = this.app.getEconomyManager().sendCash(from, to, amount);
-                        toName = to.getName();
-                    }
+                if (to == from) {
+                    this.app.getConsoleManager().usage(from, "You can't send money to yourself (╯°□°）╯︵ ┻━┻", usage);
+
                 } else {
-                    response = this.app.getEconomyManager().sendCash(from, toOff, amount);
-                    toName = toOff.getName();
-                }
+                    response = this.app.getEconomyManager().sendCash(from, to, amount);
+                    double amountSent = this.app.getEconomyManager().round(response.amount);
+                    double balance = this.app.getEconomyManager().round(this.app.getEconomyManager().getBalance(to));
 
-                double cost = this.app.getEconomyManager().round(response.amount);
+                    switch (response.type) {
+                        case SUCCESS:
+                            this.app.getConsoleManager().info(from, "You sent £" + amountSent + " to " + to.getName() + ". New Balance: £" + this.app.getEconomyManager().round(this.app.getEconomyManager().getBalance(from)));
+                            if (!playerIsOffline) {
+                                this.app.getConsoleManager().info((Player) to, "You received £" + amountSent + " from " + from.getName() + ". New Balance: £" + balance);
+                            } else {
+                                String message = "You received £<roundedAmount> from <sourceName> <daysAgo> days ago. New Balance: £<roundedBalance>";
+                                Calendar date = Calendar.getInstance();
+                                String sourceUUID = from.getUniqueId().toString();
+                                MailList userMail = this.app.getMailManager().getMailList(to);
+                                Mail mail = userMail.createMail(amount, balance, message, date, sourceUUID, false);
+                                this.app.getConsoleManager().debug("Created mail(" + mail.getID() + ") for " + to.getName());
+                            }
+                            this.app.getConsoleManager().info(from.getName() + " sent £" + amountSent + " to " + to.getName());
+                            break;
 
+                        case FAILURE:
+                            this.app.getConsoleManager().usage(from, response.errorMessage, usage);
 
-                switch (response.type) {
-                    case SUCCESS:
-                        this.app.getConsoleManager().info(from, "You sent £" + cost + " to " + toName + ". New Balance: £" + this.app.getEconomyManager().round(this.app.getEconomyManager().getBalance(from)));
-                        if (!(to == null)) {
-                            this.app.getConsoleManager().info(to, "You received £" + cost + " from " + from.getName() + ". New Balance: £" + this.app.getEconomyManager().round(this.app.getEconomyManager().getBalance(to)));
-                        } else {
-                            // Perhaps send an ingame mail message to offlinePlayer ¯\_(ツ)_/¯
-                        }
-                        this.app.getConsoleManager().info(from.getName() + " sent £" + cost + " to " + toName);
-                        break;
-
-                    case FAILURE:
-                        this.app.getConsoleManager().usage(from, response.errorMessage, usage);
-
-                    default:
-                        this.app.getConsoleManager().warn("Transaction error (" + from.getName() + "-->" + toName + "): " + response.errorMessage);
+                        default:
+                            this.app.getConsoleManager().warn("Transaction error (" + from.getName() + "-->" + to.getName() + "): " + response.errorMessage);
+                    }
                 }
             }
         }
