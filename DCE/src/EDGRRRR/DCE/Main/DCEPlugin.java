@@ -16,6 +16,7 @@ import org.bukkit.plugin.java.JavaPlugin;
  * Hooks everything together
  */
 public class DCEPlugin extends JavaPlugin {
+    private static DCEPlugin app;
     // The config
     private ConfigManager configManager;
     // The economy
@@ -65,6 +66,10 @@ public class DCEPlugin extends JavaPlugin {
     private CommandExecutor handSellCommand;
     // A command for buying items in hand
     private CommandExecutor handBuyCommand;
+
+    public static DCEPlugin getApp() {
+        return app;
+    }
 
     public MailEvent getMailEvent() {
         return this.mailEvent;
@@ -125,6 +130,7 @@ public class DCEPlugin extends JavaPlugin {
      */
     @Override
     public void onEnable() {
+        app = this;
         // Config
         this.configManager = new ConfigManager(this);
         //Setup Managers
@@ -215,8 +221,7 @@ public class DCEPlugin extends JavaPlugin {
     public void describe() {
         this.consoleManager.debug("Materials: " + this.materialManager.materials.size());
         this.consoleManager.debug("Aliases: " + this.materialManager.aliases.size());
-        this.consoleManager.debug("Starting Items: " + this.materialManager.baseTotalMaterials);
-        this.consoleManager.debug("Actual Items: " + this.materialManager.totalMaterials);
+        this.consoleManager.debug("Market Size: " + this.materialManager.totalMaterials + " / " + this.materialManager.baseTotalMaterials);
         this.consoleManager.debug("Inflation: " + this.materialManager.getInflation() + "%");
     }
 
