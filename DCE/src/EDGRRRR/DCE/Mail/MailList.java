@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Set;
 
 public class MailList {
+    private MailManager manager;
     // Variables for the dictionary keys
     public final String strAmount = "amount";
     public final String strBalance = "balance";
@@ -27,7 +28,8 @@ public class MailList {
      *
      * @param player - The player this mail list belongs to
      */
-    public MailList(OfflinePlayer player, ConfigurationSection configurationSection) {
+    public MailList(MailManager manager, OfflinePlayer player, ConfigurationSection configurationSection) {
+        this.manager = manager;
         this.player = player;
         this.configurationSection = configurationSection;
         this.mail = new HashMap<>();
@@ -169,6 +171,7 @@ public class MailList {
         Mail mail = new Mail(this, tempSection);
         this.addMail(mail);
         this.setData(mail.getID(), mail.getConfigurationSection());
+        this.manager.saveMailList(this);
         this.removeTempMailSection();
         return mail;
     }
