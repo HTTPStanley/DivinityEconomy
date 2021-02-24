@@ -24,7 +24,7 @@ public class MailEvent implements Listener {
         if (mailList.hasMail()) {
             this.app.getConsoleManager().info(player, "You have " + mailList.getReadMail().size() + " read and " + mailList.getUnreadMail().size() + " unread mail");
         } else {
-            this.app.getConsoleManager().info(player, "You have no new notifications.");
+            this.app.getConsoleManager().info(player, "You have no mail.");
         }
     }
 }
