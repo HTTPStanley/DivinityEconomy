@@ -1,13 +1,19 @@
 package EDGRRRR.DCE.Mail;
 
+import EDGRRRR.DCE.Main.DCEPlugin;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.time.Duration;
 import java.util.Calendar;
+import java.util.HashMap;
 
 public class Mail {
     private final MailList mailList;
     private final ConfigurationSection configurationSection;
+
+    private final HashMap<String, String> stringReplacementMap;
+    private static final String[] strings = {"<amount>", "<balance>", "<daysAgo>", "<roundedAmount>", "<roundedBalance>", "<sourceUUID>", "<sourceName>"};
+    private final String[] resultingStrings;
 
     /**
      * Constructor
@@ -18,6 +24,38 @@ public class Mail {
     public Mail(MailList mailList, ConfigurationSection configurationSection) {
         this.mailList = mailList;
         this.configurationSection = configurationSection;
+        this.stringReplacementMap = new HashMap<>();
+        this.resultingStrings = new String[]{
+                String.valueOf(this.getAmount()),
+                String.valueOf(this.getNewBalance()),
+                String.valueOf(this.getDaysSince()),
+                String.valueOf(this.getRoundedAmount()),
+                String.valueOf(this.getRoundedNewBalance()),
+                this.getSourceUUID(),
+                this.getSourceName()
+        };
+
+        for (int i = 0; i < strings.length; i++) {
+            String string = strings[i];
+            String resultingString = this.resultingStrings[i];
+            this.stringReplacementMap.put(string, resultingString);
+        }
+    }
+
+    public String getSourceName() {
+        return DCEPlugin.getApp().getPlayerManager().getOfflinePlayerByUUID(this.getSourceUUID(), true).getName();
+    }
+
+    public double getRoundedAmount() {
+        return DCEPlugin.getApp().getEconomyManager().round(this.getAmount());
+    }
+
+    public double getRoundedNewBalance() {
+        return DCEPlugin.getApp().getEconomyManager().round(this.getNewBalance());
+    }
+
+    public double getRoundedOldBalance() {
+        return DCEPlugin.getApp().getEconomyManager().round(this.getOldBalance());
     }
 
     /**
@@ -34,8 +72,18 @@ public class Mail {
      *
      * @return String - The message of the mail
      */
-    public String getMessage() {
+    public String getRawMessage() {
         return this.configurationSection.getString(this.mailList.strMessage);
+    }
+
+    public String getMessage() {
+        String message = this.getRawMessage();
+        for (String string : this.stringReplacementMap.keySet()) {
+            if (message.contains(string)) {
+                message = message.replace(string, this.stringReplacementMap.get(string));
+            }
+        }
+        return message;
     }
 
     /**
