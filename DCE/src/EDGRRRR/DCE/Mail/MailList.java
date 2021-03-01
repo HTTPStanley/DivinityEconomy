@@ -169,6 +169,7 @@ public class MailList {
     public String addMail(Mail mail) {
         String mailID = mail.getID();
         this.mail.put(mailID, mail);
+        this.setData(mailID, mail.getConfigurationSection());
         return mailID;
     }
 
@@ -213,6 +214,7 @@ public class MailList {
      */
     public void setMail(String mailID, Mail mail) {
         this.mail.put(mailID, mail);
+        this.setData(mailID, mail.getConfigurationSection());
     }
 
     /**
@@ -222,6 +224,7 @@ public class MailList {
      */
     public void removeMail(String mailID) {
         this.mail.remove(mailID);
+        this.setData(mailID, null);
     }
 
     /**
@@ -233,7 +236,7 @@ public class MailList {
         for (String mailID : this.mail.keySet()) {
             Mail thisMail = this.mail.get(mailID);
             if (thisMail == mail) {
-                this.mail.remove(mailID);
+                this.removeMail(thisMail.getID());
                 break;
             }
         }
