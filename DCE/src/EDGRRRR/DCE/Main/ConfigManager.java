@@ -19,7 +19,6 @@ public class ConfigManager {
     public String strComPrefix = "commands";
 
     // Main settings
-    public String strMainDebugMode = strMainPrefix + ".debugMode";
     public String strMainVersion = strMainPrefix + ".version";
     public String strMainSaveTimer = strMainPrefix + ".saveTimer";
 
@@ -56,6 +55,8 @@ public class ConfigManager {
     public String strComValue = strComPrefix + ".value";
     public String strComSearch = strComPrefix + ".search";
     public String strComInfo = strComPrefix + ".info";
+    public String strComHandInfo = strComPrefix + ".handInfo";
+    public String strComHandValue = strComPrefix + ".handValue";
 
 
     public ConfigManager(DCEPlugin app) {
@@ -121,9 +122,7 @@ public class ConfigManager {
                 config.save(new File(this.app.getDataFolder(), file));
             }
         } catch (Exception e) {
-            // I don't know why this would happen but ¯\_(ツ)_/¯
-            this.app.getConsoleManager().severe("Couldn't handle " + file + " :" + e.getMessage());
-            this.app.getServer().getPluginManager().disablePlugin(this.app);
+            config = null;
         }
 
         return config;
