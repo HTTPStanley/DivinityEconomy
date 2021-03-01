@@ -34,7 +34,7 @@ public class MaterialManager {
      */
     public MaterialManager(DCEPlugin app) {
         this.app = app;
-        int timer = this.app.getConfig().getInt(this.app.getConfigManager().strMainSaveTimer);
+        int timer = Math.getTicks(this.app.getConfig().getInt(this.app.getConfigManager().strMainSaveTimer));
         this.saveTimer = new BukkitRunnable() {
             @Override
             public void run() {
