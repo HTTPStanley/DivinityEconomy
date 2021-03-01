@@ -1,42 +1,181 @@
-# Main settings
-#   debugMode: enables and disables debugging.
-#   version: the version of the config file - do not touch!
-#   saveTimer: The time in miliseconds between saving the economy data
-# 
-# Chat settings
-#   Colours can be found here: https://jd.bukkit.org/org/bukkit/ChatColor.html
-#   chatDebug: The prefix for the plugin in chat
-#   prefix: The prefix seperator for the plugin in chat
-#   prefixSep: The colour of the prefix
-#   prefixColour: The colour of the prefix seperator
+# DCE Config
+# DCE Github: https://github.com/EDGRRRRs/DCE
+# Plugin author: EDGRRRR
+# Author Github: https://github.com/EDGRRRRs
+# Other helpers:
+#   - ExRider111Ryan: https://github.com/RyanA3
+#
+# Colours can be found here: https://jd.bukkit.org/org/bukkit/ChatColor.html
+# Text types such as BOLD, UNDERLINE and so on are not supported yet.
+#
+# [Config]
+# main:
+#   version:
+#      default: '1.0.1' (String)
+#      information:
+#         -Do not change this!!!
+#
+#   saveTimer:
+#      default: '600' (int)
+#      information:
+#         -The interval between the saving of the internal material cache.
+#         -Stored in seconds.
+#
+# chat:
+#   chatDebug:
+#      default: 'False' (boolean)
+#      information:
+#         -Whether to send debug messages to chat or not.
+#
+#   prefix:
+#      default: '[DCE]' (String)
+#      information:
+#         -The prefix of ingame user messages
+#
+#   prefixSep:
+#      default: ' - ' (String)
+#      information:
+#         -The separator between the prefix and the message
+#
+#   prefixColour:
+#      default: 'AQUA' (String)
+#      information:
+#         -The colour of the prefix
+#
+#   prefixSepColour:
+#      default: 'AQUA' (String)
+#      information:
+#         -The colour of the separator
+#
 #   prefixConsole:
-#     The prefix for console messages
-#     Codes: 
-#       %V: version of the plugin
-#     infoColour: The colour of general messages
-#   warnColour: The colour of warn-level errors in console and to players
-#   severeColour: The colour of severe-level errors in console (mostly)
-#   debugColour: The colour of debug-level messages in console - only applies if debugMode is enabled or chatDebug is enabled.
-# 
-# Economy
-#   minSendAmount - The minimum amount of money a user can send to another users
-#   roundingDigits - The level of resolution to use when rounding.
-#   baseQuantity - The base quantity of items for something worth £1
-#   tax - The tax levl
-# 
-# Commands
-#   balance - returns the users balance
-#   clearBal - #ADMIN# clears a users balance
-#   editBal - #ADMIN# adds or removes cash from a users balance
-#   ping - A test command
-#   sendCash - lets users send cash to one another
-#   setBal - #ADMIN# sets a users balance
-#   buyItem - lets users purchase items from the market
+#      default: '[DCE v%V]' (String)
+#      information:
+#         -The console prefix
+#         -Custom variables:
+#           -%V | The version of the plugin
+#
+#   infoColour:
+#      default: 'GREEN' (String)
+#      information:
+#         -The colour of the information messages
+#
+#   warnColour:
+#      default: 'YELLOW' (String)
+#      information:
+#         -The colour of the warning messages
+#
+#   severeColour:
+#      default: 'RED' (String)
+#      information:
+#         -The colour of the severe messages
+#
+#   debugColour:
+#      default: 'DARK_PURPLE' (String)
+#      information:
+#         -The colour of the debug messages, if enabled.
+#
+# economy:
+#   minAccountBalance:
+#      default: '0.0' (double)
+#      information:
+#         -The minimum account balance of a user
+#
+#   minSendAmount:
+#      default: '0.01' (double)
+#      information:
+#         -The minimum amount of cash a user can send to another user
+#
+#   roundingDigits:
+#      default: '2' (int)
+#      information:
+#         -The level of rounding to apply on amounts
+#
+#   baseQuantity:
+#      default: '1000000' (int)
+#      information:
+#         -The base quantity of items in the shop
+#         -Generally you might want to leave this alone.
+#
+#   tax:
+#      default: '1.2' (double)
+#      information:
+#         -The level of tax to apply to purchases
+#         -1.2 = 20% tax. E.G: 100$ item = 120$ to buy.
+#
+# commands:
+#   balance:
+#      default: 'True' (boolean)
+#      information:
+#         -Whether the balance command should be enabled or not
+#
+#   clearBal:
+#      default: 'True' (boolean)
+#      information:
+#         -Whether the clear balance command should be enabled or not
+#
+#   editBal:
+#      default: 'True' (boolean)
+#      information:
+#         -Whether the edit balance command should be enabled or not
+#
+#   ping:
+#      default: 'True' (boolean)
+#      information:
+#         -Whether the ping command should be enabled or not
+#
+#   sendCash:
+#      default: 'True' (boolean)
+#      information:
+#         -Whether the send cash command should be enabled or not
+#
+#   setBal:
+#      default: 'True' (boolean)
+#      information:
+#         -Whether the set balance command should be enabled or not
+#
+#   buyItem:
+#      default: 'True' (boolean)
+#      information:
+#         -Whether the buy command should be enabled or not
+#
+#   sellItem:
+#      default: 'True' (boolean)
+#      information:
+#         -Whether the sell command should be enabled or not
+#
+#   value:
+#      default: 'True' (boolean)
+#      information:
+#         -Whether the value command should be enabled or not
+#
+#   info:
+#      default: 'True' (boolean)
+#      information:
+#         -Whether the info command should be enabled or not
+#
+#   handSell:
+#      default: 'True' (boolean)
+#      information:
+#         -Whether the hand sell command should be enabled or not
+#
+#   handBuy:
+#      default: 'True' (boolean)
+#      information:
+#         -Whether the hand buy command should be enabled or not
+#
+#   handInfo:
+#      default: 'True' (boolean)
+#      information:
+#         -Whether the hand info command should be enabled or not
+#
+#   handValue:
+#      default: 'True' (boolean)
+#      information:
+#         -Whether the hand value command should be enabled or not
 
 main:
-  debugMode: false
   version: "1.0.1"
-  saveTimer: 5000 
+  saveTimer: 600
 chat:
   chatDebug: false
   prefix: "[DCE]"
@@ -67,3 +206,5 @@ commands:
   info: true
   handSell: true
   handBuy: true
+  handInfo: true
+  handValue: true
