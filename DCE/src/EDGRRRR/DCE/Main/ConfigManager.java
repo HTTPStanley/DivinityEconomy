@@ -57,6 +57,8 @@ public class ConfigManager {
     public String strComInfo = strComPrefix + ".info";
     public String strComHandInfo = strComPrefix + ".handInfo";
     public String strComHandValue = strComPrefix + ".handValue";
+    public String strComReadMail = strComPrefix + ".readMail";
+    public String strComClearMail = strComPrefix + ".clearMail";
 
 
     public ConfigManager(DCEPlugin app) {

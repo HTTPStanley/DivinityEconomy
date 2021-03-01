@@ -41,6 +41,35 @@ public class MailList {
         }
     }
 
+    public HashMap<Integer, Mail[]> getPages(int pageSize) {
+        HashMap<Integer, Mail[]> pages = new HashMap<>();
+        Object[] allMail = this.getMailIDs().toArray();
+        int mailCount = allMail.length;
+
+        int pageNumber = 0;
+        int pageIdx = 0;
+        Mail[] page = new Mail[pageSize];
+        for (int mailNumber=0; mailNumber < mailCount; mailNumber++) {
+            if (pageIdx == pageSize) {
+                pages.put(pageNumber, page);
+                pageNumber += 1;
+                page = new Mail[pageSize];
+            }
+            page[pageIdx] = this.getMail((String) allMail[(pageNumber * pageSize) + pageIdx]);
+            pageIdx += 1;
+        }
+
+        if (!pages.containsValue(page)) {
+            pages.put(pageNumber, page);
+        }
+
+        return pages;
+    }
+
+    public Mail[] getPage(int pageSize, int pageNumber) {
+        return this.getPages(pageSize).get(pageNumber);
+    }
+
     /**
      * Returns all mail IDs for which the mail has been read.
      *

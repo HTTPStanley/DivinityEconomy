@@ -11,6 +11,22 @@ load: STARTUP
 
 
 commands:
+  # Mail commands
+
+  readMail:
+    description: Reads the users mail
+    aliases: []
+    permission: dce.mail.readMail
+    permission-message: You do not have the permission to use this command
+    usage: ""
+
+  clearMail:
+    description: Clears the users mail list
+    aliases: []
+    permission: dce.mail.clearMail
+    permission-message: You do not have the permission to use this command
+    usage: ""
+
   # Misc commands
   ping:
     description: Use it to find out.
@@ -150,6 +166,22 @@ commands:
 
 
 permissions:
+  # Mail
+  dce.mail:
+    description: Allows the user to use commands relating to their mail
+    default: true
+    children:
+      dce.mail.readMail: true
+      dce.mail.clearMail: true
+
+  dce.mail.readMail:
+    description: Allows the user to read their mail
+    default: true
+
+  dce.mail.clearMail:
+    description: Allows the user to clear their mail
+    default: true
+
   # Misc
   dce.misc:
     description: Allows the user to use miscellaneous commands.

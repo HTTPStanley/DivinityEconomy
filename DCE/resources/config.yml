@@ -208,3 +208,5 @@ commands:
   handBuy: true
   handInfo: true
   handValue: true
+  readMail: true
+  clearMail: true

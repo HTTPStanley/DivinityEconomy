@@ -3,6 +3,8 @@ package EDGRRRR.DCE.Main;
 import EDGRRRR.DCE.Commands.Admin.ClearBal;
 import EDGRRRR.DCE.Commands.Admin.EditBal;
 import EDGRRRR.DCE.Commands.Admin.SetBal;
+import EDGRRRR.DCE.Commands.Mail.clearMail;
+import EDGRRRR.DCE.Commands.Mail.readMail;
 import EDGRRRR.DCE.Commands.Money.Balance;
 import EDGRRRR.DCE.Commands.Money.SendCash;
 import EDGRRRR.DCE.Commands.Market.*;
@@ -76,6 +78,10 @@ public class DCEPlugin extends JavaPlugin {
     private CommandExecutor handValueCommand;
     // A command for getting the information of the item you're holding
     private CommandExecutor handInfoCommand;
+    // A command for getting the mail list of a player
+    private CommandExecutor readMailCommand;
+    // A command for clearing the mail list of a player
+    private CommandExecutor clearMailCommand;
 
     public static DCEPlugin getApp() {
         return app;
@@ -137,6 +143,10 @@ public class DCEPlugin extends JavaPlugin {
 
     public CommandExecutor getCommandHandInfo() { return this.handInfoCommand; }
 
+    public CommandExecutor getReadMailCommand() { return this.readMailCommand; }
+
+    public CommandExecutor getClearMailCommand() { return this.clearMailCommand; }
+
     /**
      * Called when the plugin is enabled
      * Setup console
@@ -193,6 +203,8 @@ public class DCEPlugin extends JavaPlugin {
         this.handBuyCommand = new HandBuy(this);
         this.handValueCommand = new HandValue(this);
         this.handInfoCommand = new HandInfo(this);
+        this.readMailCommand = new readMail(this);
+        this.clearMailCommand = new clearMail(this);
 
         try {
             // Register commands
@@ -210,6 +222,8 @@ public class DCEPlugin extends JavaPlugin {
             this.getCommand("handBuy").setExecutor(this.getCommandHandBuy());
             this.getCommand("handValue").setExecutor(this.getCommandHandValue());
             this.getCommand("handInformation").setExecutor(this.getCommandHandInfo());
+            this.getCommand("readMail").setExecutor(this.getReadMailCommand());
+            this.getCommand("clearMail").setExecutor(this.getClearMailCommand());
         } catch (Exception e) {
             e.printStackTrace();
             this.consoleManager.severe("An error occurred on registry: " + e);
