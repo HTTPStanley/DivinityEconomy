@@ -1,6 +1,12 @@
 package EDGRRRR.DCE.Main;
 
-import EDGRRRR.DCE.Commands.*;
+import EDGRRRR.DCE.Commands.Admin.ClearBal;
+import EDGRRRR.DCE.Commands.Admin.EditBal;
+import EDGRRRR.DCE.Commands.Admin.SetBal;
+import EDGRRRR.DCE.Commands.Money.Balance;
+import EDGRRRR.DCE.Commands.Money.SendCash;
+import EDGRRRR.DCE.Commands.Market.*;
+import EDGRRRR.DCE.Commands.Misc.Ping;
 import EDGRRRR.DCE.Economy.EconomyManager;
 import EDGRRRR.DCE.Events.MailEvent;
 import EDGRRRR.DCE.Mail.MailManager;
@@ -66,6 +72,10 @@ public class DCEPlugin extends JavaPlugin {
     private CommandExecutor handSellCommand;
     // A command for buying items in hand
     private CommandExecutor handBuyCommand;
+    // A command for getting the value of the item you're holding
+    private CommandExecutor handValueCommand;
+    // A command for getting the information of the item you're holding
+    private CommandExecutor handInfoCommand;
 
     public static DCEPlugin getApp() {
         return app;
@@ -123,6 +133,10 @@ public class DCEPlugin extends JavaPlugin {
         return this.handBuyCommand;
     }
 
+    public CommandExecutor getCommandHandValue() { return this.handValueCommand; }
+
+    public CommandExecutor getCommandHandInfo() { return this.handInfoCommand; }
+
     /**
      * Called when the plugin is enabled
      * Setup console
@@ -177,21 +191,25 @@ public class DCEPlugin extends JavaPlugin {
         this.infoCommand = new Info(this);
         this.handSellCommand = new HandSell(this);
         this.handBuyCommand = new HandBuy(this);
+        this.handValueCommand = new HandValue(this);
+        this.handInfoCommand = new HandInfo(this);
 
         try {
             // Register commands
-            this.getCommand("ping").setExecutor(this.pingCommand);
-            this.getCommand("balance").setExecutor(this.balanceCommand);
-            this.getCommand("editbal").setExecutor(this.editbalCommand);
-            this.getCommand("sendcash").setExecutor(this.sendcashCommand);
-            this.getCommand("setbal").setExecutor(this.setbalCommand);
-            this.getCommand("clearbal").setExecutor(this.clearbalCommand);
-            this.getCommand("buy").setExecutor(this.buyItemCommand);
-            this.getCommand("sell").setExecutor(this.sellItemCommand);
-            this.getCommand("value").setExecutor(this.valueCommand);
-            this.getCommand("information").setExecutor(this.infoCommand);
-            this.getCommand("handSell").setExecutor(this.handSellCommand);
-            this.getCommand("handBuy").setExecutor(this.handBuyCommand);
+            this.getCommand("ping").setExecutor(this.getCommandPing());
+            this.getCommand("balance").setExecutor(this.getCommandBalance());
+            this.getCommand("editbal").setExecutor(this.getCommandEditBal());
+            this.getCommand("sendcash").setExecutor(this.getCommandSendCash());
+            this.getCommand("setbal").setExecutor(this.getCommandSetBal());
+            this.getCommand("clearbal").setExecutor(this.getCommandClearBal());
+            this.getCommand("buy").setExecutor(this.getCommandBuyItem());
+            this.getCommand("sell").setExecutor(this.getCommandSellItem());
+            this.getCommand("value").setExecutor(this.getCommandValue());
+            this.getCommand("information").setExecutor(this.getCommandInfo());
+            this.getCommand("handSell").setExecutor(this.getCommandHandSell());
+            this.getCommand("handBuy").setExecutor(this.getCommandHandBuy());
+            this.getCommand("handValue").setExecutor(this.getCommandHandValue());
+            this.getCommand("handInformation").setExecutor(this.getCommandHandInfo());
         } catch (Exception e) {
             e.printStackTrace();
             this.consoleManager.severe("An error occurred on registry: " + e);
