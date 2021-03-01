@@ -1,5 +1,7 @@
 package EDGRRRR.DCE.Commands.Admin;
 
+import EDGRRRR.DCE.Mail.Mail;
+import EDGRRRR.DCE.Mail.MailList;
 import EDGRRRR.DCE.Main.DCEPlugin;
 import EDGRRRR.DCE.Math.Math;
 import net.milkbowl.vault.economy.EconomyResponse;
@@ -8,6 +10,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.util.Calendar;
 
 /**
  * Command executor for editing (adding or removing) cash to a player
@@ -38,8 +42,8 @@ public class SetBal implements CommandExecutor {
         // Use case scenarios
         // command <amount> - applies amount to self
         // command <player> <amount> - applies amount to player
-        Player to;
-        OfflinePlayer toOff = null;
+        OfflinePlayer to;
+        boolean playerIsOffline = false;
         double amount;
 
         switch (args.length) {
@@ -54,7 +58,8 @@ public class SetBal implements CommandExecutor {
                 to = this.app.getServer().getPlayer(args[0]);
                 amount = Math.getDouble(args[1]);
                 if (to == null) {
-                    toOff = this.app.getPlayerManager().getOfflinePlayer(args[0], false);
+                    to = this.app.getPlayerManager().getOfflinePlayer(args[0], false);
+                    playerIsOffline = true;
                 }
                 break;
 
@@ -65,49 +70,44 @@ public class SetBal implements CommandExecutor {
         }
 
         // Ensure to player exists
-        if (to == null && toOff == null) {
+        if (to == null) {
             this.app.getConsoleManager().usage(from, "Invalid player name.", usage);
         } else {
 
-            // Set cash
-            EconomyResponse response;
-            String toName;
-            if (!(to == null)) {
-                response = this.app.getEconomyManager().setCash(to, amount);
-                toName = to.getName();
-            } else {
-                response = this.app.getEconomyManager().setCash(toOff, amount);
-                toName = toOff.getName();
-            }
-
-            double balance = this.app.getEconomyManager().round(response.balance);
+            EconomyResponse response = this.app.getEconomyManager().setCash(to, amount);
+            double roundedBalance = this.app.getEconomyManager().round(response.balance);
 
             // Response messages
             switch (response.type) {
                 case SUCCESS:
                     // If to != from, respond.
                     if (!(to == from)) {
-                        this.app.getConsoleManager().info(from, "You set " + toName + "'s balance to £" + balance);
+                        this.app.getConsoleManager().info(from, "You set " + to.getName() + "'s roundedBalance to £" + roundedBalance);
                     }
 
                     // If online send message
-                    if (!(to == null)) {
-                        this.app.getConsoleManager().info(to, "Your balance was set to £" + balance + " by " + from.getName());
+                    if (!playerIsOffline) {
+                        this.app.getConsoleManager().info((Player) to, "Your roundedBalance was set to £" + roundedBalance + " by " + from.getName());
 
                         // If offline --
                     } else {
-                        // Perhaps send an ingame mail message to offlinePlayer ¯\_(ツ)_/¯
+                        String message = "You received £<roundedAmount> from <sourceName> <daysAgo> days ago. New Balance: £<roundedBalance>";
+                        Calendar date = Calendar.getInstance();
+                        String sourceUUID = from.getUniqueId().toString();
+                        MailList userMail = this.app.getMailManager().getMailList(to);
+                        Mail mail = userMail.createMail(amount, roundedBalance, message, date, sourceUUID, false);
+                        this.app.getConsoleManager().debug("Created mail(" + mail.getID() + ") for " + to.getName());
                     }
 
                     // Console feedback
-                    this.app.getConsoleManager().info(from.getName() + " set " + toName + "'s balance to £" + balance);
+                    this.app.getConsoleManager().info(from.getName() + " set " + to.getName() + "'s roundedBalance to £" + roundedBalance);
                     break;
 
                 case FAILURE:
                     this.app.getConsoleManager().usage(from, response.errorMessage, usage);
 
                 default:
-                    this.app.getConsoleManager().warn("Balance Set error (" + from.getName() + "-->" + toName + "): " + response.errorMessage);
+                    this.app.getConsoleManager().warn("Balance Set error (" + from.getName() + "-->" + to.getName() + "): " + response.errorMessage);
             }
         }
         return true;

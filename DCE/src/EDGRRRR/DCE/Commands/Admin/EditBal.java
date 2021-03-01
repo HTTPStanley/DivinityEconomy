@@ -1,5 +1,7 @@
 package EDGRRRR.DCE.Commands.Admin;
 
+import EDGRRRR.DCE.Mail.Mail;
+import EDGRRRR.DCE.Mail.MailList;
 import EDGRRRR.DCE.Main.DCEPlugin;
 import EDGRRRR.DCE.Math.Math;
 import net.milkbowl.vault.economy.EconomyResponse;
@@ -8,6 +10,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.util.Calendar;
 
 /**
  * Command executor for editing (adding or removing) cash to a player
@@ -38,8 +42,8 @@ public class EditBal implements CommandExecutor {
         // Use case scenarios
         // command <amount> - applies amount to self
         // command <player> <amount> - applies amount to player
-        Player to;
-        OfflinePlayer toOff = null;
+        OfflinePlayer to = null;
+        boolean playerIsOffline = false;
         double amount;
 
         switch (args.length) {
@@ -54,7 +58,8 @@ public class EditBal implements CommandExecutor {
                 to = this.app.getServer().getPlayer(args[0]);
                 amount = Math.getDouble(args[1]);
                 if (to == null) {
-                    toOff = this.app.getPlayerManager().getOfflinePlayer(args[0], false);
+                    to = this.app.getPlayerManager().getOfflinePlayer(args[0], false);
+                    playerIsOffline = true;
                 }
                 break;
 
@@ -65,7 +70,7 @@ public class EditBal implements CommandExecutor {
         }
 
         // Ensure to player exists
-        if (to == null && toOff == null) {
+        if (to == null) {
             this.app.getConsoleManager().usage(from, "Invalid player name.", usage);
         } else {
 
@@ -74,28 +79,15 @@ public class EditBal implements CommandExecutor {
                 this.app.getConsoleManager().usage(from, "Incorrect amount.", usage);
             } else {
                 // Edit cash
-                EconomyResponse response = null;
-                String toName = null;
-                if (!(to == null) && (amount > 0)) {
-                    // Online and add
-                    toName = to.getName();
+                EconomyResponse response;
+                if (amount > 0) {
                     response = this.app.getEconomyManager().addCash(to, amount);
-                } else if ((to == null) && (amount > 0)) {
-                    // Offline and add
-                    toName = toOff.getName();
-                    response = this.app.getEconomyManager().addCash(toOff, amount);
-                } else if (!(to == null) && (amount < 0)) {
-                    // Online and remove (note the - on <amount> to invert to positive.)
-                    toName = to.getName();
+                } else {
                     response = this.app.getEconomyManager().remCash(to, -amount);
-                } else if ((to == null) && (amount < 0)) {
-                    // Offline and remove (note the - on <amount> to invert to positive.)
-                    toName = toOff.getName();
-                    response = this.app.getEconomyManager().remCash(toOff, -amount);
                 }
 
-                double cost = this.app.getEconomyManager().round(response.amount);
-                double balance = this.app.getEconomyManager().round(response.balance);
+                double roundedCost = this.app.getEconomyManager().round(response.amount);
+                double roundedBalance = this.app.getEconomyManager().round(response.balance);
 
 
                 // Response messages
@@ -103,27 +95,32 @@ public class EditBal implements CommandExecutor {
                     case SUCCESS:
                         // If to != from, respond.
                         if (!(to == from)) {
-                            this.app.getConsoleManager().info(from, "You changed " + toName + "'s balance by £" + cost + " to £" + balance);
+                            this.app.getConsoleManager().info(from, "You changed " + to.getName() + "'s roundedBalance by £" + roundedCost + " to £" + roundedBalance);
                         }
 
                         // If online send message
-                        if (!(to == null)) {
-                            this.app.getConsoleManager().info(to, from.getName() + "Changed your balance by £" + cost + " to £" + balance);
+                        if (!playerIsOffline) {
+                            this.app.getConsoleManager().info((Player) to, from.getName() + "Changed your roundedBalance by £" + roundedCost + " to £" + roundedBalance);
 
                             // If offline --
                         } else {
-                            // Perhaps send an ingame mail message to offlinePlayer ¯\_(ツ)_/¯
+                            String message = "You received £<roundedAmount> from <sourceName> <daysAgo> days ago. New Balance: £<roundedBalance>";
+                            Calendar date = Calendar.getInstance();
+                            String sourceUUID = from.getUniqueId().toString();
+                            MailList userMail = this.app.getMailManager().getMailList(to);
+                            Mail mail = userMail.createMail(response.amount, response.balance, message, date, sourceUUID, false);
+                            this.app.getConsoleManager().debug("Created mail(" + mail.getID() + ") for " + to.getName());
                         }
 
                         // Console feedback
-                        this.app.getConsoleManager().info(from.getName() + "changed " + toName + "'s balance by £" + cost + " to £" + balance);
+                        this.app.getConsoleManager().info(from.getName() + "changed " + to.getName() + "'s roundedBalance by £" + roundedCost + " to £" + roundedBalance);
                         break;
 
                     case FAILURE:
                         this.app.getConsoleManager().usage(from, response.errorMessage, usage);
 
                     default:
-                        this.app.getConsoleManager().warn("Balance Edit error (" + from.getName() + "-->" + toName + "): " + response.errorMessage);
+                        this.app.getConsoleManager().warn("Balance Edit error (" + from.getName() + "-->" + to.getName() + "): " + response.errorMessage);
                 }
             }
         }
