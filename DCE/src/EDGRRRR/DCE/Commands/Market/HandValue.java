@@ -3,6 +3,7 @@ package EDGRRRR.DCE.Commands.Market;
 import EDGRRRR.DCE.Main.DCEPlugin;
 import EDGRRRR.DCE.Materials.MaterialData;
 import EDGRRRR.DCE.Materials.MaterialValue;
+import EDGRRRR.DCE.Math.Math;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -10,7 +11,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import EDGRRRR.DCE.Math.Math;
 
 public class HandValue implements CommandExecutor {
     private final DCEPlugin app;

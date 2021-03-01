@@ -4,6 +4,7 @@ public class Math {
 
     /**
      * Calculates the number of ticks from the seconds provided
+     *
      * @param seconds - The number of seconds
      * @return int - Ticks
      */
@@ -13,6 +14,7 @@ public class Math {
 
     /**
      * Calculates the number of ticks from the milliseconds provided
+     *
      * @param milliseconds - The number of milliseconds
      * @return int - Ticks
      */

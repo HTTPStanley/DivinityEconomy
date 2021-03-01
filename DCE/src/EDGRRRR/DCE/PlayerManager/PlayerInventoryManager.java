@@ -18,6 +18,7 @@ public class PlayerInventoryManager {
 
     /**
      * Returns the item the user is holding
+     *
      * @param player - The player to get the item for
      * @return ItemStack - The itemstack the player is holding
      */
@@ -61,7 +62,7 @@ public class PlayerInventoryManager {
         ItemStack[] materialStacks = this.getMaterialSlots(player, material);
         ItemStack[] itemStacks = new ItemStack[materialStacks.length];
         int amountLeft = amount;
-        for (int idx=0; idx < materialStacks.length; idx++) {
+        for (int idx = 0; idx < materialStacks.length; idx++) {
             ItemStack itemStack = materialStacks[idx];
             int stackAmount = itemStack.getAmount();
             int amountRemoved;

@@ -256,8 +256,9 @@ public class MaterialManager {
 
     /**
      * Calculates the stock based on the price.
-     * @param price - The price of the item
-     * @param scale - The scale of the price
+     *
+     * @param price     - The price of the item
+     * @param scale     - The scale of the price
      * @param inflation - The inflation of the price
      * @return int - The level of stock required for this price.
      */

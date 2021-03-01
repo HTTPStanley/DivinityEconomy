@@ -5,10 +5,10 @@ import EDGRRRR.DCE.Commands.Admin.EditBal;
 import EDGRRRR.DCE.Commands.Admin.SetBal;
 import EDGRRRR.DCE.Commands.Mail.clearMail;
 import EDGRRRR.DCE.Commands.Mail.readMail;
-import EDGRRRR.DCE.Commands.Money.Balance;
-import EDGRRRR.DCE.Commands.Money.SendCash;
 import EDGRRRR.DCE.Commands.Market.*;
 import EDGRRRR.DCE.Commands.Misc.Ping;
+import EDGRRRR.DCE.Commands.Money.Balance;
+import EDGRRRR.DCE.Commands.Money.SendCash;
 import EDGRRRR.DCE.Economy.EconomyManager;
 import EDGRRRR.DCE.Events.MailEvent;
 import EDGRRRR.DCE.Mail.MailManager;
@@ -139,13 +139,21 @@ public class DCEPlugin extends JavaPlugin {
         return this.handBuyCommand;
     }
 
-    public CommandExecutor getCommandHandValue() { return this.handValueCommand; }
+    public CommandExecutor getCommandHandValue() {
+        return this.handValueCommand;
+    }
 
-    public CommandExecutor getCommandHandInfo() { return this.handInfoCommand; }
+    public CommandExecutor getCommandHandInfo() {
+        return this.handInfoCommand;
+    }
 
-    public CommandExecutor getReadMailCommand() { return this.readMailCommand; }
+    public CommandExecutor getReadMailCommand() {
+        return this.readMailCommand;
+    }
 
-    public CommandExecutor getClearMailCommand() { return this.clearMailCommand; }
+    public CommandExecutor getClearMailCommand() {
+        return this.clearMailCommand;
+    }
 
     /**
      * Called when the plugin is enabled

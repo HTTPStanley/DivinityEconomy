@@ -8,11 +8,10 @@ import java.util.Calendar;
 import java.util.HashMap;
 
 public class Mail {
+    private static final String[] strings = {"<amount>", "<balance>", "<daysAgo>", "<roundedAmount>", "<roundedBalance>", "<sourceUUID>", "<sourceName>"};
     private final MailList mailList;
     private final ConfigurationSection configurationSection;
-
     private final HashMap<String, String> stringReplacementMap;
-    private static final String[] strings = {"<amount>", "<balance>", "<daysAgo>", "<roundedAmount>", "<roundedBalance>", "<sourceUUID>", "<sourceName>"};
     private final String[] resultingStrings;
 
     /**

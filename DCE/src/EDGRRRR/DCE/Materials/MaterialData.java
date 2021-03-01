@@ -95,6 +95,7 @@ public class MaterialData {
 
     /**
      * Sets the stock level so that the price of the material is that given.
+     *
      * @param price - The new price for this material.
      */
     public void setPrice(double price) {

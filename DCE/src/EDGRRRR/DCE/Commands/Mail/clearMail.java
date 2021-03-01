@@ -16,7 +16,7 @@ public class clearMail implements CommandExecutor {
     private final String usage = "/clearMail read | /clearMail unread | /clearMail all";
 
     public clearMail(DCEPlugin app) {
-         this.app = app;
+        this.app = app;
     }
 
     @Override

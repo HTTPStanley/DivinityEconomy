@@ -16,7 +16,7 @@ public class readMail implements CommandExecutor {
     private final String usage = "/readMail | /readMail <page>";
 
     public readMail(DCEPlugin app) {
-         this.app = app;
+        this.app = app;
     }
 
     @Override

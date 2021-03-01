@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.Set;
 
 public class MailList {
-    private MailManager manager;
     // Variables for the dictionary keys
     public final String strAmount = "amount";
     public final String strBalance = "balance";
@@ -22,6 +21,7 @@ public class MailList {
     private final ConfigurationSection configurationSection;
     // The player this mail list belongs to
     private final OfflinePlayer player;
+    private MailManager manager;
 
     /**
      * Constructor
@@ -41,6 +41,12 @@ public class MailList {
         }
     }
 
+    /**
+     * Returns "pages" of mail.
+     *
+     * @param pageSize - The size of each page.
+     * @return HashMap<Integer, Mail [ ]> - Pages of mail.
+     */
     public HashMap<Integer, Mail[]> getPages(int pageSize) {
         HashMap<Integer, Mail[]> pages = new HashMap<>();
         Object[] allMail = this.getMailIDs().toArray();
@@ -49,7 +55,7 @@ public class MailList {
         int pageNumber = 0;
         int pageIdx = 0;
         Mail[] page = new Mail[pageSize];
-        for (int mailNumber=0; mailNumber < mailCount; mailNumber++) {
+        for (int mailNumber = 0; mailNumber < mailCount; mailNumber++) {
             if (pageIdx == pageSize) {
                 pages.put(pageNumber, page);
                 pageNumber += 1;
@@ -64,10 +70,6 @@ public class MailList {
         }
 
         return pages;
-    }
-
-    public Mail[] getPage(int pageSize, int pageNumber) {
-        return this.getPages(pageSize).get(pageNumber);
     }
 
     /**

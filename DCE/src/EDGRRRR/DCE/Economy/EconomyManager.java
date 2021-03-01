@@ -13,14 +13,14 @@ import org.bukkit.plugin.RegisteredServiceProvider;
  */
 public class EconomyManager {
 
-    // Stores the main app
-    private final DCEPlugin app;
     // Settings
     public final double minSendAmount;
     public final int roundingDigits;
     public final int baseQuantity;
     public final double tax;
     public final double minAccountBalance;
+    // Stores the main app
+    private final DCEPlugin app;
     // Stores the Vault economy api
     private Economy economy;
 
