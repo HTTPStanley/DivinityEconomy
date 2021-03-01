@@ -50,7 +50,7 @@ public class ConsoleManager {
 
 
         // Get settings
-        this.debugMode = (this.app.getConfig().getBoolean(this.app.getConfigManager().strChatDebug) || this.app.getConfig().getBoolean(this.app.getConfigManager().strMainDebugMode));
+        this.debugMode = (this.app.getConfig().getBoolean(this.app.getConfigManager().strChatDebug));
         this.infoColour = this.getColour(this.app.getConfigManager().strChatInfClr);
         this.warnColour = this.getColour(this.app.getConfigManager().strChatWrnClr);
         this.severeColour = this.getColour(this.app.getConfigManager().strChatSvrClr);
