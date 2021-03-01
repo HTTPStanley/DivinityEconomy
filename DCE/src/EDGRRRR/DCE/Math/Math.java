@@ -2,6 +2,14 @@ package EDGRRRR.DCE.Math;
 
 public class Math {
 
+    public static int getTicks(int seconds) {
+        return seconds / 20;
+    }
+
+    public static int getTicks(long milliseconds) {
+        return getTicks((int) milliseconds / 1000);
+    }
+
     /**
      * A rounding function for rounding double
      *
