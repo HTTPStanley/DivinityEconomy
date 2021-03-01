@@ -22,7 +22,6 @@ public class Info implements CommandExecutor {
         this.app = app;
     }
 
-
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
@@ -50,13 +49,13 @@ public class Info implements CommandExecutor {
                 break;
 
             default:
-                this.app.getConsoleManager().usage(from, "Invalid number of arguments.", usage);
+                this.app.getConsoleManager().usage(from, "Invalid number of arguments.", this.usage);
                 return true;
         }
 
         MaterialData material = this.app.getMaterialManager().getMaterial(materialName);
         if (material == null) {
-            this.app.getConsoleManager().usage(from, "Unknown Item: " + materialName, usage);
+            this.app.getConsoleManager().usage(from, "Unknown Item: " + materialName, this.usage);
         } else {
             MaterialValue userResponse = this.app.getMaterialManager().getBuyValue(this.app.getPlayerInventoryManager().createItemStacks(material.getMaterial(), amount));
             MaterialValue marketResponse = this.app.getMaterialManager().getSellValue(this.app.getPlayerInventoryManager().createItemStacks(material.getMaterial(), amount));
@@ -83,9 +82,9 @@ public class Info implements CommandExecutor {
             userPrice = this.app.getEconomyManager().round(userPrice);
             marketPrice = this.app.getEconomyManager().round(marketPrice);
 
-            this.app.getConsoleManager().info(from, "==[" + material.getCleanName() + "]==");
+            this.app.getConsoleManager().info(from, "==[Information for" + material.getCleanName() + "]==");
             this.app.getConsoleManager().info(from, "ID: " + material.getMaterialID());
-            this.app.getConsoleManager().info(from, "Material Type: " + material.getType());
+            this.app.getConsoleManager().info(from, "Type: " + material.getType());
             this.app.getConsoleManager().info(from, "Buy Price(x" + userAmount + "): " + userPrice);
             this.app.getConsoleManager().info(from, "Sell Price(x" + marketAmount + "): " + marketPrice);
             this.app.getConsoleManager().info(from, "Current Quantity: " + material.getQuantity());
