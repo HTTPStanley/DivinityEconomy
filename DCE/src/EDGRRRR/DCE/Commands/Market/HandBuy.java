@@ -1,4 +1,4 @@
-package EDGRRRR.DCE.Commands;
+package EDGRRRR.DCE.Commands.Market;
 
 import EDGRRRR.DCE.Main.DCEPlugin;
 import EDGRRRR.DCE.Materials.MaterialData;
@@ -56,14 +56,12 @@ public class HandBuy implements CommandExecutor {
             this.app.getConsoleManager().usage(player, "Invalid amount.", this.usage);
 
         } else {
+            ItemStack heldItem = this.app.getPlayerInventoryManager().getHeldItem(player);
 
-            int slotIdx = player.getInventory().getHeldItemSlot();
-            ItemStack iStack = player.getInventory().getItem(slotIdx);
-
-            if (iStack == null) {
+            if (heldItem == null) {
                 this.app.getConsoleManager().usage(player, "You are not holding any item.", this.usage);
             } else {
-                MaterialData materialData = this.app.getMaterialManager().getMaterial(iStack.getType().name());
+                MaterialData materialData = this.app.getMaterialManager().getMaterial(heldItem.getType().name());
 
                 if (!materialData.getAllowed()) {
                     this.app.getConsoleManager().usage(player, "Cannot buy " + materialData.getCleanName() + " because it is not allowed to be bought or sold", this.usage);

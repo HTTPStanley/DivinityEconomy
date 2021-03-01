@@ -1,4 +1,4 @@
-package EDGRRRR.DCE.Commands;
+package EDGRRRR.DCE.Commands.Admin;
 
 import EDGRRRR.DCE.Main.DCEPlugin;
 import org.bukkit.command.Command;

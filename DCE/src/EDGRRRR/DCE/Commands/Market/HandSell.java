@@ -1,4 +1,4 @@
-package EDGRRRR.DCE.Commands;
+package EDGRRRR.DCE.Commands.Market;
 
 import EDGRRRR.DCE.Main.DCEPlugin;
 import EDGRRRR.DCE.Materials.MaterialData;
@@ -62,14 +62,13 @@ public class HandSell implements CommandExecutor {
         if (amountToSell < 1) {
             this.app.getConsoleManager().usage(player, "Invalid amount.", this.usage);
         } else {
-            int slotIdx = player.getInventory().getHeldItemSlot();
-            ItemStack iStack = player.getInventory().getItem(slotIdx);
+            ItemStack heldItem = this.app.getPlayerInventoryManager().getHeldItem(player);
 
-            if (iStack == null) {
+            if (heldItem == null) {
                 this.app.getConsoleManager().usage(player, "You are not holding any item.", this.usage);
 
             } else {
-                Material material = iStack.getType();
+                Material material = heldItem.getType();
                 String materialName = material.name();
                 MaterialData materialData = this.app.getMaterialManager().getMaterial(materialName);
                 int materialCount = this.app.getPlayerInventoryManager().getMaterialCount(this.app.getPlayerInventoryManager().getMaterialSlots(player, material));
@@ -79,7 +78,7 @@ public class HandSell implements CommandExecutor {
                 }
 
                 if (sellHand) {
-                    amountToSell = iStack.getAmount();
+                    amountToSell = heldItem.getAmount();
                 }
                 if (!materialData.getAllowed()) {
                     this.app.getConsoleManager().usage(player, "Cannot sell" + materialData.getCleanName() + " when it is not allowed to be bought or sold", this.usage);

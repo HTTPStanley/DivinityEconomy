@@ -1,4 +1,4 @@
-package EDGRRRR.DCE.Commands;
+package EDGRRRR.DCE.Commands.Market;
 
 import EDGRRRR.DCE.Main.DCEPlugin;
 import EDGRRRR.DCE.Materials.MaterialData;

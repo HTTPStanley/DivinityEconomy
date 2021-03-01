@@ -1,4 +1,4 @@
-package EDGRRRR.DCE.Commands;
+package EDGRRRR.DCE.Commands.Money;
 
 import EDGRRRR.DCE.Mail.Mail;
 import EDGRRRR.DCE.Mail.MailList;
