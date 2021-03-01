@@ -6,7 +6,6 @@ import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import net.milkbowl.vault.economy.EconomyResponse.ResponseType;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
 /**
@@ -17,11 +16,11 @@ public class EconomyManager {
     // Stores the main app
     private final DCEPlugin app;
     // Settings
-    public double minSendAmount;
-    public int roundingDigits;
-    public int baseQuantity;
-    public double tax;
-    public double minAccountBalance;
+    public final double minSendAmount;
+    public final int roundingDigits;
+    public final int baseQuantity;
+    public final double tax;
+    public final double minAccountBalance;
     // Stores the Vault economy api
     private Economy economy;
 
@@ -75,16 +74,6 @@ public class EconomyManager {
     /**
      * Gets the players balance
      *
-     * @param player - The player
-     * @return double
-     */
-    public double getBalance(Player player) {
-        return this.getBalance((OfflinePlayer) player);
-    }
-
-    /**
-     * Gets the players balance
-     *
      * @return double
      */
     public double getBalance(OfflinePlayer oPlayer) {
@@ -116,16 +105,6 @@ public class EconomyManager {
     }
 
     /**
-     * Adds <amount> to <player>
-     *
-     * @param player - The player
-     * @param amount - The amount
-     */
-    public EconomyResponse addCash(Player player, double amount) {
-        return this.addCash((OfflinePlayer) player, amount);
-    }
-
-    /**
      * Removes <amount> from <player>
      *
      * @param oPlayer - The offline player
@@ -133,20 +112,16 @@ public class EconomyManager {
      */
     public EconomyResponse remCash(OfflinePlayer oPlayer, double amount) {
         this.app.getConsoleManager().debug("SET REQUEST '" + oPlayer.getName() + "' £" + amount);
-        EconomyResponse response = this.economy.withdrawPlayer(oPlayer, amount);
+        double oldBalance = this.getBalance(oPlayer);
+        EconomyResponse response;
+        if ((oldBalance - amount) < this.minAccountBalance) {
+            response = new EconomyResponse(amount, oldBalance, ResponseType.FAILURE, "Not enough cash for this transfer.");
+        } else {
+            response = this.economy.withdrawPlayer(oPlayer, amount);
+        }
         response = new EconomyResponse(response.amount, this.getBalance(oPlayer), response.type, response.errorMessage);
         this.app.getConsoleManager().debug("REM COMPLETE '" + oPlayer.getName() + "' £" + response.balance + "(£ " + response.amount + ")");
         return response;
-    }
-
-    /**
-     * Removes <amount> from <player>
-     *
-     * @param player - The player
-     * @param amount - The amount
-     */
-    public EconomyResponse remCash(Player player, double amount) {
-        return this.remCash((OfflinePlayer) player, amount);
     }
 
     /**
@@ -160,29 +135,18 @@ public class EconomyManager {
         this.app.getConsoleManager().debug("SET REQUEST '" + oPlayer.getName() + "' £" + amount);
         double balance = this.getBalance(oPlayer);
         double difference = amount - balance;
-        EconomyResponse response = null;
+        EconomyResponse response;
         if (difference < 0) {
             response = this.remCash(oPlayer, -difference);
         } else if (difference > 0) {
             response = this.addCash(oPlayer, difference);
-        } else if (difference == 0) {
+        } else {
             response = new EconomyResponse(difference, this.getBalance(oPlayer), ResponseType.SUCCESS, "");
         }
 
         response = new EconomyResponse(response.amount, this.getBalance(oPlayer), response.type, response.errorMessage);
         this.app.getConsoleManager().debug("SET COMPLETE '" + oPlayer.getName() + "' £" + response.balance + "(£ " + response.amount + ")");
         return response;
-    }
-
-    /**
-     * Sets the balance of a player to the amount provided
-     *
-     * @param player - The player
-     * @param amount - The amount
-     * @return EconomyResponse - The result of the command
-     */
-    public EconomyResponse setCash(Player player, double amount) {
-        return this.setCash((OfflinePlayer) player, amount);
     }
 
     /**
@@ -197,7 +161,7 @@ public class EconomyManager {
      * @param amount - The amount of cash
      * @return EconomyResponse - The result of the function
      */
-    public EconomyResponse sendCash(Player from, OfflinePlayer to, double amount) {
+    public EconomyResponse sendCash(OfflinePlayer from, OfflinePlayer to, double amount) {
         double fromBalance = this.getBalance(from);
 
         EconomyResponse takeResponse = this.remCash(from, amount);
@@ -214,21 +178,5 @@ public class EconomyManager {
         }
 
         return new EconomyResponse(amount, fromBalance, ResponseType.SUCCESS, null);
-    }
-
-    /**
-     * Removes amount <amount> from <from>
-     * Adds amount <amount> to <to>
-     * Can fail if criteria aren't met:
-     * -minimumSendAmount <
-     * -<from> has <amount> to send
-     *
-     * @param from   - The source player of cash
-     * @param to     - The result player of cash
-     * @param amount - The amount of cash
-     * @return EconomyResponse - The result of the function
-     */
-    public EconomyResponse sendCash(Player from, Player to, double amount) {
-        return this.sendCash(from, (OfflinePlayer) to, amount);
     }
 }
