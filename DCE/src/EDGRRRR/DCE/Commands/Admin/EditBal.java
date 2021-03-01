@@ -95,12 +95,12 @@ public class EditBal implements CommandExecutor {
                     case SUCCESS:
                         // If to != from, respond.
                         if (!(to == from)) {
-                            this.app.getConsoleManager().info(from, "You changed " + to.getName() + "'s roundedBalance by £" + roundedCost + " to £" + roundedBalance);
+                            this.app.getConsoleManager().info(from, "You changed " + to.getName() + "'s balance by £" + roundedCost + " to £" + roundedBalance);
                         }
 
                         // If online send message
                         if (!playerIsOffline) {
-                            this.app.getConsoleManager().info((Player) to, from.getName() + "Changed your roundedBalance by £" + roundedCost + " to £" + roundedBalance);
+                            this.app.getConsoleManager().info((Player) to, from.getName() + "Changed your balance by £" + roundedCost + " to £" + roundedBalance);
 
                             // If offline --
                         } else {
@@ -113,7 +113,7 @@ public class EditBal implements CommandExecutor {
                         }
 
                         // Console feedback
-                        this.app.getConsoleManager().info(from.getName() + "changed " + to.getName() + "'s roundedBalance by £" + roundedCost + " to £" + roundedBalance);
+                        this.app.getConsoleManager().info(from.getName() + "changed " + to.getName() + "'s balance by £" + roundedCost + " to £" + roundedBalance);
                         break;
 
                     case FAILURE:

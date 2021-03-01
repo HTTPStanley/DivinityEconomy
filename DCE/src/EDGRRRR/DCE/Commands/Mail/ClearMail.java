@@ -11,11 +11,11 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class clearMail implements CommandExecutor {
+public class ClearMail implements CommandExecutor {
     private final DCEPlugin app;
     private final String usage = "/clearMail read | /clearMail unread | /clearMail all";
 
-    public clearMail(DCEPlugin app) {
+    public ClearMail(DCEPlugin app) {
         this.app = app;
     }
 

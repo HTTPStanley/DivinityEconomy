@@ -87,7 +87,7 @@ public class SetBal implements CommandExecutor {
 
                     // If online send message
                     if (!playerIsOffline) {
-                        this.app.getConsoleManager().info((Player) to, "Your roundedBalance was set to £" + roundedBalance + " by " + from.getName());
+                        this.app.getConsoleManager().info((Player) to, "Your balance was set to £" + roundedBalance + " by " + from.getName());
 
                         // If offline --
                     } else {
@@ -100,7 +100,7 @@ public class SetBal implements CommandExecutor {
                     }
 
                     // Console feedback
-                    this.app.getConsoleManager().info(from.getName() + " set " + to.getName() + "'s roundedBalance to £" + roundedBalance);
+                    this.app.getConsoleManager().info(from.getName() + " set " + to.getName() + "'s balance to £" + roundedBalance);
                     break;
 
                 case FAILURE:

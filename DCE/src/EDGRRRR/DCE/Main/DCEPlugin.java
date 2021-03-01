@@ -3,8 +3,8 @@ package EDGRRRR.DCE.Main;
 import EDGRRRR.DCE.Commands.Admin.ClearBal;
 import EDGRRRR.DCE.Commands.Admin.EditBal;
 import EDGRRRR.DCE.Commands.Admin.SetBal;
-import EDGRRRR.DCE.Commands.Mail.clearMail;
-import EDGRRRR.DCE.Commands.Mail.readMail;
+import EDGRRRR.DCE.Commands.Mail.ClearMail;
+import EDGRRRR.DCE.Commands.Mail.ReadMail;
 import EDGRRRR.DCE.Commands.Market.*;
 import EDGRRRR.DCE.Commands.Misc.Ping;
 import EDGRRRR.DCE.Commands.Money.Balance;
@@ -211,8 +211,8 @@ public class DCEPlugin extends JavaPlugin {
         this.handBuyCommand = new HandBuy(this);
         this.handValueCommand = new HandValue(this);
         this.handInfoCommand = new HandInfo(this);
-        this.readMailCommand = new readMail(this);
-        this.clearMailCommand = new clearMail(this);
+        this.readMailCommand = new ReadMail(this);
+        this.clearMailCommand = new ClearMail(this);
 
         try {
             // Register commands

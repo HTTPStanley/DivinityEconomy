@@ -11,11 +11,11 @@ import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 
-public class readMail implements CommandExecutor {
+public class ReadMail implements CommandExecutor {
     private final DCEPlugin app;
     private final String usage = "/readMail | /readMail <page>";
 
-    public readMail(DCEPlugin app) {
+    public ReadMail(DCEPlugin app) {
         this.app = app;
     }
 
