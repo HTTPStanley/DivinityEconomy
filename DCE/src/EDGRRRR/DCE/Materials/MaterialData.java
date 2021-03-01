@@ -94,6 +94,14 @@ public class MaterialData {
     }
 
     /**
+     * Sets the stock level so that the price of the material is that given.
+     * @param price - The new price for this material.
+     */
+    public void setPrice(double price) {
+        this.setQuantity(this.manager.calculateStock(price, 1.0, this.manager.getInflation()));
+    }
+
+    /**
      * Returns the default quantity of this material from the config
      *
      * @return int - The default quantity of this item in stock

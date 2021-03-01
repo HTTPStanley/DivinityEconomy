@@ -255,6 +255,17 @@ public class MaterialManager {
     }
 
     /**
+     * Calculates the stock based on the price.
+     * @param price - The price of the item
+     * @param scale - The scale of the price
+     * @param inflation - The inflation of the price
+     * @return int - The level of stock required for this price.
+     */
+    public int calculateStock(double price, double scale, double inflation) {
+        return (int) ((int) (this.app.getEconomyManager().baseQuantity / price) * scale * inflation);
+    }
+
+    /**
      * Gets the market-wide level of inflation
      *
      * @return double - The level of inflation
