@@ -15,6 +15,17 @@ public class PlayerInventoryManager {
         this.app = app;
     }
 
+
+    /**
+     * Returns the item the user is holding
+     * @param player - The player to get the item for
+     * @return ItemStack - The itemstack the player is holding
+     */
+    public ItemStack getHeldItem(Player player) {
+        int slotIdx = player.getInventory().getHeldItemSlot();
+        return player.getInventory().getItem(slotIdx);
+    }
+
     /**
      * Removes the specified number of materials from the players inventory
      * The players inventory is parsed via itemStacks
@@ -48,10 +59,10 @@ public class PlayerInventoryManager {
      */
     public ItemStack[] getMaterialSlotsToCount(Player player, Material material, int amount) {
         ItemStack[] materialStacks = this.getMaterialSlots(player, material);
-        ItemStack[] itemStacks = new ItemStack[this.getStackCount(material, amount)];
+        ItemStack[] itemStacks = new ItemStack[materialStacks.length];
         int amountLeft = amount;
-        int idx = 0;
-        for (ItemStack itemStack : materialStacks) {
+        for (int idx=0; idx < materialStacks.length; idx++) {
+            ItemStack itemStack = materialStacks[idx];
             int stackAmount = itemStack.getAmount();
             int amountRemoved;
             if (amountLeft > stackAmount) {
@@ -69,7 +80,6 @@ public class PlayerInventoryManager {
             if (amountLeft == 0) {
                 break;
             }
-            idx += 1;
         }
 
         return itemStacks;
