@@ -2,10 +2,20 @@ package EDGRRRR.DCE.Math;
 
 public class Math {
 
+    /**
+     * Calculates the number of ticks from the seconds provided
+     * @param seconds - The number of seconds
+     * @return int - Ticks
+     */
     public static int getTicks(int seconds) {
-        return seconds / 20;
+        return seconds * 20;
     }
 
+    /**
+     * Calculates the number of ticks from the milliseconds provided
+     * @param milliseconds - The number of milliseconds
+     * @return int - Ticks
+     */
     public static int getTicks(long milliseconds) {
         return getTicks((int) milliseconds / 1000);
     }
