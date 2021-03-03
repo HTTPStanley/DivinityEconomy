@@ -13,52 +13,74 @@ public class ConfigManager {
     private final DCEPlugin app;
 
     // Prefixes for settings
-    public String strMainPrefix = "main";
-    public String strChatPrefix = "chat";
-    public String strEconPrefix = "economy";
-    public String strComPrefix = "commands";
+    public final String strMainPrefix = "main";
+    public final String strChatPrefix = "chat";
+    public final String strEconomyPrefix = "economy";
+    public final String strCommandsPrefix = "commands";
+    // Sub parts of commands
+    public final String strComAdminPrefix = strCommandsPrefix + ".admin";
+    public final String strComMailPrefix = strCommandsPrefix + ".mail";
+    public final String strComEconPrefix = strCommandsPrefix + ".economy";
+    public final String strComMiscPrefix = strCommandsPrefix + ".misc";
+    public final String strComMarketPrefix = strCommandsPrefix + ".market";
+    // --
+    public final String strMarketPrefix = "market";
+    // Sub parts of market
+    public final String strMaterialsPrefix = strMarketPrefix + ".materials";
+    public final String strEnchantsPrefix = strMarketPrefix + ".enchants";
+    // --
 
     // Main settings
-    public String strMainVersion = strMainPrefix + ".version";
-    public String strMainSaveTimer = strMainPrefix + ".saveTimer";
+    public final String strMainVersion = strMainPrefix + ".version";
 
     // Chat settings
-    public String strChatDebug = strChatPrefix + ".chatDebug";
-    public String strChatMsgPfx = strChatPrefix + ".prefix";
-    public String strChatPfxSep = strChatPrefix + ".prefixSep";
-    public String strChatPfxClr = strChatPrefix + ".prefixColour";
-    public String strChatPfxSepClr = strChatPrefix + ".prefixSepColour";
-    public String strChatConsPfx = strChatPrefix + ".prefixConsole";
-    public String strChatInfClr = strChatPrefix + ".infoColour";
-    public String strChatWrnClr = strChatPrefix + ".warnColour";
-    public String strChatSvrClr = strChatPrefix + ".severeColour";
-    public String strChatDbgClr = strChatPrefix + ".debugColour";
+    public final String strChatDebug = strChatPrefix + ".chatDebug";
+    public final String strChatMsgPfx = strChatPrefix + ".prefix";
+    public final String strChatPfxSep = strChatPrefix + ".prefixSep";
+    public final String strChatPfxClr = strChatPrefix + ".prefixColour";
+    public final String strChatPfxSepClr = strChatPrefix + ".prefixSepColour";
+    public final String strChatConsPfx = strChatPrefix + ".prefixConsole";
+    public final String strChatInfClr = strChatPrefix + ".infoColour";
+    public final String strChatWrnClr = strChatPrefix + ".warnColour";
+    public final String strChatSvrClr = strChatPrefix + ".severeColour";
+    public final String strChatDbgClr = strChatPrefix + ".debugColour";
 
     // Economy settings
-    public String strEconMinSendAmount = strEconPrefix + ".minSendAmount";
-    public String strEconRoundingDigits = strEconPrefix + ".roundingDigits";
-    public String strEconBaseQuantity = strEconPrefix + ".baseQuantity";
-    public String strEconTaxScale = strEconPrefix + ".tax";
-    public String strEconMinAccountBalance = strEconPrefix + ".minAccountBalance";
+    public final String strEconomyMinSendAmount = strEconomyPrefix + ".minSendAmount";
+    public final String strEconomyRoundingDigits = strEconomyPrefix + ".roundingDigits";
+    public final String strEconomyMinAccountBalance = strEconomyPrefix + ".minAccountBalance";
+
+    // Market settings
+    public final String strMarketSaveTimer = strMarketPrefix + ".saveTimer";
+    // (Market)Material settings
+    public final String strMaterialEnable = strMaterialsPrefix + ".enable";
+    public final String strMaterialBaseQuantity = strMaterialsPrefix + ".baseQuantity";
+    public final String strMaterialBuyTax = strMaterialsPrefix + ".buyTax";
+    public final String strMaterialSellTax = strMaterialsPrefix + ".sellTax";
+    // (Market)Enchant settings
+    public final String strEnchantEnable = strEnchantsPrefix + ".enable";
+    public final String strEnchantBaseQuantity = strEnchantsPrefix + ".baseQuantity";
+    public final String strEnchantBuyTax = strEnchantsPrefix + ".buyTax";
+    public final String strEnchantSellTax = strEnchantsPrefix + ".sellTax";
 
     // Commands settings
-    public String strComBalance = strComPrefix + ".balance";
-    public String strComClearBal = strComPrefix + ".clearBal";
-    public String strComEditBal = strComPrefix + ".editBal";
-    public String strComPing = strComPrefix + ".ping";
-    public String strComSendCash = strComPrefix + ".sendCash";
-    public String strComSetBal = strComPrefix + ".setBal";
-    public String strComBuyItem = strComPrefix + ".buyItem";
-    public String strComSellItem = strComPrefix + ".sellItem";
-    public String strComHandSell = strComPrefix + ".handSell";
-    public String strComHandBuy = strComPrefix + ".handBuy";
-    public String strComValue = strComPrefix + ".value";
-    public String strComSearch = strComPrefix + ".search";
-    public String strComInfo = strComPrefix + ".info";
-    public String strComHandInfo = strComPrefix + ".handInfo";
-    public String strComHandValue = strComPrefix + ".handValue";
-    public String strComReadMail = strComPrefix + ".readMail";
-    public String strComClearMail = strComPrefix + ".clearMail";
+    public final String strComBalance = strComEconPrefix + ".balance";
+    public final String strComClearBal = strComAdminPrefix + ".clearBal";
+    public final String strComEditBal = strComAdminPrefix + ".editBal";
+    public final String strComPing = strComMiscPrefix + ".ping";
+    public final String strComSendCash = strComEconPrefix + ".sendCash";
+    public final String strComSetBal = strComAdminPrefix + ".setBal";
+    public final String strComBuyItem = strComMarketPrefix + ".buyItem";
+    public final String strComSellItem = strComMarketPrefix + ".sellItem";
+    public final String strComHandSell = strComMarketPrefix + ".handSell";
+    public final String strComHandBuy = strComMarketPrefix + ".handBuy";
+    public final String strComValue = strComMarketPrefix + ".value";
+    public final String strComSearch = strComMarketPrefix + ".search";
+    public final String strComInfo = strComMarketPrefix + ".info";
+    public final String strComHandInfo = strComMarketPrefix + ".handInfo";
+    public final String strComHandValue = strComMarketPrefix + ".handValue";
+    public final String strComReadMail = strComMailPrefix + ".readMail";
+    public final String strComClearMail = strComMailPrefix + ".clearMail";
 
 
     public ConfigManager(DCEPlugin app) {
