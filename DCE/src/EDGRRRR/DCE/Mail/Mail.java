@@ -7,8 +7,14 @@ import java.time.Duration;
 import java.util.Calendar;
 import java.util.HashMap;
 
+/**
+ * A class representing ingame mail.
+ * Message variables:
+ *  <daysAgo> - The days since event
+ *  //hoursAgo - The hours since the event
+ */
 public class Mail {
-    private static final String[] strings = {"<amount>", "<balance>", "<daysAgo>", "<roundedAmount>", "<roundedBalance>", "<sourceUUID>", "<sourceName>"};
+    private static final String[] strings = {"<daysAgo>"};
     private final MailList mailList;
     private final ConfigurationSection configurationSection;
     private final HashMap<String, String> stringReplacementMap;
@@ -25,13 +31,7 @@ public class Mail {
         this.configurationSection = configurationSection;
         this.stringReplacementMap = new HashMap<>();
         this.resultingStrings = new String[]{
-                String.valueOf(this.getAmount()),
-                String.valueOf(this.getNewBalance()),
-                String.valueOf(this.getDaysSince()),
-                String.valueOf(this.getRoundedAmount()),
-                String.valueOf(this.getRoundedNewBalance()),
-                this.getSourceUUID(),
-                this.getSourceName()
+                String.valueOf(this.getDaysSince())
         };
 
         for (int i = 0; i < strings.length; i++) {
@@ -39,22 +39,6 @@ public class Mail {
             String resultingString = this.resultingStrings[i];
             this.stringReplacementMap.put(string, resultingString);
         }
-    }
-
-    public String getSourceName() {
-        return DCEPlugin.getApp().getPlayerManager().getOfflinePlayerByUUID(this.getSourceUUID(), true).getName();
-    }
-
-    public double getRoundedAmount() {
-        return DCEPlugin.getApp().getEconomyManager().round(this.getAmount());
-    }
-
-    public double getRoundedNewBalance() {
-        return DCEPlugin.getApp().getEconomyManager().round(this.getNewBalance());
-    }
-
-    public double getRoundedOldBalance() {
-        return DCEPlugin.getApp().getEconomyManager().round(this.getOldBalance());
     }
 
     /**
@@ -113,42 +97,6 @@ public class Mail {
      */
     public int getDaysSince() {
         return (int) this.getTimeSince().toDays();
-    }
-
-    /**
-     * Returns the amount of cash transferred, can be negative
-     *
-     * @return double - The cash amount transferred
-     */
-    public double getAmount() {
-        return this.configurationSection.getDouble(this.mailList.strAmount);
-    }
-
-    /**
-     * Returns the new balance of the mail owner after the transaction
-     *
-     * @return double - New balance of user
-     */
-    public double getNewBalance() {
-        return this.configurationSection.getDouble(this.mailList.strBalance);
-    }
-
-    /**
-     * Returns the old (balance before transaction) balance of the mail owner
-     *
-     * @return double - The old balance of the user
-     */
-    public double getOldBalance() {
-        return this.getNewBalance() - this.getAmount();
-    }
-
-    /**
-     * Returns the source or destination of where the cash came from or went to
-     *
-     * @return OfflinePlayer - The player
-     */
-    public String getSourceUUID() {
-        return (this.configurationSection.getString(this.mailList.strSource));
     }
 
     /**
