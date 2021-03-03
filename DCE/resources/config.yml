@@ -172,10 +172,20 @@
 #      default: 'True' (boolean)
 #      information:
 #         -Whether the hand value command should be enabled or not
+#
+#   readMail:
+#      default: 'True' (boolean)
+#      information:
+#         -Whether the read mail command should be enabled or not
+#
+#   clearMail:
+#      default: 'True' (boolean)
+#      information:
+#         -Whether the clear mail command should be enabled or not
 
 main:
   version: "1.0.1"
-  saveTimer: 600
+
 chat:
   chatDebug: false
   prefix: "[DCE]"
@@ -187,26 +197,50 @@ chat:
   warnColour: "YELLOW"
   severeColour: "RED"
   debugColour: "DARK_PURPLE"
+
 economy:
+  enable: true
   minAccountBalance: 0.0
   minSendAmount: 0.01
   roundingDigits: 2
-  baseQuantity: 1000000
-  tax: 1.2
+
+market:
+  saveTimer: 600
+  materials:
+    enable: true
+    baseQuantity: 1000000
+    buyTax: 1.2
+    sellTax: 1.0
+
+  enchants:
+    enable: true
+    baseQuantity: 1000
+    buyTax: 2.0
+    sellTax: 1.0
+
 commands:
-  balance: true
-  clearBal: true
-  editBal: true
-  ping: true
-  sendCash: true
-  setBal: true
-  buyItem: true
-  sellItem: true
-  value: true
-  info: true
-  handSell: true
-  handBuy: true
-  handInfo: true
-  handValue: true
-  readMail: true
-  clearMail: true
+  economy:
+    balance: true
+    sendCash: true
+
+  misc:
+    ping: true
+
+  admin:
+    clearBal: true
+    editBal: true
+    setBal: true
+
+  market:
+    buyItem: true
+    sellItem: true
+    value: true
+    info: true
+    handSell: true
+    handBuy: true
+    handInfo: true
+    handValue: true
+
+  mail:
+    readMail: true
+    clearMail: true
