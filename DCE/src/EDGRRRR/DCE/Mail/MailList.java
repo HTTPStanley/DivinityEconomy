@@ -175,11 +175,6 @@ public class MailList {
         return mailID;
     }
 
-    public String addMail(int amount, double balance, String message, Calendar date, String sourceUUID, boolean read) {
-        Mail mail = this.createMail(amount, balance, message, date, sourceUUID, read);
-        return mail.getID();
-    }
-
     public ConfigurationSection createMailSection(String name) {
         return this.configurationSection.createSection(name);
     }
@@ -192,13 +187,10 @@ public class MailList {
         this.setData("temp", null);
     }
 
-    public Mail createMail(double amount, double balance, String message, Calendar date, String sourceUUID, boolean read) {
+    public Mail createMail(String message, Calendar date, boolean read) {
         ConfigurationSection tempSection = this.createTempMailSection();
-        tempSection.set(strAmount, amount);
-        tempSection.set(strBalance, balance);
         tempSection.set(strMessage, message);
         tempSection.set(strDate, date.getTimeInMillis());
-        tempSection.set(strSource, sourceUUID);
         tempSection.set(strRead, read);
         Mail mail = new Mail(this, tempSection);
         this.addMail(mail);
@@ -206,6 +198,10 @@ public class MailList {
         this.manager.saveMailList(this);
         this.removeTempMailSection();
         return mail;
+    }
+
+    public Mail createMail(String message) {
+        return this.createMail(message, Calendar.getInstance(), false);
     }
 
     /**
