@@ -4,8 +4,8 @@ import EDGRRRR.DCE.Main.DCEPlugin;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class PlayerInventoryManager {
@@ -20,7 +20,7 @@ public class PlayerInventoryManager {
      * Returns the item the user is holding
      *
      * @param player - The player to get the item for
-     * @return ItemStack - The itemstack the player is holding
+     * @return ItemStack - The item stack the player is holding
      */
     public ItemStack getHeldItem(Player player) {
         int slotIdx = player.getInventory().getHeldItemSlot();
@@ -60,30 +60,41 @@ public class PlayerInventoryManager {
      */
     public ItemStack[] getMaterialSlotsToCount(Player player, Material material, int amount) {
         ItemStack[] materialStacks = this.getMaterialSlots(player, material);
-        ItemStack[] itemStacks = new ItemStack[materialStacks.length];
+        ArrayList<ItemStack> itemStacks = new ArrayList<>();
         int amountLeft = amount;
-        for (int idx = 0; idx < materialStacks.length; idx++) {
-            ItemStack itemStack = materialStacks[idx];
-            int stackAmount = itemStack.getAmount();
-            int amountRemoved;
-            if (amountLeft > stackAmount) {
-                amountRemoved = stackAmount;
+        for (ItemStack materialStack : materialStacks) {
+            ItemStack itemStack;
+            int stackAmount = materialStack.getAmount();
+            if (amountLeft >= stackAmount) {
+                itemStack = materialStack;
+
             } else {
-                int change = stackAmount - amountLeft;
-                amountRemoved = amountLeft;
-                ItemMeta meta = itemStack.getItemMeta();
-                itemStack.setAmount(change);
                 itemStack = new ItemStack(material, amountLeft);
-                itemStack.setItemMeta(meta);
+                itemStack.setItemMeta(materialStack.getItemMeta());
+                materialStack.setAmount(stackAmount - amountLeft);
             }
-            itemStacks[idx] = itemStack;
-            amountLeft -= amountRemoved;
+            itemStacks.add(itemStack);
+            amountLeft -= itemStack.getAmount();
             if (amountLeft == 0) {
                 break;
             }
         }
 
-        return itemStacks;
+        this.app.getConsoleManager().debug("Fulfilled slot request of " + amount + " " + material.name() + " from " + player.getName() + ": " + itemStacks.toString());
+        return this.convertArray(itemStacks);
+    }
+
+    /**
+     * This converts the ArrayList type to an array.
+     * @param arrayList - The arrayList to convert
+     * @return ItemStack[] - An array with the items in the arrayList
+     */
+    public ItemStack[] convertArray(ArrayList<ItemStack> arrayList) {
+        ItemStack[] newArray = new ItemStack[arrayList.size()];
+        for (int idx=0; idx<arrayList.size(); idx++) {
+            newArray[idx] = arrayList.get(idx);
+        }
+        return newArray;
     }
 
     /**
