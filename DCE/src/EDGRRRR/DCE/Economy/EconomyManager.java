@@ -16,8 +16,6 @@ public class EconomyManager {
     // Settings
     public final double minSendAmount;
     public final int roundingDigits;
-    public final int baseQuantity;
-    public final double tax;
     public final double minAccountBalance;
     // Stores the main app
     private final DCEPlugin app;
@@ -28,11 +26,9 @@ public class EconomyManager {
         this.app = app;
 
         // settings
-        this.minSendAmount = this.app.getConfig().getDouble(this.app.getConfigManager().strEconMinSendAmount);
-        this.tax = this.app.getConfig().getDouble(this.app.getConfigManager().strEconTaxScale);
-        this.roundingDigits = this.app.getConfig().getInt(this.app.getConfigManager().strEconRoundingDigits);
-        this.baseQuantity = this.app.getConfig().getInt(this.app.getConfigManager().strEconBaseQuantity);
-        this.minAccountBalance = this.app.getConfig().getDouble(this.app.getConfigManager().strEconMinAccountBalance);
+        this.minSendAmount = this.app.getConfig().getDouble(this.app.getConfigManager().strEconomyMinSendAmount);
+        this.roundingDigits = this.app.getConfig().getInt(this.app.getConfigManager().strEconomyRoundingDigits);
+        this.minAccountBalance = this.app.getConfig().getDouble(this.app.getConfigManager().strEconomyMinAccountBalance);
     }
 
 
@@ -73,11 +69,20 @@ public class EconomyManager {
 
     /**
      * Gets the players balance
-     *
+     * @param player - The player to get the balance for
      * @return double
      */
-    public double getBalance(OfflinePlayer oPlayer) {
-        return this.economy.getBalance(oPlayer);
+    public double getBalance(OfflinePlayer player) {
+        return this.economy.getBalance(player);
+    }
+
+    /**
+     * Returns the players balance, rounded.
+     * @param player - The player to get the balance for
+     * @return double - The rounded balance
+     */
+    public double getRoundedBalance(OfflinePlayer player) {
+        return this.round(this.getBalance(player));
     }
 
     /**
