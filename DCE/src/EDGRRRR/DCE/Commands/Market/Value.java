@@ -2,7 +2,7 @@ package EDGRRRR.DCE.Commands.Market;
 
 import EDGRRRR.DCE.Main.DCEPlugin;
 import EDGRRRR.DCE.Materials.MaterialData;
-import EDGRRRR.DCE.Materials.MaterialValue;
+import EDGRRRR.DCE.Materials.MaterialValueResponse;
 import EDGRRRR.DCE.Math.Math;
 import net.milkbowl.vault.economy.EconomyResponse.ResponseType;
 import org.bukkit.command.Command;
@@ -59,8 +59,8 @@ public class Value implements CommandExecutor {
             this.app.getConsoleManager().usage(from, "Unknown Item: " + materialName, usage);
         } else {
             ItemStack[] itemStacks = this.app.getPlayerInventoryManager().createItemStacks(materialData.getMaterial(), amount);
-            MaterialValue priceResponse = this.app.getMaterialManager().getBuyValue(itemStacks);
-            MaterialValue secondPriceResponse = this.app.getMaterialManager().getSellValue(itemStacks);
+            MaterialValueResponse priceResponse = this.app.getMaterialManager().getBuyValue(itemStacks);
+            MaterialValueResponse secondPriceResponse = this.app.getMaterialManager().getSellValue(itemStacks);
 
             if (priceResponse.getResponseType() == ResponseType.SUCCESS) {
                 this.app.getConsoleManager().info(from, "Buy: " + amount + " " + materialData.getCleanName() + " costs £" + this.app.getEconomyManager().round(priceResponse.getValue()));
