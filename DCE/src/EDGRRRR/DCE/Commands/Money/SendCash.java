@@ -1,8 +1,6 @@
 package EDGRRRR.DCE.Commands.Money;
 
 import EDGRRRR.DCE.Economy.EconomyTransferResponse;
-import EDGRRRR.DCE.Mail.Mail;
-import EDGRRRR.DCE.Mail.MailList;
 import EDGRRRR.DCE.Main.DCEPlugin;
 import EDGRRRR.DCE.Math.Math;
 import net.milkbowl.vault.economy.EconomyResponse;
@@ -11,8 +9,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import java.util.Calendar;
 
 /**
  * Command executor for sending cashing between players
