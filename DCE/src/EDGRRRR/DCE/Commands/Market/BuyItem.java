@@ -29,16 +29,16 @@ public class BuyItem implements CommandExecutor {
             return true;
         }
 
-        Player from = (Player) sender;
+        Player player = (Player) sender;
 
         // Ensure command is enabled
         if (!(this.app.getConfig().getBoolean(this.app.getConfigManager().strComBuyItem))) {
-            this.app.getConsoleManager().severe(from, "This command is not enabled.");
+            this.app.getConsoleManager().severe(player, "This command is not enabled.");
             return true;
         }
 
         String materialName;
-        int amount = 1;
+        int amountToBuy = 1;
         switch (args.length) {
             // Just material, used default amount of 1
             case 1:
@@ -48,39 +48,39 @@ public class BuyItem implements CommandExecutor {
             // Material & Amount
             case 2:
                 materialName = args[0];
-                amount = Math.getInt(args[1]);
+                amountToBuy = Math.getInt(args[1]);
                 break;
 
             default:
-                this.app.getConsoleManager().usage(from, "Invalid number of arguments.", this.usage);
+                this.app.getConsoleManager().usage(player, "Invalid number of arguments.", this.usage);
                 return true;
         }
 
-        if (amount < 1) {
-            this.app.getConsoleManager().usage(from, "Invalid amount.", this.usage);
-            this.app.getConsoleManager().debug("(BuyItem)Invalid amount: " + amount);
+        if (amountToBuy < 1) {
+            this.app.getConsoleManager().usage(player, "Invalid amount.", this.usage);
+            this.app.getConsoleManager().debug("(BuyItem)Invalid amount: " + amountToBuy);
+
         } else {
             MaterialData materialData = this.app.getMaterialManager().getMaterial(materialName);
             if (materialData == null) {
-                this.app.getConsoleManager().usage(from, "Unknown Item: '" + materialName + "'", "");
+                this.app.getConsoleManager().usage(player, "Unknown Item: '" + materialName + "'", "");
                 this.app.getConsoleManager().debug("(BuyItem)Unknown Item: " + materialName);
 
             } else {
-                int availableSpace = this.app.getPlayerInventoryManager().getAvailableSpace(from, materialData.getMaterial());
-                if (amount > availableSpace) {
-                    this.app.getConsoleManager().usage(from, "You only have space for " + availableSpace + " " + materialData.getCleanName(), this.usage);
-                    this.app.getConsoleManager().debug(from.getName() + " couldn't buy " + materialData.getMaterialID() + " because missing inventory space " + availableSpace + " / " + amount);
+                int availableSpace = this.app.getPlayerInventoryManager().getAvailableSpace(player, materialData.getMaterial());
+                if (amountToBuy > availableSpace) {
+                    this.app.getConsoleManager().logFailedPurchase(player, amountToBuy, 0.0, materialData.getCleanName(), String.format("missing inventory space (%d/%d)", availableSpace, amountToBuy));
 
                 } else {
-                    ItemStack[] itemStacks = this.app.getPlayerInventoryManager().createItemStacks(materialData.getMaterial(), amount);
+                    ItemStack[] itemStacks = this.app.getPlayerInventoryManager().createItemStacks(materialData.getMaterial(), amountToBuy);
                     ValueResponse priceResponse = this.app.getMaterialManager().getBuyValue(itemStacks);
-                    EconomyResponse saleResponse = this.app.getEconomyManager().remCash(from, priceResponse.value);
+                    EconomyResponse saleResponse = this.app.getEconomyManager().remCash(player, priceResponse.value);
                     if (saleResponse.transactionSuccess() && priceResponse.isSuccess()) {
-                        this.app.getPlayerInventoryManager().addItemsToPlayer(from, itemStacks);
-                        materialData.remQuantity(amount);
+                        this.app.getPlayerInventoryManager().addItemsToPlayer(player, itemStacks);
+                        materialData.remQuantity(amountToBuy);
 
                         // Handles console, message and mail
-                        this.app.getConsoleManager().logPurchase(from, amount, saleResponse.amount, materialData.getCleanName());
+                        this.app.getConsoleManager().logPurchase(player, amountToBuy, saleResponse.amount, materialData.getCleanName());
 
                     } else {
                         String errorMessage = "unknown error";
@@ -88,7 +88,7 @@ public class BuyItem implements CommandExecutor {
                         else if (priceResponse.isFailure()) errorMessage = priceResponse.errorMessage;
 
                         // Handles console, message and mail
-                        this.app.getConsoleManager().logFailedPurchase(from, amount, saleResponse.amount, materialData.getCleanName(), errorMessage);
+                        this.app.getConsoleManager().logFailedPurchase(player, amountToBuy, saleResponse.amount, materialData.getCleanName(), errorMessage);
                     }
                 }
 
