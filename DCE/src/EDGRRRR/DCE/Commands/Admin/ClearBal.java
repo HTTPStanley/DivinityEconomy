@@ -1,7 +1,6 @@
 package EDGRRRR.DCE.Commands.Admin;
 
 import EDGRRRR.DCE.Main.DCEPlugin;
-import EDGRRRR.DCE.Math.Math;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
