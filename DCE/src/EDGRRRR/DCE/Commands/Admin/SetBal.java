@@ -18,12 +18,20 @@ import java.util.Calendar;
  */
 public class SetBal implements CommandExecutor {
     private final DCEPlugin app;
+    // The command usage
     private final String usage = "/setbal <username> <amount> | /setbal <amount>";
 
+    /**
+     * Constructor
+     * @param app - The main class
+     */
     public SetBal(DCEPlugin app) {
         this.app = app;
     }
 
+    /**
+     * Called everytime the command is called
+     */
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         // Ensure player
@@ -31,83 +39,58 @@ public class SetBal implements CommandExecutor {
             return true;
         }
 
-        Player from = (Player) sender;
+        // The command sender
+        Player player1 = (Player) sender;
 
         // Ensure command is enabled
         if (!(this.app.getConfig().getBoolean(this.app.getConfigManager().strComSetBal))) {
-            this.app.getConsoleManager().severe(from, "This command is not enabled.");
+            this.app.getConsoleManager().severe(player1, "This command is not enabled.");
             return true;
         }
 
         // Use case scenarios
         // command <amount> - applies amount to self
         // command <player> <amount> - applies amount to player
-        OfflinePlayer to;
-        boolean playerIsOffline = false;
+        OfflinePlayer player2;
         double amount;
 
         switch (args.length) {
             case 1:
                 // use case #1
-                to = from;
+                player2 = player1;
                 amount = Math.getDouble(args[0]);
                 break;
 
             case 2:
                 // use case #2
-                to = this.app.getServer().getPlayer(args[0]);
+                player2 = this.app.getServer().getPlayer(args[0]);
                 amount = Math.getDouble(args[1]);
-                if (to == null) {
-                    to = this.app.getPlayerManager().getOfflinePlayer(args[0], false);
-                    playerIsOffline = true;
+                if (player2 == null) {
+                    player2 = this.app.getPlayerManager().getOfflinePlayer(args[0], false);
                 }
                 break;
 
             default:
                 // Incorrect number of args
-                this.app.getConsoleManager().usage(from, "Incorrect number of arguments.", usage);
+                this.app.getConsoleManager().usage(player1, "Incorrect number of arguments.", usage);
                 return true;
         }
 
         // Ensure to player exists
-        if (to == null) {
-            this.app.getConsoleManager().usage(from, "Invalid player name.", usage);
-        } else {
+        if (player2 == null) {
+            this.app.getConsoleManager().usage(player1, "Invalid player name.", usage);
 
-            EconomyResponse response = this.app.getEconomyManager().setCash(to, amount);
-            double roundedBalance = this.app.getEconomyManager().round(response.balance);
+        } else {
+            EconomyResponse response = this.app.getEconomyManager().setCash(player2, amount);
+            double startingBalance = this.app.getEconomyManager().getBalance(player2);
 
             // Response messages
-            switch (response.type) {
-                case SUCCESS:
-                    // If to != from, respond.
-                    if (!(to == from)) {
-                        this.app.getConsoleManager().info(from, "You set " + to.getName() + "'s roundedBalance to £" + roundedBalance);
-                    }
-
-                    // If online send message
-                    if (!playerIsOffline) {
-                        this.app.getConsoleManager().info((Player) to, "Your balance was set to £" + roundedBalance + " by " + from.getName());
-
-                        // If offline --
-                    } else {
-                        String message = "You received £<roundedAmount> from <sourceName> <daysAgo> days ago. New Balance: £<roundedBalance>";
-                        Calendar date = Calendar.getInstance();
-                        String sourceUUID = from.getUniqueId().toString();
-                        MailList userMail = this.app.getMailManager().getMailList(to);
-                        Mail mail = userMail.createMail(amount, roundedBalance, message, date, sourceUUID, false);
-                        this.app.getConsoleManager().debug("Created mail(" + mail.getID() + ") for " + to.getName());
-                    }
-
-                    // Console feedback
-                    this.app.getConsoleManager().info(from.getName() + " set " + to.getName() + "'s balance to £" + roundedBalance);
-                    break;
-
-                case FAILURE:
-                    this.app.getConsoleManager().usage(from, response.errorMessage, usage);
-
-                default:
-                    this.app.getConsoleManager().warn("Balance Set error (" + from.getName() + "-->" + to.getName() + "): " + response.errorMessage);
+            if (response.type == EconomyResponse.ResponseType.SUCCESS) {
+                // Handles console, player and mail
+                this.app.getConsoleManager().logBalance(player1, player2, response.balance, startingBalance, String.format("balance set by %s", player1.getName()));
+            } else {
+                // Handles console, player and mail
+                this.app.getConsoleManager().logFailedBalance(player1, player2, startingBalance, response.balance, response.errorMessage);
             }
         }
         return true;
