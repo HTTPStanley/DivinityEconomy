@@ -2,7 +2,7 @@ package EDGRRRR.DCE.Commands.Market;
 
 import EDGRRRR.DCE.Main.DCEPlugin;
 import EDGRRRR.DCE.Materials.MaterialData;
-import EDGRRRR.DCE.Materials.MaterialValueResponse;
+import EDGRRRR.DCE.Response.ValueResponse;
 import EDGRRRR.DCE.Math.Math;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.command.Command;
@@ -73,7 +73,7 @@ public class HandBuy implements CommandExecutor {
 
                 } else {
                     ItemStack[] itemStacks = this.app.getPlayerInventoryManager().createItemStacks(materialData.getMaterial(), amountToBuy);
-                    MaterialValueResponse priceResponse = this.app.getMaterialManager().getBuyValue(itemStacks);
+                    ValueResponse priceResponse = this.app.getMaterialManager().getBuyValue(itemStacks);
                     EconomyResponse saleResponse = this.app.getEconomyManager().remCash(player, priceResponse.value);
                     if (saleResponse.transactionSuccess() && priceResponse.isSuccess()) {
                         this.app.getPlayerInventoryManager().addItemsToPlayer(player, itemStacks);
