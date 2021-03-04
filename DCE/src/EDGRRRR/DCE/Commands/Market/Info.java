@@ -3,7 +3,7 @@ package EDGRRRR.DCE.Commands.Market;
 import EDGRRRR.DCE.Main.DCEPlugin;
 import EDGRRRR.DCE.Materials.MaterialData;
 import EDGRRRR.DCE.Materials.MaterialPotionData;
-import EDGRRRR.DCE.Materials.MaterialValueResponse;
+import EDGRRRR.DCE.Response.ValueResponse;
 import EDGRRRR.DCE.Math.Math;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -56,8 +56,8 @@ public class Info implements CommandExecutor {
         if (material == null) {
             this.app.getConsoleManager().usage(from, "Unknown Item: " + materialName, this.usage);
         } else {
-            MaterialValueResponse userResponse = this.app.getMaterialManager().getBuyValue(this.app.getPlayerInventoryManager().createItemStacks(material.getMaterial(), amount));
-            MaterialValueResponse marketResponse = this.app.getMaterialManager().getSellValue(this.app.getPlayerInventoryManager().createItemStacks(material.getMaterial(), amount));
+            ValueResponse userResponse = this.app.getMaterialManager().getBuyValue(this.app.getPlayerInventoryManager().createItemStacks(material.getMaterial(), amount));
+            ValueResponse marketResponse = this.app.getMaterialManager().getSellValue(this.app.getPlayerInventoryManager().createItemStacks(material.getMaterial(), amount));
 
             double userPrice;
             double marketPrice;
