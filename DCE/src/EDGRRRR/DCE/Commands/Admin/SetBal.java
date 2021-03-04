@@ -77,8 +77,8 @@ public class SetBal implements CommandExecutor {
             this.app.getConsoleManager().usage(player1, "Invalid player name.", usage);
 
         } else {
-            EconomyResponse response = this.app.getEconomyManager().setCash(player2, amount);
             double startingBalance = this.app.getEconomyManager().getBalance(player2);
+            EconomyResponse response = this.app.getEconomyManager().setCash(player2, amount);
 
             // Response messages
             if (response.transactionSuccess()) {
