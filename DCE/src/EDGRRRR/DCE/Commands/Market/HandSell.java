@@ -2,8 +2,9 @@ package EDGRRRR.DCE.Commands.Market;
 
 import EDGRRRR.DCE.Main.DCEPlugin;
 import EDGRRRR.DCE.Materials.MaterialData;
-import EDGRRRR.DCE.Materials.MaterialValue;
+import EDGRRRR.DCE.Materials.MaterialValueResponse;
 import EDGRRRR.DCE.Math.Math;
+import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -80,26 +81,25 @@ public class HandSell implements CommandExecutor {
                 if (sellHand) {
                     amountToSell = heldItem.getAmount();
                 }
-                if (!materialData.getAllowed()) {
-                    this.app.getConsoleManager().usage(player, "Cannot sell" + materialData.getCleanName() + " when it is not allowed to be bought or sold", this.usage);
-                    this.app.getConsoleManager().warn(player.getName() + " couldn't sell " + materialData.getMaterialID() + " when it is not allowed to be bought or sold");
+                if (materialCount < amountToSell) {
+                    this.app.getConsoleManager().logFailedSale(player, amountToSell, 0.0, materialData.getCleanName(), String.format("you do not have enough of this material (%d/%d)", materialCount, amountToSell));
 
                 } else {
-                    if (materialCount < amountToSell) {
-                        this.app.getConsoleManager().usage(player, "Cannot sell " + amountToSell + " " + materialData.getCleanName() + " when you only have " + materialCount, this.usage);
-                        this.app.getConsoleManager().warn(player.getName() + " couldn't sell " + amountToSell + " " + materialData.getMaterialID() + " because they only have " + materialCount + " / " + amountToSell);
+                    ItemStack[] itemStacks = this.app.getPlayerInventoryManager().getMaterialSlotsToCount(player, material, amountToSell);
+                    MaterialValueResponse response = this.app.getMaterialManager().getSellValue(itemStacks);
 
-                    } else {
-                        ItemStack[] itemStacks = this.app.getPlayerInventoryManager().getMaterialSlotsToCount(player, material, amountToSell);
-                        MaterialValue response = this.app.getMaterialManager().getSellValue(itemStacks);
+                    if (response.getResponseType() == EconomyResponse.ResponseType.SUCCESS) {
                         this.app.getPlayerInventoryManager().removeMaterialsFromPlayer(itemStacks);
                         materialData.addQuantity(amountToSell);
                         this.app.getEconomyManager().addCash(player, response.getValue());
                         double cost = app.getEconomyManager().round(response.getValue());
                         double balance = app.getEconomyManager().round(app.getEconomyManager().getBalance(player));
 
-                        this.app.getConsoleManager().info(player, "Sold " + amountToSell + " " + materialData.getCleanName() + " for £" + cost + ". New Balance: £" + balance);
-                        this.app.getConsoleManager().info(player.getName() + " sold " + amountToSell + " " + materialData.getMaterialID() + " for £" + cost);
+                        // Handles console, player message and mail
+                        this.app.getConsoleManager().logSale(player, amountToSell, response.value, materialData.getCleanName());
+                    } else {
+                        // Handles console, player message and mail
+                        this.app.getConsoleManager().logFailedSale(player, amountToSell, response.value, materialData.getCleanName(), response.errorMessage);
                     }
                 }
             }
