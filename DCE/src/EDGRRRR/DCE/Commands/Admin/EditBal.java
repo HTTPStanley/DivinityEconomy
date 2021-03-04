@@ -97,7 +97,7 @@ public class EditBal implements CommandExecutor {
 
 
                 // Handles sender, receiver, message, mail and console log
-                if (response.type == EconomyResponse.ResponseType.SUCCESS) {
+                if (response.transactionSuccess()) {
                     this.app.getConsoleManager().logBalance(player1, player2, startingBalance, response.balance, String.format("%s changed your balance", player1.getName()));
                 } else {
                     this.app.getConsoleManager().logFailedBalance(player1, player2, startingBalance, response.balance, response.errorMessage);
