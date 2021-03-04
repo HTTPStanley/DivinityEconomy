@@ -7,7 +7,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
@@ -15,14 +14,21 @@ import java.util.HashMap;
 public class MaterialManager {
     // Link back to Main
     private final DCEPlugin app;
+    // Save time scheduler
     private final BukkitRunnable saveTimer;
     // Stores the default items.json file location
     private final String materialsFile = "materials.yml";
     private final String aliasesFile = "aliases.yml";
+    // Stores the materials and the aliases
     public HashMap<String, String> aliases;
     public HashMap<String, MaterialData> materials;
-    public int totalMaterials;
-    public int baseTotalMaterials;
+    // Used for calculating inflation/deflation
+    private int totalMaterials;
+    private int defaultTotalMaterials;
+    // Other settings
+    private final double materialBuyTax;
+    private final double materialSellTax;
+    private final double materialBaseQuantity;
     // Stores items
     private FileConfiguration config;
 
@@ -34,11 +40,14 @@ public class MaterialManager {
      */
     public MaterialManager(DCEPlugin app) {
         this.app = app;
-        int timer = Math.getTicks(this.app.getConfig().getInt(this.app.getConfigManager().strMainSaveTimer));
+        this.materialBuyTax = this.app.getConfig().getDouble(this.app.getConfigManager().strMaterialBuyTax);
+        this.materialSellTax = this.app.getConfig().getDouble(this.app.getConfigManager().strMaterialSellTax);
+        this.materialBaseQuantity = this.app.getConfig().getInt(this.app.getConfigManager().strMaterialBaseQuantity);
+        int timer = Math.getTicks(this.app.getConfig().getInt(this.app.getConfigManager().strMarketSaveTimer));
         this.saveTimer = new BukkitRunnable() {
             @Override
             public void run() {
-                saveAll();
+                saveMaterials();
             }
         };
         this.saveTimer.runTaskTimer(this.app, timer, timer);
@@ -94,20 +103,20 @@ public class MaterialManager {
      * @param itemStacks - The items to calculate the price for
      * @return MaterialValue - The value of the items, or not if an error occurred.
      */
-    public MaterialValue getSellValue(ItemStack[] itemStacks) {
+    public MaterialValueResponse getSellValue(ItemStack[] itemStacks) {
         double value = 0.0;
 
         // Loop through items and add up the sell value of each item
         for (ItemStack itemStack : itemStacks) {
-            MaterialValue mv = this.getSellValue(itemStack);
-            if (mv.getResponseType() == ResponseType.SUCCESS) {
-                value += mv.getValue();
+            MaterialValueResponse mv = this.getSellValue(itemStack);
+            if (mv.isSuccess()) {
+                value += mv.value;
             } else {
-                return new MaterialValue(0.0, mv.getErrorMessage(), mv.getResponseType());
+                return new MaterialValueResponse(0.0, mv.errorMessage, mv.responseType);
             }
         }
 
-        return new MaterialValue(value, "", ResponseType.SUCCESS);
+        return new MaterialValueResponse(value, "", ResponseType.SUCCESS);
     }
 
     /**
@@ -116,25 +125,27 @@ public class MaterialManager {
      * @param itemStack - The itemStack to get the value of
      * @return MaterialValue - The price of the itemstack if no errors occurred.
      */
-    public MaterialValue getSellValue(ItemStack itemStack) {
-        ItemMeta meta = itemStack.getItemMeta();
+    public MaterialValueResponse getSellValue(ItemStack itemStack) {
         double scale = 1.0;
-        MaterialValue response;
+        MaterialValueResponse response;
 
-        if (meta != null) {
-            if (meta.getEnchants().size() > 0) {
-                response = new MaterialValue(0.0, "Cannot sell enchanted items.", ResponseType.FAILURE);
+        if (this.app.getEnchantmentManager().isEnchanted(itemStack)) {
+            response = new MaterialValueResponse(0.0, "item is enchanted.", ResponseType.FAILURE);
+
+        } else {
+            MaterialData materialData = this.getMaterial(itemStack.getType().name());
+
+            if (materialData == null) {
+                response = new MaterialValueResponse(0.0, "item cannot be found.", ResponseType.FAILURE);
             } else {
-                MaterialData materialData = this.getMaterial(itemStack.getType().name());
-                if (materialData == null) {
-                    response = new MaterialValue(0.0, "Item cannot be found.", ResponseType.FAILURE);
+                if (!materialData.getAllowed()) {
+                    response = new MaterialValueResponse(0.0, "item is banned.", ResponseType.FAILURE);
                 } else {
-                    response = new MaterialValue(this.calculatePrice(itemStack.getAmount(), materialData.getQuantity(), (scale * this.getDamageValue(itemStack)), false), "", ResponseType.SUCCESS);
+                    response = new MaterialValueResponse(this.calculatePrice(itemStack.getAmount(), materialData.getQuantity(), (scale * this.getDamageValue(itemStack)), false), "", ResponseType.SUCCESS);
                 }
             }
-        } else {
-            response = new MaterialValue(0.0, "Item is not supported.", ResponseType.FAILURE);
         }
+
         return response;
     }
 
@@ -144,18 +155,18 @@ public class MaterialManager {
      * @param itemStacks - The items to get the price for
      * @return MaterialValue
      */
-    public MaterialValue getBuyValue(ItemStack[] itemStacks) {
+    public MaterialValueResponse getBuyValue(ItemStack[] itemStacks) {
         double value = 0.0;
         for (ItemStack itemStack : itemStacks) {
-            MaterialValue mv = this.getBuyValue(itemStack);
-            if (mv.getResponseType() == ResponseType.SUCCESS) {
-                value += mv.getValue();
+            MaterialValueResponse mv = this.getBuyValue(itemStack);
+            if (mv.isSuccess()) {
+                value += mv.value;
             } else {
-                return new MaterialValue(0.0, mv.getErrorMessage(), mv.getResponseType());
+                return new MaterialValueResponse(0.0, mv.errorMessage, mv.responseType);
             }
         }
 
-        return new MaterialValue(value, "", ResponseType.SUCCESS);
+        return new MaterialValueResponse(value, "", ResponseType.SUCCESS);
     }
 
     /**
@@ -164,16 +175,20 @@ public class MaterialManager {
      * @param itemStack - The item stack to get the value of
      * @return MaterialValue
      */
-    public MaterialValue getBuyValue(ItemStack itemStack) {
-        double scale = this.app.getEconomyManager().tax;
-        MaterialValue response;
+    public MaterialValueResponse getBuyValue(ItemStack itemStack) {
+        MaterialValueResponse response;
 
         MaterialData materialData = this.getMaterial(itemStack.getType().name());
         if (materialData == null) {
-            response = new MaterialValue(0.0, "Item cannot be found.", ResponseType.FAILURE);
+            response = new MaterialValueResponse(0.0, "item cannot be found.", ResponseType.FAILURE);
         } else {
-            response = new MaterialValue(this.calculatePrice(itemStack.getAmount(), materialData.getQuantity(), scale, true), "", ResponseType.SUCCESS);
+            if (!materialData.getAllowed()) {
+                response = new MaterialValueResponse(0.0, "item cannot be bought or sold.", ResponseType.FAILURE);
+            } else {
+                response = new MaterialValueResponse(this.calculatePrice(itemStack.getAmount(), materialData.getQuantity(), materialBuyTax, true), "", ResponseType.SUCCESS);
+            }
         }
+
         return response;
     }
 
@@ -183,8 +198,8 @@ public class MaterialManager {
      * @param stock - The stock of the material
      * @return double
      */
-    public double getMarketPrice(int stock) {
-        return this.calculatePrice(1, stock, 1.0, false);
+    public double getMarketPrice(double stock) {
+        return this.getPrice(stock, this.materialSellTax, this.getInflation());
     }
 
 
@@ -194,12 +209,13 @@ public class MaterialManager {
      * @param stock - The stock of the material
      * @return double
      */
-    public double getUserPrice(int stock) {
-        return this.calculatePrice(1, stock, this.app.getEconomyManager().tax, true);
+    public double getUserPrice(double stock) {
+        return this.getPrice(stock, this.materialBuyTax, this.getInflation());
     }
 
     /**
-     * Calculates the price of a material
+     * Calculates the price of a material * amount
+     * This is not the same as price * amount -- Factors in price change and inflation change during purchase
      *
      * @param amount   - The amount to calculate the price for
      * @param stock    - The stock of the material
@@ -207,28 +223,8 @@ public class MaterialManager {
      * @param purchase - Whether this is a purchase from or sale to the market
      * @return double
      */
-    private double calculatePrice(int amount, int stock, double scale, boolean purchase) {
-        double value = 0;
-        int materials = this.totalMaterials;
-
-        // Loop for amount
-        // Get the price and add it to the value
-        // if purchase = true
-        // remove 1 stock to simulate decrease
-        // if purchase = false
-        // add 1 stock to simulate increase
-        for (int i = 1; i <= amount; i++) {
-            value += this.calculatePrice(stock, scale, Math.getInflation(this.baseTotalMaterials, materials));
-            if (purchase) {
-                stock -= 1;
-                materials -= 1;
-            } else {
-                stock += 1;
-                materials += 1;
-            }
-        }
-
-        return value;
+    public double calculatePrice(double amount, double stock, double scale, boolean purchase) {
+        return Math.calculatePrice(this.materialBaseQuantity, stock, this.defaultTotalMaterials, this.totalMaterials, amount, scale, purchase);
     }
 
     /**
@@ -240,18 +236,8 @@ public class MaterialManager {
      * @param inflation - The level of inflation
      * @return double - The price of the material
      */
-    private double calculatePrice(int stock, double scale, double inflation) {
-        // Price breakdown
-        // Prices were balanced in data.csv
-        // Prices are determined by quantity
-        // Price = $1 @ 1000000 (1 million) items
-        // Price = $2 @ 500000 (5 hundred-thousand) items
-        // Price is then scaled - such as the addition of tax (20% by default)
-        // Price is then scaled for inflation
-        // Inflation works by calculating the default total items and dividing it by the new total items
-        // This results in an increase in price when there are less items in the market than default
-        // Or a decrease in price when there are more items in the market than default
-        return (this.app.getEconomyManager().baseQuantity / (double) stock) * scale * inflation;
+    public double getPrice(double stock, double scale, double inflation) {
+        return Math.getPrice(this.materialBaseQuantity, stock, scale, inflation);
     }
 
     /**
@@ -263,7 +249,7 @@ public class MaterialManager {
      * @return int - The level of stock required for this price.
      */
     public int calculateStock(double price, double scale, double inflation) {
-        return (int) ((int) (this.app.getEconomyManager().baseQuantity / price) * scale * inflation);
+        return (int) ((int) (this.materialBaseQuantity / price) * scale * inflation);
     }
 
     /**
@@ -272,7 +258,7 @@ public class MaterialManager {
      * @return double - The level of inflation
      */
     public double getInflation() {
-        return Math.getInflation(this.baseTotalMaterials, this.totalMaterials);
+        return Math.getInflation(this.defaultTotalMaterials, this.totalMaterials);
     }
 
     /**
@@ -281,8 +267,16 @@ public class MaterialManager {
      *
      * @param amount - The amount to add or remove. Negative to remove.
      */
-    public void editItems(int amount) {
+    public void editTotalMaterials(int amount) {
         this.totalMaterials += amount;
+    }
+
+    public int getTotalMaterials() {
+        return totalMaterials;
+    }
+
+    public int getDefaultTotalMaterials() {
+        return defaultTotalMaterials;
     }
 
     /**
@@ -307,7 +301,7 @@ public class MaterialManager {
         this.config = this.app.getConfigManager().loadConfig(this.materialsFile);
         FileConfiguration defaultConf = this.app.getConfigManager().readResource(this.materialsFile);
         // Set material counts
-        this.baseTotalMaterials = 0;
+        this.defaultTotalMaterials = 0;
         this.totalMaterials = 0;
         // Create a HashMap to store the values
         HashMap<String, MaterialData> values = new HashMap<>();
@@ -317,13 +311,13 @@ public class MaterialManager {
             ConfigurationSection data = this.config.getConfigurationSection(key);
             ConfigurationSection defaultData = defaultConf.getConfigurationSection(key);
             MaterialData mData = new MaterialData(this, data, defaultData);
-            this.baseTotalMaterials += mData.getDefaultQuantity();
+            this.defaultTotalMaterials += mData.getDefaultQuantity();
             this.totalMaterials += mData.getQuantity();
             values.put(key, mData);
         }
         // Copy values into materials
         this.materials = values;
-        this.app.getConsoleManager().info("Loaded " + values.size() + "(" + this.totalMaterials + "/" + this.baseTotalMaterials + ") materials from " + this.materialsFile);
+        this.app.getConsoleManager().info("Loaded " + values.size() + "(" + this.totalMaterials + "/" + this.defaultTotalMaterials + ") materials from " + this.materialsFile);
     }
 
     /**
@@ -349,18 +343,18 @@ public class MaterialManager {
      * Loops through the materials and saves their data to the config
      * Then saves the config to the config file
      */
-    public void saveAll() {
+    public void saveMaterials() {
         for (MaterialData materialD : materials.values()) {
             this.saveMaterial(materialD);
         }
-        this.saveMaterials();
+        this.saveFile();
         this.app.getConsoleManager().info("Materials saved.");
     }
 
     /**
      * Saves the config to the config file
      */
-    public void saveMaterials() {
+    public void saveFile() {
         this.app.getConfigManager().saveFile(this.config, this.materialsFile);
     }
 }
