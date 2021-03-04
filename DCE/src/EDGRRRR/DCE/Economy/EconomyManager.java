@@ -172,27 +172,32 @@ public class EconomyManager {
         EconomyTransferResponse response;
         double fromBalance = this.getBalance(from);
         double toBalance = this.getBalance(to);
-        // Ensure amount is above or equal to the minimum send amount
-        if (amount < this.minSendAmount) {
-            response = new EconomyTransferResponse(fromBalance, toBalance, 0.0, ResponseType.FAILURE, String.format("cannot send less than £%f", this.minSendAmount));
+
+        if (from == to) {
+            response = new EconomyTransferResponse(fromBalance, toBalance, 0.0, ResponseType.FAILURE, "cannot send money to yourself!");
         } else {
-
-            // Take money from sender
-            EconomyResponse takeResponse = this.remCash(from, amount);
-            if (takeResponse.type == ResponseType.FAILURE) {
-                response = new EconomyTransferResponse(fromBalance, toBalance, 0.0, ResponseType.FAILURE, takeResponse.errorMessage);
-
+            // Ensure amount is above or equal to the minimum send amount
+            if (amount < this.minSendAmount) {
+                response = new EconomyTransferResponse(fromBalance, toBalance, 0.0, ResponseType.FAILURE, String.format("cannot send less than £%f", this.minSendAmount));
             } else {
 
-                // Send money to receiver
-                EconomyResponse sendResponse = this.addCash(to, amount);
-                if (sendResponse.type == ResponseType.FAILURE) {
-                    // Since takeResponse was a success
-                    // We have to reset their balance
-                    this.setCash(from, fromBalance);
-                    response = new EconomyTransferResponse(this.getBalance(from), toBalance, 0.0, ResponseType.FAILURE, sendResponse.errorMessage);
+                // Take money from sender
+                EconomyResponse takeResponse = this.remCash(from, amount);
+                if (takeResponse.type == ResponseType.FAILURE) {
+                    response = new EconomyTransferResponse(fromBalance, toBalance, 0.0, ResponseType.FAILURE, takeResponse.errorMessage);
+
                 } else {
-                    response = new EconomyTransferResponse(this.getBalance(from), this.getBalance(from), amount, ResponseType.SUCCESS, "");
+
+                    // Send money to receiver
+                    EconomyResponse sendResponse = this.addCash(to, amount);
+                    if (sendResponse.type == ResponseType.FAILURE) {
+                        // Since takeResponse was a success
+                        // We have to reset their balance
+                        this.setCash(from, fromBalance);
+                        response = new EconomyTransferResponse(this.getBalance(from), toBalance, 0.0, ResponseType.FAILURE, sendResponse.errorMessage);
+                    } else {
+                        response = new EconomyTransferResponse(this.getBalance(from), this.getBalance(from), amount, ResponseType.SUCCESS, "");
+                    }
                 }
             }
         }
