@@ -62,18 +62,13 @@ public class SendCash implements CommandExecutor {
             this.app.getConsoleManager().usage(from, "Invalid player name.", usage);
 
         } else {
-            if (to == from) {
-                this.app.getConsoleManager().usage(from, "You can't send money to yourself (╯°□°）╯︵ ┻━┻", usage);
+            EconomyTransferResponse response = this.app.getEconomyManager().sendCash(from, to, amount);
 
+            // Handles console, message and mail
+            if (response.responseType == EconomyResponse.ResponseType.SUCCESS) {
+                this.app.getConsoleManager().logTransfer(from, to, amount);
             } else {
-                EconomyTransferResponse response = this.app.getEconomyManager().sendCash(from, to, amount);
-
-                // Handles console, message and mail
-                if (response.responseType == EconomyResponse.ResponseType.SUCCESS) {
-                    this.app.getConsoleManager().logTransfer(from, to, amount);
-                } else {
-                    this.app.getConsoleManager().logFailedTransfer(from, to, amount, response.errorMessage);
-                }
+                this.app.getConsoleManager().logFailedTransfer(from, to, amount, response.errorMessage);
             }
         }
 
