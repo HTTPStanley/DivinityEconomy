@@ -74,8 +74,8 @@ public class HandBuy implements CommandExecutor {
                 } else {
                     ItemStack[] itemStacks = this.app.getPlayerInventoryManager().createItemStacks(materialData.getMaterial(), amountToBuy);
                     MaterialValueResponse priceResponse = this.app.getMaterialManager().getBuyValue(itemStacks);
-                    EconomyResponse saleResponse = this.app.getEconomyManager().remCash(player, priceResponse.getValue());
-                    if (saleResponse.type == EconomyResponse.ResponseType.SUCCESS && priceResponse.getResponseType() == EconomyResponse.ResponseType.SUCCESS) {
+                    EconomyResponse saleResponse = this.app.getEconomyManager().remCash(player, priceResponse.value);
+                    if (saleResponse.transactionSuccess() && priceResponse.isSuccess()) {
                         this.app.getPlayerInventoryManager().addItemsToPlayer(player, itemStacks);
                         materialData.remQuantity(amountToBuy);
 
@@ -84,15 +84,12 @@ public class HandBuy implements CommandExecutor {
 
 
                     } else {
-                        String errorMessage;
-                        if (saleResponse.type == EconomyResponse.ResponseType.FAILURE) {
+                        String errorMessage = "unknown error";
+                        if (!saleResponse.transactionSuccess()) {
                             errorMessage = saleResponse.errorMessage;
                         }
-                        else if (priceResponse.getResponseType() == EconomyResponse.ResponseType.FAILURE) {
-                            errorMessage = priceResponse.getErrorMessage();
-                        }
-                        else {
-                            errorMessage = "¯\\_(ツ)_/¯";
+                        else if (priceResponse.isFailure()) {
+                            errorMessage = priceResponse.errorMessage;
                         }
 
                         // Handles console, message and mail
