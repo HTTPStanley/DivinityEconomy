@@ -2,7 +2,7 @@ package EDGRRRR.DCE.Commands.Market;
 
 import EDGRRRR.DCE.Main.DCEPlugin;
 import EDGRRRR.DCE.Materials.MaterialData;
-import EDGRRRR.DCE.Materials.MaterialValueResponse;
+import EDGRRRR.DCE.Response.ValueResponse;
 import EDGRRRR.DCE.Math.Math;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -58,8 +58,8 @@ public class Value implements CommandExecutor {
             this.app.getConsoleManager().usage(from, "Unknown Item: " + materialName, usage);
         } else {
             ItemStack[] itemStacks = this.app.getPlayerInventoryManager().createItemStacks(materialData.getMaterial(), amount);
-            MaterialValueResponse priceResponse = this.app.getMaterialManager().getBuyValue(itemStacks);
-            MaterialValueResponse secondPriceResponse = this.app.getMaterialManager().getSellValue(itemStacks);
+            ValueResponse priceResponse = this.app.getMaterialManager().getBuyValue(itemStacks);
+            ValueResponse secondPriceResponse = this.app.getMaterialManager().getSellValue(itemStacks);
 
             if (priceResponse.isSuccess()) {
                 this.app.getConsoleManager().info(from, "Buy: " + amount + " " + materialData.getCleanName() + " costs £" + this.app.getEconomyManager().round(priceResponse.value));
