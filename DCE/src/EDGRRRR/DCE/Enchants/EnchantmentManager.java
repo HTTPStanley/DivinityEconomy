@@ -2,6 +2,7 @@ package EDGRRRR.DCE.Enchants;
 
 import EDGRRRR.DCE.Main.DCEPlugin;
 import EDGRRRR.DCE.Math.Math;
+import EDGRRRR.DCE.Response.ValueResponse;
 import com.sun.istack.internal.NotNull;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.configuration.ConfigurationSection;
@@ -138,23 +139,23 @@ public class EnchantmentManager {
      * @return EnchantValueResponse - The value of the enchant
      */
     @NotNull
-    public EnchantValueResponse getBuyValue(String enchantID, Integer level) {
+    public ValueResponse getBuyValue(String enchantID, Integer level) {
         EnchantData enchantData = this.getEnchant(enchantID);
-        EnchantValueResponse response;
+        ValueResponse response;
         if (enchantData == null) {
-            response = new EnchantValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, enchantID + " does not exist.");
+            response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, enchantID + " does not exist.");
         } else {
             if (!(enchantData.getAllowed())) {
-                response = new EnchantValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, "enchant is banned.");
+                response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, "enchant is banned.");
             } else {
                 if (enchantData.getMaxLevel() < level) {
-                    response = new EnchantValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, "level is above max("+enchantData.getMaxLevel()+")");
+                    response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, "level is above max("+enchantData.getMaxLevel()+")");
                 } else {
                     if (this.getEnchantAmount(level) > enchantData.getQuantity()) {
-                        response = new EnchantValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, "not enough stock.");
+                        response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, "not enough stock.");
                     } else {
                         double price = this.calculatePrice(this.getEnchantAmount(level), enchantData.getQuantity(), this.enchantBuyTax, false);
-                        response = new EnchantValueResponse(price, EconomyResponse.ResponseType.SUCCESS, "");
+                        response = new ValueResponse(price, EconomyResponse.ResponseType.SUCCESS, "");
                     }
                 }
             }
