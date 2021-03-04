@@ -2,7 +2,7 @@ package EDGRRRR.DCE.Commands.Market;
 
 import EDGRRRR.DCE.Main.DCEPlugin;
 import EDGRRRR.DCE.Materials.MaterialData;
-import EDGRRRR.DCE.Materials.MaterialValueResponse;
+import EDGRRRR.DCE.Response.ValueResponse;
 import EDGRRRR.DCE.Math.Math;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -85,8 +85,8 @@ public class HandValue implements CommandExecutor {
                     buyStacks = sellStacks;
                 }
 
-                MaterialValueResponse buyResponse = this.app.getMaterialManager().getBuyValue(buyStacks);
-                MaterialValueResponse sellResponse = this.app.getMaterialManager().getSellValue(sellStacks);
+                ValueResponse buyResponse = this.app.getMaterialManager().getBuyValue(buyStacks);
+                ValueResponse sellResponse = this.app.getMaterialManager().getSellValue(sellStacks);
 
                 if (buyResponse.isSuccess()) {
                     this.app.getConsoleManager().info(player, "Buy: " + amount + " " + materialData.getCleanName() + " costs £" + this.app.getEconomyManager().round(buyResponse.value));
