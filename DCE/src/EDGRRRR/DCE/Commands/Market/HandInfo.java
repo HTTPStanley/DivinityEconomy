@@ -3,7 +3,7 @@ package EDGRRRR.DCE.Commands.Market;
 import EDGRRRR.DCE.Main.DCEPlugin;
 import EDGRRRR.DCE.Materials.MaterialData;
 import EDGRRRR.DCE.Materials.MaterialPotionData;
-import EDGRRRR.DCE.Materials.MaterialValue;
+import EDGRRRR.DCE.Materials.MaterialValueResponse;
 import EDGRRRR.DCE.Math.Math;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Material;
@@ -61,8 +61,8 @@ public class HandInfo implements CommandExecutor {
                 Material material = heldItem.getType();
                 MaterialData materialData = this.app.getMaterialManager().getMaterial(material.name());
                 ItemStack[] itemStacks = this.app.getPlayerInventoryManager().createItemStacks(material, amount);
-                MaterialValue userResponse = this.app.getMaterialManager().getBuyValue(itemStacks);
-                MaterialValue marketResponse = this.app.getMaterialManager().getSellValue(itemStacks);
+                MaterialValueResponse userResponse = this.app.getMaterialManager().getBuyValue(itemStacks);
+                MaterialValueResponse marketResponse = this.app.getMaterialManager().getSellValue(itemStacks);
 
                 double userPrice;
                 double marketPrice;
