@@ -142,6 +142,49 @@ commands:
     permission-message: You do not have permission to use this command
     usage: ""
 
+  eHandSell:
+    description: Sells an enchant on an item.
+    aliases: [ehs]
+    permission: dce.enchant.eHandSell
+    permission-messaage: You do not have permission to use this command
+    usage: ""
+
+  eHandBuy:
+    description: Buys an enchant for an item.
+    aliases: [ ehb ]
+    permission: dce.enchant.eHandBuy
+    permission-messaage: You do not have permission to use this command
+    usage: ""
+
+  eSell:
+    description: Sells enchants from the players inventory.
+    aliases: []
+    permission: dce.enchant.eSell
+    permission-messaage: You do not have permission to use this command
+    usage: ""
+
+  eBuy:
+    description: Buys an enchant for the players inventory.
+    aliases: [ eb ]
+    permission: dce.enchant.eBuy
+    permission-messaage: You do not have permission to use this command
+    usage: ""
+
+  eHandValue:
+    description: Values the enchants on the item in the players hand.
+    aliases: [ ehv ]
+    permission: dce.enchant.eHandValue
+    permission-messaage: You do not have permission to use this command
+    usage: ""
+
+  eValue:
+    description: Values an enchant.
+    aliases: [ eval ]
+    permission: dce.enchant.eValue
+    permission-messaage: You do not have permission to use this command
+    usage: ""
+
+
   # Admin commands
   editbal:
     description: Allows the user to manipulate a users balance, including their own.
