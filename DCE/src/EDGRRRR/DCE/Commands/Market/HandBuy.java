@@ -68,8 +68,7 @@ public class HandBuy implements CommandExecutor {
 
                 int availableSpace = this.app.getPlayerInventoryManager().getAvailableSpace(player, materialData.getMaterial());
                 if (amountToBuy > availableSpace) {
-                    this.app.getConsoleManager().usage(player, "You only have space for " + availableSpace + " " + materialData.getCleanName(), this.usage);
-                    this.app.getConsoleManager().debug(player.getName() + " couldn't buy " + materialData.getMaterialID() + " because they only have space for " + availableSpace + " " + materialData.getCleanName());
+                    this.app.getConsoleManager().logFailedPurchase(player, amountToBuy, 0.0, materialData.getCleanName(), String.format("missing inventory space (%d/%d)", availableSpace, amountToBuy));
 
                 } else {
                     ItemStack[] itemStacks = this.app.getPlayerInventoryManager().createItemStacks(materialData.getMaterial(), amountToBuy);
