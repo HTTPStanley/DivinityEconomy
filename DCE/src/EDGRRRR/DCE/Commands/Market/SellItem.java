@@ -29,17 +29,17 @@ public class SellItem implements CommandExecutor {
             return true;
         }
 
-        Player from = (Player) sender;
+        Player player = (Player) sender;
 
         // Ensure command is enabled
         if (!(this.app.getConfig().getBoolean(this.app.getConfigManager().strComSellItem))) {
-            this.app.getConsoleManager().severe(from, "This command is not enabled.");
+            this.app.getConsoleManager().severe(player, "This command is not enabled.");
             return true;
         }
 
         String materialName;
         boolean sellAll = false;
-        int amount = 1;
+        int amountToSell = 1;
 
         switch (args.length) {
             // Just material, used default amount of 1
@@ -53,49 +53,49 @@ public class SellItem implements CommandExecutor {
                 if (args[1].equals("max")) {
                     sellAll = true;
                 } else {
-                    amount = Math.getInt(args[1]);
+                    amountToSell = Math.getInt(args[1]);
                 }
                 break;
 
             default:
-                this.app.getConsoleManager().usage(from, "Invalid number of arguments.", usage);
+                this.app.getConsoleManager().usage(player, "Invalid number of arguments.", usage);
                 return true;
         }
 
-        if (amount < 1) {
-            this.app.getConsoleManager().usage(from, "Invalid amount.", this.usage);
+        if (amountToSell < 1) {
+            this.app.getConsoleManager().usage(player, "Invalid amount.", this.usage);
             this.app.getConsoleManager().debug("(SellItem)Invalid item amount: " + materialName);
 
         } else {
             MaterialData materialData = this.app.getMaterialManager().getMaterial(materialName);
             if (materialData == null) {
-                this.app.getConsoleManager().usage(from, "Unknown Item: '" + materialName + "'", "");
+                this.app.getConsoleManager().usage(player, "Unknown Item: '" + materialName + "'", "");
                 this.app.getConsoleManager().debug("(SellItem)Unknown item search: " + materialName);
 
             } else {
                 Material material = materialData.getMaterial();
-                ItemStack[] totalUserMaterials = this.app.getPlayerInventoryManager().getMaterialSlots(from, material);
+                ItemStack[] totalUserMaterials = this.app.getPlayerInventoryManager().getMaterialSlots(player, material);
                 int userAmount = this.app.getPlayerInventoryManager().getMaterialCount(totalUserMaterials);
 
                 if (sellAll) {
-                    amount = userAmount;
+                    amountToSell = userAmount;
                 }
 
-                ItemStack[] itemStacks = this.app.getPlayerInventoryManager().getMaterialSlotsToCount(from, material, amount);
+                ItemStack[] itemStacks = this.app.getPlayerInventoryManager().getMaterialSlotsToCount(player, material, amountToSell);
                 ValueResponse valueResponse = this.app.getMaterialManager().getSellValue(itemStacks);
 
                 if (valueResponse.isFailure()) {
-                    this.app.getConsoleManager().logFailedSale(from, amount, valueResponse.value, materialData.getCleanName(), valueResponse.errorMessage);
+                    this.app.getConsoleManager().logFailedSale(player, amountToSell, valueResponse.value, materialData.getCleanName(), valueResponse.errorMessage);
 
                 } else {
-                    if (userAmount >= amount) {
+                    if (userAmount >= amountToSell) {
                         this.app.getPlayerInventoryManager().removeMaterialsFromPlayer(itemStacks);
-                        materialData.addQuantity(amount);
-                        this.app.getEconomyManager().addCash(from, valueResponse.value);
+                        materialData.addQuantity(amountToSell);
+                        this.app.getEconomyManager().addCash(player, valueResponse.value);
 
-                        this.app.getConsoleManager().logSale(from, amount, valueResponse.value, materialData.getCleanName());
+                        this.app.getConsoleManager().logSale(player, amountToSell, valueResponse.value, materialData.getCleanName());
                     } else {
-                        this.app.getConsoleManager().logFailedSale(from, amount, valueResponse.value, materialData.getCleanName(), String.format("you do not have enough of this material. (%d/%d)", userAmount, amount));
+                        this.app.getConsoleManager().logFailedSale(player, amountToSell, valueResponse.value, materialData.getCleanName(), String.format("you do not have enough of this material. (%d/%d)", userAmount, amountToSell));
                     }
                 }
             }
