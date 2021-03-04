@@ -1,15 +1,47 @@
 package EDGRRRR.DCE.PlayerManager;
 
 import EDGRRRR.DCE.Main.DCEPlugin;
+import com.sun.istack.internal.NotNull;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.craftbukkit.libs.jline.internal.Nullable;
+import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
+/**
+ * A class for managing players
+ */
 public class PlayerManager {
     private final DCEPlugin app;
 
+    /**
+     * Constructor
+     * @param app - The main class
+     */
     public PlayerManager(DCEPlugin app) {
         this.app = app;
+    }
+
+
+    /**
+     * If the player is online or offline
+     * Equal to player.getPlayer() == null
+     * @param player - The player to check
+     * @return boolean
+     */
+    @NotNull
+    public boolean playerIsOnline(OfflinePlayer player) {
+        return (player.getPlayer() == null);
+    }
+
+    /**
+     * The player, if they are online
+     * @param player - The player
+     * @return Player
+     */
+    @Nullable
+    public Player getPlayer(OfflinePlayer player) {
+        return player.getPlayer();
     }
 
     /**
@@ -21,21 +53,26 @@ public class PlayerManager {
      * @param allowFetch - Uses deprecated "bukkit.getOfflinePlayer".
      * @return OfflinePlayer - the player corresponding to the name.
      */
+    @Nullable
     public OfflinePlayer getOfflinePlayer(String name, boolean allowFetch) {
+        OfflinePlayer player = null;
         name = name.trim().toLowerCase();
         OfflinePlayer[] oPlayers = this.app.getServer().getOfflinePlayers();
         for (OfflinePlayer oPlayer : oPlayers) {
             String oPlayerName = oPlayer.getName().trim().toLowerCase();
             if (oPlayerName.equals(name)) {
-                return oPlayer;
+                player = oPlayer;
+                break;
             }
         }
 
-        if (allowFetch) {
-            return this.app.getServer().getOfflinePlayer(name);
+        if (allowFetch && (player == null)) {
+            player = this.app.getServer().getOfflinePlayer(name);
         } else {
-            return null;
+            player = null;
         }
+
+        return player;
     }
 
     /**
@@ -46,6 +83,7 @@ public class PlayerManager {
      * @param allowFetch - Whether to scan the web or not
      * @return OfflinePlayer - can be null.
      */
+    @Nullable
     public OfflinePlayer getOfflinePlayerByUUID(String uuid, boolean allowFetch) {
         return this.getOfflinePlayerByUUID(UUID.fromString(uuid), allowFetch);
     }
@@ -58,18 +96,23 @@ public class PlayerManager {
      * @param allowFetch - Whether to scan the web or not
      * @return OfflinePlayer - can be null.
      */
+    @Nullable
     public OfflinePlayer getOfflinePlayerByUUID(UUID uuid, boolean allowFetch) {
+        OfflinePlayer player = null;
         OfflinePlayer[] offlinePlayers = this.app.getServer().getOfflinePlayers();
         for (OfflinePlayer oPlayer : offlinePlayers) {
             if (oPlayer.getUniqueId().equals(uuid)) {
-                return oPlayer;
+                player = oPlayer;
+                break;
             }
         }
 
-        if (allowFetch) {
-            return this.app.getServer().getOfflinePlayer(uuid);
+        if (allowFetch && (player == null)) {
+            player = this.app.getServer().getOfflinePlayer(uuid);
         } else {
-            return null;
+            player =  null;
         }
+
+        return player;
     }
 }
