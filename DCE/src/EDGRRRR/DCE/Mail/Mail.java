@@ -1,6 +1,5 @@
 package EDGRRRR.DCE.Mail;
 
-import EDGRRRR.DCE.Main.DCEPlugin;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.time.Duration;
