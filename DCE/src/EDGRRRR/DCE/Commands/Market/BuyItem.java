@@ -5,7 +5,6 @@ import EDGRRRR.DCE.Materials.MaterialData;
 import EDGRRRR.DCE.Materials.MaterialValueResponse;
 import EDGRRRR.DCE.Math.Math;
 import net.milkbowl.vault.economy.EconomyResponse;
-import net.milkbowl.vault.economy.EconomyResponse.ResponseType;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -75,8 +74,8 @@ public class BuyItem implements CommandExecutor {
                 } else {
                     ItemStack[] itemStacks = this.app.getPlayerInventoryManager().createItemStacks(materialData.getMaterial(), amount);
                     MaterialValueResponse priceResponse = this.app.getMaterialManager().getBuyValue(itemStacks);
-                    EconomyResponse saleResponse = this.app.getEconomyManager().remCash(from, priceResponse.getValue());
-                    if (saleResponse.type == ResponseType.SUCCESS && priceResponse.getResponseType() == ResponseType.SUCCESS) {
+                    EconomyResponse saleResponse = this.app.getEconomyManager().remCash(from, priceResponse.value);
+                    if (saleResponse.transactionSuccess() && priceResponse.isSuccess()) {
                         this.app.getPlayerInventoryManager().addItemsToPlayer(from, itemStacks);
                         materialData.remQuantity(amount);
 
@@ -84,10 +83,9 @@ public class BuyItem implements CommandExecutor {
                         this.app.getConsoleManager().logPurchase(from, amount, saleResponse.amount, materialData.getCleanName());
 
                     } else {
-                        String errorMessage;
-                        if (saleResponse.type == ResponseType.FAILURE) errorMessage = saleResponse.errorMessage;
-                        else if (priceResponse.getResponseType() == ResponseType.FAILURE) errorMessage = priceResponse.getErrorMessage();
-                        else errorMessage = "¯\\_(ツ)_/¯";
+                        String errorMessage = "unknown error";
+                        if (!saleResponse.transactionSuccess()) errorMessage = saleResponse.errorMessage;
+                        else if (priceResponse.isFailure()) errorMessage = priceResponse.errorMessage;
 
                         // Handles console, message and mail
                         this.app.getConsoleManager().logFailedPurchase(from, amount, saleResponse.amount, materialData.getCleanName(), errorMessage);
