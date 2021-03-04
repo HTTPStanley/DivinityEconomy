@@ -2,6 +2,7 @@ package EDGRRRR.DCE.Economy;
 
 import EDGRRRR.DCE.Main.DCEPlugin;
 import EDGRRRR.DCE.Math.Math;
+import EDGRRRR.DCE.Response.EconomyTransferResponse;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import net.milkbowl.vault.economy.EconomyResponse.ResponseType;
@@ -120,7 +121,7 @@ public class EconomyManager {
         double oldBalance = this.getBalance(oPlayer);
         EconomyResponse response;
         if ((oldBalance - amount) < this.minAccountBalance) {
-            response = new EconomyResponse(amount, oldBalance, ResponseType.FAILURE, "Not enough cash for this transfer.");
+            response = new EconomyResponse(amount, oldBalance, ResponseType.FAILURE, String.format("not enough cash for this transfer (£%,.2f/£%,.2f)", oldBalance, amount));
         } else {
             response = this.economy.withdrawPlayer(oPlayer, amount);
         }
