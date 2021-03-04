@@ -68,8 +68,6 @@ public class PlayerManager {
 
         if (allowFetch && (player == null)) {
             player = this.app.getServer().getOfflinePlayer(name);
-        } else {
-            player = null;
         }
 
         return player;
@@ -109,8 +107,6 @@ public class PlayerManager {
 
         if (allowFetch && (player == null)) {
             player = this.app.getServer().getOfflinePlayer(uuid);
-        } else {
-            player =  null;
         }
 
         return player;
