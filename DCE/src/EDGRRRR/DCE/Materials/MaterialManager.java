@@ -2,6 +2,7 @@ package EDGRRRR.DCE.Materials;
 
 import EDGRRRR.DCE.Main.DCEPlugin;
 import EDGRRRR.DCE.Math.Math;
+import EDGRRRR.DCE.Response.ValueResponse;
 import net.milkbowl.vault.economy.EconomyResponse.ResponseType;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -103,20 +104,20 @@ public class MaterialManager {
      * @param itemStacks - The items to calculate the price for
      * @return MaterialValue - The value of the items, or not if an error occurred.
      */
-    public MaterialValueResponse getSellValue(ItemStack[] itemStacks) {
+    public ValueResponse getSellValue(ItemStack[] itemStacks) {
         double value = 0.0;
 
         // Loop through items and add up the sell value of each item
         for (ItemStack itemStack : itemStacks) {
-            MaterialValueResponse mv = this.getSellValue(itemStack);
+            ValueResponse mv = this.getSellValue(itemStack);
             if (mv.isSuccess()) {
                 value += mv.value;
             } else {
-                return new MaterialValueResponse(0.0, mv.errorMessage, mv.responseType);
+                return new ValueResponse(0.0, mv.responseType, mv.errorMessage);
             }
         }
 
-        return new MaterialValueResponse(value, "", ResponseType.SUCCESS);
+        return new ValueResponse(value, ResponseType.SUCCESS, "");
     }
 
     /**
@@ -125,23 +126,23 @@ public class MaterialManager {
      * @param itemStack - The itemStack to get the value of
      * @return MaterialValue - The price of the itemstack if no errors occurred.
      */
-    public MaterialValueResponse getSellValue(ItemStack itemStack) {
+    public ValueResponse getSellValue(ItemStack itemStack) {
         double scale = 1.0;
-        MaterialValueResponse response;
+        ValueResponse response;
 
         if (this.app.getEnchantmentManager().isEnchanted(itemStack)) {
-            response = new MaterialValueResponse(0.0, "item is enchanted.", ResponseType.FAILURE);
+            response = new ValueResponse(0.0, ResponseType.FAILURE, "item is enchanted.");
 
         } else {
             MaterialData materialData = this.getMaterial(itemStack.getType().name());
 
             if (materialData == null) {
-                response = new MaterialValueResponse(0.0, "item cannot be found.", ResponseType.FAILURE);
+                response = new ValueResponse(0.0, ResponseType.FAILURE, "item cannot be found.");
             } else {
                 if (!materialData.getAllowed()) {
-                    response = new MaterialValueResponse(0.0, "item is banned.", ResponseType.FAILURE);
+                    response = new ValueResponse(0.0, ResponseType.FAILURE, "item is banned.");
                 } else {
-                    response = new MaterialValueResponse(this.calculatePrice(itemStack.getAmount(), materialData.getQuantity(), (scale * this.getDamageValue(itemStack)), false), "", ResponseType.SUCCESS);
+                    response = new ValueResponse(this.calculatePrice(itemStack.getAmount(), materialData.getQuantity(), (scale * this.getDamageValue(itemStack)), false), ResponseType.SUCCESS, "");
                 }
             }
         }
@@ -155,18 +156,18 @@ public class MaterialManager {
      * @param itemStacks - The items to get the price for
      * @return MaterialValue
      */
-    public MaterialValueResponse getBuyValue(ItemStack[] itemStacks) {
+    public ValueResponse getBuyValue(ItemStack[] itemStacks) {
         double value = 0.0;
         for (ItemStack itemStack : itemStacks) {
-            MaterialValueResponse mv = this.getBuyValue(itemStack);
+            ValueResponse mv = this.getBuyValue(itemStack);
             if (mv.isSuccess()) {
                 value += mv.value;
             } else {
-                return new MaterialValueResponse(0.0, mv.errorMessage, mv.responseType);
+                return new ValueResponse(0.0, mv.responseType, mv.errorMessage);
             }
         }
 
-        return new MaterialValueResponse(value, "", ResponseType.SUCCESS);
+        return new ValueResponse(value, ResponseType.SUCCESS, "");
     }
 
     /**
@@ -175,17 +176,17 @@ public class MaterialManager {
      * @param itemStack - The item stack to get the value of
      * @return MaterialValue
      */
-    public MaterialValueResponse getBuyValue(ItemStack itemStack) {
-        MaterialValueResponse response;
+    public ValueResponse getBuyValue(ItemStack itemStack) {
+        ValueResponse response;
 
         MaterialData materialData = this.getMaterial(itemStack.getType().name());
         if (materialData == null) {
-            response = new MaterialValueResponse(0.0, "item cannot be found.", ResponseType.FAILURE);
+            response = new ValueResponse(0.0, ResponseType.FAILURE, "item cannot be found.");
         } else {
             if (!materialData.getAllowed()) {
-                response = new MaterialValueResponse(0.0, "item cannot be bought or sold.", ResponseType.FAILURE);
+                response = new ValueResponse(0.0, ResponseType.FAILURE, "item cannot be bought or sold.");
             } else {
-                response = new MaterialValueResponse(this.calculatePrice(itemStack.getAmount(), materialData.getQuantity(), materialBuyTax, true), "", ResponseType.SUCCESS);
+                response = new ValueResponse(this.calculatePrice(itemStack.getAmount(), materialData.getQuantity(), materialBuyTax, true), ResponseType.SUCCESS, "");
             }
         }
 
