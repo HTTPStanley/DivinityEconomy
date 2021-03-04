@@ -4,7 +4,6 @@ import EDGRRRR.DCE.Main.DCEPlugin;
 import EDGRRRR.DCE.Materials.MaterialData;
 import EDGRRRR.DCE.Materials.MaterialValueResponse;
 import EDGRRRR.DCE.Math.Math;
-import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -89,17 +88,17 @@ public class HandValue implements CommandExecutor {
                 MaterialValueResponse buyResponse = this.app.getMaterialManager().getBuyValue(buyStacks);
                 MaterialValueResponse sellResponse = this.app.getMaterialManager().getSellValue(sellStacks);
 
-                if (buyResponse.getResponseType() == EconomyResponse.ResponseType.SUCCESS) {
-                    this.app.getConsoleManager().info(player, "Buy: " + amount + " " + materialData.getCleanName() + " costs £" + this.app.getEconomyManager().round(buyResponse.getValue()));
+                if (buyResponse.isSuccess()) {
+                    this.app.getConsoleManager().info(player, "Buy: " + amount + " " + materialData.getCleanName() + " costs £" + this.app.getEconomyManager().round(buyResponse.value));
 
                 } else {
-                    this.app.getConsoleManager().usage(player, "Couldn't determine buy price of " + amount + " " + materialData.getCleanName() + " because " + buyResponse.getErrorMessage(), usage);
+                    this.app.getConsoleManager().usage(player, "Couldn't determine buy price of " + amount + " " + materialData.getCleanName() + " because " + buyResponse.errorMessage, usage);
                 }
 
-                if (sellResponse.getResponseType() == EconomyResponse.ResponseType.SUCCESS) {
-                    this.app.getConsoleManager().info(player, "Sell: " + amount + " " + materialData.getCleanName() + " costs £" + this.app.getEconomyManager().round(sellResponse.getValue()));
+                if (sellResponse.isSuccess()) {
+                    this.app.getConsoleManager().info(player, "Sell: " + amount + " " + materialData.getCleanName() + " costs £" + this.app.getEconomyManager().round(sellResponse.value));
                 } else {
-                    this.app.getConsoleManager().usage(player, "Couldn't determine sell price of " + amount + " " + materialData.getCleanName() + " because " + sellResponse.getErrorMessage(), usage);
+                    this.app.getConsoleManager().usage(player, "Couldn't determine sell price of " + amount + " " + materialData.getCleanName() + " because " + sellResponse.errorMessage, usage);
                 }
             }
         }
