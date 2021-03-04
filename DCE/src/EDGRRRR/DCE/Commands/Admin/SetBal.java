@@ -81,7 +81,7 @@ public class SetBal implements CommandExecutor {
             double startingBalance = this.app.getEconomyManager().getBalance(player2);
 
             // Response messages
-            if (response.type == EconomyResponse.ResponseType.SUCCESS) {
+            if (response.transactionSuccess()) {
                 // Handles console, player and mail
                 this.app.getConsoleManager().logBalance(player1, player2, response.balance, startingBalance, String.format("balance set by %s", player1.getName()));
             } else {
