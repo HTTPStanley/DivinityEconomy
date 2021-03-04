@@ -55,10 +55,14 @@ public class MailManager {
         for (String userID : this.configuration.getKeys(false)) {
             ConfigurationSection mailListSection = this.configuration.getConfigurationSection(userID);
             OfflinePlayer player = this.app.getPlayerManager().getOfflinePlayerByUUID(userID, true);
-            MailList mailList = new MailList(this, player, mailListSection);
-            this.addMailList(player, mailList);
-            userCount += 1;
-            mailCount += mailList.getMailIDs().size();
+            if (player == null) {
+                this.app.getConsoleManager().severe(String.format("Invalid player UUID in mail list: '%s'", userID));
+            } else {
+                MailList mailList = new MailList(this, player, mailListSection);
+                this.addMailList(player, mailList);
+                userCount += 1;
+                mailCount += mailList.getMailIDs().size();
+            }
         }
 
         this.app.getConsoleManager().info("Read " + mailCount + " mail for " + userCount + " users.");
@@ -72,6 +76,7 @@ public class MailManager {
      */
     public void addMailList(OfflinePlayer player, MailList mailList) {
         this.mailMap.put(player, mailList);
+        this.saveMailList(mailList);
     }
 
     /**
