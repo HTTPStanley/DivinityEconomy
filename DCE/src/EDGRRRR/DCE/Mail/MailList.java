@@ -139,7 +139,7 @@ public class MailList {
      * @return OfflinePlayer - The player this mail list belongs to
      */
     public OfflinePlayer getPlayer() {
-        return player;
+        return this.player;
     }
 
     /**
