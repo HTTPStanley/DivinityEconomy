@@ -86,7 +86,8 @@ public class ClearMail implements CommandExecutor {
             for (String mailID : mailToClear) {
                 mailList.removeMail(mailID);
             }
-            this.app.getConsoleManager().info(player, "Removed " + mailToClear.size() + " mail. (" + unreadMailCleared + " unread | " + readMailCleared + " read)");
+            this.app.getConsoleManager().info(player, String.format("Removed %d mail. (%d unread & %d read)", mailToClear.size(), unreadMailCleared, readMailCleared));
+
         }
         return true;
     }
