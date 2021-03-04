@@ -5,7 +5,6 @@ import EDGRRRR.DCE.Materials.MaterialData;
 import EDGRRRR.DCE.Materials.MaterialPotionData;
 import EDGRRRR.DCE.Materials.MaterialValueResponse;
 import EDGRRRR.DCE.Math.Math;
-import net.milkbowl.vault.economy.EconomyResponse.ResponseType;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -65,15 +64,15 @@ public class Info implements CommandExecutor {
             int userAmount = amount;
             int marketAmount = amount;
 
-            if (userResponse.getResponseType() == ResponseType.SUCCESS) {
-                userPrice = userResponse.getValue();
+            if (userResponse.isSuccess()) {
+                userPrice = userResponse.value;
             } else {
                 userPrice = material.getUserPrice();
                 userAmount = 1;
             }
 
-            if (marketResponse.getResponseType() == ResponseType.SUCCESS) {
-                marketPrice = marketResponse.getValue();
+            if (marketResponse.isSuccess()) {
+                marketPrice = marketResponse.value;
             } else {
                 marketPrice = material.getMarketPrice();
                 marketAmount = 1;
