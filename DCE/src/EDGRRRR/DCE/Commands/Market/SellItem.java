@@ -2,7 +2,7 @@ package EDGRRRR.DCE.Commands.Market;
 
 import EDGRRRR.DCE.Main.DCEPlugin;
 import EDGRRRR.DCE.Materials.MaterialData;
-import EDGRRRR.DCE.Materials.MaterialValueResponse;
+import EDGRRRR.DCE.Response.ValueResponse;
 import EDGRRRR.DCE.Math.Math;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -82,20 +82,20 @@ public class SellItem implements CommandExecutor {
                 }
 
                 ItemStack[] itemStacks = this.app.getPlayerInventoryManager().getMaterialSlotsToCount(from, material, amount);
-                MaterialValueResponse materialValueResponse = this.app.getMaterialManager().getSellValue(itemStacks);
+                ValueResponse valueResponse = this.app.getMaterialManager().getSellValue(itemStacks);
 
-                if (materialValueResponse.isFailure()) {
-                    this.app.getConsoleManager().logFailedSale(from, amount, materialValueResponse.value, materialData.getCleanName(), materialValueResponse.errorMessage);
+                if (valueResponse.isFailure()) {
+                    this.app.getConsoleManager().logFailedSale(from, amount, valueResponse.value, materialData.getCleanName(), valueResponse.errorMessage);
 
                 } else {
                     if (userAmount >= amount) {
                         this.app.getPlayerInventoryManager().removeMaterialsFromPlayer(itemStacks);
                         materialData.addQuantity(amount);
-                        this.app.getEconomyManager().addCash(from, materialValueResponse.value);
+                        this.app.getEconomyManager().addCash(from, valueResponse.value);
 
-                        this.app.getConsoleManager().logSale(from, amount, materialValueResponse.value, materialData.getCleanName());
+                        this.app.getConsoleManager().logSale(from, amount, valueResponse.value, materialData.getCleanName());
                     } else {
-                        this.app.getConsoleManager().logFailedSale(from, amount, materialValueResponse.value, materialData.getCleanName(), String.format("you do not have enough of this material. (%d/%d)", userAmount, amount));
+                        this.app.getConsoleManager().logFailedSale(from, amount, valueResponse.value, materialData.getCleanName(), String.format("you do not have enough of this material. (%d/%d)", userAmount, amount));
                     }
                 }
             }
