@@ -4,7 +4,6 @@ import EDGRRRR.DCE.Main.DCEPlugin;
 import EDGRRRR.DCE.Materials.MaterialData;
 import EDGRRRR.DCE.Materials.MaterialValueResponse;
 import EDGRRRR.DCE.Math.Math;
-import net.milkbowl.vault.economy.EconomyResponse.ResponseType;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -62,17 +61,17 @@ public class Value implements CommandExecutor {
             MaterialValueResponse priceResponse = this.app.getMaterialManager().getBuyValue(itemStacks);
             MaterialValueResponse secondPriceResponse = this.app.getMaterialManager().getSellValue(itemStacks);
 
-            if (priceResponse.getResponseType() == ResponseType.SUCCESS) {
-                this.app.getConsoleManager().info(from, "Buy: " + amount + " " + materialData.getCleanName() + " costs £" + this.app.getEconomyManager().round(priceResponse.getValue()));
+            if (priceResponse.isSuccess()) {
+                this.app.getConsoleManager().info(from, "Buy: " + amount + " " + materialData.getCleanName() + " costs £" + this.app.getEconomyManager().round(priceResponse.value));
 
             } else {
-                this.app.getConsoleManager().usage(from, "Couldn't determine buy price of " + amount + " " + materialData.getCleanName() + " because " + priceResponse.getErrorMessage(), usage);
+                this.app.getConsoleManager().usage(from, "Couldn't determine buy price of " + amount + " " + materialData.getCleanName() + " because " + priceResponse.errorMessage, usage);
             }
 
-            if (secondPriceResponse.getResponseType() == ResponseType.SUCCESS) {
-                this.app.getConsoleManager().info(from, "Sell: " + amount + " " + materialData.getCleanName() + " costs £" + this.app.getEconomyManager().round(secondPriceResponse.getValue()));
+            if (secondPriceResponse.isSuccess()) {
+                this.app.getConsoleManager().info(from, "Sell: " + amount + " " + materialData.getCleanName() + " costs £" + this.app.getEconomyManager().round(secondPriceResponse.value));
             } else {
-                this.app.getConsoleManager().usage(from, "Couldn't determine sell price of " + amount + " " + materialData.getCleanName() + " because " + secondPriceResponse.getErrorMessage(), usage);
+                this.app.getConsoleManager().usage(from, "Couldn't determine sell price of " + amount + " " + materialData.getCleanName() + " because " + secondPriceResponse.errorMessage, usage);
             }
         }
 
