@@ -44,3 +44,8 @@ DCE/out/production/DCE/priceConverter.py
 DCE/.idea/uiDesigner.xml
 DCE/out/production/DCE/mail.yml
 DCE/out/production/DCE/enchantments.yml
+DCE resources/data.csv
+DCE resources/items.yml
+DCE resources/itemsConverter.py
+DCE resources/materialData.yml
+DCE resources/priceConverter.py
