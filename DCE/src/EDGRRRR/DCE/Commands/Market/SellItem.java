@@ -2,8 +2,10 @@ package EDGRRRR.DCE.Commands.Market;
 
 import EDGRRRR.DCE.Main.DCEPlugin;
 import EDGRRRR.DCE.Materials.MaterialData;
-import EDGRRRR.DCE.Materials.MaterialValue;
+import EDGRRRR.DCE.Materials.MaterialValueResponse;
 import EDGRRRR.DCE.Math.Math;
+import net.milkbowl.vault.economy.EconomyResponse;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -63,42 +65,43 @@ public class SellItem implements CommandExecutor {
 
         if (amount < 1) {
             this.app.getConsoleManager().usage(from, "Invalid amount.", this.usage);
+            this.app.getConsoleManager().debug("(SellItem)Invalid item amount: " + materialName);
+
         } else {
             MaterialData materialData = this.app.getMaterialManager().getMaterial(materialName);
             if (materialData == null) {
                 this.app.getConsoleManager().usage(from, "Unknown Item: '" + materialName + "'", "");
+                this.app.getConsoleManager().debug("(SellItem)Unknown item search: " + materialName);
 
             } else {
-                ItemStack[] totalUserMaterials = this.app.getPlayerInventoryManager().getMaterialSlots(from, materialData.getMaterial());
+                Material material = materialData.getMaterial();
+                ItemStack[] totalUserMaterials = this.app.getPlayerInventoryManager().getMaterialSlots(from, material);
                 int userAmount = this.app.getPlayerInventoryManager().getMaterialCount(totalUserMaterials);
 
                 if (sellAll) {
                     amount = userAmount;
                 }
 
-                if (!materialData.getAllowed()) {
-                    this.app.getConsoleManager().usage(from, "Cannot sell " + materialData.getCleanName() + " because it is not allowed to be bought or sold", this.usage);
-                    this.app.getConsoleManager().warn(from.getName() + " couldn't sell " + materialData.getMaterialID() + " because it is not allowed to be bought or sold");
+                ItemStack[] itemStacks = this.app.getPlayerInventoryManager().getMaterialSlotsToCount(from, material, amount);
+                MaterialValueResponse materialValueResponse = this.app.getMaterialManager().getSellValue(itemStacks);
+
+                if (materialValueResponse.getResponseType() == EconomyResponse.ResponseType.FAILURE) {
+                    this.app.getConsoleManager().logFailedSale(from, amount, materialValueResponse.value, materialData.getCleanName(), materialValueResponse.errorMessage);
 
                 } else {
-                    ItemStack[] itemStacks = this.app.getPlayerInventoryManager().getMaterialSlotsToCount(from, materialData.getMaterial(), amount);
-                    MaterialValue materialValue = this.app.getMaterialManager().getSellValue(itemStacks);
-                    double cost = app.getEconomyManager().round(materialValue.getValue());
-                    double balance = this.app.getEconomyManager().round(app.getEconomyManager().getBalance(from));
                     if (userAmount >= amount) {
                         this.app.getPlayerInventoryManager().removeMaterialsFromPlayer(itemStacks);
                         materialData.addQuantity(amount);
-                        this.app.getEconomyManager().addCash(from, materialValue.getValue());
-                        this.app.getConsoleManager().info(from, "Sold " + amount + " " + materialData.getCleanName() + " for £" + cost + ". New balance: £" + balance);
-                        this.app.getConsoleManager().info(from.getName() + " sold " + amount + " " + materialData.getMaterialID() + " for £" + cost);
+                        this.app.getEconomyManager().addCash(from, materialValueResponse.getValue());
 
+                        this.app.getConsoleManager().logSale(from, amount, materialValueResponse.value, materialData.getCleanName());
                     } else {
-                        this.app.getConsoleManager().usage(from, "You do not have " + amount + " " + materialData.getCleanName(), this.usage);
-                        this.app.getConsoleManager().warn(from.getName() + " couldn't sell " + amount + " " + materialData.getMaterialID() + " for £" + cost + " because they only had " + userAmount + " / " + amount);
+                        this.app.getConsoleManager().logFailedSale(from, amount, materialValueResponse.value, materialData.getCleanName(), String.format("you do not have enough of this material. (%d/%d)", userAmount, amount));
                     }
                 }
             }
         }
+
         return true;
     }
 }
