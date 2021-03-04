@@ -1,4 +1,4 @@
-package EDGRRRR.DCE.PlayerManager;
+package EDGRRRR.DCE.Player;
 
 import EDGRRRR.DCE.Main.DCEPlugin;
 import com.sun.istack.internal.NotNull;
