@@ -1,6 +1,6 @@
 package EDGRRRR.DCE.Commands.Money;
 
-import EDGRRRR.DCE.Economy.EconomyTransferResponse;
+import EDGRRRR.DCE.Response.EconomyTransferResponse;
 import EDGRRRR.DCE.Main.DCEPlugin;
 import EDGRRRR.DCE.Math.Math;
 import net.milkbowl.vault.economy.EconomyResponse;
