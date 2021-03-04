@@ -4,7 +4,6 @@ import EDGRRRR.DCE.Main.DCEPlugin;
 import EDGRRRR.DCE.Materials.MaterialData;
 import EDGRRRR.DCE.Materials.MaterialValueResponse;
 import EDGRRRR.DCE.Math.Math;
-import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -88,11 +87,11 @@ public class HandSell implements CommandExecutor {
                     ItemStack[] itemStacks = this.app.getPlayerInventoryManager().getMaterialSlotsToCount(player, material, amountToSell);
                     MaterialValueResponse response = this.app.getMaterialManager().getSellValue(itemStacks);
 
-                    if (response.getResponseType() == EconomyResponse.ResponseType.SUCCESS) {
+                    if (response.isSuccess()) {
                         this.app.getPlayerInventoryManager().removeMaterialsFromPlayer(itemStacks);
                         materialData.addQuantity(amountToSell);
-                        this.app.getEconomyManager().addCash(player, response.getValue());
-                        double cost = app.getEconomyManager().round(response.getValue());
+                        this.app.getEconomyManager().addCash(player, response.value);
+                        double cost = app.getEconomyManager().round(response.value);
                         double balance = app.getEconomyManager().round(app.getEconomyManager().getBalance(player));
 
                         // Handles console, player message and mail
