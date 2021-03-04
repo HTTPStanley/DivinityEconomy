@@ -4,7 +4,6 @@ import EDGRRRR.DCE.Main.DCEPlugin;
 import EDGRRRR.DCE.Materials.MaterialData;
 import EDGRRRR.DCE.Materials.MaterialValueResponse;
 import EDGRRRR.DCE.Math.Math;
-import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -85,14 +84,14 @@ public class SellItem implements CommandExecutor {
                 ItemStack[] itemStacks = this.app.getPlayerInventoryManager().getMaterialSlotsToCount(from, material, amount);
                 MaterialValueResponse materialValueResponse = this.app.getMaterialManager().getSellValue(itemStacks);
 
-                if (materialValueResponse.getResponseType() == EconomyResponse.ResponseType.FAILURE) {
+                if (materialValueResponse.isFailure()) {
                     this.app.getConsoleManager().logFailedSale(from, amount, materialValueResponse.value, materialData.getCleanName(), materialValueResponse.errorMessage);
 
                 } else {
                     if (userAmount >= amount) {
                         this.app.getPlayerInventoryManager().removeMaterialsFromPlayer(itemStacks);
                         materialData.addQuantity(amount);
-                        this.app.getEconomyManager().addCash(from, materialValueResponse.getValue());
+                        this.app.getEconomyManager().addCash(from, materialValueResponse.value);
 
                         this.app.getConsoleManager().logSale(from, amount, materialValueResponse.value, materialData.getCleanName());
                     } else {
