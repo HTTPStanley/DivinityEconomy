@@ -40,6 +40,7 @@ public class MaterialData {
      *
      * @param manager    - The material manager
      * @param configData - The config section containing the data for this material
+     * @param defaultConfigData - The default config
      */
     public MaterialData(MaterialManager manager, ConfigurationSection configData, ConfigurationSection defaultConfigData) {
         this.manager = manager;
@@ -90,7 +91,7 @@ public class MaterialData {
         int oldQuantity = this.getQuantity();
         this.setData(this.strQuantity, amount);
         int change = oldQuantity - amount;
-        this.manager.editItems(change);
+        this.manager.editTotalMaterials(change);
     }
 
     /**
@@ -231,7 +232,7 @@ public class MaterialData {
      */
     public void addQuantity(int amount) {
         this.setData(this.strQuantity, this.getQuantity() + amount);
-        this.manager.editItems(amount);
+        this.manager.editTotalMaterials(amount);
     }
 
     /**
@@ -241,7 +242,7 @@ public class MaterialData {
      */
     public void remQuantity(int amount) {
         this.setData(this.strQuantity, this.getQuantity() - amount);
-        this.manager.editItems(amount);
+        this.manager.editTotalMaterials(amount);
     }
 
     /**
