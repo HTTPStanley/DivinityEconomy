@@ -1,0 +1,344 @@
+name: DCE
+prefix: DCE
+main: EDGRRRR.DCE.Main.DCEPlugin
+version: 1.0.1
+author: EDGRRRR
+description: DivinityCraft Economy plugin.
+api-version: 1.16
+depend: [Vault]
+soft-depend: []
+load: STARTUP
+
+
+commands:
+  # Mail commands
+
+  readMail:
+    description: Reads the users mail
+    aliases: []
+    permission: dce.mail.readMail
+    permission-message: You do not have the permission to use this command
+    usage: ""
+
+  clearMail:
+    description: Clears the users mail list
+    aliases: []
+    permission: dce.mail.clearMail
+    permission-message: You do not have the permission to use this command
+    usage: ""
+
+  # Misc commands
+  ping:
+    description: Use it to find out.
+    aliases: []
+    permission: dce.misc.ping
+    permission-message: You do not have the permission to use this command
+    usage: /ping
+
+  # Money commands
+  balance:
+    description: Returns the amount of cash in the users account.
+    aliases: [bal, cash, money]
+    permission: dce.money.balance
+    permission-message: You do not have the permission to use this command
+    usage: /balance or /balance <playername>
+
+  sendcash:
+    description: Allows the user to transfer cash to another user.
+    aliases: [transfer]
+    permission: dce.money.sendcash
+    permission-message: You do not have the permission to use this command
+    usage: /sendcash <playername> <amount>
+
+  # Market commands
+  buy:
+    description: Allows the user to purchase items from the market.
+    aliases: [b]
+    permission: dce.market.buy
+    permission-message: You do not have permission to use this command
+    usage: ""
+
+  sell:
+    description: Allows the user to sell items to the market.
+    aliases: [s]
+    permission: dce.market.sell
+    permission-message: You do not have permission to use this command
+    usage: ""
+
+  handBuy:
+    description: Allows the user to purchase items from the market.
+    aliases: [hb]
+    permission: dce.market.handBuy
+    permission-message: You do not have permission to use this command
+    usage: ""
+
+  handSell:
+    description: Allows the user to sell items to the market.
+    aliases: [hs]
+    permission: dce.market.handSell
+    permission-message: You do not have permission to use this command
+    usage: ""
+
+  value:
+    description: Allows the user to check the value of an item.
+    aliases: [val]
+    permission: dce.market.value
+    permission-message: You do not have permission to use this command
+    usage: ""
+
+  search:
+    description: Allows the user to search for items in the market
+    aliases: [find]
+    permission: dce.market.search
+    permission-message: You do not have permission to use this command
+    usage: ""
+
+  information:
+    description: Returns information about the item the user has searched for
+    aliases: [info]
+    permission: dce.market.information
+    permission-message: You do not have permission to use this command
+    usage: ""
+
+  handInformation:
+    description: Returns information about the item the user is holding
+    aliases: [hi, handinfo]
+    permission: dce.market.handInformation
+    permission-message: You do not have permission to use this command
+    usage: ""
+
+  handValue:
+    description: Returns the hand value of the item the user is holding
+    aliases: [hv, handval]
+    permission: dce.market.handValue
+    permission-message: You do not have permission to use this command
+    usage: ""
+
+  setValue:
+    description: Sets the value of an item
+    aliases: [sv, setval]
+    permission: dce.admin.setValue
+    permission-message: You do not have permission to use this command
+    usage: ""
+
+  setStock:
+    description: Sets the stock of an item
+    aliases: [ss]
+    permission: dce.admin.setStock
+    permission-message: You do not have permission to use this command
+    usage: ""
+
+  handSetValue:
+    description: Sets the value of an item
+    aliases: [hsv]
+    permission: dce.admin.handSetValue
+    permission-message: You do not have permission to use this command
+    usage: ""
+
+  handSetStock:
+    description: Sets the stock of an item
+    aliases: [hss]
+    permission: dce.admin.handSetStock
+    permission-message: You do not have permission to use this command
+    usage: ""
+
+  eHandSell:
+    description: Sells an enchant on an item.
+    aliases: [ehs]
+    permission: dce.enchant.eHandSell
+    permission-messaage: You do not have permission to use this command
+    usage: ""
+
+  eHandBuy:
+    description: Buys an enchant for an item.
+    aliases: [ ehb ]
+    permission: dce.enchant.eHandBuy
+    permission-messaage: You do not have permission to use this command
+    usage: ""
+
+  eSell:
+    description: Sells enchants from the players inventory.
+    aliases: []
+    permission: dce.enchant.eSell
+    permission-messaage: You do not have permission to use this command
+    usage: ""
+
+  eBuy:
+    description: Buys an enchant for the players inventory.
+    aliases: [ eb ]
+    permission: dce.enchant.eBuy
+    permission-messaage: You do not have permission to use this command
+    usage: ""
+
+  eHandValue:
+    description: Values the enchants on the item in the players hand.
+    aliases: [ ehv ]
+    permission: dce.enchant.eHandValue
+    permission-messaage: You do not have permission to use this command
+    usage: ""
+
+  eValue:
+    description: Values an enchant.
+    aliases: [ eval ]
+    permission: dce.enchant.eValue
+    permission-messaage: You do not have permission to use this command
+    usage: ""
+
+
+  # Admin commands
+  editbal:
+    description: Allows the user to manipulate a users balance, including their own.
+    # aliases: [eb]
+    permission: dce.admin.editbal
+    permission-message: You do not have the permission to use this command
+    usage: /editbal <playername> <amount> or /setbal <amount>
+
+  setbal:
+    description: Allows the user to set the balance of themselves and others.
+    # aliases: [sb]
+    permission: dce.admin.setbal
+    permission-message: You do not have the permission to use this command
+    usage: /setbal <playername> <amount> or /setbal <amount>
+
+  clearbal:
+    description: Allows the user to clear the balance of themselves and others.
+    # aliases: [cb]
+    permission: dce.admin.clearbal
+    permission-message: You do not have the permission to use this command
+    usage: /clearbal <playername> or /clearbal
+
+
+permissions:
+  # Mail
+  dce.mail:
+    description: Allows the user to use commands relating to their mail
+    default: true
+    children:
+      dce.mail.readMail: true
+      dce.mail.clearMail: true
+
+  dce.mail.readMail:
+    description: Allows the user to read their mail
+    default: true
+
+  dce.mail.clearMail:
+    description: Allows the user to clear their mail
+    default: true
+
+  # Misc
+  dce.misc:
+    description: Allows the user to use miscellaneous commands.
+    default: false
+    children:
+      dce.misc.ping: true
+
+  dce.misc.ping:
+    description: Allows the user to use the ping command.
+    default: true
+
+  # Money branch of permissions
+  dce.money:
+    description: Allows the user to use all commands under the money branch of permissions.
+    default: true
+    children:
+      dce.balance: true
+      dce.sendcash: true
+
+  dce.money.balance:
+    description: Allows the user to view their balance.
+    default: true
+
+  dce.money.sendcash:
+    description: Allows the user to send cash to others.
+    default: true
+
+  # Market branch of permissions
+  dce.market:
+    description: Allows the user to use all commands under the market branch of permissions
+    default: true
+    children:
+      dce.market.buy: true
+      dce.market.handBuy: true
+      dce.market.sell: true
+      dce.market.handSell: true
+      dce.market.search: true
+      dce.market.information: true
+      dce.market.value: true
+      dce.market.handValue: true
+      dce.market.handInformation: true
+
+  dce.market.handValue:
+    description: Allows the user to value the item in their hand
+    default: true
+
+  dce.market.handInformation:
+    description: Allows the user to get the information for the item in their hand
+    default: true
+
+  dce.market.buy:
+    description: Allows the user to purchase items from the market
+    default: true
+
+  dce.market.sell:
+    description: Allows the user to sell items to the market
+    default: true
+
+  dce.market.handBuy:
+    description: Allows the user to purchase items from the market
+    default: true
+
+  dce.market.handSell:
+    description: Allows the user to sell items to the market
+    default: true
+
+  dce.market.search:
+    description: Allows the user search for items in the market
+    default: true
+
+  dce.market.information:
+    description: Allows the user to get information about items in the market
+    default: true
+
+  dce.market.value:
+    description: Allows the user to value items in the market
+    default: true
+
+  # Admin commands
+  dce.admin:
+    description: Allows the user to use all commands under the admin branch of permissions.
+    default: op
+    children:
+      dce.admin.editbal: true
+      dce.admin.setbal: true
+      dce.admin.clearbal: true
+      dce.money: true
+      dce.market: true
+      dce.misc: true
+
+  dce.admin.editbal:
+    description: Allows the user to give and take money to themselves and others.
+    default: op
+
+  dce.admin.setbal:
+    description: Allows the user to set the the balance of themselves or others.
+    default: op
+
+  dce.admin.clearbal:
+    description: Allows the user to clean the balance of themselves or others.
+    default: op
+
+  dce.admin.setStock:
+    description: Allows the user to set the stock of an item
+    default: op
+
+  dce.admin.setValue:
+    description: Allows the user to set the value of an item
+    default: op
+
+  dce.admin.handSetStock:
+    description: Allows the user to set the stock of an item in their hand
+    default: op
+
+  dce.admin.handSetValue:
+    description: Allows the user to set the value of an item in their hand
+    default: op

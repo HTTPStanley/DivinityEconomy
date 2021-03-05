@@ -1,0 +1,249 @@
+# DCE Config
+# DCE Github: https://github.com/EDGRRRRs/DCE
+# Plugin author: EDGRRRR
+# Author Github: https://github.com/EDGRRRRs
+# Other helpers:
+#   - ExRider111Ryan: https://github.com/RyanA3
+#
+# Colours can be found here: https://jd.bukkit.org/org/bukkit/ChatColor.html
+# Text types such as BOLD, UNDERLINE and so on are not supported yet.
+#
+# [Config]
+# main:
+#   version:
+#      default: '1.0.1' (String)
+#      information:
+#         -Do not change this!!!
+#
+#   saveTimer:
+#      default: '600' (int)
+#      information:
+#         -The interval between the saving of the internal material cache.
+#         -Stored in seconds.
+#
+# chat:
+#   chatDebug:
+#      default: 'False' (boolean)
+#      information:
+#         -Whether to send debug messages to chat or not.
+#
+#   prefix:
+#      default: '[DCE]' (String)
+#      information:
+#         -The prefix of ingame user messages
+#
+#   prefixSep:
+#      default: ' - ' (String)
+#      information:
+#         -The separator between the prefix and the message
+#
+#   prefixColour:
+#      default: 'AQUA' (String)
+#      information:
+#         -The colour of the prefix
+#
+#   prefixSepColour:
+#      default: 'AQUA' (String)
+#      information:
+#         -The colour of the separator
+#
+#   prefixConsole:
+#      default: '[DCE v%V]' (String)
+#      information:
+#         -The console prefix
+#         -Custom variables:
+#           -%V | The version of the plugin
+#
+#   infoColour:
+#      default: 'GREEN' (String)
+#      information:
+#         -The colour of the information messages
+#
+#   warnColour:
+#      default: 'YELLOW' (String)
+#      information:
+#         -The colour of the warning messages
+#
+#   severeColour:
+#      default: 'RED' (String)
+#      information:
+#         -The colour of the severe messages
+#
+#   debugColour:
+#      default: 'DARK_PURPLE' (String)
+#      information:
+#         -The colour of the debug messages, if enabled.
+#
+# economy:
+#   minAccountBalance:
+#      default: '0.0' (double)
+#      information:
+#         -The minimum account balance of a user
+#
+#   minSendAmount:
+#      default: '0.01' (double)
+#      information:
+#         -The minimum amount of cash a user can send to another user
+#
+#   roundingDigits:
+#      default: '2' (int)
+#      information:
+#         -The level of rounding to apply on amounts
+#
+#   baseQuantity:
+#      default: '1000000' (int)
+#      information:
+#         -The base quantity of items in the shop
+#         -Generally you might want to leave this alone.
+#
+#   tax:
+#      default: '1.2' (double)
+#      information:
+#         -The level of tax to apply to purchases
+#         -1.2 = 20% tax. E.G: 100$ item = 120$ to buy.
+#
+# commands:
+#   balance:
+#      default: 'True' (boolean)
+#      information:
+#         -Whether the balance command should be enabled or not
+#
+#   clearBal:
+#      default: 'True' (boolean)
+#      information:
+#         -Whether the clear balance command should be enabled or not
+#
+#   editBal:
+#      default: 'True' (boolean)
+#      information:
+#         -Whether the edit balance command should be enabled or not
+#
+#   ping:
+#      default: 'True' (boolean)
+#      information:
+#         -Whether the ping command should be enabled or not
+#
+#   sendCash:
+#      default: 'True' (boolean)
+#      information:
+#         -Whether the send cash command should be enabled or not
+#
+#   setBal:
+#      default: 'True' (boolean)
+#      information:
+#         -Whether the set balance command should be enabled or not
+#
+#   buyItem:
+#      default: 'True' (boolean)
+#      information:
+#         -Whether the buy command should be enabled or not
+#
+#   sellItem:
+#      default: 'True' (boolean)
+#      information:
+#         -Whether the sell command should be enabled or not
+#
+#   value:
+#      default: 'True' (boolean)
+#      information:
+#         -Whether the value command should be enabled or not
+#
+#   info:
+#      default: 'True' (boolean)
+#      information:
+#         -Whether the info command should be enabled or not
+#
+#   handSell:
+#      default: 'True' (boolean)
+#      information:
+#         -Whether the hand sell command should be enabled or not
+#
+#   handBuy:
+#      default: 'True' (boolean)
+#      information:
+#         -Whether the hand buy command should be enabled or not
+#
+#   handInfo:
+#      default: 'True' (boolean)
+#      information:
+#         -Whether the hand info command should be enabled or not
+#
+#   handValue:
+#      default: 'True' (boolean)
+#      information:
+#         -Whether the hand value command should be enabled or not
+#
+#   readMail:
+#      default: 'True' (boolean)
+#      information:
+#         -Whether the read mail command should be enabled or not
+#
+#   clearMail:
+#      default: 'True' (boolean)
+#      information:
+#         -Whether the clear mail command should be enabled or not
+
+main:
+  version: "1.0.1"
+
+chat:
+  chatDebug: false
+  prefix: "[DCE]"
+  prefixSep: " - "
+  prefixColour: "AQUA"
+  prefixSepColour: "AQUA"
+  prefixConsole: "[DCE v%V]"
+  infoColour: "GREEN"
+  warnColour: "YELLOW"
+  severeColour: "RED"
+  debugColour: "DARK_PURPLE"
+
+economy:
+  enable: true
+  minAccountBalance: 0.0
+  minSendAmount: 0.01
+  roundingDigits: 2
+
+market:
+  saveTimer: 600
+  materials:
+    enable: true
+    baseQuantity: 1000000
+    buyTax: 1.2
+    sellTax: 1.0
+
+  enchants:
+    enable: true
+    baseQuantity: 1000
+    buyTax: 2.0
+    sellTax: 1.0
+
+commands:
+  economy:
+    balance: true
+    sendCash: true
+
+  misc:
+    ping: true
+
+  admin:
+    clearBal: true
+    editBal: true
+    setBal: true
+
+  market:
+    buyItem: true
+    sellItem: true
+    value: true
+    info: true
+    handSell: true
+    handBuy: true
+    handInfo: true
+    handValue: true
+
+  mail:
+    readMail: true
+    clearMail: true
+
+  enchants:
+    eHandSell: true
