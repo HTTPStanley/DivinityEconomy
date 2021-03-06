@@ -3,6 +3,7 @@ package EDGRRRR.DCE.Main;
 import EDGRRRR.DCE.Commands.Admin.ClearBal;
 import EDGRRRR.DCE.Commands.Admin.EditBal;
 import EDGRRRR.DCE.Commands.Admin.SetBal;
+import EDGRRRR.DCE.Commands.Enchants.EnchantHandSell;
 import EDGRRRR.DCE.Commands.Mail.ClearMail;
 import EDGRRRR.DCE.Commands.Mail.ReadMail;
 import EDGRRRR.DCE.Commands.Market.*;
@@ -85,6 +86,8 @@ public class DCEPlugin extends JavaPlugin {
     private CommandExecutor readMailCommand;
     // A command for clearing the mail list of a player
     private CommandExecutor clearMailCommand;
+    //
+    private CommandExecutor eHandSellCommand;
 
     /**
      * Static method for returing the app if there is no dependancy injection for the caller.
@@ -230,6 +233,8 @@ public class DCEPlugin extends JavaPlugin {
         return this.clearMailCommand;
     }
 
+    public CommandExecutor getEHandSellCommand() {return this.eHandSellCommand;}
+
     /**
      * Called when the plugin is enabled
      */
@@ -288,6 +293,7 @@ public class DCEPlugin extends JavaPlugin {
         this.handInfoCommand = new HandInfo(this);
         this.readMailCommand = new ReadMail(this);
         this.clearMailCommand = new ClearMail(this);
+        this.eHandSellCommand = new EnchantHandSell(this);
 
         try {
             // Register commands
@@ -307,6 +313,7 @@ public class DCEPlugin extends JavaPlugin {
             this.getCommand("handInformation").setExecutor(this.getCommandHandInfo());
             this.getCommand("readMail").setExecutor(this.getReadMailCommand());
             this.getCommand("clearMail").setExecutor(this.getClearMailCommand());
+            this.getCommand("eHandSell").setExecutor(this.getEHandSellCommand());
         } catch (Exception e) {
             e.printStackTrace();
             this.consoleManager.severe("An error occurred on registry: " + e);
