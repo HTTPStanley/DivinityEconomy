@@ -2,6 +2,7 @@ package EDGRRRR.DCE.Enchants;
 
 import EDGRRRR.DCE.Main.DCEPlugin;
 import EDGRRRR.DCE.Math.Math;
+import EDGRRRR.DCE.Response.MultiValueResponse;
 import EDGRRRR.DCE.Response.ValueResponse;
 import com.sun.istack.internal.NotNull;
 import net.milkbowl.vault.economy.EconomyResponse;
@@ -13,6 +14,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -82,7 +84,7 @@ public class EnchantmentManager {
         }
         // Copy values into materials
         this.enchants = values;
-        this.app.getConsoleManager().info("Loaded " + values.size() + "(" + this.totalEnchants + "/" + this.defaultTotalEnchants + ") materials from " + this.enchantFile);
+        this.app.getConsoleManager().info("Loaded " + values.size() + "(" + this.totalEnchants + "/" + this.defaultTotalEnchants + ") enchantments from " + this.enchantFile);
     }
 
     /**
@@ -92,7 +94,11 @@ public class EnchantmentManager {
      */
     @NotNull
     public int getEnchantAmount(int enchantLevel) {
-        return (int) java.lang.Math.pow(2, enchantLevel);
+        int enchantAmount = 0;
+        if (enchantLevel > 0) {
+            enchantAmount = (int) java.lang.Math.pow(2, enchantLevel);
+        }
+        return enchantAmount;
     }
 
     /**
@@ -143,19 +149,29 @@ public class EnchantmentManager {
         EnchantData enchantData = this.getEnchant(enchantID);
         ValueResponse response;
         if (enchantData == null) {
-            response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, enchantID + " does not exist.");
+            response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("enchant id %s does not exist", enchantID));
+
         } else {
-            if (!(enchantData.getAllowed())) {
-                response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, "enchant is banned.");
+            if (enchantData.getEnchantment() == null) {
+                response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("enchant id %s does not exist in the store", enchantID));
+
             } else {
-                if (enchantData.getMaxLevel() < level) {
-                    response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, "level is above max("+enchantData.getMaxLevel()+")");
+                if (!(enchantData.getAllowed())) {
+                    response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, "enchant is not allowed to be bought or sold");
+
                 } else {
-                    if (this.getEnchantAmount(level) > enchantData.getQuantity()) {
-                        response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, "not enough stock.");
+                    if (enchantData.getMaxLevel() < level) {
+                        response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("level is above max(%d)", enchantData.getMaxLevel()));
+
                     } else {
-                        double price = this.calculatePrice(this.getEnchantAmount(level), enchantData.getQuantity(), this.enchantBuyTax, false);
-                        response = new ValueResponse(price, EconomyResponse.ResponseType.SUCCESS, "");
+                        int enchantAmount = this.getEnchantAmount(level);
+                        if (enchantAmount > enchantData.getQuantity()) {
+                            response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("not enough stock (%d/%d)", enchantAmount, enchantData.getQuantity()));
+
+                        } else {
+                            double price = this.calculatePrice(enchantAmount, enchantData.getQuantity(), this.enchantBuyTax, false);
+                            response = new ValueResponse(price, EconomyResponse.ResponseType.SUCCESS, "");
+                        }
                     }
                 }
             }
@@ -169,36 +185,72 @@ public class EnchantmentManager {
      * @return MultiEnchantValueResponse - The value of each enchant
      */
     @NotNull
-    public MultiEnchantValueResponse getSellValue(ItemStack itemStack) {
-        HashMap<String, EnchantData> enchantIDMap = new HashMap<>();
-        HashMap<String, Integer> enchantLevelMap = new HashMap<>();
-        HashMap<String, Double> enchantValueMap = new HashMap<>();
-        double totalValue = 0;
-
-        EconomyResponse.ResponseType flag = EconomyResponse.ResponseType.SUCCESS;
+    public MultiValueResponse getSellValue(ItemStack itemStack) {
+        HashMap<String, Double> values = MultiValueResponse.createValues();
+        HashMap<String, Integer> quantities = MultiValueResponse.createQuantities();
+        EconomyResponse.ResponseType responseType = EconomyResponse.ResponseType.SUCCESS;
         String errorMessage = "";
 
-        for (Enchantment enchantment : itemStack.getEnchantments().keySet()) {
+        Map<Enchantment, Integer> itemStackEnchants = itemStack.getEnchantments();
+        for (Enchantment enchantment : itemStackEnchants.keySet()) {
+            int level = itemStackEnchants.get(enchantment);
             String enchantID = enchantment.getKey().getKey();
-            EnchantData enchantData = this.getEnchant(enchantID);
-            if (enchantData == null) {
-                flag = EconomyResponse.ResponseType.FAILURE;
-                errorMessage = "unknown enchant " + enchantID;
+            ValueResponse valueResponse = this.getSellValue(itemStack, enchantID, level);
+            if (valueResponse.isFailure()) {
+                errorMessage = valueResponse.errorMessage;
+                responseType = valueResponse.responseType;
                 break;
-
             } else {
-                int enchantLevel = itemStack.getEnchantmentLevel(enchantment);
-                int enchantAmount = this.getEnchantAmount(enchantLevel);
-                double enchantValue = this.calculatePrice(enchantAmount, enchantData.getQuantity(), this.enchantSellTax, false);
-                totalValue += enchantValue;
-
-                enchantIDMap.put(enchantID, enchantData);
-                enchantLevelMap.put(enchantID, enchantLevel);
-                enchantValueMap.put(enchantID, enchantValue);
+                values.put(enchantID, valueResponse.value);
+                quantities.put(enchantID, level);
             }
         }
 
-        return new MultiEnchantValueResponse(enchantIDMap, enchantLevelMap, enchantValueMap, totalValue, flag, errorMessage);
+        return new MultiValueResponse(values, quantities, responseType, errorMessage);
+    }
+
+    /**
+     * Returns the value of an enchant on an item.
+     * @param itemStack - The itemstack to check
+     * @param enchantID - The enchant ID to check for
+     * @param level - The level to value
+     * @return ValueResponse
+     */
+    public ValueResponse getSellValue(ItemStack itemStack, String enchantID, int level) {
+        EnchantData enchantData = this.getEnchant(enchantID);
+        ValueResponse response;
+        if (enchantData == null) {
+            response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("unknown enchant id %s", enchantID));
+        } else{
+
+            Enchantment enchantment = enchantData.getEnchantment();
+            if (enchantment == null) {
+                response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("unknown enchant id %s", enchantID));
+
+            } else {
+
+                if (!enchantData.getAllowed()) {
+                    response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("this enchant is not allowed to be bought or sold."));
+
+                } else {
+
+                    Map<Enchantment, Integer> itemStackEnchants = itemStack.getEnchantments();
+                    if (!itemStackEnchants.containsKey(enchantment)) {
+                        response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("item does not have enchant %s", enchantID));
+                    } else {
+
+                        int itemStackEnchantLevel = itemStackEnchants.get(enchantment);
+                        if (itemStackEnchantLevel < level) {
+                            response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("item enchant does not have enough levels(%d/%d)", itemStackEnchantLevel, level));
+                        } else {
+
+                            response = new ValueResponse(this.calculatePrice(this.getEnchantAmount(level), enchantData.getQuantity(), this.enchantSellTax, false), EconomyResponse.ResponseType.SUCCESS, "");
+                        }
+                    }
+                }
+            }
+        }
+        return response;
     }
 
     /**
