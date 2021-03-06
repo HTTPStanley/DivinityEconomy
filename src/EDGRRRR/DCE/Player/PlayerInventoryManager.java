@@ -1,7 +1,9 @@
 package EDGRRRR.DCE.Player;
 
 import EDGRRRR.DCE.Main.DCEPlugin;
+import com.sun.istack.internal.NotNull;
 import org.bukkit.Material;
+import org.bukkit.craftbukkit.libs.jline.internal.Nullable;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -23,17 +25,31 @@ public class PlayerInventoryManager {
      * @param player - The player to get the item for
      * @return ItemStack - The item stack the player is holding
      */
+    @Nullable
     public ItemStack getHeldItem(Player player) {
         int slotIdx = player.getInventory().getHeldItemSlot();
         return player.getInventory().getItem(slotIdx);
     }
 
+    /**
+     * Removes the given enchants and levels from the itemStack given.
+     * @param itemStack - The itemstack to remove the enchants from
+     * @param enchantmentAndLevels - The enchantments and the level to remove
+     */
     public void removeEnchantLevelsFromItem(ItemStack itemStack, HashMap<Enchantment, Integer> enchantmentAndLevels) {
         for (Enchantment enchantment : enchantmentAndLevels.keySet()) {
             this.removeEnchantLevelsFromItem(itemStack, enchantment, enchantmentAndLevels.get(enchantment));
         }
     }
 
+    /**
+     * Reduces an enchant level on an itemstack by levels amount
+     * If the level is 5 and you remove 4, the level is set to 1.
+     * If the level is 5 and you remove 5, the enchant is removed.
+     * @param itemStack - The itemstack to remove the enchant from
+     * @param enchantment - The enchantment to remvoe
+     * @param levels - The levels to remove
+     */
     public void removeEnchantLevelsFromItem(ItemStack itemStack, Enchantment enchantment, int levels) {
         int currentLevel = itemStack.getEnchantmentLevel(enchantment);
         itemStack.removeEnchantment(enchantment);
@@ -74,6 +90,7 @@ public class PlayerInventoryManager {
      * @param amount   - The amount
      * @return ItemStack[]
      */
+    @NotNull
     public ItemStack[] getMaterialSlotsToCount(Player player, Material material, int amount) {
         ItemStack[] materialStacks = this.getMaterialSlots(player, material);
         ArrayList<ItemStack> itemStacks = new ArrayList<>();
@@ -105,6 +122,7 @@ public class PlayerInventoryManager {
      * @param arrayList - The arrayList to convert
      * @return ItemStack[] - An array with the items in the arrayList
      */
+    @NotNull
     public ItemStack[] convertArray(ArrayList<ItemStack> arrayList) {
         ItemStack[] newArray = new ItemStack[arrayList.size()];
         for (int idx=0; idx<arrayList.size(); idx++) {
@@ -120,6 +138,7 @@ public class PlayerInventoryManager {
      * @param amount   - The amount of that material
      * @return int
      */
+    @NotNull
     public int getStackCount(Material material, int amount) {
         int itemPerStack = material.getMaxStackSize();
         return (int) Math.ceil(amount / (double) itemPerStack);
@@ -132,6 +151,7 @@ public class PlayerInventoryManager {
      * @param amount   - The amount to get
      * @return ItemStack[]
      */
+    @NotNull
     public ItemStack[] createItemStacks(Material material, int amount) {
         ItemStack[] itemStacks = new ItemStack[this.getStackCount(material, amount)];
         int idx = 0;
@@ -159,8 +179,9 @@ public class PlayerInventoryManager {
      * @param player   - The player to add the materials to
      * @param material - The material to add
      * @param amount   - The amount to add
-     * @return
+     * @return ItemStack[]
      */
+    @NotNull
     public ItemStack[] addItemsToPlayer(Player player, Material material, int amount) {
         ItemStack[] itemStacks = this.createItemStacks(material, amount);
         this.addItemsToPlayer(player, itemStacks);
@@ -186,6 +207,7 @@ public class PlayerInventoryManager {
      * @param player - The player to check
      * @return int - The number of empty slots
      */
+    @NotNull
     public int getEmptySlots(Player player) {
         int count = 0;
         ItemStack[] inventory = player.getInventory().getStorageContents();
@@ -206,6 +228,7 @@ public class PlayerInventoryManager {
      * @param material - The material to check
      * @return ItemStack[] - An array of the ItemStack's in the player of material
      */
+    @NotNull
     public ItemStack[] getMaterialSlots(Player player, Material material) {
         HashMap<Integer, ? extends ItemStack> inventory = player.getInventory().all(material);
         ItemStack[] iStacks = new ItemStack[inventory.size()];
@@ -225,6 +248,7 @@ public class PlayerInventoryManager {
      * @param material - The material to check
      * @return int - Total count of materials
      */
+    @NotNull
     public int getMaterialCount(Player player, Material material) {
         return this.getMaterialCount(this.getMaterialSlots(player, material));
     }
@@ -235,6 +259,7 @@ public class PlayerInventoryManager {
      * @param iStacks - The array of item stacks
      * @return int - Total count of materials
      */
+    @NotNull
     public int getMaterialCount(ItemStack[] iStacks) {
         int count = 0;
         for (ItemStack iStack : iStacks) {
@@ -251,6 +276,7 @@ public class PlayerInventoryManager {
      * @param material - The material to check
      * @return int - The total space that can be further occupied by a material
      */
+    @NotNull
     public int getAvailableSpace(Player player, Material material) {
         //Get empty slots
         //Get total slots used by material
