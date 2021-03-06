@@ -122,6 +122,18 @@ public class EnchantmentManager {
         return itemStack.getEnchantments().size() >= 1;
     }
 
+    public int getEnchantLevel(ItemStack itemStack, String enchantName) {
+        int level = 0;
+        Map<Enchantment, Integer> enchantments = itemStack.getEnchantments();
+        for (Enchantment enchantment : enchantments.keySet()) {
+            if (enchantment.getKey().getKey().equals(enchantName)) {
+                level = enchantments.get(enchantment);
+                break;
+            }
+        }
+        return level;
+    }
+
     /**
      * Returns A hashmap of the enchantdata, level
      * If there are no enchants, the hashmap will be empty.
