@@ -1,8 +1,10 @@
 package EDGRRRR.DCE.Main;
 
+import com.sun.istack.internal.NotNull;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.craftbukkit.libs.jline.internal.InputStreamReader;
+import org.bukkit.craftbukkit.libs.jline.internal.Nullable;
 
 import java.io.File;
 
@@ -110,6 +112,7 @@ public class ConfigManager {
      * @param file - The filename of the file
      * @return FileConfiguration - The file config
      */
+    @NotNull
     public FileConfiguration readResource(String file) {
         return YamlConfiguration.loadConfiguration(new InputStreamReader(this.app.getResource(file)));
     }
@@ -120,6 +123,7 @@ public class ConfigManager {
      * @param file - The filename of the file
      * @return FileConfiguration - The file config
      */
+    @NotNull
     public FileConfiguration readFile(String file) {
         return YamlConfiguration.loadConfiguration(new File(this.app.getDataFolder(), file));
     }
@@ -131,24 +135,26 @@ public class ConfigManager {
      * @param file - The file to load
      * @return FileConfiguration - The file config
      */
+    @NotNull
     public FileConfiguration loadConfig(String file) {
         // Instantiate default and user config
         FileConfiguration defConfig;
         FileConfiguration config = null;
-        try {
-            // Load default and user config
-            defConfig = this.readResource(file);
-            config = this.readFile(file);
+        // Load default and user config
+        defConfig = this.readResource(file);
+        config = this.readFile(file);
 
-            // If config is empty, overwrite with defaults
-            // Empty can either mean non-existent or empty file.
-            if (config.getValues(false).size() == 0) {
-                config.setDefaults(defConfig);
-                config.options().copyDefaults(true);
+        // If config is empty, overwrite with defaults
+        // Empty can either mean non-existent or empty file.
+        if (config.getValues(false).size() == 0) {
+            config.setDefaults(defConfig);
+            config.options().copyDefaults(true);
+
+            try {
                 config.save(new File(this.app.getDataFolder(), file));
+            } catch (Exception e) {
+                this.app.getConsoleManager().severe(String.format("Couldn't save config with new values: %s", file));
             }
-        } catch (Exception e) {
-            config = null;
         }
 
         return config;
