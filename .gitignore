@@ -55,3 +55,10 @@ out/production/DCE/EDGRRRR/DCE/Player/PlayerInventoryManager.class
 out/production/DCE/EDGRRRR/DCE/Player/PlayerManager.class
 out/production/DCE/EDGRRRR/DCE/Response/MultiValueResponse.class
 out/production/DCE/EDGRRRR/DCE/Commands/Enchants/EnchantHandSell.class
+out/production/DCE/EDGRRRR/DCE/Commands/Enchants/EnchantValue.class
+out/production/DCE/EDGRRRR/DCE/Commands/Enchants/EnchantSell.class
+out/production/DCE/EDGRRRR/DCE/Commands/Enchants/EnchantInfo.class
+out/production/DCE/EDGRRRR/DCE/Commands/Enchants/EnchantHandValue.class
+out/production/DCE/EDGRRRR/DCE/Commands/Enchants/EnchantHandInfo.class
+out/production/DCE/EDGRRRR/DCE/Commands/Enchants/EnchantHandBuy.class
+out/production/DCE/EDGRRRR/DCE/Commands/Enchants/EnchantBuy.class
