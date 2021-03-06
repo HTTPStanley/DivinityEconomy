@@ -1,8 +1,8 @@
-package EDGRRRR.DCE.Materials;
+package edgrrrr.dce.materials;
 
-import EDGRRRR.DCE.Main.DCEPlugin;
-import EDGRRRR.DCE.Math.Math;
-import EDGRRRR.DCE.Response.ValueResponse;
+import edgrrrr.dce.main.DCEPlugin;
+import edgrrrr.dce.math.Math;
+import edgrrrr.dce.response.ValueResponse;
 import net.milkbowl.vault.economy.EconomyResponse.ResponseType;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;

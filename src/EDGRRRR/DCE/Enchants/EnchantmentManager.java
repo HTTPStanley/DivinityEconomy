@@ -1,9 +1,9 @@
-package EDGRRRR.DCE.Enchants;
+package edgrrrr.dce.enchants;
 
-import EDGRRRR.DCE.Main.DCEPlugin;
-import EDGRRRR.DCE.Math.Math;
-import EDGRRRR.DCE.Response.MultiValueResponse;
-import EDGRRRR.DCE.Response.ValueResponse;
+import edgrrrr.dce.main.DCEPlugin;
+import edgrrrr.dce.math.Math;
+import edgrrrr.dce.response.MultiValueResponse;
+import edgrrrr.dce.response.ValueResponse;
 import com.sun.istack.internal.NotNull;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.configuration.ConfigurationSection;

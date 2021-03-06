@@ -1,6 +1,6 @@
-package EDGRRRR.DCE.Events;
+package edgrrrr.dce.events;
 
-import EDGRRRR.DCE.Main.DCEPlugin;
+import edgrrrr.dce.main.DCEPlugin;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

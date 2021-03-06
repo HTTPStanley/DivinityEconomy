@@ -1,14 +1,13 @@
-package EDGRRRR.DCE.Commands.Enchants;
+package edgrrrr.dce.commands.enchants;
 
-import EDGRRRR.DCE.Enchants.EnchantData;
-import EDGRRRR.DCE.Main.DCEPlugin;
-import EDGRRRR.DCE.Math.Math;
-import EDGRRRR.DCE.Response.MultiValueResponse;
-import EDGRRRR.DCE.Response.ValueResponse;
+import edgrrrr.dce.enchants.EnchantData;
+import edgrrrr.dce.main.DCEPlugin;
+import edgrrrr.dce.math.Math;
+import edgrrrr.dce.response.MultiValueResponse;
+import edgrrrr.dce.response.ValueResponse;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 

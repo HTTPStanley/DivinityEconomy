@@ -1,8 +1,8 @@
-package EDGRRRR.DCE.Economy;
+package edgrrrr.dce.economy;
 
-import EDGRRRR.DCE.Main.DCEPlugin;
-import EDGRRRR.DCE.Math.Math;
-import EDGRRRR.DCE.Response.EconomyTransferResponse;
+import edgrrrr.dce.main.DCEPlugin;
+import edgrrrr.dce.math.Math;
+import edgrrrr.dce.response.EconomyTransferResponse;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import net.milkbowl.vault.economy.EconomyResponse.ResponseType;

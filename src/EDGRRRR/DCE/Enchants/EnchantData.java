@@ -1,4 +1,4 @@
-package EDGRRRR.DCE.Enchants;
+package edgrrrr.dce.enchants;
 
 import com.sun.istack.internal.NotNull;
 import org.bukkit.configuration.ConfigurationSection;

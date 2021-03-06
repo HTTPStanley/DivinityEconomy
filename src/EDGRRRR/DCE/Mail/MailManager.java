@@ -1,6 +1,6 @@
-package EDGRRRR.DCE.Mail;
+package edgrrrr.dce.mail;
 
-import EDGRRRR.DCE.Main.DCEPlugin;
+import edgrrrr.dce.main.DCEPlugin;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;

@@ -1,4 +1,4 @@
-package EDGRRRR.DCE.Response;
+package edgrrrr.dce.response;
 import net.milkbowl.vault.economy.EconomyResponse.ResponseType;
 
 /**

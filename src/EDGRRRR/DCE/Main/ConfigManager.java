@@ -1,10 +1,9 @@
-package EDGRRRR.DCE.Main;
+package edgrrrr.dce.main;
 
 import com.sun.istack.internal.NotNull;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.craftbukkit.libs.jline.internal.InputStreamReader;
-import org.bukkit.craftbukkit.libs.jline.internal.Nullable;
 
 import java.io.File;
 

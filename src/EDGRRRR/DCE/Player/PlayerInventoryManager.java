@@ -1,6 +1,6 @@
-package EDGRRRR.DCE.Player;
+package edgrrrr.dce.player;
 
-import EDGRRRR.DCE.Main.DCEPlugin;
+import edgrrrr.dce.main.DCEPlugin;
 import com.sun.istack.internal.NotNull;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.libs.jline.internal.Nullable;

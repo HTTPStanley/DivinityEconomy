@@ -1,6 +1,6 @@
-package EDGRRRR.DCE.Main;
+package edgrrrr.dce.main;
 
-import EDGRRRR.DCE.Mail.MailList;
+import edgrrrr.dce.mail.MailList;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;

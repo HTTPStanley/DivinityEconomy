@@ -1,4 +1,4 @@
-package EDGRRRR.DCE.Materials;
+package edgrrrr.dce.materials;
 
 import org.bukkit.configuration.ConfigurationSection;
 

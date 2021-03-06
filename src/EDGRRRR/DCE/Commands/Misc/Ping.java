@@ -1,6 +1,6 @@
-package EDGRRRR.DCE.Commands.Misc;
+package edgrrrr.dce.commands.misc;
 
-import EDGRRRR.DCE.Main.DCEPlugin;
+import edgrrrr.dce.main.DCEPlugin;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;

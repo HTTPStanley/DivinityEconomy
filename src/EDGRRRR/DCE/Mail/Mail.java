@@ -1,4 +1,4 @@
-package EDGRRRR.DCE.Mail;
+package edgrrrr.dce.mail;
 
 import org.bukkit.configuration.ConfigurationSection;
 

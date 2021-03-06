@@ -1,8 +1,8 @@
-package EDGRRRR.DCE.Commands.Mail;
+package edgrrrr.dce.commands.mail;
 
-import EDGRRRR.DCE.Mail.Mail;
-import EDGRRRR.DCE.Mail.MailList;
-import EDGRRRR.DCE.Main.DCEPlugin;
+import edgrrrr.dce.mail.Mail;
+import edgrrrr.dce.mail.MailList;
+import edgrrrr.dce.main.DCEPlugin;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;

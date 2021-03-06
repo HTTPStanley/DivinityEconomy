@@ -1,6 +1,6 @@
-package EDGRRRR.DCE.Commands.Money;
+package edgrrrr.dce.commands.money;
 
-import EDGRRRR.DCE.Main.DCEPlugin;
+import edgrrrr.dce.main.DCEPlugin;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

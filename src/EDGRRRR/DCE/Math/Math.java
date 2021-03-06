@@ -1,4 +1,4 @@
-package EDGRRRR.DCE.Math;
+package edgrrrr.dce.math;
 
 public class Math {
 
