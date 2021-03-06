@@ -23,6 +23,7 @@ public class ConfigManager {
     public final String strComEconPrefix = strCommandsPrefix + ".economy";
     public final String strComMiscPrefix = strCommandsPrefix + ".misc";
     public final String strComMarketPrefix = strCommandsPrefix + ".market";
+    public final String strComEnchantPrefix = strCommandsPrefix + ".enchant";
     // --
     public final String strMarketPrefix = "market";
     // Sub parts of market
@@ -81,6 +82,7 @@ public class ConfigManager {
     public final String strComHandValue = strComMarketPrefix + ".handValue";
     public final String strComReadMail = strComMailPrefix + ".readMail";
     public final String strComClearMail = strComMailPrefix + ".clearMail";
+    public final String strComEnchantHandSell = strComEnchantPrefix + ".eHandSell";
 
 
     public ConfigManager(DCEPlugin app) {
