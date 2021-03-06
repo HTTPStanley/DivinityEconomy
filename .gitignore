@@ -53,3 +53,5 @@ DCE.iml
 .idea/vcs.xml
 out/production/DCE/EDGRRRR/DCE/Player/PlayerInventoryManager.class
 out/production/DCE/EDGRRRR/DCE/Player/PlayerManager.class
+out/production/DCE/EDGRRRR/DCE/Response/MultiValueResponse.class
+out/production/DCE/EDGRRRR/DCE/Commands/Enchants/EnchantHandSell.class
