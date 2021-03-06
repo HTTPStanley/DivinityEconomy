@@ -2,6 +2,7 @@ package EDGRRRR.DCE.Player;
 
 import EDGRRRR.DCE.Main.DCEPlugin;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -25,6 +26,21 @@ public class PlayerInventoryManager {
     public ItemStack getHeldItem(Player player) {
         int slotIdx = player.getInventory().getHeldItemSlot();
         return player.getInventory().getItem(slotIdx);
+    }
+
+    public void removeEnchantLevelsFromItem(ItemStack itemStack, HashMap<Enchantment, Integer> enchantmentAndLevels) {
+        for (Enchantment enchantment : enchantmentAndLevels.keySet()) {
+            this.removeEnchantLevelsFromItem(itemStack, enchantment, enchantmentAndLevels.get(enchantment));
+        }
+    }
+
+    public void removeEnchantLevelsFromItem(ItemStack itemStack, Enchantment enchantment, int levels) {
+        int currentLevel = itemStack.getEnchantmentLevel(enchantment);
+        itemStack.removeEnchantment(enchantment);
+        int levelsLeft = currentLevel - levels;
+        if (levelsLeft > 0) {
+            itemStack.addUnsafeEnchantment(enchantment, levelsLeft);
+        }
     }
 
     /**
