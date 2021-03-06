@@ -91,10 +91,15 @@ public class EnchantHandSell implements CommandExecutor {
             this.app.getConsoleManager().usage(player, "You are not holding any item", this.usage);
 
         } else {
+            // Ensure item is enchanted
             if (!this.app.getEnchantmentManager().isEnchanted(heldItem)){
                 this.app.getConsoleManager().usage(player, "The item you are holding is not enchanted", this.usage);
 
             } else {
+                // If sell all enchants is true
+                // Then use MultiValueResponse and use getSellValue of entire item
+                // Then add quantity of each enchant / remove enchant from item
+                // Then add cash
                 if (sellAllEnchants) {
                     MultiValueResponse multiValueResponse = this.app.getEnchantmentManager().getSellValue(heldItem);
                     if (multiValueResponse.isFailure()) {
@@ -109,14 +114,20 @@ public class EnchantHandSell implements CommandExecutor {
                         this.app.getConsoleManager().logSale(player, multiValueResponse.getTotalQuantity(), multiValueResponse.getTotalValue(), String.format("enchants(%s)", multiValueResponse.toString()));
                     }
                 } else {
+                    // If only handling one enchant
+                    // Ensure enchant exists
                     EnchantData enchantData = this.app.getEnchantmentManager().getEnchant(enchantName);
                     if (enchantData == null) {
                         this.app.getConsoleManager().usage(player, String.format("Unknown enchant name %s", enchantName), this.usage);
                     } else {
+                        // Update enchantLevels to the max if sellAllEnchants is true
                         if (sellAllLevels) {
                             enchantLevels = heldItem.getEnchantmentLevel(enchantData.getEnchantment());
                         }
 
+
+                        // Get value
+                        // Remove enchants, add quantity and add cash
                         ValueResponse valueResponse = this.app.getEnchantmentManager().getSellValue(heldItem, enchantName, enchantLevels);
                         if (valueResponse.isFailure()) {
                             this.app.getConsoleManager().logFailedSale(player, enchantLevels, valueResponse.value, enchantName, valueResponse.errorMessage);
