@@ -3,6 +3,7 @@ package EDGRRRR.DCE.Enchants;
 import com.sun.istack.internal.NotNull;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.craftbukkit.libs.jline.internal.Nullable;
+import org.bukkit.enchantments.Enchantment;
 
 /**
  * A class that represents an enchant within the economy
@@ -14,6 +15,8 @@ public class EnchantData {
     private final ConfigurationSection configurationSection;
     // The default configuration section for this enchant
     private final ConfigurationSection defaultConfigurationSection;
+
+    private Enchantment enchantment;
 
     // String key names for values
     private final String strAllowed = "ALLOWED";
@@ -33,6 +36,17 @@ public class EnchantData {
         this.enchantmentManager = enchantmentManager;
         this.configurationSection = configurationSection;
         this.defaultConfigurationSection = defaultConfigurationSection;
+
+        for (Enchantment enchantment : Enchantment.values()) {
+            if (this.getID().equals(enchantment.getKey().getKey())){
+                this.enchantment = enchantment;
+                break;
+            }
+        }
+    }
+
+    public Enchantment getEnchantment() {
+        return this.enchantment;
     }
 
     /**
