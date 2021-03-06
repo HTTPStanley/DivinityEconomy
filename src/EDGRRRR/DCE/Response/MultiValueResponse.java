@@ -1,5 +1,6 @@
 package EDGRRRR.DCE.Response;
 
+import com.sun.istack.internal.NotNull;
 import net.milkbowl.vault.economy.EconomyResponse;
 
 import java.util.HashMap;
@@ -26,6 +27,11 @@ public class MultiValueResponse extends Response {
         this.quantities = quantities;
     }
 
+    /**
+     * Returns the sum of all values
+     * @return double
+     */
+    @NotNull
     public double getTotalValue() {
         double totalValue = 0;
         for (double value : this.values.values()) {
@@ -34,6 +40,11 @@ public class MultiValueResponse extends Response {
         return totalValue;
     }
 
+    /**
+     * Returns the sum of all quantities
+     * @return int
+     */
+    @NotNull
     public int getTotalQuantity() {
         int totalQuantity = 0;
         for (int quantity : this.quantities.values()) {
@@ -42,14 +53,29 @@ public class MultiValueResponse extends Response {
         return totalQuantity;
     }
 
+    /**
+     * A method for creating a hashmap with the necessary data types for the values
+     * @return HashMap<String, Double>
+     */
+    @NotNull
     public static HashMap<String, Double> createValues() {
-        return new HashMap<String, Double>();
+        return new HashMap<>();
     }
 
+    /**
+     * A method for creating a hashmap with the necessary data types for the quantities
+     * @return HashMap<String, Integer>
+     */
+    @NotNull
     public static HashMap<String, Integer> createQuantities() {
-        return new HashMap<String, Integer>();
+        return new HashMap<>();
     }
 
+    /**
+     * A method for returning the Set of item id's
+     * @return Set<String>
+     */
+    @NotNull
     public Set<String> getItemIds() {
         Set<String> keys1 = values.keySet();
         Set<String> keys2 = quantities.keySet();
@@ -60,11 +86,22 @@ public class MultiValueResponse extends Response {
         }
     }
 
+    /**
+     * Returns all items with a prefix before them
+     * @param prefix - The string to concatenate at the beginning
+     * @return String
+     */
+    @NotNull
     public String toString(String prefix) {
         return String.format("%s: %s", prefix, this.toString());
     }
 
+    /**
+     * Returns a string containing all item id's within the Quantities alongside their quantity
+     * @return String
+     */
     @Override
+    @NotNull
     public String toString() {
         StringBuilder string = new StringBuilder();
         int idx = 1;
