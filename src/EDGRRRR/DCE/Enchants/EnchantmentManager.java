@@ -122,6 +122,14 @@ public class EnchantmentManager {
         return itemStack.getEnchantments().size() >= 1;
     }
 
+    /**
+     * Returns the enchant level of the given enchant on the given itemstack
+     * Will return 0 if the enchant does not exist / is not on the itemstack
+     * @param itemStack
+     * @param enchantName
+     * @return
+     */
+    @NotNull
     public int getEnchantLevel(ItemStack itemStack, String enchantName) {
         int level = 0;
         Map<Enchantment, Integer> enchantments = itemStack.getEnchantments();
@@ -228,6 +236,7 @@ public class EnchantmentManager {
      * @param level - The level to value
      * @return ValueResponse
      */
+    @NotNull
     public ValueResponse getSellValue(ItemStack itemStack, String enchantID, int level) {
         EnchantData enchantData = this.getEnchant(enchantID);
         ValueResponse response;
