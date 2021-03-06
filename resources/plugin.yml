@@ -151,7 +151,7 @@ commands:
 
   eHandBuy:
     description: Buys an enchant for an item.
-    aliases: [ ehb ]
+    aliases: [ehb]
     permission: dce.enchant.eHandBuy
     permission-messaage: You do not have permission to use this command
     usage: ""
@@ -165,21 +165,21 @@ commands:
 
   eBuy:
     description: Buys an enchant for the players inventory.
-    aliases: [ eb ]
+    aliases: [eb]
     permission: dce.enchant.eBuy
     permission-messaage: You do not have permission to use this command
     usage: ""
 
   eHandValue:
     description: Values the enchants on the item in the players hand.
-    aliases: [ ehv ]
+    aliases: [ehv]
     permission: dce.enchant.eHandValue
     permission-messaage: You do not have permission to use this command
     usage: ""
 
   eValue:
     description: Values an enchant.
-    aliases: [ eval ]
+    aliases: [eval]
     permission: dce.enchant.eValue
     permission-messaage: You do not have permission to use this command
     usage: ""
@@ -220,9 +220,31 @@ permissions:
       dce.enchant.eBuy: true
       dce.enchant.eValue: true
       dce.enchant.eHandValue: true
+      dce.enchant.eHandInfo: true
+      dce.enchant.eInfo: true
 
   dce.enchant.eHandSell:
     description: Allows the user to sell enchants on their held item.
+    default: true
+
+  dce.enchant.eHandBuy:
+    description: Allows the user to buy enchants for their held item.
+    default: true
+
+  dce.enchant.eHandValue:
+    description: Allows the user to value enchants on their held item.
+    default: true
+
+  dce.enchant.eValue:
+    description: Allows the user to value enchants.
+    default: true
+
+  dce.enchant.eHandInfo:
+    description: Allows the user to get the information for enchants on their held item.
+    default: true
+
+  dce.enchant.eInfo:
+    description: Allows the user to get the information for enchants.
     default: true
 
   # Mail

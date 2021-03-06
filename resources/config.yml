@@ -247,3 +247,10 @@ commands:
 
   enchant:
     eHandSell: true
+    eHandBuy: true
+    eSell: true
+    eBuy: true
+    eHandValue: true
+    eValue: true
+    eHandInfo: true
+    eInfo: true
