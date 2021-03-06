@@ -1,0 +1,138 @@
+package EDGRRRR.DCE.Commands.Enchants;
+
+import EDGRRRR.DCE.Enchants.EnchantData;
+import EDGRRRR.DCE.Main.DCEPlugin;
+import EDGRRRR.DCE.Math.Math;
+import EDGRRRR.DCE.Response.MultiValueResponse;
+import EDGRRRR.DCE.Response.ValueResponse;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+
+/**
+ * A command for selling enchants on held items
+ */
+public class EnchantHandSell implements CommandExecutor {
+    // The main class
+    private final DCEPlugin app;
+    // The usage for this command
+    private final String usage = "/ehs <enchant> <levels> | /ehs <enchant>";
+
+    /**
+     * Constructor
+     * @param app - The main class
+     */
+    public EnchantHandSell(DCEPlugin app) {
+        this.app = app;
+    }
+
+    /**
+     * Called everytime the command /eHandSell is called
+     */
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
+        // Ensure sender is a player
+        if (!(sender instanceof Player)) {
+            return true;
+        }
+
+        // Cast to player
+        Player player = (Player) sender;
+
+        // Ensure command is enabled
+        if (!(this.app.getConfig().getBoolean(this.app.getConfigManager().strComEnchantHandSell))) {
+            this.app.getConsoleManager().severe(player, "This command is not enabled.");
+            return true;
+        }
+
+        // The name of the enchant
+        // The number of levels to sell
+        // If all levels should be sold
+        String enchantName= "";
+        int enchantLevels = 1;
+        boolean sellAllLevels = false;
+        boolean sellAllEnchants = false;
+
+        switch (args.length) {
+            // If user enters only the command
+            // Sell all enchants on item
+            case 0:
+                sellAllEnchants = true;
+                sellAllLevels = true;
+                break;
+
+            // If user enters the name
+            // sell maximum of enchant given
+            case 1:
+                enchantName = args[0];
+                sellAllLevels = true;
+                break;
+
+            // If user enters name and level
+            // Sell enchant level times
+            case 2:
+                enchantName = args[0];
+                enchantLevels = Math.getInt(args[1]);
+                break;
+
+            // If wrong number of arguments
+            default:
+                this.app.getConsoleManager().usage(player, "Invalid number of arguments.", this.usage);
+                return true;
+        }
+
+        // get the item the user is holding.
+        // ensure it is not null
+        ItemStack heldItem = this.app.getPlayerInventoryManager().getHeldItem(player);
+        if (heldItem == null) {
+            this.app.getConsoleManager().usage(player, "You are not holding any item", this.usage);
+
+        } else {
+            if (!this.app.getEnchantmentManager().isEnchanted(heldItem)){
+                this.app.getConsoleManager().usage(player, "The item you are holding is not enchanted", this.usage);
+
+            } else {
+                if (sellAllEnchants) {
+                    MultiValueResponse multiValueResponse = this.app.getEnchantmentManager().getSellValue(heldItem);
+                    if (multiValueResponse.isFailure()) {
+                        this.app.getConsoleManager().logFailedSale(player, multiValueResponse.getTotalQuantity(), multiValueResponse.getTotalValue(), multiValueResponse.toString("Enchants: "), multiValueResponse.errorMessage);
+                    } else {
+                        for (String enchantID : multiValueResponse.getItemIds()) {
+                            EnchantData enchantmentData = this.app.getEnchantmentManager().getEnchant(enchantID);
+                            enchantmentData.addLevelQuantity(multiValueResponse.quantities.get(enchantID));
+                            this.app.getPlayerInventoryManager().removeEnchantLevelsFromItem(heldItem, enchantmentData.getEnchantment(), multiValueResponse.quantities.get(enchantID));
+                        }
+                        this.app.getEconomyManager().addCash(player, multiValueResponse.getTotalValue());
+                        this.app.getConsoleManager().logSale(player, multiValueResponse.getTotalQuantity(), multiValueResponse.getTotalValue(), String.format("enchants(%s)", multiValueResponse.toString()));
+                    }
+                } else {
+                    EnchantData enchantData = this.app.getEnchantmentManager().getEnchant(enchantName);
+                    if (enchantData == null) {
+                        this.app.getConsoleManager().usage(player, String.format("Unknown enchant name %s", enchantName), this.usage);
+                    } else {
+                        if (sellAllLevels) {
+                            enchantLevels = heldItem.getEnchantmentLevel(enchantData.getEnchantment());
+                        }
+
+                        ValueResponse valueResponse = this.app.getEnchantmentManager().getSellValue(heldItem, enchantName, enchantLevels);
+                        if (valueResponse.isFailure()) {
+                            this.app.getConsoleManager().logFailedSale(player, enchantLevels, valueResponse.value, enchantName, valueResponse.errorMessage);
+
+                        } else {
+                            this.app.getPlayerInventoryManager().removeEnchantLevelsFromItem(heldItem, enchantData.getEnchantment(), enchantLevels);
+                            enchantData.addLevelQuantity(enchantLevels);
+                            this.app.getEconomyManager().addCash(player, valueResponse.value);
+                            this.app.getConsoleManager().logSale(player, enchantLevels, valueResponse.value, enchantName);
+                        }
+                    }
+                }
+            }
+        }
+
+        // Graceful exit :)
+        return true;
+    }
+}
