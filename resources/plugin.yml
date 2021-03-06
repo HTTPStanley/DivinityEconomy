@@ -209,6 +209,22 @@ commands:
 
 
 permissions:
+  # Enchants
+  dce.enchant:
+    description: Allows the user to buy and sell enchantments.
+    default: true
+    children:
+      dce.enchant.eHandSell: true
+      dce.enchant.eHandBuy: true
+      dce.enchant.eSell: true
+      dce.enchant.eBuy: true
+      dce.enchant.eValue: true
+      dce.enchant.eHandValue: true
+
+  dce.enchant.eHandSell:
+    description: Allows the user to sell enchants on their held item.
+    default: true
+
   # Mail
   dce.mail:
     description: Allows the user to use commands relating to their mail
