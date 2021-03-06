@@ -45,6 +45,11 @@ public class EnchantData {
         }
     }
 
+    /**
+     * Returns the enchant that this represents
+     * @return Enchantment
+     */
+    @Nullable
     public Enchantment getEnchantment() {
         return this.enchantment;
     }
