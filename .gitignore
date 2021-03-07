@@ -62,3 +62,6 @@ out/production/DCE/EDGRRRR/DCE/Commands/Enchants/EnchantHandValue.class
 out/production/DCE/EDGRRRR/DCE/Commands/Enchants/EnchantHandInfo.class
 out/production/DCE/EDGRRRR/DCE/Commands/Enchants/EnchantHandBuy.class
 out/production/DCE/EDGRRRR/DCE/Commands/Enchants/EnchantBuy.class
+.idea/uiDesigner.xml
+out/production/DCE/edgrrrr/dce/config/ConfigManager.class
+out/production/DCE/edgrrrr/dce/config/Setting.class
