@@ -1,6 +1,6 @@
 name: DCE
 prefix: DCE
-main: EDGRRRR.DCE.Main.DCEPlugin
+main: edgrrrr.dce.DCEPlugin
 version: 1.0.1
 author: EDGRRRR
 description: DivinityCraft Economy plugin.
