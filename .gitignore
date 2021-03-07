@@ -65,3 +65,6 @@ out/production/DCE/EDGRRRR/DCE/Commands/Enchants/EnchantBuy.class
 .idea/uiDesigner.xml
 out/production/DCE/edgrrrr/dce/config/ConfigManager.class
 out/production/DCE/edgrrrr/dce/config/Setting.class
+out/production/DCE/edgrrrr/dce/DCEPlugin.class
+out/production/DCE/edgrrrr/dce/console/LogLevel.class
+out/production/DCE/edgrrrr/dce/console/Console.class
