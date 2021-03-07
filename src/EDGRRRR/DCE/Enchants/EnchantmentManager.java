@@ -1,5 +1,6 @@
 package edgrrrr.dce.enchants;
 
+import edgrrrr.dce.config.Setting;
 import edgrrrr.dce.main.DCEPlugin;
 import edgrrrr.dce.math.Math;
 import edgrrrr.dce.response.MultiValueResponse;
@@ -49,15 +50,17 @@ public class EnchantmentManager {
      */
     public EnchantmentManager(DCEPlugin app) {
         this.app = app;
-        this.enchantBuyTax = this.app.getConfig().getDouble(this.app.getConfigManager().strEnchantBuyTax);
-        this.enchantSellTax = this.app.getConfig().getDouble(this.app.getConfigManager().strMaterialSellTax);
-        this.enchantBaseQuantity = this.app.getConfig().getInt(this.app.getConfigManager().strMaterialBaseQuantity);
+        this.enchantBuyTax = this.app.getConfig().getDouble(Setting.MARKET_ENCHANTS_BUY_TAX_FLOAT.path());
+        this.enchantSellTax = this.app.getConfig().getDouble(Setting.MARKET_ENCHANTS_SELL_TAX_FLOAT.path());
+        this.enchantBaseQuantity = this.app.getConfig().getInt(Setting.MARKET_ENCHANTS_BASE_QUANTITY_INTEGER.path());
+        int timer = this.app.getConfig().getInt(Setting.MARKET_SAVE_TIMER_INTEGER.path());
         this.saveTimer = new BukkitRunnable() {
             @Override
             public void run() {
-
+                saveEnchants();
             }
         };
+        this.saveTimer.runTaskTimer(this.app, timer, timer);
     }
 
     /**
