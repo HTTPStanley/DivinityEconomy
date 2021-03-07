@@ -1,4 +1,4 @@
-package edgrrrr.dce.commands.misc;
+package edgrrrr.dce.commands.enchants;
 
 import edgrrrr.dce.config.Setting;
 import edgrrrr.dce.main.DCEPlugin;
@@ -7,16 +7,13 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-/**
- * A simple ping pong! command
- */
-public class Ping implements CommandExecutor {
-    private final DCEPlugin app;
+public class EnchantBuy implements CommandExecutor {
+    private DCEPlugin app;
+    private String usage;
 
-    public Ping(DCEPlugin app) {
+    public EnchantBuy(DCEPlugin app) {
         this.app = app;
     }
-
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -27,7 +24,7 @@ public class Ping implements CommandExecutor {
         Player player = (Player) sender;
 
         // Ensure command is enabled
-        if (!(this.app.getConfig().getBoolean(Setting.COMMAND_PING_ENABLE_BOOLEAN.path()))) {
+        if (!(this.app.getConfig().getBoolean(Setting.COMMAND_E_BUY_ENABLE_BOOLEAN.path()))) {
             this.app.getConsoleManager().severe(player, "This command is not enabled.");
             return true;
         }

@@ -1,5 +1,6 @@
 package edgrrrr.dce.commands.market;
 
+import edgrrrr.dce.config.Setting;
 import edgrrrr.dce.main.DCEPlugin;
 import edgrrrr.dce.materials.MaterialData;
 import edgrrrr.dce.materials.MaterialPotionData;
@@ -30,7 +31,7 @@ public class Info implements CommandExecutor {
         Player from = (Player) sender;
 
         // Ensure command is enabled
-        if (!(this.app.getConfig().getBoolean(this.app.getConfigManager().strComInfo))) {
+        if (!(this.app.getConfig().getBoolean(Setting.COMMAND_INFO_ENABLE_BOOLEAN.path()))) {
             this.app.getConsoleManager().severe(from, "This command is not enabled.");
             return true;
         }

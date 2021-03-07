@@ -1,5 +1,6 @@
 package edgrrrr.dce.commands.mail;
 
+import edgrrrr.dce.config.Setting;
 import edgrrrr.dce.mail.Mail;
 import edgrrrr.dce.mail.MailList;
 import edgrrrr.dce.main.DCEPlugin;
@@ -28,7 +29,7 @@ public class ClearMail implements CommandExecutor {
         Player player = (Player) sender;
 
         // Ensure command is enabled
-        if (!(this.app.getConfig().getBoolean(this.app.getConfigManager().strComClearMail))) {
+        if (!(this.app.getConfig().getBoolean(Setting.COMMAND_CLEAR_MAIL_ENABLE_BOOLEAN.path()))) {
             this.app.getConsoleManager().severe(player, "This command is not enabled.");
             return true;
         }

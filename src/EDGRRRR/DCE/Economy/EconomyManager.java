@@ -1,5 +1,6 @@
 package edgrrrr.dce.economy;
 
+import edgrrrr.dce.config.Setting;
 import edgrrrr.dce.main.DCEPlugin;
 import edgrrrr.dce.math.Math;
 import edgrrrr.dce.response.EconomyTransferResponse;
@@ -15,9 +16,9 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 public class EconomyManager {
 
     // Settings
-    public final double minSendAmount;
+    public final double minTransfer;
     public final int roundingDigits;
-    public final double minAccountBalance;
+    public final double minBalance;
     // Stores the main app
     private final DCEPlugin app;
     // Stores the Vault economy api
@@ -27,9 +28,9 @@ public class EconomyManager {
         this.app = app;
 
         // settings
-        this.minSendAmount = this.app.getConfig().getDouble(this.app.getConfigManager().strEconomyMinSendAmount);
-        this.roundingDigits = this.app.getConfig().getInt(this.app.getConfigManager().strEconomyRoundingDigits);
-        this.minAccountBalance = this.app.getConfig().getDouble(this.app.getConfigManager().strEconomyMinAccountBalance);
+        this.minTransfer = this.app.getConfig().getDouble(Setting.ECONOMY_MIN_SEND_AMOUNT_DOUBLE.path());
+        this.roundingDigits = this.app.getConfig().getInt(Setting.ECONOMY_ACCURACY_DIGITS_INTEGER.path());
+        this.minBalance = this.app.getConfig().getDouble(Setting.ECONOMY_MIN_BALANCE_DOUBLE.path());
     }
 
 
@@ -120,7 +121,7 @@ public class EconomyManager {
         this.app.getConsoleManager().debug("REM REQUEST '" + oPlayer.getName() + "' £" + amount);
         double oldBalance = this.getBalance(oPlayer);
         EconomyResponse response;
-        if ((oldBalance - amount) < this.minAccountBalance) {
+        if ((oldBalance - amount) < this.minBalance) {
             response = new EconomyResponse(amount, oldBalance, ResponseType.FAILURE, String.format("not enough cash for this transfer (£%,.2f/£%,.2f)", oldBalance, amount));
         } else {
             response = this.economy.withdrawPlayer(oPlayer, amount);
@@ -177,8 +178,8 @@ public class EconomyManager {
             response = new EconomyTransferResponse(fromBalance, toBalance, 0.0, ResponseType.FAILURE, "cannot send money to yourself!");
         } else {
             // Ensure amount is above or equal to the minimum send amount
-            if (amount < this.minSendAmount) {
-                response = new EconomyTransferResponse(fromBalance, toBalance, 0.0, ResponseType.FAILURE, String.format("cannot send less than £%f", this.minSendAmount));
+            if (amount < this.minTransfer) {
+                response = new EconomyTransferResponse(fromBalance, toBalance, 0.0, ResponseType.FAILURE, String.format("cannot send less than £%f", this.minTransfer));
             } else {
 
                 // Take money from sender

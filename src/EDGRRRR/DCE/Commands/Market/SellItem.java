@@ -1,5 +1,6 @@
 package edgrrrr.dce.commands.market;
 
+import edgrrrr.dce.config.Setting;
 import edgrrrr.dce.main.DCEPlugin;
 import edgrrrr.dce.materials.MaterialData;
 import edgrrrr.dce.response.ValueResponse;
@@ -32,7 +33,7 @@ public class SellItem implements CommandExecutor {
         Player player = (Player) sender;
 
         // Ensure command is enabled
-        if (!(this.app.getConfig().getBoolean(this.app.getConfigManager().strComSellItem))) {
+        if (!(this.app.getConfig().getBoolean(Setting.COMMAND_SELL_ITEM_ENABLE_BOOLEAN.path()))) {
             this.app.getConsoleManager().severe(player, "This command is not enabled.");
             return true;
         }

@@ -1,5 +1,6 @@
 package edgrrrr.dce.main;
 
+import edgrrrr.dce.config.Setting;
 import edgrrrr.dce.mail.MailList;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -52,16 +53,16 @@ public class ConsoleManager {
 
 
         // Get settings
-        this.debugMode = (this.app.getConfig().getBoolean(this.app.getConfigManager().strChatDebug));
-        this.infoColour = this.getColour(this.app.getConfigManager().strChatInfClr);
-        this.warnColour = this.getColour(this.app.getConfigManager().strChatWrnClr);
-        this.severeColour = this.getColour(this.app.getConfigManager().strChatSvrClr);
-        this.debugColour = this.getColour(this.app.getConfigManager().strChatDbgClr);
-        this.prefixColour = this.getColour(this.app.getConfigManager().strChatPfxClr);
-        this.prefixSepColour = this.getColour(this.app.getConfigManager().strChatPfxSepClr);
-        String prefix = this.app.getConfig().getString(this.app.getConfigManager().strChatMsgPfx);
-        String conPrefix = this.app.getConfig().getString(this.app.getConfigManager().strChatConsPfx).replace("%V", this.app.getDescription().getVersion());
-        String prefixSep = this.app.getConfig().getString(this.app.getConfigManager().strChatPfxSep);
+        this.debugMode = (this.app.getConfig().getBoolean(Setting.CHAT_DEBUG_OUTPUT_BOOLEAN.path()));
+        this.infoColour = this.getColour(Setting.CHAT_INFO_COLOR.path());
+        this.warnColour = this.getColour(Setting.CHAT_WARNING_COLOR.path());
+        this.severeColour = this.getColour(Setting.CHAT_SEVERE_COLOR.path());
+        this.debugColour = this.getColour(Setting.CHAT_DEBUG_COLOR.path());
+        this.prefixColour = this.getColour(Setting.CHAT_PREFIX_COLOR.path());
+        this.prefixSepColour = this.getColour(Setting.CHAT_PREFIX_SEPARATOR_COLOR.path());
+        String prefix = this.app.getConfig().getString(Setting.CHAT_PREFIX_STRING.path());
+        String conPrefix = this.app.getConfig().getString(Setting.CHAT_CONSOLE_PREFIX.path()).replace("%V", this.app.getDescription().getVersion());
+        String prefixSep = this.app.getConfig().getString(Setting.CHAT_PREFIX_SEPARATOR_STRING.path());
         this.prefix = prefixColour + prefix + prefixSepColour + prefixSep;
         this.conPrefix = prefixColour + conPrefix + prefixSepColour + prefixSep;
     }

@@ -1,5 +1,6 @@
 package edgrrrr.dce.commands.market;
 
+import edgrrrr.dce.config.Setting;
 import edgrrrr.dce.main.DCEPlugin;
 import edgrrrr.dce.materials.MaterialData;
 import edgrrrr.dce.response.ValueResponse;
@@ -31,7 +32,7 @@ public class Value implements CommandExecutor {
         Player from = (Player) sender;
 
         // Ensure command is enabled
-        if (!(this.app.getConfig().getBoolean(this.app.getConfigManager().strComValue))) {
+        if (!(this.app.getConfig().getBoolean(Setting.COMMAND_VALUE_ENABLE_BOOLEAN.path()))) {
             this.app.getConsoleManager().severe(from, "This command is not enabled.");
             return true;
         }

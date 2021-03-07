@@ -1,5 +1,6 @@
 package edgrrrr.dce.commands.money;
 
+import edgrrrr.dce.config.Setting;
 import edgrrrr.dce.main.DCEPlugin;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -29,7 +30,7 @@ public class Balance implements CommandExecutor {
         Player from = (Player) sender;
 
         // Ensure command is enabled
-        if (!(this.app.getConfig().getBoolean(this.app.getConfigManager().strComBalance))) {
+        if (!(this.app.getConfig().getBoolean(Setting.COMMAND_BALANCE_ENABLE_BOOLEAN.path()))) {
             this.app.getConsoleManager().severe(from, "This command is not enabled.");
             return true;
         }

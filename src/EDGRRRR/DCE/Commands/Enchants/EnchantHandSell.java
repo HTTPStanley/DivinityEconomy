@@ -1,5 +1,6 @@
 package edgrrrr.dce.commands.enchants;
 
+import edgrrrr.dce.config.Setting;
 import edgrrrr.dce.enchants.EnchantData;
 import edgrrrr.dce.main.DCEPlugin;
 import edgrrrr.dce.math.Math;
@@ -42,7 +43,7 @@ public class EnchantHandSell implements CommandExecutor {
         Player player = (Player) sender;
 
         // Ensure command is enabled
-        if (!(this.app.getConfig().getBoolean(this.app.getConfigManager().strComEnchantHandSell))) {
+        if (!(this.app.getConfig().getBoolean(Setting.COMMAND_E_HAND_SELL_ENABLE_BOOLEAN.path()))) {
             this.app.getConsoleManager().severe(player, "This command is not enabled.");
             return true;
         }

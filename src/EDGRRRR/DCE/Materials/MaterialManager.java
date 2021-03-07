@@ -1,5 +1,6 @@
 package edgrrrr.dce.materials;
 
+import edgrrrr.dce.config.Setting;
 import edgrrrr.dce.main.DCEPlugin;
 import edgrrrr.dce.math.Math;
 import edgrrrr.dce.response.ValueResponse;
@@ -41,10 +42,10 @@ public class MaterialManager {
      */
     public MaterialManager(DCEPlugin app) {
         this.app = app;
-        this.materialBuyTax = this.app.getConfig().getDouble(this.app.getConfigManager().strMaterialBuyTax);
-        this.materialSellTax = this.app.getConfig().getDouble(this.app.getConfigManager().strMaterialSellTax);
-        this.materialBaseQuantity = this.app.getConfig().getInt(this.app.getConfigManager().strMaterialBaseQuantity);
-        int timer = Math.getTicks(this.app.getConfig().getInt(this.app.getConfigManager().strMarketSaveTimer));
+        this.materialBuyTax = this.app.getConfig().getDouble(Setting.MARKET_MATERIALS_BUY_TAX_FLOAT.path());
+        this.materialSellTax = this.app.getConfig().getDouble(Setting.MARKET_MATERIALS_SELL_TAX_FLOAT.path());
+        this.materialBaseQuantity = this.app.getConfig().getInt(Setting.MARKET_MATERIALS_BASE_QUANTITY_INTEGER.path());
+        int timer = Math.getTicks(this.app.getConfig().getInt(Setting.MARKET_SAVE_TIMER_INTEGER.path()));
         this.saveTimer = new BukkitRunnable() {
             @Override
             public void run() {

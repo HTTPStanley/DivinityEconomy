@@ -6,12 +6,12 @@ import edgrrrr.dce.commands.admin.SetBal;
 import edgrrrr.dce.commands.enchants.EnchantHandSell;
 import edgrrrr.dce.commands.mail.ClearMail;
 import edgrrrr.dce.commands.mail.ReadMail;
-import EDGRRRR.dce.commands.market.*;
-import edgrr.dce.commands.market.*;
 import edgrrrr.dce.commands.market.*;
 import edgrrrr.dce.commands.misc.Ping;
 import edgrrrr.dce.commands.money.Balance;
 import edgrrrr.dce.commands.money.SendCash;
+import edgrrrr.dce.config.ConfigManager;
+import edgrrrr.dce.config.Setting;
 import edgrrrr.dce.economy.EconomyManager;
 import edgrrrr.dce.enchants.EnchantmentManager;
 import edgrrrr.dce.events.MailEvent;
@@ -22,6 +22,8 @@ import edgrrrr.dce.player.PlayerManager;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.HashMap;
 
 /**
  * The Main Class of the plugin
@@ -350,61 +352,48 @@ public class DCEPlugin extends JavaPlugin {
      * Such as settings, the materials market variables, the enchant market variables.
      */
     public void describe() {
+        Setting[] chatSettings = {Setting.CHAT_DEBUG_OUTPUT_BOOLEAN, Setting.CHAT_PREFIX_STRING, Setting.CHAT_CONSOLE_PREFIX,
+                Setting.CHAT_PREFIX_COLOR, Setting.CHAT_PREFIX_SEPARATOR_STRING, Setting.CHAT_PREFIX_SEPARATOR_COLOR,
+                Setting.CHAT_INFO_COLOR, Setting.CHAT_WARNING_COLOR, Setting.CHAT_SEVERE_COLOR, Setting.CHAT_DEBUG_COLOR};
+
+        Setting[] economySettings = {Setting.ECONOMY_MIN_SEND_AMOUNT_DOUBLE, Setting.ECONOMY_ACCURACY_DIGITS_INTEGER, Setting.ECONOMY_MIN_BALANCE_DOUBLE};
+
+        Setting[] marketSettings = {Setting.MARKET_SAVE_TIMER_INTEGER};
+
+        Setting[] materialSettings = {Setting.MARKET_MATERIALS_ENABLE_BOOLEAN, Setting.MARKET_MATERIALS_BASE_QUANTITY_INTEGER, Setting.MARKET_MATERIALS_BUY_TAX_FLOAT,
+                Setting.MARKET_MATERIALS_SELL_TAX_FLOAT};
+
+        Setting[] enchantSettings = {Setting.MARKET_ENCHANTS_ENABLE_BOOLEAN, Setting.MARKET_ENCHANTS_BASE_QUANTITY_INTEGER, Setting.MARKET_ENCHANTS_BUY_TAX_FLOAT,
+                Setting.MARKET_ENCHANTS_SELL_TAX_FLOAT};
+
+        Setting[] commandSettings = {Setting.COMMAND_PING_ENABLE_BOOLEAN, Setting.COMMAND_BALANCE_ENABLE_BOOLEAN, Setting.COMMAND_SET_BALANCE_ENABLE_BOOLEAN, Setting.COMMAND_EDIT_BALANCE_ENABLE_BOOLEAN,
+                Setting.COMMAND_CLEAR_BALANCE_ENABLE_BOOLEAN, Setting.COMMAND_BALANCE_ENABLE_BOOLEAN, Setting.COMMAND_SEND_CASH_ENABLE_BOOLEAN, Setting.COMMAND_BUY_ITEM_ENABLE_BOOLEAN, Setting.COMMAND_SELL_ITEM_ENABLE_BOOLEAN,
+                Setting.COMMAND_HAND_SELL_ITEM_ENABLE_BOOLEAN, Setting.COMMAND_HAND_BUY_ITEM_ENABLE_BOOLEAN, Setting.COMMAND_VALUE_ENABLE_BOOLEAN, Setting.COMMAND_HAND_VALUE_ENABLE_BOOLEAN, Setting.COMMAND_SEARCH_ENABLE_BOOLEAN,
+                Setting.COMMAND_INFO_ENABLE_BOOLEAN, Setting.COMMAND_HAND_INFO_ENABLE_BOOLEAN, Setting.COMMAND_READ_MAIL_ENABLE_BOOLEAN, Setting.COMMAND_CLEAR_MAIL_ENABLE_BOOLEAN, Setting.COMMAND_E_HAND_SELL_ENABLE_BOOLEAN,
+                Setting.COMMAND_E_HAND_BUY_ENABLE_BOOLEAN, Setting.COMMAND_E_SELL_ENABLE_BOOLEAN, Setting.COMMAND_E_BUY_ENABLE_BOOLEAN, Setting.COMMAND_E_VALUE_ENABLE_BOOLEAN, Setting.COMMAND_E_HAND_VALUE_ENABLE_BOOLEAN,
+                Setting.COMMAND_E_INFO_ENABLE_BOOLEAN, Setting.COMMAND_E_HAND_INFO_ENABLE_BOOLEAN};
+
+        HashMap<String, Setting[]> settingMap = new HashMap<>();
+        settingMap.put("Chat", chatSettings);
+        settingMap.put("Economy", economySettings);
+        settingMap.put("Market", marketSettings);
+        settingMap.put("   Materials", materialSettings);
+        settingMap.put("   Enchants", enchantSettings);
+        settingMap.put("Commands", commandSettings);
+
+
         this.consoleManager.debug("===Describe===");
         this.consoleManager.debug("Settings:");
-        this.consoleManager.debug("   Chat:");
-        this.consoleManager.debug("      - " + this.configManager.strChatDebug + ": " + this.getConfig().getString(this.configManager.strChatDebug));
-        this.consoleManager.debug("      - " + this.configManager.strChatMsgPfx + ": " + this.getConfig().getString(this.configManager.strChatMsgPfx));
-        this.consoleManager.debug("      - " + this.configManager.strChatPfxSep + ": " + this.getConfig().getString(this.configManager.strChatPfxSep));
-        this.consoleManager.debug("      - " + this.configManager.strChatPfxClr + ": " + this.getConfig().getString(this.configManager.strChatPfxClr));
-        this.consoleManager.debug("      - " + this.configManager.strChatPfxSepClr + ": " + this.getConfig().getString(this.configManager.strChatPfxSepClr));
-        this.consoleManager.debug("      - " + this.configManager.strChatConsPfx + ": " + this.getConfig().getString(this.configManager.strChatConsPfx));
-        this.consoleManager.debug("      - " + this.configManager.strChatInfClr + ": " + this.getConfig().getString(this.configManager.strChatInfClr));
-        this.consoleManager.debug("      - " + this.configManager.strChatWrnClr + ": " + this.getConfig().getString(this.configManager.strChatWrnClr));
-        this.consoleManager.debug("      - " + this.configManager.strChatSvrClr + ": " + this.getConfig().getString(this.configManager.strChatSvrClr));
-        this.consoleManager.debug("      - " + this.configManager.strChatDbgClr + ": " + this.getConfig().getString(this.configManager.strChatDbgClr));
-        this.consoleManager.debug("      - " + this.configManager.strChatConsPfx + ": " + this.getConfig().getString(this.configManager.strChatConsPfx));
-        this.consoleManager.debug("");
-        this.consoleManager.debug("   Economy:");
-        this.consoleManager.debug("      - " + this.configManager.strEconomyMinSendAmount + ": " + this.getConfig().getString(this.configManager.strEconomyMinSendAmount));
-        this.consoleManager.debug("      - " + this.configManager.strEconomyRoundingDigits + ": " + this.getConfig().getString(this.configManager.strEconomyRoundingDigits));
-        this.consoleManager.debug("      - " + this.configManager.strEconomyMinAccountBalance + ": " + this.getConfig().getString(this.configManager.strEconomyMinAccountBalance));
-        this.consoleManager.debug("");
-        this.consoleManager.debug("   Market:");
-        this.consoleManager.debug("      - " + this.configManager.strMarketSaveTimer + ": " + this.getConfig().getString(this.configManager.strMarketSaveTimer));
-        this.consoleManager.debug("");
-        this.consoleManager.debug("      Materials:");
-        this.consoleManager.debug("         - " + this.configManager.strMaterialEnable + ": " + this.getConfig().getString(this.configManager.strMaterialEnable));
-        this.consoleManager.debug("         - " + this.configManager.strMaterialBaseQuantity + ": " + this.getConfig().getString(this.configManager.strMaterialBaseQuantity));
-        this.consoleManager.debug("         - " + this.configManager.strMaterialBuyTax + ": " + this.getConfig().getString(this.configManager.strMaterialBuyTax));
-        this.consoleManager.debug("         - " + this.configManager.strMaterialSellTax + ": " + this.getConfig().getString(this.configManager.strMaterialSellTax));
-        this.consoleManager.debug("      Enchants:");
-        this.consoleManager.debug("         - " + this.configManager.strEnchantEnable + ": " + this.getConfig().getString(this.configManager.strEnchantEnable));
-        this.consoleManager.debug("         - " + this.configManager.strEnchantBaseQuantity + ": " + this.getConfig().getString(this.configManager.strEnchantBaseQuantity));
-        this.consoleManager.debug("         - " + this.configManager.strEnchantBuyTax + ": " + this.getConfig().getString(this.configManager.strEnchantBuyTax));
-        this.consoleManager.debug("         - " + this.configManager.strEnchantSellTax + ": " + this.getConfig().getString(this.configManager.strEnchantSellTax));
-        this.consoleManager.debug("");
-        this.consoleManager.debug("   Commands:");
-        this.consoleManager.debug("      - " + this.configManager.strComBalance + ": " + this.getConfig().getString(this.configManager.strComBalance));
-        this.consoleManager.debug("      - " + this.configManager.strComClearBal + ": " + this.getConfig().getString(this.configManager.strComClearBal));
-        this.consoleManager.debug("      - " + this.configManager.strComEditBal + ": " + this.getConfig().getString(this.configManager.strComEditBal));
-        this.consoleManager.debug("      - " + this.configManager.strComPing + ": " + this.getConfig().getString(this.configManager.strComPing));
-        this.consoleManager.debug("      - " + this.configManager.strComSendCash + ": " + this.getConfig().getString(this.configManager.strComSendCash));
-        this.consoleManager.debug("      - " + this.configManager.strComSetBal + ": " + this.getConfig().getString(this.configManager.strComSetBal));
-        this.consoleManager.debug("      - " + this.configManager.strComBuyItem + ": " + this.getConfig().getString(this.configManager.strComBuyItem));
-        this.consoleManager.debug("      - " + this.configManager.strComSellItem + ": " + this.getConfig().getString(this.configManager.strComSellItem));
-        this.consoleManager.debug("      - " + this.configManager.strComHandSell + ": " + this.getConfig().getString(this.configManager.strComHandSell));
-        this.consoleManager.debug("      - " + this.configManager.strComHandBuy + ": " + this.getConfig().getString(this.configManager.strComHandBuy));
-        this.consoleManager.debug("      - " + this.configManager.strComValue + ": " + this.getConfig().getString(this.configManager.strComValue));
-        this.consoleManager.debug("      - " + this.configManager.strComSearch + ": " + this.getConfig().getString(this.configManager.strComSearch));
-        this.consoleManager.debug("      - " + this.configManager.strComInfo + ": " + this.getConfig().getString(this.configManager.strComInfo));
-        this.consoleManager.debug("      - " + this.configManager.strComHandInfo + ": " + this.getConfig().getString(this.configManager.strComHandInfo));
-        this.consoleManager.debug("      - " + this.configManager.strComHandValue + ": " + this.getConfig().getString(this.configManager.strComHandValue));
-        this.consoleManager.debug("      - " + this.configManager.strComReadMail + ": " + this.getConfig().getString(this.configManager.strComReadMail));
-        this.consoleManager.debug("      - " + this.configManager.strComClearMail + ": " + this.getConfig().getString(this.configManager.strComClearMail));
+        for (String settingGroup : settingMap.keySet()) {
+            this.consoleManager.debug(String.format("   %s:", settingGroup));
+            for (Setting setting : settingMap.get(settingGroup)) {
+                this.consoleManager.debug(String.format("      - %s: %s", setting.path(), this.getConfig().getString(setting.path())));
+            }
+            this.consoleManager.debug("");
+        }
         this.consoleManager.debug("");
         this.consoleManager.debug("Markets:");
-        this.consoleManager.debug("      - Materials: " + this.materialManager.materials.size());
+        this.consoleManager.debug("   - Materials: " + this.materialManager.materials.size());
         this.consoleManager.debug("      - Material Aliases: " + this.materialManager.aliases.size());
         this.consoleManager.debug("      - Material Market Size: " + this.materialManager.getTotalMaterials() + " / " + this.materialManager.getDefaultTotalMaterials());
         this.consoleManager.debug("      - Material Market Inflation: " + this.materialManager.getInflation() + "%");

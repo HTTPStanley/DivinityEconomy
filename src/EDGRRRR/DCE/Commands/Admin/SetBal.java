@@ -1,5 +1,6 @@
 package edgrrrr.dce.commands.admin;
 
+import edgrrrr.dce.config.Setting;
 import edgrrrr.dce.main.DCEPlugin;
 import edgrrrr.dce.math.Math;
 import net.milkbowl.vault.economy.EconomyResponse;
@@ -39,7 +40,7 @@ public class SetBal implements CommandExecutor {
         Player player1 = (Player) sender;
 
         // Ensure command is enabled
-        if (!(this.app.getConfig().getBoolean(this.app.getConfigManager().strComSetBal))) {
+        if (!(this.app.getConfig().getBoolean(Setting.COMMAND_SET_BALANCE_ENABLE_BOOLEAN.path()))) {
             this.app.getConsoleManager().severe(player1, "This command is not enabled.");
             return true;
         }
