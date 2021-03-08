@@ -161,6 +161,37 @@ public class EnchantmentManager {
         return enchants;
     }
 
+
+    /**
+     * Returns the total purchase price of all the enchants on an itemstack
+     * @param itemStack - The itemstack to check
+     * @return MultiValueResponse
+     */
+    @NotNull
+    public MultiValueResponse getBuyValue(ItemStack itemStack) {
+        HashMap<String, Double> values = MultiValueResponse.createValues();
+        HashMap<String, Integer> quantities = MultiValueResponse.createQuantities();
+        EconomyResponse.ResponseType responseType = EconomyResponse.ResponseType.SUCCESS;
+        String errorMessage = "";
+
+        Map<Enchantment, Integer> enchantmentLevels = itemStack.getEnchantments();
+        for (Enchantment enchantment : enchantmentLevels.keySet()) {
+            int level = enchantmentLevels.get(enchantment);
+            String enchantID = enchantment.getKey().getKey();
+            ValueResponse valueResponse = this.getBuyValue(enchantID, level);
+            if (valueResponse.isFailure()) {
+                errorMessage = valueResponse.errorMessage;
+                responseType = valueResponse.responseType;
+                break;
+            } else {
+                values.put(enchantID, valueResponse.value);
+                quantities.put(enchantID, level);
+            }
+        }
+
+        return new MultiValueResponse(values, quantities, responseType, errorMessage);
+    }
+
     /**
      * Returns the purchase value of the enchantID provided at the given level.
      * @param enchantID - The enchantment ID
