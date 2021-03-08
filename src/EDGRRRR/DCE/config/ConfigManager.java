@@ -1,12 +1,15 @@
 package edgrrrr.dce.config;
 
 import com.sun.istack.internal.NotNull;
-import edgrrrr.dce.main.DCEPlugin;
+import edgrrrr.dce.DCEPlugin;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.craftbukkit.libs.jline.internal.InputStreamReader;
 
 import java.io.File;
+import java.util.List;
 
 /**
  * Console class for sending uniform messages to players and the console.
@@ -31,6 +34,42 @@ public class ConfigManager {
             this.app.saveConfig();
             // app.reloadConfig();
         }
+    }
+
+    public Object get(Setting setting) {
+        return this.app.getConfig().get(setting.path(), this.app.getConfig().getDefaults().get(setting.path()));
+    }
+
+    public Integer getInt(Setting setting) {
+        return this.app.getConfig().getInt(setting.path(), this.app.getConfig().getDefaults().getInt(setting.path()));
+    }
+
+    public Boolean getBoolean(Setting setting) {
+        return this.app.getConfig().getBoolean(setting.path(), this.app.getConfig().getDefaults().getBoolean(setting.path()));
+    }
+
+    public Double getDouble(Setting setting) {
+        return this.app.getConfig().getDouble(setting.path(), this.app.getConfig().getDefaults().getDouble(setting.path()));
+    }
+
+    public String getString(Setting setting) {
+        return this.app.getConfig().getString(setting.path(), this.app.getConfig().getDefaults().getString(setting.path()));
+    }
+
+    public Material getMaterial(Setting setting) {
+        return Material.valueOf(this.app.getConfig().getString(setting.path(), this.app.getConfig().getDefaults().getString(setting.path())));
+    }
+
+    public ChatColor getColor(Setting setting) {
+        return ChatColor.valueOf(this.app.getConfig().getString(setting.path(), this.app.getConfig().getDefaults().getString(setting.path())));
+    }
+
+    public List<String> getStringList(Setting setting) {
+        return this.app.getConfig().getStringList(setting.path());
+    }
+
+    public void set(Setting setting, Object value) {
+        this.app.getConfig().set(setting.path(), value);
     }
 
     /**
@@ -80,7 +119,7 @@ public class ConfigManager {
             try {
                 config.save(new File(this.app.getDataFolder(), file));
             } catch (Exception e) {
-                this.app.getConsoleManager().severe(String.format("Couldn't save config with new values: %s", file));
+                DCEPlugin.CONSOLE.severe(String.format("Couldn't save config with new values: %s", file));
             }
         }
 
@@ -97,7 +136,7 @@ public class ConfigManager {
         try {
             file.save(new File(this.app.getDataFolder(), fileName));
         } catch (Exception e) {
-            this.app.getConsoleManager().severe("Couldn't handle " + fileName + " :" + e.getMessage());
+            DCEPlugin.CONSOLE.severe("Couldn't handle " + fileName + " :" + e.getMessage());
         }
     }
 }
