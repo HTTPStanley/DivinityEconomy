@@ -2,9 +2,7 @@ package edgrrrr.dce.console;
 
 import edgrrrr.dce.DCEPlugin;
 import edgrrrr.dce.config.Setting;
-import edgrrrr.dce.economy.EconomyManager;
 import edgrrrr.dce.mail.MailList;
-import edgrrrr.dce.mail.MailManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -20,8 +18,12 @@ public class Console {
 
     // Settings
     private final boolean debugMode;
-    private final String prefix;
-    private final String conPrefix;
+    private final String chatPrefix;
+    private final String consolePrefix;
+
+
+    private static final String[] variables = {};
+    private static final String[] variableValues = {};
 
     public Console(DCEPlugin app, String version) {
         this.app = app;
@@ -29,13 +31,25 @@ public class Console {
 
         // Get settings
         this.debugMode = (DCEPlugin.CONFIG.getBoolean(Setting.CHAT_DEBUG_OUTPUT_BOOLEAN));
-        ChatColor prefixColour = DCEPlugin.CONFIG.getColor(Setting.CHAT_PREFIX_COLOR);
-        ChatColor prefixSepColour =  DCEPlugin.CONFIG.getColor(Setting.CHAT_PREFIX_SEPARATOR_COLOR);
         String prefix = DCEPlugin.CONFIG.getString(Setting.CHAT_PREFIX_STRING);
-        String conPrefix = DCEPlugin.CONFIG.getString(Setting.CHAT_CONSOLE_PREFIX).replace("%V", version);
-        String prefixSep = DCEPlugin.CONFIG.getString(Setting.CHAT_PREFIX_SEPARATOR_STRING);
-        this.prefix = prefixColour + prefix + prefixSepColour + prefixSep;
-        this.conPrefix = prefixColour + conPrefix + prefixSepColour + prefixSep;
+        String conPrefix = DCEPlugin.CONFIG.getString(Setting.CHAT_CONSOLE_PREFIX).replace("<VERSION>", version);
+        this.chatPrefix = insertColours(prefix);
+        conPrefix = insertColours(conPrefix);
+        this.consolePrefix = insertVariables(conPrefix);
+    }
+
+    private static String insertVariables(String string) {
+        for (int idx=0; idx < variables.length; idx++) {
+            string = string.replace(variables[idx], variableValues[idx]);
+        }
+        return string;
+    }
+
+    private static String insertColours(String string) {
+        for (ChatColor colour : ChatColor.values()) {
+            string = string.replaceAll(String.format("(&%s)|(%s)", colour.getChar(), colour.name()), colour.toString());
+        }
+        return string;
     }
 
     // CONSOLE COMMANDS
@@ -46,7 +60,7 @@ public class Console {
      * @param message - The message to send
      */
     private void send(LogLevel level, String message) {
-        this.consoleSender.sendMessage(conPrefix + level.getColour() + message);
+        this.consoleSender.sendMessage(consolePrefix + level.getColour() + message);
     }
 
     /**
@@ -94,7 +108,7 @@ public class Console {
      * @param message - The message to send
      */
     private void send(Player player, LogLevel level, String message) {
-        player.sendMessage(prefix + level.getColour() + message);
+        player.sendMessage(chatPrefix + level.getColour() + message);
     }
 
     /**
