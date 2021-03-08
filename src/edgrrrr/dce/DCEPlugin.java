@@ -141,7 +141,6 @@ public class DCEPlugin extends JavaPlugin {
      */
     public void describe() {
         Setting[] chatSettings = {Setting.CHAT_DEBUG_OUTPUT_BOOLEAN, Setting.CHAT_PREFIX_STRING, Setting.CHAT_CONSOLE_PREFIX,
-                Setting.CHAT_PREFIX_COLOR, Setting.CHAT_PREFIX_SEPARATOR_STRING, Setting.CHAT_PREFIX_SEPARATOR_COLOR,
                 Setting.CHAT_INFO_COLOR, Setting.CHAT_WARNING_COLOR, Setting.CHAT_SEVERE_COLOR, Setting.CHAT_DEBUG_COLOR};
 
         Setting[] economySettings = {Setting.ECONOMY_MIN_SEND_AMOUNT_DOUBLE, Setting.ECONOMY_ACCURACY_DIGITS_INTEGER, Setting.ECONOMY_MIN_BALANCE_DOUBLE};
