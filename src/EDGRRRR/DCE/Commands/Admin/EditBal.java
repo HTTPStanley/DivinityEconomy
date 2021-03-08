@@ -1,7 +1,7 @@
 package edgrrrr.dce.commands.admin;
 
 import edgrrrr.dce.config.Setting;
-import edgrrrr.dce.main.DCEPlugin;
+import edgrrrr.dce.DCEPlugin;
 import edgrrrr.dce.math.Math;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.OfflinePlayer;
@@ -41,7 +41,7 @@ public class EditBal implements CommandExecutor {
 
         // Ensure command is enabled
         if (!(this.app.getConfig().getBoolean(Setting.COMMAND_EDIT_BALANCE_ENABLE_BOOLEAN.path()))) {
-            this.app.getConsoleManager().severe(player1, "This command is not enabled.");
+            DCEPlugin.CONSOLE.severe(player1, "This command is not enabled.");
             return true;
         }
 
@@ -73,18 +73,18 @@ public class EditBal implements CommandExecutor {
 
             default:
                 // Incorrect number of args
-                this.app.getConsoleManager().usage(player1, "Incorrect number of arguments.", usage);
+                DCEPlugin.CONSOLE.usage(player1, "Incorrect number of arguments.", usage);
                 return true;
         }
 
         // Ensure to player exists
         if (player2 == null) {
-            this.app.getConsoleManager().usage(player1, "Invalid player name.", usage);
+            DCEPlugin.CONSOLE.usage(player1, "Invalid player name.", usage);
         } else {
 
             // Ensure amount is not null
             if (amount < 1) {
-                this.app.getConsoleManager().usage(player1, "Incorrect amount.", usage);
+                DCEPlugin.CONSOLE.usage(player1, "Incorrect amount.", usage);
             } else {
                 // Edit cash
                 EconomyResponse response;
@@ -99,9 +99,9 @@ public class EditBal implements CommandExecutor {
 
                 // Handles sender, receiver, message, mail and console log
                 if (response.transactionSuccess()) {
-                    this.app.getConsoleManager().logBalance(player1, player2, startingBalance, response.balance, String.format("%s changed your balance", player1.getName()));
+                    DCEPlugin.CONSOLE.logBalance(player1, player2, startingBalance, response.balance, String.format("%s changed your balance", player1.getName()));
                 } else {
-                    this.app.getConsoleManager().logFailedBalance(player1, player2, startingBalance, response.balance, response.errorMessage);
+                    DCEPlugin.CONSOLE.logFailedBalance(player1, player2, startingBalance, response.balance, response.errorMessage);
                 }
             }
         }

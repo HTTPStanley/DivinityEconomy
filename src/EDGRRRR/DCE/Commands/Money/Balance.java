@@ -1,7 +1,7 @@
 package edgrrrr.dce.commands.money;
 
 import edgrrrr.dce.config.Setting;
-import edgrrrr.dce.main.DCEPlugin;
+import edgrrrr.dce.DCEPlugin;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -31,7 +31,7 @@ public class Balance implements CommandExecutor {
 
         // Ensure command is enabled
         if (!(this.app.getConfig().getBoolean(Setting.COMMAND_BALANCE_ENABLE_BOOLEAN.path()))) {
-            this.app.getConsoleManager().severe(from, "This command is not enabled.");
+            DCEPlugin.CONSOLE.severe(from, "This command is not enabled.");
             return true;
         }
 
@@ -58,7 +58,7 @@ public class Balance implements CommandExecutor {
         }
 
         if (to == null && toOff == null) {
-            this.app.getConsoleManager().usage(from, "Invalid player name.", usage);
+            DCEPlugin.CONSOLE.usage(from, "Invalid player name.", usage);
             return true;
         }
 
@@ -66,13 +66,13 @@ public class Balance implements CommandExecutor {
         if (to != null) {
             balance = this.app.getEconomyManager().round(this.app.getEconomyManager().getBalance(to));
             if (!(from == to)) {
-                this.app.getConsoleManager().info(from, to.getName() + "'s Balance: £" + balance);
+                DCEPlugin.CONSOLE.info(from, String.format("%s's Balance is £%,.2f", to.getName(), balance));
             } else {
-                this.app.getConsoleManager().info(from, "Balance: £" + balance);
+                DCEPlugin.CONSOLE.info(from, "Balance: £" + balance);
             }
         } else {
             balance = this.app.getEconomyManager().round(this.app.getEconomyManager().getBalance(toOff));
-            this.app.getConsoleManager().info(from, toOff.getName() + "'s Balance: £" + balance);
+            DCEPlugin.CONSOLE.info(from, toOff.getName() + "'s Balance: £" + balance);
         }
         return true;
     }

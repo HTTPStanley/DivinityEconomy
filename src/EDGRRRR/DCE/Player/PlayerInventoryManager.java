@@ -1,6 +1,6 @@
 package edgrrrr.dce.player;
 
-import edgrrrr.dce.main.DCEPlugin;
+import edgrrrr.dce.DCEPlugin;
 import com.sun.istack.internal.NotNull;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.libs.jline.internal.Nullable;
@@ -113,7 +113,7 @@ public class PlayerInventoryManager {
             }
         }
 
-        this.app.getConsoleManager().debug("Fulfilled slot request of " + amount + " " + material.name() + " from " + player.getName() + ": " + itemStacks.toString());
+        DCEPlugin.CONSOLE.debug("Fulfilled slot request of " + amount + " " + material.name() + " from " + player.getName() + ": " + itemStacks.toString());
         return this.convertArray(itemStacks);
     }
 

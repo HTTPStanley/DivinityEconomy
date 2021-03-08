@@ -1,7 +1,7 @@
 package edgrrrr.dce.economy;
 
 import edgrrrr.dce.config.Setting;
-import edgrrrr.dce.main.DCEPlugin;
+import edgrrrr.dce.DCEPlugin;
 import edgrrrr.dce.math.Math;
 import edgrrrr.dce.response.EconomyTransferResponse;
 import net.milkbowl.vault.economy.Economy;
@@ -41,19 +41,19 @@ public class EconomyManager {
     public void setupEconomy() {
         // Look for vault
         if (this.app.getServer().getPluginManager().getPlugin("Vault") == null) {
-            this.app.getConsoleManager().severe("No plugin 'Vault' detected.");
+            DCEPlugin.CONSOLE.severe("No plugin 'Vault' detected.");
             return;
         } else {
-            this.app.getConsoleManager().info("Vault has been detected.");
+            DCEPlugin.CONSOLE.info("Vault has been detected.");
         }
 
         // Get the service provider
         RegisteredServiceProvider<Economy> rsp = this.app.getServer().getServicesManager().getRegistration(Economy.class);
         if (rsp == null) {
-            this.app.getConsoleManager().severe("Could not register Economy.");
+            DCEPlugin.CONSOLE.severe("Could not register Economy.");
             return;
         } else {
-            this.app.getConsoleManager().info("Registered Economy.");
+            DCEPlugin.CONSOLE.info("Registered Economy.");
         }
 
         // return if economy was gotten successfully.
@@ -104,10 +104,10 @@ public class EconomyManager {
      * @param amount  - The amount
      */
     public EconomyResponse addCash(OfflinePlayer oPlayer, double amount) {
-        this.app.getConsoleManager().debug("ADD REQUEST '" + oPlayer.getName() + "' £" + amount);
+        DCEPlugin.CONSOLE.debug("ADD REQUEST '" + oPlayer.getName() + "' £" + amount);
         EconomyResponse response = this.economy.depositPlayer(oPlayer, amount);
         response = new EconomyResponse(response.amount, this.getBalance(oPlayer), response.type, response.errorMessage);
-        this.app.getConsoleManager().debug("ADD COMPLETE '" + oPlayer.getName() + "' £" + response.balance + "(£ " + response.amount + ")");
+        DCEPlugin.CONSOLE.debug("ADD COMPLETE '" + oPlayer.getName() + "' £" + response.balance + "(£ " + response.amount + ")");
         return response;
     }
 
@@ -118,7 +118,7 @@ public class EconomyManager {
      * @param amount  - The amount
      */
     public EconomyResponse remCash(OfflinePlayer oPlayer, double amount) {
-        this.app.getConsoleManager().debug("REM REQUEST '" + oPlayer.getName() + "' £" + amount);
+        DCEPlugin.CONSOLE.debug("REM REQUEST '" + oPlayer.getName() + "' £" + amount);
         double oldBalance = this.getBalance(oPlayer);
         EconomyResponse response;
         if ((oldBalance - amount) < this.minBalance) {
@@ -127,7 +127,7 @@ public class EconomyManager {
             response = this.economy.withdrawPlayer(oPlayer, amount);
         }
         response = new EconomyResponse(response.amount, this.getBalance(oPlayer), response.type, response.errorMessage);
-        this.app.getConsoleManager().debug("REM COMPLETE '" + oPlayer.getName() + "' £" + response.balance + "(£ " + response.amount + ")");
+        DCEPlugin.CONSOLE.debug("REM COMPLETE '" + oPlayer.getName() + "' £" + response.balance + "(£ " + response.amount + ")");
         return response;
     }
 
@@ -139,7 +139,7 @@ public class EconomyManager {
      * @return EconomyResponse - The result of the function
      */
     public EconomyResponse setCash(OfflinePlayer oPlayer, double amount) {
-        this.app.getConsoleManager().debug("SET REQUEST '" + oPlayer.getName() + "' £" + amount);
+        DCEPlugin.CONSOLE.debug("SET REQUEST '" + oPlayer.getName() + "' £" + amount);
         double balance = this.getBalance(oPlayer);
         double difference = amount - balance;
         EconomyResponse response;
@@ -152,7 +152,7 @@ public class EconomyManager {
         }
 
         response = new EconomyResponse(response.amount, this.getBalance(oPlayer), response.type, response.errorMessage);
-        this.app.getConsoleManager().debug("SET COMPLETE '" + oPlayer.getName() + "' £" + response.balance + "(£ " + response.amount + ")");
+        DCEPlugin.CONSOLE.debug("SET COMPLETE '" + oPlayer.getName() + "' £" + response.balance + "(£ " + response.amount + ")");
         return response;
     }
 

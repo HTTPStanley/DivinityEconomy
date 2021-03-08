@@ -1,7 +1,7 @@
 package edgrrrr.dce.materials;
 
 import edgrrrr.dce.config.Setting;
-import edgrrrr.dce.main.DCEPlugin;
+import edgrrrr.dce.DCEPlugin;
 import edgrrrr.dce.math.Math;
 import edgrrrr.dce.response.ValueResponse;
 import net.milkbowl.vault.economy.EconomyResponse.ResponseType;
@@ -285,14 +285,14 @@ public class MaterialManager {
      * Loads aliases from the aliases file into the aliases variable
      */
     public void loadAliases() {
-        FileConfiguration config = this.app.getConfigManager().loadConfig(this.aliasesFile);
+        FileConfiguration config = DCEPlugin.CONFIG.loadConfig(this.aliasesFile);
         HashMap<String, String> values = new HashMap<>();
         for (String key : config.getKeys(false)) {
             String value = config.getString(key);
             values.put(key, value);
         }
         this.aliases = values;
-        this.app.getConsoleManager().info("Loaded " + values.size() + " aliases from " + this.aliasesFile);
+        DCEPlugin.CONSOLE.info("Loaded " + values.size() + " aliases from " + this.aliasesFile);
     }
 
     /**
@@ -300,8 +300,8 @@ public class MaterialManager {
      */
     public void loadMaterials() {
         // Load the config
-        this.config = this.app.getConfigManager().loadConfig(this.materialsFile);
-        FileConfiguration defaultConf = this.app.getConfigManager().readResource(this.materialsFile);
+        this.config = DCEPlugin.CONFIG.loadConfig(this.materialsFile);
+        FileConfiguration defaultConf = DCEPlugin.CONFIG.readResource(this.materialsFile);
         // Set material counts
         this.defaultTotalMaterials = 0;
         this.totalMaterials = 0;
@@ -319,7 +319,7 @@ public class MaterialManager {
         }
         // Copy values into materials
         this.materials = values;
-        this.app.getConsoleManager().info("Loaded " + values.size() + "(" + this.totalMaterials + "/" + this.defaultTotalMaterials + ") materials from " + this.materialsFile);
+        DCEPlugin.CONSOLE.info("Loaded " + values.size() + "(" + this.totalMaterials + "/" + this.defaultTotalMaterials + ") materials from " + this.materialsFile);
     }
 
     /**
@@ -350,13 +350,13 @@ public class MaterialManager {
             this.saveMaterial(materialD);
         }
         this.saveFile();
-        this.app.getConsoleManager().info("Materials saved.");
+        DCEPlugin.CONSOLE.info("Materials saved.");
     }
 
     /**
      * Saves the config to the config file
      */
     public void saveFile() {
-        this.app.getConfigManager().saveFile(this.config, this.materialsFile);
+        DCEPlugin.CONFIG.saveFile(this.config, this.materialsFile);
     }
 }

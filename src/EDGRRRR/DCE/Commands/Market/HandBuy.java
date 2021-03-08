@@ -1,7 +1,7 @@
 package edgrrrr.dce.commands.market;
 
 import edgrrrr.dce.config.Setting;
-import edgrrrr.dce.main.DCEPlugin;
+import edgrrrr.dce.DCEPlugin;
 import edgrrrr.dce.materials.MaterialData;
 import edgrrrr.dce.response.ValueResponse;
 import edgrrrr.dce.math.Math;
@@ -33,7 +33,7 @@ public class HandBuy implements CommandExecutor {
 
         // Ensure command is enabled
         if (!(this.app.getConfig().getBoolean(Setting.COMMAND_HAND_BUY_ITEM_ENABLE_BOOLEAN.path()))) {
-            this.app.getConsoleManager().severe(player, "This command is not enabled.");
+            DCEPlugin.CONSOLE.severe(player, "This command is not enabled.");
             return true;
         }
 
@@ -49,27 +49,27 @@ public class HandBuy implements CommandExecutor {
                 break;
 
             default:
-                this.app.getConsoleManager().usage(player, "Invalid number of arguments.", this.usage);
+                DCEPlugin.CONSOLE.usage(player, "Invalid number of arguments.", this.usage);
                 return true;
         }
 
         if (amountToBuy < 1) {
-            this.app.getConsoleManager().usage(player, "Invalid amount.", this.usage);
-            this.app.getConsoleManager().debug("(HandBuy)Invalid amount: " + amountToBuy);
+            DCEPlugin.CONSOLE.usage(player, "Invalid amount.", this.usage);
+            DCEPlugin.CONSOLE.debug("(HandBuy)Invalid amount: " + amountToBuy);
 
         } else {
             ItemStack heldItem = this.app.getPlayerInventoryManager().getHeldItem(player);
 
             if (heldItem == null) {
-                this.app.getConsoleManager().usage(player, "You are not holding any item.", this.usage);
-                this.app.getConsoleManager().debug("(HandBuy)User is not holding an item.");
+                DCEPlugin.CONSOLE.usage(player, "You are not holding any item.", this.usage);
+                DCEPlugin.CONSOLE.debug("(HandBuy)User is not holding an item.");
 
             } else {
                 MaterialData materialData = this.app.getMaterialManager().getMaterial(heldItem.getType().name());
 
                 int availableSpace = this.app.getPlayerInventoryManager().getAvailableSpace(player, materialData.getMaterial());
                 if (amountToBuy > availableSpace) {
-                    this.app.getConsoleManager().logFailedPurchase(player, amountToBuy, 0.0, materialData.getCleanName(), String.format("missing inventory space (%d/%d)", availableSpace, amountToBuy));
+                    DCEPlugin.CONSOLE.logFailedPurchase(player, amountToBuy, 0.0, materialData.getCleanName(), String.format("missing inventory space (%d/%d)", availableSpace, amountToBuy));
 
                 } else {
                     ItemStack[] itemStacks = this.app.getPlayerInventoryManager().createItemStacks(materialData.getMaterial(), amountToBuy);
@@ -80,7 +80,7 @@ public class HandBuy implements CommandExecutor {
                         materialData.remQuantity(amountToBuy);
 
                         // Handles console, message and mail
-                        this.app.getConsoleManager().logPurchase(player, amountToBuy, saleResponse.amount, materialData.getCleanName());
+                        DCEPlugin.CONSOLE.logPurchase(player, amountToBuy, saleResponse.amount, materialData.getCleanName());
 
 
                     } else {
@@ -93,7 +93,7 @@ public class HandBuy implements CommandExecutor {
                         }
 
                         // Handles console, message and mail
-                        this.app.getConsoleManager().logFailedPurchase(player, amountToBuy, saleResponse.amount, materialData.getCleanName(), errorMessage);
+                        DCEPlugin.CONSOLE.logFailedPurchase(player, amountToBuy, saleResponse.amount, materialData.getCleanName(), errorMessage);
                     }
                 }
             }

@@ -1,6 +1,6 @@
 package edgrrrr.dce.mail;
 
-import edgrrrr.dce.main.DCEPlugin;
+import edgrrrr.dce.DCEPlugin;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -40,7 +40,7 @@ public class MailManager {
      * @return FileConfiguration - The contents of the mail file
      */
     public FileConfiguration readMailFile() {
-        return this.app.getConfigManager().loadConfig(this.mailFile);
+        return DCEPlugin.CONFIG.loadConfig(this.mailFile);
     }
 
     /**
@@ -48,7 +48,7 @@ public class MailManager {
      * Mail cannot be read unless this is called!
      */
     public void loadAllMail() {
-        this.configuration = this.app.getConfigManager().loadConfig(this.mailFile);
+        this.configuration = DCEPlugin.CONFIG.loadConfig(this.mailFile);
         this.mailMap = new HashMap<>();
         int userCount = 0;
         int mailCount = 0;
@@ -56,7 +56,7 @@ public class MailManager {
             ConfigurationSection mailListSection = this.configuration.getConfigurationSection(userID);
             OfflinePlayer player = this.app.getPlayerManager().getOfflinePlayerByUUID(userID, true);
             if (player == null) {
-                this.app.getConsoleManager().severe(String.format("Invalid player UUID in mail list: '%s'", userID));
+                DCEPlugin.CONSOLE.severe(String.format("Invalid player UUID in mail list: '%s'", userID));
             } else {
                 MailList mailList = new MailList(this, player, mailListSection);
                 this.addMailList(player, mailList);
@@ -65,7 +65,7 @@ public class MailManager {
             }
         }
 
-        this.app.getConsoleManager().info("Read " + mailCount + " mail for " + userCount + " users.");
+        DCEPlugin.CONSOLE.info("Read " + mailCount + " mail for " + userCount + " users.");
     }
 
     /**
@@ -119,7 +119,7 @@ public class MailManager {
     }
 
     private void saveMailFile() {
-        this.app.getConfigManager().saveFile(this.configuration, this.mailFile);
+        DCEPlugin.CONFIG.saveFile(this.configuration, this.mailFile);
     }
 
     /**
@@ -135,6 +135,6 @@ public class MailManager {
         }
 
         this.saveMailFile();
-        this.app.getConsoleManager().info("Saved " + mailCount + " mail for " + userCount + " users");
+        DCEPlugin.CONSOLE.info("Saved " + mailCount + " mail for " + userCount + " users");
     }
 }

@@ -1,7 +1,7 @@
 package edgrrrr.dce.events;
 
 import edgrrrr.dce.mail.MailList;
-import edgrrrr.dce.main.DCEPlugin;
+import edgrrrr.dce.DCEPlugin;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -22,9 +22,9 @@ public class MailEvent implements Listener {
         Player player = event.getPlayer();
         MailList mailList = this.app.getMailManager().getMailList(player);
         if (mailList.hasMail()) {
-            this.app.getConsoleManager().info(player, "You have " + mailList.getReadMail().size() + " read and " + mailList.getUnreadMail().size() + " unread mail");
+            DCEPlugin.CONSOLE.info(player, "You have " + mailList.getReadMail().size() + " read and " + mailList.getUnreadMail().size() + " unread mail");
         } else {
-            this.app.getConsoleManager().info(player, "You have no mail.");
+            DCEPlugin.CONSOLE.info(player, "You have no mail.");
         }
     }
 }

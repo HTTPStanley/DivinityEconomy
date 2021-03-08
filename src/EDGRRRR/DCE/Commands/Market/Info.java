@@ -1,7 +1,7 @@
 package edgrrrr.dce.commands.market;
 
 import edgrrrr.dce.config.Setting;
-import edgrrrr.dce.main.DCEPlugin;
+import edgrrrr.dce.DCEPlugin;
 import edgrrrr.dce.materials.MaterialData;
 import edgrrrr.dce.materials.MaterialPotionData;
 import edgrrrr.dce.response.ValueResponse;
@@ -32,7 +32,7 @@ public class Info implements CommandExecutor {
 
         // Ensure command is enabled
         if (!(this.app.getConfig().getBoolean(Setting.COMMAND_INFO_ENABLE_BOOLEAN.path()))) {
-            this.app.getConsoleManager().severe(from, "This command is not enabled.");
+            DCEPlugin.CONSOLE.severe(from, "This command is not enabled.");
             return true;
         }
 
@@ -49,13 +49,13 @@ public class Info implements CommandExecutor {
                 break;
 
             default:
-                this.app.getConsoleManager().usage(from, "Invalid number of arguments.", this.usage);
+                DCEPlugin.CONSOLE.usage(from, "Invalid number of arguments.", this.usage);
                 return true;
         }
 
         MaterialData material = this.app.getMaterialManager().getMaterial(materialName);
         if (material == null) {
-            this.app.getConsoleManager().usage(from, "Unknown Item: " + materialName, this.usage);
+            DCEPlugin.CONSOLE.usage(from, "Unknown Item: " + materialName, this.usage);
         } else {
             ValueResponse userResponse = this.app.getMaterialManager().getBuyValue(this.app.getPlayerInventoryManager().createItemStacks(material.getMaterial(), amount));
             ValueResponse marketResponse = this.app.getMaterialManager().getSellValue(this.app.getPlayerInventoryManager().createItemStacks(material.getMaterial(), amount));
@@ -82,20 +82,20 @@ public class Info implements CommandExecutor {
             userPrice = this.app.getEconomyManager().round(userPrice);
             marketPrice = this.app.getEconomyManager().round(marketPrice);
 
-            this.app.getConsoleManager().info(from, "==[Information for" + material.getCleanName() + "]==");
-            this.app.getConsoleManager().info(from, "ID: " + material.getMaterialID());
-            this.app.getConsoleManager().info(from, "Type: " + material.getType());
-            this.app.getConsoleManager().info(from, "Buy Price(x" + userAmount + "): " + userPrice);
-            this.app.getConsoleManager().info(from, "Sell Price(x" + marketAmount + "): " + marketPrice);
-            this.app.getConsoleManager().info(from, "Current Quantity: " + material.getQuantity());
-            this.app.getConsoleManager().info(from, "Is Banned: " + !(material.getAllowed()));
+            DCEPlugin.CONSOLE.info(from, "==[Information for" + material.getCleanName() + "]==");
+            DCEPlugin.CONSOLE.info(from, "ID: " + material.getMaterialID());
+            DCEPlugin.CONSOLE.info(from, "Type: " + material.getType());
+            DCEPlugin.CONSOLE.info(from, "Buy Price(x" + userAmount + "): " + userPrice);
+            DCEPlugin.CONSOLE.info(from, "Sell Price(x" + marketAmount + "): " + marketPrice);
+            DCEPlugin.CONSOLE.info(from, "Current Quantity: " + material.getQuantity());
+            DCEPlugin.CONSOLE.info(from, "Is Banned: " + !(material.getAllowed()));
             if (material.getEntityName() != null)
-                this.app.getConsoleManager().info(from, "Entity Name: " + material.getEntityName());
+                DCEPlugin.CONSOLE.info(from, "Entity Name: " + material.getEntityName());
             MaterialPotionData pData = material.getPotionData();
             if (pData != null) {
-                this.app.getConsoleManager().info(from, "Potion type: " + pData.getType());
-                this.app.getConsoleManager().info(from, "Upgraded potion: " + pData.getUpgraded());
-                this.app.getConsoleManager().info(from, "Extended potion: " + pData.getExtended());
+                DCEPlugin.CONSOLE.info(from, "Potion type: " + pData.getType());
+                DCEPlugin.CONSOLE.info(from, "Upgraded potion: " + pData.getUpgraded());
+                DCEPlugin.CONSOLE.info(from, "Extended potion: " + pData.getExtended());
             }
         }
 

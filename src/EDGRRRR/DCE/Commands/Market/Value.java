@@ -1,7 +1,7 @@
 package edgrrrr.dce.commands.market;
 
 import edgrrrr.dce.config.Setting;
-import edgrrrr.dce.main.DCEPlugin;
+import edgrrrr.dce.DCEPlugin;
 import edgrrrr.dce.materials.MaterialData;
 import edgrrrr.dce.response.ValueResponse;
 import edgrrrr.dce.math.Math;
@@ -33,7 +33,7 @@ public class Value implements CommandExecutor {
 
         // Ensure command is enabled
         if (!(this.app.getConfig().getBoolean(Setting.COMMAND_VALUE_ENABLE_BOOLEAN.path()))) {
-            this.app.getConsoleManager().severe(from, "This command is not enabled.");
+            DCEPlugin.CONSOLE.severe(from, "This command is not enabled.");
             return true;
         }
 
@@ -50,29 +50,29 @@ public class Value implements CommandExecutor {
                 break;
 
             default:
-                this.app.getConsoleManager().usage(from, "Invalid number of arguments.", usage);
+                DCEPlugin.CONSOLE.usage(from, "Invalid number of arguments.", usage);
                 return true;
         }
 
         MaterialData materialData = this.app.getMaterialManager().getMaterial(materialName);
         if (materialData == null) {
-            this.app.getConsoleManager().usage(from, "Unknown Item: " + materialName, usage);
+            DCEPlugin.CONSOLE.usage(from, "Unknown Item: " + materialName, usage);
         } else {
             ItemStack[] itemStacks = this.app.getPlayerInventoryManager().createItemStacks(materialData.getMaterial(), amount);
             ValueResponse priceResponse = this.app.getMaterialManager().getBuyValue(itemStacks);
             ValueResponse secondPriceResponse = this.app.getMaterialManager().getSellValue(itemStacks);
 
             if (priceResponse.isSuccess()) {
-                this.app.getConsoleManager().info(from, "Buy: " + amount + " " + materialData.getCleanName() + " costs £" + this.app.getEconomyManager().round(priceResponse.value));
+                DCEPlugin.CONSOLE.info(from, "Buy: " + amount + " " + materialData.getCleanName() + " costs £" + this.app.getEconomyManager().round(priceResponse.value));
 
             } else {
-                this.app.getConsoleManager().usage(from, "Couldn't determine buy price of " + amount + " " + materialData.getCleanName() + " because " + priceResponse.errorMessage, usage);
+                DCEPlugin.CONSOLE.usage(from, "Couldn't determine buy price of " + amount + " " + materialData.getCleanName() + " because " + priceResponse.errorMessage, usage);
             }
 
             if (secondPriceResponse.isSuccess()) {
-                this.app.getConsoleManager().info(from, "Sell: " + amount + " " + materialData.getCleanName() + " costs £" + this.app.getEconomyManager().round(secondPriceResponse.value));
+                DCEPlugin.CONSOLE.info(from, "Sell: " + amount + " " + materialData.getCleanName() + " costs £" + this.app.getEconomyManager().round(secondPriceResponse.value));
             } else {
-                this.app.getConsoleManager().usage(from, "Couldn't determine sell price of " + amount + " " + materialData.getCleanName() + " because " + secondPriceResponse.errorMessage, usage);
+                DCEPlugin.CONSOLE.usage(from, "Couldn't determine sell price of " + amount + " " + materialData.getCleanName() + " because " + secondPriceResponse.errorMessage, usage);
             }
         }
 

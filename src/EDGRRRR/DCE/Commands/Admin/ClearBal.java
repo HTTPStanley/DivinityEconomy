@@ -1,7 +1,7 @@
 package edgrrrr.dce.commands.admin;
 
 import edgrrrr.dce.config.Setting;
-import edgrrrr.dce.main.DCEPlugin;
+import edgrrrr.dce.DCEPlugin;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -42,7 +42,7 @@ public class ClearBal implements CommandExecutor {
 
         // Ensure command is enabled
         if (!(this.app.getConfig().getBoolean(Setting.COMMAND_CLEAR_BALANCE_ENABLE_BOOLEAN.path()))) {
-            this.app.getConsoleManager().severe(player1, "This command is not enabled.");
+            DCEPlugin.CONSOLE.severe(player1, "This command is not enabled.");
             return true;
         }
 
@@ -69,13 +69,13 @@ public class ClearBal implements CommandExecutor {
 
             // If any other number of arguments are passed.
             default:
-                this.app.getConsoleManager().usage(player1, "Incorrect number of arguments.", usage);
+                DCEPlugin.CONSOLE.usage(player1, "Incorrect number of arguments.", usage);
                 return true;
         }
 
         // Ensure to player exists
         if (player2 == null) {
-            this.app.getConsoleManager().usage(player1, "Invalid player name.", usage);
+            DCEPlugin.CONSOLE.usage(player1, "Invalid player name.", usage);
         } else {
             // Set balance to 0
             double startingBalance = this.app.getEconomyManager().getBalance(player2);
@@ -83,9 +83,9 @@ public class ClearBal implements CommandExecutor {
 
             // Handles sender, receiver, message, mail and console log
             if (response.transactionSuccess()) {
-                this.app.getConsoleManager().logBalance(player1, player2, startingBalance, response.balance, String.format("%s changed your balance", player1.getName()));
+                DCEPlugin.CONSOLE.logBalance(player1, player2, startingBalance, response.balance, String.format("%s changed your balance", player1.getName()));
             } else {
-                this.app.getConsoleManager().logFailedBalance(player1, player2, startingBalance, response.balance, response.errorMessage);
+                DCEPlugin.CONSOLE.logFailedBalance(player1, player2, startingBalance, response.balance, response.errorMessage);
             }
         }
         return true;

@@ -2,7 +2,7 @@ package edgrrrr.dce.commands.money;
 
 import edgrrrr.dce.config.Setting;
 import edgrrrr.dce.response.EconomyTransferResponse;
-import edgrrrr.dce.main.DCEPlugin;
+import edgrrrr.dce.DCEPlugin;
 import edgrrrr.dce.math.Math;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.OfflinePlayer;
@@ -33,7 +33,7 @@ public class SendCash implements CommandExecutor {
 
         // Ensure command is enabled
         if (!(this.app.getConfig().getBoolean(Setting.COMMAND_SEND_CASH_ENABLE_BOOLEAN.path()))) {
-            this.app.getConsoleManager().severe(from, "This command is not enabled.");
+            DCEPlugin.CONSOLE.severe(from, "This command is not enabled.");
             return true;
         }
 
@@ -54,22 +54,22 @@ public class SendCash implements CommandExecutor {
                 break;
 
             default:
-                this.app.getConsoleManager().usage(from, "Invalid number of arguments.", usage);
+                DCEPlugin.CONSOLE.usage(from, "Invalid number of arguments.", usage);
                 return true;
         }
 
         // Ensure online or offline player exists.
         if (to == null) {
-            this.app.getConsoleManager().usage(from, "Invalid player name.", usage);
+            DCEPlugin.CONSOLE.usage(from, "Invalid player name.", usage);
 
         } else {
             EconomyTransferResponse response = this.app.getEconomyManager().sendCash(from, to, amount);
 
             // Handles console, message and mail
             if (response.responseType == EconomyResponse.ResponseType.SUCCESS) {
-                this.app.getConsoleManager().logTransfer(from, to, amount);
+                DCEPlugin.CONSOLE.logTransfer(from, to, amount);
             } else {
-                this.app.getConsoleManager().logFailedTransfer(from, to, amount, response.errorMessage);
+                DCEPlugin.CONSOLE.logFailedTransfer(from, to, amount, response.errorMessage);
             }
         }
 

@@ -1,6 +1,6 @@
 package edgrrrr.dce.events;
 
-import edgrrrr.dce.main.DCEPlugin;
+import edgrrrr.dce.DCEPlugin;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -20,6 +20,6 @@ public class UUIDFetchEvent implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        this.app.getConsoleManager().debug("UUID (" + player.getName() + "): " + player.getUniqueId().toString());
+        DCEPlugin.CONSOLE.debug("UUID (" + player.getName() + "): " + player.getUniqueId().toString());
     }
 }

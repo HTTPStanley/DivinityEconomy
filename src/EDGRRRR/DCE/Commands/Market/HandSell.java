@@ -1,7 +1,7 @@
 package edgrrrr.dce.commands.market;
 
 import edgrrrr.dce.config.Setting;
-import edgrrrr.dce.main.DCEPlugin;
+import edgrrrr.dce.DCEPlugin;
 import edgrrrr.dce.materials.MaterialData;
 import edgrrrr.dce.response.ValueResponse;
 import edgrrrr.dce.math.Math;
@@ -34,7 +34,7 @@ public class HandSell implements CommandExecutor {
 
         // Ensure command is enabled
         if (!(this.app.getConfig().getBoolean(Setting.COMMAND_HAND_SELL_ITEM_ENABLE_BOOLEAN.path()))) {
-            this.app.getConsoleManager().severe(player, "This command is not enabled.");
+            DCEPlugin.CONSOLE.severe(player, "This command is not enabled.");
             return true;
         }
 
@@ -56,17 +56,17 @@ public class HandSell implements CommandExecutor {
                 break;
 
             default:
-                this.app.getConsoleManager().usage(player, "Invalid number of arguments.", this.usage);
+                DCEPlugin.CONSOLE.usage(player, "Invalid number of arguments.", this.usage);
                 return true;
         }
 
         if (amountToSell < 1) {
-            this.app.getConsoleManager().usage(player, "Invalid amount.", this.usage);
+            DCEPlugin.CONSOLE.usage(player, "Invalid amount.", this.usage);
         } else {
             ItemStack heldItem = this.app.getPlayerInventoryManager().getHeldItem(player);
 
             if (heldItem == null) {
-                this.app.getConsoleManager().usage(player, "You are not holding any item.", this.usage);
+                DCEPlugin.CONSOLE.usage(player, "You are not holding any item.", this.usage);
 
             } else {
                 Material material = heldItem.getType();
@@ -82,7 +82,7 @@ public class HandSell implements CommandExecutor {
                     amountToSell = heldItem.getAmount();
                 }
                 if (materialCount < amountToSell) {
-                    this.app.getConsoleManager().logFailedSale(player, amountToSell, 0.0, materialData.getCleanName(), String.format("you do not have enough of this material (%d/%d)", materialCount, amountToSell));
+                    DCEPlugin.CONSOLE.logFailedSale(player, amountToSell, 0.0, materialData.getCleanName(), String.format("you do not have enough of this material (%d/%d)", materialCount, amountToSell));
 
                 } else {
                     ItemStack[] itemStacks = this.app.getPlayerInventoryManager().getMaterialSlotsToCount(player, material, amountToSell);
@@ -96,10 +96,10 @@ public class HandSell implements CommandExecutor {
                         double balance = app.getEconomyManager().round(app.getEconomyManager().getBalance(player));
 
                         // Handles console, player message and mail
-                        this.app.getConsoleManager().logSale(player, amountToSell, response.value, materialData.getCleanName());
+                        DCEPlugin.CONSOLE.logSale(player, amountToSell, response.value, materialData.getCleanName());
                     } else {
                         // Handles console, player message and mail
-                        this.app.getConsoleManager().logFailedSale(player, amountToSell, response.value, materialData.getCleanName(), response.errorMessage);
+                        DCEPlugin.CONSOLE.logFailedSale(player, amountToSell, response.value, materialData.getCleanName(), response.errorMessage);
                     }
                 }
             }

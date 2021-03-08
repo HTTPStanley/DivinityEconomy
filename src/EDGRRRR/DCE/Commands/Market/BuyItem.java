@@ -1,7 +1,7 @@
 package edgrrrr.dce.commands.market;
 
 import edgrrrr.dce.config.Setting;
-import edgrrrr.dce.main.DCEPlugin;
+import edgrrrr.dce.DCEPlugin;
 import edgrrrr.dce.materials.MaterialData;
 import edgrrrr.dce.response.ValueResponse;
 import edgrrrr.dce.math.Math;
@@ -34,7 +34,7 @@ public class BuyItem implements CommandExecutor {
 
         // Ensure command is enabled
         if (!(this.app.getConfig().getBoolean(Setting.COMMAND_BUY_ITEM_ENABLE_BOOLEAN.path()))) {
-            this.app.getConsoleManager().severe(player, "This command is not enabled.");
+            DCEPlugin.CONSOLE.severe(player, "This command is not enabled.");
             return true;
         }
 
@@ -53,24 +53,24 @@ public class BuyItem implements CommandExecutor {
                 break;
 
             default:
-                this.app.getConsoleManager().usage(player, "Invalid number of arguments.", this.usage);
+                DCEPlugin.CONSOLE.usage(player, "Invalid number of arguments.", this.usage);
                 return true;
         }
 
         if (amountToBuy < 1) {
-            this.app.getConsoleManager().usage(player, "Invalid amount.", this.usage);
-            this.app.getConsoleManager().debug("(BuyItem)Invalid amount: " + amountToBuy);
+            DCEPlugin.CONSOLE.usage(player, "Invalid amount.", this.usage);
+            DCEPlugin.CONSOLE.debug("(BuyItem)Invalid amount: " + amountToBuy);
 
         } else {
             MaterialData materialData = this.app.getMaterialManager().getMaterial(materialName);
             if (materialData == null) {
-                this.app.getConsoleManager().usage(player, "Unknown Item: '" + materialName + "'", "");
-                this.app.getConsoleManager().debug("(BuyItem)Unknown Item: " + materialName);
+                DCEPlugin.CONSOLE.usage(player, "Unknown Item: '" + materialName + "'", "");
+                DCEPlugin.CONSOLE.debug("(BuyItem)Unknown Item: " + materialName);
 
             } else {
                 int availableSpace = this.app.getPlayerInventoryManager().getAvailableSpace(player, materialData.getMaterial());
                 if (amountToBuy > availableSpace) {
-                    this.app.getConsoleManager().logFailedPurchase(player, amountToBuy, 0.0, materialData.getCleanName(), String.format("missing inventory space (%d/%d)", availableSpace, amountToBuy));
+                    DCEPlugin.CONSOLE.logFailedPurchase(player, amountToBuy, 0.0, materialData.getCleanName(), String.format("missing inventory space (%d/%d)", availableSpace, amountToBuy));
 
                 } else {
                     ItemStack[] itemStacks = this.app.getPlayerInventoryManager().createItemStacks(materialData.getMaterial(), amountToBuy);
@@ -81,7 +81,7 @@ public class BuyItem implements CommandExecutor {
                         materialData.remQuantity(amountToBuy);
 
                         // Handles console, message and mail
-                        this.app.getConsoleManager().logPurchase(player, amountToBuy, saleResponse.amount, materialData.getCleanName());
+                        DCEPlugin.CONSOLE.logPurchase(player, amountToBuy, saleResponse.amount, materialData.getCleanName());
 
                     } else {
                         String errorMessage = "unknown error";
@@ -89,7 +89,7 @@ public class BuyItem implements CommandExecutor {
                         else if (priceResponse.isFailure()) errorMessage = priceResponse.errorMessage;
 
                         // Handles console, message and mail
-                        this.app.getConsoleManager().logFailedPurchase(player, amountToBuy, saleResponse.amount, materialData.getCleanName(), errorMessage);
+                        DCEPlugin.CONSOLE.logFailedPurchase(player, amountToBuy, saleResponse.amount, materialData.getCleanName(), errorMessage);
                     }
                 }
 
