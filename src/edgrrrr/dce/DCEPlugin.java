@@ -4,6 +4,7 @@ import edgrrrr.dce.commands.admin.ClearBal;
 import edgrrrr.dce.commands.admin.EditBal;
 import edgrrrr.dce.commands.admin.SetBal;
 import edgrrrr.dce.commands.enchants.EnchantHandSell;
+import edgrrrr.dce.commands.enchants.EnchantHandValue;
 import edgrrrr.dce.commands.mail.ClearMail;
 import edgrrrr.dce.commands.mail.ReadMail;
 import edgrrrr.dce.commands.market.*;
@@ -12,6 +13,7 @@ import edgrrrr.dce.commands.money.Balance;
 import edgrrrr.dce.commands.money.SendCash;
 import edgrrrr.dce.config.ConfigManager;
 import edgrrrr.dce.config.Setting;
+import edgrrrr.dce.console.LogLevel;
 import edgrrrr.dce.economy.EconomyManager;
 import edgrrrr.dce.enchants.EnchantmentManager;
 import edgrrrr.dce.events.MailEvent;
@@ -20,6 +22,7 @@ import edgrrrr.dce.console.Console;
 import edgrrrr.dce.materials.MaterialManager;
 import edgrrrr.dce.player.PlayerInventoryManager;
 import edgrrrr.dce.player.PlayerManager;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -56,6 +59,7 @@ public class DCEPlugin extends JavaPlugin {
         CONFIG = new ConfigManager(this);
         //Setup Managers
         CONSOLE = new Console(this, this.getDescription().getVersion());
+        LogLevel.loadValuesFromConfig((YamlConfiguration) this.getConfig());
         this.economyManager = new EconomyManager(this);
         this.economyManager.setupEconomy();
         this.materialManager = new MaterialManager(this);
@@ -101,6 +105,7 @@ public class DCEPlugin extends JavaPlugin {
             this.getCommand("readMail").setExecutor(new ReadMail(this));
             this.getCommand("clearMail").setExecutor(new ClearMail(this));
             this.getCommand("eHandSell").setExecutor(new EnchantHandSell(this));
+            this.getCommand("eHandValue").setExecutor(new EnchantHandValue(this));
         } catch (Exception e) {
             e.printStackTrace();
             CONSOLE.severe("An error occurred on registry: " + e);
