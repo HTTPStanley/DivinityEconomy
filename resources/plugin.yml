@@ -156,20 +156,6 @@ commands:
     permission-messaage: You do not have permission to use this command
     usage: ""
 
-  eSell:
-    description: Sells enchants from the players inventory.
-    aliases: []
-    permission: dce.enchant.eSell
-    permission-messaage: You do not have permission to use this command
-    usage: ""
-
-  eBuy:
-    description: Buys an enchant for the players inventory.
-    aliases: [eb]
-    permission: dce.enchant.eBuy
-    permission-messaage: You do not have permission to use this command
-    usage: ""
-
   eHandValue:
     description: Values the enchants on the item in the players hand.
     aliases: [ehv]
@@ -216,8 +202,6 @@ permissions:
     children:
       dce.enchant.eHandSell: true
       dce.enchant.eHandBuy: true
-      dce.enchant.eSell: true
-      dce.enchant.eBuy: true
       dce.enchant.eValue: true
       dce.enchant.eHandValue: true
       dce.enchant.eHandInfo: true
