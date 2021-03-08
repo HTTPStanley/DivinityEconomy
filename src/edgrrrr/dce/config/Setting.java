@@ -32,11 +32,8 @@ public enum Setting {
 
 	//Chat Settings
 	CHAT_DEBUG_OUTPUT_BOOLEAN         ( SECTION_CHAT.path + ".chatDebug"       ),
-	CHAT_PREFIX_STRING                ( SECTION_CHAT.path + ".prefix"          ),
-	CHAT_PREFIX_COLOR                 ( SECTION_CHAT.path + ".prefixColour"    ),
-	CHAT_PREFIX_SEPARATOR_STRING( SECTION_CHAT.path + ".prefixSep"       ),
-	CHAT_PREFIX_SEPARATOR_COLOR( SECTION_CHAT.path + ".prefixSepColour" ),
-	CHAT_CONSOLE_PREFIX               ( SECTION_CHAT.path + ".prefixConsole"   ),
+	CHAT_PREFIX_STRING                ( SECTION_CHAT.path + ".chatPrefix"      ),
+	CHAT_CONSOLE_PREFIX               ( SECTION_CHAT.path + ".consolePrefix"   ),
 	CHAT_DEBUG_COLOR                  ( SECTION_CHAT.path + ".debugColour"     ),
 	CHAT_INFO_COLOR                   ( SECTION_CHAT.path + ".infoColour"      ),
 	CHAT_WARNING_COLOR                ( SECTION_CHAT.path + ".warningColour"   ),
