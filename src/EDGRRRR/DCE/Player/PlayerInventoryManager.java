@@ -32,34 +32,6 @@ public class PlayerInventoryManager {
     }
 
     /**
-     * Removes the given enchants and levels from the itemStack given.
-     * @param itemStack - The itemstack to remove the enchants from
-     * @param enchantmentAndLevels - The enchantments and the level to remove
-     */
-    public void removeEnchantLevelsFromItem(ItemStack itemStack, HashMap<Enchantment, Integer> enchantmentAndLevels) {
-        for (Enchantment enchantment : enchantmentAndLevels.keySet()) {
-            this.removeEnchantLevelsFromItem(itemStack, enchantment, enchantmentAndLevels.get(enchantment));
-        }
-    }
-
-    /**
-     * Reduces an enchant level on an itemstack by levels amount
-     * If the level is 5 and you remove 4, the level is set to 1.
-     * If the level is 5 and you remove 5, the enchant is removed.
-     * @param itemStack - The itemstack to remove the enchant from
-     * @param enchantment - The enchantment to remvoe
-     * @param levels - The levels to remove
-     */
-    public void removeEnchantLevelsFromItem(ItemStack itemStack, Enchantment enchantment, int levels) {
-        int currentLevel = itemStack.getEnchantmentLevel(enchantment);
-        itemStack.removeEnchantment(enchantment);
-        int levelsLeft = currentLevel - levels;
-        if (levelsLeft > 0) {
-            itemStack.addUnsafeEnchantment(enchantment, levelsLeft);
-        }
-    }
-
-    /**
      * Removes the specified number of materials from the players inventory
      * The players inventory is parsed via itemStacks
      *
