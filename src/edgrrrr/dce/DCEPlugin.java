@@ -3,6 +3,7 @@ package edgrrrr.dce;
 import edgrrrr.dce.commands.admin.ClearBal;
 import edgrrrr.dce.commands.admin.EditBal;
 import edgrrrr.dce.commands.admin.SetBal;
+import edgrrrr.dce.commands.enchants.EnchantHandBuy;
 import edgrrrr.dce.commands.enchants.EnchantHandSell;
 import edgrrrr.dce.commands.enchants.EnchantHandValue;
 import edgrrrr.dce.commands.mail.ClearMail;
@@ -106,6 +107,7 @@ public class DCEPlugin extends JavaPlugin {
             this.getCommand("clearMail").setExecutor(new ClearMail(this));
             this.getCommand("eHandSell").setExecutor(new EnchantHandSell(this));
             this.getCommand("eHandValue").setExecutor(new EnchantHandValue(this));
+            this.getCommand("eHandBuy").setExecutor(new EnchantHandBuy(this));
         } catch (Exception e) {
             e.printStackTrace();
             CONSOLE.severe("An error occurred on registry: " + e);
