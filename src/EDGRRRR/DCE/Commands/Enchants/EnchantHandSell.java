@@ -108,7 +108,7 @@ public class EnchantHandSell implements CommandExecutor {
                         for (String enchantID : multiValueResponse.getItemIds()) {
                             EnchantData enchantmentData = this.app.getEnchantmentManager().getEnchant(enchantID);
                             enchantmentData.addLevelQuantity(multiValueResponse.quantities.get(enchantID));
-                            this.app.getPlayerInventoryManager().removeEnchantLevelsFromItem(heldItem, enchantmentData.getEnchantment(), multiValueResponse.quantities.get(enchantID));
+                            this.app.getEnchantmentManager().removeEnchantLevelsFromItem(heldItem, enchantmentData.getEnchantment(), multiValueResponse.quantities.get(enchantID));
                         }
                         this.app.getEconomyManager().addCash(player, multiValueResponse.getTotalValue());
                         DCEPlugin.CONSOLE.logSale(player, multiValueResponse.getTotalQuantity(), multiValueResponse.getTotalValue(), String.format("enchants(%s)", multiValueResponse.toString()));
@@ -133,7 +133,7 @@ public class EnchantHandSell implements CommandExecutor {
                             DCEPlugin.CONSOLE.logFailedSale(player, enchantLevels, valueResponse.value, enchantName, valueResponse.errorMessage);
 
                         } else {
-                            this.app.getPlayerInventoryManager().removeEnchantLevelsFromItem(heldItem, enchantData.getEnchantment(), enchantLevels);
+                            this.app.getEnchantmentManager().removeEnchantLevelsFromItem(heldItem, enchantData.getEnchantment(), enchantLevels);
                             enchantData.addLevelQuantity(enchantLevels);
                             this.app.getEconomyManager().addCash(player, valueResponse.value);
                             DCEPlugin.CONSOLE.logSale(player, enchantLevels, valueResponse.value, enchantName);
