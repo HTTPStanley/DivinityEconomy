@@ -4,9 +4,11 @@ import edgrrrr.dce.config.Setting;
 import edgrrrr.dce.DCEPlugin;
 import edgrrrr.dce.math.Math;
 import edgrrrr.dce.response.MultiValueResponse;
+import edgrrrr.dce.response.Response;
 import edgrrrr.dce.response.ValueResponse;
 import com.sun.istack.internal.NotNull;
 import net.milkbowl.vault.economy.EconomyResponse;
+import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.craftbukkit.libs.jline.internal.Nullable;
@@ -91,15 +93,65 @@ public class EnchantmentManager {
     }
 
     /**
+     * Removes the given enchants and levels from the itemStack given.
+     * @param itemStack - The itemstack to remove the enchants from
+     * @param enchantmentAndLevels - The enchantments and the level to remove
+     */
+    public void removeEnchantLevelsFromItem(ItemStack itemStack, HashMap<Enchantment, Integer> enchantmentAndLevels) {
+        for (Enchantment enchantment : enchantmentAndLevels.keySet()) {
+            this.removeEnchantLevelsFromItem(itemStack, enchantment, enchantmentAndLevels.get(enchantment));
+        }
+    }
+
+    /**
+     * Reduces an enchant level on an itemstack by levels amount
+     * If the level is 5 and you remove 4, the level is set to 1.
+     * If the level is 5 and you remove 5, the enchant is removed.
+     * @param itemStack - The itemstack to remove the enchant from
+     * @param enchantment - The enchantment to remvoe
+     * @param levels - The levels to remove
+     */
+    public void removeEnchantLevelsFromItem(ItemStack itemStack, Enchantment enchantment, int levels) {
+        int currentLevel = itemStack.getEnchantmentLevel(enchantment);
+        itemStack.removeEnchantment(enchantment);
+        int levelsLeft = currentLevel - levels;
+        if (levelsLeft > 0) {
+            itemStack.addUnsafeEnchantment(enchantment, levelsLeft);
+        }
+    }
+
+    public Response addEnchantToItem(ItemStack itemStack, Enchantment enchantment, int levels) {
+        Response response;
+        int newLevel = levels + itemStack.getEnchantmentLevel(enchantment);
+        EnchantData enchantData = this.getEnchant(enchantment.getKey().getKey());
+        if (enchantData == null) {
+            response = new Response(EconomyResponse.ResponseType.FAILURE, "enchant is not supported");
+        } else {
+            if (enchantData.getMaxLevel() < newLevel) {
+                response = new Response(EconomyResponse.ResponseType.FAILURE, String.format("level is greater than max (%d/%d)", newLevel, enchantData.getMaxLevel()));
+            } else {
+                itemStack.addUnsafeEnchantment(enchantment, newLevel);
+                response = new Response(EconomyResponse.ResponseType.SUCCESS, "");
+            }
+        }
+
+        return response;
+    }
+
+    /**
      * Calculates the number of enchant books required for the level provided.
      * @param enchantLevel - The enchant level
      * @return int - The number of enchants required for this level
      */
     @NotNull
     public int getEnchantAmount(int enchantLevel) {
-        int enchantAmount = 0;
+        int enchantAmount;
         if (enchantLevel > 0) {
             enchantAmount = (int) java.lang.Math.pow(2, enchantLevel);
+        } else if (enchantLevel < 0) {
+            enchantAmount = -(int) java.lang.Math.pow(2, -enchantLevel);
+        } else {
+            enchantAmount = 0;
         }
         return enchantAmount;
     }
@@ -111,6 +163,7 @@ public class EnchantmentManager {
      */
     @Nullable
     public EnchantData getEnchant(String name) {
+        name = name.trim().toLowerCase();
         return this.enchants.get(name);
     }
 
@@ -215,7 +268,7 @@ public class EnchantmentManager {
 
                 } else {
                     if (enchantData.getMaxLevel() < level) {
-                        response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("level is above max(%d)", enchantData.getMaxLevel()));
+                        response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("level is above max(%d/%d)", level, enchantData.getMaxLevel()));
 
                     } else {
                         int enchantAmount = this.getEnchantAmount(level);
