@@ -33,14 +33,14 @@ market:
   materials:
     enable: true
     baseQuantity: 1000000
-    buyTax: 1.2
-    sellTax: 1.0
+    buyTax: 0.25
+    sellTax: 0.2
 
   enchants:
     enable: true
     baseQuantity: 1000000
-    buyTax: 2.0
-    sellTax: 1.0
+    buyTax: 0.3
+    sellTax: 0.2
 
 commands:
   economy:
