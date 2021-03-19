@@ -243,7 +243,7 @@ public class Console {
 
 
         // Handles online and offline messages for receiver
-        Player onlinePlayer2 = player1.getPlayer();
+        Player onlinePlayer2 = player2.getPlayer();
         MailList playerMailList2 = this.app.getMailManager().getMailList(player2);
         String playerMessage2 = String.format("Your balance changed from £%,.2f to £%,.2f (δ £%,.2f) because %s", balance1, balance2, delta, reason);
         if (onlinePlayer2 != null) {
