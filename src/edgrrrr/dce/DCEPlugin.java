@@ -1,5 +1,6 @@
 package edgrrrr.dce;
 
+import edgrrrr.dce.commandTabCompletions.admin.ClearBalTC;
 import edgrrrr.dce.commands.admin.ClearBal;
 import edgrrrr.dce.commands.admin.EditBal;
 import edgrrrr.dce.commands.admin.SetBal;
@@ -95,6 +96,7 @@ public class DCEPlugin extends JavaPlugin {
             this.getCommand("sendcash").setExecutor(new SendCash(this));
             this.getCommand("setbal").setExecutor(new SetBal(this));
             this.getCommand("clearbal").setExecutor(new ClearBal(this));
+            this.getCommand("clearbal").setTabCompleter(new ClearBalTC(this));
             this.getCommand("buy").setExecutor(new BuyItem(this));
             this.getCommand("sell").setExecutor(new SellItem(this));
             this.getCommand("value").setExecutor(new Value(this));
