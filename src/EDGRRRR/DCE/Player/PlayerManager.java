@@ -6,6 +6,8 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.craftbukkit.libs.jline.internal.Nullable;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
+import java.util.Locale;
 import java.util.UUID;
 
 /**
@@ -110,5 +112,26 @@ public class PlayerManager {
         }
 
         return player;
+    }
+
+    public String[] getOfflinePlayers() {
+        OfflinePlayer[] offlinePlayers = this.app.getServer().getOfflinePlayers();
+        String[] playerNames = new String[offlinePlayers.length];
+        for (int idx=0; idx < playerNames.length; idx++) {
+            playerNames[idx] = offlinePlayers[idx].getName();
+        }
+        return playerNames;
+    }
+
+    public String[] getOfflinePlayers(String startsWith) {
+        String[] offlinePlayers = this.getOfflinePlayers();
+        ArrayList<String> playerNames = new ArrayList<>();
+        for (String playerName : offlinePlayers) {
+            if (playerName.toLowerCase().startsWith(startsWith.toLowerCase(Locale.ROOT))) {
+                playerNames.add(playerName);
+            }
+        }
+
+        return playerNames.toArray(new String[0]);
     }
 }
