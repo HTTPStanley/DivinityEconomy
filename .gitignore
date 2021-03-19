@@ -68,3 +68,4 @@ out/production/DCE/edgrrrr/dce/config/Setting.class
 out/production/DCE/edgrrrr/dce/DCEPlugin.class
 out/production/DCE/edgrrrr/dce/console/LogLevel.class
 out/production/DCE/edgrrrr/dce/console/Console.class
+out/production/DCE/edgrrrr/dce/commandTabCompletions/admin/ClearBalTC.class
