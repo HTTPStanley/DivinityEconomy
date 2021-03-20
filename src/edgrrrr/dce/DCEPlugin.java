@@ -1,9 +1,6 @@
 package edgrrrr.dce;
 
-import edgrrrr.dce.commandTabCompletions.admin.ClearBalTC;
-import edgrrrr.dce.commands.admin.ClearBal;
-import edgrrrr.dce.commands.admin.EditBal;
-import edgrrrr.dce.commands.admin.SetBal;
+import edgrrrr.dce.commands.admin.*;
 import edgrrrr.dce.commands.enchants.EnchantHandBuy;
 import edgrrrr.dce.commands.enchants.EnchantHandSell;
 import edgrrrr.dce.commands.enchants.EnchantHandValue;
@@ -27,8 +24,6 @@ import edgrrrr.dce.player.PlayerManager;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import java.util.HashMap;
 
 /**
  * The Main Class of the plugin
@@ -93,6 +88,7 @@ public class DCEPlugin extends JavaPlugin {
             this.getCommand("ping").setExecutor(new Ping(this));
             this.getCommand("balance").setExecutor(new Balance(this));
             this.getCommand("editbal").setExecutor(new EditBal(this));
+            this.getCommand("editbal").setTabCompleter(new EditBalTC(this));
             this.getCommand("sendcash").setExecutor(new SendCash(this));
             this.getCommand("setbal").setExecutor(new SetBal(this));
             this.getCommand("clearbal").setExecutor(new ClearBal(this));
