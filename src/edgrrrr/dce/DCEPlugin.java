@@ -9,7 +9,9 @@ import edgrrrr.dce.commands.mail.ReadMail;
 import edgrrrr.dce.commands.market.*;
 import edgrrrr.dce.commands.misc.Ping;
 import edgrrrr.dce.commands.money.Balance;
+import edgrrrr.dce.commands.money.BalanceTC;
 import edgrrrr.dce.commands.money.SendCash;
+import edgrrrr.dce.commands.money.SendCashTC;
 import edgrrrr.dce.config.ConfigManager;
 import edgrrrr.dce.config.Setting;
 import edgrrrr.dce.console.LogLevel;
@@ -87,9 +89,11 @@ public class DCEPlugin extends JavaPlugin {
             // Register commands
             this.getCommand("ping").setExecutor(new Ping(this));
             this.getCommand("balance").setExecutor(new Balance(this));
+            this.getCommand("balance").setTabCompleter(new BalanceTC(this));
             this.getCommand("editbal").setExecutor(new EditBal(this));
             this.getCommand("editbal").setTabCompleter(new EditBalTC(this));
             this.getCommand("sendcash").setExecutor(new SendCash(this));
+            this.getCommand("sendcash").setTabCompleter(new SendCashTC(this));
             this.getCommand("setbal").setExecutor(new SetBal(this));
             this.getCommand("setbal").setTabCompleter(new SetBalTC(this));
             this.getCommand("clearbal").setExecutor(new ClearBal(this));
