@@ -1,4 +1,4 @@
-package edgrrrr.dce.commandTabCompletions.admin;
+package edgrrrr.dce.commands.admin;
 
 import edgrrrr.dce.DCEPlugin;
 import edgrrrr.dce.config.Setting;
@@ -18,21 +18,19 @@ public class ClearBalTC implements TabCompleter {
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String s, String[] args) {
+    public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
         // Ensure player
         if (!(sender instanceof Player) || !(this.app.getConfig().getBoolean(Setting.COMMAND_CLEAR_BALANCE_ENABLE_BOOLEAN.path()))) {
             return null;
         }
 
-        String[] playerNames = new String[0];
+        String[] playerNames;
         switch (args.length) {
             // 0 args
             // return names of players
-
             case 0:
                 playerNames = this.app.getPlayerManager().getOfflinePlayers();
                 break;
-
 
             // 1 args
             // return names of players starting with arg
@@ -41,6 +39,7 @@ public class ClearBalTC implements TabCompleter {
                 break;
 
             default:
+                playerNames = new String[0];
                 break;
         }
 
