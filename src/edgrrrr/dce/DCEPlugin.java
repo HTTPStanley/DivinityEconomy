@@ -2,6 +2,7 @@ package edgrrrr.dce;
 
 import edgrrrr.dce.commands.admin.*;
 import edgrrrr.dce.commands.enchants.EnchantHandBuy;
+import edgrrrr.dce.commands.enchants.EnchantHandBuyTC;
 import edgrrrr.dce.commands.enchants.EnchantHandSell;
 import edgrrrr.dce.commands.enchants.EnchantHandValue;
 import edgrrrr.dce.commands.mail.ClearMail;
@@ -136,14 +137,14 @@ public class DCEPlugin extends JavaPlugin {
             this.getCommand("clearMail").setExecutor(new ClearMail(this));
             this.getCommand("clearMail").setTabCompleter(new ClearMailTC(this));
 
-            this.getCommand("eHandSell").setExecutor(new EnchantHandSell(this));
-            //this.getCommand("eHandSell").setTabCompleter(new EnchantHandSell(this));
+            this.getCommand("eSell").setExecutor(new EnchantHandSell(this));
+            //this.getCommand("eSell").setTabCompleter(new EnchantHandSell(this));
 
-            this.getCommand("eHandValue").setExecutor(new EnchantHandValue(this));
-            //this.getCommand("eHandValue").setTabCompleter(new EnchantHandValue(this));
+            this.getCommand("eValue").setExecutor(new EnchantHandValue(this));
+            //this.getCommand("eValue").setTabCompleter(new EnchantHandValue(this));
 
-            this.getCommand("eHandBuy").setExecutor(new EnchantHandBuy(this));
-            //this.getCommand("eHandBuy").setTabCompleter(new EnchantHandBuy(this));
+            this.getCommand("eBuy").setExecutor(new EnchantHandBuy(this));
+            this.getCommand("eBuy").setTabCompleter(new EnchantHandBuyTC(this));
 
         } catch (Exception e) {
             e.printStackTrace();
