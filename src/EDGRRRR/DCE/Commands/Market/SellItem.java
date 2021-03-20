@@ -17,7 +17,7 @@ import org.bukkit.inventory.ItemStack;
  */
 public class SellItem implements CommandExecutor {
     private final DCEPlugin app;
-    private final String usage = "/sell <itemName> <amountToSell> | /sell <itemName> | /sell <itemName> max";
+    private final String usage = "/sell <itemName> <amountToSell> | /sell <itemName>";
 
     public SellItem(DCEPlugin app) {
         this.app = app;
@@ -39,7 +39,6 @@ public class SellItem implements CommandExecutor {
         }
 
         String materialName;
-        boolean sellAll = false;
         int amountToSell = 1;
 
         switch (args.length) {
@@ -51,11 +50,7 @@ public class SellItem implements CommandExecutor {
             // Material & Amount
             case 2:
                 materialName = args[0];
-                if (args[1].equals("max")) {
-                    sellAll = true;
-                } else {
-                    amountToSell = Math.getInt(args[1]);
-                }
+                amountToSell = Math.getInt(args[1]);
                 break;
 
             default:
@@ -78,10 +73,6 @@ public class SellItem implements CommandExecutor {
                 ItemStack[] totalUserMaterials = this.app.getPlayerInventoryManager().getMaterialSlots(player, material);
                 int userAmount = this.app.getPlayerInventoryManager().getMaterialCount(totalUserMaterials);
 
-                if (sellAll) {
-                    amountToSell = userAmount;
-                }
-
                 ItemStack[] itemStacks = this.app.getPlayerInventoryManager().getMaterialSlotsToCount(player, material, amountToSell);
                 ValueResponse valueResponse = this.app.getMaterialManager().getSellValue(itemStacks);
 
@@ -96,7 +87,7 @@ public class SellItem implements CommandExecutor {
 
                         DCEPlugin.CONSOLE.logSale(player, amountToSell, valueResponse.value, materialData.getCleanName());
                     } else {
-                        DCEPlugin.CONSOLE.logFailedSale(player, amountToSell, valueResponse.value, materialData.getCleanName(), String.format("you do not have enough of this material. (%d/%d)", userAmount, amountToSell));
+                        DCEPlugin.CONSOLE.logFailedSale(player, amountToSell, valueResponse.value, materialData.getCleanName(), String.format("you do not have enough of this material. (missing %d)", amountToSell - userAmount));
                     }
                 }
             }
