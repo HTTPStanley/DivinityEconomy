@@ -64,7 +64,7 @@ public class BuyItem implements CommandExecutor {
         } else {
             MaterialData materialData = this.app.getMaterialManager().getMaterial(materialName);
             if (materialData == null) {
-                DCEPlugin.CONSOLE.usage(player, "Unknown Item: '" + materialName + "'", "");
+                DCEPlugin.CONSOLE.usage(player, "Unknown Item: '" + materialName + "'", this.usage);
                 DCEPlugin.CONSOLE.debug("(BuyItem)Unknown Item: " + materialName);
 
             } else {
