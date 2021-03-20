@@ -2,6 +2,7 @@ package edgrrrr.dce.enchants;
 
 import edgrrrr.dce.config.Setting;
 import edgrrrr.dce.DCEPlugin;
+import edgrrrr.dce.materials.MaterialData;
 import edgrrrr.dce.math.Math;
 import edgrrrr.dce.response.MultiValueResponse;
 import edgrrrr.dce.response.Response;
@@ -16,6 +17,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,9 +41,9 @@ public class EnchantmentManager {
     private int totalEnchants;
     private int defaultTotalEnchants;
     // Settings
-    private final double enchantBuyTax;
-    private final double enchantSellTax;
-    private final int enchantBaseQuantity;
+    public final double enchantBuyTax;
+    public final double enchantSellTax;
+    public final int enchantBaseQuantity;
 
 
     /**
@@ -63,6 +65,26 @@ public class EnchantmentManager {
             }
         };
         this.saveTimer.runTaskTimer(this.app, timer, timer);
+    }
+
+    public String[] getEnchantNames() {
+        ArrayList<String> enchantNames = new ArrayList<>();
+        for (EnchantData enchantData : this.enchants.values()) {
+            enchantNames.add(enchantData.getCleanName().toLowerCase().replace(" ", ""));
+        }
+
+        return enchantNames.toArray(new String[0]);
+    }
+
+    public String[] getEnchantNames(String startsWith) {
+        ArrayList<String> enchantNames = new ArrayList<>();
+        for (String enchantName : this.getEnchantNames()) {
+            if (enchantName.toLowerCase().startsWith(startsWith.toLowerCase())) {
+                enchantNames.add(enchantName);
+            }
+        }
+
+        return enchantNames.toArray(new String[0]);
     }
 
     /**
