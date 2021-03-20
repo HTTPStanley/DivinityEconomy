@@ -88,17 +88,25 @@ public class DCEPlugin extends JavaPlugin {
         try {
             // Register commands
             this.getCommand("ping").setExecutor(new Ping(this));
+
             this.getCommand("balance").setExecutor(new Balance(this));
             this.getCommand("balance").setTabCompleter(new BalanceTC(this));
+
             this.getCommand("editbal").setExecutor(new EditBal(this));
             this.getCommand("editbal").setTabCompleter(new EditBalTC(this));
+
             this.getCommand("sendcash").setExecutor(new SendCash(this));
             this.getCommand("sendcash").setTabCompleter(new SendCashTC(this));
+
             this.getCommand("setbal").setExecutor(new SetBal(this));
             this.getCommand("setbal").setTabCompleter(new SetBalTC(this));
+
             this.getCommand("clearbal").setExecutor(new ClearBal(this));
             this.getCommand("clearbal").setTabCompleter(new ClearBalTC(this));
+
             this.getCommand("buy").setExecutor(new BuyItem(this));
+            this.getCommand("buy").setTabCompleter(new BuyItemTC(this));
+
             this.getCommand("sell").setExecutor(new SellItem(this));
             this.getCommand("value").setExecutor(new Value(this));
             this.getCommand("information").setExecutor(new Info(this));
