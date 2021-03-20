@@ -70,7 +70,7 @@ public class SellItem implements CommandExecutor {
         } else {
             MaterialData materialData = this.app.getMaterialManager().getMaterial(materialName);
             if (materialData == null) {
-                DCEPlugin.CONSOLE.usage(player, "Unknown Item: '" + materialName + "'", "");
+                DCEPlugin.CONSOLE.usage(player, "Unknown Item: '" + materialName + "'", this.usage);
                 DCEPlugin.CONSOLE.debug("(SellItem)Unknown item search: " + materialName);
 
             } else {
