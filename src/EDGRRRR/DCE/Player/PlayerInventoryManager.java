@@ -8,8 +8,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 
 public class PlayerInventoryManager {
     private final DCEPlugin app;
@@ -29,6 +28,18 @@ public class PlayerInventoryManager {
     public ItemStack getHeldItem(Player player) {
         int slotIdx = player.getInventory().getHeldItemSlot();
         return player.getInventory().getItem(slotIdx);
+    }
+
+    public String[] getInventoryMaterials(Player player) {
+        ItemStack[] materials = player.getInventory().getStorageContents();
+        ArrayList<String> materialIDs = new ArrayList<>();
+        for (ItemStack iStack : materials) {
+            if (iStack != null) {
+                materialIDs.add(iStack.getType().toString());
+            }
+        }
+        Set<String> uniqueMaterialIDs = new HashSet<>(materialIDs);
+        return uniqueMaterialIDs.toArray(new String[0]);
     }
 
     /**
