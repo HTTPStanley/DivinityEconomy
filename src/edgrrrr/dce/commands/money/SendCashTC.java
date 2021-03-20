@@ -26,12 +26,6 @@ public class SendCashTC implements TabCompleter {
 
         String[] strings;
         switch (args.length) {
-            // Args 0
-            // get player names
-            case 0:
-                strings = this.app.getPlayerManager().getOfflinePlayers();
-                break;
-
             // Args 1
             // get player names that start with args[0]
             case 1:
