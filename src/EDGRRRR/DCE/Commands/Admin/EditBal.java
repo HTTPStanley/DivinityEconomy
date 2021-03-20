@@ -48,7 +48,7 @@ public class EditBal implements CommandExecutor {
 
         // The command receiver
         OfflinePlayer player2 = null;
-        double amount;
+        double amount = 0;
 
         // Use case scenarios
         // command <amount> - applies amount to self
@@ -82,29 +82,24 @@ public class EditBal implements CommandExecutor {
             DCEPlugin.CONSOLE.usage(player1, "Invalid player name.", usage);
         } else {
 
-            // Ensure amount is not null
-            if (amount < 1) {
-                DCEPlugin.CONSOLE.usage(player1, "Incorrect amount.", usage);
+            // Edit cash
+            EconomyResponse response;
+            double startingBalance = this.app.getEconomyManager().getBalance(player2);
+            if (amount > 0) {
+                response = this.app.getEconomyManager().addCash(player2, amount);
             } else {
-                // Edit cash
-                EconomyResponse response;
-                double startingBalance = this.app.getEconomyManager().getBalance(player2);
-                if (amount > 0) {
-                    response = this.app.getEconomyManager().addCash(player2, amount);
-                } else {
-                    response = this.app.getEconomyManager().remCash(player2, -amount);
-                }
+                response = this.app.getEconomyManager().remCash(player2, -amount);
+            }
 
+            // Handles sender, receiver, message, mail and console log
+            if (response.transactionSuccess()) {
+                DCEPlugin.CONSOLE.logBalance(player1, player2, startingBalance, response.balance, String.format("%s changed your balance", player1.getName()));
+            } else {
 
-
-                // Handles sender, receiver, message, mail and console log
-                if (response.transactionSuccess()) {
-                    DCEPlugin.CONSOLE.logBalance(player1, player2, startingBalance, response.balance, String.format("%s changed your balance", player1.getName()));
-                } else {
-                    DCEPlugin.CONSOLE.logFailedBalance(player1, player2, startingBalance, response.balance, response.errorMessage);
-                }
+                DCEPlugin.CONSOLE.logFailedBalance(player1, player2, startingBalance, response.balance, response.errorMessage);
             }
         }
+
         return true;
     }
 }
