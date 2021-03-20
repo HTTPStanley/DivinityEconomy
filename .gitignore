@@ -74,3 +74,4 @@ out/production/DCE/edgrrrr/dce/commands/admin/ClearBalTC.class
 out/production/DCE/edgrrrr/dce/commands/admin/SetBalTC.class
 out/production/DCE/edgrrrr/dce/commands/money/BalanceTC.class
 out/production/DCE/edgrrrr/dce/commands/money/SendCashTC.class
+out/production/DCE/edgrrrr/dce/commands/market/BuyItemTC.class
