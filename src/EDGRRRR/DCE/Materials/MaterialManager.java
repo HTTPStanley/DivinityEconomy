@@ -12,6 +12,7 @@ import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Locale;
 
@@ -95,6 +96,37 @@ public class MaterialManager {
         }
 
         return materialNames.toArray(new String[0]);
+    }
+
+    public String[] getMaterialAliases(String materialID) {
+        ArrayList<String> aliases = new ArrayList<>();
+        for (String alias : this.aliases.keySet()) {
+            if (this.aliases.get(alias).equalsIgnoreCase(materialID)) {
+                aliases.add(alias);
+            }
+        }
+        return aliases.toArray(new String[0]);
+    }
+
+    public String[] getMaterialAliases(String[] materialIDs, String startsWith) {
+        String[] materialAliases = this.getMaterialAliases(materialIDs);
+        ArrayList<String> newMaterialAliases = new ArrayList<>();
+        for (String materialAlias : materialAliases) {
+            if (materialAlias.toLowerCase().startsWith(startsWith.toLowerCase())) {
+                newMaterialAliases.add(materialAlias);
+            }
+        }
+
+        return newMaterialAliases.toArray(new String[0]);
+    }
+
+    public String[] getMaterialAliases(String[] materialIDs) {
+        ArrayList<String> materialAliases = new ArrayList<>();
+        for (String materialID : materialIDs) {
+            materialAliases.addAll(Arrays.asList(this.getMaterialAliases(materialID)));
+        }
+
+        return materialAliases.toArray(new String[0]);
     }
 
     /**
