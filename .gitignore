@@ -76,3 +76,11 @@ out/production/DCE/edgrrrr/dce/commands/money/BalanceTC.class
 out/production/DCE/edgrrrr/dce/commands/money/SendCashTC.class
 out/production/DCE/edgrrrr/dce/commands/market/BuyItemTC.class
 out/production/DCE/edgrrrr/dce/commands/market/SellItemTC.class
+out/production/DCE/edgrrrr/dce/commands/market/ValueTC.class
+out/production/DCE/edgrrrr/dce/commands/market/InfoTC.class
+out/production/DCE/edgrrrr/dce/commands/market/HandValueTC.class
+out/production/DCE/edgrrrr/dce/commands/market/HandSellTC.class
+out/production/DCE/edgrrrr/dce/commands/market/HandInfoTC.class
+out/production/DCE/edgrrrr/dce/commands/market/HandBuyTC.class
+out/production/DCE/edgrrrr/dce/commands/mail/ReadMailTC.class
+out/production/DCE/edgrrrr/dce/commands/mail/ClearMailTC.class
