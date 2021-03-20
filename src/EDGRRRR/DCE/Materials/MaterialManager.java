@@ -11,7 +11,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 
 public class MaterialManager {
     // Link back to Main
@@ -28,9 +30,9 @@ public class MaterialManager {
     private int totalMaterials;
     private int defaultTotalMaterials;
     // Other settings
-    private final double materialBuyTax;
-    private final double materialSellTax;
-    private final double materialBaseQuantity;
+    public final double materialBuyTax;
+    public final double materialSellTax;
+    public final double materialBaseQuantity;
     // Stores items
     private FileConfiguration config;
 
@@ -70,6 +72,29 @@ public class MaterialManager {
         if (matID == null)
             matID = alias;
         return this.materials.get(matID);
+    }
+
+    public String[] getMaterialNames() {
+        ArrayList<String> materialNames = new ArrayList<>();
+        for (MaterialData materialData : this.materials.values()) {
+            materialNames.add(materialData.getCleanName().toLowerCase().replace(" ", ""));
+        }
+        for (String alias : this.aliases.keySet()) {
+            materialNames.add(alias.toLowerCase().replace(" ", ""));
+        }
+
+        return materialNames.toArray(new String[0]);
+    }
+
+    public String[] getMaterialNames(String startsWith) {
+        ArrayList<String> materialNames = new ArrayList<>();
+        for (String materialName : this.getMaterialNames()) {
+            if (materialName.toLowerCase().startsWith(startsWith.toLowerCase())) {
+                materialNames.add(materialName);
+            }
+        }
+
+        return materialNames.toArray(new String[0]);
     }
 
     /**
