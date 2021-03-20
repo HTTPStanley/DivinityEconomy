@@ -5,7 +5,9 @@ import edgrrrr.dce.commands.enchants.EnchantHandBuy;
 import edgrrrr.dce.commands.enchants.EnchantHandSell;
 import edgrrrr.dce.commands.enchants.EnchantHandValue;
 import edgrrrr.dce.commands.mail.ClearMail;
+import edgrrrr.dce.commands.mail.ClearMailTC;
 import edgrrrr.dce.commands.mail.ReadMail;
+import edgrrrr.dce.commands.mail.ReadMailTC;
 import edgrrrr.dce.commands.market.*;
 import edgrrrr.dce.commands.misc.Ping;
 import edgrrrr.dce.commands.money.Balance;
@@ -111,16 +113,38 @@ public class DCEPlugin extends JavaPlugin {
             this.getCommand("sell").setTabCompleter(new SellItemTC(this));
 
             this.getCommand("value").setExecutor(new Value(this));
+            this.getCommand("value").setTabCompleter(new ValueTC(this));
+
             this.getCommand("information").setExecutor(new Info(this));
+            this.getCommand("information").setTabCompleter(new InfoTC(this));
+
             this.getCommand("handSell").setExecutor(new HandSell(this));
+            this.getCommand("handSell").setTabCompleter(new HandSellTC(this));
+
             this.getCommand("handBuy").setExecutor(new HandBuy(this));
+            this.getCommand("handBuy").setTabCompleter(new HandBuyTC(this));
+
             this.getCommand("handValue").setExecutor(new HandValue(this));
+            this.getCommand("handValue").setTabCompleter(new HandValueTC(this));
+
             this.getCommand("handInformation").setExecutor(new HandInfo(this));
+            this.getCommand("handInformation").setTabCompleter(new HandInfoTC(this));
+
             this.getCommand("readMail").setExecutor(new ReadMail(this));
+            this.getCommand("readMail").setTabCompleter(new ReadMailTC(this));
+
             this.getCommand("clearMail").setExecutor(new ClearMail(this));
+            this.getCommand("clearMail").setTabCompleter(new ClearMailTC(this));
+
             this.getCommand("eHandSell").setExecutor(new EnchantHandSell(this));
+            //this.getCommand("eHandSell").setTabCompleter(new EnchantHandSell(this));
+
             this.getCommand("eHandValue").setExecutor(new EnchantHandValue(this));
+            //this.getCommand("eHandValue").setTabCompleter(new EnchantHandValue(this));
+
             this.getCommand("eHandBuy").setExecutor(new EnchantHandBuy(this));
+            //this.getCommand("eHandBuy").setTabCompleter(new EnchantHandBuy(this));
+
         } catch (Exception e) {
             e.printStackTrace();
             CONSOLE.severe("An error occurred on registry: " + e);
