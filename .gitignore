@@ -69,3 +69,5 @@ out/production/DCE/edgrrrr/dce/DCEPlugin.class
 out/production/DCE/edgrrrr/dce/console/LogLevel.class
 out/production/DCE/edgrrrr/dce/console/Console.class
 out/production/DCE/edgrrrr/dce/commandTabCompletions/admin/ClearBalTC.class
+out/production/DCE/edgrrrr/dce/commands/admin/EditBalTC.class
+out/production/DCE/edgrrrr/dce/commands/admin/ClearBalTC.class
