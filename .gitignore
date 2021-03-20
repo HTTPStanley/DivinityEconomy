@@ -84,3 +84,4 @@ out/production/DCE/edgrrrr/dce/commands/market/HandInfoTC.class
 out/production/DCE/edgrrrr/dce/commands/market/HandBuyTC.class
 out/production/DCE/edgrrrr/dce/commands/mail/ReadMailTC.class
 out/production/DCE/edgrrrr/dce/commands/mail/ClearMailTC.class
+out/production/DCE/edgrrrr/dce/commands/enchants/EnchantHandBuyTC.class
