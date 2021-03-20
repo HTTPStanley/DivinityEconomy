@@ -91,6 +91,7 @@ public class DCEPlugin extends JavaPlugin {
             this.getCommand("editbal").setTabCompleter(new EditBalTC(this));
             this.getCommand("sendcash").setExecutor(new SendCash(this));
             this.getCommand("setbal").setExecutor(new SetBal(this));
+            this.getCommand("setbal").setTabCompleter(new SetBalTC(this));
             this.getCommand("clearbal").setExecutor(new ClearBal(this));
             this.getCommand("clearbal").setTabCompleter(new ClearBalTC(this));
             this.getCommand("buy").setExecutor(new BuyItem(this));
