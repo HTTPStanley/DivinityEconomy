@@ -70,7 +70,7 @@ public class EnchantmentManager {
     public String[] getEnchantNames() {
         ArrayList<String> enchantNames = new ArrayList<>();
         for (EnchantData enchantData : this.enchants.values()) {
-            enchantNames.add(enchantData.getCleanName().toLowerCase().replace(" ", ""));
+            enchantNames.add(enchantData.getID().toLowerCase());
         }
 
         return enchantNames.toArray(new String[0]);
