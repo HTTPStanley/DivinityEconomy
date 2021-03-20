@@ -84,7 +84,7 @@ public class SetBal implements CommandExecutor {
             // Response messages
             if (response.transactionSuccess()) {
                 // Handles console, player and mail
-                DCEPlugin.CONSOLE.logBalance(player1, player2, response.balance, startingBalance, String.format("balance set by %s", player1.getName()));
+                DCEPlugin.CONSOLE.logBalance(player1, player2, startingBalance, response.balance, String.format("balance set by %s", player1.getName()));
             } else {
                 // Handles console, player and mail
                 DCEPlugin.CONSOLE.logFailedBalance(player1, player2, startingBalance, response.balance, response.errorMessage);
