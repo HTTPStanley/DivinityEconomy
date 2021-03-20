@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 import java.util.Arrays;
 import java.util.List;
 
-public class SetBalTC  implements TabCompleter {
+public class SetBalTC implements TabCompleter {
     private final DCEPlugin app;
 
     public SetBalTC(DCEPlugin app) {
