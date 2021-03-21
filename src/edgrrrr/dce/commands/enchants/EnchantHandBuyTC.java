@@ -4,6 +4,7 @@ import edgrrrr.dce.DCEPlugin;
 import edgrrrr.dce.config.Setting;
 import edgrrrr.dce.enchants.EnchantData;
 import edgrrrr.dce.math.Math;
+import edgrrrr.dce.utils.ArrayUtils;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -30,8 +31,7 @@ public class EnchantHandBuyTC implements TabCompleter {
         Player player = (Player) sender;
         String[] strings;
         EnchantData enchantData;
-        ItemStack heldItem = this.app.getPlayerInventoryManager().getHeldItem(player);
-        if (heldItem == null) heldItem = new ItemStack(Material.AIR, 0);
+        ItemStack heldItem = this.app.getPlayerInventoryManager().getHeldItemNotNull(player);
         switch (args.length) {
             // 1 args
             // return names of players starting with arg
@@ -43,14 +43,12 @@ public class EnchantHandBuyTC implements TabCompleter {
             // return max stack size for the material given
             case 2:
                 enchantData = this.app.getEnchantmentManager().getEnchant(args[0]);
-                int enchantLevel = 1;
+                int maxLevel = 1;
                 if (enchantData != null) {
-                    enchantLevel = enchantData.getMaxLevel();
+                    maxLevel = enchantData.getMaxLevel() - heldItem.getEnchantmentLevel(enchantData.getEnchantment());
                 }
 
-                strings = new String[] {
-                    String.valueOf(enchantLevel)
-                };
+                strings = ArrayUtils.strRange(1, maxLevel);
                 break;
 
             // 3 args
