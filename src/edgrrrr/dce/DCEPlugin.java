@@ -21,7 +21,6 @@ import edgrrrr.dce.enchants.EnchantmentManager;
 import edgrrrr.dce.events.MailEvent;
 import edgrrrr.dce.mail.MailManager;
 import edgrrrr.dce.materials.MaterialManager;
-import edgrrrr.dce.player.PlayerInventoryManager;
 import edgrrrr.dce.player.PlayerManager;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.PluginManager;
@@ -44,8 +43,6 @@ public class DCEPlugin extends JavaPlugin {
     private MailManager mailManager;
     // The player manager
     private PlayerManager playerManager;
-    // The player inventory manager
-    private PlayerInventoryManager playerInventoryManager;
     // The enchantment manager
     private EnchantmentManager enchantmentManager;
 
@@ -70,7 +67,6 @@ public class DCEPlugin extends JavaPlugin {
         this.enchantmentManager = new EnchantmentManager(this);
         this.enchantmentManager.loadEnchants();
         this.playerManager = new PlayerManager(this);
-        this.playerInventoryManager = new PlayerInventoryManager(this);
         this.mailManager = new MailManager(this);
         this.mailManager.setupMailFile();
         this.mailManager.loadAllMail();
@@ -266,15 +262,6 @@ public class DCEPlugin extends JavaPlugin {
      */
     public PlayerManager getPlayerManager() {
         return this.playerManager;
-    }
-
-    /**
-     * Returns the player inventory manager
-     * This is used for handling a players inventory and materials within it.
-     * @return
-     */
-    public PlayerInventoryManager getPlayerInventoryManager() {
-        return this.playerInventoryManager;
     }
 
     /**
