@@ -66,6 +66,9 @@ public class EnchantmentManager {
         this.saveTimer.runTaskTimer(this.app, timer, timer);
     }
 
+    /**
+     * Returns an array of the names of the enchantments given.
+     */
     public String[] getEnchantNames(Set<Enchantment> enchantmentSet) {
         ArrayList<EnchantData> enchants = new ArrayList<>();
         for (Enchantment enchantment : enchantmentSet) {
@@ -74,6 +77,9 @@ public class EnchantmentManager {
         return this.getEnchantNames(enchants.toArray(new EnchantData[0]));
     }
 
+    /**
+     * Returns if the enchantment given is supported by the itemstack given.
+     */
     public boolean supportsEnchant(ItemStack itemStack, Enchantment enchantment) {
         for (EnchantData enchantData : this.getCompatibleEnchants(itemStack)) {
             if (enchantData.getEnchantment().equals(enchantment)) return true;
@@ -81,10 +87,16 @@ public class EnchantmentManager {
         return false;
     }
 
+    /**
+     * Returns an array of names of the enchants stored.
+     */
     public String[] getEnchantNames() {
         return this.getEnchantNames(this.enchants.values().toArray(new EnchantData[0]));
     }
 
+    /**
+     * Returns an array of the names of the enchants given.
+     */
     public String[] getEnchantNames(EnchantData[] enchants) {
         ArrayList<String> enchantNames = new ArrayList<>();
         for (EnchantData enchantData : enchants) {
@@ -94,6 +106,9 @@ public class EnchantmentManager {
         return enchantNames.toArray(new String[0]);
     }
 
+    /**
+     * Returns an array of enchants supported by the given itemstack
+     */
     public EnchantData[] getCompatibleEnchants(ItemStack itemStack) {
         ArrayList<EnchantData> enchants = new ArrayList<>();
         for (EnchantData enchantData : this.enchants.values()) {
@@ -103,10 +118,16 @@ public class EnchantmentManager {
         return enchants.toArray(new EnchantData[0]);
     }
 
+    /**
+     * Returns an array of the names of enchants that start with startsWith
+     */
     public String[] getCompatibleEnchants(ItemStack itemStack, String startsWith) {
         return this.getEnchantNames(this.getEnchantNames(this.getCompatibleEnchants(itemStack)), startsWith);
     }
 
+    /**
+     * Returns an array of the names of enchants that start with startsWith
+     */
     public String[] getEnchantNames(String[] enchants, String startsWith) {
         ArrayList<String> enchantNames = new ArrayList<>();
         for (String enchantName : enchants) {
@@ -118,6 +139,9 @@ public class EnchantmentManager {
         return enchantNames.toArray(new String[0]);
     }
 
+    /**
+     * Returns an array of the names of enchants that start with startsWith
+     */
     public String[] getEnchantNames(String startsWith) {
         return this.getEnchantNames(this.getEnchantNames(), startsWith);
     }
