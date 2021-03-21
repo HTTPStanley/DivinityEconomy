@@ -4,6 +4,7 @@ import edgrrrr.dce.DCEPlugin;
 import edgrrrr.dce.config.Setting;
 import edgrrrr.dce.enchants.EnchantData;
 import edgrrrr.dce.math.Math;
+import edgrrrr.dce.player.PlayerInventoryManager;
 import edgrrrr.dce.utils.ArrayUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -30,7 +31,7 @@ public class EnchantHandSellTC implements TabCompleter {
         Player player = (Player) sender;
         String[] strings;
         EnchantData enchantData;
-        ItemStack heldItem = this.app.getPlayerInventoryManager().getHeldItemNotNull(player);
+        ItemStack heldItem = PlayerInventoryManager.getHeldItemNotNull(player);
         switch (args.length) {
             // 1 args
             // return names of players starting with arg

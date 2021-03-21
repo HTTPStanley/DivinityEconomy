@@ -3,6 +3,7 @@ package edgrrrr.dce.commands.market;
 import edgrrrr.dce.DCEPlugin;
 import edgrrrr.dce.config.Setting;
 import edgrrrr.dce.materials.MaterialData;
+import edgrrrr.dce.player.PlayerInventoryManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -29,7 +30,7 @@ public class HandValueTC implements TabCompleter {
         Player player = (Player) sender;
 
         String[] strings = new String[0];
-        ItemStack heldItem = this.app.getPlayerInventoryManager().getHeldItem(player);
+        ItemStack heldItem = PlayerInventoryManager.getHeldItem(player);
         if (heldItem == null) {
             strings = new String[]{"You are not holding any item."};
         } else {

@@ -4,6 +4,7 @@ import edgrrrr.dce.DCEPlugin;
 import edgrrrr.dce.config.Setting;
 import edgrrrr.dce.materials.MaterialData;
 import edgrrrr.dce.math.Math;
+import edgrrrr.dce.player.PlayerInventoryManager;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -35,7 +36,7 @@ public class SellItemTC implements TabCompleter {
             // 1 args
             // return items in user inventory
             case 1:
-                String[] materials = this.app.getPlayerInventoryManager().getInventoryMaterials(player);
+                String[] materials = PlayerInventoryManager.getInventoryMaterials(player);
                 strings = this.app.getMaterialManager().getMaterialAliases(materials, args[0]);
                 break;
 
@@ -48,7 +49,7 @@ public class SellItemTC implements TabCompleter {
                 if (materialData != null) {
                     Material material = materialData.getMaterial();
                     stackSize = material.getMaxStackSize();
-                    inventoryCount = this.app.getPlayerInventoryManager().getMaterialCount(player, material);
+                    inventoryCount = PlayerInventoryManager.getMaterialCount(player, material);
                 }
                 strings = new String[]{
                         String.valueOf(stackSize), String.valueOf(inventoryCount)
@@ -60,7 +61,7 @@ public class SellItemTC implements TabCompleter {
                 String value = "unknown";
                 if (materialData != null) {
                     Material material = materialData.getMaterial();
-                    value = String.format("£%,.2f", this.app.getMaterialManager().getSellValue(this.app.getPlayerInventoryManager().getMaterialSlotsToCount(player, material, Math.getInt(args[1]))).value);
+                    value = String.format("£%,.2f", this.app.getMaterialManager().getSellValue(PlayerInventoryManager.getMaterialSlotsToCount(player, material, Math.getInt(args[1]))).value);
                 }
                 strings = new String[] {
                     String.format("Value: %s", value)

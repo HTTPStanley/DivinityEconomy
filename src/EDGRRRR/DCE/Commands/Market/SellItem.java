@@ -4,6 +4,7 @@ import edgrrrr.dce.DCEPlugin;
 import edgrrrr.dce.config.Setting;
 import edgrrrr.dce.materials.MaterialData;
 import edgrrrr.dce.math.Math;
+import edgrrrr.dce.player.PlayerInventoryManager;
 import edgrrrr.dce.response.ValueResponse;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -70,10 +71,10 @@ public class SellItem implements CommandExecutor {
 
             } else {
                 Material material = materialData.getMaterial();
-                ItemStack[] totalUserMaterials = this.app.getPlayerInventoryManager().getMaterialSlots(player, material);
-                int userAmount = this.app.getPlayerInventoryManager().getMaterialCount(totalUserMaterials);
+                ItemStack[] totalUserMaterials = PlayerInventoryManager.getMaterialSlots(player, material);
+                int userAmount = PlayerInventoryManager.getMaterialCount(totalUserMaterials);
 
-                ItemStack[] itemStacks = this.app.getPlayerInventoryManager().getMaterialSlotsToCount(player, material, amountToSell);
+                ItemStack[] itemStacks = PlayerInventoryManager.getMaterialSlotsToCount(player, material, amountToSell);
                 ValueResponse valueResponse = this.app.getMaterialManager().getSellValue(itemStacks);
 
                 if (valueResponse.isFailure()) {
@@ -81,7 +82,7 @@ public class SellItem implements CommandExecutor {
 
                 } else {
                     if (userAmount >= amountToSell) {
-                        this.app.getPlayerInventoryManager().removeMaterialsFromPlayer(itemStacks);
+                        PlayerInventoryManager.removeMaterialsFromPlayer(itemStacks);
                         materialData.addQuantity(amountToSell);
                         this.app.getEconomyManager().addCash(player, valueResponse.value);
 

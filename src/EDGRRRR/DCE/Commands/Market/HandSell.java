@@ -4,6 +4,7 @@ import edgrrrr.dce.DCEPlugin;
 import edgrrrr.dce.config.Setting;
 import edgrrrr.dce.materials.MaterialData;
 import edgrrrr.dce.math.Math;
+import edgrrrr.dce.player.PlayerInventoryManager;
 import edgrrrr.dce.response.ValueResponse;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -63,7 +64,7 @@ public class HandSell implements CommandExecutor {
         if (amountToSell < 1) {
             DCEPlugin.CONSOLE.usage(player, "Invalid amount.", this.usage);
         } else {
-            ItemStack heldItem = this.app.getPlayerInventoryManager().getHeldItem(player);
+            ItemStack heldItem = PlayerInventoryManager.getHeldItem(player);
 
             if (heldItem == null) {
                 DCEPlugin.CONSOLE.usage(player, "You are not holding any item.", this.usage);
@@ -72,7 +73,7 @@ public class HandSell implements CommandExecutor {
                 Material material = heldItem.getType();
                 String materialName = material.name();
                 MaterialData materialData = this.app.getMaterialManager().getMaterial(materialName);
-                int materialCount = this.app.getPlayerInventoryManager().getMaterialCount(this.app.getPlayerInventoryManager().getMaterialSlots(player, material));
+                int materialCount = PlayerInventoryManager.getMaterialCount(PlayerInventoryManager.getMaterialSlots(player, material));
 
                 if (sellAll) {
                     amountToSell = materialCount;
@@ -85,11 +86,11 @@ public class HandSell implements CommandExecutor {
                     DCEPlugin.CONSOLE.logFailedSale(player, amountToSell, 0.0, materialData.getCleanName(), String.format("you do not have enough of this material (%d/%d)", materialCount, amountToSell));
 
                 } else {
-                    ItemStack[] itemStacks = this.app.getPlayerInventoryManager().getMaterialSlotsToCount(player, material, amountToSell);
+                    ItemStack[] itemStacks = PlayerInventoryManager.getMaterialSlotsToCount(player, material, amountToSell);
                     ValueResponse response = this.app.getMaterialManager().getSellValue(itemStacks);
 
                     if (response.isSuccess()) {
-                        this.app.getPlayerInventoryManager().removeMaterialsFromPlayer(itemStacks);
+                        PlayerInventoryManager.removeMaterialsFromPlayer(itemStacks);
                         materialData.addQuantity(amountToSell);
                         this.app.getEconomyManager().addCash(player, response.value);
                         double cost = app.getEconomyManager().round(response.value);

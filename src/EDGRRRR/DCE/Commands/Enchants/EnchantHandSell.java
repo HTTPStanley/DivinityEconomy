@@ -4,6 +4,7 @@ import edgrrrr.dce.DCEPlugin;
 import edgrrrr.dce.config.Setting;
 import edgrrrr.dce.enchants.EnchantData;
 import edgrrrr.dce.math.Math;
+import edgrrrr.dce.player.PlayerInventoryManager;
 import edgrrrr.dce.response.MultiValueResponse;
 import edgrrrr.dce.response.ValueResponse;
 import org.bukkit.command.Command;
@@ -86,7 +87,7 @@ public class EnchantHandSell implements CommandExecutor {
 
         // get the item the user is holding.
         // ensure it is not null
-        ItemStack heldItem = this.app.getPlayerInventoryManager().getHeldItem(player);
+        ItemStack heldItem = PlayerInventoryManager.getHeldItem(player);
         if (heldItem == null) {
             DCEPlugin.CONSOLE.usage(player, "You are not holding any item", this.usage);
 

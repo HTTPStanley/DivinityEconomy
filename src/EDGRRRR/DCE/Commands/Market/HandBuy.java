@@ -4,6 +4,7 @@ import edgrrrr.dce.DCEPlugin;
 import edgrrrr.dce.config.Setting;
 import edgrrrr.dce.materials.MaterialData;
 import edgrrrr.dce.math.Math;
+import edgrrrr.dce.player.PlayerInventoryManager;
 import edgrrrr.dce.response.ValueResponse;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.command.Command;
@@ -58,7 +59,7 @@ public class HandBuy implements CommandExecutor {
             DCEPlugin.CONSOLE.debug("(HandBuy)Invalid amount: " + amountToBuy);
 
         } else {
-            ItemStack heldItem = this.app.getPlayerInventoryManager().getHeldItem(player);
+            ItemStack heldItem = PlayerInventoryManager.getHeldItem(player);
 
             if (heldItem == null) {
                 DCEPlugin.CONSOLE.usage(player, "You are not holding any item.", this.usage);
@@ -67,16 +68,16 @@ public class HandBuy implements CommandExecutor {
             } else {
                 MaterialData materialData = this.app.getMaterialManager().getMaterial(heldItem.getType().name());
 
-                int availableSpace = this.app.getPlayerInventoryManager().getAvailableSpace(player, materialData.getMaterial());
+                int availableSpace = PlayerInventoryManager.getAvailableSpace(player, materialData.getMaterial());
                 if (amountToBuy > availableSpace) {
                     DCEPlugin.CONSOLE.logFailedPurchase(player, amountToBuy, 0.0, materialData.getCleanName(), String.format("missing inventory space (%d/%d)", availableSpace, amountToBuy));
 
                 } else {
-                    ItemStack[] itemStacks = this.app.getPlayerInventoryManager().createItemStacks(materialData.getMaterial(), amountToBuy);
+                    ItemStack[] itemStacks = PlayerInventoryManager.createItemStacks(materialData.getMaterial(), amountToBuy);
                     ValueResponse priceResponse = this.app.getMaterialManager().getBuyValue(itemStacks);
                     EconomyResponse saleResponse = this.app.getEconomyManager().remCash(player, priceResponse.value);
                     if (saleResponse.transactionSuccess() && priceResponse.isSuccess()) {
-                        this.app.getPlayerInventoryManager().addItemsToPlayer(player, itemStacks);
+                        PlayerInventoryManager.addItemsToPlayer(player, itemStacks);
                         materialData.remQuantity(amountToBuy);
 
                         // Handles console, message and mail

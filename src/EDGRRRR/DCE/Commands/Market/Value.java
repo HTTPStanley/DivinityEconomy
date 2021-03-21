@@ -4,6 +4,7 @@ import edgrrrr.dce.DCEPlugin;
 import edgrrrr.dce.config.Setting;
 import edgrrrr.dce.materials.MaterialData;
 import edgrrrr.dce.math.Math;
+import edgrrrr.dce.player.PlayerInventoryManager;
 import edgrrrr.dce.response.ValueResponse;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -58,7 +59,7 @@ public class Value implements CommandExecutor {
         if (materialData == null) {
             DCEPlugin.CONSOLE.usage(from, "Unknown Item: " + materialName, usage);
         } else {
-            ItemStack[] itemStacks = this.app.getPlayerInventoryManager().createItemStacks(materialData.getMaterial(), amount);
+            ItemStack[] itemStacks = PlayerInventoryManager.createItemStacks(materialData.getMaterial(), amount);
             ValueResponse priceResponse = this.app.getMaterialManager().getBuyValue(itemStacks);
             ValueResponse secondPriceResponse = this.app.getMaterialManager().getSellValue(itemStacks);
 

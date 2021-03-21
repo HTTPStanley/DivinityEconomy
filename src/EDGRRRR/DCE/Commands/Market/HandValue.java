@@ -4,6 +4,7 @@ import edgrrrr.dce.DCEPlugin;
 import edgrrrr.dce.config.Setting;
 import edgrrrr.dce.materials.MaterialData;
 import edgrrrr.dce.math.Math;
+import edgrrrr.dce.player.PlayerInventoryManager;
 import edgrrrr.dce.response.ValueResponse;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -61,7 +62,7 @@ public class HandValue implements CommandExecutor {
         if (amount < 0) {
             DCEPlugin.CONSOLE.usage(player, "Invalid amount.", this.usage);
         } else {
-            ItemStack heldItem = this.app.getPlayerInventoryManager().getHeldItem(player);
+            ItemStack heldItem = PlayerInventoryManager.getHeldItem(player);
             if (heldItem == null) {
                 DCEPlugin.CONSOLE.usage(player, "You are not holding any item.", this.usage);
 
@@ -70,19 +71,19 @@ public class HandValue implements CommandExecutor {
                 MaterialData materialData = this.app.getMaterialManager().getMaterial(material.name());
                 ItemStack[] buyStacks;
                 ItemStack[] sellStacks;
-                ItemStack[] itemStacks = this.app.getPlayerInventoryManager().getMaterialSlots(player, material);
+                ItemStack[] itemStacks = PlayerInventoryManager.getMaterialSlots(player, material);
 
                 if (valueHand) {
                     amount = heldItem.getAmount();
-                    buyStacks = this.app.getPlayerInventoryManager().createItemStacks(material, amount);
+                    buyStacks = PlayerInventoryManager.createItemStacks(material, amount);
                     sellStacks = new ItemStack[1];
                     sellStacks[0] = heldItem;
                 } else if (valueAll) {
-                    amount = this.app.getPlayerInventoryManager().getMaterialCount(itemStacks);
+                    amount = PlayerInventoryManager.getMaterialCount(itemStacks);
                     sellStacks = itemStacks;
-                    buyStacks = this.app.getPlayerInventoryManager().createItemStacks(material, amount);
+                    buyStacks = PlayerInventoryManager.createItemStacks(material, amount);
                 } else {
-                    sellStacks = this.app.getPlayerInventoryManager().createItemStacks(material, amount);
+                    sellStacks = PlayerInventoryManager.createItemStacks(material, amount);
                     buyStacks = sellStacks;
                 }
 

@@ -1,7 +1,7 @@
 package edgrrrr.dce.economy;
 
-import edgrrrr.dce.config.Setting;
 import edgrrrr.dce.DCEPlugin;
+import edgrrrr.dce.config.Setting;
 import edgrrrr.dce.math.Math;
 import edgrrrr.dce.response.EconomyTransferResponse;
 import net.milkbowl.vault.economy.Economy;

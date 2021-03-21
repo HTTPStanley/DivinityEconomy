@@ -4,6 +4,7 @@ import edgrrrr.dce.DCEPlugin;
 import edgrrrr.dce.config.Setting;
 import edgrrrr.dce.enchants.EnchantData;
 import edgrrrr.dce.math.Math;
+import edgrrrr.dce.player.PlayerInventoryManager;
 import edgrrrr.dce.response.Response;
 import edgrrrr.dce.response.ValueResponse;
 import net.milkbowl.vault.economy.EconomyResponse;
@@ -54,7 +55,7 @@ public class EnchantHandBuy implements CommandExecutor {
         if (enchantLevels < 1) {
             DCEPlugin.CONSOLE.warn(player, "Enchant level cannot be less than 1.");
         } else {
-            ItemStack heldItem = this.app.getPlayerInventoryManager().getHeldItem(player);
+            ItemStack heldItem = PlayerInventoryManager.getHeldItem(player);
             if (heldItem == null) {
                 DCEPlugin.CONSOLE.warn(player, "You are not holding any item.");
             } else {

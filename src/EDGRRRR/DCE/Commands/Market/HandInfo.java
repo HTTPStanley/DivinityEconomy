@@ -5,6 +5,7 @@ import edgrrrr.dce.config.Setting;
 import edgrrrr.dce.materials.MaterialData;
 import edgrrrr.dce.materials.MaterialPotionData;
 import edgrrrr.dce.math.Math;
+import edgrrrr.dce.player.PlayerInventoryManager;
 import edgrrrr.dce.response.ValueResponse;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -54,13 +55,13 @@ public class HandInfo implements CommandExecutor {
         if (amount < 0) {
             DCEPlugin.CONSOLE.usage(player, "Invalid amount.", this.usage);
         } else {
-            ItemStack heldItem = this.app.getPlayerInventoryManager().getHeldItem(player);
+            ItemStack heldItem = PlayerInventoryManager.getHeldItem(player);
             if (heldItem == null) {
                 DCEPlugin.CONSOLE.usage(player, "You are not holding any item.", this.usage);
             } else {
                 Material material = heldItem.getType();
                 MaterialData materialData = this.app.getMaterialManager().getMaterial(material.name());
-                ItemStack[] itemStacks = this.app.getPlayerInventoryManager().createItemStacks(material, amount);
+                ItemStack[] itemStacks = PlayerInventoryManager.createItemStacks(material, amount);
                 ValueResponse userResponse = this.app.getMaterialManager().getBuyValue(itemStacks);
                 ValueResponse marketResponse = this.app.getMaterialManager().getSellValue(itemStacks);
 
