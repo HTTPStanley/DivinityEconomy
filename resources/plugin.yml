@@ -6,7 +6,7 @@ author: EDGRRRR
 description: DivinityCraft Economy plugin.
 api-version: 1.16
 depend: [Vault]
-soft-depend: []
+soft-depend: [EssentialsX]
 load: STARTUP
 
 
