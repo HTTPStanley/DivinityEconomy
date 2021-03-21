@@ -17,12 +17,12 @@ import edgrrrr.dce.commands.money.SendCash;
 import edgrrrr.dce.commands.money.SendCashTC;
 import edgrrrr.dce.config.ConfigManager;
 import edgrrrr.dce.config.Setting;
+import edgrrrr.dce.console.Console;
 import edgrrrr.dce.console.LogLevel;
 import edgrrrr.dce.economy.EconomyManager;
 import edgrrrr.dce.enchants.EnchantmentManager;
 import edgrrrr.dce.events.MailEvent;
 import edgrrrr.dce.mail.MailManager;
-import edgrrrr.dce.console.Console;
 import edgrrrr.dce.materials.MaterialManager;
 import edgrrrr.dce.player.PlayerInventoryManager;
 import edgrrrr.dce.player.PlayerManager;
@@ -63,7 +63,10 @@ public class DCEPlugin extends JavaPlugin {
         CONSOLE = new Console(this, this.getDescription().getVersion());
         LogLevel.loadValuesFromConfig((YamlConfiguration) this.getConfig());
         this.economyManager = new EconomyManager(this);
-        this.economyManager.setupEconomy();
+        if (!this.economyManager.setupEconomy()) {
+            this.shutdown();
+            return;
+        }
         this.materialManager = new MaterialManager(this);
         this.materialManager.loadAliases();
         this.materialManager.loadMaterials();
@@ -84,7 +87,7 @@ public class DCEPlugin extends JavaPlugin {
         } catch (Exception e) {
             e.printStackTrace();
             CONSOLE.severe("An error occurred on event creation: " + e);
-            this.getServer().getPluginManager().disablePlugin(this);
+            this.shutdown();
             return;
         }
 
@@ -149,7 +152,7 @@ public class DCEPlugin extends JavaPlugin {
         } catch (Exception e) {
             e.printStackTrace();
             CONSOLE.severe("An error occurred on registry: " + e);
-            this.getServer().getPluginManager().disablePlugin(this);
+            this.shutdown();
             return;
         }
 
@@ -173,6 +176,13 @@ public class DCEPlugin extends JavaPlugin {
             this.mailManager.saveAllMail();
         }
         CONSOLE.warn("Plugin Disabled");
+    }
+
+    /**
+     * Shorthand for disabling the plugin.
+     */
+    public void shutdown() {
+        this.getServer().getPluginManager().disablePlugin(this);
     }
 
     /**
