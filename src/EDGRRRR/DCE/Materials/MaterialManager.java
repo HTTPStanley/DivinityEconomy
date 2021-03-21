@@ -1,7 +1,7 @@
 package edgrrrr.dce.materials;
 
-import edgrrrr.dce.config.Setting;
 import edgrrrr.dce.DCEPlugin;
+import edgrrrr.dce.config.Setting;
 import edgrrrr.dce.math.Math;
 import edgrrrr.dce.response.ValueResponse;
 import net.milkbowl.vault.economy.EconomyResponse.ResponseType;
@@ -14,7 +14,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Locale;
 
 public class MaterialManager {
     // Link back to Main

@@ -1,7 +1,7 @@
 package edgrrrr.dce.commands.admin;
 
-import edgrrrr.dce.config.Setting;
 import edgrrrr.dce.DCEPlugin;
+import edgrrrr.dce.config.Setting;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;

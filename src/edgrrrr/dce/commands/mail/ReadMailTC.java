@@ -3,7 +3,6 @@ package edgrrrr.dce.commands.mail;
 import edgrrrr.dce.DCEPlugin;
 import edgrrrr.dce.config.Setting;
 import edgrrrr.dce.mail.MailList;
-import edgrrrr.dce.materials.MaterialData;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -12,7 +11,6 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 
 public class ReadMailTC implements TabCompleter {
     private final DCEPlugin app;

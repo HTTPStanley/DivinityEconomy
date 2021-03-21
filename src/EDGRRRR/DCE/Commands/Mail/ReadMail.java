@@ -1,9 +1,9 @@
 package edgrrrr.dce.commands.mail;
 
+import edgrrrr.dce.DCEPlugin;
 import edgrrrr.dce.config.Setting;
 import edgrrrr.dce.mail.Mail;
 import edgrrrr.dce.mail.MailList;
-import edgrrrr.dce.DCEPlugin;
 import edgrrrr.dce.math.Math;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

@@ -1,8 +1,8 @@
 package edgrrrr.dce.commands.enchants;
 
+import edgrrrr.dce.DCEPlugin;
 import edgrrrr.dce.config.Setting;
 import edgrrrr.dce.enchants.EnchantData;
-import edgrrrr.dce.DCEPlugin;
 import edgrrrr.dce.math.Math;
 import edgrrrr.dce.response.MultiValueResponse;
 import edgrrrr.dce.response.ValueResponse;

@@ -1,15 +1,13 @@
 package edgrrrr.dce.enchants;
 
-import edgrrrr.dce.config.Setting;
+import com.sun.istack.internal.NotNull;
 import edgrrrr.dce.DCEPlugin;
-import edgrrrr.dce.materials.MaterialData;
+import edgrrrr.dce.config.Setting;
 import edgrrrr.dce.math.Math;
 import edgrrrr.dce.response.MultiValueResponse;
 import edgrrrr.dce.response.Response;
 import edgrrrr.dce.response.ValueResponse;
-import com.sun.istack.internal.NotNull;
 import net.milkbowl.vault.economy.EconomyResponse;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.craftbukkit.libs.jline.internal.Nullable;

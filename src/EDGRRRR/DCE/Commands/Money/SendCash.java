@@ -1,9 +1,9 @@
 package edgrrrr.dce.commands.money;
 
-import edgrrrr.dce.config.Setting;
-import edgrrrr.dce.response.EconomyTransferResponse;
 import edgrrrr.dce.DCEPlugin;
+import edgrrrr.dce.config.Setting;
 import edgrrrr.dce.math.Math;
+import edgrrrr.dce.response.EconomyTransferResponse;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;

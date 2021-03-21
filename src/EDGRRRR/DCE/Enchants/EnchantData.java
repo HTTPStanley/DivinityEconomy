@@ -1,7 +1,6 @@
 package edgrrrr.dce.enchants;
 
 import com.sun.istack.internal.NotNull;
-import edgrrrr.dce.DCEPlugin;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.craftbukkit.libs.jline.internal.Nullable;
 import org.bukkit.enchantments.Enchantment;

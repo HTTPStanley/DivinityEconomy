@@ -1,14 +1,16 @@
 package edgrrrr.dce.player;
 
-import edgrrrr.dce.DCEPlugin;
 import com.sun.istack.internal.NotNull;
+import edgrrrr.dce.DCEPlugin;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.libs.jline.internal.Nullable;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 public class PlayerInventoryManager {
     private final DCEPlugin app;

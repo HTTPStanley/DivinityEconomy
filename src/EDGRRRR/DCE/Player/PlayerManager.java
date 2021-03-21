@@ -1,7 +1,7 @@
 package edgrrrr.dce.player;
 
-import edgrrrr.dce.DCEPlugin;
 import com.sun.istack.internal.NotNull;
+import edgrrrr.dce.DCEPlugin;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.craftbukkit.libs.jline.internal.Nullable;
 import org.bukkit.entity.Player;

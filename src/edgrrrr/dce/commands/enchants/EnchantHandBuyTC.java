@@ -3,7 +3,6 @@ package edgrrrr.dce.commands.enchants;
 import edgrrrr.dce.DCEPlugin;
 import edgrrrr.dce.config.Setting;
 import edgrrrr.dce.enchants.EnchantData;
-import edgrrrr.dce.materials.MaterialData;
 import edgrrrr.dce.math.Math;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;

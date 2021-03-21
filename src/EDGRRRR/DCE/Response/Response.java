@@ -1,7 +1,7 @@
 package edgrrrr.dce.response;
-import net.milkbowl.vault.economy.EconomyResponse.ResponseType;
 
 import com.sun.istack.internal.NotNull;
+import net.milkbowl.vault.economy.EconomyResponse.ResponseType;
 
 /**
  * Base class for a response

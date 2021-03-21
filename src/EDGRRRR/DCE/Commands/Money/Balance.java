@@ -1,7 +1,7 @@
 package edgrrrr.dce.commands.money;
 
-import edgrrrr.dce.config.Setting;
 import edgrrrr.dce.DCEPlugin;
+import edgrrrr.dce.config.Setting;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

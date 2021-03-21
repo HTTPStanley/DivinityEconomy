@@ -1,10 +1,10 @@
 package edgrrrr.dce.commands.market;
 
-import edgrrrr.dce.config.Setting;
 import edgrrrr.dce.DCEPlugin;
+import edgrrrr.dce.config.Setting;
 import edgrrrr.dce.materials.MaterialData;
-import edgrrrr.dce.response.ValueResponse;
 import edgrrrr.dce.math.Math;
+import edgrrrr.dce.response.ValueResponse;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
