@@ -125,7 +125,6 @@ public class DCEPlugin extends JavaPlugin {
             this.getCommand("handValue").setTabCompleter(new HandValueTC(this));
 
             this.getCommand("handInformation").setExecutor(new HandInfo(this));
-            this.getCommand("handInformation").setTabCompleter(new HandInfoTC(this));
 
             this.getCommand("readMail").setExecutor(new ReadMail(this));
             this.getCommand("readMail").setTabCompleter(new ReadMailTC(this));
