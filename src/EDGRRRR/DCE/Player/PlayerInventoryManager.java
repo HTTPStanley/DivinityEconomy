@@ -32,6 +32,18 @@ public class PlayerInventoryManager {
         return player.getInventory().getItem(slotIdx);
     }
 
+    public ItemStack getHeldItemNotNull(Player player, ItemStack fallback) {
+        ItemStack heldItem = this.getHeldItem(player);
+        if (heldItem == null) heldItem = fallback;
+        return heldItem;
+    }
+
+    public ItemStack getHeldItemNotNull(Player player) {
+        ItemStack heldItem = this.getHeldItem(player);
+        if (heldItem == null) heldItem = new ItemStack(Material.AIR, 0);
+        return heldItem;
+    }
+
     public String[] getInventoryMaterials(Player player) {
         ItemStack[] materials = player.getInventory().getStorageContents();
         ArrayList<String> materialIDs = new ArrayList<>();
@@ -99,21 +111,7 @@ public class PlayerInventoryManager {
         }
 
         DCEPlugin.CONSOLE.debug("Fulfilled slot request of " + amount + " " + material.name() + " from " + player.getName() + ": " + itemStacks.toString());
-        return this.convertArray(itemStacks);
-    }
-
-    /**
-     * This converts the ArrayList type to an array.
-     * @param arrayList - The arrayList to convert
-     * @return ItemStack[] - An array with the items in the arrayList
-     */
-    @NotNull
-    public ItemStack[] convertArray(ArrayList<ItemStack> arrayList) {
-        ItemStack[] newArray = new ItemStack[arrayList.size()];
-        for (int idx=0; idx<arrayList.size(); idx++) {
-            newArray[idx] = arrayList.get(idx);
-        }
-        return newArray;
+        return itemStacks.toArray(new ItemStack[0]);
     }
 
     /**
