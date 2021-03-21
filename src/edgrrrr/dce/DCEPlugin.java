@@ -141,7 +141,7 @@ public class DCEPlugin extends JavaPlugin {
             this.getCommand("eSell").setTabCompleter(new EnchantHandSellTC(this));
 
             this.getCommand("eValue").setExecutor(new EnchantHandValue(this));
-            //this.getCommand("eValue").setTabCompleter(new EnchantHandValue(this));
+            this.getCommand("eValue").setTabCompleter(new EnchantHandValueTC(this));
 
             this.getCommand("eBuy").setExecutor(new EnchantHandBuy(this));
             this.getCommand("eBuy").setTabCompleter(new EnchantHandBuyTC(this));
