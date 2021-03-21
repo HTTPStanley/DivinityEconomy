@@ -37,14 +37,8 @@ public class HandInfo implements CommandExecutor {
             return true;
         }
 
-        int amount;
         switch (args.length) {
             case 0:
-                amount = 1;
-                break;
-
-            case 1:
-                amount = Math.getInt(args[0]);
                 break;
 
             default:
@@ -52,58 +46,25 @@ public class HandInfo implements CommandExecutor {
                 return true;
         }
 
-        if (amount < 0) {
-            DCEPlugin.CONSOLE.usage(player, "Invalid amount.", this.usage);
-        } else {
-            ItemStack heldItem = PlayerInventoryManager.getHeldItem(player);
-            if (heldItem == null) {
-                DCEPlugin.CONSOLE.usage(player, "You are not holding any item.", this.usage);
-            } else {
-                Material material = heldItem.getType();
-                MaterialData materialData = this.app.getMaterialManager().getMaterial(material.name());
-                ItemStack[] itemStacks = PlayerInventoryManager.createItemStacks(material, amount);
-                ValueResponse userResponse = this.app.getMaterialManager().getBuyValue(itemStacks);
-                ValueResponse marketResponse = this.app.getMaterialManager().getSellValue(itemStacks);
 
-                double userPrice;
-                double marketPrice;
-                int userAmount = amount;
-                int marketAmount = amount;
+        ItemStack heldItem = PlayerInventoryManager.getHeldItemNotNull(player);
+        Material material = heldItem.getType();
+        MaterialData materialData = this.app.getMaterialManager().getMaterial(material.name());
 
-                if (userResponse.isSuccess()) {
-                    userPrice = userResponse.value;
-                } else {
-                    userPrice = materialData.getUserPrice();
-                    userAmount = 1;
-                }
-
-                if (marketResponse.isSuccess()) {
-                    marketPrice = marketResponse.value;
-                } else {
-                    marketPrice = materialData.getMarketPrice();
-                    marketAmount = 1;
-                }
-
-                userPrice = this.app.getEconomyManager().round(userPrice);
-                marketPrice = this.app.getEconomyManager().round(marketPrice);
-
-                DCEPlugin.CONSOLE.info(player, "==[Information for" + materialData.getCleanName() + "]==");
-                DCEPlugin.CONSOLE.info(player, "ID: " + materialData.getMaterialID());
-                DCEPlugin.CONSOLE.info(player, "Type: " + materialData.getType());
-                DCEPlugin.CONSOLE.info(player, "Buy Price(x" + userAmount + "): " + userPrice);
-                DCEPlugin.CONSOLE.info(player, "Sell Price(x" + marketAmount + "): " + marketPrice);
-                DCEPlugin.CONSOLE.info(player, "Current Quantity: " + materialData.getQuantity());
-                DCEPlugin.CONSOLE.info(player, "Is Banned: " + !(materialData.getAllowed()));
-                if (materialData.getEntityName() != null)
-                    DCEPlugin.CONSOLE.info(player, "Entity Name: " + materialData.getEntityName());
-                MaterialPotionData pData = materialData.getPotionData();
-                if (pData != null) {
-                    DCEPlugin.CONSOLE.info(player, "Potion type: " + pData.getType());
-                    DCEPlugin.CONSOLE.info(player, "Upgraded potion: " + pData.getUpgraded());
-                    DCEPlugin.CONSOLE.info(player, "Extended potion: " + pData.getExtended());
-                }
-            }
+        DCEPlugin.CONSOLE.info(player, "==[Information for" + materialData.getCleanName() + "]==");
+        DCEPlugin.CONSOLE.info(player, "ID: " + materialData.getMaterialID());
+        DCEPlugin.CONSOLE.info(player, "Type: " + materialData.getType());
+        DCEPlugin.CONSOLE.info(player, "Current Quantity: " + materialData.getQuantity());
+        DCEPlugin.CONSOLE.info(player, "Is Banned: " + !(materialData.getAllowed()));
+        if (materialData.getEntityName() != null)
+            DCEPlugin.CONSOLE.info(player, "Entity Name: " + materialData.getEntityName());
+        MaterialPotionData pData = materialData.getPotionData();
+        if (pData != null) {
+            DCEPlugin.CONSOLE.info(player, "Potion type: " + pData.getType());
+            DCEPlugin.CONSOLE.info(player, "Upgraded potion: " + pData.getUpgraded());
+            DCEPlugin.CONSOLE.info(player, "Extended potion: " + pData.getExtended());
         }
+
         return true;
     }
 }
