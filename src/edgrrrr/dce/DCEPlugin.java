@@ -267,7 +267,7 @@ public class DCEPlugin extends JavaPlugin {
     /**
      * Returns the enchantment manager
      * This is used for handling enchantments on items and determining their value.
-     * @return
+     * @return EnchantmentManager
      */
     public EnchantmentManager getEnchantmentManager() { return this.enchantmentManager; }
 }
