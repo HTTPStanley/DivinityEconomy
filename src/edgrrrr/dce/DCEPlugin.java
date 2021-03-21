@@ -1,10 +1,7 @@
 package edgrrrr.dce;
 
 import edgrrrr.dce.commands.admin.*;
-import edgrrrr.dce.commands.enchants.EnchantHandBuy;
-import edgrrrr.dce.commands.enchants.EnchantHandBuyTC;
-import edgrrrr.dce.commands.enchants.EnchantHandSell;
-import edgrrrr.dce.commands.enchants.EnchantHandValue;
+import edgrrrr.dce.commands.enchants.*;
 import edgrrrr.dce.commands.mail.ClearMail;
 import edgrrrr.dce.commands.mail.ClearMailTC;
 import edgrrrr.dce.commands.mail.ReadMail;
@@ -141,7 +138,7 @@ public class DCEPlugin extends JavaPlugin {
             this.getCommand("clearMail").setTabCompleter(new ClearMailTC(this));
 
             this.getCommand("eSell").setExecutor(new EnchantHandSell(this));
-            //this.getCommand("eSell").setTabCompleter(new EnchantHandSell(this));
+            this.getCommand("eSell").setTabCompleter(new EnchantHandSellTC(this));
 
             this.getCommand("eValue").setExecutor(new EnchantHandValue(this));
             //this.getCommand("eValue").setTabCompleter(new EnchantHandValue(this));
