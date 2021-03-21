@@ -134,7 +134,7 @@ public class MaterialManager {
      * @param itemStack - The itemstack containing the material with the specified damage.
      * @return double - The level of price scaling to apply. For example .9 = 90% of full price. Maximum value is 1 for undamaged.
      */
-    private double getDamageValue(ItemStack itemStack) {
+    private static double getDamageValue(ItemStack itemStack) {
         // Instantiate damage value
         double damageValue = 1.0;
 
@@ -199,7 +199,7 @@ public class MaterialManager {
                 if (!materialData.getAllowed()) {
                     response = new ValueResponse(0.0, ResponseType.FAILURE, "item is banned.");
                 } else {
-                    response = new ValueResponse(this.calculatePrice(itemStack.getAmount(), materialData.getQuantity(), (scale * this.getDamageValue(itemStack)), false), ResponseType.SUCCESS, "");
+                    response = new ValueResponse(this.calculatePrice(itemStack.getAmount(), materialData.getQuantity(), (scale * getDamageValue(itemStack)), false), ResponseType.SUCCESS, "");
                 }
             }
         }
