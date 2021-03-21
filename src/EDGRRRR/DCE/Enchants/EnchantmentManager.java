@@ -65,24 +65,52 @@ public class EnchantmentManager {
         this.saveTimer.runTaskTimer(this.app, timer, timer);
     }
 
+    public boolean supportsEnchant(ItemStack itemStack, Enchantment enchantment) {
+        for (EnchantData enchantData : this.getCompatibleEnchants(itemStack)) {
+            if (enchantData.getEnchantment().equals(enchantment)) return true;
+        }
+        return false;
+    }
+
     public String[] getEnchantNames() {
+        return this.getEnchantNames(this.enchants.values().toArray(new EnchantData[0]));
+    }
+
+    public String[] getEnchantNames(EnchantData[] enchants) {
         ArrayList<String> enchantNames = new ArrayList<>();
-        for (EnchantData enchantData : this.enchants.values()) {
+        for (EnchantData enchantData : enchants) {
             enchantNames.add(enchantData.getID().toLowerCase());
         }
 
         return enchantNames.toArray(new String[0]);
     }
 
-    public String[] getEnchantNames(String startsWith) {
+    public EnchantData[] getCompatibleEnchants(ItemStack itemStack) {
+        ArrayList<EnchantData> enchants = new ArrayList<>();
+        for (EnchantData enchantData : this.enchants.values()) {
+            Enchantment enchantment = enchantData.getEnchantment();
+            if (enchantment.canEnchantItem(itemStack)) enchants.add(enchantData);
+        }
+        return enchants.toArray(new EnchantData[0]);
+    }
+
+    public String[] getCompatibleEnchants(ItemStack itemStack, String startsWith) {
+        return this.getEnchantNames(this.getEnchantNames(this.getCompatibleEnchants(itemStack)), startsWith);
+    }
+
+    public String[] getEnchantNames(String[] enchants, String startsWith) {
         ArrayList<String> enchantNames = new ArrayList<>();
-        for (String enchantName : this.getEnchantNames()) {
+        for (String enchantName : enchants) {
             if (enchantName.toLowerCase().startsWith(startsWith.toLowerCase())) {
                 enchantNames.add(enchantName);
             }
         }
 
         return enchantNames.toArray(new String[0]);
+    }
+
+    public String[] getEnchantNames(String startsWith) {
+        return this.getEnchantNames(this.getEnchantNames(), startsWith);
     }
 
     /**
