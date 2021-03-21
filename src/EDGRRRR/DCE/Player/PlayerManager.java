@@ -116,11 +116,12 @@ public class PlayerManager {
 
     public String[] getOfflinePlayers() {
         OfflinePlayer[] offlinePlayers = this.app.getServer().getOfflinePlayers();
-        String[] playerNames = new String[offlinePlayers.length];
-        for (int idx=0; idx < playerNames.length; idx++) {
-            playerNames[idx] = offlinePlayers[idx].getName();
+        ArrayList<String> playerNames = new ArrayList<>();
+        for (OfflinePlayer offlinePlayer : offlinePlayers) {
+            String name = offlinePlayer.getName();
+            if (name != null) playerNames.add(name);
         }
-        return playerNames;
+        return playerNames.toArray(new String[0]);
     }
 
     public String[] getOfflinePlayers(String startsWith) {
