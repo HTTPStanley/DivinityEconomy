@@ -1,7 +1,6 @@
 package edgrrrr.dce.player;
 
 import com.sun.istack.internal.NotNull;
-import edgrrrr.dce.DCEPlugin;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.libs.jline.internal.Nullable;
 import org.bukkit.entity.Player;
@@ -13,13 +12,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class PlayerInventoryManager {
-    private final DCEPlugin app;
-
-    public PlayerInventoryManager(DCEPlugin app) {
-        this.app = app;
-    }
-
-
     /**
      * Returns the item the user is holding
      *
@@ -27,24 +19,24 @@ public class PlayerInventoryManager {
      * @return ItemStack - The item stack the player is holding
      */
     @Nullable
-    public ItemStack getHeldItem(Player player) {
+    public static ItemStack getHeldItem(Player player) {
         int slotIdx = player.getInventory().getHeldItemSlot();
         return player.getInventory().getItem(slotIdx);
     }
 
-    public ItemStack getHeldItemNotNull(Player player, ItemStack fallback) {
-        ItemStack heldItem = this.getHeldItem(player);
+    public static ItemStack getHeldItemNotNull(Player player, ItemStack fallback) {
+        ItemStack heldItem = getHeldItem(player);
         if (heldItem == null) heldItem = fallback;
         return heldItem;
     }
 
-    public ItemStack getHeldItemNotNull(Player player) {
-        ItemStack heldItem = this.getHeldItem(player);
+    public static ItemStack getHeldItemNotNull(Player player) {
+        ItemStack heldItem = getHeldItem(player);
         if (heldItem == null) heldItem = new ItemStack(Material.AIR, 0);
         return heldItem;
     }
 
-    public String[] getInventoryMaterials(Player player) {
+    public static String[] getInventoryMaterials(Player player) {
         ItemStack[] materials = player.getInventory().getStorageContents();
         ArrayList<String> materialIDs = new ArrayList<>();
         for (ItemStack iStack : materials) {
@@ -62,9 +54,9 @@ public class PlayerInventoryManager {
      *
      * @param amount - The amount to remove
      */
-    public void removeMaterialsFromPlayer(Player player, Material material, int amount) {
-        ItemStack[] itemStacks = this.getMaterialSlotsToCount(player, material, amount);
-        this.removeMaterialsFromPlayer(itemStacks);
+    public static void removeMaterialsFromPlayer(Player player, Material material, int amount) {
+        ItemStack[] itemStacks = getMaterialSlotsToCount(player, material, amount);
+        removeMaterialsFromPlayer(itemStacks);
     }
 
     /**
@@ -72,7 +64,7 @@ public class PlayerInventoryManager {
      *
      * @param itemStacks - The items to remove
      */
-    public void removeMaterialsFromPlayer(ItemStack[] itemStacks) {
+    public static void removeMaterialsFromPlayer(ItemStack[] itemStacks) {
         for (ItemStack itemStack : itemStacks) {
             itemStack.setAmount(0);
         }
@@ -88,8 +80,8 @@ public class PlayerInventoryManager {
      * @return ItemStack[]
      */
     @NotNull
-    public ItemStack[] getMaterialSlotsToCount(Player player, Material material, int amount) {
-        ItemStack[] materialStacks = this.getMaterialSlots(player, material);
+    public static ItemStack[] getMaterialSlotsToCount(Player player, Material material, int amount) {
+        ItemStack[] materialStacks = getMaterialSlots(player, material);
         ArrayList<ItemStack> itemStacks = new ArrayList<>();
         int amountLeft = amount;
         for (ItemStack materialStack : materialStacks) {
@@ -110,7 +102,6 @@ public class PlayerInventoryManager {
             }
         }
 
-        DCEPlugin.CONSOLE.debug("Fulfilled slot request of " + amount + " " + material.name() + " from " + player.getName() + ": " + itemStacks.toString());
         return itemStacks.toArray(new ItemStack[0]);
     }
 
@@ -122,7 +113,7 @@ public class PlayerInventoryManager {
      * @return int
      */
     @NotNull
-    public int getStackCount(Material material, int amount) {
+    public static int getStackCount(Material material, int amount) {
         int itemPerStack = material.getMaxStackSize();
         return (int) Math.ceil(amount / (double) itemPerStack);
     }
@@ -135,8 +126,8 @@ public class PlayerInventoryManager {
      * @return ItemStack[]
      */
     @NotNull
-    public ItemStack[] createItemStacks(Material material, int amount) {
-        ItemStack[] itemStacks = new ItemStack[this.getStackCount(material, amount)];
+    public static ItemStack[] createItemStacks(Material material, int amount) {
+        ItemStack[] itemStacks = new ItemStack[getStackCount(material, amount)];
         int idx = 0;
         for (int i = 0; i < amount; ) {
             ItemStack newStack = new ItemStack(material);
@@ -165,9 +156,9 @@ public class PlayerInventoryManager {
      * @return ItemStack[]
      */
     @NotNull
-    public ItemStack[] addItemsToPlayer(Player player, Material material, int amount) {
-        ItemStack[] itemStacks = this.createItemStacks(material, amount);
-        this.addItemsToPlayer(player, itemStacks);
+    public static ItemStack[] addItemsToPlayer(Player player, Material material, int amount) {
+        ItemStack[] itemStacks = createItemStacks(material, amount);
+        addItemsToPlayer(player, itemStacks);
         return itemStacks;
     }
 
@@ -178,7 +169,7 @@ public class PlayerInventoryManager {
      * @param player     - The player to add the materials to
      * @param itemStacks - The itemStacks to add
      */
-    public void addItemsToPlayer(Player player, ItemStack[] itemStacks) {
+    public static void addItemsToPlayer(Player player, ItemStack[] itemStacks) {
         for (ItemStack itemStack : itemStacks) {
             player.getInventory().addItem(itemStack);
         }
@@ -191,7 +182,7 @@ public class PlayerInventoryManager {
      * @return int - The number of empty slots
      */
     @NotNull
-    public int getEmptySlots(Player player) {
+    public static int getEmptySlots(Player player) {
         int count = 0;
         ItemStack[] inventory = player.getInventory().getStorageContents();
 
@@ -212,7 +203,7 @@ public class PlayerInventoryManager {
      * @return ItemStack[] - An array of the ItemStack's in the player of material
      */
     @NotNull
-    public ItemStack[] getMaterialSlots(Player player, Material material) {
+    public static ItemStack[] getMaterialSlots(Player player, Material material) {
         HashMap<Integer, ? extends ItemStack> inventory = player.getInventory().all(material);
         ItemStack[] iStacks = new ItemStack[inventory.size()];
         int idx = 0;
@@ -232,8 +223,8 @@ public class PlayerInventoryManager {
      * @return int - Total count of materials
      */
     @NotNull
-    public int getMaterialCount(Player player, Material material) {
-        return this.getMaterialCount(this.getMaterialSlots(player, material));
+    public static int getMaterialCount(Player player, Material material) {
+        return getMaterialCount(getMaterialSlots(player, material));
     }
 
     /**
@@ -243,7 +234,7 @@ public class PlayerInventoryManager {
      * @return int - Total count of materials
      */
     @NotNull
-    public int getMaterialCount(ItemStack[] iStacks) {
+    public static int getMaterialCount(ItemStack[] iStacks) {
         int count = 0;
         for (ItemStack iStack : iStacks) {
             count += iStack.getAmount();
@@ -260,13 +251,13 @@ public class PlayerInventoryManager {
      * @return int - The total space that can be further occupied by a material
      */
     @NotNull
-    public int getAvailableSpace(Player player, Material material) {
+    public static int getAvailableSpace(Player player, Material material) {
         //Get empty slots
         //Get total slots used by material
         //Get total count of materials in those slots
-        int emptySlots = this.getEmptySlots(player);
-        ItemStack[] iStacks = this.getMaterialSlots(player, material);
-        int materialCount = this.getMaterialCount(iStacks);
+        int emptySlots = getEmptySlots(player);
+        ItemStack[] iStacks = getMaterialSlots(player, material);
+        int materialCount = getMaterialCount(iStacks);
 
         // Instantiate space
         // Add the total space occupied by the number of slots filled less the actual space filled
