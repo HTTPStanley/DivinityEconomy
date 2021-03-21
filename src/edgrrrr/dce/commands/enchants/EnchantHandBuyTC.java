@@ -4,10 +4,12 @@ import edgrrrr.dce.DCEPlugin;
 import edgrrrr.dce.config.Setting;
 import edgrrrr.dce.enchants.EnchantData;
 import edgrrrr.dce.math.Math;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.Arrays;
 import java.util.List;
@@ -25,14 +27,16 @@ public class EnchantHandBuyTC implements TabCompleter {
         if (!(sender instanceof Player) || !(this.app.getConfig().getBoolean(Setting.COMMAND_E_HAND_BUY_ENABLE_BOOLEAN.path()))) {
             return null;
         }
-
+        Player player = (Player) sender;
         String[] strings;
         EnchantData enchantData;
+        ItemStack heldItem = this.app.getPlayerInventoryManager().getHeldItem(player);
+        if (heldItem == null) heldItem = new ItemStack(Material.AIR, 0);
         switch (args.length) {
             // 1 args
             // return names of players starting with arg
             case 1:
-                strings = this.app.getEnchantmentManager().getEnchantNames(args[0]);
+                strings = this.app.getEnchantmentManager().getCompatibleEnchants(heldItem, args[0]);
                 break;
 
             // 2 args
