@@ -12,11 +12,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class PlayerInventoryManager {
+
     /**
      * Returns the item the user is holding
-     *
-     * @param player - The player to get the item for
-     * @return ItemStack - The item stack the player is holding
      */
     @Nullable
     public static ItemStack getHeldItem(Player player) {
@@ -24,18 +22,30 @@ public class PlayerInventoryManager {
         return player.getInventory().getItem(slotIdx);
     }
 
+    /**
+     * Returns the item the user is holding, but returns the fallback if null.
+     */
+    @Nullable
     public static ItemStack getHeldItemNotNull(Player player, ItemStack fallback) {
         ItemStack heldItem = getHeldItem(player);
         if (heldItem == null) heldItem = fallback;
         return heldItem;
     }
 
+    /**
+     * Returns the item the user is holding, however returns 0 AIR if null.
+     */
+    @NotNull
     public static ItemStack getHeldItemNotNull(Player player) {
         ItemStack heldItem = getHeldItem(player);
         if (heldItem == null) heldItem = new ItemStack(Material.AIR, 0);
         return heldItem;
     }
 
+    /**
+     * Returns a string of the names of materials in the players inventory.
+     */
+    @NotNull
     public static String[] getInventoryMaterials(Player player) {
         ItemStack[] materials = player.getInventory().getStorageContents();
         ArrayList<String> materialIDs = new ArrayList<>();
@@ -51,8 +61,6 @@ public class PlayerInventoryManager {
     /**
      * Removes the specified number of materials from the players inventory
      * The players inventory is parsed via itemStacks
-     *
-     * @param amount - The amount to remove
      */
     public static void removeMaterialsFromPlayer(Player player, Material material, int amount) {
         ItemStack[] itemStacks = getMaterialSlotsToCount(player, material, amount);
@@ -61,8 +69,6 @@ public class PlayerInventoryManager {
 
     /**
      * Loops through the items and removes them from the players inventory
-     *
-     * @param itemStacks - The items to remove
      */
     public static void removeMaterialsFromPlayer(ItemStack[] itemStacks) {
         for (ItemStack itemStack : itemStacks) {
@@ -73,11 +79,6 @@ public class PlayerInventoryManager {
     /**
      * gets the specified materials of the specified amount from the specified player
      * Note if the player does not have enough, it will return all of their materials of this type
-     *
-     * @param player   - The player
-     * @param material - The material
-     * @param amount   - The amount
-     * @return ItemStack[]
      */
     @NotNull
     public static ItemStack[] getMaterialSlotsToCount(Player player, Material material, int amount) {
