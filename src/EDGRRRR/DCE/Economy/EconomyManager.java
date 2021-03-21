@@ -38,11 +38,11 @@ public class EconomyManager {
      * Sets up the vault economy object
      * Returns if it was successful or not.
      */
-    public void setupEconomy() {
+    public boolean setupEconomy() {
         // Look for vault
         if (this.app.getServer().getPluginManager().getPlugin("Vault") == null) {
             DCEPlugin.CONSOLE.severe("No plugin 'Vault' detected.");
-            return;
+            return false;
         } else {
             DCEPlugin.CONSOLE.info("Vault has been detected.");
         }
@@ -51,13 +51,14 @@ public class EconomyManager {
         RegisteredServiceProvider<Economy> rsp = this.app.getServer().getServicesManager().getRegistration(Economy.class);
         if (rsp == null) {
             DCEPlugin.CONSOLE.severe("Could not register Economy.");
-            return;
+            return false;
         } else {
             DCEPlugin.CONSOLE.info("Registered Economy.");
         }
 
         // return if economy was gotten successfully.
         this.economy = rsp.getProvider();
+        return true;
     }
 
     /**
