@@ -18,6 +18,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 
 /**
@@ -63,6 +64,14 @@ public class EnchantmentManager {
             }
         };
         this.saveTimer.runTaskTimer(this.app, timer, timer);
+    }
+
+    public String[] getEnchantNames(Set<Enchantment> enchantmentSet) {
+        ArrayList<EnchantData> enchants = new ArrayList<>();
+        for (Enchantment enchantment : enchantmentSet) {
+            enchants.add(this.getEnchant(enchantment.getKey().getKey()));
+        }
+        return this.getEnchantNames(enchants.toArray(new EnchantData[0]));
     }
 
     public boolean supportsEnchant(ItemStack itemStack, Enchantment enchantment) {
