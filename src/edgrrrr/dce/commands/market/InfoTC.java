@@ -26,26 +26,11 @@ public class InfoTC implements TabCompleter {
         }
 
         String[] strings;
-        MaterialData materialData;
         switch (args.length) {
             // 1 args
             // return names of players starting with arg
             case 1:
                 strings = this.app.getMaterialManager().getMaterialNames(args[0]);
-                break;
-
-            // 2 args
-            // return max stack size for the material given
-            case 2:
-                materialData = this.app.getMaterialManager().getMaterial(args[0]);
-                int stackSize = 64;
-                if (materialData != null) {
-                    stackSize = materialData.getMaterial().getMaxStackSize();
-                }
-
-                strings = new String[] {
-                        String.valueOf(stackSize)
-                };
                 break;
 
             // else
