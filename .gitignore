@@ -85,3 +85,4 @@ out/production/DCE/edgrrrr/dce/commands/market/HandBuyTC.class
 out/production/DCE/edgrrrr/dce/commands/mail/ReadMailTC.class
 out/production/DCE/edgrrrr/dce/commands/mail/ClearMailTC.class
 out/production/DCE/edgrrrr/dce/commands/enchants/EnchantHandBuyTC.class
+lib/spigot-1.16.5.jar
