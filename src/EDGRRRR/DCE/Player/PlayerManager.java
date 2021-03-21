@@ -121,6 +121,7 @@ public class PlayerManager {
             String name = offlinePlayer.getName();
             if (name != null) playerNames.add(name);
         }
+
         return playerNames.toArray(new String[0]);
     }
 
