@@ -58,13 +58,14 @@ public class PlayerManager {
     @Nullable
     public OfflinePlayer getOfflinePlayer(String name, boolean allowFetch) {
         OfflinePlayer player = null;
-        name = name.trim().toLowerCase();
         OfflinePlayer[] oPlayers = this.app.getServer().getOfflinePlayers();
         for (OfflinePlayer oPlayer : oPlayers) {
-            String oPlayerName = oPlayer.getName().trim().toLowerCase();
-            if (oPlayerName.equals(name)) {
-                player = oPlayer;
-                break;
+            String oPlayerName = oPlayer.getName();
+            if (oPlayerName != null) {
+                if (oPlayerName.toLowerCase().trim().equals(name.trim().toLowerCase())) {
+                    player = oPlayer;
+                    break;
+                }
             }
         }
 
