@@ -17,7 +17,7 @@ import org.bukkit.entity.Player;
  */
 public class Info implements CommandExecutor {
     private final DCEPlugin app;
-    private final String usage = "/info <materialName> <amount> | /info <materialName>";
+    private final String usage = "/info <materialName>";
 
     public Info(DCEPlugin app) {
         this.app = app;
@@ -38,15 +38,9 @@ public class Info implements CommandExecutor {
         }
 
         String materialName;
-        int amount = 1;
         switch (args.length) {
             case 1:
                 materialName = args[0];
-                break;
-
-            case 2:
-                materialName = args[0];
-                amount = Math.getInt(args[1]);
                 break;
 
             default:
@@ -58,36 +52,9 @@ public class Info implements CommandExecutor {
         if (material == null) {
             DCEPlugin.CONSOLE.usage(from, "Unknown Item: " + materialName, this.usage);
         } else {
-            ValueResponse userResponse = this.app.getMaterialManager().getBuyValue(PlayerInventoryManager.createItemStacks(material.getMaterial(), amount));
-            ValueResponse marketResponse = this.app.getMaterialManager().getSellValue(PlayerInventoryManager.createItemStacks(material.getMaterial(), amount));
-
-            double userPrice;
-            double marketPrice;
-            int userAmount = amount;
-            int marketAmount = amount;
-
-            if (userResponse.isSuccess()) {
-                userPrice = userResponse.value;
-            } else {
-                userPrice = material.getUserPrice();
-                userAmount = 1;
-            }
-
-            if (marketResponse.isSuccess()) {
-                marketPrice = marketResponse.value;
-            } else {
-                marketPrice = material.getMarketPrice();
-                marketAmount = 1;
-            }
-
-            userPrice = this.app.getEconomyManager().round(userPrice);
-            marketPrice = this.app.getEconomyManager().round(marketPrice);
-
             DCEPlugin.CONSOLE.info(from, "==[Information for" + material.getCleanName() + "]==");
             DCEPlugin.CONSOLE.info(from, "ID: " + material.getMaterialID());
             DCEPlugin.CONSOLE.info(from, "Type: " + material.getType());
-            DCEPlugin.CONSOLE.info(from, "Buy Price(x" + userAmount + "): " + userPrice);
-            DCEPlugin.CONSOLE.info(from, "Sell Price(x" + marketAmount + "): " + marketPrice);
             DCEPlugin.CONSOLE.info(from, "Current Quantity: " + material.getQuantity());
             DCEPlugin.CONSOLE.info(from, "Is Banned: " + !(material.getAllowed()));
             if (material.getEntityName() != null)
