@@ -63,16 +63,15 @@ public class Balance implements CommandExecutor {
             return true;
         }
 
-        double balance;
-        balance = this.app.getEconomyManager().round(this.app.getEconomyManager().getBalance(player2));
+        double balance = this.app.getEconomyManager().getBalance(player2);
         if (!playerIsOffline) {
             if (!(player1 == player2)) {
                 DCEPlugin.CONSOLE.info(player1, String.format("%s's Balance is £%,.2f", player2.getName(), balance));
             } else {
-                DCEPlugin.CONSOLE.info(player1, "Balance: £" + balance);
+                DCEPlugin.CONSOLE.info(player1, "Balance: £%,.2f" + balance);
             }
         } else {
-            DCEPlugin.CONSOLE.info(player1, player2.getName() + "'s Balance: £" + balance);
+            DCEPlugin.CONSOLE.info(player1, String.format("%s's Balance is £%,.2f", player2.getName(), balance));
         }
         return true;
     }
