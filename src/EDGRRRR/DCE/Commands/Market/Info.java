@@ -52,7 +52,7 @@ public class Info implements CommandExecutor {
         if (material == null) {
             DCEPlugin.CONSOLE.usage(from, "Unknown Item: " + materialName, this.usage);
         } else {
-            DCEPlugin.CONSOLE.info(from, "==[Information for" + material.getCleanName() + "]==");
+            DCEPlugin.CONSOLE.info(from, "==[Information for " + material.getCleanName() + "]==");
             DCEPlugin.CONSOLE.info(from, "ID: " + material.getMaterialID());
             DCEPlugin.CONSOLE.info(from, "Type: " + material.getType());
             DCEPlugin.CONSOLE.info(from, "Current Quantity: " + material.getQuantity());
