@@ -66,20 +66,21 @@ public class Value implements CommandExecutor {
             DCEPlugin.CONSOLE.usage(player, "Unknown Item: " + materialName, usage);
         } else {
             ItemStack[] itemStacks = PlayerInventoryManager.createItemStacks(materialData.getMaterial(), amount);
-            ValueResponse priceResponse = this.app.getMaterialManager().getBuyValue(itemStacks);
-            ValueResponse secondPriceResponse = this.app.getMaterialManager().getSellValue(itemStacks);
+            ValueResponse buyResponse = this.app.getMaterialManager().getBuyValue(itemStacks);
+            ValueResponse sellResponse = this.app.getMaterialManager().getSellValue(itemStacks);
 
-            if (priceResponse.isSuccess()) {
-                DCEPlugin.CONSOLE.info(player, "Buy: " + amount + " " + materialData.getCleanName() + " costs £" + this.app.getEconomyManager().round(priceResponse.value));
+            if (buyResponse.isSuccess()) {
+                DCEPlugin.CONSOLE.info(player, String.format("Buy: %d %s costs £%,.2f", amount, materialData.getCleanName(), buyResponse.value));
 
             } else {
-                DCEPlugin.CONSOLE.usage(player, "Couldn't determine buy price of " + amount + " " + materialData.getCleanName() + " because " + priceResponse.errorMessage, usage);
+                DCEPlugin.CONSOLE.usage(player, String.format("Couldn't determine buy price of %d %s because %s", amount, materialData.getCleanName(), buyResponse.errorMessage), this.usage);
             }
 
-            if (secondPriceResponse.isSuccess()) {
-                DCEPlugin.CONSOLE.info(player, "Sell: " + amount + " " + materialData.getCleanName() + " costs £" + this.app.getEconomyManager().round(secondPriceResponse.value));
+            if (sellResponse.isSuccess()) {
+                DCEPlugin.CONSOLE.info(player, String.format("Sell: %d %s costs £%,.2f", amount, materialData.getCleanName(), sellResponse.value));
+
             } else {
-                DCEPlugin.CONSOLE.usage(player, "Couldn't determine sell price of " + amount + " " + materialData.getCleanName() + " because " + secondPriceResponse.errorMessage, usage);
+                DCEPlugin.CONSOLE.usage(player, String.format("Couldn't determine buy price of %d %s because %s", amount, materialData.getCleanName(), sellResponse.errorMessage), this.usage);
             }
         }
 
