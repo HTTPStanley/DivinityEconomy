@@ -71,23 +71,24 @@ public class EnchantHandBuy implements CommandExecutor {
                 ValueResponse valueResponse = this.app.getEnchantmentManager().getBuyValue(enchantName, enchantLevels);
 
                 if (valueResponse.isFailure()) {
-                    DCEPlugin.CONSOLE.logFailedPurchase(player, enchantLevels, valueResponse.value, enchantName, valueResponse.errorMessage);
+                    DCEPlugin.CONSOLE.logFailedPurchase(player, enchantLevels, enchantName, valueResponse.errorMessage);
                 } else {
                     EnchantData enchantData = this.app.getEnchantmentManager().getEnchant(enchantName);
 
                     if (enchantData == null) {
-                        DCEPlugin.CONSOLE.logFailedPurchase(player, enchantLevels, valueResponse.value, enchantName, String.format("enchant name '%s' does not exist", enchantName));
+                        DCEPlugin.CONSOLE.logFailedPurchase(player, enchantLevels, enchantName, String.format("enchant name '%s' does not exist", enchantName));
+
                     } else {
                         double startingBalance = this.app.getEconomyManager().getBalance(player);
                         EconomyResponse economyResponse = this.app.getEconomyManager().remCash(player, valueResponse.value);
 
                         if (!economyResponse.transactionSuccess()) {
-                            DCEPlugin.CONSOLE.logFailedPurchase(player, enchantLevels, valueResponse.value, enchantName, economyResponse.errorMessage);
+                            DCEPlugin.CONSOLE.logFailedPurchase(player, enchantLevels, enchantName, economyResponse.errorMessage);
                             this.app.getEconomyManager().setCash(player, startingBalance);
                         } else {
                             Response response = this.app.getEnchantmentManager().addEnchantToItem(heldItem, enchantData.getEnchantment(), enchantLevels);
                             if (response.isFailure()) {
-                                DCEPlugin.CONSOLE.logFailedPurchase(player, enchantLevels, valueResponse.value, enchantName, response.errorMessage);
+                                DCEPlugin.CONSOLE.logFailedPurchase(player, enchantLevels, enchantName, response.errorMessage);
                                 this.app.getEconomyManager().setCash(player, startingBalance);
                             } else {
                                 DCEPlugin.CONSOLE.logPurchase(player, enchantLevels, valueResponse.value, enchantName);
