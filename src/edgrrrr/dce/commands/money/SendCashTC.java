@@ -38,7 +38,7 @@ public class SendCashTC implements TabCompleter {
             // Args 2
             // just return some numbers
             case 2:
-                String balance = String.valueOf(this.app.getEconomyManager().getRoundedBalance((Player) sender));
+                String balance = String.format("%,.2f", this.app.getEconomyManager().getBalance((Player) sender));
                 strings = new String[]{
                         "1", "10", "100", "1000", balance
                 };
