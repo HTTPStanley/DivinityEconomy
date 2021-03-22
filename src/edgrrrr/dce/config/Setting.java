@@ -36,7 +36,7 @@ public enum Setting {
 	CHAT_CONSOLE_PREFIX               ( SECTION_CHAT.path + ".consolePrefix"   ),
 	CHAT_DEBUG_COLOR                  ( SECTION_CHAT.path + ".debugColour"     ),
 	CHAT_INFO_COLOR                   ( SECTION_CHAT.path + ".infoColour"      ),
-	CHAT_WARNING_COLOR                ( SECTION_CHAT.path + ".warningColour"   ),
+	CHAT_WARNING_COLOR                ( SECTION_CHAT.path + ".warnColour"   ),
 	CHAT_SEVERE_COLOR                 ( SECTION_CHAT.path + ".severeColour"    ),
 
 	//Economy Settings
