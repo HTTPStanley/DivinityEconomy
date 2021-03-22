@@ -106,8 +106,14 @@ public class EconomyManager {
      */
     public EconomyResponse addCash(OfflinePlayer oPlayer, double amount) {
         DCEPlugin.CONSOLE.debug("ADD REQUEST '" + oPlayer.getName() + "' £" + amount);
-        EconomyResponse response = this.economy.depositPlayer(oPlayer, amount);
-        response = new EconomyResponse(response.amount, this.getBalance(oPlayer), response.type, response.errorMessage);
+        EconomyResponse response;
+        double currentBalance = this.getBalance(oPlayer);
+        if (Double.isInfinite(amount) || Double.isInfinite(amount + currentBalance)) {
+            response = new EconomyResponse(0, currentBalance, ResponseType.FAILURE, "cannot have infinite cash.");
+        } else {
+            response = this.economy.depositPlayer(oPlayer, amount);
+            response = new EconomyResponse(response.amount, this.getBalance(oPlayer), response.type, response.errorMessage);
+        }
         DCEPlugin.CONSOLE.debug("ADD COMPLETE '" + oPlayer.getName() + "' £" + response.balance + "(£ " + response.amount + ")");
         return response;
     }
