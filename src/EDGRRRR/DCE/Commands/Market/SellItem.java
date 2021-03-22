@@ -90,7 +90,7 @@ public class SellItem implements CommandExecutor {
                     if (userAmount >= amountToSell) {
                         PlayerInventoryManager.removeMaterialsFromPlayer(itemStacks);
                         materialData.addQuantity(amountToSell);
-                        this.app.getEconomyManager().addCash(player, valueResponse.value);
+                        if (!this.app.getEconomyManager().addCash(player, valueResponse.value).transactionSuccess()) {DCEPlugin.CONSOLE.severe(player,"An error occurred on funding your account, show this message to an admin.");}
 
                         DCEPlugin.CONSOLE.logSale(player, amountToSell, valueResponse.value, materialData.getCleanName());
                     } else {
