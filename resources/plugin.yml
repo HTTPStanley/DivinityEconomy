@@ -86,13 +86,6 @@ commands:
     permission-message: You do not have permission to use this command
     usage: ""
 
-  search:
-    description: Allows the user to search for items in the market
-    aliases: [find]
-    permission: dce.market.search
-    permission-message: You do not have permission to use this command
-    usage: ""
-
   information:
     description: Returns information about the item the user has searched for
     aliases: [i]
@@ -111,34 +104,6 @@ commands:
     description: Returns the hand value of the item the user is holding
     aliases: [hv]
     permission: dce.market.handValue
-    permission-message: You do not have permission to use this command
-    usage: ""
-
-  setValue:
-    description: Sets the value of an item
-    aliases: []
-    permission: dce.admin.setValue
-    permission-message: You do not have permission to use this command
-    usage: ""
-
-  setStock:
-    description: Sets the stock of an item
-    aliases: []
-    permission: dce.admin.setStock
-    permission-message: You do not have permission to use this command
-    usage: ""
-
-  handSetValue:
-    description: Sets the value of an item
-    aliases: []
-    permission: dce.admin.handSetValue
-    permission-message: You do not have permission to use this command
-    usage: ""
-
-  handSetStock:
-    description: Sets the stock of an item
-    aliases: []
-    permission: dce.admin.handSetStock
     permission-message: You do not have permission to use this command
     usage: ""
 
@@ -201,6 +166,21 @@ commands:
     permission: dce.admin.reloadEnchants
     permission-message: You do not have the permission to use this command
     usage: ""
+
+  setValue:
+    description: Sets the value of an item
+    aliases: [ ]
+    permission: dce.admin.setValue
+    permission-message: You do not have permission to use this command
+    usage: ""
+
+  setStock:
+    description: Sets the stock of an item
+    aliases: [ ]
+    permission: dce.admin.setStock
+    permission-message: You do not have permission to use this command
+    usage: ""
+
 
 permissions:
   # Enchants
@@ -333,6 +313,8 @@ permissions:
       dce.admin.clearbal: true
       dce.admin.reloadEnchants: true
       dce.admin.reloadMaterials: true
+      dce.admin.setStock: true
+      dce.admin.setValue: true
       dce.money: true
       dce.market: true
       dce.misc: true
@@ -365,12 +347,4 @@ permissions:
 
   dce.admin.setValue:
     description: Allows the user to set the value of an item
-    default: op
-
-  dce.admin.handSetStock:
-    description: Allows the user to set the stock of an item in their hand
-    default: op
-
-  dce.admin.handSetValue:
-    description: Allows the user to set the value of an item in their hand
     default: op
