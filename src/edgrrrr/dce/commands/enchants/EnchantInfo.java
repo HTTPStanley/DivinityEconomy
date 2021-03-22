@@ -38,6 +38,12 @@ public class EnchantInfo implements CommandExecutor {
             return true;
         }
 
+        // Ensure market is enabled
+        if (!(this.app.getConfig().getBoolean(Setting.MARKET_ENCHANTS_ENABLE_BOOLEAN.path()))) {
+            DCEPlugin.CONSOLE.severe(player, "The enchant market is not enabled.");
+            return true;
+        }
+
         String enchantName;
         switch (args.length) {
             case 1:

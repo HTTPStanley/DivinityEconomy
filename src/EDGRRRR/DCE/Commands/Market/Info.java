@@ -29,11 +29,17 @@ public class Info implements CommandExecutor {
             return true;
         }
 
-        Player from = (Player) sender;
+        Player player = (Player) sender;
 
         // Ensure command is enabled
         if (!(this.app.getConfig().getBoolean(Setting.COMMAND_INFO_ENABLE_BOOLEAN.path()))) {
-            DCEPlugin.CONSOLE.severe(from, "This command is not enabled.");
+            DCEPlugin.CONSOLE.severe(player, "This command is not enabled.");
+            return true;
+        }
+
+        // Ensure market is enabled
+        if (!(this.app.getConfig().getBoolean(Setting.MARKET_MATERIALS_ENABLE_BOOLEAN.path()))) {
+            DCEPlugin.CONSOLE.severe(player, "The market is not enabled.");
             return true;
         }
 
@@ -44,26 +50,26 @@ public class Info implements CommandExecutor {
                 break;
 
             default:
-                DCEPlugin.CONSOLE.usage(from, "Invalid number of arguments.", this.usage);
+                DCEPlugin.CONSOLE.usage(player, "Invalid number of arguments.", this.usage);
                 return true;
         }
 
         MaterialData material = this.app.getMaterialManager().getMaterial(materialName);
         if (material == null) {
-            DCEPlugin.CONSOLE.usage(from, "Unknown Item: " + materialName, this.usage);
+            DCEPlugin.CONSOLE.usage(player, "Unknown Item: " + materialName, this.usage);
         } else {
-            DCEPlugin.CONSOLE.info(from, "==[Information for " + material.getCleanName() + "]==");
-            DCEPlugin.CONSOLE.info(from, "ID: " + material.getMaterialID());
-            DCEPlugin.CONSOLE.info(from, "Type: " + material.getType());
-            DCEPlugin.CONSOLE.info(from, "Current Quantity: " + material.getQuantity());
-            DCEPlugin.CONSOLE.info(from, "Is Banned: " + !(material.getAllowed()));
+            DCEPlugin.CONSOLE.info(player, "==[Information for " + material.getCleanName() + "]==");
+            DCEPlugin.CONSOLE.info(player, "ID: " + material.getMaterialID());
+            DCEPlugin.CONSOLE.info(player, "Type: " + material.getType());
+            DCEPlugin.CONSOLE.info(player, "Current Quantity: " + material.getQuantity());
+            DCEPlugin.CONSOLE.info(player, "Is Banned: " + !(material.getAllowed()));
             if (material.getEntityName() != null)
-                DCEPlugin.CONSOLE.info(from, "Entity Name: " + material.getEntityName());
+                DCEPlugin.CONSOLE.info(player, "Entity Name: " + material.getEntityName());
             MaterialPotionData pData = material.getPotionData();
             if (pData != null) {
-                DCEPlugin.CONSOLE.info(from, "Potion type: " + pData.getType());
-                DCEPlugin.CONSOLE.info(from, "Upgraded potion: " + pData.getUpgraded());
-                DCEPlugin.CONSOLE.info(from, "Extended potion: " + pData.getExtended());
+                DCEPlugin.CONSOLE.info(player, "Potion type: " + pData.getType());
+                DCEPlugin.CONSOLE.info(player, "Upgraded potion: " + pData.getUpgraded());
+                DCEPlugin.CONSOLE.info(player, "Extended potion: " + pData.getExtended());
             }
         }
 

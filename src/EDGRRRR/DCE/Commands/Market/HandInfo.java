@@ -37,6 +37,12 @@ public class HandInfo implements CommandExecutor {
             return true;
         }
 
+        // Ensure market is enabled
+        if (!(this.app.getConfig().getBoolean(Setting.MARKET_MATERIALS_ENABLE_BOOLEAN.path()))) {
+            DCEPlugin.CONSOLE.severe(player, "The market is not enabled.");
+            return true;
+        }
+
         switch (args.length) {
             case 0:
                 break;

@@ -27,52 +27,52 @@ public class Balance implements CommandExecutor {
         }
 
         // Create player object
-        Player from = (Player) sender;
+        Player player1 = (Player) sender;
 
         // Ensure command is enabled
         if (!(this.app.getConfig().getBoolean(Setting.COMMAND_BALANCE_ENABLE_BOOLEAN.path()))) {
-            DCEPlugin.CONSOLE.severe(from, "This command is not enabled.");
+            DCEPlugin.CONSOLE.severe(player1, "This command is not enabled.");
             return true;
         }
 
         // Use case scenarios
         // command - returns the callers balance.
         // command <username> - returns the usernames balance.
-        Player to;
-        OfflinePlayer toOff = null;
+        OfflinePlayer player2 = null;
+        boolean playerIsOffline = false;
 
         switch (args.length) {
             case 1:
                 // Get online player
-                to = this.app.getServer().getPlayer(args[0]);
+                player2 = this.app.getServer().getPlayer(args[0]);
                 // If they aren't online or don't exist. Do the dirty offline call.
-                if (to == null) {
-                    toOff = this.app.getPlayerManager().getOfflinePlayer(args[0], false);
+                if (player2 == null) {
+                    player2 = this.app.getPlayerManager().getOfflinePlayer(args[0], false);
+                    playerIsOffline = true;
                 }
                 break;
 
             default:
                 // any number of args.. just return their own.
-                to = from;
+                player2 = player1;
                 break;
         }
 
-        if (to == null && toOff == null) {
-            DCEPlugin.CONSOLE.usage(from, "Invalid player name.", usage);
+        if (player2 == null) {
+            DCEPlugin.CONSOLE.usage(player1, "Invalid player name.", usage);
             return true;
         }
 
         double balance;
-        if (to != null) {
-            balance = this.app.getEconomyManager().round(this.app.getEconomyManager().getBalance(to));
-            if (!(from == to)) {
-                DCEPlugin.CONSOLE.info(from, String.format("%s's Balance is £%,.2f", to.getName(), balance));
+        balance = this.app.getEconomyManager().round(this.app.getEconomyManager().getBalance(player2));
+        if (!playerIsOffline) {
+            if (!(player1 == player2)) {
+                DCEPlugin.CONSOLE.info(player1, String.format("%s's Balance is £%,.2f", player2.getName(), balance));
             } else {
-                DCEPlugin.CONSOLE.info(from, "Balance: £" + balance);
+                DCEPlugin.CONSOLE.info(player1, "Balance: £" + balance);
             }
         } else {
-            balance = this.app.getEconomyManager().round(this.app.getEconomyManager().getBalance(toOff));
-            DCEPlugin.CONSOLE.info(from, toOff.getName() + "'s Balance: £" + balance);
+            DCEPlugin.CONSOLE.info(player1, player2.getName() + "'s Balance: £" + balance);
         }
         return true;
     }

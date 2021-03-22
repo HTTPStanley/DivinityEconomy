@@ -33,8 +33,14 @@ public class EnchantHandBuy implements CommandExecutor {
         Player player = (Player) sender;
 
         // Ensure command is enabled
-        if (!(this.app.getConfig().getBoolean(Setting.COMMAND_E_HAND_BUY_ENABLE_BOOLEAN.path()))) {
+        if (!(this.app.getConfig().getBoolean(Setting.COMMAND_E_BUY_ENABLE_BOOLEAN.path()))) {
             DCEPlugin.CONSOLE.severe(player, "This command is not enabled.");
+            return true;
+        }
+
+        // Ensure market is enabled
+        if (!(this.app.getConfig().getBoolean(Setting.MARKET_ENCHANTS_ENABLE_BOOLEAN.path()))) {
+            DCEPlugin.CONSOLE.severe(player, "The enchant market is not enabled.");
             return true;
         }
 
