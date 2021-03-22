@@ -81,7 +81,7 @@ public class HandSell implements CommandExecutor {
                     if (response.isSuccess()) {
                         PlayerInventoryManager.removeMaterialsFromPlayer(itemStacks);
                         materialData.addQuantity(amountToSell);
-                        this.app.getEconomyManager().addCash(player, response.value);
+                        if (!this.app.getEconomyManager().addCash(player, response.value).transactionSuccess()) {DCEPlugin.CONSOLE.severe(player,"An error occurred on funding your account, show this message to an admin.");}
 
                         // Handles console, player message and mail
                         DCEPlugin.CONSOLE.logSale(player, amountToSell, response.value, materialData.getCleanName());
