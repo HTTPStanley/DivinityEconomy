@@ -77,29 +77,34 @@ public class BuyItem implements CommandExecutor {
             } else {
                 int availableSpace = PlayerInventoryManager.getAvailableSpace(player, materialData.getMaterial());
                 if (amountToBuy > availableSpace) {
-                    DCEPlugin.CONSOLE.logFailedPurchase(player, amountToBuy, 0.0, materialData.getCleanName(), String.format("missing inventory space (%d/%d)", availableSpace, amountToBuy));
+                    DCEPlugin.CONSOLE.logFailedPurchase(player, amountToBuy, materialData.getCleanName(), String.format("missing inventory space (%d/%d)", availableSpace, amountToBuy));
 
                 } else {
-                    ItemStack[] itemStacks = PlayerInventoryManager.createItemStacks(materialData.getMaterial(), amountToBuy);
-                    ValueResponse priceResponse = this.app.getMaterialManager().getBuyValue(itemStacks);
-                    EconomyResponse saleResponse = this.app.getEconomyManager().remCash(player, priceResponse.value);
-                    if (saleResponse.transactionSuccess() && priceResponse.isSuccess()) {
-                        PlayerInventoryManager.addItemsToPlayer(player, itemStacks);
-                        materialData.remQuantity(amountToBuy);
-
-                        // Handles console, message and mail
-                        DCEPlugin.CONSOLE.logPurchase(player, amountToBuy, saleResponse.amount, materialData.getCleanName());
+                    if (amountToBuy > materialData.getQuantity()) {
+                        DCEPlugin.CONSOLE.logFailedPurchase(player, amountToBuy, materialData.getCleanName(), String.format("not enough stock (%d/%d)", materialData.getQuantity(), amountToBuy));
 
                     } else {
-                        String errorMessage = "unknown error";
-                        if (!saleResponse.transactionSuccess()) errorMessage = saleResponse.errorMessage;
-                        else if (priceResponse.isFailure()) errorMessage = priceResponse.errorMessage;
 
-                        // Handles console, message and mail
-                        DCEPlugin.CONSOLE.logFailedPurchase(player, amountToBuy, saleResponse.amount, materialData.getCleanName(), errorMessage);
+                        ItemStack[] itemStacks = PlayerInventoryManager.createItemStacks(materialData.getMaterial(), amountToBuy);
+                        ValueResponse priceResponse = this.app.getMaterialManager().getBuyValue(itemStacks);
+                        EconomyResponse saleResponse = this.app.getEconomyManager().remCash(player, priceResponse.value);
+                        if (saleResponse.transactionSuccess() && priceResponse.isSuccess()) {
+                            PlayerInventoryManager.addItemsToPlayer(player, itemStacks);
+                            materialData.remQuantity(amountToBuy);
+
+                            // Handles console, message and mail
+                            DCEPlugin.CONSOLE.logPurchase(player, amountToBuy, saleResponse.amount, materialData.getCleanName());
+
+                        } else {
+                            String errorMessage = "unknown error";
+                            if (!saleResponse.transactionSuccess()) errorMessage = saleResponse.errorMessage;
+                            else if (priceResponse.isFailure()) errorMessage = priceResponse.errorMessage;
+
+                            // Handles console, message and mail
+                            DCEPlugin.CONSOLE.logFailedPurchase(player, amountToBuy, materialData.getCleanName(), errorMessage);
+                        }
                     }
                 }
-
             }
         }
         return true;
