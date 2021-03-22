@@ -36,7 +36,7 @@ public enum Setting {
 	CHAT_CONSOLE_PREFIX               ( SECTION_CHAT.path + ".consolePrefix"   ),
 	CHAT_DEBUG_COLOR                  ( SECTION_CHAT.path + ".debugColour"     ),
 	CHAT_INFO_COLOR                   ( SECTION_CHAT.path + ".infoColour"      ),
-	CHAT_WARNING_COLOR                ( SECTION_CHAT.path + ".warningColour"   ),
+	CHAT_WARNING_COLOR                ( SECTION_CHAT.path + ".warnColour"   ),
 	CHAT_SEVERE_COLOR                 ( SECTION_CHAT.path + ".severeColour"    ),
 
 	//Economy Settings
@@ -68,7 +68,6 @@ public enum Setting {
 	COMMAND_HAND_BUY_ITEM_ENABLE_BOOLEAN  ( SECTION_COMMANDS_MARKET.path  + ".handBuy"   ),
 	COMMAND_VALUE_ENABLE_BOOLEAN          ( SECTION_COMMANDS_MARKET.path  + ".value"     ),
 	COMMAND_HAND_VALUE_ENABLE_BOOLEAN     ( SECTION_COMMANDS_MARKET.path  + ".handValue" ),
-	COMMAND_SEARCH_ENABLE_BOOLEAN         ( SECTION_COMMANDS_MARKET.path  + ".search"    ),
 	COMMAND_INFO_ENABLE_BOOLEAN           ( SECTION_COMMANDS_MARKET.path  + ".info"      ),
 	COMMAND_HAND_INFO_ENABLE_BOOLEAN      ( SECTION_COMMANDS_MARKET.path  + ".handInfo"  ),
 	COMMAND_READ_MAIL_ENABLE_BOOLEAN      ( SECTION_COMMANDS_MAIL.path    + ".readMail"  ),
@@ -76,7 +75,13 @@ public enum Setting {
 	COMMAND_E_SELL_ENABLE_BOOLEAN         ( SECTION_COMMANDS_ENCHANT.path + ".eSell" 	  ),
 	COMMAND_E_BUY_ENABLE_BOOLEAN		  ( SECTION_COMMANDS_ENCHANT.path + ".eBuy" 	  ),
 	COMMAND_E_VALUE_ENABLE_BOOLEAN	      ( SECTION_COMMANDS_ENCHANT.path + ".eValue"	  ),
-	COMMAND_E_INFO_ENABLE_BOOLEAN		  ( SECTION_COMMANDS_ENCHANT.path + ".eInfo"	  );
+	COMMAND_E_INFO_ENABLE_BOOLEAN		  ( SECTION_COMMANDS_ENCHANT.path + ".eInfo"	  ),
+	COMMAND_SET_STOCK_ENABLE_BOOLEAN (SECTION_COMMANDS_ADMIN.path + ".setStock"),
+	COMMAND_SET_VALUE_ENABLE_BOOLEAN (SECTION_COMMANDS_ADMIN.path + ".setValue"),
+	COMMAND_RELOAD_ENCHANTS_ENABLE_BOOLEAN (SECTION_COMMANDS_ADMIN.path + ".reloadEnchants"),
+	COMMAND_RELOAD_MATERIALS_ENABLE_BOOLEAN (SECTION_COMMANDS_ADMIN.path + ".reloadMaterials"),
+	COMMAND_SAVE_ENCHANTS_ENABLE_BOOLEAN (SECTION_COMMANDS_ADMIN.path + ".saveEnchants"),
+	COMMAND_SAVE_MATERIALS_ENABLE_BOOLEAN (SECTION_COMMANDS_ADMIN.path + ".saveMaterials");
 
 	private final String path;
 

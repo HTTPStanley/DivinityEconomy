@@ -13,7 +13,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 /**
- * A simple ping pong! command
+ * A command for getting the value of items
  */
 public class Value implements CommandExecutor {
     private final DCEPlugin app;

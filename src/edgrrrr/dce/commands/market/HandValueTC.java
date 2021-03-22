@@ -13,6 +13,9 @@ import org.bukkit.inventory.ItemStack;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * A tab completer for the handvalue command
+ */
 public class HandValueTC implements TabCompleter {
     private final DCEPlugin app;
 

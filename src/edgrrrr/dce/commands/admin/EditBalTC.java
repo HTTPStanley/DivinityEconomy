@@ -10,6 +10,9 @@ import org.bukkit.entity.Player;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * tab completer for editbal command
+ */
 public class EditBalTC implements TabCompleter {
     private final DCEPlugin app;
 

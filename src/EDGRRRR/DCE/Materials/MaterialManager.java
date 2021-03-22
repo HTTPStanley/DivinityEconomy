@@ -152,6 +152,7 @@ public class MaterialManager {
         if (maxDurability > 0) {
             damageValue = (maxDurability - durability) / maxDurability;
         }
+
         return damageValue;
     }
 
@@ -184,7 +185,6 @@ public class MaterialManager {
      * @return MaterialValue - The price of the itemstack if no errors occurred.
      */
     public ValueResponse getSellValue(ItemStack itemStack) {
-        double scale = 1.0;
         ValueResponse response;
 
         if (this.app.getEnchantmentManager().isEnchanted(itemStack)) {
@@ -199,7 +199,7 @@ public class MaterialManager {
                 if (!materialData.getAllowed()) {
                     response = new ValueResponse(0.0, ResponseType.FAILURE, "item is banned.");
                 } else {
-                    response = new ValueResponse(this.calculatePrice(itemStack.getAmount(), materialData.getQuantity(), (scale * getDamageValue(itemStack)), false), ResponseType.SUCCESS, "");
+                    response = new ValueResponse(this.calculatePrice(itemStack.getAmount(), materialData.getQuantity(), (this.materialSellTax * getDamageValue(itemStack)), false), ResponseType.SUCCESS, "");
                 }
             }
         }
@@ -243,7 +243,7 @@ public class MaterialManager {
             if (!materialData.getAllowed()) {
                 response = new ValueResponse(0.0, ResponseType.FAILURE, "item cannot be bought or sold.");
             } else {
-                response = new ValueResponse(this.calculatePrice(itemStack.getAmount(), materialData.getQuantity(), materialBuyTax, true), ResponseType.SUCCESS, "");
+                response = new ValueResponse(this.calculatePrice(itemStack.getAmount(), materialData.getQuantity(), this.materialBuyTax, true), ResponseType.SUCCESS, "");
             }
         }
 

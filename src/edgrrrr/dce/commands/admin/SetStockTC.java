@@ -11,35 +11,35 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Tab completer for the clearbal command.
+ * A tab completer for the setvalue command
  */
-public class ClearBalTC implements TabCompleter {
+public class SetStockTC implements TabCompleter {
     private final DCEPlugin app;
 
-    public ClearBalTC(DCEPlugin app) {
+    public SetStockTC(DCEPlugin app) {
         this.app = app;
     }
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
         // Ensure player
-        if (!(sender instanceof Player) || !(this.app.getConfig().getBoolean(Setting.COMMAND_CLEAR_BALANCE_ENABLE_BOOLEAN.path()))) {
+        if (!(this.app.getConfig().getBoolean(Setting.COMMAND_SET_STOCK_ENABLE_BOOLEAN.path()))) {
             return null;
         }
 
-        String[] playerNames;
+        String[] strings;
         switch (args.length) {
-            // 1 args
-            // return names of players starting with arg
+            // Args 1
+            // get player names that start with args[0]
             case 1:
-                playerNames = this.app.getPlayerManager().getOfflinePlayers(args[0]);
+                strings = this.app.getMaterialManager().getMaterialNames();
                 break;
 
             default:
-                playerNames = new String[0];
+                strings = new String[0];
                 break;
         }
 
-        return Arrays.asList(playerNames);
+        return Arrays.asList(strings);
     }
 }

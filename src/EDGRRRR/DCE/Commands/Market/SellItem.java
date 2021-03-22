@@ -14,7 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 /**
- * A command for buying items from the market
+ * A command for selling items to the market
  */
 public class SellItem implements CommandExecutor {
     private final DCEPlugin app;

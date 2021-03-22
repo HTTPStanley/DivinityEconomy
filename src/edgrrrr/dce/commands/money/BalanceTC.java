@@ -10,6 +10,9 @@ import org.bukkit.entity.Player;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * A tab completer for the balance command
+ */
 public class BalanceTC implements TabCompleter {
     private final DCEPlugin app;
 

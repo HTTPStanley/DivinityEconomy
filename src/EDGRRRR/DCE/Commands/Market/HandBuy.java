@@ -14,7 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 /**
- * A simple ping pong! command
+ * A command for buying the item the user is currently holding
  */
 public class HandBuy implements CommandExecutor {
     private final DCEPlugin app;

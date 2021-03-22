@@ -13,6 +13,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+/**
+ * A command for valuing the item in the users hand
+ */
 public class HandValue implements CommandExecutor {
     private final DCEPlugin app;
     private final String usage = "/handvalue | /handvalue <amount> | /handvalue max";

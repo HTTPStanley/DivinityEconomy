@@ -10,7 +10,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 /**
- * Command executor for editing (adding or removing) cash to a player
+ * A command for clearing the balance of a player.
  */
 public class ClearBal implements CommandExecutor {
     private final DCEPlugin app;

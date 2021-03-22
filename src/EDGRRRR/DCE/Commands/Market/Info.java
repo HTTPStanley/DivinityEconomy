@@ -13,7 +13,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 /**
- * A simple ping pong! command
+ * A command for getting information about a material
  */
 public class Info implements CommandExecutor {
     private final DCEPlugin app;

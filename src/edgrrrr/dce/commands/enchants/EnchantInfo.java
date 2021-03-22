@@ -14,7 +14,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 /**
- * A simple ping pong! command
+ * A command for getting information about enchants
  */
 public class EnchantInfo implements CommandExecutor {
     private final DCEPlugin app;

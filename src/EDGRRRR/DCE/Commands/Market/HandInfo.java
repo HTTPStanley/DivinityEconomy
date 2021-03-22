@@ -14,9 +14,12 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+/**
+ * A command for getting information about the item the user is currently holding
+ */
 public class HandInfo implements CommandExecutor {
     private final DCEPlugin app;
-    private final String usage = "/handinfo | /handinfo <amount>";
+    private final String usage = "/handinfo";
 
     public HandInfo(DCEPlugin app) {
         this.app = app;

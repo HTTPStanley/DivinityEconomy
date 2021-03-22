@@ -9,7 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 /**
- * A command executor class for replying to /balance
+ * A command for getting player's balances
  */
 public class Balance implements CommandExecutor {
     private final DCEPlugin app;

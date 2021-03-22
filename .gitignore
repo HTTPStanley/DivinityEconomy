@@ -96,9 +96,9 @@ out/production/DCE/edgrrrr/dce/commands/enchants/EnchantHandInfoTC.class
 out/production/DCE/edgrrrr/dce/commands/enchants/EnchantInfoTC.class
 out/production/DCE/edgrrrr/dce/commands/admin/ReloadEnchants.class
 out/production/DCE/edgrrrr/dce/commands/admin/ReloadMaterials.class
-out/production/DCE/edgrrrr/dce/commands/admin/SaveEnchants.class
-out/production/DCE/edgrrrr/dce/commands/admin/SaveMaterials.class
 out/production/DCE/edgrrrr/dce/commands/admin/SetStock.class
 out/production/DCE/edgrrrr/dce/commands/admin/SetStockTC.class
 out/production/DCE/edgrrrr/dce/commands/admin/SetValue.class
 out/production/DCE/edgrrrr/dce/commands/admin/SetValueTC.class
+out/production/DCE/edgrrrr/dce/commands/admin/SaveEnchants.class
+out/production/DCE/edgrrrr/dce/commands/admin/SaveMaterials.class

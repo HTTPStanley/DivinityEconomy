@@ -12,7 +12,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 /**
- * Command executor for sending cashing between players
+ * A command for sending cash between players
  */
 public class SendCash implements CommandExecutor {
     private final DCEPlugin app;

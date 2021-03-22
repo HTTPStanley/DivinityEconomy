@@ -12,6 +12,9 @@ import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 
+/**
+ * A command for reading mail
+ */
 public class ReadMail implements CommandExecutor {
     private final DCEPlugin app;
     private final String usage = "/readMail | /readMail <page>";

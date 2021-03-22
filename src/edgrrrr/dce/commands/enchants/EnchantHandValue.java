@@ -13,6 +13,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+/**
+ * A command for valuing enchants
+ */
 public class EnchantHandValue implements CommandExecutor {
     private DCEPlugin app;
     private String usage = "/ehv | /ehv <enchant> | /ehv <enchant> <levels>";
