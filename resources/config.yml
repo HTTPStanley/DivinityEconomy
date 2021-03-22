@@ -9,32 +9,290 @@
 # Also supports the colour characters such as &1 &2 &3 &4 &5 &6 &7...
 #
 # [Config]
+# main:
+#     version:
+#      Default: 1.0.2
+#      Type: String
+#      Information:
+#        - The version of the plugin config.
+#        - Do not touch!! this is required for updating the config values.
+#
+# chat:
+#     chatDebug:
+#      Default: False
+#      Type: Boolean
+#      Information:
+#        - Whether or not the plugin should output debug information.
+#
+#     consolePrefix:
+#      Default: &b[DCE v<VERSION>] &b-
+#      Type: String
+#      Information:
+#        - The console prefix for information output.
+#
+#     chatPrefix:
+#      Default: &b[DCE] &b-
+#      Type: String
+#      Information:
+#        - The chat prefix for information output.
+#
+#     infoColour:
+#      Default: GREEN
+#      Type: String
+#      Information:
+#        - The chat colour for information messages.
+#
+#     warnColour:
+#      Default: YELLOW
+#      Type: String
+#      Information:
+#        - The chat colour for warning messages.
+#
+#     severeColour:
+#      Default: RED
+#      Type: String
+#      Information:
+#        - The chat colour for severe messages.
+#
+#     debugColour:
+#      Default: DARK_PURPLE
+#      Type: String
+#      Information:
+#        - The chat colour for debug messages.
+#
+# economy:
+#     enable:
+#      Default: True
+#      Type: Boolean
+#      Information:
+#        - Whether or not to enable the economy or not.
+#
+#     minAccountBalance:
+#      Default: 0.0
+#      Type: Double
+#      Information:
+#        - The minimum account balance of a player.
+#
+#     minSendAmount:
+#      Default: 0.01
+#      Type: Double
+#      Information:
+#        - The minimum amount of cash a player can send to another.
+#
+#     roundingDigits:
+#      Default: 2
+#      Type: Integer
+#      Information:
+#        - The level of rounding to apply to internal math operations.
+#
+# market:
+#     saveTimer:
+#      Default: 600
+#      Type: Integer
+#      Information:
+#        - The time in seconds between market saves.
+#
+#   materials:
+#     enable:
+#      Default: True
+#      Type: Boolean
+#      Information:
+#        - Whether to enable the ability to buy or sell materials in the market.
+#
+#     baseQuantity:
+#      Default: 1000000
+#      Type: Integer
+#      Information:
+#        - The base quantity of items in the market. Generally, this should be left alone.
+#        - Decreasing this value will increase the value of items and increase the rate at which their value changes.
+#        - Increasing this value will decrease the value of items and decrease the rate at which their value changes.
+#
+#     buyTax:
+#      Default: 0.25
+#      Type: Double
+#      Information:
+#        - The scaling applied to purchases.
+#
+#     sellTax:
+#      Default: 0.2
+#      Type: Double
+#      Information:
+#        - The scaling applied to sales.
+#
+#   enchants:
+#     enable:
+#      Default: True
+#      Type: Boolean
+#      Information:
+#        - Whether to enable the ability to buy or sell enchants in the market.
+#
+#     baseQuantity:
+#      Default: 1000000
+#      Type: Integer
+#      Information:
+#        - The base quantity of enchants in the market. Generally, this should be left alone.
+#        - Decreasing this value will increase the value of enchants and increase the rate at which their value changes.
+#        - Increasing this value will decrease the value of enchants and decrease the rate at which their value changes.
+#
+#     buyTax:
+#      Default: 0.3
+#      Type: Double
+#      Information:
+#        - The scaling applied to purchases
+#
+#     sellTax:
+#      Default: 0.2
+#      Type: Double
+#      Information:
+#        - The scaling applied to sales
+#
+# commands:
+#   economy:
+#     balance:
+#      Default: True
+#      Type: Boolean
+#      Information:
+#        - Whether this command should be enabled or not.
+#
+#     sendCash:
+#      Default: True
+#      Type: Boolean
+#      Information:
+#        - Whether this command should be enabled or not.
+#
+#   misc:
+#     ping:
+#      Default: True
+#      Type: Boolean
+#      Information:
+#        - Whether this command should be enabled or not.
+#
+#   admin:
+#     clearBal:
+#      Default: True
+#      Type: Boolean
+#      Information:
+#        - Whether this command should be enabled or not.
+#
+#     editBal:
+#      Default: True
+#      Type: Boolean
+#      Information:
+#        - Whether this command should be enabled or not.
+#
+#     setBal:
+#      Default: True
+#      Type: Boolean
+#      Information:
+#        - Whether this command should be enabled or not.
+#
+#   market:
+#     buyItem:
+#      Default: True
+#      Type: Boolean
+#      Information:
+#        - Whether this command should be enabled or not.
+#
+#     sellItem:
+#      Default: True
+#      Type: Boolean
+#      Information:
+#        - Whether this command should be enabled or not.
+#
+#     value:
+#      Default: True
+#      Type: Boolean
+#      Information:
+#        - Whether this command should be enabled or not.
+#
+#     info:
+#      Default: True
+#      Type: Boolean
+#      Information:
+#        - Whether this command should be enabled or not.
+#
+#     handSell:
+#      Default: True
+#      Type: Boolean
+#      Information:
+#        - Whether this command should be enabled or not.
+#
+#     handBuy:
+#      Default: True
+#      Type: Boolean
+#      Information:
+#        - Whether this command should be enabled or not.
+#
+#     handInfo:
+#      Default: True
+#      Type: Boolean
+#      Information:
+#        - Whether this command should be enabled or not.
+#
+#     handValue:
+#      Default: True
+#      Type: Boolean
+#      Information:
+#        - Whether this command should be enabled or not.
+#
+#   mail:
+#     readMail:
+#      Default: True
+#      Type: Boolean
+#      Information:
+#        - Whether this command should be enabled or not.
+#
+#     clearMail:
+#      Default: True
+#      Type: Boolean
+#      Information:
+#        - Whether this command should be enabled or not.
+#
+#   enchant:
+#     eSell:
+#      Default: True
+#      Type: Boolean
+#      Information:
+#        - Whether this command should be enabled or not.
+#
+#     eBuy:
+#      Default: True
+#      Type: Boolean
+#      Information:
+#        - Whether this command should be enabled or not.
+#
+#     eValue:
+#      Default: True
+#      Type: Boolean
+#      Information:
+#        - Whether this command should be enabled or not.
+#
+#     eInfo:
+#      Default: True
+#      Type: Boolean
+#      Information:
+#        - Whether this command should be enabled or not.
+#
 
 main:
-  version: "1.0.1"
+  version: 1.0.2
 
 chat:
   chatDebug: false
-  consolePrefix: "&b[DCE v<VERSION>] &b- "
-  chatPrefix: "&b[DCE] &b- "
-  infoColour: "GREEN"
-  warnColour: "YELLOW"
-  severeColour: "RED"
-  debugColour: "DARK_PURPLE"
+  consolePrefix: '&b[DCE v<VERSION>] &b- '
+  chatPrefix: '&b[DCE] &b- '
+  infoColour: GREEN
+  severeColour: RED
+  warnColour: YELLOW
+  debugColour: DARK_PURPLE
 
 economy:
-  enable: true
   minAccountBalance: 0.0
   minSendAmount: 0.01
   roundingDigits: 2
 
 market:
   saveTimer: 600
-  materials:
-    enable: true
-    baseQuantity: 1000000
-    buyTax: 0.25
-    sellTax: 0.2
 
   enchants:
     enable: true
@@ -42,37 +300,42 @@ market:
     buyTax: 0.3
     sellTax: 0.2
 
+  materials:
+    enable: true
+    baseQuantity: 1000000
+    buyTax: 0.25
+    sellTax: 0.2
+
+
 commands:
-  economy:
-    balance: true
-    sendCash: true
-
-  misc:
-    ping: true
-
   admin:
     clearBal: true
     editBal: true
     setBal: true
 
-  market:
-    buyItem: true
-    sellItem: true
-    value: true
-    info: true
-    handSell: true
-    handBuy: true
-    handInfo: true
-    handValue: true
-
-  mail:
-    readMail: true
-    clearMail: true
+  economy:
+    balance: true
+    sendCash: true
 
   enchant:
-    eHandSell: true
-    eHandBuy: true
-    eHandValue: true
-    eValue: true
-    eHandInfo: true
+    eBuy: true
     eInfo: true
+    eSell: true
+    eValue: true
+
+  mail:
+    clearMail: true
+    readMail: true
+
+  market:
+    buyItem: true
+    handBuy: true
+    handInfo: true
+    handSell: true
+    handValue: true
+    info: true
+    sellItem: true
+    value: true
+
+  misc:
+    ping: true
