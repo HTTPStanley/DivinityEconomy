@@ -1,5 +1,6 @@
 package edgrrrr.dce.mail;
 
+import edgrrrr.dce.DCEPlugin;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -17,17 +18,15 @@ public class MailList {
     private final HashMap<String, Mail> mail;
     private final ConfigurationSection configurationSection;
     // The player this mail list belongs to
-    private final OfflinePlayer player;
+    private final String playerUUID;
     private MailManager manager;
 
     /**
      * Constructor
-     *
-     * @param player - The player this mail list belongs to
      */
-    public MailList(MailManager manager, OfflinePlayer player, ConfigurationSection configurationSection) {
+    public MailList(MailManager manager, String UUID, ConfigurationSection configurationSection) {
         this.manager = manager;
-        this.player = player;
+        this.playerUUID = UUID;
         this.configurationSection = configurationSection;
         this.mail = new HashMap<>();
 
@@ -42,27 +41,26 @@ public class MailList {
      * Returns "pages" of mail.
      *
      * @param pageSize - The size of each page.
-     * @return HashMap<Integer, Mail [ ]> - Pages of mail.
+     * @return HashMap<Integer, Mail []> - Pages of mail.
      */
     public HashMap<Integer, Mail[]> getPages(int pageSize) {
         HashMap<Integer, Mail[]> pages = new HashMap<>();
         Mail[] allMail = this.getAllMail().values().toArray(new Mail[0]);
-        int mailCount = allMail.length;
 
         int pageNum = 0;
         ArrayList<Mail> page = new ArrayList<>();
-        for (int mailNumber=0; mailNumber < mailCount; mailNumber++) {
+        for (Mail value : allMail) {
             if (page.size() == pageSize) {
                 pages.put(pageNum, page.toArray(new Mail[0]));
                 pageNum += 1;
                 page = new ArrayList<>();
             }
 
-            page.add(allMail[(pageNum * pageSize) + page.size()]);
+            page.add(value);
+        }
 
-            if (!pages.containsKey(pageNum)) {
-                pages.put(pageNum, page.toArray(new Mail[0]));
-            }
+        if (!pages.containsKey(pageNum)) {
+            pages.put(pageNum, page.toArray(new Mail[0]));
         }
 
         return pages;
@@ -131,11 +129,9 @@ public class MailList {
 
     /**
      * Returns the player this mail list belongs to
-     *
-     * @return OfflinePlayer - The player this mail list belongs to
      */
-    public OfflinePlayer getPlayer() {
-        return this.player;
+    public String getPlayer() {
+        return this.playerUUID;
     }
 
     /**
@@ -189,9 +185,7 @@ public class MailList {
         tempSection.set(strDate, date.getTimeInMillis());
         tempSection.set(strRead, read);
         Mail mail = new Mail(this, tempSection);
-        this.addMail(mail);
-        this.setData(mail.getID(), mail.getConfigurationSection());
-        this.manager.saveMailList(this);
+        this.setMail(mail.getID(), mail);
         this.removeTempMailSection();
         return mail;
     }
