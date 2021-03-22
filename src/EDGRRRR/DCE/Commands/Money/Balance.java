@@ -39,7 +39,6 @@ public class Balance implements CommandExecutor {
         // command - returns the callers balance.
         // command <username> - returns the usernames balance.
         OfflinePlayer player2 = null;
-        boolean playerIsOffline = false;
 
         switch (args.length) {
             case 1:
@@ -48,7 +47,6 @@ public class Balance implements CommandExecutor {
                 // If they aren't online or don't exist. Do the dirty offline call.
                 if (player2 == null) {
                     player2 = this.app.getPlayerManager().getOfflinePlayer(args[0], false);
-                    playerIsOffline = true;
                 }
                 break;
 
@@ -64,14 +62,10 @@ public class Balance implements CommandExecutor {
         }
 
         double balance = this.app.getEconomyManager().getBalance(player2);
-        if (!playerIsOffline) {
-            if (!(player1 == player2)) {
-                DCEPlugin.CONSOLE.info(player1, String.format("%s's Balance is £%,.2f", player2.getName(), balance));
-            } else {
-                DCEPlugin.CONSOLE.info(player1, "Balance: £%,.2f" + balance);
-            }
-        } else {
+        if (!(player1 == player2)) {
             DCEPlugin.CONSOLE.info(player1, String.format("%s's Balance is £%,.2f", player2.getName(), balance));
+        } else {
+            DCEPlugin.CONSOLE.info(player1, String.format("Balance: £%,.2f", balance));
         }
         return true;
     }
