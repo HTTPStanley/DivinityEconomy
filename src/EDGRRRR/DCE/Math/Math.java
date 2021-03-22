@@ -23,24 +23,6 @@ public class Math {
     }
 
     /**
-     * A rounding function for rounding double
-     *
-     * @param amount         - The amount to round
-     * @param roundingDigits - The number of digits to round to
-     * @return double - The rounded number
-     */
-    public static double round(double amount, int roundingDigits) {
-        // Rounds the amount to the number of digits specified
-        // Does this by 10**digits (100 or 10**2 = 2 digits)
-        try {
-            double roundAmount = java.lang.Math.pow(10, roundingDigits);
-            return java.lang.Math.round(amount * roundAmount) / roundAmount;
-        } catch (Exception e) {
-            return amount;
-        }
-    }
-
-    /**
      * A function for extracting a double from a String
      * will return null if an error occurs (such as the string not containing a double)
      *
