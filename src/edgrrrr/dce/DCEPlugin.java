@@ -141,6 +141,9 @@ public class DCEPlugin extends JavaPlugin {
             this.getCommand("eBuy").setExecutor(new EnchantHandBuy(this));
             this.getCommand("eBuy").setTabCompleter(new EnchantHandBuyTC(this));
 
+            this.getCommand("eInfo").setExecutor(new EnchantInfo(this));
+            this.getCommand("eInfo").setTabCompleter(new EnchantInfoTC(this));
+
         } catch (Exception e) {
             e.printStackTrace();
             CONSOLE.severe("An error occurred on registry: " + e);
