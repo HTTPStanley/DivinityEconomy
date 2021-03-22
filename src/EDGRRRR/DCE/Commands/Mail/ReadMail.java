@@ -57,7 +57,7 @@ public class ReadMail implements CommandExecutor {
 
         } else {
 
-            MailList mailList = this.app.getMailManager().getMailList(player);
+            MailList mailList = this.app.getMailManager().getMailList(player.getUniqueId().toString());
 
             if (mailList.getAllMail().isEmpty()) {
                 DCEPlugin.CONSOLE.warn(player, "You have no mail.");

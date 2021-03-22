@@ -30,7 +30,7 @@ public class ReadMailTC implements TabCompleter {
         }
 
         String[] strings;
-        MailList mailList = this.app.getMailManager().getMailList((Player) sender);
+        MailList mailList = this.app.getMailManager().getMailList(((Player) sender).getUniqueId().toString());
         switch (args.length) {
             // 1 arg
             // return list of page numbers

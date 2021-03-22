@@ -67,7 +67,7 @@ public class ClearMail implements CommandExecutor {
                 return true;
         }
 
-        MailList mailList = this.app.getMailManager().getMailList(player);
+        MailList mailList = this.app.getMailManager().getMailList(player.getUniqueId().toString());
         HashMap<String, Mail> allMail = mailList.getAllMail();
         ArrayList<String> readMail = mailList.getReadMail();
         ArrayList<String> unreadMail = mailList.getUnreadMail();

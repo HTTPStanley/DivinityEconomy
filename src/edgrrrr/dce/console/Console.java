@@ -170,22 +170,22 @@ public class Console {
 
         // Handles online & offline messages for sender
         Player onlinePlayer1 = player1.getPlayer();
-        MailList player1MailList = this.app.getMailManager().getMailList(player1);
+        MailList player1MailList = this.app.getMailManager().getMailList(player1.getUniqueId().toString());
         String player1Message = String.format("Sent £%,.2f to %s", amount, player2.getName());
         if (onlinePlayer1 != null) {
             this.info(onlinePlayer1, player1Message);
         } else {
-            player1MailList.createMail(String.format("%s <daysAgo> days ago", player1Message));
+            player1MailList.createMail(String.format("%s <aptime>", player1Message));
         }
 
         // Handle online & offline messages for receiver
         Player onlinePlayer2 = player2.getPlayer();
-        MailList player2MailList = this.app.getMailManager().getMailList(player2);
+        MailList player2MailList = this.app.getMailManager().getMailList(player2.getUniqueId().toString());
         String player2Message = String.format("Received £%,.2f from %s", amount, player1.getName());
         if (onlinePlayer2 != null) {
             this.info(onlinePlayer2, player2Message);
         } else {
-            player2MailList.createMail(String.format("%s <daysAgo> days ago", player2Message));
+            player2MailList.createMail(String.format("%s <aptime>", player2Message));
         }
     }
 
@@ -203,7 +203,7 @@ public class Console {
 
         // Handles online and offline messages for sender
         Player onlinePlayer1 = player1.getPlayer();
-        MailList player1MailList = this.app.getMailManager().getMailList(player1);
+        MailList player1MailList = this.app.getMailManager().getMailList(player1.getUniqueId().toString());
         String player1Message = String.format("Couldn't send £%,.2f to %s because %s", amount, player2.getName(), error);
         if (onlinePlayer1 != null) {
             this.warn(onlinePlayer1, player1Message);
@@ -236,24 +236,24 @@ public class Console {
         if (player1 != player2) {
             // Handles online and offline messages for sender
             Player onlinePlayer1 = player1.getPlayer();
-            MailList playerMailList1 = this.app.getMailManager().getMailList(player1);
+            MailList playerMailList1 = this.app.getMailManager().getMailList(player1.getUniqueId().toString());
             String playerMessage1 = String.format("You changed %s's balance from £%,.2f to £%,.2f (δ £%,.2f)", player2.getName(), balance1, balance2, delta);
             if (onlinePlayer1 != null) {
                 this.info(onlinePlayer1, playerMessage1);
             } else {
-                playerMailList1.createMail(String.format("%s <daysAgo> days ago", playerMessage1));
+                playerMailList1.createMail(String.format("%s <aptime>", playerMessage1));
             }
         }
 
 
         // Handles online and offline messages for receiver
         Player onlinePlayer2 = player2.getPlayer();
-        MailList playerMailList2 = this.app.getMailManager().getMailList(player2);
+        MailList playerMailList2 = this.app.getMailManager().getMailList(player2.getUniqueId().toString());
         String playerMessage2 = String.format("Your balance changed from £%,.2f to £%,.2f (δ £%,.2f) because %s", balance1, balance2, delta, reason);
         if (onlinePlayer2 != null) {
             this.info(onlinePlayer2, playerMessage2);
         } else {
-            playerMailList2.createMail(String.format("%s <daysAgo> days ago", playerMessage2));
+            playerMailList2.createMail(String.format("%s <aptime>", playerMessage2));
         }
     }
 
@@ -282,13 +282,13 @@ public class Console {
 
         // Handles online and offline messages for receiver
         Player onlinePlayer1 = player1.getPlayer();
-        MailList playerMailList = this.app.getMailManager().getMailList(player1);
+        MailList playerMailList = this.app.getMailManager().getMailList(player1.getUniqueId().toString());
         if (onlinePlayer1 != null) {
             // Player is online - send message
             this.warn(onlinePlayer1, playerMessage);
         } else {
             // Player is offline - create mail
-            playerMailList.createMail(String.format("%s <daysAgo> days ago", playerMessage));
+            playerMailList.createMail(String.format("%s <aptime>", playerMessage));
         }
     }
 
@@ -306,12 +306,12 @@ public class Console {
 
         // Handles online and offline messages for sender
         Player onlinePlayer = player.getPlayer();
-        MailList playerMailList = this.app.getMailManager().getMailList(player);
+        MailList playerMailList = this.app.getMailManager().getMailList(player.getUniqueId().toString());
         String player1Message = String.format("Purchased %d %s for £%,.2f", amount, materialName, cost);
         if (onlinePlayer != null) {
             this.info(onlinePlayer, player1Message);
         } else {
-            playerMailList.createMail(String.format("%s <daysAgo> days ago", player1Message));
+            playerMailList.createMail(String.format("%s <aptime>", player1Message));
         }
     }
 
@@ -330,12 +330,12 @@ public class Console {
 
         // Handles online and offline messages for sender
         Player onlinePlayer = player.getPlayer();
-        MailList playerMailList = this.app.getMailManager().getMailList(player);
+        MailList playerMailList = this.app.getMailManager().getMailList(player.getUniqueId().toString());
         String player1Message = String.format("Couldn't purchase %d %s for £%,.2f because %s", amount, materialName, cost, error);
         if (onlinePlayer != null) {
             this.warn(onlinePlayer, player1Message);
         } else {
-            playerMailList.createMail(String.format("%s <daysAgo> days ago", player1Message));
+            playerMailList.createMail(String.format("%s <aptime>", player1Message));
         }
     }
 
@@ -353,12 +353,12 @@ public class Console {
 
         // Handles online and offline messages for sender
         Player onlinePlayer = player.getPlayer();
-        MailList playerMailList = this.app.getMailManager().getMailList(player);
+        MailList playerMailList = this.app.getMailManager().getMailList(player.getUniqueId().toString());
         String player1Message = String.format("Sold %d %s for £%,.2f", amount, materialName, value);
         if (onlinePlayer != null) {
             this.info(onlinePlayer, player1Message);
         } else {
-            playerMailList.createMail(String.format("%s <daysAgo> days ago", player1Message));
+            playerMailList.createMail(String.format("%s <aptime>", player1Message));
         }
     }
 
@@ -377,12 +377,12 @@ public class Console {
 
         // Handles online and offline messages for sender
         Player onlinePlayer = player.getPlayer();
-        MailList playerMailList = this.app.getMailManager().getMailList(player);
+        MailList playerMailList = this.app.getMailManager().getMailList(player.getUniqueId().toString());
         String player1Message = String.format("Couldn't sell %d %s for £%,.2f because %s", amount, materialName, value, error);
         if (onlinePlayer != null) {
             this.warn(onlinePlayer, player1Message);
         } else {
-            playerMailList.createMail(String.format("%s <daysAgo> days ago", player1Message));
+            playerMailList.createMail(String.format("%s <aptime>", player1Message));
         }
     }
 }
