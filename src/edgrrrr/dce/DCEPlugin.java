@@ -161,6 +161,7 @@ public class DCEPlugin extends JavaPlugin {
      */
     @Override
     public void onDisable() {
+        // Save materials, enchants and mail if data was loaded.
         if (this.materialManager != null) {
             this.materialManager.saveMaterials();
         }
