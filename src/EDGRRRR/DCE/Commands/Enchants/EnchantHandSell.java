@@ -7,6 +7,7 @@ import edgrrrr.dce.math.Math;
 import edgrrrr.dce.player.PlayerInventoryManager;
 import edgrrrr.dce.response.MultiValueResponse;
 import edgrrrr.dce.response.ValueResponse;
+import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -132,7 +133,6 @@ public class EnchantHandSell implements CommandExecutor {
                             enchantLevels = heldItem.getEnchantmentLevel(enchantData.getEnchantment());
                         }
 
-
                         // Get value
                         // Remove enchants, add quantity and add cash
                         ValueResponse valueResponse = this.app.getEnchantmentManager().getSellValue(heldItem, enchantName, enchantLevels);
@@ -142,7 +142,7 @@ public class EnchantHandSell implements CommandExecutor {
                         } else {
                             this.app.getEnchantmentManager().removeEnchantLevelsFromItem(heldItem, enchantData.getEnchantment(), enchantLevels);
                             enchantData.addLevelQuantity(enchantLevels);
-                            this.app.getEconomyManager().addCash(player, valueResponse.value);
+                            if (!this.app.getEconomyManager().addCash(player, valueResponse.value).transactionSuccess()) {DCEPlugin.CONSOLE.severe(player,"An error occurred on funding your account, show this message to an admin.");}
                             DCEPlugin.CONSOLE.logSale(player, enchantLevels, valueResponse.value, enchantName);
                         }
                     }
