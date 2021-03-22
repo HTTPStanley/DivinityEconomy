@@ -1,10 +1,11 @@
 package edgrrrr.dce.mail;
 
-import edgrrrr.dce.DCEPlugin;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Set;
 
 public class MailList {
     // Variables for the dictionary keys

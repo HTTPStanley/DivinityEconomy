@@ -1,6 +1,5 @@
 package edgrrrr.dce.config;
 
-import com.sun.istack.internal.NotNull;
 import edgrrrr.dce.DCEPlugin;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -78,7 +77,6 @@ public class ConfigManager {
      * @param file - The filename of the file
      * @return FileConfiguration - The file config
      */
-    @NotNull
     public FileConfiguration readResource(String file) {
         return YamlConfiguration.loadConfiguration(new InputStreamReader(this.app.getResource(file)));
     }
@@ -89,7 +87,6 @@ public class ConfigManager {
      * @param file - The filename of the file
      * @return FileConfiguration - The file config
      */
-    @NotNull
     public FileConfiguration readFile(String file) {
         return YamlConfiguration.loadConfiguration(new File(this.app.getDataFolder(), file));
     }
@@ -101,7 +98,6 @@ public class ConfigManager {
      * @param file - The file to load
      * @return FileConfiguration - The file config
      */
-    @NotNull
     public FileConfiguration loadConfig(String file) {
         // Instantiate default and user config
         FileConfiguration defConfig;

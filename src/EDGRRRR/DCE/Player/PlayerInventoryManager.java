@@ -1,8 +1,6 @@
 package edgrrrr.dce.player;
 
-import com.sun.istack.internal.NotNull;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.libs.jline.internal.Nullable;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -16,7 +14,6 @@ public class PlayerInventoryManager {
     /**
      * Returns the item the user is holding
      */
-    @Nullable
     public static ItemStack getHeldItem(Player player) {
         int slotIdx = player.getInventory().getHeldItemSlot();
         return player.getInventory().getItem(slotIdx);
@@ -25,7 +22,6 @@ public class PlayerInventoryManager {
     /**
      * Returns the item the user is holding, but returns the fallback if null.
      */
-    @Nullable
     public static ItemStack getHeldItemNotNull(Player player, ItemStack fallback) {
         ItemStack heldItem = getHeldItem(player);
         if (heldItem == null) heldItem = fallback;
@@ -35,7 +31,6 @@ public class PlayerInventoryManager {
     /**
      * Returns the item the user is holding, however returns 0 AIR if null.
      */
-    @NotNull
     public static ItemStack getHeldItemNotNull(Player player) {
         ItemStack heldItem = getHeldItem(player);
         if (heldItem == null) heldItem = new ItemStack(Material.AIR, 0);
@@ -45,7 +40,6 @@ public class PlayerInventoryManager {
     /**
      * Returns a string of the names of materials in the players inventory.
      */
-    @NotNull
     public static String[] getInventoryMaterials(Player player) {
         ItemStack[] materials = player.getInventory().getStorageContents();
         ArrayList<String> materialIDs = new ArrayList<>();
@@ -80,7 +74,6 @@ public class PlayerInventoryManager {
      * gets the specified materials of the specified amount from the specified player
      * Note if the player does not have enough, it will return all of their materials of this type
      */
-    @NotNull
     public static ItemStack[] getMaterialSlotsToCount(Player player, Material material, int amount) {
         ItemStack[] materialStacks = getMaterialSlots(player, material);
         ArrayList<ItemStack> itemStacks = new ArrayList<>();
@@ -113,7 +106,6 @@ public class PlayerInventoryManager {
      * @param amount   - The amount of that material
      * @return int
      */
-    @NotNull
     public static int getStackCount(Material material, int amount) {
         int itemPerStack = material.getMaxStackSize();
         return (int) Math.ceil(amount / (double) itemPerStack);
@@ -126,7 +118,6 @@ public class PlayerInventoryManager {
      * @param amount   - The amount to get
      * @return ItemStack[]
      */
-    @NotNull
     public static ItemStack[] createItemStacks(Material material, int amount) {
         ItemStack[] itemStacks = new ItemStack[getStackCount(material, amount)];
         int idx = 0;
@@ -156,7 +147,6 @@ public class PlayerInventoryManager {
      * @param amount   - The amount to add
      * @return ItemStack[]
      */
-    @NotNull
     public static ItemStack[] addItemsToPlayer(Player player, Material material, int amount) {
         ItemStack[] itemStacks = createItemStacks(material, amount);
         addItemsToPlayer(player, itemStacks);
@@ -182,7 +172,6 @@ public class PlayerInventoryManager {
      * @param player - The player to check
      * @return int - The number of empty slots
      */
-    @NotNull
     public static int getEmptySlots(Player player) {
         int count = 0;
         ItemStack[] inventory = player.getInventory().getStorageContents();
@@ -203,7 +192,6 @@ public class PlayerInventoryManager {
      * @param material - The material to check
      * @return ItemStack[] - An array of the ItemStack's in the player of material
      */
-    @NotNull
     public static ItemStack[] getMaterialSlots(Player player, Material material) {
         HashMap<Integer, ? extends ItemStack> inventory = player.getInventory().all(material);
         ItemStack[] iStacks = new ItemStack[inventory.size()];
@@ -223,7 +211,6 @@ public class PlayerInventoryManager {
      * @param material - The material to check
      * @return int - Total count of materials
      */
-    @NotNull
     public static int getMaterialCount(Player player, Material material) {
         return getMaterialCount(getMaterialSlots(player, material));
     }
@@ -234,7 +221,6 @@ public class PlayerInventoryManager {
      * @param iStacks - The array of item stacks
      * @return int - Total count of materials
      */
-    @NotNull
     public static int getMaterialCount(ItemStack[] iStacks) {
         int count = 0;
         for (ItemStack iStack : iStacks) {
@@ -251,7 +237,6 @@ public class PlayerInventoryManager {
      * @param material - The material to check
      * @return int - The total space that can be further occupied by a material
      */
-    @NotNull
     public static int getAvailableSpace(Player player, Material material) {
         //Get empty slots
         //Get total slots used by material

@@ -2,14 +2,10 @@ package edgrrrr.dce.commands.enchants;
 
 import edgrrrr.dce.DCEPlugin;
 import edgrrrr.dce.config.Setting;
-import edgrrrr.dce.enchants.EnchantData;
-import edgrrrr.dce.player.PlayerInventoryManager;
-import edgrrrr.dce.utils.ArrayUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.Arrays;
 import java.util.List;

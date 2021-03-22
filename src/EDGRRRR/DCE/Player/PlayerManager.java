@@ -1,9 +1,7 @@
 package edgrrrr.dce.player;
 
-import com.sun.istack.internal.NotNull;
 import edgrrrr.dce.DCEPlugin;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.craftbukkit.libs.jline.internal.Nullable;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -31,7 +29,6 @@ public class PlayerManager {
      * @param player - The player to check
      * @return boolean
      */
-    @NotNull
     public boolean playerIsOnline(OfflinePlayer player) {
         return (player.getPlayer() == null);
     }
@@ -41,7 +38,6 @@ public class PlayerManager {
      * @param player - The player
      * @return Player
      */
-    @Nullable
     public Player getPlayer(OfflinePlayer player) {
         return player.getPlayer();
     }
@@ -55,7 +51,6 @@ public class PlayerManager {
      * @param allowFetch - Uses deprecated "bukkit.getOfflinePlayer".
      * @return OfflinePlayer - the player corresponding to the name.
      */
-    @Nullable
     public OfflinePlayer getOfflinePlayer(String name, boolean allowFetch) {
         OfflinePlayer player = null;
         OfflinePlayer[] oPlayers = this.app.getServer().getOfflinePlayers();
@@ -84,7 +79,6 @@ public class PlayerManager {
      * @param allowFetch - Whether to scan the web or not
      * @return OfflinePlayer - can be null.
      */
-    @Nullable
     public OfflinePlayer getOfflinePlayerByUUID(String uuid, boolean allowFetch) {
         return this.getOfflinePlayerByUUID(UUID.fromString(uuid), allowFetch);
     }
@@ -97,7 +91,6 @@ public class PlayerManager {
      * @param allowFetch - Whether to scan the web or not
      * @return OfflinePlayer - can be null.
      */
-    @Nullable
     public OfflinePlayer getOfflinePlayerByUUID(UUID uuid, boolean allowFetch) {
         OfflinePlayer player = null;
         OfflinePlayer[] offlinePlayers = this.app.getServer().getOfflinePlayers();

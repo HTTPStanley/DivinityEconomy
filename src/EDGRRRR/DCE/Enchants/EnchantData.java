@@ -1,6 +1,5 @@
 package edgrrrr.dce.enchants;
 
-import com.sun.istack.internal.NotNull;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.craftbukkit.libs.jline.internal.Nullable;
 import org.bukkit.enchantments.Enchantment;
@@ -58,7 +57,6 @@ public class EnchantData {
      * Returns the configuration section containing the data of this enchant
      * @return ConfigurationSection
      */
-    @NotNull
     public ConfigurationSection getConfigurationSection() {
         return this.configurationSection;
     }
@@ -67,7 +65,6 @@ public class EnchantData {
      * Returns the default configuration section containing the data of this enchant
      * @return ConfigurationSection
      */
-    @NotNull
     public ConfigurationSection getDefaultConfigurationSection() {
         return this.defaultConfigurationSection;
     }
@@ -76,7 +73,6 @@ public class EnchantData {
      * Returns the clean user-friendly name of the enchant
      * @return String
      */
-    @Nullable
     public String getCleanName() {
         return this.configurationSection.getString(this.strCleanName);
     }
@@ -85,7 +81,6 @@ public class EnchantData {
      * Returns the quantity of this enchant in the market
      * @return int
      */
-    @NotNull
     public int getQuantity() {
         return this.configurationSection.getInt(this.strQuantity);
     }
@@ -94,7 +89,6 @@ public class EnchantData {
      * Returns the default quantity of this enchant
      * @return int
      */
-    @NotNull
     public int getDefaultQuantity() {
         return this.defaultConfigurationSection.getInt(this.strQuantity);
     }
@@ -173,7 +167,6 @@ public class EnchantData {
      * Returns the ID of this enchant
      * @return String
      */
-    @Nullable
     public String getID() {
         return this.configurationSection.getString(this.strID);
     }
@@ -183,7 +176,6 @@ public class EnchantData {
      * Defaults to the max game-defined level.
      * @return int
      */
-    @NotNull
     public int getMaxLevel() {
         return this.configurationSection.getInt(this.strMaxLevel);
     }
@@ -192,7 +184,6 @@ public class EnchantData {
      * Returns whether the item is allowed or not.
      * @return boolean
      */
-    @NotNull
     public boolean getAllowed() {
         return this.configurationSection.getBoolean(this.strAllowed);
     }

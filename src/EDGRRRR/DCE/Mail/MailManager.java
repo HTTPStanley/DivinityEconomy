@@ -1,7 +1,6 @@
 package edgrrrr.dce.mail;
 
 import edgrrrr.dce.DCEPlugin;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 

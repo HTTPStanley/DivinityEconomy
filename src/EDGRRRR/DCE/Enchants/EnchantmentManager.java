@@ -1,6 +1,5 @@
 package edgrrrr.dce.enchants;
 
-import com.sun.istack.internal.NotNull;
 import edgrrrr.dce.DCEPlugin;
 import edgrrrr.dce.config.Setting;
 import edgrrrr.dce.math.Math;
@@ -10,7 +9,6 @@ import edgrrrr.dce.response.ValueResponse;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.craftbukkit.libs.jline.internal.Nullable;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -224,7 +222,6 @@ public class EnchantmentManager {
      * @param enchantLevel - The enchant level
      * @return int - The number of enchants required for this level
      */
-    @NotNull
     public int getEnchantAmount(int enchantLevel) {
         int enchantAmount;
         if (enchantLevel > 0) {
@@ -242,7 +239,6 @@ public class EnchantmentManager {
      * @param name - The name ID of the enchant
      * @return EnchantData
      */
-    @Nullable
     public EnchantData getEnchant(String name) {
         name = name.trim().toLowerCase();
         return this.enchants.get(name);
@@ -254,7 +250,6 @@ public class EnchantmentManager {
      * @param itemStack - The itemstack to check
      * @return boolean - Is enchanted / Is not enchanted
      */
-    @NotNull
     public boolean isEnchanted(ItemStack itemStack) {
         return itemStack.getEnchantments().size() >= 1;
     }
@@ -264,9 +259,7 @@ public class EnchantmentManager {
      * Will return 0 if the enchant does not exist / is not on the itemstack
      * @param itemStack
      * @param enchantName
-     * @return
      */
-    @NotNull
     public int getEnchantLevel(ItemStack itemStack, String enchantName) {
         int level = 0;
         Map<Enchantment, Integer> enchantments = itemStack.getEnchantments();
@@ -286,7 +279,6 @@ public class EnchantmentManager {
      * @param itemStack - The itemstack to check.
      * @return HashMap<EnchantData, Integer> - The Enchants and their respective level
      */
-    @NotNull
     public HashMap<EnchantData, Integer> getEnchantLevels(ItemStack itemStack) {
         HashMap<EnchantData, Integer> enchants = new HashMap<>();
         for (Enchantment enchantment : itemStack.getEnchantments().keySet()) {
@@ -301,7 +293,6 @@ public class EnchantmentManager {
      * @param itemStack - The itemstack to check
      * @return MultiValueResponse
      */
-    @NotNull
     public MultiValueResponse getBuyValue(ItemStack itemStack) {
         HashMap<String, Double> values = MultiValueResponse.createValues();
         HashMap<String, Integer> quantities = MultiValueResponse.createQuantities();
@@ -332,7 +323,6 @@ public class EnchantmentManager {
      * @param level - The enchantment level
      * @return EnchantValueResponse - The value of the enchant
      */
-    @NotNull
     public ValueResponse getBuyValue(String enchantID, Integer level) {
         EnchantData enchantData = this.getEnchant(enchantID);
         ValueResponse response;
@@ -372,7 +362,6 @@ public class EnchantmentManager {
      * @param itemStack - The itemstack to check
      * @return MultiEnchantValueResponse - The value of each enchant
      */
-    @NotNull
     public MultiValueResponse getSellValue(ItemStack itemStack) {
         HashMap<String, Double> values = MultiValueResponse.createValues();
         HashMap<String, Integer> quantities = MultiValueResponse.createQuantities();
@@ -404,7 +393,6 @@ public class EnchantmentManager {
      * @param level - The level to value
      * @return ValueResponse
      */
-    @NotNull
     public ValueResponse getSellValue(ItemStack itemStack, String enchantID, int level) {
         EnchantData enchantData = this.getEnchant(enchantID);
         ValueResponse response;
@@ -455,7 +443,6 @@ public class EnchantmentManager {
      * Returns the total number of enchants in the market
      * @return int
      */
-    @NotNull
     public int getTotalEnchants() {
         return totalEnchants;
     }
@@ -464,7 +451,6 @@ public class EnchantmentManager {
      * Returns the default total number of enchants in the market
      * @return int
      */
-    @NotNull
     public int getDefaultTotalEnchants() {
         return defaultTotalEnchants;
     }
@@ -477,7 +463,6 @@ public class EnchantmentManager {
      * @param purchase - If the user is buy / if the user is not buying (E.g. selling)
      * @return double - the price of amount of this enchant
      */
-    @NotNull
     public double calculatePrice(double amount, double stock, double scale, boolean purchase) {
         return Math.calculatePrice(this.enchantBaseQuantity, stock, this.defaultTotalEnchants, this.totalEnchants, amount, scale, purchase);
     }
@@ -486,7 +471,6 @@ public class EnchantmentManager {
      * Returns the inflation of the whole enchant market
      * @return double
      */
-    @NotNull
     public double getInflation() {
         return Math.getInflation(this.defaultTotalEnchants, this.totalEnchants);
     }
@@ -498,7 +482,6 @@ public class EnchantmentManager {
      * @param inflation - The inflation of the market
      * @return double
      */
-    @NotNull
     public double getPrice(double stock, double scale, double inflation) {
         return Math.getPrice(this.enchantBaseQuantity, stock, scale, inflation);
     }
@@ -508,7 +491,6 @@ public class EnchantmentManager {
      * @param stock - The stock of the enchant
      * @return double
      */
-    @NotNull
     public double getUserPrice(double stock) {
         return this.getPrice(stock, this.enchantBuyTax, this.getInflation());
     }
@@ -518,7 +500,6 @@ public class EnchantmentManager {
      * @param stock - The stock of the enchant
      * @return double
      */
-    @NotNull
     public double getMarketPrice(double stock) {
         return this.getPrice(stock, this.enchantSellTax, this.getInflation());
     }

@@ -1,6 +1,5 @@
 package edgrrrr.dce.response;
 
-import com.sun.istack.internal.NotNull;
 import net.milkbowl.vault.economy.EconomyResponse;
 
 import java.util.HashMap;
@@ -31,7 +30,6 @@ public class MultiValueResponse extends Response {
      * Returns the sum of all values
      * @return double
      */
-    @NotNull
     public double getTotalValue() {
         double totalValue = 0;
         for (double value : this.values.values()) {
@@ -44,7 +42,6 @@ public class MultiValueResponse extends Response {
      * Returns the sum of all quantities
      * @return int
      */
-    @NotNull
     public int getTotalQuantity() {
         int totalQuantity = 0;
         for (int quantity : this.quantities.values()) {
@@ -57,7 +54,6 @@ public class MultiValueResponse extends Response {
      * A method for creating a hashmap with the necessary data types for the values
      * @return HashMap<String, Double>
      */
-    @NotNull
     public static HashMap<String, Double> createValues() {
         return new HashMap<>();
     }
@@ -66,7 +62,6 @@ public class MultiValueResponse extends Response {
      * A method for creating a hashmap with the necessary data types for the quantities
      * @return HashMap<String, Integer>
      */
-    @NotNull
     public static HashMap<String, Integer> createQuantities() {
         return new HashMap<>();
     }
@@ -75,7 +70,6 @@ public class MultiValueResponse extends Response {
      * A method for returning the Set of item id's
      * @return Set<String>
      */
-    @NotNull
     public Set<String> getItemIds() {
         Set<String> keys1 = values.keySet();
         Set<String> keys2 = quantities.keySet();
@@ -91,7 +85,6 @@ public class MultiValueResponse extends Response {
      * @param prefix - The string to concatenate at the beginning
      * @return String
      */
-    @NotNull
     public String toString(String prefix) {
         return String.format("%s: %s", prefix, this.toString());
     }
@@ -101,7 +94,6 @@ public class MultiValueResponse extends Response {
      * @return String
      */
     @Override
-    @NotNull
     public String toString() {
         StringBuilder string = new StringBuilder();
         int idx = 1;

@@ -1,6 +1,5 @@
 package edgrrrr.dce.response;
 
-import com.sun.istack.internal.NotNull;
 import net.milkbowl.vault.economy.EconomyResponse.ResponseType;
 
 /**
@@ -17,7 +16,7 @@ public class Response {
      * @param responseType - The type of response.
      * @param errorMessage - The error message, if any.
      */
-    public Response (@NotNull ResponseType responseType, @NotNull String errorMessage) {
+    public Response (ResponseType responseType, String errorMessage) {
         this.responseType = responseType;
         this.errorMessage = errorMessage;
     }
@@ -26,7 +25,6 @@ public class Response {
      * If the response was a success, or not.
      * @return boolean - is success
      */
-    @NotNull
     public boolean isSuccess() {
         return this.responseType == ResponseType.SUCCESS;
     }
@@ -35,7 +33,6 @@ public class Response {
      * If the response was a failure, or not.
      * @return boolean - is failure
      */
-    @NotNull
     public boolean isFailure() {
         return !this.isSuccess();
     }
