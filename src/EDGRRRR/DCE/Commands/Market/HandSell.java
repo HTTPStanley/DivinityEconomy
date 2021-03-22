@@ -45,9 +45,13 @@ public class HandSell implements CommandExecutor {
             return true;
         }
 
-        int amountToSell = 1;
+        int amountToSell;
 
         switch (args.length) {
+            case 0:
+                amountToSell = 1;
+                break;
+
             case 1:
                 amountToSell = Math.getInt(args[0]);
                 break;
