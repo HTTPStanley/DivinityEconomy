@@ -174,25 +174,33 @@ commands:
   # Admin commands
   editbal:
     description: Allows the user to manipulate a users balance, including their own.
-    # aliases: [eb]
     permission: dce.admin.editbal
     permission-message: You do not have the permission to use this command
     usage: /editbal <playername> <amount> or /setbal <amount>
 
   setbal:
     description: Allows the user to set the balance of themselves and others.
-    # aliases: [sb]
     permission: dce.admin.setbal
     permission-message: You do not have the permission to use this command
     usage: /setbal <playername> <amount> or /setbal <amount>
 
   clearbal:
     description: Allows the user to clear the balance of themselves and others.
-    # aliases: [cb]
     permission: dce.admin.clearbal
     permission-message: You do not have the permission to use this command
     usage: /clearbal <playername> or /clearbal
 
+  reloadMaterials:
+    description: Allows the user to reload materials from the file
+    permission: dce.admin.reloadMaterials
+    permission-message: You do not have the permission to use this command
+    usage: ""
+
+  reloadEnchants:
+    description: Allows the user to reload enchants from the file
+    permission: dce.admin.reloadEnchants
+    permission-message: You do not have the permission to use this command
+    usage: ""
 
 permissions:
   # Enchants
@@ -323,9 +331,21 @@ permissions:
       dce.admin.editbal: true
       dce.admin.setbal: true
       dce.admin.clearbal: true
+      dce.admin.reloadEnchants: true
+      dce.admin.reloadMaterials: true
       dce.money: true
       dce.market: true
       dce.misc: true
+      dce.enchant: true
+      dce.mail: true
+
+  dce.admin.reloadEnchants:
+    description: Allows the user to reload enchants from the file.
+    default: op
+
+  dce.admin.reloadMaterials:
+    description: Allows the user to reload enchants from the file.
+    default: op
 
   dce.admin.editbal:
     description: Allows the user to give and take money to themselves and others.

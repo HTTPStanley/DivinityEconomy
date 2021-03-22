@@ -312,6 +312,8 @@ commands:
     clearBal: true
     editBal: true
     setBal: true
+    reloadMaterials: true
+    reloadEnchants: true
 
   economy:
     balance: true
