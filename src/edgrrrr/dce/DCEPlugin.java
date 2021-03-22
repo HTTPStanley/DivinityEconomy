@@ -144,6 +144,10 @@ public class DCEPlugin extends JavaPlugin {
             this.getCommand("eInfo").setExecutor(new EnchantInfo(this));
             this.getCommand("eInfo").setTabCompleter(new EnchantInfoTC(this));
 
+            this.getCommand("reloadMaterials").setExecutor(new ReloadMaterials(this));
+
+            this.getCommand("reloadEnchants").setExecutor(new ReloadEnchants(this));
+
         } catch (Exception e) {
             e.printStackTrace();
             CONSOLE.severe("An error occurred on registry: " + e);
@@ -203,7 +207,7 @@ public class DCEPlugin extends JavaPlugin {
                 Setting.COMMAND_CLEAR_BALANCE_ENABLE_BOOLEAN, Setting.COMMAND_BALANCE_ENABLE_BOOLEAN, Setting.COMMAND_SEND_CASH_ENABLE_BOOLEAN, Setting.COMMAND_BUY_ITEM_ENABLE_BOOLEAN, Setting.COMMAND_SELL_ITEM_ENABLE_BOOLEAN,
                 Setting.COMMAND_HAND_SELL_ITEM_ENABLE_BOOLEAN, Setting.COMMAND_HAND_BUY_ITEM_ENABLE_BOOLEAN, Setting.COMMAND_VALUE_ENABLE_BOOLEAN, Setting.COMMAND_HAND_VALUE_ENABLE_BOOLEAN, Setting.COMMAND_SEARCH_ENABLE_BOOLEAN,
                 Setting.COMMAND_INFO_ENABLE_BOOLEAN, Setting.COMMAND_HAND_INFO_ENABLE_BOOLEAN, Setting.COMMAND_READ_MAIL_ENABLE_BOOLEAN, Setting.COMMAND_CLEAR_MAIL_ENABLE_BOOLEAN, Setting.COMMAND_E_SELL_ENABLE_BOOLEAN,
-                Setting.COMMAND_E_BUY_ENABLE_BOOLEAN, Setting.COMMAND_E_VALUE_ENABLE_BOOLEAN, Setting.COMMAND_E_INFO_ENABLE_BOOLEAN };
+                Setting.COMMAND_E_BUY_ENABLE_BOOLEAN, Setting.COMMAND_E_VALUE_ENABLE_BOOLEAN, Setting.COMMAND_E_INFO_ENABLE_BOOLEAN, Setting.COMMAND_RELOAD_ENCHANTS_ENABLE_BOOLEAN, Setting.COMMAND_RELOAD_MATERIALS_ENABLE_BOOLEAN };
 
         String[] settingGroups = {"Chat", "Economy", "Market", "|-Materials", "|-Enchants", "Commands"};
         Setting[][] settings = {chatSettings, economySettings, marketSettings, materialSettings, enchantSettings, commandSettings};
