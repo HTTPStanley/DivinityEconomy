@@ -84,7 +84,7 @@ public class SellItem implements CommandExecutor {
                 ValueResponse valueResponse = this.app.getMaterialManager().getSellValue(itemStacks);
 
                 if (valueResponse.isFailure()) {
-                    DCEPlugin.CONSOLE.logFailedSale(player, amountToSell, valueResponse.value, materialData.getCleanName(), valueResponse.errorMessage);
+                    DCEPlugin.CONSOLE.logFailedSale(player, amountToSell, materialData.getCleanName(), valueResponse.errorMessage);
 
                 } else {
                     if (userAmount >= amountToSell) {
@@ -94,7 +94,7 @@ public class SellItem implements CommandExecutor {
 
                         DCEPlugin.CONSOLE.logSale(player, amountToSell, valueResponse.value, materialData.getCleanName());
                     } else {
-                        DCEPlugin.CONSOLE.logFailedSale(player, amountToSell, valueResponse.value, materialData.getCleanName(), String.format("you do not have enough of this material. (missing %d)", amountToSell - userAmount));
+                        DCEPlugin.CONSOLE.logFailedSale(player, amountToSell, materialData.getCleanName(), String.format("you do not have enough of this material. (missing %d)", amountToSell - userAmount));
                     }
                 }
             }
