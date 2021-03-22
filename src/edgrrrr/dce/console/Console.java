@@ -164,7 +164,6 @@ public class Console {
      * @param amount - The amount sent
      */
     public void logTransfer(OfflinePlayer player1, OfflinePlayer player2, double amount) {
-        amount = this.app.getEconomyManager().round(amount);
         // Send console log of transaction
         this.info(String.format("%s sent £%,.2f to %s", player1.getName(), amount, player2.getName()));
 
@@ -197,9 +196,8 @@ public class Console {
      * @param error - The error
      */
     public void logFailedTransfer(OfflinePlayer player1, OfflinePlayer player2, double amount, String error) {
-        amount = this.app.getEconomyManager().round(amount);
         // Send console log of transaction
-        this.warn(String.format("%s couldn't send £%,.2f to %s because %s", player1.getName(), this.app.getEconomyManager().round(amount), player2.getName(), error));
+        this.warn(String.format("%s couldn't send £%,.2f to %s because %s", player1.getName(), amount, player2.getName(), error));
 
         // Handles online and offline messages for sender
         Player onlinePlayer1 = player1.getPlayer();
@@ -222,22 +220,15 @@ public class Console {
      * @param reason - The reason for the change.
      */
     public void logBalance(OfflinePlayer player1, OfflinePlayer player2, double balance1, double balance2, String reason) {
-        // Round balances
-        balance1 = this.app.getEconomyManager().round(balance1);
-        balance2 = this.app.getEconomyManager().round(balance2);
-
-        // Get the change
-        double delta = this.app.getEconomyManager().round(balance2 - balance1);
-
         // Send console log of balance change
-        this.info(String.format("%s's balance changed from £%,.2f to £%,.2f (δ £%,.2f) because %s", player2.getName(), balance1, balance2, delta, reason));
+        this.info(String.format("%s's balance changed from £%,.2f to £%,.2f because %s", player2.getName(), balance1, balance2, reason));
 
         // Only handle sender if sender is not also the receiver
         if (player1 != player2) {
             // Handles online and offline messages for sender
             Player onlinePlayer1 = player1.getPlayer();
             MailList playerMailList1 = this.app.getMailManager().getMailList(player1.getUniqueId().toString());
-            String playerMessage1 = String.format("You changed %s's balance from £%,.2f to £%,.2f (δ £%,.2f)", player2.getName(), balance1, balance2, delta);
+            String playerMessage1 = String.format("You changed %s's balance from £%,.2f to £%,.2f", player2.getName(), balance1, balance2);
             if (onlinePlayer1 != null) {
                 this.info(onlinePlayer1, playerMessage1);
             } else {
@@ -249,7 +240,7 @@ public class Console {
         // Handles online and offline messages for receiver
         Player onlinePlayer2 = player2.getPlayer();
         MailList playerMailList2 = this.app.getMailManager().getMailList(player2.getUniqueId().toString());
-        String playerMessage2 = String.format("Your balance changed from £%,.2f to £%,.2f (δ £%,.2f) because %s", balance1, balance2, delta, reason);
+        String playerMessage2 = String.format("Your balance changed from £%,.2f to £%,.2f because %s", balance1, balance2, reason);
         if (onlinePlayer2 != null) {
             this.info(onlinePlayer2, playerMessage2);
         } else {
@@ -262,20 +253,11 @@ public class Console {
      * Player1 and Player2 can be the same!
      * @param player1 - The command sender (Person who requested balance change)
      * @param player2 - The command receiver (Person who's balance is changing)
-     * @param balance1 - The balance before the change.
-     * @param balance2 - The balance after the change
      * @param error - The error causing the failure.
      */
-    public void logFailedBalance(OfflinePlayer player1, OfflinePlayer player2, double balance1, double balance2, String error) {
-        // Round balances
-        balance1 = this.app.getEconomyManager().round(balance1);
-        balance2 = this.app.getEconomyManager().round(balance2);
-
-        // Get the change
-        double delta = this.app.getEconomyManager().round(balance2 - balance1);
-
+    public void logFailedBalance(OfflinePlayer player1, OfflinePlayer player2, String error) {
         // The message to send
-        String playerMessage = String.format("Couldn't change %s's balance from £%,.2f to £%,.2f (δ £%,.2f) because %s", player2.getName(), balance1, balance2, delta, error);
+        String playerMessage = String.format("Couldn't change %s's balance because %s", player2.getName(), error);
 
         // Send console log of balance change
         this.warn(playerMessage);
@@ -344,9 +326,8 @@ public class Console {
      * @param materialName - The name of the item
      */
     public void logSale(OfflinePlayer player, int amount, double value, String materialName) {
-        value = this.app.getEconomyManager().round(value);
         // Send console log for sale
-        this.info(String.format("%s sold %d %s for £%,.2f", player.getName(), amount, materialName, this.app.getEconomyManager().round(value)));
+        this.info(String.format("%s sold %d %s for £%,.2f", player.getName(), amount, materialName, value));
 
         // Handles online and offline messages for sender
         Player onlinePlayer = player.getPlayer();
