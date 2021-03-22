@@ -3,10 +3,7 @@ package edgrrrr.dce.mail;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Set;
+import java.util.*;
 
 public class MailList {
     // Variables for the dictionary keys
@@ -49,24 +46,23 @@ public class MailList {
      */
     public HashMap<Integer, Mail[]> getPages(int pageSize) {
         HashMap<Integer, Mail[]> pages = new HashMap<>();
-        Object[] allMail = this.getMailIDs().toArray();
+        Mail[] allMail = this.getAllMail().values().toArray(new Mail[0]);
         int mailCount = allMail.length;
 
-        int pageNumber = 0;
-        int pageIdx = 0;
-        Mail[] page = new Mail[pageSize];
-        for (int mailNumber = 0; mailNumber < mailCount; mailNumber++) {
-            if (pageIdx == pageSize) {
-                pages.put(pageNumber, page);
-                pageNumber += 1;
-                page = new Mail[pageSize];
+        int pageNum = 0;
+        ArrayList<Mail> page = new ArrayList<>();
+        for (int mailNumber=0; mailNumber < mailCount; mailNumber++) {
+            if (page.size() == pageSize) {
+                pages.put(pageNum, page.toArray(new Mail[0]));
+                pageNum += 1;
+                page = new ArrayList<>();
             }
-            page[pageIdx] = this.getMail((String) allMail[(pageNumber * pageSize) + pageIdx]);
-            pageIdx += 1;
-        }
 
-        if (!pages.containsValue(page)) {
-            pages.put(pageNumber, page);
+            page.add(allMail[(pageNum * pageSize) + page.size()]);
+
+            if (!pages.containsKey(pageNum)) {
+                pages.put(pageNum, page.toArray(new Mail[0]));
+            }
         }
 
         return pages;
