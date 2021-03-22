@@ -319,19 +319,16 @@ public class Console {
      * Handles the console logging, player message and player mail for the failed purchase of an item
      * @param player - The player
      * @param amount - The amount of the item
-     * @param cost - The cost of the items
      * @param materialName - The name of the item
      * @param error - The error
      */
-    public void logFailedPurchase(OfflinePlayer player, int amount, double cost, String materialName, String error) {
-        cost = this.app.getEconomyManager().round(cost);
-        // Send console log for failed purchase
-        this.warn(String.format("%s couldn't purchase %d %s for £%,.2f because %s", player.getName(), amount, materialName, this.app.getEconomyManager().round(cost), error));
+    public void logFailedPurchase(OfflinePlayer player, int amount, String materialName, String error) {
+        this.warn(String.format("%s couldn't purchase %d %s because %s", player.getName(), amount, materialName, error));
 
         // Handles online and offline messages for sender
         Player onlinePlayer = player.getPlayer();
         MailList playerMailList = this.app.getMailManager().getMailList(player.getUniqueId().toString());
-        String player1Message = String.format("Couldn't purchase %d %s for £%,.2f because %s", amount, materialName, cost, error);
+        String player1Message = String.format("Couldn't purchase %d %s because %s", amount, materialName, error);
         if (onlinePlayer != null) {
             this.warn(onlinePlayer, player1Message);
         } else {
@@ -366,19 +363,16 @@ public class Console {
      * Handles the console logging, player message and player mail of the failed sale of an item
      * @param player - The player
      * @param amount - The amount of the item
-     * @param value - The value of the items
      * @param materialName - The material name
      * @param error - The error
      */
-    public void logFailedSale(OfflinePlayer player, int amount, double value, String materialName, String error) {
-        value = this.app.getEconomyManager().round(value);
-        // Send console log for failed sale
-        this.warn(String.format("%s couldn't sell %d %s for £%,.2f because %s", player.getName(), amount, materialName, this.app.getEconomyManager().round(value), error));
+    public void logFailedSale(OfflinePlayer player, int amount, String materialName, String error) {
+        this.warn(String.format("%s couldn't sell %d %s because %s", player.getName(), amount, materialName, error));
 
         // Handles online and offline messages for sender
         Player onlinePlayer = player.getPlayer();
         MailList playerMailList = this.app.getMailManager().getMailList(player.getUniqueId().toString());
-        String player1Message = String.format("Couldn't sell %d %s for £%,.2f because %s", amount, materialName, value, error);
+        String player1Message = String.format("Couldn't sell %d %s because %s", amount, materialName, error);
         if (onlinePlayer != null) {
             this.warn(onlinePlayer, player1Message);
         } else {
