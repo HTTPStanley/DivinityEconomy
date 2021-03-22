@@ -38,7 +38,6 @@ public enum Setting {
 	CHAT_INFO_COLOR                   ( SECTION_CHAT.path + ".infoColour"      ),
 	CHAT_WARNING_COLOR                ( SECTION_CHAT.path + ".warningColour"   ),
 	CHAT_SEVERE_COLOR                 ( SECTION_CHAT.path + ".severeColour"    ),
-	CHAT_FATAL_COLOR                  ( SECTION_CHAT.path + ""                 ), //TODO: Add to config
 
 	//Economy Settings
 	ECONOMY_MIN_SEND_AMOUNT_DOUBLE    ( SECTION_ECONOMY.path + ".minSendAmount"     ),
@@ -46,7 +45,7 @@ public enum Setting {
 	ECONOMY_MIN_BALANCE_DOUBLE        ( SECTION_ECONOMY.path + ".minAccountBalance" ),
 
 	//Market Settings
-	MARKET_SAVE_TIMER_INTEGER   ( SECTION_MARKET.path + ".saveTimer" ),
+	MARKET_SAVE_TIMER_INTEGER   		   ( SECTION_MARKET.path + ".saveTimer"              ),
 	MARKET_MATERIALS_ENABLE_BOOLEAN        ( SECTION_MARKET_MATERIALS.path + ".enable"       ),
 	MARKET_MATERIALS_BASE_QUANTITY_INTEGER ( SECTION_MARKET_MATERIALS.path + ".baseQuantity" ),
 	MARKET_MATERIALS_BUY_TAX_FLOAT         ( SECTION_MARKET_MATERIALS.path + ".buyTax"       ),
@@ -74,16 +73,12 @@ public enum Setting {
 	COMMAND_HAND_INFO_ENABLE_BOOLEAN      ( SECTION_COMMANDS_MARKET.path  + ".handInfo"  ),
 	COMMAND_READ_MAIL_ENABLE_BOOLEAN      ( SECTION_COMMANDS_MAIL.path    + ".readMail"  ),
 	COMMAND_CLEAR_MAIL_ENABLE_BOOLEAN     ( SECTION_COMMANDS_MAIL.path    + ".clearMail" ),
-	COMMAND_E_HAND_SELL_ENABLE_BOOLEAN    ( SECTION_COMMANDS_ENCHANT.path + ".eHandSell" ),
-	COMMAND_E_HAND_BUY_ENABLE_BOOLEAN     ( SECTION_COMMANDS_ENCHANT.path + ".eHandBuy"  ),
-	COMMAND_E_SELL_ENABLE_BOOLEAN     	  ( SECTION_COMMANDS_ENCHANT.path + ".eSell"     ),
-	COMMAND_E_BUY_ENABLE_BOOLEAN          ( SECTION_COMMANDS_ENCHANT.path + ".eBuy"      ),
-	COMMAND_E_VALUE_ENABLE_BOOLEAN        ( SECTION_COMMANDS_ENCHANT.path + ".eValue"    ),
-	COMMAND_E_HAND_VALUE_ENABLE_BOOLEAN   ( SECTION_COMMANDS_ENCHANT.path + ".eHandValue"),
-	COMMAND_E_INFO_ENABLE_BOOLEAN         ( SECTION_COMMANDS_ENCHANT.path + ".eInfo"     ),
-	COMMAND_E_HAND_INFO_ENABLE_BOOLEAN    ( SECTION_COMMANDS_ENCHANT.path + ".eHandInfo" );
+	COMMAND_E_SELL_ENABLE_BOOLEAN         ( SECTION_COMMANDS_ENCHANT.path + ".eSell" 	  ),
+	COMMAND_E_BUY_ENABLE_BOOLEAN		  ( SECTION_COMMANDS_ENCHANT.path + ".eBuy" 	  ),
+	COMMAND_E_VALUE_ENABLE_BOOLEAN	      ( SECTION_COMMANDS_ENCHANT.path + ".eValue"	  ),
+	COMMAND_E_INFO_ENABLE_BOOLEAN		  ( SECTION_COMMANDS_ENCHANT.path + ".eInfo"	  );
 
-	private String path;
+	private final String path;
 
 	Setting(String path) {
 		this.path = path;
