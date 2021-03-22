@@ -316,6 +316,8 @@ commands:
     reloadEnchants: true
     setStock: true
     setValue: true
+    saveMaterials: true
+    saveEnchants: true
 
   economy:
     balance: true

@@ -167,6 +167,18 @@ commands:
     permission-message: You do not have the permission to use this command
     usage: ""
 
+  saveMaterials:
+    description: Allows the user to save materials from the file
+    permission: dce.admin.saveMaterials
+    permission-message: You do not have the permission to use this command
+    usage: ""
+
+  saveEnchants:
+    description: Allows the user to save enchants from the file
+    permission: dce.admin.saveEnchants
+    permission-message: You do not have the permission to use this command
+    usage: ""
+
   setValue:
     description: Sets the value of an item
     aliases: [ ]
@@ -180,6 +192,7 @@ commands:
     permission: dce.admin.setStock
     permission-message: You do not have permission to use this command
     usage: ""
+
 
 
 permissions:
@@ -315,18 +328,28 @@ permissions:
       dce.admin.reloadMaterials: true
       dce.admin.setStock: true
       dce.admin.setValue: true
+      dce.admin.saveEnchants: true
+      dce.admin.saveMaterials: true
       dce.money: true
       dce.market: true
       dce.misc: true
       dce.enchant: true
       dce.mail: true
 
+  dce.admin.saveEnchants:
+    description: Allows the user to save enchants from the file.
+    default: op
+
+  dce.admin.saveMaterials:
+    description: Allows the user to save materials from the file.
+    default: op
+
   dce.admin.reloadEnchants:
     description: Allows the user to reload enchants from the file.
     default: op
 
   dce.admin.reloadMaterials:
-    description: Allows the user to reload enchants from the file.
+    description: Allows the user to reload materials from the file.
     default: op
 
   dce.admin.editbal:
