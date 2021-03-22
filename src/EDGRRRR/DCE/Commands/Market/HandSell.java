@@ -72,7 +72,7 @@ public class HandSell implements CommandExecutor {
                 int materialCount = PlayerInventoryManager.getMaterialCount(PlayerInventoryManager.getMaterialSlots(player, material));
 
                 if (materialCount < amountToSell) {
-                    DCEPlugin.CONSOLE.logFailedSale(player, amountToSell, 0.0, materialData.getCleanName(), String.format("you do not have enough of this material (%d/%d)", materialCount, amountToSell));
+                    DCEPlugin.CONSOLE.logFailedSale(player, amountToSell, materialData.getCleanName(), String.format("you do not have enough of this material (%d/%d)", materialCount, amountToSell));
 
                 } else {
                     ItemStack[] itemStacks = PlayerInventoryManager.getMaterialSlotsToCount(player, material, amountToSell);
@@ -87,7 +87,7 @@ public class HandSell implements CommandExecutor {
                         DCEPlugin.CONSOLE.logSale(player, amountToSell, response.value, materialData.getCleanName());
                     } else {
                         // Handles console, player message and mail
-                        DCEPlugin.CONSOLE.logFailedSale(player, amountToSell, response.value, materialData.getCleanName(), response.errorMessage);
+                        DCEPlugin.CONSOLE.logFailedSale(player, amountToSell, materialData.getCleanName(), response.errorMessage);
                     }
                 }
             }
