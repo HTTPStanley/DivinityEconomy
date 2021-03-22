@@ -51,7 +51,7 @@ public class HandInfo implements CommandExecutor {
         Material material = heldItem.getType();
         MaterialData materialData = this.app.getMaterialManager().getMaterial(material.name());
 
-        DCEPlugin.CONSOLE.info(player, "==[Information for" + materialData.getCleanName() + "]==");
+        DCEPlugin.CONSOLE.info(player, "==[Information for " + materialData.getCleanName() + "]==");
         DCEPlugin.CONSOLE.info(player, "ID: " + materialData.getMaterialID());
         DCEPlugin.CONSOLE.info(player, "Type: " + materialData.getType());
         DCEPlugin.CONSOLE.info(player, "Current Quantity: " + materialData.getQuantity());
