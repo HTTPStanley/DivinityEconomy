@@ -12,7 +12,7 @@ public class MailManager {
     // The mail file
     private final String mailFile = "mail.yml";
     // Where mail is stored against the player
-    private HashMap<OfflinePlayer, MailList> mailMap;
+    private HashMap<String, MailList> mailMap;
     // Where the config is stored
     private FileConfiguration configuration;
 
@@ -54,15 +54,10 @@ public class MailManager {
         int mailCount = 0;
         for (String userID : this.configuration.getKeys(false)) {
             ConfigurationSection mailListSection = this.configuration.getConfigurationSection(userID);
-            OfflinePlayer player = this.app.getPlayerManager().getOfflinePlayerByUUID(userID, true);
-            if (player == null) {
-                DCEPlugin.CONSOLE.severe(String.format("Invalid player UUID in mail list: '%s'", userID));
-            } else {
-                MailList mailList = new MailList(this, player, mailListSection);
-                this.addMailList(player, mailList);
-                userCount += 1;
-                mailCount += mailList.getMailIDs().size();
-            }
+            MailList mailList = new MailList(this, userID, mailListSection);
+            this.addMailList(userID, mailList);
+            userCount += 1;
+            mailCount += mailList.getMailIDs().size();
         }
 
         DCEPlugin.CONSOLE.info("Read " + mailCount + " mail for " + userCount + " users.");
@@ -70,43 +65,37 @@ public class MailManager {
 
     /**
      * Adds a mail list and stores it against the player
-     *
-     * @param player   - The player to store the mail list for
      * @param mailList - The mail list to store
      */
-    public void addMailList(OfflinePlayer player, MailList mailList) {
-        this.mailMap.put(player, mailList);
+    public void addMailList(String uuid, MailList mailList) {
+        this.mailMap.put(uuid, mailList);
         this.saveMailList(mailList);
     }
 
     /**
      * Creates an empty mail list for a player
-     *
-     * @param player - The player to store the mail for
      */
-    public MailList addPlayer(OfflinePlayer player) {
-        ConfigurationSection mailSection = this.createMailListSection(player);
-        MailList mailList = new MailList(this, player, mailSection);
-        this.addMailList(player, mailList);
+    public MailList addPlayer(String uuid) {
+        ConfigurationSection mailSection = this.createMailListSection(uuid);
+        MailList mailList = new MailList(this, uuid, mailSection);
+        this.addMailList(uuid, mailList);
         return mailList;
     }
 
-    public ConfigurationSection createMailListSection(OfflinePlayer player) {
-        return this.configuration.createSection(player.getUniqueId().toString());
+    public ConfigurationSection createMailListSection(String uuid) {
+        return this.configuration.createSection(uuid);
     }
 
     /**
      * Returns a players mail list
      * If the user does not have one, it will create an empty mail list and return it.
-     *
-     * @param player - The player to get the mail list for
      * @return MailList - The mail list for this player
      */
-    public MailList getMailList(OfflinePlayer player) {
-        if (!(this.mailMap.containsKey(player))) {
-            this.addPlayer(player);
+    public MailList getMailList(String uuid) {
+        if (!(this.mailMap.containsKey(uuid))) {
+            this.addPlayer(uuid);
         }
-        return this.mailMap.get(player);
+        return this.mailMap.get(uuid);
     }
 
     private void setData(String key, Object value) {
@@ -115,7 +104,7 @@ public class MailManager {
 
     public void saveMailList(MailList mailList) {
         mailList.saveAllMail();
-        this.setData(mailList.getPlayer().getUniqueId().toString(), mailList.getConfigurationSection());
+        this.setData(mailList.getPlayer(), mailList.getConfigurationSection());
     }
 
     private void saveMailFile() {
@@ -129,7 +118,7 @@ public class MailManager {
         int userCount = 0;
         int mailCount = 0;
         for (MailList mailList : this.mailMap.values()) {
-            saveMailList(mailList);
+            this.saveMailList(mailList);
             userCount += 1;
             mailCount += mailList.getMailIDs().size();
         }
