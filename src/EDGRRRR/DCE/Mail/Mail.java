@@ -10,14 +10,13 @@ import java.util.HashMap;
  * A class representing ingame mail.
  * Message variables:
  *  <daysAgo> - The days since event
- *  //hoursAgo - The hours since the event
+ *  <hoursAgo> - The hours since the event
+ *  <minsAgo> - The minutes since the event
+ *  <aptime> - The appropriate time since the event
  */
 public class Mail {
-    private static final String[] strings = {"<daysAgo>"};
     private final MailList mailList;
     private final ConfigurationSection configurationSection;
-    private final HashMap<String, String> stringReplacementMap;
-    private final String[] resultingStrings;
 
     /**
      * Constructor
@@ -28,16 +27,6 @@ public class Mail {
     public Mail(MailList mailList, ConfigurationSection configurationSection) {
         this.mailList = mailList;
         this.configurationSection = configurationSection;
-        this.stringReplacementMap = new HashMap<>();
-        this.resultingStrings = new String[]{
-                String.valueOf(this.getDaysSince())
-        };
-
-        for (int i = 0; i < strings.length; i++) {
-            String string = strings[i];
-            String resultingString = this.resultingStrings[i];
-            this.stringReplacementMap.put(string, resultingString);
-        }
     }
 
     /**
@@ -60,11 +49,11 @@ public class Mail {
 
     public String getMessage() {
         String message = this.getRawMessage();
-        for (String string : this.stringReplacementMap.keySet()) {
-            if (message.contains(string)) {
-                message = message.replace(string, this.stringReplacementMap.get(string));
-            }
-        }
+        message = message.replace("<daysAgo>", String.valueOf(this.getDaysSince()));
+        message = message.replace("<hoursAgo>", String.valueOf(this.getHoursSince()));
+        message = message.replace("<minsAgo>", String.valueOf(this.getMinutesSince()));
+        HashMap<String, Object> aptime = this.getApTimeSince();
+        message = message.replace("<aptime>", String.format("%s %s ago", aptime.get("value"), aptime.get("type")));
         return message;
     }
 
@@ -96,6 +85,43 @@ public class Mail {
      */
     public int getDaysSince() {
         return (int) this.getTimeSince().toDays();
+    }
+
+    /**
+     * Returns the number of hours between the creation date and now
+     * @return int
+     */
+    public int getHoursSince(){return (int) this.getTimeSince().toHours();}
+
+    /**
+     * Returns the number of minutes between the creation date and now
+     * @return int
+     */
+    public int getMinutesSince(){return (int) this.getTimeSince().toMinutes();}
+
+    /**
+     * Returns the appropriate time since the creation date.
+     * @return String, Integer - The type, the value
+     */
+    public HashMap<String, Object> getApTimeSince(){
+        int days = this.getDaysSince();
+        int hours = this.getHoursSince();
+        int minutes = this.getMinutesSince();
+
+        HashMap<String, Object> result = new HashMap<>();
+
+        if (minutes <= 120) {
+            result.put("value", minutes);
+            result.put("type", "minutes");
+        } else if (hours <= 72) {
+            result.put("value", hours);
+            result.put("type", "hours");
+        } else {
+            result.put("value", days);
+            result.put("type", "days");
+        }
+
+        return result;
     }
 
     /**
