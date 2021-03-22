@@ -94,9 +94,10 @@ public class EditBal implements CommandExecutor {
             // Handles sender, receiver, message, mail and console log
             if (response.transactionSuccess()) {
                 DCEPlugin.CONSOLE.logBalance(player1, player2, startingBalance, response.balance, String.format("%s changed your balance", player1.getName()));
+
             } else {
 
-                DCEPlugin.CONSOLE.logFailedBalance(player1, player2, startingBalance, response.balance, response.errorMessage);
+                DCEPlugin.CONSOLE.logFailedBalance(player1, player2, response.errorMessage);
             }
         }
 
