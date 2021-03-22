@@ -148,6 +148,10 @@ public class DCEPlugin extends JavaPlugin {
 
             this.getCommand("reloadEnchants").setExecutor(new ReloadEnchants(this));
 
+            this.getCommand("saveMaterials").setExecutor(new SaveMaterials(this));
+
+            this.getCommand("saveEnchants").setExecutor(new SaveEnchants(this));
+
             this.getCommand("setStock").setExecutor(new SetStock(this));
             this.getCommand("setStock").setTabCompleter(new SetStockTC(this));
 
