@@ -108,7 +108,11 @@ public class Console {
      * @param message - The message to send
      */
     private void send(Player player, LogLevel level, String message) {
-        player.sendMessage(chatPrefix + level.getColour() + message);
+        if (player != null) {
+            player.sendMessage(chatPrefix + level.getColour() + message);
+        } else {
+            this.send(level, message);
+        }
     }
 
     /**
