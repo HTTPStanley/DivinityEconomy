@@ -94,3 +94,5 @@ out/production/DCE/edgrrrr/dce/commands/enchants/EnchantHandValueTC.class
 .idea/workspace.xml~
 out/production/DCE/edgrrrr/dce/commands/enchants/EnchantHandInfoTC.class
 out/production/DCE/edgrrrr/dce/commands/enchants/EnchantInfoTC.class
+out/production/DCE/edgrrrr/dce/commands/admin/ReloadEnchants.class
+out/production/DCE/edgrrrr/dce/commands/admin/ReloadMaterials.class
