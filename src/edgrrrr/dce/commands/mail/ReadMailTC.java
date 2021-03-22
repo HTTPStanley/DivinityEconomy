@@ -12,6 +12,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * A tab completer for the read mail command
+ */
 public class ReadMailTC implements TabCompleter {
     private final DCEPlugin app;
 

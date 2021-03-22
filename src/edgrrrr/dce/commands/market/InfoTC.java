@@ -11,6 +11,9 @@ import org.bukkit.entity.Player;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * tab completer for the info command
+ */
 public class InfoTC implements TabCompleter {
     private final DCEPlugin app;
 

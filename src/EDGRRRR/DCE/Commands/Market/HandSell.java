@@ -14,11 +14,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 /**
- * A simple ping pong! command
+ * A command for selling items in the users hand
  */
 public class HandSell implements CommandExecutor {
     private final DCEPlugin app;
-    private final String usage = "/hs | /hs <amount> | /hs max";
+    private final String usage = "/hs | /hs <amount>";
 
     public HandSell(DCEPlugin app) {
         this.app = app;
@@ -46,20 +46,10 @@ public class HandSell implements CommandExecutor {
         }
 
         int amountToSell = 1;
-        boolean sellAll = false;
-        boolean sellHand = false;
 
         switch (args.length) {
-            case 0:
-                sellHand = true;
-                break;
-
             case 1:
-                if (args[0].equals("max")) {
-                    sellAll = true;
-                } else {
-                    amountToSell = Math.getInt(args[0]);
-                }
+                amountToSell = Math.getInt(args[0]);
                 break;
 
             default:
@@ -81,13 +71,6 @@ public class HandSell implements CommandExecutor {
                 MaterialData materialData = this.app.getMaterialManager().getMaterial(materialName);
                 int materialCount = PlayerInventoryManager.getMaterialCount(PlayerInventoryManager.getMaterialSlots(player, material));
 
-                if (sellAll) {
-                    amountToSell = materialCount;
-                }
-
-                if (sellHand) {
-                    amountToSell = heldItem.getAmount();
-                }
                 if (materialCount < amountToSell) {
                     DCEPlugin.CONSOLE.logFailedSale(player, amountToSell, 0.0, materialData.getCleanName(), String.format("you do not have enough of this material (%d/%d)", materialCount, amountToSell));
 
@@ -99,8 +82,6 @@ public class HandSell implements CommandExecutor {
                         PlayerInventoryManager.removeMaterialsFromPlayer(itemStacks);
                         materialData.addQuantity(amountToSell);
                         this.app.getEconomyManager().addCash(player, response.value);
-                        double cost = app.getEconomyManager().round(response.value);
-                        double balance = app.getEconomyManager().round(app.getEconomyManager().getBalance(player));
 
                         // Handles console, player message and mail
                         DCEPlugin.CONSOLE.logSale(player, amountToSell, response.value, materialData.getCleanName());

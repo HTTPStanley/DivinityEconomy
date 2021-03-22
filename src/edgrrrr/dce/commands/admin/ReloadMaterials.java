@@ -8,7 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 /**
- * A simple ping pong! command
+ * A command for reloading the materials
  */
 public class ReloadMaterials implements CommandExecutor {
     private final DCEPlugin app;

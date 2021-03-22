@@ -10,6 +10,9 @@ import org.bukkit.entity.Player;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Tab completer for the clearbal command.
+ */
 public class ClearBalTC implements TabCompleter {
     private final DCEPlugin app;
 

@@ -15,6 +15,9 @@ import org.bukkit.inventory.ItemStack;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * A tab completer for the enchant hand buy command
+ */
 public class EnchantHandBuyTC implements TabCompleter {
     private final DCEPlugin app;
 

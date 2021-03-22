@@ -14,6 +14,9 @@ import org.bukkit.inventory.ItemStack;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * A tab completer for the hand buy command
+ */
 public class HandBuyTC implements TabCompleter {
     private final DCEPlugin app;
 
@@ -41,7 +44,9 @@ public class HandBuyTC implements TabCompleter {
                 // return max stack size for the material given
                 case 1:
                     strings = new String[]{
-                            String.valueOf(materialData.getMaterial().getMaxStackSize())
+                            String.valueOf(materialData.getMaterial().getMaxStackSize() - heldItem.getAmount()),
+                            String.valueOf(materialData.getMaterial().getMaxStackSize()),
+                            String.valueOf(PlayerInventoryManager.getAvailableSpace(player, materialData.getMaterial()))
                     };
                     break;
 

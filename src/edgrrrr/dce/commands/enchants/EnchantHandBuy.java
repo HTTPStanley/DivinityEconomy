@@ -14,6 +14,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+/**
+ * A command for buying enchants for the item held in a users hand
+ */
 public class EnchantHandBuy implements CommandExecutor {
     private final DCEPlugin app;
     private final String usage = "/ehb <enchant> <level>";

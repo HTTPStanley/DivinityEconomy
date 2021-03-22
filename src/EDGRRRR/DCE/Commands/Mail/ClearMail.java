@@ -12,6 +12,9 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * A command for clearing mail
+ */
 public class ClearMail implements CommandExecutor {
     private final DCEPlugin app;
     private final String usage = "/clearMail read | /clearMail unread | /clearMail all";
