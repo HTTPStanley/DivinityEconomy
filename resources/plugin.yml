@@ -95,71 +95,78 @@ commands:
 
   information:
     description: Returns information about the item the user has searched for
-    aliases: [info]
+    aliases: [i]
     permission: dce.market.information
     permission-message: You do not have permission to use this command
     usage: ""
 
   handInformation:
     description: Returns information about the item the user is holding
-    aliases: [hi, handinfo]
+    aliases: [hi]
     permission: dce.market.handInformation
     permission-message: You do not have permission to use this command
     usage: ""
 
   handValue:
     description: Returns the hand value of the item the user is holding
-    aliases: [hv, handval]
+    aliases: [hv]
     permission: dce.market.handValue
     permission-message: You do not have permission to use this command
     usage: ""
 
   setValue:
     description: Sets the value of an item
-    aliases: [sv, setval]
+    aliases: []
     permission: dce.admin.setValue
     permission-message: You do not have permission to use this command
     usage: ""
 
   setStock:
     description: Sets the stock of an item
-    aliases: [ss]
+    aliases: []
     permission: dce.admin.setStock
     permission-message: You do not have permission to use this command
     usage: ""
 
   handSetValue:
     description: Sets the value of an item
-    aliases: [hsv]
+    aliases: []
     permission: dce.admin.handSetValue
     permission-message: You do not have permission to use this command
     usage: ""
 
   handSetStock:
     description: Sets the stock of an item
-    aliases: [hss]
+    aliases: []
     permission: dce.admin.handSetStock
     permission-message: You do not have permission to use this command
     usage: ""
 
   eSell:
     description: Sells an enchant on an item.
-    aliases: [ehs]
-    permission: dce.enchant.eHandSell
+    aliases: [es]
+    permission: dce.enchant.eSell
     permission-messaage: You do not have permission to use this command
     usage: ""
 
   eBuy:
     description: Buys an enchant for an item.
-    aliases: [ehb]
-    permission: dce.enchant.eHandBuy
+    aliases: [eb]
+    permission: dce.enchant.eBuy
     permission-messaage: You do not have permission to use this command
     usage: ""
 
   eValue:
     description: Values the enchants on the item in the players hand.
-    aliases: [ehv]
-    permission: dce.enchant.eHandValue
+    aliases: [ev]
+    permission: dce.enchant.eValue
+    permission-messaage: You do not have permission to use this command
+    usage: ""
+
+  eInfo:
+    description: Gets the information for an enchant
+    aliases: [ ei ]
+    permission: dce.enchant.eInfo
     permission-messaage: You do not have permission to use this command
     usage: ""
 
@@ -193,31 +200,21 @@ permissions:
     description: Allows the user to buy and sell enchantments.
     default: true
     children:
-      dce.enchant.eHandSell: true
-      dce.enchant.eHandBuy: true
+      dce.enchant.eSell: true
+      dce.enchant.eBuy: true
       dce.enchant.eValue: true
-      dce.enchant.eHandValue: true
-      dce.enchant.eHandInfo: true
       dce.enchant.eInfo: true
 
-  dce.enchant.eHandSell:
+  dce.enchant.eSell:
     description: Allows the user to sell enchants on their held item.
     default: true
 
-  dce.enchant.eHandBuy:
+  dce.enchant.eBuy:
     description: Allows the user to buy enchants for their held item.
     default: true
 
-  dce.enchant.eHandValue:
-    description: Allows the user to value enchants on their held item.
-    default: true
-
   dce.enchant.eValue:
-    description: Allows the user to value enchants.
-    default: true
-
-  dce.enchant.eHandInfo:
-    description: Allows the user to get the information for enchants on their held item.
+    description: Allows the user to value enchants on their held item.
     default: true
 
   dce.enchant.eInfo:
