@@ -80,41 +80,24 @@ public class EconomyManager {
     }
 
     /**
-     * Returns the players balance, rounded.
-     * @param player - The player to get the balance for
-     * @return double - The rounded balance
-     */
-    public double getRoundedBalance(OfflinePlayer player) {
-        return this.round(this.getBalance(player));
-    }
-
-    /**
-     * Rounding
-     *
-     * @param amount - The amount
-     */
-    public double round(double amount) {
-        return Math.round(amount, this.roundingDigits);
-    }
-
-
-    /**
      * Adds <amount> to <player>
      *
      * @param oPlayer - The offline player
      * @param amount  - The amount
      */
     public EconomyResponse addCash(OfflinePlayer oPlayer, double amount) {
-        DCEPlugin.CONSOLE.debug("ADD REQUEST '" + oPlayer.getName() + "' £" + amount);
+        DCEPlugin.CONSOLE.debug(String.format("ADD REQUEST FOR %s £%,.2f", oPlayer.getName(), amount));
         EconomyResponse response;
         double currentBalance = this.getBalance(oPlayer);
-        if (Double.isInfinite(amount) || Double.isInfinite(amount + currentBalance)) {
+        if (((amount + currentBalance) == amount)) {
             response = new EconomyResponse(0, currentBalance, ResponseType.FAILURE, "cannot have infinite cash.");
         } else {
             response = this.economy.depositPlayer(oPlayer, amount);
             response = new EconomyResponse(response.amount, this.getBalance(oPlayer), response.type, response.errorMessage);
         }
-        DCEPlugin.CONSOLE.debug("ADD COMPLETE '" + oPlayer.getName() + "' £" + response.balance + "(£ " + response.amount + ")");
+
+        DCEPlugin.CONSOLE.debug(String.format("ADD RESULT: %s", response.transactionSuccess()));
+
         return response;
     }
 
@@ -125,7 +108,8 @@ public class EconomyManager {
      * @param amount  - The amount
      */
     public EconomyResponse remCash(OfflinePlayer oPlayer, double amount) {
-        DCEPlugin.CONSOLE.debug("REM REQUEST '" + oPlayer.getName() + "' £" + amount);
+        DCEPlugin.CONSOLE.debug(String.format("REM REQUEST FOR %s £%,.2f", oPlayer.getName(), amount));
+
         double oldBalance = this.getBalance(oPlayer);
         EconomyResponse response;
         if ((oldBalance - amount) < this.minBalance) {
@@ -134,7 +118,9 @@ public class EconomyManager {
             response = this.economy.withdrawPlayer(oPlayer, amount);
         }
         response = new EconomyResponse(response.amount, this.getBalance(oPlayer), response.type, response.errorMessage);
-        DCEPlugin.CONSOLE.debug("REM COMPLETE '" + oPlayer.getName() + "' £" + response.balance + "(£ " + response.amount + ")");
+
+        DCEPlugin.CONSOLE.debug(String.format("REM RESULT: %s", response.transactionSuccess()));
+
         return response;
     }
 
@@ -146,7 +132,7 @@ public class EconomyManager {
      * @return EconomyResponse - The result of the function
      */
     public EconomyResponse setCash(OfflinePlayer oPlayer, double amount) {
-        DCEPlugin.CONSOLE.debug("SET REQUEST '" + oPlayer.getName() + "' £" + amount);
+        DCEPlugin.CONSOLE.debug(String.format("SET REQUEST FOR %s £%,.2f", oPlayer.getName(), amount));
         double balance = this.getBalance(oPlayer);
         double difference = amount - balance;
         EconomyResponse response;
@@ -157,9 +143,10 @@ public class EconomyManager {
         } else {
             response = new EconomyResponse(difference, this.getBalance(oPlayer), ResponseType.SUCCESS, "");
         }
-
         response = new EconomyResponse(response.amount, this.getBalance(oPlayer), response.type, response.errorMessage);
-        DCEPlugin.CONSOLE.debug("SET COMPLETE '" + oPlayer.getName() + "' £" + response.balance + "(£ " + response.amount + ")");
+
+        DCEPlugin.CONSOLE.debug(String.format("SET RESULT: %s", response.transactionSuccess()));
+
         return response;
     }
 
