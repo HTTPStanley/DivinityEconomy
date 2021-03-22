@@ -110,7 +110,7 @@ public class EnchantHandSell implements CommandExecutor {
                 if (sellAllEnchants) {
                     MultiValueResponse multiValueResponse = this.app.getEnchantmentManager().getSellValue(heldItem);
                     if (multiValueResponse.isFailure()) {
-                        DCEPlugin.CONSOLE.logFailedSale(player, multiValueResponse.getTotalQuantity(), multiValueResponse.getTotalValue(), multiValueResponse.toString("Enchants: "), multiValueResponse.errorMessage);
+                        DCEPlugin.CONSOLE.logFailedSale(player, multiValueResponse.getTotalQuantity(), multiValueResponse.toString("Enchants: "), multiValueResponse.errorMessage);
                     } else {
                         for (String enchantID : multiValueResponse.getItemIds()) {
                             EnchantData enchantmentData = this.app.getEnchantmentManager().getEnchant(enchantID);
@@ -137,7 +137,7 @@ public class EnchantHandSell implements CommandExecutor {
                         // Remove enchants, add quantity and add cash
                         ValueResponse valueResponse = this.app.getEnchantmentManager().getSellValue(heldItem, enchantName, enchantLevels);
                         if (valueResponse.isFailure()) {
-                            DCEPlugin.CONSOLE.logFailedSale(player, enchantLevels, valueResponse.value, enchantName, valueResponse.errorMessage);
+                            DCEPlugin.CONSOLE.logFailedSale(player, enchantLevels, enchantName, valueResponse.errorMessage);
 
                         } else {
                             this.app.getEnchantmentManager().removeEnchantLevelsFromItem(heldItem, enchantData.getEnchantment(), enchantLevels);
