@@ -102,3 +102,6 @@ out/production/DCE/edgrrrr/dce/commands/admin/SetValue.class
 out/production/DCE/edgrrrr/dce/commands/admin/SetValueTC.class
 out/production/DCE/edgrrrr/dce/commands/admin/SaveEnchants.class
 out/production/DCE/edgrrrr/dce/commands/admin/SaveMaterials.class
+out/production/DCE/edgrrrr/dce/commands/misc/Help.class
+out/production/DCE/edgrrrr/dce/help/Help.class
+out/production/DCE/edgrrrr/dce/help/HelpManager.class
