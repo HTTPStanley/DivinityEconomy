@@ -2,6 +2,7 @@ package edgrrrr.dce.commands.admin;
 
 import edgrrrr.dce.DCEPlugin;
 import edgrrrr.dce.config.Setting;
+import edgrrrr.dce.help.Help;
 import edgrrrr.dce.math.Math;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.OfflinePlayer;
@@ -16,7 +17,7 @@ import org.bukkit.entity.Player;
 public class EditBal implements CommandExecutor {
     private final DCEPlugin app;
     // This is the usage for this command
-    private final String usage = "/editbal <username> <amount> | /editbal <amount>";
+    private final Help help;
 
     /**
      * Constructor
@@ -24,6 +25,7 @@ public class EditBal implements CommandExecutor {
      */
     public EditBal(DCEPlugin app) {
         this.app = app;
+        this.help = this.app.getHelpManager().get("editbal");
     }
 
     /**
@@ -73,13 +75,13 @@ public class EditBal implements CommandExecutor {
 
             default:
                 // Incorrect number of args
-                DCEPlugin.CONSOLE.usage(player1, "Incorrect number of arguments.", usage);
+                DCEPlugin.CONSOLE.usage(player1, "Incorrect number of arguments.", help);
                 return true;
         }
 
         // Ensure to player exists
         if (player2 == null) {
-            DCEPlugin.CONSOLE.usage(player1, "Invalid player name.", usage);
+            DCEPlugin.CONSOLE.usage(player1, "Invalid player name.", help);
         } else {
 
             // Edit cash

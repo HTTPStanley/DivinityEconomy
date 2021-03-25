@@ -2,6 +2,7 @@ package edgrrrr.dce.commands.mail;
 
 import edgrrrr.dce.DCEPlugin;
 import edgrrrr.dce.config.Setting;
+import edgrrrr.dce.help.Help;
 import edgrrrr.dce.mail.Mail;
 import edgrrrr.dce.mail.MailList;
 import edgrrrr.dce.math.Math;
@@ -17,10 +18,11 @@ import java.util.HashMap;
  */
 public class ReadMail implements CommandExecutor {
     private final DCEPlugin app;
-    private final String usage = "/readMail | /readMail <page>";
+    private final Help help;
 
     public ReadMail(DCEPlugin app) {
         this.app = app;
+        this.help = this.app.getHelpManager().get("readmail");
     }
 
     @Override
@@ -49,11 +51,11 @@ public class ReadMail implements CommandExecutor {
                 break;
 
             default:
-                DCEPlugin.CONSOLE.usage(player, "Invalid number of arguments.", this.usage);
+                DCEPlugin.CONSOLE.usage(player, "Invalid number of arguments.", this.help);
                 return true;
         }
         if (page < 0) {
-            DCEPlugin.CONSOLE.usage(player, "Invalid page.", this.usage);
+            DCEPlugin.CONSOLE.usage(player, "Invalid page.", this.help);
 
         } else {
 

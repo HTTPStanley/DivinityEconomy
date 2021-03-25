@@ -1,6 +1,11 @@
 package edgrrrr.dce.utils;
 
+import edgrrrr.dce.mail.Mail;
+
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ArrayUtils {
 

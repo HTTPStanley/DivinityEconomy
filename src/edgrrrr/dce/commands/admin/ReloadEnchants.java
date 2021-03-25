@@ -2,6 +2,7 @@ package edgrrrr.dce.commands.admin;
 
 import edgrrrr.dce.DCEPlugin;
 import edgrrrr.dce.config.Setting;
+import edgrrrr.dce.help.Help;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -12,9 +13,11 @@ import org.bukkit.entity.Player;
  */
 public class ReloadEnchants implements CommandExecutor {
     private final DCEPlugin app;
+    private final Help help;
 
     public ReloadEnchants(DCEPlugin app) {
         this.app = app;
+        this.help = this.app.getHelpManager().get("reloadenchants");
     }
 
 

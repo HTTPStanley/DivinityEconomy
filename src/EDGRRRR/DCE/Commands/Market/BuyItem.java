@@ -2,6 +2,7 @@ package edgrrrr.dce.commands.market;
 
 import edgrrrr.dce.DCEPlugin;
 import edgrrrr.dce.config.Setting;
+import edgrrrr.dce.help.Help;
 import edgrrrr.dce.materials.MaterialData;
 import edgrrrr.dce.math.Math;
 import edgrrrr.dce.player.PlayerInventoryManager;
@@ -18,10 +19,11 @@ import org.bukkit.inventory.ItemStack;
  */
 public class BuyItem implements CommandExecutor {
     private final DCEPlugin app;
-    private final String usage = "/buy <itemName> <amountToBuy> | /buy <itemName>";
+    private final Help help;
 
     public BuyItem(DCEPlugin app) {
         this.app = app;
+        this.help = this.app.getHelpManager().get("buy");
     }
 
 
@@ -60,18 +62,18 @@ public class BuyItem implements CommandExecutor {
                 break;
 
             default:
-                DCEPlugin.CONSOLE.usage(player, "Invalid number of arguments.", this.usage);
+                DCEPlugin.CONSOLE.usage(player, "Invalid number of arguments.", this.help);
                 return true;
         }
 
         if (amountToBuy < 1) {
-            DCEPlugin.CONSOLE.usage(player, "Invalid amount.", this.usage);
+            DCEPlugin.CONSOLE.usage(player, "Invalid amount.", this.help);
             DCEPlugin.CONSOLE.debug("(BuyItem)Invalid amount: " + amountToBuy);
 
         } else {
             MaterialData materialData = this.app.getMaterialManager().getMaterial(materialName);
             if (materialData == null) {
-                DCEPlugin.CONSOLE.usage(player, "Unknown Item: '" + materialName + "'", this.usage);
+                DCEPlugin.CONSOLE.usage(player, "Unknown Item: '" + materialName + "'", this.help);
                 DCEPlugin.CONSOLE.debug("(BuyItem)Unknown Item: " + materialName);
 
             } else {

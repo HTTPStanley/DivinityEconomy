@@ -2,6 +2,7 @@ package edgrrrr.dce.commands.market;
 
 import edgrrrr.dce.DCEPlugin;
 import edgrrrr.dce.config.Setting;
+import edgrrrr.dce.help.Help;
 import edgrrrr.dce.materials.MaterialData;
 import edgrrrr.dce.materials.MaterialPotionData;
 import org.bukkit.command.Command;
@@ -14,10 +15,11 @@ import org.bukkit.entity.Player;
  */
 public class Info implements CommandExecutor {
     private final DCEPlugin app;
-    private final String usage = "/info <materialName>";
+    private final Help help;
 
     public Info(DCEPlugin app) {
         this.app = app;
+        this.help = this.app.getHelpManager().get("information");
     }
 
     @Override
@@ -47,13 +49,13 @@ public class Info implements CommandExecutor {
                 break;
 
             default:
-                DCEPlugin.CONSOLE.usage(player, "Invalid number of arguments.", this.usage);
+                DCEPlugin.CONSOLE.usage(player, "Invalid number of arguments.", this.help);
                 return true;
         }
 
         MaterialData material = this.app.getMaterialManager().getMaterial(materialName);
         if (material == null) {
-            DCEPlugin.CONSOLE.usage(player, "Unknown Item: " + materialName, this.usage);
+            DCEPlugin.CONSOLE.usage(player, "Unknown Item: " + materialName, this.help);
         } else {
             DCEPlugin.CONSOLE.info(player, "==[Information for " + material.getCleanName() + "]==");
             DCEPlugin.CONSOLE.info(player, "ID: " + material.getMaterialID());

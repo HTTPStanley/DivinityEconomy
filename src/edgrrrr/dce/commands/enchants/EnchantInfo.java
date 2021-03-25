@@ -3,6 +3,7 @@ package edgrrrr.dce.commands.enchants;
 import edgrrrr.dce.DCEPlugin;
 import edgrrrr.dce.config.Setting;
 import edgrrrr.dce.enchants.EnchantData;
+import edgrrrr.dce.help.Help;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -13,10 +14,11 @@ import org.bukkit.entity.Player;
  */
 public class EnchantInfo implements CommandExecutor {
     private final DCEPlugin app;
-    private final String usage = "/einfo <enchantName>";
+    private final Help help;
 
     public EnchantInfo(DCEPlugin app) {
         this.app = app;
+        this.help = this.app.getHelpManager().get("einfo");
     }
 
     @Override
@@ -46,13 +48,13 @@ public class EnchantInfo implements CommandExecutor {
                 break;
 
             default:
-                DCEPlugin.CONSOLE.usage(player, "Invalid number of arguments.", this.usage);
+                DCEPlugin.CONSOLE.usage(player, "Invalid number of arguments.", this.help);
                 return true;
         }
 
         EnchantData enchantData = this.app.getEnchantmentManager().getEnchant(enchantName);
         if (enchantData == null) {
-            DCEPlugin.CONSOLE.usage(player, "Unknown Item: " + enchantName, this.usage);
+            DCEPlugin.CONSOLE.usage(player, "Unknown Item: " + enchantName, this.help);
         } else {
             DCEPlugin.CONSOLE.info(player, "==[Information for " + enchantData.getCleanName() + "]==");
             DCEPlugin.CONSOLE.info(player, "ID: " + enchantData.getID());

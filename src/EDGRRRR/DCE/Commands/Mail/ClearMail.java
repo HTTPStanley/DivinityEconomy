@@ -2,6 +2,7 @@ package edgrrrr.dce.commands.mail;
 
 import edgrrrr.dce.DCEPlugin;
 import edgrrrr.dce.config.Setting;
+import edgrrrr.dce.help.Help;
 import edgrrrr.dce.mail.Mail;
 import edgrrrr.dce.mail.MailList;
 import org.bukkit.command.Command;
@@ -17,10 +18,11 @@ import java.util.HashMap;
  */
 public class ClearMail implements CommandExecutor {
     private final DCEPlugin app;
-    private final String usage = "/clearMail read | /clearMail unread | /clearMail all";
+    private final Help help;
 
     public ClearMail(DCEPlugin app) {
         this.app = app;
+        this.help = this.app.getHelpManager().get("clearmail");
     }
 
     @Override
@@ -57,13 +59,13 @@ public class ClearMail implements CommandExecutor {
                         break;
 
                     default:
-                        DCEPlugin.CONSOLE.usage(player, "Invalid arguments.", this.usage);
+                        DCEPlugin.CONSOLE.usage(player, "Invalid arguments.", this.help);
                         return true;
                 }
                 break;
 
             default:
-                DCEPlugin.CONSOLE.usage(player, "Invalid number of arguments.", this.usage);
+                DCEPlugin.CONSOLE.usage(player, "Invalid number of arguments.", this.help);
                 return true;
         }
 

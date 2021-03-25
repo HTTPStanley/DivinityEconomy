@@ -1,6 +1,7 @@
 package edgrrrr.dce.commands.admin;
 
 import edgrrrr.dce.DCEPlugin;
+import edgrrrr.dce.help.Help;
 import edgrrrr.dce.materials.MaterialData;
 import edgrrrr.dce.math.Math;
 import org.bukkit.command.Command;
@@ -13,10 +14,11 @@ import org.bukkit.entity.Player;
  */
 public class SetValue implements CommandExecutor {
     private final DCEPlugin app;
-    private final String usage = "/setvalue <materialName> <value>";
+    private final Help help;
 
     public SetValue(DCEPlugin app) {
         this.app = app;
+        this.help = this.app.getHelpManager().get("setvalue");
     }
 
     @Override
@@ -37,7 +39,7 @@ public class SetValue implements CommandExecutor {
                 break;
 
             default:
-                DCEPlugin.CONSOLE.usage(player, "Not enough arguments.", this.usage);
+                DCEPlugin.CONSOLE.usage(player, "Not enough arguments.", this.help);
                 break;
         }
 

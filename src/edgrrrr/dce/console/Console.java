@@ -2,12 +2,15 @@ package edgrrrr.dce.console;
 
 import edgrrrr.dce.DCEPlugin;
 import edgrrrr.dce.config.Setting;
+import edgrrrr.dce.help.Help;
 import edgrrrr.dce.mail.MailList;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
+
+import java.util.Arrays;
 
 /**
  * Console class for sending uniform messages to players and the console.
@@ -120,11 +123,18 @@ public class Console {
      *
      * @param player       - The player to send to
      * @param errorMessage - The message to send
-     * @param commandUsage - The usage of the command
+     * @param help         - The help object for the command
      */
-    public void usage(Player player, String errorMessage, String commandUsage) {
-        this.warn(player, "Incorrect command usage: " + errorMessage);
-        this.warn(player, "Command Usage: " + commandUsage);
+    public void usage(Player player, String errorMessage, Help help) {
+        this.warn(player, String.format("Incorrect command usage: %s", errorMessage));
+        this.warn(player, String.format("Command usage: %s", Arrays.toString(help.getUsages())));
+    }
+
+    public void help(Player player, Help help) {
+        this.info(player, String.format("Help for %s", help.getCommand()));
+        this.info(player, String.format("Description: %s", help.getDescription()));
+        this.info(player, String.format("Usages: %s", Arrays.toString(help.getUsages())));
+        this.info(player, String.format("Aliases: %s", Arrays.toString(help.getAliases())));
     }
 
     /**

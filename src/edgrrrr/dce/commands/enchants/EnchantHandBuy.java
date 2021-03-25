@@ -3,6 +3,7 @@ package edgrrrr.dce.commands.enchants;
 import edgrrrr.dce.DCEPlugin;
 import edgrrrr.dce.config.Setting;
 import edgrrrr.dce.enchants.EnchantData;
+import edgrrrr.dce.help.Help;
 import edgrrrr.dce.math.Math;
 import edgrrrr.dce.player.PlayerInventoryManager;
 import edgrrrr.dce.response.Response;
@@ -19,10 +20,11 @@ import org.bukkit.inventory.ItemStack;
  */
 public class EnchantHandBuy implements CommandExecutor {
     private final DCEPlugin app;
-    private final String usage = "/ehb <enchant> <level>";
+    private final Help help;
 
     public EnchantHandBuy(DCEPlugin app) {
         this.app = app;
+        this.help = this.app.getHelpManager().get("ebuy");
     }
 
     @Override
@@ -57,7 +59,7 @@ public class EnchantHandBuy implements CommandExecutor {
                 break;
 
             default:
-                DCEPlugin.CONSOLE.usage(player, "Invalid number of arguments.", this.usage);
+                DCEPlugin.CONSOLE.usage(player, "Invalid number of arguments.", this.help);
                 return true;
         }
 

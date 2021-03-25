@@ -2,6 +2,7 @@ package edgrrrr.dce.commands.market;
 
 import edgrrrr.dce.DCEPlugin;
 import edgrrrr.dce.config.Setting;
+import edgrrrr.dce.help.Help;
 import edgrrrr.dce.materials.MaterialData;
 import edgrrrr.dce.materials.MaterialPotionData;
 import edgrrrr.dce.player.PlayerInventoryManager;
@@ -17,10 +18,11 @@ import org.bukkit.inventory.ItemStack;
  */
 public class HandInfo implements CommandExecutor {
     private final DCEPlugin app;
-    private final String usage = "/handinfo";
+    private final Help help;
 
     public HandInfo(DCEPlugin app) {
         this.app = app;
+        this.help = this.app.getHelpManager().get("handinfo");
     }
 
 
@@ -49,7 +51,7 @@ public class HandInfo implements CommandExecutor {
                 break;
 
             default:
-                DCEPlugin.CONSOLE.usage(player, "Invalid number of arguments.", this.usage);
+                DCEPlugin.CONSOLE.usage(player, "Invalid number of arguments.", this.help);
                 return true;
         }
 

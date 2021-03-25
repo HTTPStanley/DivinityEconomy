@@ -2,6 +2,7 @@ package edgrrrr.dce.commands.money;
 
 import edgrrrr.dce.DCEPlugin;
 import edgrrrr.dce.config.Setting;
+import edgrrrr.dce.help.Help;
 import edgrrrr.dce.math.Math;
 import edgrrrr.dce.response.EconomyTransferResponse;
 import net.milkbowl.vault.economy.EconomyResponse;
@@ -16,10 +17,11 @@ import org.bukkit.entity.Player;
  */
 public class SendCash implements CommandExecutor {
     private final DCEPlugin app;
-    private final String usage = "/sendcash <username> <amount>";
+    private final Help help;
 
     public SendCash(DCEPlugin app) {
         this.app = app;
+        this.help = this.app.getHelpManager().get("sendcash");
     }
 
     @Override
@@ -54,13 +56,13 @@ public class SendCash implements CommandExecutor {
                 break;
 
             default:
-                DCEPlugin.CONSOLE.usage(player1, "Invalid number of arguments.", usage);
+                DCEPlugin.CONSOLE.usage(player1, "Invalid number of arguments.", this.help);
                 return true;
         }
 
         // Ensure online or offline player exists.
         if (player2 == null) {
-            DCEPlugin.CONSOLE.usage(player1, "Invalid player name.", usage);
+            DCEPlugin.CONSOLE.usage(player1, "Invalid player name.", this.help);
 
         } else {
             EconomyTransferResponse response = this.app.getEconomyManager().sendCash(player1, player2, amount);

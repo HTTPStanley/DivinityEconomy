@@ -2,6 +2,7 @@ package edgrrrr.dce.commands.market;
 
 import edgrrrr.dce.DCEPlugin;
 import edgrrrr.dce.config.Setting;
+import edgrrrr.dce.help.Help;
 import edgrrrr.dce.materials.MaterialData;
 import edgrrrr.dce.math.Math;
 import edgrrrr.dce.player.PlayerInventoryManager;
@@ -18,11 +19,11 @@ import org.bukkit.inventory.ItemStack;
  */
 public class HandValue implements CommandExecutor {
     private final DCEPlugin app;
-    private final String usage = "/handvalue | /handvalue <amount> | /handvalue max";
+    private final Help help;
 
     public HandValue(DCEPlugin app) {
         this.app = app;
-
+        this.help = this.app.getHelpManager().get("handvalue");
     }
 
 
@@ -64,16 +65,16 @@ public class HandValue implements CommandExecutor {
                 break;
 
             default:
-                DCEPlugin.CONSOLE.usage(player, "Invalid number of arguments.", this.usage);
+                DCEPlugin.CONSOLE.usage(player, "Invalid number of arguments.", this.help);
                 return true;
         }
 
         if (amount < 0) {
-            DCEPlugin.CONSOLE.usage(player, "Invalid amount.", this.usage);
+            DCEPlugin.CONSOLE.usage(player, "Invalid amount.", this.help);
         } else {
             ItemStack heldItem = PlayerInventoryManager.getHeldItem(player);
             if (heldItem == null) {
-                DCEPlugin.CONSOLE.usage(player, "You are not holding any item.", this.usage);
+                DCEPlugin.CONSOLE.usage(player, "You are not holding any item.", this.help);
 
             } else {
                 Material material = heldItem.getType();
@@ -103,14 +104,14 @@ public class HandValue implements CommandExecutor {
                     DCEPlugin.CONSOLE.info(player, String.format("Buy: %d %s costs £%,.2f", amount, materialData.getCleanName(), buyResponse.value));
 
                 } else {
-                    DCEPlugin.CONSOLE.usage(player, String.format("Couldn't determine buy price of %d %s because %s", amount, materialData.getCleanName(), buyResponse.errorMessage), this.usage);
+                    DCEPlugin.CONSOLE.usage(player, String.format("Couldn't determine buy price of %d %s because %s", amount, materialData.getCleanName(), buyResponse.errorMessage), this.help);
                 }
 
                 if (sellResponse.isSuccess()) {
                     DCEPlugin.CONSOLE.info(player, String.format("Sell: %d %s costs £%,.2f", amount, materialData.getCleanName(), sellResponse.value));
 
                 } else {
-                    DCEPlugin.CONSOLE.usage(player, String.format("Couldn't determine buy price of %d %s because %s", amount, materialData.getCleanName(), sellResponse.errorMessage), this.usage);
+                    DCEPlugin.CONSOLE.usage(player, String.format("Couldn't determine buy price of %d %s because %s", amount, materialData.getCleanName(), sellResponse.errorMessage), this.help);
                 }
             }
         }

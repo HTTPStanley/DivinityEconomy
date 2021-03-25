@@ -2,6 +2,7 @@ package edgrrrr.dce.commands.market;
 
 import edgrrrr.dce.DCEPlugin;
 import edgrrrr.dce.config.Setting;
+import edgrrrr.dce.help.Help;
 import edgrrrr.dce.materials.MaterialData;
 import edgrrrr.dce.math.Math;
 import edgrrrr.dce.player.PlayerInventoryManager;
@@ -18,10 +19,11 @@ import org.bukkit.inventory.ItemStack;
  */
 public class HandBuy implements CommandExecutor {
     private final DCEPlugin app;
-    private final String usage = "/hb | /hb <amount>";
+    private final Help help;
 
     public HandBuy(DCEPlugin app) {
         this.app = app;
+        this.help = this.app.getHelpManager().get("handbuy");
     }
 
     @Override
@@ -56,19 +58,19 @@ public class HandBuy implements CommandExecutor {
                 break;
 
             default:
-                DCEPlugin.CONSOLE.usage(player, "Invalid number of arguments.", this.usage);
+                DCEPlugin.CONSOLE.usage(player, "Invalid number of arguments.", this.help);
                 return true;
         }
 
         if (amountToBuy < 1) {
-            DCEPlugin.CONSOLE.usage(player, "Invalid amount.", this.usage);
+            DCEPlugin.CONSOLE.usage(player, "Invalid amount.", this.help);
             DCEPlugin.CONSOLE.debug("(HandBuy)Invalid amount: " + amountToBuy);
 
         } else {
             ItemStack heldItem = PlayerInventoryManager.getHeldItem(player);
 
             if (heldItem == null) {
-                DCEPlugin.CONSOLE.usage(player, "You are not holding any item.", this.usage);
+                DCEPlugin.CONSOLE.usage(player, "You are not holding any item.", this.help);
                 DCEPlugin.CONSOLE.debug("(HandBuy)User is not holding an item.");
 
             } else {

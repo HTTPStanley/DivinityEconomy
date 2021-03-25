@@ -2,6 +2,7 @@ package edgrrrr.dce.commands.money;
 
 import edgrrrr.dce.DCEPlugin;
 import edgrrrr.dce.config.Setting;
+import edgrrrr.dce.help.Help;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -13,10 +14,11 @@ import org.bukkit.entity.Player;
  */
 public class Balance implements CommandExecutor {
     private final DCEPlugin app;
-    private final String usage = "/balance | /balance <username>";
+    private final Help help;
 
     public Balance(DCEPlugin app) {
         this.app = app;
+        this.help = this.app.getHelpManager().get("balance");
     }
 
     @Override
@@ -57,7 +59,7 @@ public class Balance implements CommandExecutor {
         }
 
         if (player2 == null) {
-            DCEPlugin.CONSOLE.usage(player1, "Invalid player name.", usage);
+            DCEPlugin.CONSOLE.usage(player1, "Invalid player name.", help);
             return true;
         }
 

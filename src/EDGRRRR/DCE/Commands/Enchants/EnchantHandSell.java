@@ -3,6 +3,7 @@ package edgrrrr.dce.commands.enchants;
 import edgrrrr.dce.DCEPlugin;
 import edgrrrr.dce.config.Setting;
 import edgrrrr.dce.enchants.EnchantData;
+import edgrrrr.dce.help.Help;
 import edgrrrr.dce.math.Math;
 import edgrrrr.dce.player.PlayerInventoryManager;
 import edgrrrr.dce.response.MultiValueResponse;
@@ -20,7 +21,7 @@ public class EnchantHandSell implements CommandExecutor {
     // The main class
     private final DCEPlugin app;
     // The usage for this command
-    private final String usage = "/ehs <enchant> <levels> | /ehs <enchant>";
+    private final Help help;
 
     /**
      * Constructor
@@ -28,6 +29,7 @@ public class EnchantHandSell implements CommandExecutor {
      */
     public EnchantHandSell(DCEPlugin app) {
         this.app = app;
+        this.help = this.app.getHelpManager().get("esell");
     }
 
     /**
@@ -87,7 +89,7 @@ public class EnchantHandSell implements CommandExecutor {
 
             // If wrong number of arguments
             default:
-                DCEPlugin.CONSOLE.usage(player, "Invalid number of arguments.", this.usage);
+                DCEPlugin.CONSOLE.usage(player, "Invalid number of arguments.", this.help);
                 return true;
         }
 
@@ -95,12 +97,12 @@ public class EnchantHandSell implements CommandExecutor {
         // ensure it is not null
         ItemStack heldItem = PlayerInventoryManager.getHeldItem(player);
         if (heldItem == null) {
-            DCEPlugin.CONSOLE.usage(player, "You are not holding any item", this.usage);
+            DCEPlugin.CONSOLE.usage(player, "You are not holding any item", this.help);
 
         } else {
             // Ensure item is enchanted
             if (!this.app.getEnchantmentManager().isEnchanted(heldItem)){
-                DCEPlugin.CONSOLE.usage(player, "The item you are holding is not enchanted", this.usage);
+                DCEPlugin.CONSOLE.usage(player, "The item you are holding is not enchanted", this.help);
 
             } else {
                 // If sell all enchants is true
@@ -125,7 +127,7 @@ public class EnchantHandSell implements CommandExecutor {
                     // Ensure enchant exists
                     EnchantData enchantData = this.app.getEnchantmentManager().getEnchant(enchantName);
                     if (enchantData == null) {
-                        DCEPlugin.CONSOLE.usage(player, String.format("Unknown enchant name %s", enchantName), this.usage);
+                        DCEPlugin.CONSOLE.usage(player, String.format("Unknown enchant name %s", enchantName), this.help);
                     } else {
                         // Update enchantLevels to the max if sellAllEnchants is true
                         if (sellAllLevels) {

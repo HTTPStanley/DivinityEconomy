@@ -2,11 +2,13 @@ package edgrrrr.dce;
 
 import edgrrrr.dce.commands.admin.*;
 import edgrrrr.dce.commands.enchants.*;
+import edgrrrr.dce.commands.help.HelpCommandTC;
 import edgrrrr.dce.commands.mail.ClearMail;
 import edgrrrr.dce.commands.mail.ClearMailTC;
 import edgrrrr.dce.commands.mail.ReadMail;
 import edgrrrr.dce.commands.mail.ReadMailTC;
 import edgrrrr.dce.commands.market.*;
+import edgrrrr.dce.commands.help.HelpCommand;
 import edgrrrr.dce.commands.misc.Ping;
 import edgrrrr.dce.commands.money.Balance;
 import edgrrrr.dce.commands.money.BalanceTC;
@@ -19,6 +21,7 @@ import edgrrrr.dce.console.LogLevel;
 import edgrrrr.dce.economy.EconomyManager;
 import edgrrrr.dce.enchants.EnchantmentManager;
 import edgrrrr.dce.events.MailEvent;
+import edgrrrr.dce.help.HelpManager;
 import edgrrrr.dce.mail.MailManager;
 import edgrrrr.dce.materials.MaterialManager;
 import edgrrrr.dce.player.PlayerManager;
@@ -45,6 +48,8 @@ public class DCEPlugin extends JavaPlugin {
     private PlayerManager playerManager;
     // The enchantment manager
     private EnchantmentManager enchantmentManager;
+    // The help manager
+    private HelpManager helpManager;
 
     /**
      * Called when the plugin is enabled
@@ -70,6 +75,8 @@ public class DCEPlugin extends JavaPlugin {
         this.mailManager = new MailManager(this);
         this.mailManager.setupMailFile();
         this.mailManager.loadAllMail();
+        this.helpManager = new HelpManager(this);
+        this.helpManager.loadHelp();
 
         // setup events
         try {
@@ -157,6 +164,9 @@ public class DCEPlugin extends JavaPlugin {
 
             this.getCommand("setValue").setExecutor(new SetValue(this));
             this.getCommand("setValue").setTabCompleter(new SetValueTC(this));
+
+            this.getCommand("ehelp").setExecutor(new HelpCommand(this));
+            this.getCommand("ehelp").setTabCompleter(new HelpCommandTC(this));
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -286,4 +296,6 @@ public class DCEPlugin extends JavaPlugin {
      * @return EnchantmentManager
      */
     public EnchantmentManager getEnchantmentManager() { return this.enchantmentManager; }
+
+    public HelpManager getHelpManager() {return this.helpManager;}
 }

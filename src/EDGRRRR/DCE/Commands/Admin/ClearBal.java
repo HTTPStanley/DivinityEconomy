@@ -2,6 +2,7 @@ package edgrrrr.dce.commands.admin;
 
 import edgrrrr.dce.DCEPlugin;
 import edgrrrr.dce.config.Setting;
+import edgrrrr.dce.help.Help;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -15,7 +16,7 @@ import org.bukkit.entity.Player;
 public class ClearBal implements CommandExecutor {
     private final DCEPlugin app;
     // The usage for this command.
-    private final String usage = "/clearbal <username> | /clearbal";
+    private final Help help;
 
     /**
      * Constructor
@@ -23,6 +24,7 @@ public class ClearBal implements CommandExecutor {
      */
     public ClearBal(DCEPlugin app) {
         this.app = app;
+        this.help = this.app.getHelpManager().get("clearbal");
     }
 
     /**
@@ -69,13 +71,13 @@ public class ClearBal implements CommandExecutor {
 
             // If any other number of arguments are passed.
             default:
-                DCEPlugin.CONSOLE.usage(player1, "Incorrect number of arguments.", usage);
+                DCEPlugin.CONSOLE.usage(player1, "Incorrect number of arguments.", help);
                 return true;
         }
 
         // Ensure to player exists
         if (player2 == null) {
-            DCEPlugin.CONSOLE.usage(player1, "Invalid player name.", usage);
+            DCEPlugin.CONSOLE.usage(player1, "Invalid player name.", help);
         } else {
             // Set balance to 0
             double startingBalance = this.app.getEconomyManager().getBalance(player2);
