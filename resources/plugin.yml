@@ -13,7 +13,7 @@ load: STARTUP
 commands:
   # Help
   ehelp:
-    description: "Help!."
+    description: "Help!"
     aliases: []
     permission: dce.help
     permission-message: "You do not have the permission to use this command"
