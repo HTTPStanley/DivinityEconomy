@@ -34,7 +34,7 @@ public class HelpCommandTC implements TabCompleter {
             case 1:
                 ArrayList<String> allStrings = new ArrayList<>();
                 for (Integer i : this.app.getHelpManager().getPages(8).keySet()) {
-                    allStrings.add(String.valueOf(i));
+                    allStrings.add(String.valueOf(i+1));
                 }
                 allStrings.addAll(Arrays.asList(this.app.getHelpManager().getAllNames(args[0])));
                 strings = allStrings.toArray(new String[0]);
