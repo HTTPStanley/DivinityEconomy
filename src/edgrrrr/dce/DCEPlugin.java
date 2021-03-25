@@ -2,13 +2,13 @@ package edgrrrr.dce;
 
 import edgrrrr.dce.commands.admin.*;
 import edgrrrr.dce.commands.enchants.*;
+import edgrrrr.dce.commands.help.HelpCommand;
 import edgrrrr.dce.commands.help.HelpCommandTC;
 import edgrrrr.dce.commands.mail.ClearMail;
 import edgrrrr.dce.commands.mail.ClearMailTC;
 import edgrrrr.dce.commands.mail.ReadMail;
 import edgrrrr.dce.commands.mail.ReadMailTC;
 import edgrrrr.dce.commands.market.*;
-import edgrrrr.dce.commands.help.HelpCommand;
 import edgrrrr.dce.commands.misc.Ping;
 import edgrrrr.dce.commands.money.Balance;
 import edgrrrr.dce.commands.money.BalanceTC;
