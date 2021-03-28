@@ -55,10 +55,14 @@ public class HelpCommand implements CommandExecutor {
             DCEPlugin.CONSOLE.usage(player, "invalid command or page number", this.help);
 
         } else {
+            int maxLength = 30;
+            String string;
             if (helpPages.containsKey(pageNumber-1)) {
                 DCEPlugin.CONSOLE.info(player, String.format("Help page %s/%s", pageNumber, helpPages.size()));
                 for (Help helpCom : helpPages.get(pageNumber-1)) {
-                    DCEPlugin.CONSOLE.info(player, String.format("%s: %s...", helpCom.getCommand(), helpCom.getDescription(20)));
+                    string = String.format("%s: ", helpCom.getCommand());
+                    int length = maxLength - string.length();
+                    DCEPlugin.CONSOLE.info(player, String.format("%s%s...", helpCom.getDescription(length)));
                 }
 
             } else {
