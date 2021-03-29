@@ -107,3 +107,5 @@ out/production/DCE/edgrrrr/dce/help/Help.class
 out/production/DCE/edgrrrr/dce/help/HelpManager.class
 out/production/DCE/edgrrrr/dce/commands/help/HelpCommand.class
 out/production/DCE/edgrrrr/dce/commands/help/HelpCommandTC.class
+.idea/DCEEconomyUpdate.iml
+.idea/libraries/lib.xml
