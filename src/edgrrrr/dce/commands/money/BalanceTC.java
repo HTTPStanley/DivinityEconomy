@@ -32,7 +32,7 @@ public class BalanceTC implements TabCompleter {
             // 1 args
             // return names of players starting with arg
             case 1:
-                playerNames = this.app.getPlayerManager().getOfflinePlayers(args[0]);
+                playerNames = this.app.getPlayerManager().getOfflinePlayersNames(args[0]);
                 break;
 
             default:

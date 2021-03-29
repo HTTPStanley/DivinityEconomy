@@ -79,19 +79,7 @@ public class PlayerManager {
      * @param allowFetch - Whether to scan the web or not
      * @return OfflinePlayer - can be null.
      */
-    public OfflinePlayer getOfflinePlayerByUUID(String uuid, boolean allowFetch) {
-        return this.getOfflinePlayerByUUID(UUID.fromString(uuid), allowFetch);
-    }
-
-    /**
-     * Gets an offline player by their UUID
-     * Scans only local players unless allowFetch is enabled, which will allow it to scan the web
-     *
-     * @param uuid       - The uuid the find
-     * @param allowFetch - Whether to scan the web or not
-     * @return OfflinePlayer - can be null.
-     */
-    public OfflinePlayer getOfflinePlayerByUUID(UUID uuid, boolean allowFetch) {
+    public OfflinePlayer getOfflinePlayer(UUID uuid, boolean allowFetch) {
         OfflinePlayer player = null;
         OfflinePlayer[] offlinePlayers = this.app.getServer().getOfflinePlayers();
         for (OfflinePlayer oPlayer : offlinePlayers) {
@@ -108,7 +96,10 @@ public class PlayerManager {
         return player;
     }
 
-    public String[] getOfflinePlayers() {
+    /**
+     * Gets all names of offline players
+     */
+    public String[] getOfflinePlayersNames() {
         OfflinePlayer[] offlinePlayers = this.app.getServer().getOfflinePlayers();
         ArrayList<String> playerNames = new ArrayList<>();
         for (OfflinePlayer offlinePlayer : offlinePlayers) {
@@ -119,8 +110,11 @@ public class PlayerManager {
         return playerNames.toArray(new String[0]);
     }
 
-    public String[] getOfflinePlayers(String startsWith) {
-        String[] offlinePlayers = this.getOfflinePlayers();
+    /**
+     * Gets all names of offline players who's name starts with startswith
+     */
+    public String[] getOfflinePlayersNames(String startsWith) {
+        String[] offlinePlayers = this.getOfflinePlayersNames();
         ArrayList<String> playerNames = new ArrayList<>();
         for (String playerName : offlinePlayers) {
             if (playerName.toLowerCase().startsWith(startsWith.toLowerCase(Locale.ROOT))) {

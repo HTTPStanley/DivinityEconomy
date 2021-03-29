@@ -32,7 +32,7 @@ public class SetBalTC implements TabCompleter {
             // Args 1
             // get player names that start with args[0]
             case 1:
-                strings = this.app.getPlayerManager().getOfflinePlayers(args[0]);
+                strings = this.app.getPlayerManager().getOfflinePlayersNames(args[0]);
                 break;
 
             // Args 2
