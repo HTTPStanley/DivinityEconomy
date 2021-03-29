@@ -88,7 +88,7 @@ public class EconomyManager {
         DCEPlugin.CONSOLE.debug(String.format("ADD REQUEST FOR %s £%,.2f", oPlayer.getName(), amount));
         EconomyResponse response;
         double currentBalance = this.getBalance(oPlayer);
-        if (((amount + currentBalance) == amount)) {
+        if (((amount + currentBalance) == currentBalance)) {
             response = new EconomyResponse(0, currentBalance, ResponseType.FAILURE, "cannot have infinite cash.");
         } else {
             response = this.economy.depositPlayer(oPlayer, amount);
