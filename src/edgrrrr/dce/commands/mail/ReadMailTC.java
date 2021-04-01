@@ -1,7 +1,7 @@
 package edgrrrr.dce.commands.mail;
 
+import edgrrrr.configapi.Setting;
 import edgrrrr.dce.DCEPlugin;
-import edgrrrr.dce.config.Setting;
 import edgrrrr.dce.mail.MailList;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -25,7 +25,7 @@ public class ReadMailTC implements TabCompleter {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
         // Ensure player
-        if (!(sender instanceof Player) || !(this.app.getConfig().getBoolean(Setting.COMMAND_READ_MAIL_ENABLE_BOOLEAN.path()))) {
+        if (!(sender instanceof Player) || !(this.app.getConfig().getBoolean(Setting.COMMAND_READ_MAIL_ENABLE_BOOLEAN.path))) {
             return null;
         }
 

@@ -39,20 +39,20 @@ public class SetStock implements CommandExecutor {
                 break;
 
             default:
-                DCEPlugin.CONSOLE.usage(player, "Not enough arguments.", this.help);
+                this.app.getConsole().usage(player, "Not enough arguments.", this.help.getUsages());
                 break;
         }
 
         if (materialData == null) {
-            DCEPlugin.CONSOLE.warn(player, String.format("Unrecognized material '%s'", strings[0]));
+            this.app.getConsole().warn(player, String.format("Unrecognized material '%s'", strings[0]));
         } else {
             if (stock < 0) {
-                DCEPlugin.CONSOLE.warn(player, "Stock level must be equal to or above 0.");
+                this.app.getConsole().warn(player, "Stock level must be equal to or above 0.");
             } else {
                 int previousStock = materialData.getQuantity();
                 double previousValue = materialData.getUserPrice();
                 materialData.setQuantity(stock);
-                DCEPlugin.CONSOLE.info(player, String.format("Changed stock level from %d(£%,.2f) to %d(£%,.2f).", previousStock, previousValue, stock, materialData.getUserPrice()));
+                this.app.getConsole().info(player, String.format("Changed stock level from %d(£%,.2f) to %d(£%,.2f).", previousStock, previousValue, stock, materialData.getUserPrice()));
             }
         }
 

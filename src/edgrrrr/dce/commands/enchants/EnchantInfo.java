@@ -1,7 +1,7 @@
 package edgrrrr.dce.commands.enchants;
 
+import edgrrrr.configapi.Setting;
 import edgrrrr.dce.DCEPlugin;
-import edgrrrr.dce.config.Setting;
 import edgrrrr.dce.enchants.EnchantData;
 import edgrrrr.dce.help.Help;
 import org.bukkit.command.Command;
@@ -30,14 +30,14 @@ public class EnchantInfo implements CommandExecutor {
         Player player = (Player) sender;
 
         // Ensure command is enabled
-        if (!(this.app.getConfig().getBoolean(Setting.COMMAND_E_INFO_ENABLE_BOOLEAN.path()))) {
-            DCEPlugin.CONSOLE.severe(player, "This command is not enabled.");
+        if (!(this.app.getConfig().getBoolean(Setting.COMMAND_E_INFO_ENABLE_BOOLEAN.path))) {
+            this.app.getConsole().severe(player, "This command is not enabled.");
             return true;
         }
 
         // Ensure market is enabled
-        if (!(this.app.getConfig().getBoolean(Setting.MARKET_ENCHANTS_ENABLE_BOOLEAN.path()))) {
-            DCEPlugin.CONSOLE.severe(player, "The enchant market is not enabled.");
+        if (!(this.app.getConfig().getBoolean(Setting.MARKET_ENCHANTS_ENABLE_BOOLEAN.path))) {
+            this.app.getConsole().severe(player, "The enchant market is not enabled.");
             return true;
         }
 
@@ -48,18 +48,18 @@ public class EnchantInfo implements CommandExecutor {
                 break;
 
             default:
-                DCEPlugin.CONSOLE.usage(player, "Invalid number of arguments.", this.help);
+                this.app.getConsole().usage(player, "Invalid number of arguments.", this.help.getUsages());
                 return true;
         }
 
         EnchantData enchantData = this.app.getEnchantmentManager().getEnchant(enchantName);
         if (enchantData == null) {
-            DCEPlugin.CONSOLE.usage(player, "Unknown Item: " + enchantName, this.help);
+            this.app.getConsole().usage(player, "Unknown Item: " + enchantName, this.help.getUsages());
         } else {
-            DCEPlugin.CONSOLE.info(player, "==[Information for " + enchantData.getCleanName() + "]==");
-            DCEPlugin.CONSOLE.info(player, "ID: " + enchantData.getID());
-            DCEPlugin.CONSOLE.info(player, "Current Quantity: " + enchantData.getQuantity());
-            DCEPlugin.CONSOLE.info(player, "Is Banned: " + !(enchantData.getAllowed()));
+            this.app.getConsole().info(player, "==[Information for " + enchantData.getCleanName() + "]==");
+            this.app.getConsole().info(player, "ID: " + enchantData.getID());
+            this.app.getConsole().info(player, "Current Quantity: " + enchantData.getQuantity());
+            this.app.getConsole().info(player, "Is Banned: " + !(enchantData.getAllowed()));
         }
 
         return true;

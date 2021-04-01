@@ -46,23 +46,23 @@ public class HelpCommand implements CommandExecutor {
                 break;
 
             default:
-                DCEPlugin.CONSOLE.usage(player, "Not enough arguments.", this.help);
+                this.app.getConsole().usage(player, "Not enough arguments.", this.help.getUsages());
                 break;
         }
 
         Map<Integer, Help[]> helpPages = this.app.getHelpManager().getPages(8);
         if (help == null && !helpPages.containsKey(pageNumber-1)) {
-            DCEPlugin.CONSOLE.usage(player, "invalid command or page number", this.help);
+            this.app.getConsole().usage(player, "invalid command or page number", this.help.getUsages());
 
         } else {
             if (helpPages.containsKey(pageNumber-1)) {
-                DCEPlugin.CONSOLE.info(player, String.format("Help page %s/%s", pageNumber, helpPages.size()));
+                this.app.getConsole().info(player, String.format("Help page %s/%s", pageNumber, helpPages.size()));
                 for (Help helpCom : helpPages.get(pageNumber-1)) {
-                    DCEPlugin.CONSOLE.info(player, String.format("%s: %s...", helpCom.getCommand(), helpCom.getDescription(20)));
+                    this.app.getConsole().info(player, String.format("%s: %s...", helpCom.getCommand(), helpCom.getDescription(20)));
                 }
 
             } else {
-                DCEPlugin.CONSOLE.help(player, help);
+                this.app.getConsole().help(player, help.getCommand(), help.getDescription(), help.getUsages(), help.getAliases());
             }
         }
 

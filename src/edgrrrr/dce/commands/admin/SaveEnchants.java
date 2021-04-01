@@ -1,7 +1,7 @@
 package edgrrrr.dce.commands.admin;
 
+import edgrrrr.configapi.Setting;
 import edgrrrr.dce.DCEPlugin;
-import edgrrrr.dce.config.Setting;
 import edgrrrr.dce.help.Help;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -31,13 +31,13 @@ public class SaveEnchants implements CommandExecutor {
         }
 
         // Ensure command is enabled
-        if (!(this.app.getConfig().getBoolean(Setting.COMMAND_SAVE_ENCHANTS_ENABLE_BOOLEAN.path()))) {
-            DCEPlugin.CONSOLE.severe(player, "This command is not enabled.");
+        if (!(this.app.getConfig().getBoolean(Setting.COMMAND_SAVE_ENCHANTS_ENABLE_BOOLEAN.path))) {
+            this.app.getConsole().severe(player, "This command is not enabled.");
             return true;
         }
 
         this.app.getEnchantmentManager().saveEnchants();
-        DCEPlugin.CONSOLE.info(player, "Saved Enchants");
+        this.app.getConsole().info(player, "Saved Enchants");
         return true;
     }
 }

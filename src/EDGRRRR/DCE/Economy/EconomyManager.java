@@ -1,13 +1,18 @@
 package edgrrrr.dce.economy;
 
+import edgrrrr.configapi.Setting;
 import edgrrrr.dce.DCEPlugin;
-import edgrrrr.dce.config.Setting;
 import edgrrrr.dce.response.EconomyTransferResponse;
+import edgrrrr.vea.economy.EconomyAPI;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import net.milkbowl.vault.economy.EconomyResponse.ResponseType;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.RegisteredServiceProvider;
+import org.bukkit.plugin.ServicePriority;
+
+import java.util.Collection;
+import java.util.List;
 
 /**
  * An economy manager to simplify tasks for managing the player economy, works with Vault Economy.
@@ -27,9 +32,22 @@ public class EconomyManager {
         this.app = app;
 
         // settings
-        this.minTransfer = this.app.getConfig().getDouble(Setting.ECONOMY_MIN_SEND_AMOUNT_DOUBLE.path());
-        this.roundingDigits = this.app.getConfig().getInt(Setting.ECONOMY_ACCURACY_DIGITS_INTEGER.path());
-        this.minBalance = this.app.getConfig().getDouble(Setting.ECONOMY_MIN_BALANCE_DOUBLE.path());
+        this.minTransfer = this.app.getConfig().getDouble(Setting.ECONOMY_MIN_SEND_AMOUNT_DOUBLE.path);
+        this.roundingDigits = this.app.getConfig().getInt(Setting.ECONOMY_ACCURACY_DIGITS_INTEGER.path);
+        this.minBalance = this.app.getConfig().getDouble(Setting.ECONOMY_MIN_BALANCE_DOUBLE.path);
+    }
+
+    public Collection<RegisteredServiceProvider<Economy>> getProviders() {
+        return this.app.getServer().getServicesManager().getRegistrations(Economy.class);
+    }
+
+    public RegisteredServiceProvider<Economy> getPrimaryProvider() {
+        return this.app.getServer().getServicesManager().getRegistration(Economy.class);
+    }
+
+    public Collection<RegisteredServiceProvider<Economy>> setProvider(Economy economy) {
+        this.app.getServer().getServicesManager().register(Economy.class, economy, this.app, ServicePriority.Normal);
+        return this.getProviders();
     }
 
 
@@ -38,25 +56,33 @@ public class EconomyManager {
      * Returns if it was successful or not.
      */
     public boolean setupEconomy() {
+        EconomyAPI economy = new DCEEconomyAPI(this.app);
+
         // Look for vault
         if (this.app.getServer().getPluginManager().getPlugin("Vault") == null) {
-            DCEPlugin.CONSOLE.severe("No plugin 'Vault' detected.");
-            return false;
-        } else {
-            DCEPlugin.CONSOLE.info("Vault has been detected.");
-        }
+            this.app.getConsole().warn("No plugin 'Vault' detected, this will likely cause issues with plugins not cooperating.");
+            this.economy = economy;
 
-        // Get the service provider
-        RegisteredServiceProvider<Economy> rsp = this.app.getServer().getServicesManager().getRegistration(Economy.class);
-        if (rsp == null) {
-            DCEPlugin.CONSOLE.severe("Could not register Economy.");
-            return false;
         } else {
-            DCEPlugin.CONSOLE.info("Registered Economy.");
+            this.app.getConsole().info("Vault has been detected.");
+
+
+            // Get the service provider
+            Collection<RegisteredServiceProvider<Economy>> providers = this.setProvider(economy);
+            if (providers.size() == 0) {
+                this.app.getConsole().severe("Could not register Economy.");
+                return false;
+            } else {
+                this.economy = this.getPrimaryProvider().getProvider();
+            }
+
+            for (RegisteredServiceProvider<Economy> provider : providers) {
+                this.app.getConsole().info(String.format("Registered Economy: '%s' (primary = %s)", provider.getPlugin().getName(), provider.equals(this.getPrimaryProvider())));
+            }
+            this.app.getConsole().info(String.format("Total Economy Providers: %d", providers.size()));
         }
 
         // return if economy was gotten successfully.
-        this.economy = rsp.getProvider();
         return true;
     }
 
@@ -85,17 +111,17 @@ public class EconomyManager {
      * @param amount  - The amount
      */
     public EconomyResponse addCash(OfflinePlayer oPlayer, double amount) {
-        DCEPlugin.CONSOLE.debug(String.format("ADD REQUEST FOR %s £%,.2f", oPlayer.getName(), amount));
+        this.app.getConsole().debug(String.format("ADD REQUEST FOR %s £%,.2f", oPlayer.getName(), amount));
         EconomyResponse response;
         double currentBalance = this.getBalance(oPlayer);
-        if (((amount + currentBalance) == amount)) {
+        if (((amount + currentBalance) == currentBalance)) {
             response = new EconomyResponse(0, currentBalance, ResponseType.FAILURE, "cannot have infinite cash.");
         } else {
             response = this.economy.depositPlayer(oPlayer, amount);
             response = new EconomyResponse(response.amount, this.getBalance(oPlayer), response.type, response.errorMessage);
         }
 
-        DCEPlugin.CONSOLE.debug(String.format("ADD RESULT: %s", response.transactionSuccess()));
+        this.app.getConsole().debug(String.format("ADD RESULT: %s %s", response.transactionSuccess(), response.errorMessage));
 
         return response;
     }
@@ -107,7 +133,7 @@ public class EconomyManager {
      * @param amount  - The amount
      */
     public EconomyResponse remCash(OfflinePlayer oPlayer, double amount) {
-        DCEPlugin.CONSOLE.debug(String.format("REM REQUEST FOR %s £%,.2f", oPlayer.getName(), amount));
+        this.app.getConsole().debug(String.format("REM REQUEST FOR %s £%,.2f", oPlayer.getName(), amount));
 
         double oldBalance = this.getBalance(oPlayer);
         EconomyResponse response;
@@ -118,7 +144,7 @@ public class EconomyManager {
         }
         response = new EconomyResponse(response.amount, this.getBalance(oPlayer), response.type, response.errorMessage);
 
-        DCEPlugin.CONSOLE.debug(String.format("REM RESULT: %s", response.transactionSuccess()));
+        this.app.getConsole().debug(String.format("REM RESULT: %s %s", response.transactionSuccess(), response.errorMessage));
 
         return response;
     }
@@ -131,7 +157,7 @@ public class EconomyManager {
      * @return EconomyResponse - The result of the function
      */
     public EconomyResponse setCash(OfflinePlayer oPlayer, double amount) {
-        DCEPlugin.CONSOLE.debug(String.format("SET REQUEST FOR %s £%,.2f", oPlayer.getName(), amount));
+        this.app.getConsole().debug(String.format("SET REQUEST FOR %s £%,.2f", oPlayer.getName(), amount));
         double balance = this.getBalance(oPlayer);
         double difference = amount - balance;
         EconomyResponse response;
@@ -144,7 +170,7 @@ public class EconomyManager {
         }
         response = new EconomyResponse(response.amount, this.getBalance(oPlayer), response.type, response.errorMessage);
 
-        DCEPlugin.CONSOLE.debug(String.format("SET RESULT: %s", response.transactionSuccess()));
+        this.app.getConsole().debug(String.format("SET RESULT: %s %s", response.transactionSuccess(), response.errorMessage));
 
         return response;
     }

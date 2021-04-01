@@ -1,4 +1,4 @@
-package edgrrrr.dce.config;
+package edgrrrr.configapi;
 
 public enum Setting {
 
@@ -83,14 +83,10 @@ public enum Setting {
 	COMMAND_SAVE_ENCHANTS_ENABLE_BOOLEAN (SECTION_COMMANDS_ADMIN.path + ".saveEnchants"),
 	COMMAND_SAVE_MATERIALS_ENABLE_BOOLEAN (SECTION_COMMANDS_ADMIN.path + ".saveMaterials");
 
-	private final String path;
+	public final String path;
 
 	Setting(String path) {
 		this.path = path;
-	}
-
-	public String path() {
-		return path;
 	}
 
 }

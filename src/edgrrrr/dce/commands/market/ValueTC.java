@@ -1,7 +1,7 @@
 package edgrrrr.dce.commands.market;
 
+import edgrrrr.configapi.Setting;
 import edgrrrr.dce.DCEPlugin;
-import edgrrrr.dce.config.Setting;
 import edgrrrr.dce.materials.MaterialData;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -24,7 +24,7 @@ public class ValueTC implements TabCompleter {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
         // Ensure player
-        if (!(sender instanceof Player) || !(this.app.getConfig().getBoolean(Setting.COMMAND_VALUE_ENABLE_BOOLEAN.path()))) {
+        if (!(sender instanceof Player) || !(this.app.getConfig().getBoolean(Setting.COMMAND_VALUE_ENABLE_BOOLEAN.path))) {
             return null;
         }
 

@@ -1,7 +1,7 @@
 package edgrrrr.dce.commands.market;
 
+import edgrrrr.configapi.Setting;
 import edgrrrr.dce.DCEPlugin;
-import edgrrrr.dce.config.Setting;
 import edgrrrr.dce.help.Help;
 import edgrrrr.dce.materials.MaterialData;
 import edgrrrr.dce.math.Math;
@@ -35,14 +35,14 @@ public class Value implements CommandExecutor {
         Player player = (Player) sender;
 
         // Ensure command is enabled
-        if (!(this.app.getConfig().getBoolean(Setting.COMMAND_VALUE_ENABLE_BOOLEAN.path()))) {
-            DCEPlugin.CONSOLE.severe(player, "This command is not enabled.");
+        if (!(this.app.getConfig().getBoolean(Setting.COMMAND_VALUE_ENABLE_BOOLEAN.path))) {
+            this.app.getConsole().severe(player, "This command is not enabled.");
             return true;
         }
 
         // Ensure market is enabled
-        if (!(this.app.getConfig().getBoolean(Setting.MARKET_MATERIALS_ENABLE_BOOLEAN.path()))) {
-            DCEPlugin.CONSOLE.severe(player, "The market is not enabled.");
+        if (!(this.app.getConfig().getBoolean(Setting.MARKET_MATERIALS_ENABLE_BOOLEAN.path))) {
+            this.app.getConsole().severe(player, "The market is not enabled.");
             return true;
         }
 
@@ -59,30 +59,30 @@ public class Value implements CommandExecutor {
                 break;
 
             default:
-                DCEPlugin.CONSOLE.usage(player, "Invalid number of arguments.", help);
+                this.app.getConsole().usage(player, "Invalid number of arguments.", this.help.getUsages());
                 return true;
         }
 
         MaterialData materialData = this.app.getMaterialManager().getMaterial(materialName);
         if (materialData == null) {
-            DCEPlugin.CONSOLE.usage(player, "Unknown Item: " + materialName, help);
+            this.app.getConsole().usage(player, "Unknown Item: " + materialName, this.help.getUsages());
         } else {
             ItemStack[] itemStacks = PlayerInventoryManager.createItemStacks(materialData.getMaterial(), amount);
             ValueResponse buyResponse = this.app.getMaterialManager().getBuyValue(itemStacks);
             ValueResponse sellResponse = this.app.getMaterialManager().getSellValue(itemStacks);
 
             if (buyResponse.isSuccess()) {
-                DCEPlugin.CONSOLE.info(player, String.format("Buy: %d %s costs £%,.2f", amount, materialData.getCleanName(), buyResponse.value));
+                this.app.getConsole().info(player, String.format("Buy: %d %s costs £%,.2f", amount, materialData.getCleanName(), buyResponse.value));
 
             } else {
-                DCEPlugin.CONSOLE.usage(player, String.format("Couldn't determine buy price of %d %s because %s", amount, materialData.getCleanName(), buyResponse.errorMessage), this.help);
+                this.app.getConsole().usage(player, String.format("Couldn't determine buy price of %d %s because %s", amount, materialData.getCleanName(), buyResponse.errorMessage), this.help.getUsages());
             }
 
             if (sellResponse.isSuccess()) {
-                DCEPlugin.CONSOLE.info(player, String.format("Sell: %d %s costs £%,.2f", amount, materialData.getCleanName(), sellResponse.value));
+                this.app.getConsole().info(player, String.format("Sell: %d %s costs £%,.2f", amount, materialData.getCleanName(), sellResponse.value));
 
             } else {
-                DCEPlugin.CONSOLE.usage(player, String.format("Couldn't determine buy price of %d %s because %s", amount, materialData.getCleanName(), sellResponse.errorMessage), this.help);
+                this.app.getConsole().usage(player, String.format("Couldn't determine buy price of %d %s because %s", amount, materialData.getCleanName(), sellResponse.errorMessage), this.help.getUsages());
             }
         }
 

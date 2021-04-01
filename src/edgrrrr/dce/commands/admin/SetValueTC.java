@@ -1,7 +1,7 @@
 package edgrrrr.dce.commands.admin;
 
+import edgrrrr.configapi.Setting;
 import edgrrrr.dce.DCEPlugin;
-import edgrrrr.dce.config.Setting;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -22,7 +22,7 @@ public class SetValueTC implements TabCompleter {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
         // Ensure player
-        if (!(this.app.getConfig().getBoolean(Setting.COMMAND_SET_VALUE_ENABLE_BOOLEAN.path()))) {
+        if (!(this.app.getConfig().getBoolean(Setting.COMMAND_SET_VALUE_ENABLE_BOOLEAN.path))) {
             return null;
         }
 

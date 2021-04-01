@@ -1,7 +1,7 @@
 package edgrrrr.dce.commands.admin;
 
+import edgrrrr.configapi.Setting;
 import edgrrrr.dce.DCEPlugin;
-import edgrrrr.dce.config.Setting;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -23,7 +23,7 @@ public class ClearBalTC implements TabCompleter {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
         // Ensure player
-        if (!(sender instanceof Player) || !(this.app.getConfig().getBoolean(Setting.COMMAND_CLEAR_BALANCE_ENABLE_BOOLEAN.path()))) {
+        if (!(sender instanceof Player) || !(this.app.getConfig().getBoolean(Setting.COMMAND_CLEAR_BALANCE_ENABLE_BOOLEAN.path))) {
             return null;
         }
 
@@ -32,7 +32,7 @@ public class ClearBalTC implements TabCompleter {
             // 1 args
             // return names of players starting with arg
             case 1:
-                playerNames = this.app.getPlayerManager().getOfflinePlayers(args[0]);
+                playerNames = this.app.getPlayerManager().getOfflinePlayerNames(args[0]);
                 break;
 
             default:

@@ -1,7 +1,7 @@
 package edgrrrr.dce.materials;
 
+import edgrrrr.configapi.Setting;
 import edgrrrr.dce.DCEPlugin;
-import edgrrrr.dce.config.Setting;
 import edgrrrr.dce.math.Math;
 import edgrrrr.dce.response.ValueResponse;
 import net.milkbowl.vault.economy.EconomyResponse.ResponseType;
@@ -44,10 +44,10 @@ public class MaterialManager {
      */
     public MaterialManager(DCEPlugin app) {
         this.app = app;
-        this.materialBuyTax = this.app.getConfig().getDouble(Setting.MARKET_MATERIALS_BUY_TAX_FLOAT.path());
-        this.materialSellTax = this.app.getConfig().getDouble(Setting.MARKET_MATERIALS_SELL_TAX_FLOAT.path());
-        this.materialBaseQuantity = this.app.getConfig().getInt(Setting.MARKET_MATERIALS_BASE_QUANTITY_INTEGER.path());
-        int timer = Math.getTicks(this.app.getConfig().getInt(Setting.MARKET_SAVE_TIMER_INTEGER.path()));
+        this.materialBuyTax = this.app.getConfig().getDouble(Setting.MARKET_MATERIALS_BUY_TAX_FLOAT.path);
+        this.materialSellTax = this.app.getConfig().getDouble(Setting.MARKET_MATERIALS_SELL_TAX_FLOAT.path);
+        this.materialBaseQuantity = this.app.getConfig().getInt(Setting.MARKET_MATERIALS_BASE_QUANTITY_INTEGER.path);
+        int timer = Math.getTicks(this.app.getConfig().getInt(Setting.MARKET_SAVE_TIMER_INTEGER.path));
         this.saveTimer = new BukkitRunnable() {
             @Override
             public void run() {
@@ -341,14 +341,14 @@ public class MaterialManager {
      * Loads aliases from the aliases file into the aliases variable
      */
     public void loadAliases() {
-        FileConfiguration config = DCEPlugin.CONFIG.loadConfig(this.aliasesFile);
+        FileConfiguration config = this.app.getConfigManager().loadFile(this.aliasesFile);
         HashMap<String, String> values = new HashMap<>();
         for (String key : config.getKeys(false)) {
             String value = config.getString(key);
             values.put(key, value);
         }
         this.aliases = values;
-        DCEPlugin.CONSOLE.info("Loaded " + values.size() + " aliases from " + this.aliasesFile);
+        this.app.getConsole().info("Loaded " + values.size() + " aliases from " + this.aliasesFile);
     }
 
     /**
@@ -356,8 +356,8 @@ public class MaterialManager {
      */
     public void loadMaterials() {
         // Load the config
-        this.config = DCEPlugin.CONFIG.loadConfig(this.materialsFile);
-        FileConfiguration defaultConf = DCEPlugin.CONFIG.readResource(this.materialsFile);
+        this.config = this.app.getConfigManager().loadFile(this.materialsFile);
+        FileConfiguration defaultConf = this.app.getConfigManager().readResource(this.materialsFile);
         // Set material counts
         this.defaultTotalMaterials = 0;
         this.totalMaterials = 0;
@@ -375,7 +375,7 @@ public class MaterialManager {
         }
         // Copy values into materials
         this.materials = values;
-        DCEPlugin.CONSOLE.info("Loaded " + values.size() + "(" + this.totalMaterials + "/" + this.defaultTotalMaterials + ") materials from " + this.materialsFile);
+        this.app.getConsole().info("Loaded " + values.size() + "(" + this.totalMaterials + "/" + this.defaultTotalMaterials + ") materials from " + this.materialsFile);
     }
 
     /**
@@ -406,13 +406,13 @@ public class MaterialManager {
             this.saveMaterial(materialD);
         }
         this.saveFile();
-        DCEPlugin.CONSOLE.info("Materials saved.");
+        this.app.getConsole().info("Materials saved.");
     }
 
     /**
      * Saves the config to the config file
      */
     public void saveFile() {
-        DCEPlugin.CONFIG.saveFile(this.config, this.materialsFile);
+        this.app.getConfigManager().saveFile(this.config, this.materialsFile);
     }
 }

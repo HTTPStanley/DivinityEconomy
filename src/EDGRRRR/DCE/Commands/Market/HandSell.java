@@ -1,7 +1,7 @@
 package edgrrrr.dce.commands.market;
 
+import edgrrrr.configapi.Setting;
 import edgrrrr.dce.DCEPlugin;
-import edgrrrr.dce.config.Setting;
 import edgrrrr.dce.help.Help;
 import edgrrrr.dce.materials.MaterialData;
 import edgrrrr.dce.math.Math;
@@ -36,14 +36,14 @@ public class HandSell implements CommandExecutor {
         Player player = (Player) sender;
 
         // Ensure command is enabled
-        if (!(this.app.getConfig().getBoolean(Setting.COMMAND_HAND_SELL_ITEM_ENABLE_BOOLEAN.path()))) {
-            DCEPlugin.CONSOLE.severe(player, "This command is not enabled.");
+        if (!(this.app.getConfig().getBoolean(Setting.COMMAND_HAND_SELL_ITEM_ENABLE_BOOLEAN.path))) {
+            this.app.getConsole().severe(player, "This command is not enabled.");
             return true;
         }
 
         // Ensure market is enabled
-        if (!(this.app.getConfig().getBoolean(Setting.MARKET_MATERIALS_ENABLE_BOOLEAN.path()))) {
-            DCEPlugin.CONSOLE.severe(player, "The market is not enabled.");
+        if (!(this.app.getConfig().getBoolean(Setting.MARKET_MATERIALS_ENABLE_BOOLEAN.path))) {
+            this.app.getConsole().severe(player, "The market is not enabled.");
             return true;
         }
 
@@ -59,17 +59,17 @@ public class HandSell implements CommandExecutor {
                 break;
 
             default:
-                DCEPlugin.CONSOLE.usage(player, "Invalid number of arguments.", this.help);
+                this.app.getConsole().usage(player, "Invalid number of arguments.", this.help.getUsages());
                 return true;
         }
 
         if (amountToSell < 1) {
-            DCEPlugin.CONSOLE.usage(player, "Invalid amount.", this.help);
+            this.app.getConsole().usage(player, "Invalid amount.", this.help.getUsages());
         } else {
             ItemStack heldItem = PlayerInventoryManager.getHeldItem(player);
 
             if (heldItem == null) {
-                DCEPlugin.CONSOLE.usage(player, "You are not holding any item.", this.help);
+                this.app.getConsole().usage(player, "You are not holding any item.", this.help.getUsages());
 
             } else {
                 Material material = heldItem.getType();
@@ -78,7 +78,7 @@ public class HandSell implements CommandExecutor {
                 int materialCount = PlayerInventoryManager.getMaterialCount(PlayerInventoryManager.getMaterialSlots(player, material));
 
                 if (materialCount < amountToSell) {
-                    DCEPlugin.CONSOLE.logFailedSale(player, amountToSell, materialData.getCleanName(), String.format("you do not have enough of this material (%d/%d)", materialCount, amountToSell));
+                    this.app.getConsole().logFailedSale(player, amountToSell, materialData.getCleanName(), String.format("you do not have enough of this material (%d/%d)", materialCount, amountToSell));
 
                 } else {
                     ItemStack[] itemStacks = PlayerInventoryManager.getMaterialSlotsToCount(player, material, amountToSell);
@@ -87,13 +87,13 @@ public class HandSell implements CommandExecutor {
                     if (response.isSuccess()) {
                         PlayerInventoryManager.removeMaterialsFromPlayer(itemStacks);
                         materialData.addQuantity(amountToSell);
-                        if (!this.app.getEconomyManager().addCash(player, response.value).transactionSuccess()) {DCEPlugin.CONSOLE.severe(player,"An error occurred on funding your account, show this message to an admin.");}
+                        if (!this.app.getEconomyManager().addCash(player, response.value).transactionSuccess()) {this.app.getConsole().severe(player,"An error occurred on funding your account, show this message to an admin.");}
 
                         // Handles console, player message and mail
-                        DCEPlugin.CONSOLE.logSale(player, amountToSell, response.value, materialData.getCleanName());
+                        this.app.getConsole().logSale(player, amountToSell, response.value, materialData.getCleanName());
                     } else {
                         // Handles console, player message and mail
-                        DCEPlugin.CONSOLE.logFailedSale(player, amountToSell, materialData.getCleanName(), response.errorMessage);
+                        this.app.getConsole().logFailedSale(player, amountToSell, materialData.getCleanName(), response.errorMessage);
                     }
                 }
             }
