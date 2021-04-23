@@ -7,6 +7,7 @@ import edgrrrr.dce.materials.MaterialData;
 import edgrrrr.dce.math.Math;
 import edgrrrr.dce.player.PlayerInventoryManager;
 import edgrrrr.dce.response.ValueResponse;
+import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -82,15 +83,22 @@ public class HandSell implements CommandExecutor {
 
                 } else {
                     ItemStack[] itemStacks = PlayerInventoryManager.getMaterialSlotsToCount(player, material, amountToSell);
+                    ItemStack[] itemStacksClone = PlayerInventoryManager.cloneItems(itemStacks);
                     ValueResponse response = this.app.getMaterialManager().getSellValue(itemStacks);
 
                     if (response.isSuccess()) {
                         PlayerInventoryManager.removeMaterialsFromPlayer(itemStacks);
-                        materialData.addQuantity(amountToSell);
-                        if (!this.app.getEconomyManager().addCash(player, response.value).transactionSuccess()) {this.app.getConsole().severe(player,"An error occurred on funding your account, show this message to an admin.");}
 
-                        // Handles console, player message and mail
-                        this.app.getConsole().logSale(player, amountToSell, response.value, materialData.getCleanName());
+                        EconomyResponse economyResponse = this.app.getEconomyManager().addCash(player, response.value);
+                        if (!economyResponse.transactionSuccess()) {
+                            PlayerInventoryManager.addItemsToPlayer(player, itemStacksClone);
+                            // Handles console, player message and mail
+                            this.app.getConsole().logFailedSale(player, amountToSell, materialData.getCleanName(), economyResponse.errorMessage);
+                        } else {
+                            materialData.addQuantity(amountToSell);
+                            // Handles console, player message and mail
+                            this.app.getConsole().logSale(player, amountToSell, response.value, materialData.getCleanName());
+                        }
                     } else {
                         // Handles console, player message and mail
                         this.app.getConsole().logFailedSale(player, amountToSell, materialData.getCleanName(), response.errorMessage);
