@@ -48,33 +48,33 @@ public class BuyItem extends DivinityCommandMarket {
                 break;
 
             default:
-                this.app.getConsole().usage(sender, Message.InvalidNumberOfArguments.message, this.help.getUsages());
+                this.app.getConsole().usage(sender, CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
                 return true;
         }
 
         // Ensure amount is greater than 0
         if (amountToBuy < 1) {
-            this.app.getConsole().usage(sender, Message.InvalidAmountGiven.message, this.help.getUsages());
+            this.app.getConsole().usage(sender, CommandResponse.InvalidAmountGiven.message, this.help.getUsages());
             return true;
         }
 
         // Ensure Material given exists.
         MaterialData materialData = this.app.getMaterialManager().getMaterial(materialName);
         if (materialData == null) {
-            this.app.getConsole().usage(sender, String.format(Message.InvalidItemName.message, materialName), this.help.getUsages());
+            this.app.getConsole().usage(sender, String.format(CommandResponse.InvalidItemName.message, materialName), this.help.getUsages());
             return true;
         }
 
         // Ensure player has the available inventory space
         int availableSpace = PlayerInventoryManager.getAvailableSpace(sender, materialData.getMaterial());
         if (amountToBuy > availableSpace) {
-            this.app.getConsole().logFailedPurchase(sender, amountToBuy, materialData.getCleanName(), String.format(Message.InvalidInventorySpace.message, availableSpace, amountToBuy));
+            this.app.getConsole().logFailedPurchase(sender, amountToBuy, materialData.getCleanName(), String.format(CommandResponse.InvalidInventorySpace.message, availableSpace, amountToBuy));
             return true;
         }
 
         // Ensure market has enough stock
-        if (amountToBuy > materialData.getQuantity()) {
-            this.app.getConsole().logFailedPurchase(sender, amountToBuy, materialData.getCleanName(), String.format(Message.InvalidStockAmount.message, materialData.getQuantity(), amountToBuy));
+        if (materialData.has(amountToBuy)) {
+            this.app.getConsole().logFailedPurchase(sender, amountToBuy, materialData.getCleanName(), String.format(CommandResponse.InvalidStockAmount.message, materialData.getQuantity(), amountToBuy));
             return true;
         }
 
@@ -96,7 +96,7 @@ public class BuyItem extends DivinityCommandMarket {
 
         // If the transaction or valuation failed then the user is returned an error.
         else {
-            String errorMessage = Message.UnknownError.message;
+            String errorMessage = CommandResponse.UnknownError.message;
             if (!saleResponse.transactionSuccess()) errorMessage = saleResponse.errorMessage;
             else if (priceResponse.isFailure()) errorMessage = priceResponse.errorMessage;
 
