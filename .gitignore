@@ -240,3 +240,6 @@ out/production/DCE/edgrrrr/dce/commands/DivinityCommandMarketTC.class
 out/production/DCE/edgrrrr/dce/commands/DivinityCommandMarket.class
 out/production/DCE/edgrrrr/dce/commands/DivinityCommand$CommandResponse.class
 out/production/DCE/edgrrrr/dce/commands/DivinityCommandEnchant.class
+out/production/DCE/edgrrrr/dce/commands/DivinityCommandEnchantTC.class
+out/production/DCE/edgrrrr/dce/commands/DivinityCommandMaterials.class
+out/production/DCE/edgrrrr/dce/commands/DivinityCommandMaterialsTC.class
