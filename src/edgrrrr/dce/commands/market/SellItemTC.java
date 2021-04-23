@@ -2,13 +2,11 @@ package edgrrrr.dce.commands.market;
 
 import edgrrrr.configapi.Setting;
 import edgrrrr.dce.DCEPlugin;
+import edgrrrr.dce.commands.DivinityCommandMarketTC;
 import edgrrrr.dce.materials.MaterialData;
 import edgrrrr.dce.math.Math;
 import edgrrrr.dce.player.PlayerInventoryManager;
 import org.bukkit.Material;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
@@ -17,29 +15,33 @@ import java.util.List;
 /**
  * A tab completer for the sell item command
  */
-public class SellItemTC implements TabCompleter {
-    private final DCEPlugin app;
+public class SellItemTC extends DivinityCommandMarketTC {
 
+    /**
+     * Constructor
+     *
+     * @param app
+     */
     public SellItemTC(DCEPlugin app) {
-        this.app = app;
+        super(app, false, Setting.COMMAND_SELL_ITEM_ENABLE_BOOLEAN);
     }
 
+    /**
+     * For handling a player calling this command
+     *
+     * @param sender
+     * @param args
+     * @return
+     */
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
-        // Ensure player
-        if (!(sender instanceof Player) || !(this.app.getConfig().getBoolean(Setting.COMMAND_SELL_ITEM_ENABLE_BOOLEAN.path))) {
-            return null;
-        }
-
-        Player player = (Player) sender;
-
+    public List<String> onPlayerTabCompleter(Player sender, String[] args) {
         String[] strings;
         MaterialData materialData;
         switch (args.length) {
             // 1 args
             // return items in user inventory
             case 1:
-                String[] materials = PlayerInventoryManager.getInventoryMaterials(player);
+                String[] materials = PlayerInventoryManager.getInventoryMaterials(sender);
                 strings = this.app.getMaterialManager().getMaterialAliases(materials, args[0]);
                 break;
 
@@ -52,7 +54,7 @@ public class SellItemTC implements TabCompleter {
                 if (materialData != null) {
                     Material material = materialData.getMaterial();
                     stackSize = material.getMaxStackSize();
-                    inventoryCount = PlayerInventoryManager.getMaterialCount(player, material);
+                    inventoryCount = PlayerInventoryManager.getMaterialCount(sender, material);
                 }
                 strings = new String[]{
                         String.valueOf(stackSize), String.valueOf(inventoryCount)
@@ -64,10 +66,10 @@ public class SellItemTC implements TabCompleter {
                 String value = "unknown";
                 if (materialData != null) {
                     Material material = materialData.getMaterial();
-                    value = String.format("£%,.2f", this.app.getMaterialManager().getSellValue(PlayerInventoryManager.getMaterialSlotsToCount(player, material, Math.getInt(args[1]))).value);
+                    value = String.format("£%,.2f", this.app.getMaterialManager().getSellValue(PlayerInventoryManager.getMaterialSlotsToCount(sender, material, Math.getInt(args[1]))).value);
                 }
                 strings = new String[] {
-                    String.format("Value: %s", value)
+                        String.format("Value: %s", value)
                 };
                 break;
 
@@ -78,5 +80,16 @@ public class SellItemTC implements TabCompleter {
         }
 
         return Arrays.asList(strings);
+    }
+
+    /**
+     * For the handling of the console calling this command
+     *
+     * @param args
+     * @return
+     */
+    @Override
+    public List<String> onConsoleTabCompleter(String[] args) {
+        return null;
     }
 }
