@@ -180,6 +180,10 @@ public class MaterialData {
         return this.configData.getString(this.strEntity);
     }
 
+    public boolean has(int amount) {
+        return this.getQuantity() >= amount;
+    }
+
     /**
      * Returns the type of material
      * Examples:
