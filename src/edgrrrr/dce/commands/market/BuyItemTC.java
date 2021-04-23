@@ -4,6 +4,7 @@ import edgrrrr.configapi.Setting;
 import edgrrrr.dce.DCEPlugin;
 import edgrrrr.dce.materials.MaterialData;
 import edgrrrr.dce.math.Math;
+import edgrrrr.dce.player.PlayerInventoryManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -29,6 +30,7 @@ public class BuyItemTC implements TabCompleter {
             return null;
         }
 
+        Player player = (Player) sender;
         String[] strings;
         MaterialData materialData;
         switch (args.length) {
@@ -48,7 +50,8 @@ public class BuyItemTC implements TabCompleter {
                 }
 
                 strings = new String[] {
-                    String.valueOf(stackSize)
+                    String.valueOf(stackSize),
+                    String.valueOf(PlayerInventoryManager.getAvailableSpace(player, materialData.getMaterial()))
                 };
                 break;
 
