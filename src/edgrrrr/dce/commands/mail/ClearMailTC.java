@@ -2,9 +2,7 @@ package edgrrrr.dce.commands.mail;
 
 import edgrrrr.configapi.Setting;
 import edgrrrr.dce.DCEPlugin;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
+import edgrrrr.dce.commands.DivinityCommandTC;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
@@ -13,20 +11,26 @@ import java.util.List;
 /**
  * A tab completer for the clear mail command
  */
-public class ClearMailTC implements TabCompleter {
-    private final DCEPlugin app;
+public class ClearMailTC extends DivinityCommandTC {
 
+    /**
+     * Constructor
+     *
+     * @param
+     */
     public ClearMailTC(DCEPlugin app) {
-        this.app = app;
+        super(app, false, Setting.COMMAND_CLEAR_MAIL_ENABLE_BOOLEAN);
     }
 
+    /**
+     * For handling a player calling this command
+     *
+     * @param sender
+     * @param args
+     * @return
+     */
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
-        // Ensure player
-        if (!(sender instanceof Player) || !(this.app.getConfig().getBoolean(Setting.COMMAND_CLEAR_MAIL_ENABLE_BOOLEAN.path))) {
-            return null;
-        }
-
+    public List<String> onPlayerTabCompleter(Player sender, String[] args) {
         String[] strings;
         switch (args.length) {
             // 1 arg
@@ -44,5 +48,16 @@ public class ClearMailTC implements TabCompleter {
         }
 
         return Arrays.asList(strings);
+    }
+
+    /**
+     * For the handling of the console calling this command
+     *
+     * @param args
+     * @return
+     */
+    @Override
+    public List<String> onConsoleTabCompleter(String[] args) {
+        return null;
     }
 }

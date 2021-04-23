@@ -2,12 +2,9 @@ package edgrrrr.dce.commands.mail;
 
 import edgrrrr.configapi.Setting;
 import edgrrrr.dce.DCEPlugin;
-import edgrrrr.dce.help.Help;
+import edgrrrr.dce.commands.DivinityCommand;
 import edgrrrr.dce.mail.Mail;
 import edgrrrr.dce.mail.MailList;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -16,29 +13,26 @@ import java.util.HashMap;
 /**
  * A command for clearing mail
  */
-public class ClearMail implements CommandExecutor {
-    private final DCEPlugin app;
-    private final Help help;
+public class ClearMail extends DivinityCommand {
 
+    /**
+     * Constructor
+     *
+     * @param app
+     */
     public ClearMail(DCEPlugin app) {
-        this.app = app;
-        this.help = this.app.getHelpManager().get("clearmail");
+        super(app, "clearmail", false, Setting.COMMAND_CLEAR_MAIL_ENABLE_BOOLEAN);
     }
 
+    /**
+     * For handling a player calling this command
+     *
+     * @param sender
+     * @param args
+     * @return
+     */
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player)) {
-            return true;
-        }
-
-        Player player = (Player) sender;
-
-        // Ensure command is enabled
-        if (!(this.app.getConfig().getBoolean(Setting.COMMAND_CLEAR_MAIL_ENABLE_BOOLEAN.path))) {
-            this.app.getConsole().severe(player, "This command is not enabled.");
-            return true;
-        }
-
+    public boolean onPlayerCommand(Player sender, String[] args) {
         boolean clearRead = false;
         boolean clearUnread = false;
         switch (args.length) {
@@ -59,17 +53,17 @@ public class ClearMail implements CommandExecutor {
                         break;
 
                     default:
-                        this.app.getConsole().usage(player, "Invalid arguments.", this.help.getUsages());
+                        this.app.getConsole().usage(sender, "Invalid arguments.", this.help.getUsages());
                         return true;
                 }
                 break;
 
             default:
-                this.app.getConsole().usage(player, "Invalid number of arguments.", this.help.getUsages());
+                this.app.getConsole().usage(sender, "Invalid number of arguments.", this.help.getUsages());
                 return true;
         }
 
-        MailList mailList = this.app.getMailManager().getMailList(player.getUniqueId().toString());
+        MailList mailList = this.app.getMailManager().getMailList(sender.getUniqueId().toString());
         HashMap<String, Mail> allMail = mailList.getAllMail();
         ArrayList<String> readMail = mailList.getReadMail();
         ArrayList<String> unreadMail = mailList.getUnreadMail();
@@ -78,7 +72,7 @@ public class ClearMail implements CommandExecutor {
         int unreadMailCleared = 0;
 
         if (allMail.isEmpty()) {
-            this.app.getConsole().warn(player, "You have no mail to clear.");
+            this.app.getConsole().warn(sender, "You have no mail to clear.");
         } else {
             if (clearRead) {
                 mailToClear.addAll(readMail);
@@ -92,9 +86,20 @@ public class ClearMail implements CommandExecutor {
             for (String mailID : mailToClear) {
                 mailList.removeMail(mailID);
             }
-            this.app.getConsole().info(player, String.format("Removed %d mail. (%d unread & %d read)", mailToClear.size(), unreadMailCleared, readMailCleared));
+            this.app.getConsole().info(sender, String.format("Removed %d mail. (%d unread & %d read)", mailToClear.size(), unreadMailCleared, readMailCleared));
 
         }
         return true;
+    }
+
+    /**
+     * For the handling of the console calling this command
+     *
+     * @param args
+     * @return
+     */
+    @Override
+    public boolean onConsoleCommand(String[] args) {
+        return false;
     }
 }
