@@ -2,7 +2,7 @@ package edgrrrr.dce.commands;
 
 import edgrrrr.configapi.Setting;
 import edgrrrr.dce.DCEPlugin;
-import edgrrrr.dce.commands.DivinityCommand.Message;
+import edgrrrr.dce.commands.DivinityCommand.CommandResponse;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -50,7 +50,7 @@ public abstract class DivinityCommandTC implements TabCompleter {
                 return this._onConsoleTabComplete(args);
             }
         } catch (Exception e) {
-            this.app.getConsole().send(Message.ErrorOnCommand.defaultLogLevel, String.format(Message.ErrorOnCommand.message, this.getClass().getCanonicalName(), e.getMessage()));
+            this.app.getConsole().send(CommandResponse.ErrorOnCommand.defaultLogLevel, String.format(CommandResponse.ErrorOnCommand.message, this.getClass().getCanonicalName(), e.getMessage()));
             return null;
         }
     }
