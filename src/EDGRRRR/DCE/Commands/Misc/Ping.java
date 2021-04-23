@@ -2,40 +2,44 @@ package edgrrrr.dce.commands.misc;
 
 import edgrrrr.configapi.Setting;
 import edgrrrr.dce.DCEPlugin;
-import edgrrrr.dce.help.Help;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
+import edgrrrr.dce.commands.DivinityCommand;
 import org.bukkit.entity.Player;
 
 /**
  * A simple ping pong! command
  */
-public class Ping implements CommandExecutor {
-    private final DCEPlugin app;
-    private final Help help;
-
+public class Ping extends DivinityCommand {
+    /**
+     * Constructor
+     *
+     * @param app
+     */
     public Ping(DCEPlugin app) {
-        this.app = app;
-        this.help = this.app.getHelpManager().get("ping");
+        super(app, "ping", true, Setting.COMMAND_PING_ENABLE_BOOLEAN);
     }
 
-
+    /**
+     * For handling a player calling this command
+     *
+     * @param sender
+     * @param args
+     * @return
+     */
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player)) {
-            return true;
-        }
+    public boolean onPlayerCommand(Player sender, String[] args) {
+        this.app.getConsole().send(sender, Message.PingResponse.defaultLogLevel, Message.PingResponse.message);
+        return true;
+    }
 
-        Player player = (Player) sender;
-
-        // Ensure command is enabled
-        if (!(this.app.getConfig().getBoolean(Setting.COMMAND_PING_ENABLE_BOOLEAN.path))) {
-            this.app.getConsole().severe(player, "This command is not enabled.");
-            return true;
-        }
-
-        this.app.getConsole().info(player, "Pong!");
+    /**
+     * For the handling of the console calling this command
+     *
+     * @param args
+     * @return
+     */
+    @Override
+    public boolean onConsoleCommand(String[] args) {
+        this.app.getConsole().send(Message.PingResponse.defaultLogLevel, Message.PingResponse.message);
         return true;
     }
 }
