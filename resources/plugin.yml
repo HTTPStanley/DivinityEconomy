@@ -14,7 +14,7 @@ commands:
   # Help
   ehelp:
     description: "Help!"
-    aliases: []
+    aliases: [dce]
     permission: dce.help
     permission-message: "You do not have the permission to use this command"
     usage: "/ehelp"
