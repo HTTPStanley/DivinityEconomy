@@ -30,7 +30,7 @@ public abstract class DivinityCommandTC implements TabCompleter {
     public DivinityCommandTC(DCEPlugin app, boolean hasConsoleSupport, Setting commandSetting) {
         this.app = app;
         this.hasConsoleSupport = hasConsoleSupport;
-        this.isEnabled = (this.app.getConfig().getBoolean(Setting.COMMAND_PING_ENABLE_BOOLEAN.path));
+        this.isEnabled = this.app.getConfig().getBoolean(commandSetting.path);
     }
 
     /**
