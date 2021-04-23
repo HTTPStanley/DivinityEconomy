@@ -275,7 +275,7 @@
 #
 
 main:
-  version: 1.0.2
+  version: 1.1.0
 
 chat:
   chatDebug: false
@@ -299,12 +299,17 @@ market:
     baseQuantity: 1000000
     buyTax: 0.3
     sellTax: 0.2
+    wholeMarketInflation: true
+    dynamicPricing: true
 
   materials:
     enable: true
     baseQuantity: 1000000
     buyTax: 0.25
     sellTax: 0.2
+    wholeMarketInflation: false
+    dynamicPricing: true
+    itemDamageScaling: true
 
 
 commands:
