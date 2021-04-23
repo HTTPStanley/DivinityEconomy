@@ -7,6 +7,7 @@ import edgrrrr.dce.materials.MaterialData;
 import edgrrrr.dce.math.Math;
 import edgrrrr.dce.player.PlayerInventoryManager;
 import edgrrrr.dce.response.ValueResponse;
+import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -79,24 +80,32 @@ public class SellItem implements CommandExecutor {
 
             } else {
                 Material material = materialData.getMaterial();
-                ItemStack[] totalUserMaterials = PlayerInventoryManager.getMaterialSlots(player, material);
-                int userAmount = PlayerInventoryManager.getMaterialCount(totalUserMaterials);
+                int materialCount = PlayerInventoryManager.getMaterialCount(PlayerInventoryManager.getMaterialSlots(player, material));
 
-                ItemStack[] itemStacks = PlayerInventoryManager.getMaterialSlotsToCount(player, material, amountToSell);
-                ValueResponse valueResponse = this.app.getMaterialManager().getSellValue(itemStacks);
-
-                if (valueResponse.isFailure()) {
-                    this.app.getConsole().logFailedSale(player, amountToSell, materialData.getCleanName(), valueResponse.errorMessage);
+                if (materialCount < amountToSell) {
+                    this.app.getConsole().logFailedSale(player, amountToSell, materialData.getCleanName(), String.format("you do not have enough of this material (%d/%d)", materialCount, amountToSell));
 
                 } else {
-                    if (userAmount >= amountToSell) {
-                        PlayerInventoryManager.removeMaterialsFromPlayer(itemStacks);
-                        materialData.addQuantity(amountToSell);
-                        if (!this.app.getEconomyManager().addCash(player, valueResponse.value).transactionSuccess()) {this.app.getConsole().severe(player,"An error occurred on funding your account, show this message to an admin.");}
+                    ItemStack[] itemStacks = PlayerInventoryManager.getMaterialSlotsToCount(player, material, amountToSell);
+                    ItemStack[] itemStacksClone = PlayerInventoryManager.cloneItems(itemStacks);
+                    ValueResponse response = this.app.getMaterialManager().getSellValue(itemStacks);
 
-                        this.app.getConsole().logSale(player, amountToSell, valueResponse.value, materialData.getCleanName());
+                    if (response.isSuccess()) {
+                        PlayerInventoryManager.removeMaterialsFromPlayer(itemStacks);
+
+                        EconomyResponse economyResponse = this.app.getEconomyManager().addCash(player, response.value);
+                        if (!economyResponse.transactionSuccess()) {
+                            PlayerInventoryManager.addItemsToPlayer(player, itemStacksClone);
+                            // Handles console, player message and mail
+                            this.app.getConsole().logFailedSale(player, amountToSell, materialData.getCleanName(), economyResponse.errorMessage);
+                        } else {
+                            materialData.addQuantity(amountToSell);
+                            // Handles console, player message and mail
+                            this.app.getConsole().logSale(player, amountToSell, response.value, materialData.getCleanName());
+                        }
                     } else {
-                        this.app.getConsole().logFailedSale(player, amountToSell, materialData.getCleanName(), String.format("you do not have enough of this material. (missing %d)", amountToSell - userAmount));
+                        // Handles console, player message and mail
+                        this.app.getConsole().logFailedSale(player, amountToSell, materialData.getCleanName(), response.errorMessage);
                     }
                 }
             }
