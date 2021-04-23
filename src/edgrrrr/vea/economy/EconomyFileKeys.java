@@ -7,13 +7,8 @@ public enum EconomyFileKeys {
     NAME("last-known-name"),
     ;
     //END
-    private final String key;
+    public final String key;
     EconomyFileKeys(String key) {
         this.key = key;
     }
-
-    public String get() {
-        return this.key;
-    }
-
 }
