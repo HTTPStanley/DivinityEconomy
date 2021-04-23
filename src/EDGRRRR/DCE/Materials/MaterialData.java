@@ -89,9 +89,12 @@ public class MaterialData {
      */
     public void setQuantity(int amount) {
         int oldQuantity = this.getQuantity();
-        this.setData(this.strQuantity, amount);
-        int change = oldQuantity - amount;
-        this.manager.editTotalMaterials(change);
+        int change = amount - oldQuantity;
+        if (change >= 0) {
+            this.remQuantity(-change);
+        } else {
+            this.addQuantity(change);
+        }
     }
 
     /**
@@ -205,24 +208,6 @@ public class MaterialData {
             type = this.strTypeMaterial;
         }
         return type;
-    }
-
-    /**
-     * Returns an itemStack containing <amount> of this material
-     *
-     * @param amount - The amount to set the stack to
-     * @return ItemStack - The item stack
-     */
-    public ItemStack getItemStack(int amount) {
-        // Create the itemStack of <material> of <amount>
-        ItemStack iStack = new ItemStack(this.getMaterial(), amount);
-        // If potion, set meta data
-        if (this.getType().equals(this.strTypePotion)) {
-            PotionMeta meta = (PotionMeta) iStack.getItemMeta();
-            meta.setBasePotionData(new PotionData(PotionType.valueOf(potionData.getType()), potionData.getExtended(), potionData.getUpgraded()));
-            iStack.setItemMeta(meta);
-        }
-        return iStack;
     }
 
     /**
