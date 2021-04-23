@@ -6,6 +6,9 @@ import edgrrrr.dce.mail.MailList;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class EconConsole extends Console {
     private final DCEPlugin app;
 
@@ -76,23 +79,21 @@ public class EconConsole extends Console {
      * @param balance2 - The balance after the change
      * @param reason - The reason for the change.
      */
-    public void logBalance(OfflinePlayer player1, OfflinePlayer player2, double balance1, double balance2, String reason) {
+    public void logBalance(@Nullable OfflinePlayer player1, @Nonnull OfflinePlayer player2, double balance1, double balance2, String reason) {
         // Send console log of balance change
         this.info(String.format("%s's balance changed from £%,.2f to £%,.2f because %s", player2.getName(), balance1, balance2, reason));
 
         // Only handle sender if sender is not also the receiver
         if (player1 != player2) {
             // Handles online and offline messages for sender
-            Player onlinePlayer1 = player1.getPlayer();
-            MailList playerMailList1 = this.app.getMailManager().getMailList(player1.getUniqueId().toString());
-            String playerMessage1 = String.format("You changed %s's balance from £%,.2f to £%,.2f", player2.getName(), balance1, balance2);
-            if (onlinePlayer1 != null) {
-                this.info(onlinePlayer1, playerMessage1);
-            } else {
-                playerMailList1.createMail(String.format("%s <aptime>", playerMessage1));
+            if (player1 != null) {
+                Player onlinePlayer1 = player1.getPlayer();
+                String playerMessage1 = String.format("You changed %s's balance from £%,.2f to £%,.2f", player2.getName(), balance1, balance2);
+                if (onlinePlayer1 != null) {
+                    this.info(onlinePlayer1, playerMessage1);
+                }
             }
         }
-
 
         // Handles online and offline messages for receiver
         Player onlinePlayer2 = player2.getPlayer();
@@ -112,22 +113,35 @@ public class EconConsole extends Console {
      * @param player2 - The command receiver (Person who's balance is changing)
      * @param error - The error causing the failure.
      */
-    public void logFailedBalance(OfflinePlayer player1, OfflinePlayer player2, String error) {
+    public void logFailedBalance(@Nullable OfflinePlayer player1, @Nullable OfflinePlayer player2, String error) {
         // The message to send
         String playerMessage = String.format("Couldn't change %s's balance because %s", player2.getName(), error);
 
         // Send console log of balance change
         this.warn(playerMessage);
 
-        // Handles online and offline messages for receiver
-        Player onlinePlayer1 = player1.getPlayer();
-        MailList playerMailList = this.app.getMailManager().getMailList(player1.getUniqueId().toString());
-        if (onlinePlayer1 != null) {
-            // Player is online - send message
-            this.warn(onlinePlayer1, playerMessage);
-        } else {
-            // Player is offline - create mail
-            playerMailList.createMail(String.format("%s <aptime>", playerMessage));
+        if (player1 != player2 ) {
+            // Handles online and offline messages for sender
+            if (player1 != null) {
+                Player onlinePlayer1 = player1.getPlayer();
+                if (onlinePlayer1 != null) {
+                    // Player is online - send message
+                    this.warn(onlinePlayer1, playerMessage);
+                }
+            }
+        }
+
+        // Handles online and offline messages for receiver#
+        if (player2 != null) {
+            Player onlinePlayer2 = player2.getPlayer();
+            MailList playerMailList = this.app.getMailManager().getMailList(player2.getUniqueId().toString());
+            if (onlinePlayer2 != null) {
+                // Player is online - send message
+                this.warn(onlinePlayer2, playerMessage);
+            } else {
+                // Player is offline - create mail
+                playerMailList.createMail(String.format("%s <aptime>", playerMessage));
+            }
         }
     }
 
