@@ -2,6 +2,7 @@ package edgrrrr.dce.commands.enchants;
 
 import edgrrrr.configapi.Setting;
 import edgrrrr.dce.DCEPlugin;
+import edgrrrr.dce.commands.DivinityCommandEnchantTC;
 import edgrrrr.dce.enchants.EnchantData;
 import edgrrrr.dce.math.Math;
 import edgrrrr.dce.player.PlayerInventoryManager;
@@ -18,23 +19,29 @@ import java.util.List;
 /**
  * A tab completer for the enchant hand buy command
  */
-public class EnchantHandBuyTC implements TabCompleter {
-    private final DCEPlugin app;
+public class EnchantHandBuyTC extends DivinityCommandEnchantTC {
 
+    /**
+     * Constructor
+     *
+     * @param app
+     */
     public EnchantHandBuyTC(DCEPlugin app) {
-        this.app = app;
+        super(app, false, Setting.COMMAND_E_BUY_ENABLE_BOOLEAN);
     }
 
+    /**
+     * For handling a player calling this command
+     *
+     * @param sender
+     * @param args
+     * @return
+     */
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
-        // Ensure player
-        if (!(sender instanceof Player) || !(this.app.getConfig().getBoolean(Setting.COMMAND_E_BUY_ENABLE_BOOLEAN.path))) {
-            return null;
-        }
-        Player player = (Player) sender;
+    public List<String> onPlayerTabCompleter(Player sender, String[] args) {
         String[] strings;
         EnchantData enchantData;
-        ItemStack heldItem = PlayerInventoryManager.getHeldItemNotNull(player);
+        ItemStack heldItem = PlayerInventoryManager.getHeldItemNotNull(sender);
         switch (args.length) {
             // 1 args
             // return names of players starting with arg
@@ -76,4 +83,16 @@ public class EnchantHandBuyTC implements TabCompleter {
 
         return Arrays.asList(strings);
     }
+
+    /**
+     * For the handling of the console calling this command
+     *
+     * @param args
+     * @return
+     */
+    @Override
+    public List<String> onConsoleTabCompleter(String[] args) {
+        return null;
+    }
 }
+
