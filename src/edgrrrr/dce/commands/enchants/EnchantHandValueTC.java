@@ -2,12 +2,10 @@ package edgrrrr.dce.commands.enchants;
 
 import edgrrrr.configapi.Setting;
 import edgrrrr.dce.DCEPlugin;
+import edgrrrr.dce.commands.DivinityCommandEnchantTC;
 import edgrrrr.dce.enchants.EnchantData;
 import edgrrrr.dce.player.PlayerInventoryManager;
 import edgrrrr.dce.utils.ArrayUtils;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -17,23 +15,29 @@ import java.util.List;
 /**
  * A tab completer for the enchant hand value command
  */
-public class EnchantHandValueTC implements TabCompleter {
-    private final DCEPlugin app;
+public class EnchantHandValueTC extends DivinityCommandEnchantTC {
 
+    /**
+     * Constructor
+     *
+     * @param app
+     */
     public EnchantHandValueTC(DCEPlugin app) {
-        this.app = app;
+        super(app, false, Setting.COMMAND_E_VALUE_ENABLE_BOOLEAN);
     }
 
+    /**
+     * For handling a player calling this command
+     *
+     * @param sender
+     * @param args
+     * @return
+     */
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
-        // Ensure player
-        if (!(sender instanceof Player) || !(this.app.getConfig().getBoolean(Setting.COMMAND_E_VALUE_ENABLE_BOOLEAN.path))) {
-            return null;
-        }
-        Player player = (Player) sender;
+    public List<String> onPlayerTabCompleter(Player sender, String[] args) {
         String[] strings;
         EnchantData enchantData;
-        ItemStack heldItem = PlayerInventoryManager.getHeldItemNotNull(player);
+        ItemStack heldItem = PlayerInventoryManager.getHeldItemNotNull(sender);
         switch (args.length) {
             // 1 args
             // return names of players starting with arg
@@ -60,5 +64,16 @@ public class EnchantHandValueTC implements TabCompleter {
         }
 
         return Arrays.asList(strings);
+    }
+
+    /**
+     * For the handling of the console calling this command
+     *
+     * @param args
+     * @return
+     */
+    @Override
+    public List<String> onConsoleTabCompleter(String[] args) {
+        return null;
     }
 }
