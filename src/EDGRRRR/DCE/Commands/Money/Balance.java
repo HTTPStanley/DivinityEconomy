@@ -51,15 +51,15 @@ public class Balance extends DivinityCommand {
         }
 
         if (receiverPlayer == null) {
-            this.app.getConsole().usage(sender, Message.InvalidPlayerNameResponse.message, this.help.getUsages());
+            this.app.getConsole().usage(sender, CommandResponse.InvalidPlayerNameResponse.message, this.help.getUsages());
             return true;
         }
 
         double balance = this.app.getEconomyManager().getBalance(receiverPlayer);
         if (!(sender == receiverPlayer)) {
-            this.app.getConsole().info(sender, String.format(Message.BalanceResponseOther.message, receiverPlayer.getName(), balance));
+            this.app.getConsole().info(sender, String.format(CommandResponse.BalanceResponseOther.message, receiverPlayer.getName(), balance));
         } else {
-            this.app.getConsole().info(sender, String.format(Message.BalanceResponse.message, balance));
+            this.app.getConsole().info(sender, String.format(CommandResponse.BalanceResponse.message, balance));
         }
         return true;
     }
@@ -82,16 +82,16 @@ public class Balance extends DivinityCommand {
                 break;
 
             default:
-                this.app.getConsole().send(Message.InvalidNumberOfArguments.defaultLogLevel, Message.InvalidNumberOfArguments.message);
+                this.app.getConsole().send(CommandResponse.InvalidNumberOfArguments.defaultLogLevel, CommandResponse.InvalidNumberOfArguments.message);
                 return true;
         }
 
         if (player == null) {
-            this.app.getConsole().send(Message.InvalidPlayerNameResponse.defaultLogLevel, Message.InvalidPlayerNameResponse.message);
+            this.app.getConsole().send(CommandResponse.InvalidPlayerNameResponse.defaultLogLevel, CommandResponse.InvalidPlayerNameResponse.message);
             return true;
         }
 
-        this.app.getConsole().info(String.format(Message.BalanceResponseOther.message, player.getName(), this.app.getEconomyManager().getBalance(player)));
+        this.app.getConsole().info(String.format(CommandResponse.BalanceResponseOther.message, player.getName(), this.app.getEconomyManager().getBalance(player)));
         return true;
     }
 }
