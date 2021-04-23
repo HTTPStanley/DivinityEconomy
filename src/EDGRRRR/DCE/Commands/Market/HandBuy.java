@@ -75,7 +75,7 @@ public class HandBuy extends DivinityCommandMaterials {
         }
 
         // Ensure market has enough
-        if (materialData.has(amountToBuy)) {
+        if (!materialData.has(amountToBuy)) {
             this.app.getConsole().logFailedPurchase(sender, amountToBuy, materialData.getCleanName(), String.format(CommandResponse.InvalidStockAmount.message, materialData.getQuantity(), amountToBuy));
             return true;
         }

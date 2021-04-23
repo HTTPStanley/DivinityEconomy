@@ -73,7 +73,7 @@ public class BuyItem extends DivinityCommandMaterials {
         }
 
         // Ensure market has enough stock
-        if (materialData.has(amountToBuy)) {
+        if (!materialData.has(amountToBuy)) {
             this.app.getConsole().logFailedPurchase(sender, amountToBuy, materialData.getCleanName(), String.format(CommandResponse.InvalidStockAmount.message, materialData.getQuantity(), amountToBuy));
             return true;
         }
