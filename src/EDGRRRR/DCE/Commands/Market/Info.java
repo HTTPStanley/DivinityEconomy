@@ -3,12 +3,8 @@ package edgrrrr.dce.commands.market;
 import edgrrrr.configapi.Setting;
 import edgrrrr.dce.DCEPlugin;
 import edgrrrr.dce.commands.DivinityCommand;
-import edgrrrr.dce.help.Help;
 import edgrrrr.dce.materials.MaterialData;
 import edgrrrr.dce.materials.MaterialPotionData;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 /**
