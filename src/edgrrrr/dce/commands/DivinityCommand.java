@@ -26,7 +26,7 @@ public abstract class DivinityCommand implements CommandExecutor {
      * Default Message for standardized messaging across the commands.
      * Some may require string formatting to complete.
      */
-    protected enum Message {
+    public enum CommandResponse {
         // Defaults
         ConsoleCommandIsDisabled("This command is not enabled.", LogLevel.WARNING),
         ConsoleSupportNotAdded("This command does not support the console.", LogLevel.WARNING),
@@ -48,13 +48,15 @@ public abstract class DivinityCommand implements CommandExecutor {
         InvalidPlayerNameResponse("Invalid player name.", LogLevel.WARNING),
         InvalidAmountGiven("Invalid amount given.", LogLevel.WARNING),
         InvalidItemName("Invalid item name '%s'.", LogLevel.WARNING),
+        InvalidItemHeld("Invalid held item.", LogLevel.WARNING),
         InvalidInventorySpace("Missing inventory space %d/%d.", LogLevel.WARNING),
         InvalidStockAmount("Missing stock %d/%d.", LogLevel.WARNING),
+        InvalidInventoryStock("Missing inventory stock %d/%d", LogLevel.WARNING),
         UnknownError("Unknown error.", LogLevel.WARNING)
         ;
         public String message;
         public LogLevel defaultLogLevel;
-        Message(String message, LogLevel defaultLevel) {
+        CommandResponse(String message, LogLevel defaultLevel) {
             this.message = message;
             this.defaultLogLevel = defaultLevel;
         }
@@ -92,7 +94,7 @@ public abstract class DivinityCommand implements CommandExecutor {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            this.app.getConsole().send(Message.ErrorOnCommand.defaultLogLevel, String.format(Message.ErrorOnCommand.message, command, e.getMessage()));
+            this.app.getConsole().send(CommandResponse.ErrorOnCommand.defaultLogLevel, String.format(CommandResponse.ErrorOnCommand.message, command, e.getMessage()));
             return false;
         }
     }
@@ -106,7 +108,7 @@ public abstract class DivinityCommand implements CommandExecutor {
      */
     public boolean _onPlayerCommand(Player sender, String[] args){
         if (!this.isEnabled) {
-            this.app.getConsole().send(sender, Message.PlayerCommandIsDisabled.defaultLogLevel, Message.PlayerCommandIsDisabled.message);
+            this.app.getConsole().send(sender, CommandResponse.PlayerCommandIsDisabled.defaultLogLevel, CommandResponse.PlayerCommandIsDisabled.message);
             return true;
         } else {
             return this.onPlayerCommand(sender, args);
@@ -130,10 +132,10 @@ public abstract class DivinityCommand implements CommandExecutor {
      */
     public boolean _onConsoleCommand(String[] args) {
         if (!this.isEnabled) {
-            this.app.getConsole().send(Message.ConsoleCommandIsDisabled.defaultLogLevel, Message.ConsoleCommandIsDisabled.message);
+            this.app.getConsole().send(CommandResponse.ConsoleCommandIsDisabled.defaultLogLevel, CommandResponse.ConsoleCommandIsDisabled.message);
             return true;
         } else if (!this.hasConsoleSupport) {
-            this.app.getConsole().send(Message.ConsoleSupportNotAdded.defaultLogLevel, Message.ConsoleSupportNotAdded.message);
+            this.app.getConsole().send(CommandResponse.ConsoleSupportNotAdded.defaultLogLevel, CommandResponse.ConsoleSupportNotAdded.message);
             return true;
         } else {
             return this.onConsoleCommand(args);
