@@ -2,6 +2,7 @@ package edgrrrr.dce.commands.market;
 
 import edgrrrr.configapi.Setting;
 import edgrrrr.dce.DCEPlugin;
+import edgrrrr.dce.commands.DivinityCommandMarketTC;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -13,20 +14,37 @@ import java.util.List;
 /**
  * tab completer for the info command
  */
-public class InfoTC implements TabCompleter {
-    private final DCEPlugin app;
+public class InfoTC extends DivinityCommandMarketTC {
 
+    /**
+     * Constructor
+     *
+     * @param app
+     */
     public InfoTC(DCEPlugin app) {
-        this.app = app;
+        super(app, true, Setting.COMMAND_INFO_ENABLE_BOOLEAN);
     }
 
+    /**
+     * For handling a player calling this command
+     *
+     * @param sender
+     * @param args
+     * @return
+     */
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
-        // Ensure player
-        if (!(sender instanceof Player) || !(this.app.getConfig().getBoolean(Setting.COMMAND_INFO_ENABLE_BOOLEAN.path))) {
-            return null;
-        }
+    public List<String> onPlayerTabCompleter(Player sender, String[] args) {
+        return this.onConsoleTabCompleter(args);
+    }
 
+    /**
+     * For the handling of the console calling this command
+     *
+     * @param args
+     * @return
+     */
+    @Override
+    public List<String> onConsoleTabCompleter(String[] args) {
         String[] strings;
         switch (args.length) {
             // 1 args
