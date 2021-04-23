@@ -41,6 +41,8 @@ public class EnchantmentManager {
     public final double enchantBuyTax;
     public final double enchantSellTax;
     public final int enchantBaseQuantity;
+    public final boolean dynamicPricing;
+    public final boolean wholeMarketInflation;
 
 
     /**
@@ -54,6 +56,8 @@ public class EnchantmentManager {
         this.enchantBuyTax = this.app.getConfig().getDouble(Setting.MARKET_ENCHANTS_BUY_TAX_FLOAT.path);
         this.enchantSellTax = this.app.getConfig().getDouble(Setting.MARKET_ENCHANTS_SELL_TAX_FLOAT.path);
         this.enchantBaseQuantity = this.app.getConfig().getInt(Setting.MARKET_ENCHANTS_BASE_QUANTITY_INTEGER.path);
+        this.dynamicPricing = this.app.getConfig().getBoolean(Setting.MARKET_ENCHANTS_DYN_PRICING_BOOLEAN.path);
+        this.wholeMarketInflation = this.app.getConfig().getBoolean(Setting.MARKET_ENCHANTS_WHOLE_MARKET_INF_BOOLEAN.path);
         int timer = Math.getTicks(this.app.getConfig().getInt(Setting.MARKET_SAVE_TIMER_INTEGER.path));
         this.saveTimer = new BukkitRunnable() {
             @Override
@@ -464,7 +468,7 @@ public class EnchantmentManager {
      * @return double - the price of amount of this enchant
      */
     public double calculatePrice(double amount, double stock, double scale, boolean purchase) {
-        return Math.calculatePrice(this.enchantBaseQuantity, stock, this.defaultTotalEnchants, this.totalEnchants, amount, scale, purchase);
+        return Math.calculatePrice(this.enchantBaseQuantity, stock, this.defaultTotalEnchants, this.totalEnchants, amount, scale, purchase, this.dynamicPricing, this.wholeMarketInflation);
     }
 
     /**
