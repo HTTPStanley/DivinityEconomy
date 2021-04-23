@@ -2,52 +2,39 @@ package edgrrrr.dce.commands.market;
 
 import edgrrrr.configapi.Setting;
 import edgrrrr.dce.DCEPlugin;
-import edgrrrr.dce.help.Help;
+import edgrrrr.dce.commands.DivinityCommandMarket;
 import edgrrrr.dce.materials.MaterialData;
 import edgrrrr.dce.math.Math;
 import edgrrrr.dce.player.PlayerInventoryManager;
 import edgrrrr.dce.response.ValueResponse;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Material;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 /**
  * A command for selling items to the market
  */
-public class SellItem implements CommandExecutor {
-    private final DCEPlugin app;
-    private final Help help;
+public class SellItem extends DivinityCommandMarket {
 
+    /**
+     * Constructor
+     *
+     * @param app
+     */
     public SellItem(DCEPlugin app) {
-        this.app = app;
-        this.help = this.app.getHelpManager().get("sell");
+        super(app, "sellitem", false, Setting.COMMAND_SELL_ITEM_ENABLE_BOOLEAN);
     }
 
-
+    /**
+     * For handling a player calling this command
+     *
+     * @param sender
+     * @param args
+     * @return
+     */
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player)) {
-            return true;
-        }
-
-        Player player = (Player) sender;
-
-        // Ensure command is enabled
-        if (!(this.app.getConfig().getBoolean(Setting.COMMAND_SELL_ITEM_ENABLE_BOOLEAN.path))) {
-            this.app.getConsole().severe(player, "This command is not enabled.");
-            return true;
-        }
-
-        // Ensure market is enabled
-        if (!(this.app.getConfig().getBoolean(Setting.MARKET_MATERIALS_ENABLE_BOOLEAN.path))) {
-            this.app.getConsole().severe(player, "The market is not enabled.");
-            return true;
-        }
-
+    public boolean onPlayerCommand(Player sender, String[] args) {
         String materialName;
         int amountToSell = 1;
 
@@ -64,53 +51,70 @@ public class SellItem implements CommandExecutor {
                 break;
 
             default:
-                this.app.getConsole().usage(player, "Invalid number of arguments.", this.help.getUsages());
+                this.app.getConsole().usage(sender, CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
                 return true;
         }
 
+        // Check amount is greater than  0
         if (amountToSell < 1) {
-            this.app.getConsole().usage(player, "Invalid amount.", this.help.getUsages());
-            this.app.getConsole().debug("(SellItem)Invalid item amount: " + materialName);
+            this.app.getConsole().usage(sender, CommandResponse.InvalidAmountGiven.message, this.help.getUsages());
+            return true;
+        }
 
-        } else {
-            MaterialData materialData = this.app.getMaterialManager().getMaterial(materialName);
-            if (materialData == null) {
-                this.app.getConsole().usage(player, "Unknown Item: '" + materialName + "'", this.help.getUsages());
-                this.app.getConsole().debug("(SellItem)Unknown item search: " + materialName);
 
-            } else {
-                Material material = materialData.getMaterial();
-                int materialCount = PlayerInventoryManager.getMaterialCount(PlayerInventoryManager.getMaterialSlots(player, material));
+        // Check material given exists
+        MaterialData materialData = this.app.getMaterialManager().getMaterial(materialName);
+        if (materialData == null) {
+            this.app.getConsole().usage(sender, String.format(CommandResponse.InvalidItemName.message, materialName), this.help.getUsages());
+            return true;
+        }
 
-                if (materialCount < amountToSell) {
-                    this.app.getConsole().logFailedSale(player, amountToSell, materialData.getCleanName(), String.format("you do not have enough of this material (%d/%d)", materialCount, amountToSell));
+        // Ensure player has enough of the material to sell.
+        Material material = materialData.getMaterial();
+        int materialCount = PlayerInventoryManager.getMaterialCount(PlayerInventoryManager.getMaterialSlots(sender, material));
+        if (materialCount < amountToSell) {
+            this.app.getConsole().logFailedSale(sender, amountToSell, materialData.getCleanName(), String.format(CommandResponse.InvalidInventoryStock.message, materialCount, amountToSell));
+            return true;
+        }
 
-                } else {
-                    ItemStack[] itemStacks = PlayerInventoryManager.getMaterialSlotsToCount(player, material, amountToSell);
-                    ItemStack[] itemStacksClone = PlayerInventoryManager.cloneItems(itemStacks);
-                    ValueResponse response = this.app.getMaterialManager().getSellValue(itemStacks);
+        // Get item stacks
+        // Clone incase need to be refunded
+        // Get valuation
+        ItemStack[] itemStacks = PlayerInventoryManager.getMaterialSlotsToCount(sender, material, amountToSell);
+        ItemStack[] itemStacksClone = PlayerInventoryManager.cloneItems(itemStacks);
+        ValueResponse response = this.app.getMaterialManager().getSellValue(itemStacks);
 
-                    if (response.isSuccess()) {
-                        PlayerInventoryManager.removeMaterialsFromPlayer(itemStacks);
+        if (response.isSuccess()) {
+            PlayerInventoryManager.removeMaterialsFromPlayer(itemStacks);
 
-                        EconomyResponse economyResponse = this.app.getEconomyManager().addCash(player, response.value);
-                        if (!economyResponse.transactionSuccess()) {
-                            PlayerInventoryManager.addItemsToPlayer(player, itemStacksClone);
-                            // Handles console, player message and mail
-                            this.app.getConsole().logFailedSale(player, amountToSell, materialData.getCleanName(), economyResponse.errorMessage);
-                        } else {
-                            materialData.addQuantity(amountToSell);
-                            // Handles console, player message and mail
-                            this.app.getConsole().logSale(player, amountToSell, response.value, materialData.getCleanName());
-                        }
-                    } else {
-                        // Handles console, player message and mail
-                        this.app.getConsole().logFailedSale(player, amountToSell, materialData.getCleanName(), response.errorMessage);
-                    }
-                }
+            EconomyResponse economyResponse = this.app.getEconomyManager().addCash(sender, response.value);
+            if (!economyResponse.transactionSuccess()) {
+                PlayerInventoryManager.addItemsToPlayer(sender, itemStacksClone);
+                // Handles console, player message and mail
+                this.app.getConsole().logFailedSale(sender, amountToSell, materialData.getCleanName(), economyResponse.errorMessage);
             }
+            else {
+                materialData.addQuantity(amountToSell);
+                // Handles console, player message and mail
+                this.app.getConsole().logSale(sender, amountToSell, response.value, materialData.getCleanName());
+            }
+        }
+        else {
+            // Handles console, player message and mail
+            this.app.getConsole().logFailedSale(sender, amountToSell, materialData.getCleanName(), response.errorMessage);
         }
 
         return true;
+    }
+
+    /**
+     * For the handling of the console calling this command
+     *
+     * @param args
+     * @return
+     */
+    @Override
+    public boolean onConsoleCommand(String[] args) {
+        return false;
     }
 }
