@@ -2,61 +2,39 @@ package edgrrrr.dce.commands.enchants;
 
 import edgrrrr.configapi.Setting;
 import edgrrrr.dce.DCEPlugin;
+import edgrrrr.dce.commands.DivinityCommandEnchant;
 import edgrrrr.dce.enchants.EnchantData;
-import edgrrrr.dce.help.Help;
 import edgrrrr.dce.math.Math;
 import edgrrrr.dce.player.PlayerInventoryManager;
 import edgrrrr.dce.response.MultiValueResponse;
 import edgrrrr.dce.response.ValueResponse;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
+import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 /**
  * A command for selling enchants on held items
  */
-public class EnchantHandSell implements CommandExecutor {
-    // The main class
-    private final DCEPlugin app;
-    // The usage for this command
-    private final Help help;
+public class EnchantHandSell extends DivinityCommandEnchant {
 
     /**
      * Constructor
-     * @param app - The main class
+     *
+     * @param app
      */
     public EnchantHandSell(DCEPlugin app) {
-        this.app = app;
-        this.help = this.app.getHelpManager().get("esell");
+        super(app, "esell", false, Setting.COMMAND_E_SELL_ENABLE_BOOLEAN);
     }
 
     /**
-     * Called everytime the command /eHandSell is called
+     * For handling a player calling this command
+     *
+     * @param sender
+     * @param args
+     * @return
      */
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
-        // Ensure sender is a player
-        if (!(sender instanceof Player)) {
-            return true;
-        }
-
-        // Cast to player
-        Player player = (Player) sender;
-
-        // Ensure command is enabled
-        if (!(this.app.getConfig().getBoolean(Setting.COMMAND_E_SELL_ENABLE_BOOLEAN.path))) {
-            this.app.getConsole().severe(player, "This command is not enabled.");
-            return true;
-        }
-
-        // Ensure market is enabled
-        if (!(this.app.getConfig().getBoolean(Setting.MARKET_ENCHANTS_ENABLE_BOOLEAN.path))) {
-            this.app.getConsole().severe(player, "The enchant market is not enabled.");
-            return true;
-        }
-
+    public boolean onPlayerCommand(Player sender, String[] args) {
         // The name of the enchant
         // The number of levels to sell
         // If all levels should be sold
@@ -89,69 +67,92 @@ public class EnchantHandSell implements CommandExecutor {
 
             // If wrong number of arguments
             default:
-                this.app.getConsole().usage(player, "Invalid number of arguments.", this.help.getUsages());
+                this.app.getConsole().usage(sender, CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
                 return true;
         }
 
         // get the item the user is holding.
         // ensure it is not null
-        ItemStack heldItem = PlayerInventoryManager.getHeldItem(player);
+        ItemStack heldItem = PlayerInventoryManager.getHeldItem(sender);
         if (heldItem == null) {
-            this.app.getConsole().usage(player, "You are not holding any item", this.help.getUsages());
+            this.app.getConsole().usage(sender, CommandResponse.InvalidItemHeld.message, this.help.getUsages());
+            return true;
+        }
 
-        } else {
-            // Ensure item is enchanted
-            if (!this.app.getEnchantmentManager().isEnchanted(heldItem)){
-                this.app.getConsole().usage(player, "The item you are holding is not enchanted", this.help.getUsages());
+        // Ensure item is enchanted
+        if (!this.app.getEnchantmentManager().isEnchanted(heldItem)){
+            this.app.getConsole().usage(sender, CommandResponse.InvalidItemHeld.message, this.help.getUsages());
+            return true;
+        }
 
+        // If sell all enchants is true
+        // Then use MultiValueResponse and use getSellValue of entire item
+        // Then add quantity of each enchant / remove enchant from item
+        // Then add cash
+        if (sellAllEnchants) {
+            MultiValueResponse multiValueResponse = this.app.getEnchantmentManager().getSellValue(heldItem);
+            if (multiValueResponse.isFailure()) {
+                this.app.getConsole().logFailedSale(sender, multiValueResponse.getTotalQuantity(), multiValueResponse.toString("Enchants: "), multiValueResponse.errorMessage);
             } else {
-                // If sell all enchants is true
-                // Then use MultiValueResponse and use getSellValue of entire item
-                // Then add quantity of each enchant / remove enchant from item
-                // Then add cash
-                if (sellAllEnchants) {
-                    MultiValueResponse multiValueResponse = this.app.getEnchantmentManager().getSellValue(heldItem);
-                    if (multiValueResponse.isFailure()) {
-                        this.app.getConsole().logFailedSale(player, multiValueResponse.getTotalQuantity(), multiValueResponse.toString("Enchants: "), multiValueResponse.errorMessage);
-                    } else {
-                        for (String enchantID : multiValueResponse.getItemIds()) {
-                            EnchantData enchantmentData = this.app.getEnchantmentManager().getEnchant(enchantID);
-                            enchantmentData.addLevelQuantity(multiValueResponse.quantities.get(enchantID));
-                            this.app.getEnchantmentManager().removeEnchantLevelsFromItem(heldItem, enchantmentData.getEnchantment(), multiValueResponse.quantities.get(enchantID));
-                        }
-                        this.app.getEconomyManager().addCash(player, multiValueResponse.getTotalValue());
-                        this.app.getConsole().logSale(player, multiValueResponse.getTotalQuantity(), multiValueResponse.getTotalValue(), String.format("enchants(%s)", multiValueResponse.toString()));
-                    }
-                } else {
-                    // If only handling one enchant
-                    // Ensure enchant exists
-                    EnchantData enchantData = this.app.getEnchantmentManager().getEnchant(enchantName);
-                    if (enchantData == null) {
-                        this.app.getConsole().usage(player, String.format("Unknown enchant name %s", enchantName), this.help.getUsages());
-                    } else {
-                        // Update enchantLevels to the max if sellAllEnchants is true
-                        if (sellAllLevels) {
-                            enchantLevels = heldItem.getEnchantmentLevel(enchantData.getEnchantment());
-                        }
-
-                        // Get value
-                        // Remove enchants, add quantity and add cash
-                        ValueResponse valueResponse = this.app.getEnchantmentManager().getSellValue(heldItem, enchantName, enchantLevels);
-                        if (valueResponse.isFailure()) {
-                            this.app.getConsole().logFailedSale(player, enchantLevels, enchantName, valueResponse.errorMessage);
-
-                        } else {
-                            this.app.getEnchantmentManager().removeEnchantLevelsFromItem(heldItem, enchantData.getEnchantment(), enchantLevels);
-                            enchantData.addLevelQuantity(enchantLevels);
-                            if (!this.app.getEconomyManager().addCash(player, valueResponse.value).transactionSuccess()) {this.app.getConsole().severe(player,"An error occurred on funding your account, show this message to an admin.");}
-                            this.app.getConsole().logSale(player, enchantLevels, valueResponse.value, enchantName);
-                        }
-                    }
+                for (String enchantID : multiValueResponse.getItemIds()) {
+                    EnchantData enchantmentData = this.app.getEnchantmentManager().getEnchant(enchantID);
+                    enchantmentData.addLevelQuantity(multiValueResponse.quantities.get(enchantID));
+                    this.app.getEnchantmentManager().removeEnchantLevelsFromItem(heldItem, enchantmentData.getEnchantment(), multiValueResponse.quantities.get(enchantID));
                 }
+                this.app.getEconomyManager().addCash(sender, multiValueResponse.getTotalValue());
+                this.app.getConsole().logSale(sender, multiValueResponse.getTotalQuantity(), multiValueResponse.getTotalValue(), String.format("enchants(%s)", multiValueResponse.toString()));
+            }
+        }
+        else {
+            // If only handling one enchant
+            // Ensure enchant exists
+            EnchantData enchantData = this.app.getEnchantmentManager().getEnchant(enchantName);
+            if (enchantData == null) {
+                this.app.getConsole().usage(sender, String.format(CommandResponse.InvalidEnchantName.message, enchantName), this.help.getUsages());
+                return true;
+            }
+
+            // Update enchantLevels to the max if sellAllEnchants is true
+            if (sellAllLevels) {
+                enchantLevels = heldItem.getEnchantmentLevel(enchantData.getEnchantment());
+            }
+
+            // Get value
+            ValueResponse valueResponse = this.app.getEnchantmentManager().getSellValue(heldItem, enchantName, enchantLevels);
+
+            // Ensure valuation was successful
+            if (valueResponse.isFailure()) {
+                this.app.getConsole().logFailedSale(sender, enchantLevels, enchantName, valueResponse.errorMessage);
+                return true;
+            }
+
+            // Remove enchants, add quantity and add cash
+            this.app.getEnchantmentManager().removeEnchantLevelsFromItem(heldItem, enchantData.getEnchantment(), enchantLevels);
+            EconomyResponse economyResponse = this.app.getEconomyManager().addCash(sender, valueResponse.value);
+
+            // Edit enchant quantity & log
+            if (economyResponse.transactionSuccess()) {
+                enchantData.addLevelQuantity(enchantLevels);
+                this.app.getConsole().logSale(sender, enchantLevels, valueResponse.value, enchantName);
+            }
+            // Failed funding of account, refund enchant & log
+            else {
+                this.app.getEnchantmentManager().addEnchantToItem(heldItem, enchantData.getEnchantment(), enchantLevels);
+                this.app.getConsole().logFailedSale(sender, enchantLevels, economyResponse.errorMessage, enchantName);
             }
         }
 
-        // Graceful exit :)
         return true;
+    }
+
+    /**
+     * For the handling of the console calling this command
+     *
+     * @param args
+     * @return
+     */
+    @Override
+    public boolean onConsoleCommand(String[] args) {
+        return false;
     }
 }
