@@ -2,51 +2,38 @@ package edgrrrr.dce.commands.market;
 
 import edgrrrr.configapi.Setting;
 import edgrrrr.dce.DCEPlugin;
-import edgrrrr.dce.help.Help;
+import edgrrrr.dce.commands.DivinityCommandMarket;
 import edgrrrr.dce.materials.MaterialData;
 import edgrrrr.dce.math.Math;
 import edgrrrr.dce.player.PlayerInventoryManager;
 import edgrrrr.dce.response.ValueResponse;
 import org.bukkit.Material;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 /**
  * A command for valuing the item in the users hand
  */
-public class HandValue implements CommandExecutor {
-    private final DCEPlugin app;
-    private final Help help;
+public class HandValue extends DivinityCommandMarket {
 
+    /**
+     * Constructor
+     *
+     * @param app
+     */
     public HandValue(DCEPlugin app) {
-        this.app = app;
-        this.help = this.app.getHelpManager().get("handvalue");
+        super(app, "handvalue", false, Setting.COMMAND_HAND_VALUE_ENABLE_BOOLEAN);
     }
 
-
+    /**
+     * For handling a player calling this command
+     *
+     * @param sender
+     * @param args
+     * @return
+     */
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player)) {
-            return true;
-        }
-
-        Player player = (Player) sender;
-
-        // Ensure command is enabled
-        if (!(this.app.getConfig().getBoolean(Setting.COMMAND_HAND_VALUE_ENABLE_BOOLEAN.path))) {
-            this.app.getConsole().severe(player, "This command is not enabled.");
-            return true;
-        }
-
-        // Ensure market is enabled
-        if (!(this.app.getConfig().getBoolean(Setting.MARKET_MATERIALS_ENABLE_BOOLEAN.path))) {
-            this.app.getConsole().severe(player, "The market is not enabled.");
-            return true;
-        }
-
+    public boolean onPlayerCommand(Player sender, String[] args) {
         int amount = 1;
         boolean valueAll = false;
         boolean valueHand = false;
@@ -65,56 +52,72 @@ public class HandValue implements CommandExecutor {
                 break;
 
             default:
-                this.app.getConsole().usage(player, "Invalid number of arguments.", this.help.getUsages());
+                this.app.getConsole().usage(sender, CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
                 return true;
         }
 
+        // Ensure amount is greater than 0
         if (amount < 0) {
-            this.app.getConsole().usage(player, "Invalid amount.", this.help.getUsages());
+            this.app.getConsole().usage(sender, CommandResponse.InvalidAmountGiven.message, this.help.getUsages());
+            return true;
+        }
+
+        ItemStack heldItem = PlayerInventoryManager.getHeldItem(sender);
+
+        // Ensure user is holding an item
+        if (heldItem == null) {
+            this.app.getConsole().usage(sender, CommandResponse.InvalidItemHeld.message, this.help.getUsages());
+            return false;
+
+        }
+
+        Material material = heldItem.getType();
+        MaterialData materialData = this.app.getMaterialManager().getMaterial(material.name());
+        ItemStack[] buyStacks;
+        ItemStack[] sellStacks;
+        ItemStack[] itemStacks = PlayerInventoryManager.getMaterialSlots(sender, material);
+
+        if (valueHand) {
+            amount = heldItem.getAmount();
+            buyStacks = PlayerInventoryManager.createItemStacks(material, amount);
+            sellStacks = new ItemStack[1];
+            sellStacks[0] = heldItem;
+        } else if (valueAll) {
+            amount = PlayerInventoryManager.getMaterialCount(itemStacks);
+            sellStacks = itemStacks;
+            buyStacks = PlayerInventoryManager.createItemStacks(material, amount);
         } else {
-            ItemStack heldItem = PlayerInventoryManager.getHeldItem(player);
-            if (heldItem == null) {
-                this.app.getConsole().usage(player, "You are not holding any item.", this.help.getUsages());
+            sellStacks = PlayerInventoryManager.createItemStacks(material, amount);
+            buyStacks = sellStacks;
+        }
 
-            } else {
-                Material material = heldItem.getType();
-                MaterialData materialData = this.app.getMaterialManager().getMaterial(material.name());
-                ItemStack[] buyStacks;
-                ItemStack[] sellStacks;
-                ItemStack[] itemStacks = PlayerInventoryManager.getMaterialSlots(player, material);
+        ValueResponse buyResponse = this.app.getMaterialManager().getBuyValue(buyStacks);
+        ValueResponse sellResponse = this.app.getMaterialManager().getSellValue(sellStacks);
 
-                if (valueHand) {
-                    amount = heldItem.getAmount();
-                    buyStacks = PlayerInventoryManager.createItemStacks(material, amount);
-                    sellStacks = new ItemStack[1];
-                    sellStacks[0] = heldItem;
-                } else if (valueAll) {
-                    amount = PlayerInventoryManager.getMaterialCount(itemStacks);
-                    sellStacks = itemStacks;
-                    buyStacks = PlayerInventoryManager.createItemStacks(material, amount);
-                } else {
-                    sellStacks = PlayerInventoryManager.createItemStacks(material, amount);
-                    buyStacks = sellStacks;
-                }
+        if (buyResponse.isSuccess()) {
+            this.app.getConsole().info(sender, String.format("Buy: %d %s costs £%,.2f", amount, materialData.getCleanName(), buyResponse.value));
 
-                ValueResponse buyResponse = this.app.getMaterialManager().getBuyValue(buyStacks);
-                ValueResponse sellResponse = this.app.getMaterialManager().getSellValue(sellStacks);
+        } else {
+            this.app.getConsole().usage(sender, String.format("Couldn't determine buy price of %d %s because %s", amount, materialData.getCleanName(), buyResponse.errorMessage), this.help.getUsages());
+        }
 
-                if (buyResponse.isSuccess()) {
-                    this.app.getConsole().info(player, String.format("Buy: %d %s costs £%,.2f", amount, materialData.getCleanName(), buyResponse.value));
+        if (sellResponse.isSuccess()) {
+            this.app.getConsole().info(sender, String.format("Sell: %d %s costs £%,.2f", amount, materialData.getCleanName(), sellResponse.value));
 
-                } else {
-                    this.app.getConsole().usage(player, String.format("Couldn't determine buy price of %d %s because %s", amount, materialData.getCleanName(), buyResponse.errorMessage), this.help.getUsages());
-                }
-
-                if (sellResponse.isSuccess()) {
-                    this.app.getConsole().info(player, String.format("Sell: %d %s costs £%,.2f", amount, materialData.getCleanName(), sellResponse.value));
-
-                } else {
-                    this.app.getConsole().usage(player, String.format("Couldn't determine buy price of %d %s because %s", amount, materialData.getCleanName(), sellResponse.errorMessage), this.help.getUsages());
-                }
-            }
+        } else {
+            this.app.getConsole().usage(sender, String.format("Couldn't determine buy price of %d %s because %s", amount, materialData.getCleanName(), sellResponse.errorMessage), this.help.getUsages());
         }
         return true;
+    }
+
+    /**
+     * For the handling of the console calling this command
+     *
+     * @param args
+     * @return
+     */
+    @Override
+    public boolean onConsoleCommand(String[] args) {
+        return false;
     }
 }
