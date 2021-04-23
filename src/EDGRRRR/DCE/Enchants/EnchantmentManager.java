@@ -476,7 +476,11 @@ public class EnchantmentManager {
      * @return double
      */
     public double getInflation() {
-        return Math.getInflation(this.defaultTotalEnchants, this.totalEnchants);
+        if (this.wholeMarketInflation) {
+            return Math.getInflation(this.defaultTotalEnchants, this.totalEnchants);
+        } else {
+            return 1.0;
+        }
     }
 
     /**
