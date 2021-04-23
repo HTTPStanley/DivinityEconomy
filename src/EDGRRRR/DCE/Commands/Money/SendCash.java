@@ -45,13 +45,13 @@ public class SendCash extends DivinityCommand {
                 break;
 
             default:
-                this.app.getConsole().usage(sender, Message.InvalidNumberOfArguments.message, this.help.getUsages());
+                this.app.getConsole().usage(sender, CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
                 return true;
         }
 
         // Ensure online or offline player exists.
         if (player2 == null) {
-            this.app.getConsole().usage(sender, Message.InvalidNumberOfArguments.message, this.help.getUsages());
+            this.app.getConsole().usage(sender, CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
             return true;
         }
 
