@@ -95,7 +95,7 @@ commands:
 
   information:
     description: "Gets information about a material"
-    aliases: []
+    aliases: [materialinfo, minfo, iteminfo]
     permission: dce.market.information
     permission-message: "You do not have permission to use this command"
     usage: "/information <materialName>"
