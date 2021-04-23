@@ -2,6 +2,7 @@ package edgrrrr.dce.commands.money;
 
 import edgrrrr.configapi.Setting;
 import edgrrrr.dce.DCEPlugin;
+import edgrrrr.dce.commands.DivinityCommandTC;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -13,20 +14,27 @@ import java.util.List;
 /**
  * A tab completer for the send cash command
  */
-public class SendCashTC implements TabCompleter {
-    private final DCEPlugin app;
+public class SendCashTC extends DivinityCommandTC {
 
+    /**
+     * Constructor
+     *
+     * @param app
+     */
     public SendCashTC(DCEPlugin app) {
-        this.app = app;
+        super(app, false, Setting.COMMAND_SEND_CASH_ENABLE_BOOLEAN);
     }
 
+    /**
+     * ###To be overridden by the actual command
+     * For handling a player calling this command
+     *
+     * @param sender
+     * @param args
+     * @return
+     */
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
-        // Ensure player
-        if (!(sender instanceof Player) || !(this.app.getConfig().getBoolean(Setting.COMMAND_SEND_CASH_ENABLE_BOOLEAN.path))) {
-            return null;
-        }
-
+    public List<String> onPlayerTabCompleter(Player sender, String[] args) {
         String[] strings;
         switch (args.length) {
             // Args 1
@@ -50,5 +58,17 @@ public class SendCashTC implements TabCompleter {
         }
 
         return Arrays.asList(strings);
+    }
+
+    /**
+     * ###To be overridden by the actual command
+     * For the handling of the console calling this command
+     *
+     * @param args
+     * @return
+     */
+    @Override
+    public List<String> onConsoleTabCompleter(String[] args) {
+        return null;
     }
 }
