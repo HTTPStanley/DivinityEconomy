@@ -487,6 +487,9 @@ public class EnchantmentManager {
      * @return double
      */
     public double getPrice(double stock, double scale, double inflation) {
+        if (!this.wholeMarketInflation) {
+            inflation = 1.0;
+        }
         return Math.getPrice(this.enchantBaseQuantity, stock, scale, inflation);
     }
 
