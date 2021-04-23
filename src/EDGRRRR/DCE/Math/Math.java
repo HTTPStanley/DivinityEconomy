@@ -70,8 +70,9 @@ public class Math {
      * @param purchase - Whether this is a purchase or a sale.
      * @return double
      */
-    public static double calculatePrice(double baseQuantity, double currentQuantity, double defaultMarketSize, double marketSize, double amount, double scale, boolean purchase) {
+    public static double calculatePrice(double baseQuantity, double currentQuantity, double defaultMarketSize, double marketSize, double amount, double scale, boolean purchase, boolean dynamic, boolean marketInflation) {
         double value = 0;
+        double inflation = 1.0;
 
         // Loop for amount
         // Get the price and add it to the value
@@ -80,13 +81,16 @@ public class Math {
         // if purchase = false
         // add 1 stock to simulate increase
         for (int i = 1; i <= amount; i++) {
-            value += getPrice(baseQuantity, currentQuantity, scale, getInflation(defaultMarketSize, marketSize));
+            if (marketInflation) {
+                inflation = getInflation(defaultMarketSize, marketSize);
+            }
+            value += getPrice(baseQuantity, currentQuantity, scale, inflation);
             if (purchase) {
-                currentQuantity -= 1;
-                marketSize -= 1;
+                if (dynamic) currentQuantity -= 1;
+                if (marketInflation) marketSize -= 1;
             } else {
-                currentQuantity += 1;
-                marketSize += 1;
+                if (dynamic) currentQuantity += 1;
+                if (marketInflation) marketSize += 1;
             }
         }
 
@@ -112,7 +116,9 @@ public class Math {
         // Inflation works by calculating the default total items and dividing it by the new total items
         // This results in an increase in price when there are less items in the market than default
         // Or a decrease in price when there are more items in the market than default
-        return (getScale(baseQuantity+1, currentQuantity+1)) * scale * inflation;
+        double value = (getScale(baseQuantity+1, currentQuantity+1)) * scale * inflation;
+        if (value < 0) value = -value;
+        return value;
     }
 
     /**
