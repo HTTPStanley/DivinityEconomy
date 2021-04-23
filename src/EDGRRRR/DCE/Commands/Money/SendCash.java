@@ -52,16 +52,17 @@ public class SendCash extends DivinityCommand {
         // Ensure online or offline player exists.
         if (player2 == null) {
             this.app.getConsole().usage(sender, Message.InvalidNumberOfArguments.message, this.help.getUsages());
+            return true;
+        }
 
+        // Sendcash response
+        EconomyTransferResponse response = this.app.getEconomyManager().sendCash(sender, player2, amount);
+
+        // Handles console, message and mail
+        if (response.responseType == EconomyResponse.ResponseType.SUCCESS) {
+            this.app.getConsole().logTransfer(sender, player2, amount);
         } else {
-            EconomyTransferResponse response = this.app.getEconomyManager().sendCash(sender, player2, amount);
-
-            // Handles console, message and mail
-            if (response.responseType == EconomyResponse.ResponseType.SUCCESS) {
-                this.app.getConsole().logTransfer(sender, player2, amount);
-            } else {
-                this.app.getConsole().logFailedTransfer(sender, player2, amount, response.errorMessage);
-            }
+            this.app.getConsole().logFailedTransfer(sender, player2, amount, response.errorMessage);
         }
         return true;
     }
