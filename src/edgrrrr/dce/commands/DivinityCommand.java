@@ -35,6 +35,7 @@ public abstract class DivinityCommand implements CommandExecutor {
 
         // Market
         MaterialMarketIsDisabled("This command is not enabled because the materials market has been disabled.", LogLevel.WARNING),
+        EnchantMarketIsDisabled("This command is not enabled because the enchant market has been disabled.", LogLevel.WARNING),
 
         // Ping
         PingResponse("Pong!", LogLevel.INFO),

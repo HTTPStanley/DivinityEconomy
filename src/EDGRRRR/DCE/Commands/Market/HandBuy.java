@@ -2,7 +2,7 @@ package edgrrrr.dce.commands.market;
 
 import edgrrrr.configapi.Setting;
 import edgrrrr.dce.DCEPlugin;
-import edgrrrr.dce.commands.DivinityCommandMarket;
+import edgrrrr.dce.commands.DivinityCommandMaterials;
 import edgrrrr.dce.materials.MaterialData;
 import edgrrrr.dce.math.Math;
 import edgrrrr.dce.player.PlayerInventoryManager;
@@ -14,7 +14,7 @@ import org.bukkit.inventory.ItemStack;
 /**
  * A command for buying the item the user is currently holding
  */
-public class HandBuy extends DivinityCommandMarket {
+public class HandBuy extends DivinityCommandMaterials {
 
     /**
      * Constructor

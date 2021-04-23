@@ -3,7 +3,7 @@ package edgrrrr.dce.commands.market;
 import edgrrrr.configapi.Setting;
 import edgrrrr.dce.DCEPlugin;
 import edgrrrr.dce.commands.DivinityCommand;
-import edgrrrr.dce.commands.DivinityCommandMarketTC;
+import edgrrrr.dce.commands.DivinityCommandMaterialsTC;
 import edgrrrr.dce.materials.MaterialData;
 import edgrrrr.dce.math.Math;
 import edgrrrr.dce.player.PlayerInventoryManager;
@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * A tab completer for the hand buy command
  */
-public class HandBuyTC extends DivinityCommandMarketTC {
+public class HandBuyTC extends DivinityCommandMaterialsTC {
 
     /**
      * Constructor

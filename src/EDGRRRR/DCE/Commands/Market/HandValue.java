@@ -2,7 +2,7 @@ package edgrrrr.dce.commands.market;
 
 import edgrrrr.configapi.Setting;
 import edgrrrr.dce.DCEPlugin;
-import edgrrrr.dce.commands.DivinityCommandMarket;
+import edgrrrr.dce.commands.DivinityCommandMaterials;
 import edgrrrr.dce.materials.MaterialData;
 import edgrrrr.dce.math.Math;
 import edgrrrr.dce.player.PlayerInventoryManager;
@@ -14,7 +14,7 @@ import org.bukkit.inventory.ItemStack;
 /**
  * A command for valuing the item in the users hand
  */
-public class HandValue extends DivinityCommandMarket {
+public class HandValue extends DivinityCommandMaterials {
 
     /**
      * Constructor

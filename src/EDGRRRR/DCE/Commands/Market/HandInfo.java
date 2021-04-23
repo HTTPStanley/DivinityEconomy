@@ -2,7 +2,7 @@ package edgrrrr.dce.commands.market;
 
 import edgrrrr.configapi.Setting;
 import edgrrrr.dce.DCEPlugin;
-import edgrrrr.dce.commands.DivinityCommandMarket;
+import edgrrrr.dce.commands.DivinityCommandMaterials;
 import edgrrrr.dce.materials.MaterialData;
 import edgrrrr.dce.materials.MaterialPotionData;
 import edgrrrr.dce.player.PlayerInventoryManager;
@@ -13,7 +13,7 @@ import org.bukkit.inventory.ItemStack;
 /**
  * A command for getting information about the item the user is currently holding
  */
-public class HandInfo extends DivinityCommandMarket {
+public class HandInfo extends DivinityCommandMaterials {
 
     /**
      * Constructor

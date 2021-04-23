@@ -2,7 +2,7 @@ package edgrrrr.dce.commands.market;
 
 import edgrrrr.configapi.Setting;
 import edgrrrr.dce.DCEPlugin;
-import edgrrrr.dce.commands.DivinityCommandMarketTC;
+import edgrrrr.dce.commands.DivinityCommandMaterialsTC;
 import edgrrrr.dce.materials.MaterialData;
 import edgrrrr.dce.player.PlayerInventoryManager;
 import org.bukkit.entity.Player;
@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * A tab completer for the handvalue command
  */
-public class HandValueTC extends DivinityCommandMarketTC {
+public class HandValueTC extends DivinityCommandMaterialsTC {
 
     /**
      * Constructor

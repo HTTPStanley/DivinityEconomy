@@ -2,7 +2,7 @@ package edgrrrr.dce.commands.market;
 
 import edgrrrr.configapi.Setting;
 import edgrrrr.dce.DCEPlugin;
-import edgrrrr.dce.commands.DivinityCommandMarketTC;
+import edgrrrr.dce.commands.DivinityCommandMaterialsTC;
 import edgrrrr.dce.materials.MaterialData;
 import org.bukkit.entity.Player;
 
@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * A tab completer for the value item command
  */
-public class ValueTC extends DivinityCommandMarketTC {
+public class ValueTC extends DivinityCommandMaterialsTC {
 
     /**
      * Constructor

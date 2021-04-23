@@ -2,7 +2,7 @@ package edgrrrr.dce.commands.market;
 
 import edgrrrr.configapi.Setting;
 import edgrrrr.dce.DCEPlugin;
-import edgrrrr.dce.commands.DivinityCommandMarketTC;
+import edgrrrr.dce.commands.DivinityCommandMaterialsTC;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * tab completer for the info command
  */
-public class InfoTC extends DivinityCommandMarketTC {
+public class InfoTC extends DivinityCommandMaterialsTC {
 
     /**
      * Constructor
