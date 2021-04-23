@@ -55,6 +55,8 @@ public class HelpCommand implements CommandExecutor {
             this.app.getConsole().usage(player, "invalid command or page number", this.help.getUsages());
 
         } else {
+            int maxLength = 30;
+            String string;
             if (helpPages.containsKey(pageNumber-1)) {
                 this.app.getConsole().info(player, String.format("Help page %s/%s", pageNumber, helpPages.size()));
                 for (Help helpCom : helpPages.get(pageNumber-1)) {

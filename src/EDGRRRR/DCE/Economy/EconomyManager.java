@@ -113,7 +113,6 @@ public class EconomyManager {
         this.app.getConsole().debug(String.format("ADD REQUEST FOR %s £%,.2f", oPlayer.getName(), amount));
         EconomyResponse response = this.economy.depositPlayer(oPlayer, amount);
         this.app.getConsole().debug(String.format("ADD RESULT: %s %s", response.transactionSuccess(), response.errorMessage));
-
         return response;
     }
 
