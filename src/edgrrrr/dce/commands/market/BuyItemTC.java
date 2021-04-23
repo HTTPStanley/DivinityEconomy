@@ -2,6 +2,7 @@ package edgrrrr.dce.commands.market;
 
 import edgrrrr.configapi.Setting;
 import edgrrrr.dce.DCEPlugin;
+import edgrrrr.dce.commands.DivinityCommandMarketTC;
 import edgrrrr.dce.materials.MaterialData;
 import edgrrrr.dce.math.Math;
 import edgrrrr.dce.player.PlayerInventoryManager;
@@ -16,21 +17,25 @@ import java.util.List;
 /**
  * A tab completer for the buy item command
  */
-public class BuyItemTC implements TabCompleter {
-    private final DCEPlugin app;
-
+public class BuyItemTC extends DivinityCommandMarketTC {
+    /**
+     * Constructor
+     *
+     * @param app
+     */
     public BuyItemTC(DCEPlugin app) {
-        this.app = app;
+        super(app, false, Setting.COMMAND_BUY_ITEM_ENABLE_BOOLEAN);
     }
 
+    /**
+     * For handling a player calling this command
+     *
+     * @param sender
+     * @param args
+     * @return
+     */
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
-        // Ensure player
-        if (!(sender instanceof Player) || !(this.app.getConfig().getBoolean(Setting.COMMAND_BUY_ITEM_ENABLE_BOOLEAN.path))) {
-            return null;
-        }
-
-        Player player = (Player) sender;
+    public List<String> onPlayerTabCompleter(Player sender, String[] args) {
         String[] strings;
         MaterialData materialData;
         switch (args.length) {
@@ -50,8 +55,8 @@ public class BuyItemTC implements TabCompleter {
                 }
 
                 strings = new String[] {
-                    String.valueOf(stackSize),
-                    String.valueOf(PlayerInventoryManager.getAvailableSpace(player, materialData.getMaterial()))
+                        String.valueOf(stackSize),
+                        String.valueOf(PlayerInventoryManager.getAvailableSpace(sender, materialData.getMaterial()))
                 };
                 break;
 
@@ -77,4 +82,17 @@ public class BuyItemTC implements TabCompleter {
 
         return Arrays.asList(strings);
     }
+
+    /**
+     * For the handling of the console calling this command
+     *
+     * @param args
+     * @return
+     */
+    @Override
+    public List<String> onConsoleTabCompleter(String[] args) {
+        return null;
+    }
 }
+
+
