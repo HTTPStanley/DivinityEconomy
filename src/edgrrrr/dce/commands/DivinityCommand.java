@@ -33,6 +33,9 @@ public abstract class DivinityCommand implements CommandExecutor {
         PlayerCommandIsDisabled("This command has not been enabled by the server.", LogLevel.WARNING),
         ErrorOnCommand("Error on command (%s): %s.", LogLevel.SEVERE),
 
+        // Market
+        MaterialMarketIsDisabled("This command is not enabled because the materials market has been disabled.", LogLevel.WARNING),
+
         // Ping
         PingResponse("Pong!", LogLevel.INFO),
 
@@ -42,7 +45,12 @@ public abstract class DivinityCommand implements CommandExecutor {
 
         // Poly
         InvalidNumberOfArguments("Invalid number of arguments.", LogLevel.WARNING),
-        InvalidPlayerNameResponse("Invalid player name.", LogLevel.WARNING)
+        InvalidPlayerNameResponse("Invalid player name.", LogLevel.WARNING),
+        InvalidAmountGiven("Invalid amount given.", LogLevel.WARNING),
+        InvalidItemName("Invalid item name '%s'.", LogLevel.WARNING),
+        InvalidInventorySpace("Missing inventory space %d/%d.", LogLevel.WARNING),
+        InvalidStockAmount("Missing stock %d/%d.", LogLevel.WARNING),
+        UnknownError("Unknown error.", LogLevel.WARNING)
         ;
         public String message;
         public LogLevel defaultLogLevel;
