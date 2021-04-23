@@ -13,6 +13,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 public class EconomyAPI implements net.milkbowl.vault.economy.Economy {
@@ -23,7 +24,7 @@ public class EconomyAPI implements net.milkbowl.vault.economy.Economy {
     private final int fractionalDigits;
     private final String currencyNamePlural;
     private final String currencyNameSingular;
-    private HashMap<UUID, EconomyPlayer> economyPlayerMap;
+    private final HashMap<UUID, EconomyPlayer> economyPlayerMap;
     private final File userFolder;
 
     private static final String foldername = "userdata";
@@ -45,19 +46,29 @@ public class EconomyAPI implements net.milkbowl.vault.economy.Economy {
         this.economyPlayerMap = new HashMap<>();
         this.userFolder = this.configManager.getFolder(EconomyAPI.foldername);
 
-        for (File file : this.userFolder.listFiles()) {
-            if (!file.isFile()) continue;
-
-            this.addPlayer(file);
-        }
-
+        this.registerPlayers();
         this.app.getServer().getPluginManager().registerEvents(new PlayerJoin(this), this.app);
         this.console.info(String.format("Loaded %d players", this.economyPlayerMap.size()));
     }
 
+    private void registerPlayers() {
+        File[] files = Objects.requireNonNull(this.userFolder.listFiles());
+        if (files.length > 0) {
+            for (File file : files) {
+                if (!file.isFile()) continue;
+
+                try {
+                    this.addPlayer(file);
+                } catch (Exception e) {
+                    this.console.warn(String.format("Player (%s) could not be registered from file because %s.", file, e.getMessage()));
+                }
+            }
+        }
+    }
+
     private void addPlayer(File file) {
         FileConfiguration fileConf = this.configManager.readFile(file);
-        UUID playerUUID = UUID.fromString(fileConf.getString(EconomyFileKeys.UUID.get()));
+        UUID playerUUID = UUID.fromString(Objects.requireNonNull(fileConf.getString(EconomyFileKeys.UUID.key)));
         OfflinePlayer offlinePlayer = this.app.getServer().getOfflinePlayer(playerUUID);
         EconomyPlayer player = new EconomyPlayer(offlinePlayer, file, fileConf);
 
@@ -325,7 +336,6 @@ public class EconomyAPI implements net.milkbowl.vault.economy.Economy {
         if (player == null) return new EconomyResponse(amount, 0.0, EconomyResponse.ResponseType.FAILURE, "unknown player");
         return this.withdrawPlayer(player.getOfflinePlayer(), amount);
     }
-
     /**
      * Withdraw an amount from a player - DO NOT USE NEGATIVE AMOUNTS
      *
@@ -395,7 +405,7 @@ public class EconomyAPI implements net.milkbowl.vault.economy.Economy {
 
         if (amount < 0) return new EconomyResponse(amount, economyPlayer.getBalance(), EconomyResponse.ResponseType.FAILURE, "negative amounts are not allowed");
 
-        if (!economyPlayer.canHave(amount)) return new EconomyResponse(amount, economyPlayer.getBalance(), EconomyResponse.ResponseType.FAILURE, "deposit would lead to infinity");
+        if (!economyPlayer.canHave(amount)) return new EconomyResponse(amount, economyPlayer.getBalance(), EconomyResponse.ResponseType.FAILURE, "balance may be too large");
 
         double balance = economyPlayer.deposit(amount);
         return new EconomyResponse(amount, balance, EconomyResponse.ResponseType.SUCCESS, "");
