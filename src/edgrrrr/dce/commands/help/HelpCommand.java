@@ -1,11 +1,10 @@
 package edgrrrr.dce.commands.help;
 
+import edgrrrr.configapi.Setting;
 import edgrrrr.dce.DCEPlugin;
+import edgrrrr.dce.commands.DivinityCommand;
 import edgrrrr.dce.help.Help;
 import edgrrrr.dce.math.Math;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.Map;
@@ -13,25 +12,26 @@ import java.util.Map;
 /**
  * A command for getting help
  */
-public class HelpCommand implements CommandExecutor {
-    private final DCEPlugin app;
-    private final Help help;
+public class HelpCommand extends DivinityCommand {
 
+    /**
+     * Constructor
+     *
+     * @param app
+     */
     public HelpCommand(DCEPlugin app) {
-        this.app = app;
-        this.help = this.app.getHelpManager().get("ehelp");
+        super(app, "ehelp", true, Setting.COMMAND_EHELP_ENABLE_BOOLEAN);
     }
 
-
+    /**
+     * For handling a player calling this command
+     *
+     * @param sender
+     * @param args
+     * @return
+     */
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        Player player;
-        if (sender instanceof Player) {
-            player = (Player) sender;
-        } else {
-            player = null;
-        }
-
+    public boolean onPlayerCommand(Player sender, String[] args) {
         Help help = null;
         int pageNumber = -1;
 
@@ -46,28 +46,39 @@ public class HelpCommand implements CommandExecutor {
                 break;
 
             default:
-                this.app.getConsole().usage(player, "Not enough arguments.", this.help.getUsages());
+                this.app.getConsole().usage(sender, "Not enough arguments.", this.help.getUsages());
                 break;
         }
 
         Map<Integer, Help[]> helpPages = this.app.getHelpManager().getPages(8);
         if (help == null && !helpPages.containsKey(pageNumber-1)) {
-            this.app.getConsole().usage(player, "invalid command or page number", this.help.getUsages());
+            this.app.getConsole().usage(sender, "invalid command or page number", this.help.getUsages());
 
         } else {
             int maxLength = 30;
             String string;
             if (helpPages.containsKey(pageNumber-1)) {
-                this.app.getConsole().info(player, String.format("Help page %s/%s", pageNumber, helpPages.size()));
+                this.app.getConsole().info(sender, String.format("Help page %s/%s", pageNumber, helpPages.size()));
                 for (Help helpCom : helpPages.get(pageNumber-1)) {
-                    this.app.getConsole().info(player, String.format("%s: %s...", helpCom.getCommand(), helpCom.getDescription(20)));
+                    this.app.getConsole().info(sender, String.format("%s: %s...", helpCom.getCommand(), helpCom.getDescription(20)));
                 }
 
             } else {
-                this.app.getConsole().help(player, help.getCommand(), help.getDescription(), help.getUsages(), help.getAliases());
+                this.app.getConsole().help(sender, help.getCommand(), help.getDescription(), help.getUsages(), help.getAliases());
             }
         }
 
         return true;
+    }
+
+    /**
+     * For the handling of the console calling this command
+     *
+     * @param args
+     * @return
+     */
+    @Override
+    public boolean onConsoleCommand(String[] args) {
+        return this.onPlayerCommand(null, args);
     }
 }

@@ -1,32 +1,34 @@
 package edgrrrr.dce.commands.help;
 
+import edgrrrr.configapi.Setting;
 import edgrrrr.dce.DCEPlugin;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
+import edgrrrr.dce.commands.DivinityCommandTC;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class HelpCommandTC implements TabCompleter {
-    DCEPlugin app;
+public class HelpCommandTC extends DivinityCommandTC {
 
+    /**
+     * Constructor
+     *
+     * @param app
+     */
     public HelpCommandTC(DCEPlugin app) {
-        this.app = app;
+        super(app, true, Setting.COMMAND_EHELP_ENABLE_BOOLEAN);
     }
 
-
+    /**
+     * For handling a player calling this command
+     *
+     * @param sender
+     * @param args
+     * @return
+     */
     @Override
-    public List<String> onTabComplete(CommandSender commandSender, Command command, String label, String[] args) {
-        Player player;
-        if (commandSender instanceof Player) {
-            player = (Player) commandSender;
-        } else {
-            player = null;
-        }
-
+    public List<String> onPlayerTabCompleter(Player sender, String[] args) {
         String[] strings;
 
         switch (args.length) {
@@ -45,5 +47,16 @@ public class HelpCommandTC implements TabCompleter {
         }
 
         return Arrays.asList(strings);
+    }
+
+    /**
+     * For the handling of the console calling this command
+     *
+     * @param args
+     * @return
+     */
+    @Override
+    public List<String> onConsoleTabCompleter(String[] args) {
+        return this.onPlayerTabCompleter(null, args);
     }
 }
