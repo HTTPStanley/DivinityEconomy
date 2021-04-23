@@ -2,18 +2,13 @@ package edgrrrr.dce.commands.enchants;
 
 import edgrrrr.configapi.Setting;
 import edgrrrr.dce.DCEPlugin;
-import edgrrrr.dce.commands.DivinityCommand;
 import edgrrrr.dce.commands.DivinityCommandEnchant;
 import edgrrrr.dce.enchants.EnchantData;
-import edgrrrr.dce.help.Help;
 import edgrrrr.dce.math.Math;
 import edgrrrr.dce.player.PlayerInventoryManager;
 import edgrrrr.dce.response.Response;
 import edgrrrr.dce.response.ValueResponse;
 import net.milkbowl.vault.economy.EconomyResponse;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -77,7 +72,7 @@ public class EnchantHandBuy extends DivinityCommandEnchant {
         // Ensure given enchant exists
         EnchantData enchantData = this.app.getEnchantmentManager().getEnchant(enchantName);
         if (enchantData == null) {
-            this.app.getConsole().logFailedPurchase(sender, enchantLevels, enchantName, String.format("enchant name '%s' does not exist", enchantName));
+            this.app.getConsole().logFailedPurchase(sender, enchantLevels, enchantName, String.format(CommandResponse.InvalidEnchantName.message, enchantName));
             return true;
         }
 
