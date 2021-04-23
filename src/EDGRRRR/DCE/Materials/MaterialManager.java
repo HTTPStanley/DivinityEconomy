@@ -33,6 +33,9 @@ public class MaterialManager {
     public final double materialBuyTax;
     public final double materialSellTax;
     public final double materialBaseQuantity;
+    public final boolean itemDmgScaling;
+    public final boolean dynamicPricing;
+    public final boolean wholeMarketInflation;
     // Stores items
     private FileConfiguration config;
 
@@ -47,6 +50,9 @@ public class MaterialManager {
         this.materialBuyTax = this.app.getConfig().getDouble(Setting.MARKET_MATERIALS_BUY_TAX_FLOAT.path);
         this.materialSellTax = this.app.getConfig().getDouble(Setting.MARKET_MATERIALS_SELL_TAX_FLOAT.path);
         this.materialBaseQuantity = this.app.getConfig().getInt(Setting.MARKET_MATERIALS_BASE_QUANTITY_INTEGER.path);
+        this.itemDmgScaling = this.app.getConfig().getBoolean(Setting.MARKET_MATERIALS_ITEM_DMG_SCALING_BOOLEAN.path);
+        this.dynamicPricing = this.app.getConfig().getBoolean(Setting.MARKET_MATERIALS_DYN_PRICING_BOOLEAN.path);
+        this.wholeMarketInflation = this.app.getConfig().getBoolean(Setting.MARKET_MATERIALS_WHOLE_MARKET_INF_BOOLEAN.path);
         int timer = Math.getTicks(this.app.getConfig().getInt(Setting.MARKET_SAVE_TIMER_INTEGER.path));
         this.saveTimer = new BukkitRunnable() {
             @Override
@@ -156,6 +162,14 @@ public class MaterialManager {
         return damageValue;
     }
 
+    private double getDamageScaling(ItemStack itemStack) {
+        if (this.itemDmgScaling) {
+            return MaterialManager.getDamageValue(itemStack);
+        } else {
+            return 1.0;
+        }
+    }
+
     /**
      * Returns the combined sell value of all the items given
      *
@@ -199,7 +213,7 @@ public class MaterialManager {
                 if (!materialData.getAllowed()) {
                     response = new ValueResponse(0.0, ResponseType.FAILURE, "item is banned.");
                 } else {
-                    response = new ValueResponse(this.calculatePrice(itemStack.getAmount(), materialData.getQuantity(), (this.materialSellTax * getDamageValue(itemStack)), false), ResponseType.SUCCESS, "");
+                    response = new ValueResponse(this.calculatePrice(itemStack.getAmount(), materialData.getQuantity(), (this.materialSellTax * this.getDamageScaling(itemStack)), false), ResponseType.SUCCESS, "");
                 }
             }
         }
@@ -282,7 +296,7 @@ public class MaterialManager {
      * @return double
      */
     public double calculatePrice(double amount, double stock, double scale, boolean purchase) {
-        return Math.calculatePrice(this.materialBaseQuantity, stock, this.defaultTotalMaterials, this.totalMaterials, amount, scale, purchase);
+        return Math.calculatePrice(this.materialBaseQuantity, stock, this.defaultTotalMaterials, this.totalMaterials, amount, scale, purchase, this.dynamicPricing, this.wholeMarketInflation);
     }
 
     /**
@@ -295,6 +309,9 @@ public class MaterialManager {
      * @return double - The price of the material
      */
     public double getPrice(double stock, double scale, double inflation) {
+        if (!this.wholeMarketInflation) {
+            inflation = 1.0;
+        }
         return Math.getPrice(this.materialBaseQuantity, stock, scale, inflation);
     }
 
@@ -316,7 +333,11 @@ public class MaterialManager {
      * @return double - The level of inflation
      */
     public double getInflation() {
-        return Math.getInflation(this.defaultTotalMaterials, this.totalMaterials);
+        if (this.wholeMarketInflation) {
+            return Math.getInflation(this.defaultTotalMaterials, this.totalMaterials);
+        } else {
+            return 1.0;
+        }
     }
 
     /**
