@@ -49,6 +49,7 @@ public abstract class DivinityCommand implements CommandExecutor {
         InvalidPlayerNameResponse("Invalid player name.", LogLevel.WARNING),
         InvalidAmountGiven("Invalid amount given.", LogLevel.WARNING),
         InvalidItemName("Invalid item name '%s'.", LogLevel.WARNING),
+        InvalidEnchantName("Invalid enchant name '%s'.", LogLevel.WARNING),
         InvalidItemHeld("Invalid held item.", LogLevel.WARNING),
         InvalidInventorySpace("Missing inventory space %d/%d.", LogLevel.WARNING),
         InvalidStockAmount("Missing stock %d/%d.", LogLevel.WARNING),
