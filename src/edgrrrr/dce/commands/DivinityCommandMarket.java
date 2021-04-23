@@ -23,10 +23,10 @@ public abstract class DivinityCommandMarket extends DivinityCommand {
     @Override
     public boolean _onPlayerCommand(Player sender, String[] args) {
         if (!this.marketIsEnabled) {
-            this.app.getConsole().send(sender, Message.MaterialMarketIsDisabled.defaultLogLevel, Message.MaterialMarketIsDisabled.message);
+            this.app.getConsole().send(sender, CommandResponse.MaterialMarketIsDisabled.defaultLogLevel, CommandResponse.MaterialMarketIsDisabled.message);
             return true;
         } else if (!this.isEnabled) {
-            this.app.getConsole().send(sender, Message.PlayerCommandIsDisabled.defaultLogLevel, Message.PlayerCommandIsDisabled.message);
+            this.app.getConsole().send(sender, CommandResponse.PlayerCommandIsDisabled.defaultLogLevel, CommandResponse.PlayerCommandIsDisabled.message);
             return true;
         } else {
             return this.onPlayerCommand(sender, args);
@@ -36,13 +36,13 @@ public abstract class DivinityCommandMarket extends DivinityCommand {
     @Override
     public boolean _onConsoleCommand(String[] args) {
         if (!this.marketIsEnabled) {
-            this.app.getConsole().send(Message.MaterialMarketIsDisabled.defaultLogLevel, Message.MaterialMarketIsDisabled.message);
+            this.app.getConsole().send(CommandResponse.MaterialMarketIsDisabled.defaultLogLevel, CommandResponse.MaterialMarketIsDisabled.message);
             return true;
         } else if (!this.isEnabled) {
-            this.app.getConsole().send(Message.ConsoleCommandIsDisabled.defaultLogLevel, Message.ConsoleCommandIsDisabled.message);
+            this.app.getConsole().send(CommandResponse.ConsoleCommandIsDisabled.defaultLogLevel, CommandResponse.ConsoleCommandIsDisabled.message);
             return true;
         } else if (!this.hasConsoleSupport) {
-            this.app.getConsole().send(Message.ConsoleSupportNotAdded.defaultLogLevel, Message.ConsoleSupportNotAdded.message);
+            this.app.getConsole().send(CommandResponse.ConsoleSupportNotAdded.defaultLogLevel, CommandResponse.ConsoleSupportNotAdded.message);
             return true;
         } else {
             return this.onConsoleCommand(args);
