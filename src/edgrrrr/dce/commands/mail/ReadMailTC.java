@@ -2,10 +2,8 @@ package edgrrrr.dce.commands.mail;
 
 import edgrrrr.configapi.Setting;
 import edgrrrr.dce.DCEPlugin;
+import edgrrrr.dce.commands.DivinityCommandTC;
 import edgrrrr.dce.mail.MailList;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -15,20 +13,26 @@ import java.util.List;
 /**
  * A tab completer for the read mail command
  */
-public class ReadMailTC implements TabCompleter {
-    private final DCEPlugin app;
+public class ReadMailTC extends DivinityCommandTC {
 
+    /**
+     * Constructor
+     *
+     * @param app
+     */
     public ReadMailTC(DCEPlugin app) {
-        this.app = app;
+        super(app, false, Setting.COMMAND_READ_MAIL_ENABLE_BOOLEAN);
     }
 
+    /**
+     * For handling a player calling this command
+     *
+     * @param sender
+     * @param args
+     * @return
+     */
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
-        // Ensure player
-        if (!(sender instanceof Player) || !(this.app.getConfig().getBoolean(Setting.COMMAND_READ_MAIL_ENABLE_BOOLEAN.path))) {
-            return null;
-        }
-
+    public List<String> onPlayerTabCompleter(Player sender, String[] args) {
         String[] strings;
         MailList mailList = this.app.getMailManager().getMailList(((Player) sender).getUniqueId().toString());
         switch (args.length) {
@@ -50,5 +54,16 @@ public class ReadMailTC implements TabCompleter {
         }
 
         return Arrays.asList(strings);
+    }
+
+    /**
+     * For the handling of the console calling this command
+     *
+     * @param args
+     * @return
+     */
+    @Override
+    public List<String> onConsoleTabCompleter(String[] args) {
+        return null;
     }
 }
