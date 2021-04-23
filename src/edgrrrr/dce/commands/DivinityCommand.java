@@ -63,7 +63,7 @@ public abstract class DivinityCommand implements CommandExecutor {
         this.app = app;
         this.help = this.app.getHelpManager().get(registeredCommandName);
         this.hasConsoleSupport = hasConsoleSupport;
-        this.isEnabled = (this.app.getConfig().getBoolean(Setting.COMMAND_PING_ENABLE_BOOLEAN.path));
+        this.isEnabled = this.app.getConfig().getBoolean(commandSetting.path);
     }
 
     /**
