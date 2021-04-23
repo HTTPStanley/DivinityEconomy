@@ -5,6 +5,8 @@ import org.bukkit.configuration.file.FileConfiguration;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.Objects;
 import java.util.UUID;
 
 public class EconomyPlayer {
@@ -12,10 +14,28 @@ public class EconomyPlayer {
     private final File file;
     private final FileConfiguration playerConfig;
 
+    private static final BigDecimal MAX_DOUBLE = new BigDecimal(String.valueOf(Double.MAX_VALUE));
+
     public EconomyPlayer(OfflinePlayer offlinePlayer, File file, FileConfiguration playerConfig) {
         this.offlinePlayer = offlinePlayer;
         this.file = file;
         this.playerConfig = playerConfig;
+    }
+
+    private BigDecimal getNearestValue(BigDecimal value, double direction) {
+        double closestValue = value.doubleValue();
+        if (BigDecimal.valueOf(closestValue).compareTo(value) > 0){
+            closestValue = Math.nextAfter(closestValue, direction);
+        }
+        return BigDecimal.valueOf(closestValue);
+    }
+
+    private BigDecimal getNearestValueDown(BigDecimal value) {
+        return this.getNearestValue(value, Math.floor(value.doubleValue()));
+    }
+
+    private BigDecimal getNearestValueUp(BigDecimal value) {
+        return this.getNearestValue(value, Math.ceil(value.doubleValue()));
     }
 
     public boolean isLegal() {
@@ -23,38 +43,64 @@ public class EconomyPlayer {
     }
 
     public double getBalance() {
-        return this.playerConfig.getDouble(EconomyFileKeys.BALANCE.get());
+        return this._getBalance().doubleValue();
+    }
+
+    private BigDecimal _getBalance() {
+        BigDecimal value = new BigDecimal(this.playerConfig.getString(EconomyFileKeys.BALANCE.key));
+        return this.getNearestValueDown(value);
     }
 
     public double withdraw(double amount) {
-        this.setBalance(this.getBalance() - amount);
-        return this.getBalance();
+        return this._withdraw(amount).doubleValue();
+    }
+
+    private BigDecimal _withdraw(double amount) {
+        BigDecimal newAmount = this._getBalance().subtract(BigDecimal.valueOf(amount));
+        this.setBalance(this.getNearestValueDown(newAmount).doubleValue());
+        return this._getBalance();
     }
 
     public double deposit(double amount) {
-        this.setBalance(this.getBalance() + amount);
-        return this.getBalance();
+        return this._deposit(amount).doubleValue();
+    }
+
+    public BigDecimal _deposit(double amount) {
+        BigDecimal newAmount = this._getBalance().add(BigDecimal.valueOf(amount));
+        this.setBalance(this.getNearestValueDown(newAmount).doubleValue());
+        return this._getBalance();
     }
 
     public boolean has(double amount) {
-        return this.getBalance() >= amount;
+        return this._getBalance().compareTo(BigDecimal.valueOf(amount)) >= 0;
     }
 
     public boolean canHave(double amount) {
-        double balance = this.getBalance();
-        return balance + amount != balance;
+        return EconomyPlayer.canHave(this._getBalance(), amount);
+    }
+
+    public static boolean canHave(double balance, double amount) {
+        return EconomyPlayer.canHave(BigDecimal.valueOf(balance), amount);
+    }
+
+    public static boolean canHave(BigDecimal balance, double amount) {
+        return balance.add(BigDecimal.valueOf(amount)).compareTo(EconomyPlayer.MAX_DOUBLE) < 0;
     }
 
     public void update() {
-        if (!this.getLastKnownName().equals(this.offlinePlayer.getName())) this.setName(this.offlinePlayer.getName());
+        this.setName(this.offlinePlayer.getName());
     }
 
     public void setBalance(double balance) {
-        this.set(EconomyFileKeys.BALANCE, balance);
+        this.set(EconomyFileKeys.BALANCE, BigDecimal.valueOf(balance).toString());
+    }
+
+    public void setBalance(BigDecimal balance) {
+        this.set(EconomyFileKeys.BALANCE, balance.toString());
     }
 
     public String getLastKnownName() {
-        return this.playerConfig.getString(EconomyFileKeys.NAME.get());
+        return this.playerConfig.getString(EconomyFileKeys.NAME.key);
     }
 
     public void setName(String name) {
@@ -62,7 +108,7 @@ public class EconomyPlayer {
     }
 
     public UUID getUUID() {
-        return UUID.fromString(this.playerConfig.getString(EconomyFileKeys.UUID.get()));
+        return UUID.fromString(Objects.requireNonNull(this.playerConfig.getString(EconomyFileKeys.UUID.key)));
     }
 
     public void setUUID(UUID uuid) {
@@ -82,7 +128,7 @@ public class EconomyPlayer {
     }
 
     public void set(EconomyFileKeys key, Object value) {
-        this.playerConfig.set(key.get(), value);
+        this.playerConfig.set(key.key, value);
         this.save();
     }
 
