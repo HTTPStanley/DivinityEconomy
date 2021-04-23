@@ -1,170 +1,17 @@
 package edgrrrr.dce.console;
 
+import edgrrrr.consoleapi.Console;
 import edgrrrr.dce.DCEPlugin;
-import edgrrrr.dce.config.Setting;
-import edgrrrr.dce.help.Help;
 import edgrrrr.dce.mail.MailList;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.Arrays;
+public class EconConsole extends Console {
+    private final DCEPlugin app;
 
-/**
- * Console class for sending uniform messages to players and the console.
- */
-public class Console {
-    private DCEPlugin app;
-    private ConsoleCommandSender consoleSender;
-
-    // Settings
-    private final boolean debugMode;
-    private final String chatPrefix;
-    private final String consolePrefix;
-
-
-    private static final String[] variables = {};
-    private static final String[] variableValues = {};
-
-    public Console(DCEPlugin app, String version) {
+    public EconConsole(DCEPlugin app) {
+        super(app);
         this.app = app;
-        this.consoleSender = Bukkit.getConsoleSender();
-
-        // Get settings
-        this.debugMode = (DCEPlugin.CONFIG.getBoolean(Setting.CHAT_DEBUG_OUTPUT_BOOLEAN));
-        String prefix = DCEPlugin.CONFIG.getString(Setting.CHAT_PREFIX_STRING);
-        String conPrefix = DCEPlugin.CONFIG.getString(Setting.CHAT_CONSOLE_PREFIX).replace("<VERSION>", version);
-        this.chatPrefix = insertColours(prefix);
-        conPrefix = insertColours(conPrefix);
-        this.consolePrefix = insertVariables(conPrefix);
-    }
-
-    private static String insertVariables(String string) {
-        for (int idx=0; idx < variables.length; idx++) {
-            string = string.replace(variables[idx], variableValues[idx]);
-        }
-        return string;
-    }
-
-    private static String insertColours(String string) {
-        for (ChatColor colour : ChatColor.values()) {
-            string = string.replaceAll(String.format("(&%s)|(%s)", colour.getChar(), colour.name()), colour.toString());
-        }
-        return string;
-    }
-
-    // CONSOLE COMMANDS
-
-    /**
-     * Sends a message to the console
-     *
-     * @param message - The message to send
-     */
-    private void send(LogLevel level, String message) {
-        this.consoleSender.sendMessage(consolePrefix + level.getColour() + message);
-    }
-
-    /**
-     * Sends a (default green) message to the console
-     *
-     * @param message - The message to send
-     */
-    public void info(String message) {
-        this.send(LogLevel.INFO, message);
-    }
-
-    /**
-     * Sends a (default green) message to the console
-     *
-     * @param message - The message to send
-     */
-    public void debug(String message) {
-        if (debugMode) this.send(LogLevel.DEBUG, message);
-    }
-
-    /**
-     * Sends a (default yellow) message to the console
-     *
-     * @param message - The message to send
-     */
-    public void warn(String message) {
-        this.send(LogLevel.WARNING, message);
-    }
-
-    /**
-     * Sends a (default red) message to the console
-     *
-     * @param message - The message to send
-     */
-    public void severe(String message) {
-        this.send(LogLevel.SEVERE, message);
-    }
-
-    // PLAYER
-
-    /**
-     * Sends a message to a player
-     *
-     * @param player  - The player to send to
-     * @param message - The message to send
-     */
-    private void send(Player player, LogLevel level, String message) {
-        if (player != null) {
-            player.sendMessage(chatPrefix + level.getColour() + message);
-        } else {
-            this.send(level, message);
-        }
-    }
-
-    /**
-     * Sends a usage command to a player
-     *
-     * @param player       - The player to send to
-     * @param errorMessage - The message to send
-     * @param help         - The help object for the command
-     */
-    public void usage(Player player, String errorMessage, Help help) {
-        this.warn(player, String.format("Incorrect command usage: %s", errorMessage));
-        this.warn(player, String.format("Command usage: %s", Arrays.toString(help.getUsages())));
-    }
-
-    public void help(Player player, Help help) {
-        this.info(player, String.format("Help for %s", help.getCommand()));
-        this.info(player, String.format("Description: %s", help.getDescription()));
-        this.info(player, String.format("Usages: %s", Arrays.toString(help.getUsages())));
-        this.info(player, String.format("Aliases: %s", Arrays.toString(help.getAliases())));
-    }
-
-    /**
-     * Sends an info message to a player
-     *
-     * @param player  - The player to send to
-     * @param message - The message to send
-     */
-    public void info(Player player, String message) {
-        this.send(player, LogLevel.INFO, message);
-    }
-
-    /**
-     * Sends a warning message to a player
-     *
-     * @param player  - The player to send to
-     * @param message - The message to send
-     */
-    public void warn(Player player, String message) {
-        this.send(player, LogLevel.WARNING, message);
-    }
-
-    /**
-     * Sends a severe message to a player
-     *
-     * @param player  - The player to send to
-     * @param message - The message to send
-     */
-    public void severe(Player player, String message) {
-        this.send(player, LogLevel.SEVERE, message);
     }
 
     /**

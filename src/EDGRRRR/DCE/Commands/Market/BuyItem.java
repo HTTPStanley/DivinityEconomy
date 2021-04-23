@@ -1,7 +1,7 @@
 package edgrrrr.dce.commands.market;
 
+import edgrrrr.configapi.Setting;
 import edgrrrr.dce.DCEPlugin;
-import edgrrrr.dce.config.Setting;
 import edgrrrr.dce.help.Help;
 import edgrrrr.dce.materials.MaterialData;
 import edgrrrr.dce.math.Math;
@@ -36,14 +36,14 @@ public class BuyItem implements CommandExecutor {
         Player player = (Player) sender;
 
         // Ensure command is enabled
-        if (!(this.app.getConfig().getBoolean(Setting.COMMAND_BUY_ITEM_ENABLE_BOOLEAN.path()))) {
-            DCEPlugin.CONSOLE.severe(player, "This command is not enabled.");
+        if (!(this.app.getConfig().getBoolean(Setting.COMMAND_BUY_ITEM_ENABLE_BOOLEAN.path))) {
+            this.app.getConsole().severe(player, "This command is not enabled.");
             return true;
         }
 
         // Ensure market is enabled
-        if (!(this.app.getConfig().getBoolean(Setting.MARKET_MATERIALS_ENABLE_BOOLEAN.path()))) {
-            DCEPlugin.CONSOLE.severe(player, "The market is not enabled.");
+        if (!(this.app.getConfig().getBoolean(Setting.MARKET_MATERIALS_ENABLE_BOOLEAN.path))) {
+            this.app.getConsole().severe(player, "The market is not enabled.");
             return true;
         }
 
@@ -62,28 +62,28 @@ public class BuyItem implements CommandExecutor {
                 break;
 
             default:
-                DCEPlugin.CONSOLE.usage(player, "Invalid number of arguments.", this.help);
+                this.app.getConsole().usage(player, "Invalid number of arguments.", this.help.getUsages());
                 return true;
         }
 
         if (amountToBuy < 1) {
-            DCEPlugin.CONSOLE.usage(player, "Invalid amount.", this.help);
-            DCEPlugin.CONSOLE.debug("(BuyItem)Invalid amount: " + amountToBuy);
+            this.app.getConsole().usage(player, "Invalid amount.", this.help.getUsages());
+            this.app.getConsole().debug("(BuyItem)Invalid amount: " + amountToBuy);
 
         } else {
             MaterialData materialData = this.app.getMaterialManager().getMaterial(materialName);
             if (materialData == null) {
-                DCEPlugin.CONSOLE.usage(player, "Unknown Item: '" + materialName + "'", this.help);
-                DCEPlugin.CONSOLE.debug("(BuyItem)Unknown Item: " + materialName);
+                this.app.getConsole().usage(player, "Unknown Item: '" + materialName + "'", this.help.getUsages());
+                this.app.getConsole().debug("(BuyItem)Unknown Item: " + materialName);
 
             } else {
                 int availableSpace = PlayerInventoryManager.getAvailableSpace(player, materialData.getMaterial());
                 if (amountToBuy > availableSpace) {
-                    DCEPlugin.CONSOLE.logFailedPurchase(player, amountToBuy, materialData.getCleanName(), String.format("missing inventory space (%d/%d)", availableSpace, amountToBuy));
+                    this.app.getConsole().logFailedPurchase(player, amountToBuy, materialData.getCleanName(), String.format("missing inventory space (%d/%d)", availableSpace, amountToBuy));
 
                 } else {
                     if (amountToBuy > materialData.getQuantity()) {
-                        DCEPlugin.CONSOLE.logFailedPurchase(player, amountToBuy, materialData.getCleanName(), String.format("not enough stock (%d/%d)", materialData.getQuantity(), amountToBuy));
+                        this.app.getConsole().logFailedPurchase(player, amountToBuy, materialData.getCleanName(), String.format("not enough stock (%d/%d)", materialData.getQuantity(), amountToBuy));
 
                     } else {
 
@@ -95,7 +95,7 @@ public class BuyItem implements CommandExecutor {
                             materialData.remQuantity(amountToBuy);
 
                             // Handles console, message and mail
-                            DCEPlugin.CONSOLE.logPurchase(player, amountToBuy, saleResponse.amount, materialData.getCleanName());
+                            this.app.getConsole().logPurchase(player, amountToBuy, saleResponse.amount, materialData.getCleanName());
 
                         } else {
                             String errorMessage = "unknown error";
@@ -103,7 +103,7 @@ public class BuyItem implements CommandExecutor {
                             else if (priceResponse.isFailure()) errorMessage = priceResponse.errorMessage;
 
                             // Handles console, message and mail
-                            DCEPlugin.CONSOLE.logFailedPurchase(player, amountToBuy, materialData.getCleanName(), errorMessage);
+                            this.app.getConsole().logFailedPurchase(player, amountToBuy, materialData.getCleanName(), errorMessage);
                         }
                     }
                 }

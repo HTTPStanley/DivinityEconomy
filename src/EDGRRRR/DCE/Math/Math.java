@@ -1,7 +1,6 @@
 package edgrrrr.dce.math;
 
 public class Math {
-
     /**
      * Calculates the number of ticks from the seconds provided
      *
@@ -113,7 +112,7 @@ public class Math {
         // Inflation works by calculating the default total items and dividing it by the new total items
         // This results in an increase in price when there are less items in the market than default
         // Or a decrease in price when there are more items in the market than default
-        return (getScale(baseQuantity, currentQuantity)) * scale * inflation;
+        return (getScale(baseQuantity+1, currentQuantity+1)) * scale * inflation;
     }
 
     /**

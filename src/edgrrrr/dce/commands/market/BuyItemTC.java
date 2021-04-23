@@ -1,9 +1,10 @@
 package edgrrrr.dce.commands.market;
 
+import edgrrrr.configapi.Setting;
 import edgrrrr.dce.DCEPlugin;
-import edgrrrr.dce.config.Setting;
 import edgrrrr.dce.materials.MaterialData;
 import edgrrrr.dce.math.Math;
+import edgrrrr.dce.player.PlayerInventoryManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -25,10 +26,11 @@ public class BuyItemTC implements TabCompleter {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
         // Ensure player
-        if (!(sender instanceof Player) || !(this.app.getConfig().getBoolean(Setting.COMMAND_BUY_ITEM_ENABLE_BOOLEAN.path()))) {
+        if (!(sender instanceof Player) || !(this.app.getConfig().getBoolean(Setting.COMMAND_BUY_ITEM_ENABLE_BOOLEAN.path))) {
             return null;
         }
 
+        Player player = (Player) sender;
         String[] strings;
         MaterialData materialData;
         switch (args.length) {
@@ -48,7 +50,8 @@ public class BuyItemTC implements TabCompleter {
                 }
 
                 strings = new String[] {
-                    String.valueOf(stackSize)
+                    String.valueOf(stackSize),
+                    String.valueOf(PlayerInventoryManager.getAvailableSpace(player, materialData.getMaterial()))
                 };
                 break;
 

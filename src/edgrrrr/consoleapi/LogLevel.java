@@ -1,16 +1,16 @@
-package edgrrrr.dce.console;
+package edgrrrr.consoleapi;
 
-import edgrrrr.dce.config.Setting;
+import edgrrrr.configapi.Setting;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.util.logging.Logger;
 
 public enum LogLevel {
-    DEBUG(0, ChatColor.DARK_PURPLE, Setting.CHAT_DEBUG_COLOR.path()),
-    INFO(1, ChatColor.GREEN, Setting.CHAT_INFO_COLOR.path()),
-    WARNING(2, ChatColor.YELLOW, Setting.CHAT_WARNING_COLOR.path()),
-    SEVERE(3, ChatColor.DARK_RED, Setting.CHAT_SEVERE_COLOR.path());
+    DEBUG(0, ChatColor.DARK_PURPLE, Setting.CHAT_DEBUG_COLOR.path),
+    INFO(1, ChatColor.GREEN, Setting.CHAT_INFO_COLOR.path),
+    WARNING(2, ChatColor.YELLOW, Setting.CHAT_WARNING_COLOR.path),
+    SEVERE(3, ChatColor.DARK_RED, Setting.CHAT_SEVERE_COLOR.path);
 
     private int priority = 0;
     private ChatColor colour = ChatColor.GRAY;

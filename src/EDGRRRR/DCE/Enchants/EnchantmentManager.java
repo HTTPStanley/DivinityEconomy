@@ -1,7 +1,7 @@
 package edgrrrr.dce.enchants;
 
+import edgrrrr.configapi.Setting;
 import edgrrrr.dce.DCEPlugin;
-import edgrrrr.dce.config.Setting;
 import edgrrrr.dce.math.Math;
 import edgrrrr.dce.response.MultiValueResponse;
 import edgrrrr.dce.response.Response;
@@ -51,10 +51,10 @@ public class EnchantmentManager {
      */
     public EnchantmentManager(DCEPlugin app) {
         this.app = app;
-        this.enchantBuyTax = this.app.getConfig().getDouble(Setting.MARKET_ENCHANTS_BUY_TAX_FLOAT.path());
-        this.enchantSellTax = this.app.getConfig().getDouble(Setting.MARKET_ENCHANTS_SELL_TAX_FLOAT.path());
-        this.enchantBaseQuantity = this.app.getConfig().getInt(Setting.MARKET_ENCHANTS_BASE_QUANTITY_INTEGER.path());
-        int timer = Math.getTicks(this.app.getConfig().getInt(Setting.MARKET_SAVE_TIMER_INTEGER.path()));
+        this.enchantBuyTax = this.app.getConfig().getDouble(Setting.MARKET_ENCHANTS_BUY_TAX_FLOAT.path);
+        this.enchantSellTax = this.app.getConfig().getDouble(Setting.MARKET_ENCHANTS_SELL_TAX_FLOAT.path);
+        this.enchantBaseQuantity = this.app.getConfig().getInt(Setting.MARKET_ENCHANTS_BASE_QUANTITY_INTEGER.path);
+        int timer = Math.getTicks(this.app.getConfig().getInt(Setting.MARKET_SAVE_TIMER_INTEGER.path));
         this.saveTimer = new BukkitRunnable() {
             @Override
             public void run() {
@@ -149,8 +149,8 @@ public class EnchantmentManager {
      */
     public void loadEnchants() {
         // Load the config
-        this.config = DCEPlugin.CONFIG.loadConfig(this.enchantFile);
-        FileConfiguration defaultConf = DCEPlugin.CONFIG.readResource(this.enchantFile);
+        this.config = this.app.getConfigManager().loadFile(this.enchantFile);
+        FileConfiguration defaultConf = this.app.getConfigManager().readResource(this.enchantFile);
         // Set material counts
         this.defaultTotalEnchants = 0;
         this.totalEnchants = 0;
@@ -168,7 +168,7 @@ public class EnchantmentManager {
         }
         // Copy values into materials
         this.enchants = values;
-        DCEPlugin.CONSOLE.info("Loaded " + values.size() + "(" + this.totalEnchants + "/" + this.defaultTotalEnchants + ") enchantments from " + this.enchantFile);
+        this.app.getConsole().info("Loaded " + values.size() + "(" + this.totalEnchants + "/" + this.defaultTotalEnchants + ") enchantments from " + this.enchantFile);
     }
 
     /**
@@ -521,13 +521,13 @@ public class EnchantmentManager {
             this.saveEnchant(enchantData);
         }
         this.saveFile();
-        DCEPlugin.CONSOLE.info("Enchants saved.");
+        this.app.getConsole().info("Enchants saved.");
     }
 
     /**
      * Saves the internal config to the save file
      */
     public void saveFile() {
-        DCEPlugin.CONFIG.saveFile(this.config, this.enchantFile);
+        this.app.getConfigManager().saveFile(this.config, this.enchantFile);
     }
 }

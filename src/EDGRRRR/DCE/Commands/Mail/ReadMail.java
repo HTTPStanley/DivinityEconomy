@@ -1,7 +1,7 @@
 package edgrrrr.dce.commands.mail;
 
+import edgrrrr.configapi.Setting;
 import edgrrrr.dce.DCEPlugin;
-import edgrrrr.dce.config.Setting;
 import edgrrrr.dce.help.Help;
 import edgrrrr.dce.mail.Mail;
 import edgrrrr.dce.mail.MailList;
@@ -34,8 +34,8 @@ public class ReadMail implements CommandExecutor {
         Player player = (Player) sender;
 
         // Ensure command is enabled
-        if (!(this.app.getConfig().getBoolean(Setting.COMMAND_READ_MAIL_ENABLE_BOOLEAN.path()))) {
-            DCEPlugin.CONSOLE.severe(player, "This command is not enabled.");
+        if (!(this.app.getConfig().getBoolean(Setting.COMMAND_READ_MAIL_ENABLE_BOOLEAN.path))) {
+            this.app.getConsole().severe(player, "This command is not enabled.");
             return true;
         }
 
@@ -51,32 +51,32 @@ public class ReadMail implements CommandExecutor {
                 break;
 
             default:
-                DCEPlugin.CONSOLE.usage(player, "Invalid number of arguments.", this.help);
+                this.app.getConsole().usage(player, "Invalid number of arguments.", this.help.getUsages());
                 return true;
         }
         if (page < 0) {
-            DCEPlugin.CONSOLE.usage(player, "Invalid page.", this.help);
+            this.app.getConsole().usage(player, "Invalid page.", this.help.getUsages());
 
         } else {
 
             MailList mailList = this.app.getMailManager().getMailList(player.getUniqueId().toString());
 
             if (mailList.getAllMail().isEmpty()) {
-                DCEPlugin.CONSOLE.warn(player, "You have no mail.");
+                this.app.getConsole().warn(player, "You have no mail.");
             } else {
                 HashMap<Integer, Mail[]> mailPages = mailList.getPages(pageSize);
 
                 if ((page + 1) > mailPages.size()) {
-                    DCEPlugin.CONSOLE.warn(player, "Invalid page. Choose a number up to " + mailPages.size());
+                    this.app.getConsole().warn(player, "Invalid page. Choose a number up to " + mailPages.size());
                 } else {
                     Mail[] mailPage = mailPages.get(page);
-                    DCEPlugin.CONSOLE.info(player, "Mail List (" + (page + 1) + "/" + mailPages.size() + ")");
+                    this.app.getConsole().info(player, "Mail List (" + (page + 1) + "/" + mailPages.size() + ")");
                     int idx = 1;
                     for (Mail mail : mailPage) {
                         if (mail == null) {
                             break;
                         }
-                        DCEPlugin.CONSOLE.info(player, idx + ": " + mail.getMessage());
+                        this.app.getConsole().info(player, idx + ": " + mail.getMessage());
                         mail.setRead(true);
                         idx += 1;
                     }

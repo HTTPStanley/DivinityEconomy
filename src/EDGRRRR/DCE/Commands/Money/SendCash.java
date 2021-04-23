@@ -1,7 +1,7 @@
 package edgrrrr.dce.commands.money;
 
+import edgrrrr.configapi.Setting;
 import edgrrrr.dce.DCEPlugin;
-import edgrrrr.dce.config.Setting;
 import edgrrrr.dce.help.Help;
 import edgrrrr.dce.math.Math;
 import edgrrrr.dce.response.EconomyTransferResponse;
@@ -34,8 +34,8 @@ public class SendCash implements CommandExecutor {
         Player player1 = (Player) sender;
 
         // Ensure command is enabled
-        if (!(this.app.getConfig().getBoolean(Setting.COMMAND_SEND_CASH_ENABLE_BOOLEAN.path()))) {
-            DCEPlugin.CONSOLE.severe(player1, "This command is not enabled.");
+        if (!(this.app.getConfig().getBoolean(Setting.COMMAND_SEND_CASH_ENABLE_BOOLEAN.path))) {
+            this.app.getConsole().severe(player1, "This command is not enabled.");
             return true;
         }
 
@@ -56,22 +56,22 @@ public class SendCash implements CommandExecutor {
                 break;
 
             default:
-                DCEPlugin.CONSOLE.usage(player1, "Invalid number of arguments.", this.help);
+                this.app.getConsole().usage(player1, "Invalid number of arguments.", this.help.getUsages());
                 return true;
         }
 
         // Ensure online or offline player exists.
         if (player2 == null) {
-            DCEPlugin.CONSOLE.usage(player1, "Invalid player name.", this.help);
+            this.app.getConsole().usage(player1, "Invalid player name.", this.help.getUsages());
 
         } else {
             EconomyTransferResponse response = this.app.getEconomyManager().sendCash(player1, player2, amount);
 
             // Handles console, message and mail
             if (response.responseType == EconomyResponse.ResponseType.SUCCESS) {
-                DCEPlugin.CONSOLE.logTransfer(player1, player2, amount);
+                this.app.getConsole().logTransfer(player1, player2, amount);
             } else {
-                DCEPlugin.CONSOLE.logFailedTransfer(player1, player2, amount, response.errorMessage);
+                this.app.getConsole().logFailedTransfer(player1, player2, amount, response.errorMessage);
             }
         }
 

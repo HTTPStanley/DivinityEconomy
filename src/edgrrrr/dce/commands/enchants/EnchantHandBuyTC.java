@@ -1,7 +1,7 @@
 package edgrrrr.dce.commands.enchants;
 
+import edgrrrr.configapi.Setting;
 import edgrrrr.dce.DCEPlugin;
-import edgrrrr.dce.config.Setting;
 import edgrrrr.dce.enchants.EnchantData;
 import edgrrrr.dce.math.Math;
 import edgrrrr.dce.player.PlayerInventoryManager;
@@ -28,7 +28,7 @@ public class EnchantHandBuyTC implements TabCompleter {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
         // Ensure player
-        if (!(sender instanceof Player) || !(this.app.getConfig().getBoolean(Setting.COMMAND_E_BUY_ENABLE_BOOLEAN.path()))) {
+        if (!(sender instanceof Player) || !(this.app.getConfig().getBoolean(Setting.COMMAND_E_BUY_ENABLE_BOOLEAN.path))) {
             return null;
         }
         Player player = (Player) sender;

@@ -22,9 +22,9 @@ public class MailEvent implements Listener {
         Player player = event.getPlayer();
         MailList mailList = this.app.getMailManager().getMailList(player.getUniqueId().toString());
         if (mailList.hasMail()) {
-            DCEPlugin.CONSOLE.info(player, "You have " + mailList.getReadMail().size() + " read and " + mailList.getUnreadMail().size() + " unread mail");
+            this.app.getConsole().info(player, "You have " + mailList.getReadMail().size() + " read and " + mailList.getUnreadMail().size() + " unread mail");
         } else {
-            DCEPlugin.CONSOLE.info(player, "You have no mail. ");
+            this.app.getConsole().info(player, "You have no mail. ");
         }
     }
 }

@@ -1,5 +1,9 @@
 package edgrrrr.dce;
 
+import edgrrrr.configapi.ConfigManager;
+import edgrrrr.configapi.ConfigManagerAPI;
+import edgrrrr.configapi.Setting;
+import edgrrrr.consoleapi.LogLevel;
 import edgrrrr.dce.commands.admin.*;
 import edgrrrr.dce.commands.enchants.*;
 import edgrrrr.dce.commands.help.HelpCommand;
@@ -14,10 +18,7 @@ import edgrrrr.dce.commands.money.Balance;
 import edgrrrr.dce.commands.money.BalanceTC;
 import edgrrrr.dce.commands.money.SendCash;
 import edgrrrr.dce.commands.money.SendCashTC;
-import edgrrrr.dce.config.ConfigManager;
-import edgrrrr.dce.config.Setting;
-import edgrrrr.dce.console.Console;
-import edgrrrr.dce.console.LogLevel;
+import edgrrrr.dce.console.EconConsole;
 import edgrrrr.dce.economy.EconomyManager;
 import edgrrrr.dce.enchants.EnchantmentManager;
 import edgrrrr.dce.events.MailEvent;
@@ -25,6 +26,7 @@ import edgrrrr.dce.help.HelpManager;
 import edgrrrr.dce.mail.MailManager;
 import edgrrrr.dce.materials.MaterialManager;
 import edgrrrr.dce.player.PlayerManager;
+import edgrrrr.paa.playerManager.PlayerManagerAPI;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -35,9 +37,9 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 public class DCEPlugin extends JavaPlugin {
     // The config
-    public static ConfigManager CONFIG;
+    private ConfigManagerAPI config;
     // The console
-    public static Console CONSOLE;
+    private EconConsole console;
     // The economy
     private EconomyManager economyManager;
     // The material manager
@@ -45,7 +47,7 @@ public class DCEPlugin extends JavaPlugin {
     // The mail manager
     private MailManager mailManager;
     // The player manager
-    private PlayerManager playerManager;
+    private PlayerManagerAPI playerManager;
     // The enchantment manager
     private EnchantmentManager enchantmentManager;
     // The help manager
@@ -57,9 +59,9 @@ public class DCEPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         // Config
-        CONFIG = new ConfigManager(this);
+        this.config = new ConfigManager(this);
         //Setup Managers
-        CONSOLE = new Console(this, this.getDescription().getVersion());
+        this.console = new EconConsole(this);
         LogLevel.loadValuesFromConfig((YamlConfiguration) this.getConfig());
         this.economyManager = new EconomyManager(this);
         if (!this.economyManager.setupEconomy()) {
@@ -86,7 +88,7 @@ public class DCEPlugin extends JavaPlugin {
             pm.registerEvents(new MailEvent(this), this);
         } catch (Exception e) {
             e.printStackTrace();
-            CONSOLE.severe("An error occurred on event creation: " + e);
+            this.console.severe("An error occurred on event creation: " + e);
             this.shutdown();
             return;
         }
@@ -170,14 +172,14 @@ public class DCEPlugin extends JavaPlugin {
 
         } catch (Exception e) {
             e.printStackTrace();
-            CONSOLE.severe("An error occurred on registry: " + e);
+            this.console.severe("An error occurred on registry: " + e);
             this.shutdown();
             return;
         }
 
         // Done :)
         this.describe();
-        CONSOLE.info("Plugin Enabled");
+        this.console.info("Plugin Enabled");
     }
 
     /**
@@ -195,7 +197,7 @@ public class DCEPlugin extends JavaPlugin {
         if (this.mailManager != null) {
             this.mailManager.saveAllMail();
         }
-        CONSOLE.warn("Plugin Disabled");
+        this.console.warn("Plugin Disabled");
     }
 
     /**
@@ -232,26 +234,34 @@ public class DCEPlugin extends JavaPlugin {
         String[] settingGroups = {"Chat", "Economy", "Market", "|-Materials", "|-Enchants", "Commands"};
         Setting[][] settings = {chatSettings, economySettings, marketSettings, materialSettings, enchantSettings, commandSettings};
 
-        CONSOLE.debug("===Describe===");
-        CONSOLE.debug("Settings:");
+        this.console.debug("===Describe===");
+        this.console.debug("Settings:");
         for (int groupIdx=0; groupIdx < settingGroups.length; groupIdx++) {
-            CONSOLE.debug(String.format("   %s:", settingGroups[groupIdx]));
+            this.console.debug(String.format("   %s:", settingGroups[groupIdx]));
             for (int settingIdx=0; settingIdx < settings[groupIdx].length; settingIdx++) {
                 Setting setting = settings[groupIdx][settingIdx];
-                CONSOLE.debug(String.format("      - %s: %s", setting.path(), this.getConfig().getString(setting.path())));
+                this.console.debug(String.format("      - %s: %s", setting.path, this.getConfig().getString(setting.path)));
             }
-            CONSOLE.debug("");
+            this.console.debug("");
         }
-        CONSOLE.debug("");
-        CONSOLE.debug("Markets:");
-        CONSOLE.debug("   - Materials: " + this.materialManager.materials.size());
-        CONSOLE.debug("      - Material Aliases: " + this.materialManager.aliases.size());
-        CONSOLE.debug("      - Material Market Size: " + this.materialManager.getTotalMaterials() + " / " + this.materialManager.getDefaultTotalMaterials());
-        CONSOLE.debug("      - Material Market Inflation: " + this.materialManager.getInflation() + "%");
-        CONSOLE.debug("   - Enchants: " + this.enchantmentManager.enchants.size());
-        CONSOLE.debug("      - Enchant Market Size: " + this.enchantmentManager.getTotalEnchants() + " / " + this.enchantmentManager.getDefaultTotalEnchants());
-        CONSOLE.debug("      - Enchant Market Inflation: " + this.enchantmentManager.getInflation() + "%");
-        CONSOLE.debug("");
+        this.console.debug("");
+        this.console.debug("Markets:");
+        this.console.debug("   - Materials: " + this.materialManager.materials.size());
+        this.console.debug("      - Material Aliases: " + this.materialManager.aliases.size());
+        this.console.debug("      - Material Market Size: " + this.materialManager.getTotalMaterials() + " / " + this.materialManager.getDefaultTotalMaterials());
+        this.console.debug("      - Material Market Inflation: " + this.materialManager.getInflation() + "%");
+        this.console.debug("   - Enchants: " + this.enchantmentManager.enchants.size());
+        this.console.debug("      - Enchant Market Size: " + this.enchantmentManager.getTotalEnchants() + " / " + this.enchantmentManager.getDefaultTotalEnchants());
+        this.console.debug("      - Enchant Market Inflation: " + this.enchantmentManager.getInflation() + "%");
+        this.console.debug("");
+    }
+
+    public ConfigManagerAPI getConfigManager() {
+        return this.config;
+    }
+
+    public EconConsole getConsole() {
+        return this.console;
     }
 
     /**
@@ -286,7 +296,7 @@ public class DCEPlugin extends JavaPlugin {
      * This is currently used for getting Player and OfflinePlayer objects
      * @return PlayerManager
      */
-    public PlayerManager getPlayerManager() {
+    public PlayerManagerAPI getPlayerManager() {
         return this.playerManager;
     }
 

@@ -1,12 +1,13 @@
 package edgrrrr.dce.commands.market;
 
+import edgrrrr.configapi.Setting;
 import edgrrrr.dce.DCEPlugin;
-import edgrrrr.dce.config.Setting;
 import edgrrrr.dce.help.Help;
 import edgrrrr.dce.materials.MaterialData;
 import edgrrrr.dce.math.Math;
 import edgrrrr.dce.player.PlayerInventoryManager;
 import edgrrrr.dce.response.ValueResponse;
+import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -36,14 +37,14 @@ public class SellItem implements CommandExecutor {
         Player player = (Player) sender;
 
         // Ensure command is enabled
-        if (!(this.app.getConfig().getBoolean(Setting.COMMAND_SELL_ITEM_ENABLE_BOOLEAN.path()))) {
-            DCEPlugin.CONSOLE.severe(player, "This command is not enabled.");
+        if (!(this.app.getConfig().getBoolean(Setting.COMMAND_SELL_ITEM_ENABLE_BOOLEAN.path))) {
+            this.app.getConsole().severe(player, "This command is not enabled.");
             return true;
         }
 
         // Ensure market is enabled
-        if (!(this.app.getConfig().getBoolean(Setting.MARKET_MATERIALS_ENABLE_BOOLEAN.path()))) {
-            DCEPlugin.CONSOLE.severe(player, "The market is not enabled.");
+        if (!(this.app.getConfig().getBoolean(Setting.MARKET_MATERIALS_ENABLE_BOOLEAN.path))) {
+            this.app.getConsole().severe(player, "The market is not enabled.");
             return true;
         }
 
@@ -63,40 +64,48 @@ public class SellItem implements CommandExecutor {
                 break;
 
             default:
-                DCEPlugin.CONSOLE.usage(player, "Invalid number of arguments.", help);
+                this.app.getConsole().usage(player, "Invalid number of arguments.", this.help.getUsages());
                 return true;
         }
 
         if (amountToSell < 1) {
-            DCEPlugin.CONSOLE.usage(player, "Invalid amount.", this.help);
-            DCEPlugin.CONSOLE.debug("(SellItem)Invalid item amount: " + materialName);
+            this.app.getConsole().usage(player, "Invalid amount.", this.help.getUsages());
+            this.app.getConsole().debug("(SellItem)Invalid item amount: " + materialName);
 
         } else {
             MaterialData materialData = this.app.getMaterialManager().getMaterial(materialName);
             if (materialData == null) {
-                DCEPlugin.CONSOLE.usage(player, "Unknown Item: '" + materialName + "'", this.help);
-                DCEPlugin.CONSOLE.debug("(SellItem)Unknown item search: " + materialName);
+                this.app.getConsole().usage(player, "Unknown Item: '" + materialName + "'", this.help.getUsages());
+                this.app.getConsole().debug("(SellItem)Unknown item search: " + materialName);
 
             } else {
                 Material material = materialData.getMaterial();
-                ItemStack[] totalUserMaterials = PlayerInventoryManager.getMaterialSlots(player, material);
-                int userAmount = PlayerInventoryManager.getMaterialCount(totalUserMaterials);
+                int materialCount = PlayerInventoryManager.getMaterialCount(PlayerInventoryManager.getMaterialSlots(player, material));
 
-                ItemStack[] itemStacks = PlayerInventoryManager.getMaterialSlotsToCount(player, material, amountToSell);
-                ValueResponse valueResponse = this.app.getMaterialManager().getSellValue(itemStacks);
-
-                if (valueResponse.isFailure()) {
-                    DCEPlugin.CONSOLE.logFailedSale(player, amountToSell, materialData.getCleanName(), valueResponse.errorMessage);
+                if (materialCount < amountToSell) {
+                    this.app.getConsole().logFailedSale(player, amountToSell, materialData.getCleanName(), String.format("you do not have enough of this material (%d/%d)", materialCount, amountToSell));
 
                 } else {
-                    if (userAmount >= amountToSell) {
-                        PlayerInventoryManager.removeMaterialsFromPlayer(itemStacks);
-                        materialData.addQuantity(amountToSell);
-                        if (!this.app.getEconomyManager().addCash(player, valueResponse.value).transactionSuccess()) {DCEPlugin.CONSOLE.severe(player,"An error occurred on funding your account, show this message to an admin.");}
+                    ItemStack[] itemStacks = PlayerInventoryManager.getMaterialSlotsToCount(player, material, amountToSell);
+                    ItemStack[] itemStacksClone = PlayerInventoryManager.cloneItems(itemStacks);
+                    ValueResponse response = this.app.getMaterialManager().getSellValue(itemStacks);
 
-                        DCEPlugin.CONSOLE.logSale(player, amountToSell, valueResponse.value, materialData.getCleanName());
+                    if (response.isSuccess()) {
+                        PlayerInventoryManager.removeMaterialsFromPlayer(itemStacks);
+
+                        EconomyResponse economyResponse = this.app.getEconomyManager().addCash(player, response.value);
+                        if (!economyResponse.transactionSuccess()) {
+                            PlayerInventoryManager.addItemsToPlayer(player, itemStacksClone);
+                            // Handles console, player message and mail
+                            this.app.getConsole().logFailedSale(player, amountToSell, materialData.getCleanName(), economyResponse.errorMessage);
+                        } else {
+                            materialData.addQuantity(amountToSell);
+                            // Handles console, player message and mail
+                            this.app.getConsole().logSale(player, amountToSell, response.value, materialData.getCleanName());
+                        }
                     } else {
-                        DCEPlugin.CONSOLE.logFailedSale(player, amountToSell, materialData.getCleanName(), String.format("you do not have enough of this material. (missing %d)", amountToSell - userAmount));
+                        // Handles console, player message and mail
+                        this.app.getConsole().logFailedSale(player, amountToSell, materialData.getCleanName(), response.errorMessage);
                     }
                 }
             }

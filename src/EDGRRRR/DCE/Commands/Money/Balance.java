@@ -1,7 +1,7 @@
 package edgrrrr.dce.commands.money;
 
+import edgrrrr.configapi.Setting;
 import edgrrrr.dce.DCEPlugin;
-import edgrrrr.dce.config.Setting;
 import edgrrrr.dce.help.Help;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -32,8 +32,8 @@ public class Balance implements CommandExecutor {
         Player player1 = (Player) sender;
 
         // Ensure command is enabled
-        if (!(this.app.getConfig().getBoolean(Setting.COMMAND_BALANCE_ENABLE_BOOLEAN.path()))) {
-            DCEPlugin.CONSOLE.severe(player1, "This command is not enabled.");
+        if (!(this.app.getConfig().getBoolean(Setting.COMMAND_BALANCE_ENABLE_BOOLEAN.path))) {
+            this.app.getConsole().severe(player1, "This command is not enabled.");
             return true;
         }
 
@@ -59,15 +59,15 @@ public class Balance implements CommandExecutor {
         }
 
         if (player2 == null) {
-            DCEPlugin.CONSOLE.usage(player1, "Invalid player name.", help);
+            this.app.getConsole().usage(player1, "Invalid player name.", this.help.getUsages());
             return true;
         }
 
         double balance = this.app.getEconomyManager().getBalance(player2);
         if (!(player1 == player2)) {
-            DCEPlugin.CONSOLE.info(player1, String.format("%s's Balance is £%,.2f", player2.getName(), balance));
+            this.app.getConsole().info(player1, String.format("%s's Balance is £%,.2f", player2.getName(), balance));
         } else {
-            DCEPlugin.CONSOLE.info(player1, String.format("Balance: £%,.2f", balance));
+            this.app.getConsole().info(player1, String.format("Balance: £%,.2f", balance));
         }
         return true;
     }

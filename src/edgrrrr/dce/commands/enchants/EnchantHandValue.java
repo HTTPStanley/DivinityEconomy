@@ -1,7 +1,7 @@
 package edgrrrr.dce.commands.enchants;
 
+import edgrrrr.configapi.Setting;
 import edgrrrr.dce.DCEPlugin;
-import edgrrrr.dce.config.Setting;
 import edgrrrr.dce.enchants.EnchantData;
 import edgrrrr.dce.help.Help;
 import edgrrrr.dce.math.Math;
@@ -40,14 +40,14 @@ public class EnchantHandValue implements CommandExecutor {
         Player player = (Player) sender;
 
         // Ensure command is enabled
-        if (!(this.app.getConfig().getBoolean(Setting.COMMAND_E_VALUE_ENABLE_BOOLEAN.path()))) {
-            DCEPlugin.CONSOLE.severe(player, "This command is not enabled.");
+        if (!(this.app.getConfig().getBoolean(Setting.COMMAND_E_VALUE_ENABLE_BOOLEAN.path))) {
+            this.app.getConsole().severe(player, "This command is not enabled.");
             return true;
         }
 
         // Ensure market is enabled
-        if (!(this.app.getConfig().getBoolean(Setting.MARKET_ENCHANTS_ENABLE_BOOLEAN.path()))) {
-            DCEPlugin.CONSOLE.severe(player, "The enchant market is not enabled.");
+        if (!(this.app.getConfig().getBoolean(Setting.MARKET_ENCHANTS_ENABLE_BOOLEAN.path))) {
+            this.app.getConsole().severe(player, "The enchant market is not enabled.");
             return true;
         }
 
@@ -83,7 +83,7 @@ public class EnchantHandValue implements CommandExecutor {
 
             // If wrong number of arguments
             default:
-                DCEPlugin.CONSOLE.usage(player, "Invalid number of arguments.", this.help);
+                this.app.getConsole().usage(player, "Invalid number of arguments.", this.help.getUsages());
                 return true;
         }
 
@@ -91,12 +91,12 @@ public class EnchantHandValue implements CommandExecutor {
         // ensure it is not null
         ItemStack heldItem = PlayerInventoryManager.getHeldItem(player);
         if (heldItem == null) {
-            DCEPlugin.CONSOLE.usage(player, "You are not holding any item", this.help);
+            this.app.getConsole().usage(player, "You are not holding any item", this.help.getUsages());
 
         } else {
             // Ensure item is enchanted
             if (!this.app.getEnchantmentManager().isEnchanted(heldItem)){
-                DCEPlugin.CONSOLE.usage(player, "The item you are holding is not enchanted", this.help);
+                this.app.getConsole().usage(player, "The item you are holding is not enchanted", this.help.getUsages());
 
             } else {
                 // If sell all enchants is true
@@ -107,21 +107,21 @@ public class EnchantHandValue implements CommandExecutor {
                     MultiValueResponse multiValueResponse1 = this.app.getEnchantmentManager().getSellValue(heldItem);
                     MultiValueResponse multiValueResponse2 = this.app.getEnchantmentManager().getBuyValue(heldItem);
                     if (multiValueResponse1.isFailure()) {
-                        DCEPlugin.CONSOLE.warn(player, String.format("Couldn't determine buy value of &d Enchants(%s) because %s", multiValueResponse2.getTotalQuantity(), multiValueResponse2.toString(), multiValueResponse2.errorMessage));
+                        this.app.getConsole().warn(player, String.format("Couldn't determine buy value of &d Enchants(%s) because %s", multiValueResponse2.getTotalQuantity(), multiValueResponse2.toString(), multiValueResponse2.errorMessage));
                     } else {
-                        DCEPlugin.CONSOLE.info(player, String.format("Buy: %d Enchants(%s) costs £%,.2f", multiValueResponse2.getTotalQuantity(), multiValueResponse2.toString(), multiValueResponse2.getTotalValue()));
+                        this.app.getConsole().info(player, String.format("Buy: %d Enchants(%s) costs £%,.2f", multiValueResponse2.getTotalQuantity(), multiValueResponse2.toString(), multiValueResponse2.getTotalValue()));
                     }
                     if (multiValueResponse1.isFailure()) {
-                        DCEPlugin.CONSOLE.warn(player, String.format("Couldn't determine sell value of &d Enchants(%s) because %s", multiValueResponse1.getTotalQuantity(), multiValueResponse1.toString(), multiValueResponse1.errorMessage));
+                        this.app.getConsole().warn(player, String.format("Couldn't determine sell value of &d Enchants(%s) because %s", multiValueResponse1.getTotalQuantity(), multiValueResponse1.toString(), multiValueResponse1.errorMessage));
                     } else {
-                        DCEPlugin.CONSOLE.info(player, String.format("Sell: %d Enchants(%s) costs £%,.2f", multiValueResponse1.getTotalQuantity(), multiValueResponse1.toString(), multiValueResponse1.getTotalValue()));
+                        this.app.getConsole().info(player, String.format("Sell: %d Enchants(%s) costs £%,.2f", multiValueResponse1.getTotalQuantity(), multiValueResponse1.toString(), multiValueResponse1.getTotalValue()));
                     }
                 } else {
                     // If only handling one enchant
                     // Ensure enchant exists
                     EnchantData enchantData = this.app.getEnchantmentManager().getEnchant(enchantName);
                     if (enchantData == null) {
-                        DCEPlugin.CONSOLE.usage(player, String.format("Unknown enchant name %s", enchantName), this.help);
+                        this.app.getConsole().usage(player, String.format("Unknown enchant name %s", enchantName), this.help.getUsages());
                     } else {
                         // Update enchantLevels to the max if sellAllEnchants is true
                         if (sellAllLevels) {
@@ -134,14 +134,14 @@ public class EnchantHandValue implements CommandExecutor {
                         ValueResponse valueResponse1 = this.app.getEnchantmentManager().getSellValue(heldItem, enchantName, enchantLevels);
                         ValueResponse valueResponse2 = this.app.getEnchantmentManager().getBuyValue(enchantName, enchantLevels);
                         if (valueResponse2.isFailure()) {
-                            DCEPlugin.CONSOLE.warn(player, String.format("Couldn't determine buy value of &d Enchants(%s) because %s", enchantLevels, enchantName, valueResponse2.errorMessage));
+                            this.app.getConsole().warn(player, String.format("Couldn't determine buy value of &d Enchants(%s) because %s", enchantLevels, enchantName, valueResponse2.errorMessage));
                         } else {
-                            DCEPlugin.CONSOLE.info(player, String.format("Buy: %d Enchants(%s) costs £%,.2f", enchantLevels, enchantName, valueResponse2.value));
+                            this.app.getConsole().info(player, String.format("Buy: %d Enchants(%s) costs £%,.2f", enchantLevels, enchantName, valueResponse2.value));
                         }
                         if (valueResponse1.isFailure()) {
-                            DCEPlugin.CONSOLE.warn(player, String.format("Couldn't determine sell value of &d Enchants(%s) because %s", enchantLevels, enchantName, valueResponse1.errorMessage));
+                            this.app.getConsole().warn(player, String.format("Couldn't determine sell value of &d Enchants(%s) because %s", enchantLevels, enchantName, valueResponse1.errorMessage));
                         } else {
-                            DCEPlugin.CONSOLE.info(player, String.format("Sell: %d Enchants(%s) costs £%,.2f", enchantLevels, enchantName, valueResponse1.value));
+                            this.app.getConsole().info(player, String.format("Sell: %d Enchants(%s) costs £%,.2f", enchantLevels, enchantName, valueResponse1.value));
                         }
                     }
                 }

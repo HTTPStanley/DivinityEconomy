@@ -39,7 +39,7 @@ public class MailManager {
      * @return FileConfiguration - The contents of the mail file
      */
     public FileConfiguration readMailFile() {
-        return DCEPlugin.CONFIG.loadConfig(this.mailFile);
+        return this.app.getConfigManager().loadFile(this.mailFile);
     }
 
     /**
@@ -47,7 +47,7 @@ public class MailManager {
      * Mail cannot be read unless this is called!
      */
     public void loadAllMail() {
-        this.configuration = DCEPlugin.CONFIG.loadConfig(this.mailFile);
+        this.configuration = this.app.getConfigManager().loadFile(this.mailFile);
         this.mailMap = new HashMap<>();
         int userCount = 0;
         int mailCount = 0;
@@ -59,7 +59,7 @@ public class MailManager {
             mailCount += mailList.getMailIDs().size();
         }
 
-        DCEPlugin.CONSOLE.info("Read " + mailCount + " mail for " + userCount + " users.");
+        this.app.getConsole().info("Read " + mailCount + " mail for " + userCount + " users.");
     }
 
     /**
@@ -107,7 +107,7 @@ public class MailManager {
     }
 
     private void saveMailFile() {
-        DCEPlugin.CONFIG.saveFile(this.configuration, this.mailFile);
+        this.app.getConfigManager().saveFile(this.configuration, this.mailFile);
     }
 
     /**
@@ -123,6 +123,6 @@ public class MailManager {
         }
 
         this.saveMailFile();
-        DCEPlugin.CONSOLE.info("Saved " + mailCount + " mail for " + userCount + " users");
+        this.app.getConsole().info("Saved " + mailCount + " mail for " + userCount + " users");
     }
 }

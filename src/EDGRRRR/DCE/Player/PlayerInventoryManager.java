@@ -99,6 +99,14 @@ public class PlayerInventoryManager {
         return itemStacks.toArray(new ItemStack[0]);
     }
 
+    public static ItemStack[] cloneItems(ItemStack[] itemStacks) {
+        ItemStack[] clones = new ItemStack[itemStacks.length];
+        for (int i=0; i<itemStacks.length; i++) {
+            clones[i] = itemStacks[i].clone();
+        }
+        return clones;
+    }
+
     /**
      * Returns the amount of slots an amount of materials will take up
      *

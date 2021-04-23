@@ -39,20 +39,20 @@ public class SetValue implements CommandExecutor {
                 break;
 
             default:
-                DCEPlugin.CONSOLE.usage(player, "Not enough arguments.", this.help);
+                this.app.getConsole().usage(player, "Not enough arguments.", this.help.getUsages());
                 break;
         }
 
         if (materialData == null) {
-            DCEPlugin.CONSOLE.warn(player, String.format("Unrecognized material '%s'", strings[0]));
+            this.app.getConsole().warn(player, String.format("Unrecognized material '%s'", strings[0]));
         } else {
             if (value < 0) {
-                DCEPlugin.CONSOLE.warn(player, "Price must be equal to or above 0.");
+                this.app.getConsole().warn(player, "Price must be equal to or above 0.");
             } else {
                 int previousStock = materialData.getQuantity();
                 double previousValue = materialData.getUserPrice();
                 materialData.setPrice(value);
-                DCEPlugin.CONSOLE.info(player, String.format("Changed price from £%,.2f(%d) to £%,.2f(%d).", previousValue, previousStock, value, materialData.getQuantity()));
+                this.app.getConsole().info(player, String.format("Changed price from £%,.2f(%d) to £%,.2f(%d).", previousValue, previousStock, value, materialData.getQuantity()));
             }
         }
 

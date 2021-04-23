@@ -1,6 +1,7 @@
 package edgrrrr.dce.player;
 
 import edgrrrr.dce.DCEPlugin;
+import edgrrrr.paa.playerManager.PlayerManagerAPI;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
@@ -11,7 +12,7 @@ import java.util.UUID;
 /**
  * A class for managing players
  */
-public class PlayerManager {
+public class PlayerManager implements PlayerManagerAPI {
     private final DCEPlugin app;
 
     /**
@@ -97,14 +98,35 @@ public class PlayerManager {
     }
 
     /**
+     * Gets all offline players who's name starts with startswith
+     *
+     * @param startsWith
+     */
+    @Override
+    public OfflinePlayer[] getOfflinePlayers(String startsWith) {
+        OfflinePlayer[] offlinePlayers = this.app.getServer().getOfflinePlayers();
+        ArrayList<OfflinePlayer> players = new ArrayList<>();
+        for (OfflinePlayer offlinePlayer : offlinePlayers) {
+            if (offlinePlayer.getName() == null) continue;
+            if (offlinePlayer.getName().toLowerCase().startsWith(startsWith.toLowerCase(Locale.ROOT))) {
+                players.add(offlinePlayer);
+            }
+        }
+
+        return players.toArray(new OfflinePlayer[0]);
+    }
+
+    /**
      * Gets all names of offline players
      */
-    public String[] getOfflinePlayersNames() {
+    public String[] getOfflinePlayerNames() {
         OfflinePlayer[] offlinePlayers = this.app.getServer().getOfflinePlayers();
         ArrayList<String> playerNames = new ArrayList<>();
         for (OfflinePlayer offlinePlayer : offlinePlayers) {
             String name = offlinePlayer.getName();
-            if (name != null) playerNames.add(name);
+            if (name == null)  continue;
+
+            playerNames.add(name);
         }
 
         return playerNames.toArray(new String[0]);
@@ -113,13 +135,11 @@ public class PlayerManager {
     /**
      * Gets all names of offline players who's name starts with startswith
      */
-    public String[] getOfflinePlayersNames(String startsWith) {
-        String[] offlinePlayers = this.getOfflinePlayersNames();
+    public String[] getOfflinePlayerNames(String startsWith) {
+        OfflinePlayer[] offlinePlayers = this.getOfflinePlayers(startsWith);
         ArrayList<String> playerNames = new ArrayList<>();
-        for (String playerName : offlinePlayers) {
-            if (playerName.toLowerCase().startsWith(startsWith.toLowerCase(Locale.ROOT))) {
-                playerNames.add(playerName);
-            }
+        for (OfflinePlayer player : offlinePlayers) {
+            playerNames.add(player.getName());
         }
 
         return playerNames.toArray(new String[0]);

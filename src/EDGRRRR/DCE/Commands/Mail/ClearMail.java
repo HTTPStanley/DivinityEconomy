@@ -1,7 +1,7 @@
 package edgrrrr.dce.commands.mail;
 
+import edgrrrr.configapi.Setting;
 import edgrrrr.dce.DCEPlugin;
-import edgrrrr.dce.config.Setting;
 import edgrrrr.dce.help.Help;
 import edgrrrr.dce.mail.Mail;
 import edgrrrr.dce.mail.MailList;
@@ -34,8 +34,8 @@ public class ClearMail implements CommandExecutor {
         Player player = (Player) sender;
 
         // Ensure command is enabled
-        if (!(this.app.getConfig().getBoolean(Setting.COMMAND_CLEAR_MAIL_ENABLE_BOOLEAN.path()))) {
-            DCEPlugin.CONSOLE.severe(player, "This command is not enabled.");
+        if (!(this.app.getConfig().getBoolean(Setting.COMMAND_CLEAR_MAIL_ENABLE_BOOLEAN.path))) {
+            this.app.getConsole().severe(player, "This command is not enabled.");
             return true;
         }
 
@@ -59,13 +59,13 @@ public class ClearMail implements CommandExecutor {
                         break;
 
                     default:
-                        DCEPlugin.CONSOLE.usage(player, "Invalid arguments.", this.help);
+                        this.app.getConsole().usage(player, "Invalid arguments.", this.help.getUsages());
                         return true;
                 }
                 break;
 
             default:
-                DCEPlugin.CONSOLE.usage(player, "Invalid number of arguments.", this.help);
+                this.app.getConsole().usage(player, "Invalid number of arguments.", this.help.getUsages());
                 return true;
         }
 
@@ -78,7 +78,7 @@ public class ClearMail implements CommandExecutor {
         int unreadMailCleared = 0;
 
         if (allMail.isEmpty()) {
-            DCEPlugin.CONSOLE.warn(player, "You have no mail to clear.");
+            this.app.getConsole().warn(player, "You have no mail to clear.");
         } else {
             if (clearRead) {
                 mailToClear.addAll(readMail);
@@ -92,7 +92,7 @@ public class ClearMail implements CommandExecutor {
             for (String mailID : mailToClear) {
                 mailList.removeMail(mailID);
             }
-            DCEPlugin.CONSOLE.info(player, String.format("Removed %d mail. (%d unread & %d read)", mailToClear.size(), unreadMailCleared, readMailCleared));
+            this.app.getConsole().info(player, String.format("Removed %d mail. (%d unread & %d read)", mailToClear.size(), unreadMailCleared, readMailCleared));
 
         }
         return true;

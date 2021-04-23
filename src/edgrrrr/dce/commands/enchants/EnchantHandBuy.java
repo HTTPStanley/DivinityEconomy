@@ -1,7 +1,7 @@
 package edgrrrr.dce.commands.enchants;
 
+import edgrrrr.configapi.Setting;
 import edgrrrr.dce.DCEPlugin;
-import edgrrrr.dce.config.Setting;
 import edgrrrr.dce.enchants.EnchantData;
 import edgrrrr.dce.help.Help;
 import edgrrrr.dce.math.Math;
@@ -38,14 +38,14 @@ public class EnchantHandBuy implements CommandExecutor {
         Player player = (Player) sender;
 
         // Ensure command is enabled
-        if (!(this.app.getConfig().getBoolean(Setting.COMMAND_E_BUY_ENABLE_BOOLEAN.path()))) {
-            DCEPlugin.CONSOLE.severe(player, "This command is not enabled.");
+        if (!(this.app.getConfig().getBoolean(Setting.COMMAND_E_BUY_ENABLE_BOOLEAN.path))) {
+            this.app.getConsole().severe(player, "This command is not enabled.");
             return true;
         }
 
         // Ensure market is enabled
-        if (!(this.app.getConfig().getBoolean(Setting.MARKET_ENCHANTS_ENABLE_BOOLEAN.path()))) {
-            DCEPlugin.CONSOLE.severe(player, "The enchant market is not enabled.");
+        if (!(this.app.getConfig().getBoolean(Setting.MARKET_ENCHANTS_ENABLE_BOOLEAN.path))) {
+            this.app.getConsole().severe(player, "The enchant market is not enabled.");
             return true;
         }
 
@@ -59,41 +59,41 @@ public class EnchantHandBuy implements CommandExecutor {
                 break;
 
             default:
-                DCEPlugin.CONSOLE.usage(player, "Invalid number of arguments.", this.help);
+                this.app.getConsole().usage(player, "Invalid number of arguments.", this.help.getUsages());
                 return true;
         }
 
         if (enchantLevels < 1) {
-            DCEPlugin.CONSOLE.warn(player, "Enchant level cannot be less than 1.");
+            this.app.getConsole().warn(player, "Enchant level cannot be less than 1.");
         } else {
             ItemStack heldItem = PlayerInventoryManager.getHeldItem(player);
             if (heldItem == null) {
-                DCEPlugin.CONSOLE.warn(player, "You are not holding any item.");
+                this.app.getConsole().warn(player, "You are not holding any item.");
             } else {
                 ValueResponse valueResponse = this.app.getEnchantmentManager().getBuyValue(enchantName, enchantLevels);
 
                 if (valueResponse.isFailure()) {
-                    DCEPlugin.CONSOLE.logFailedPurchase(player, enchantLevels, enchantName, valueResponse.errorMessage);
+                    this.app.getConsole().logFailedPurchase(player, enchantLevels, enchantName, valueResponse.errorMessage);
                 } else {
                     EnchantData enchantData = this.app.getEnchantmentManager().getEnchant(enchantName);
 
                     if (enchantData == null) {
-                        DCEPlugin.CONSOLE.logFailedPurchase(player, enchantLevels, enchantName, String.format("enchant name '%s' does not exist", enchantName));
+                        this.app.getConsole().logFailedPurchase(player, enchantLevels, enchantName, String.format("enchant name '%s' does not exist", enchantName));
 
                     } else {
                         double startingBalance = this.app.getEconomyManager().getBalance(player);
                         EconomyResponse economyResponse = this.app.getEconomyManager().remCash(player, valueResponse.value);
 
                         if (!economyResponse.transactionSuccess()) {
-                            DCEPlugin.CONSOLE.logFailedPurchase(player, enchantLevels, enchantName, economyResponse.errorMessage);
+                            this.app.getConsole().logFailedPurchase(player, enchantLevels, enchantName, economyResponse.errorMessage);
                             this.app.getEconomyManager().setCash(player, startingBalance);
                         } else {
                             Response response = this.app.getEnchantmentManager().addEnchantToItem(heldItem, enchantData.getEnchantment(), enchantLevels);
                             if (response.isFailure()) {
-                                DCEPlugin.CONSOLE.logFailedPurchase(player, enchantLevels, enchantName, response.errorMessage);
+                                this.app.getConsole().logFailedPurchase(player, enchantLevels, enchantName, response.errorMessage);
                                 this.app.getEconomyManager().setCash(player, startingBalance);
                             } else {
-                                DCEPlugin.CONSOLE.logPurchase(player, enchantLevels, valueResponse.value, enchantName);
+                                this.app.getConsole().logPurchase(player, enchantLevels, valueResponse.value, enchantName);
                                 enchantData.remLevelQuantity(enchantLevels);
                             }
                         }

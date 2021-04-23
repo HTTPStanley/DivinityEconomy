@@ -66,20 +66,20 @@ public class HelpManager {
 
     public void loadHelp() {
         Map<String, Map<String, Object>> commands = this.app.getDescription().getCommands();
-        DCEPlugin.CONSOLE.debug(Arrays.toString(commands.keySet().toArray(new String[0])));
+        this.app.getConsole().debug(Arrays.toString(commands.keySet().toArray(new String[0])));
         for (String command : commands.keySet()) {
             try {
                 Map<String, Object> commandSection = commands.get(command);
                 if (commandSection == null) {
-                    DCEPlugin.CONSOLE.severe(String.format("%s is null", command));
+                    this.app.getConsole().severe(String.format("%s is null", command));
                 } else {
                     String commandName = command.toLowerCase();
                     this.helpMap.put(commandName, Help.fromConfig(commandName, commandSection));
                 }
             } catch (Exception e) {
-                DCEPlugin.CONSOLE.severe(String.format("%s raised %s", command, e.getMessage()));
+                this.app.getConsole().severe(String.format("%s raised %s", command, e.getMessage()));
             }
         }
-        DCEPlugin.CONSOLE.info(String.format("Loaded %d help objects", this.helpMap.size()));
+        this.app.getConsole().info(String.format("Loaded %d help objects", this.helpMap.size()));
     }
 }

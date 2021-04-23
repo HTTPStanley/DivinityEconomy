@@ -1,7 +1,7 @@
 package edgrrrr.dce.commands.admin;
 
+import edgrrrr.configapi.Setting;
 import edgrrrr.dce.DCEPlugin;
-import edgrrrr.dce.config.Setting;
 import edgrrrr.dce.help.Help;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -31,14 +31,14 @@ public class ReloadMaterials implements CommandExecutor {
         }
 
         // Ensure command is enabled
-        if (!(this.app.getConfig().getBoolean(Setting.COMMAND_RELOAD_MATERIALS_ENABLE_BOOLEAN.path()))) {
-            DCEPlugin.CONSOLE.severe(player, "This command is not enabled.");
+        if (!(this.app.getConfig().getBoolean(Setting.COMMAND_RELOAD_MATERIALS_ENABLE_BOOLEAN.path))) {
+            this.app.getConsole().severe(player, "This command is not enabled.");
             return true;
         }
 
         this.app.getMaterialManager().loadAliases();
         this.app.getMaterialManager().loadMaterials();
-        DCEPlugin.CONSOLE.info(player, "Reloaded Materials");
+        this.app.getConsole().info(player, "Reloaded Materials");
         return true;
     }
 }

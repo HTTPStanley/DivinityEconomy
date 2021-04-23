@@ -1,7 +1,7 @@
 package edgrrrr.dce.commands.enchants;
 
+import edgrrrr.configapi.Setting;
 import edgrrrr.dce.DCEPlugin;
-import edgrrrr.dce.config.Setting;
 import edgrrrr.dce.enchants.EnchantData;
 import edgrrrr.dce.help.Help;
 import edgrrrr.dce.math.Math;
@@ -46,14 +46,14 @@ public class EnchantHandSell implements CommandExecutor {
         Player player = (Player) sender;
 
         // Ensure command is enabled
-        if (!(this.app.getConfig().getBoolean(Setting.COMMAND_E_SELL_ENABLE_BOOLEAN.path()))) {
-            DCEPlugin.CONSOLE.severe(player, "This command is not enabled.");
+        if (!(this.app.getConfig().getBoolean(Setting.COMMAND_E_SELL_ENABLE_BOOLEAN.path))) {
+            this.app.getConsole().severe(player, "This command is not enabled.");
             return true;
         }
 
         // Ensure market is enabled
-        if (!(this.app.getConfig().getBoolean(Setting.MARKET_ENCHANTS_ENABLE_BOOLEAN.path()))) {
-            DCEPlugin.CONSOLE.severe(player, "The enchant market is not enabled.");
+        if (!(this.app.getConfig().getBoolean(Setting.MARKET_ENCHANTS_ENABLE_BOOLEAN.path))) {
+            this.app.getConsole().severe(player, "The enchant market is not enabled.");
             return true;
         }
 
@@ -89,7 +89,7 @@ public class EnchantHandSell implements CommandExecutor {
 
             // If wrong number of arguments
             default:
-                DCEPlugin.CONSOLE.usage(player, "Invalid number of arguments.", this.help);
+                this.app.getConsole().usage(player, "Invalid number of arguments.", this.help.getUsages());
                 return true;
         }
 
@@ -97,12 +97,12 @@ public class EnchantHandSell implements CommandExecutor {
         // ensure it is not null
         ItemStack heldItem = PlayerInventoryManager.getHeldItem(player);
         if (heldItem == null) {
-            DCEPlugin.CONSOLE.usage(player, "You are not holding any item", this.help);
+            this.app.getConsole().usage(player, "You are not holding any item", this.help.getUsages());
 
         } else {
             // Ensure item is enchanted
             if (!this.app.getEnchantmentManager().isEnchanted(heldItem)){
-                DCEPlugin.CONSOLE.usage(player, "The item you are holding is not enchanted", this.help);
+                this.app.getConsole().usage(player, "The item you are holding is not enchanted", this.help.getUsages());
 
             } else {
                 // If sell all enchants is true
@@ -112,7 +112,7 @@ public class EnchantHandSell implements CommandExecutor {
                 if (sellAllEnchants) {
                     MultiValueResponse multiValueResponse = this.app.getEnchantmentManager().getSellValue(heldItem);
                     if (multiValueResponse.isFailure()) {
-                        DCEPlugin.CONSOLE.logFailedSale(player, multiValueResponse.getTotalQuantity(), multiValueResponse.toString("Enchants: "), multiValueResponse.errorMessage);
+                        this.app.getConsole().logFailedSale(player, multiValueResponse.getTotalQuantity(), multiValueResponse.toString("Enchants: "), multiValueResponse.errorMessage);
                     } else {
                         for (String enchantID : multiValueResponse.getItemIds()) {
                             EnchantData enchantmentData = this.app.getEnchantmentManager().getEnchant(enchantID);
@@ -120,14 +120,14 @@ public class EnchantHandSell implements CommandExecutor {
                             this.app.getEnchantmentManager().removeEnchantLevelsFromItem(heldItem, enchantmentData.getEnchantment(), multiValueResponse.quantities.get(enchantID));
                         }
                         this.app.getEconomyManager().addCash(player, multiValueResponse.getTotalValue());
-                        DCEPlugin.CONSOLE.logSale(player, multiValueResponse.getTotalQuantity(), multiValueResponse.getTotalValue(), String.format("enchants(%s)", multiValueResponse.toString()));
+                        this.app.getConsole().logSale(player, multiValueResponse.getTotalQuantity(), multiValueResponse.getTotalValue(), String.format("enchants(%s)", multiValueResponse.toString()));
                     }
                 } else {
                     // If only handling one enchant
                     // Ensure enchant exists
                     EnchantData enchantData = this.app.getEnchantmentManager().getEnchant(enchantName);
                     if (enchantData == null) {
-                        DCEPlugin.CONSOLE.usage(player, String.format("Unknown enchant name %s", enchantName), this.help);
+                        this.app.getConsole().usage(player, String.format("Unknown enchant name %s", enchantName), this.help.getUsages());
                     } else {
                         // Update enchantLevels to the max if sellAllEnchants is true
                         if (sellAllLevels) {
@@ -138,13 +138,13 @@ public class EnchantHandSell implements CommandExecutor {
                         // Remove enchants, add quantity and add cash
                         ValueResponse valueResponse = this.app.getEnchantmentManager().getSellValue(heldItem, enchantName, enchantLevels);
                         if (valueResponse.isFailure()) {
-                            DCEPlugin.CONSOLE.logFailedSale(player, enchantLevels, enchantName, valueResponse.errorMessage);
+                            this.app.getConsole().logFailedSale(player, enchantLevels, enchantName, valueResponse.errorMessage);
 
                         } else {
                             this.app.getEnchantmentManager().removeEnchantLevelsFromItem(heldItem, enchantData.getEnchantment(), enchantLevels);
                             enchantData.addLevelQuantity(enchantLevels);
-                            if (!this.app.getEconomyManager().addCash(player, valueResponse.value).transactionSuccess()) {DCEPlugin.CONSOLE.severe(player,"An error occurred on funding your account, show this message to an admin.");}
-                            DCEPlugin.CONSOLE.logSale(player, enchantLevels, valueResponse.value, enchantName);
+                            if (!this.app.getEconomyManager().addCash(player, valueResponse.value).transactionSuccess()) {this.app.getConsole().severe(player,"An error occurred on funding your account, show this message to an admin.");}
+                            this.app.getConsole().logSale(player, enchantLevels, valueResponse.value, enchantName);
                         }
                     }
                 }
