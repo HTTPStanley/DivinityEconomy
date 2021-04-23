@@ -3,14 +3,10 @@ package edgrrrr.dce.commands.money;
 import edgrrrr.configapi.Setting;
 import edgrrrr.dce.DCEPlugin;
 import edgrrrr.dce.commands.DivinityCommand;
-import edgrrrr.dce.help.Help;
 import edgrrrr.dce.math.Math;
 import edgrrrr.dce.response.EconomyTransferResponse;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 /**

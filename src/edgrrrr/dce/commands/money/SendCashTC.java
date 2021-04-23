@@ -3,9 +3,6 @@ package edgrrrr.dce.commands.money;
 import edgrrrr.configapi.Setting;
 import edgrrrr.dce.DCEPlugin;
 import edgrrrr.dce.commands.DivinityCommandTC;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
