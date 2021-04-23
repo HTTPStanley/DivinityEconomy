@@ -12,7 +12,6 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.ServicePriority;
 
 import java.util.Collection;
-import java.util.List;
 
 /**
  * An economy manager to simplify tasks for managing the player economy, works with Vault Economy.
@@ -56,7 +55,7 @@ public class EconomyManager {
      * Returns if it was successful or not.
      */
     public boolean setupEconomy() {
-        EconomyAPI economy = new DCEEconomyAPI(this.app);
+        EconomyAPI economy = new EconomyAPI(this.app, this.app.getConfigManager(), this.app.getConsole(), this.app.getPlayerManager(), this.app.getConfigManager().getInt(Setting.ECONOMY_ACCURACY_DIGITS_INTEGER), "coins", "coin");
 
         // Look for vault
         if (this.app.getServer().getPluginManager().getPlugin("Vault") == null) {
@@ -112,15 +111,7 @@ public class EconomyManager {
      */
     public EconomyResponse addCash(OfflinePlayer oPlayer, double amount) {
         this.app.getConsole().debug(String.format("ADD REQUEST FOR %s £%,.2f", oPlayer.getName(), amount));
-        EconomyResponse response;
-        double currentBalance = this.getBalance(oPlayer);
-        if (((amount + currentBalance) == currentBalance)) {
-            response = new EconomyResponse(0, currentBalance, ResponseType.FAILURE, "cannot have infinite cash.");
-        } else {
-            response = this.economy.depositPlayer(oPlayer, amount);
-            response = new EconomyResponse(response.amount, this.getBalance(oPlayer), response.type, response.errorMessage);
-        }
-
+        EconomyResponse response = this.economy.depositPlayer(oPlayer, amount);
         this.app.getConsole().debug(String.format("ADD RESULT: %s %s", response.transactionSuccess(), response.errorMessage));
 
         return response;
@@ -134,16 +125,7 @@ public class EconomyManager {
      */
     public EconomyResponse remCash(OfflinePlayer oPlayer, double amount) {
         this.app.getConsole().debug(String.format("REM REQUEST FOR %s £%,.2f", oPlayer.getName(), amount));
-
-        double oldBalance = this.getBalance(oPlayer);
-        EconomyResponse response;
-        if ((oldBalance - amount) < this.minBalance) {
-            response = new EconomyResponse(amount, oldBalance, ResponseType.FAILURE, String.format("not enough cash for this transfer (£%,.2f/£%,.2f)", oldBalance, amount));
-        } else {
-            response = this.economy.withdrawPlayer(oPlayer, amount);
-        }
-        response = new EconomyResponse(response.amount, this.getBalance(oPlayer), response.type, response.errorMessage);
-
+        EconomyResponse response = this.economy.withdrawPlayer(oPlayer, amount);
         this.app.getConsole().debug(String.format("REM RESULT: %s %s", response.transactionSuccess(), response.errorMessage));
 
         return response;
@@ -168,7 +150,6 @@ public class EconomyManager {
         } else {
             response = new EconomyResponse(difference, this.getBalance(oPlayer), ResponseType.SUCCESS, "");
         }
-        response = new EconomyResponse(response.amount, this.getBalance(oPlayer), response.type, response.errorMessage);
 
         this.app.getConsole().debug(String.format("SET RESULT: %s %s", response.transactionSuccess(), response.errorMessage));
 
