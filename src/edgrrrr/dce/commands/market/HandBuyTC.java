@@ -2,12 +2,11 @@ package edgrrrr.dce.commands.market;
 
 import edgrrrr.configapi.Setting;
 import edgrrrr.dce.DCEPlugin;
+import edgrrrr.dce.commands.DivinityCommand;
+import edgrrrr.dce.commands.DivinityCommandMarketTC;
 import edgrrrr.dce.materials.MaterialData;
 import edgrrrr.dce.math.Math;
 import edgrrrr.dce.player.PlayerInventoryManager;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -17,26 +16,31 @@ import java.util.List;
 /**
  * A tab completer for the hand buy command
  */
-public class HandBuyTC implements TabCompleter {
-    private final DCEPlugin app;
+public class HandBuyTC extends DivinityCommandMarketTC {
 
+    /**
+     * Constructor
+     *
+     * @param app
+     */
     public HandBuyTC(DCEPlugin app) {
-        this.app = app;
+        super(app, false, Setting.COMMAND_HAND_BUY_ITEM_ENABLE_BOOLEAN);
     }
 
+    /**
+     * ###To be overridden by the actual command
+     * For handling a player calling this command
+     *
+     * @param sender
+     * @param args
+     * @return
+     */
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
-        // Ensure player
-        if (!(sender instanceof Player) || !(this.app.getConfig().getBoolean(Setting.COMMAND_HAND_BUY_ITEM_ENABLE_BOOLEAN.path))) {
-            return null;
-        }
-
-        Player player = (Player) sender;
-
+    public List<String> onPlayerTabCompleter(Player sender, String[] args) {
         String[] strings = new String[0];
-        ItemStack heldItem = PlayerInventoryManager.getHeldItem(player);
+        ItemStack heldItem = PlayerInventoryManager.getHeldItem(sender);
         if (heldItem == null) {
-            strings = new String[]{"You are not holding any item."};
+            strings = new String[]{DivinityCommand.CommandResponse.InvalidItemHeld.message};
         } else {
             MaterialData materialData = this.app.getMaterialManager().getMaterial(heldItem.getType().toString());
             switch (args.length) {
@@ -46,7 +50,7 @@ public class HandBuyTC implements TabCompleter {
                     strings = new String[]{
                             String.valueOf(materialData.getMaterial().getMaxStackSize() - heldItem.getAmount()),
                             String.valueOf(materialData.getMaterial().getMaxStackSize()),
-                            String.valueOf(PlayerInventoryManager.getAvailableSpace(player, materialData.getMaterial()))
+                            String.valueOf(PlayerInventoryManager.getAvailableSpace(sender, materialData.getMaterial()))
                     };
                     break;
 
@@ -61,5 +65,17 @@ public class HandBuyTC implements TabCompleter {
         }
 
         return Arrays.asList(strings);
+    }
+
+    /**
+     * ###To be overridden by the actual command
+     * For the handling of the console calling this command
+     *
+     * @param args
+     * @return
+     */
+    @Override
+    public List<String> onConsoleTabCompleter(String[] args) {
+        return null;
     }
 }
