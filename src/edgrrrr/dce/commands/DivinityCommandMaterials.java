@@ -4,7 +4,7 @@ import edgrrrr.configapi.Setting;
 import edgrrrr.dce.DCEPlugin;
 import org.bukkit.entity.Player;
 
-public abstract class DivinityCommandMarket extends DivinityCommand {
+public abstract class DivinityCommandMaterials extends DivinityCommand {
     protected final boolean marketIsEnabled;
 
     /**
@@ -15,7 +15,7 @@ public abstract class DivinityCommandMarket extends DivinityCommand {
      * @param hasConsoleSupport
      * @param commandSetting
      */
-    public DivinityCommandMarket(DCEPlugin app, String registeredCommandName, boolean hasConsoleSupport, Setting commandSetting) {
+    public DivinityCommandMaterials(DCEPlugin app, String registeredCommandName, boolean hasConsoleSupport, Setting commandSetting) {
         super(app, registeredCommandName, hasConsoleSupport, commandSetting);
         this.marketIsEnabled = this.app.getConfig().getBoolean(Setting.MARKET_MATERIALS_ENABLE_BOOLEAN.path);
     }

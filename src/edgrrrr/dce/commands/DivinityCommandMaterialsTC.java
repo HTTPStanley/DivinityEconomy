@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * The default inherited class for all Divinity Command Tab Completer
  */
-public abstract class DivinityCommandMarketTC extends DivinityCommandTC {
+public abstract class DivinityCommandMaterialsTC extends DivinityCommandTC {
     protected final boolean marketIsEnabled;
 
     /**
@@ -18,7 +18,7 @@ public abstract class DivinityCommandMarketTC extends DivinityCommandTC {
      * @param hasConsoleSupport
      * @param commandSetting
      */
-    public DivinityCommandMarketTC(DCEPlugin app, boolean hasConsoleSupport, Setting commandSetting) {
+    public DivinityCommandMaterialsTC(DCEPlugin app, boolean hasConsoleSupport, Setting commandSetting) {
         super(app, hasConsoleSupport, commandSetting);
         this.marketIsEnabled = this.app.getConfig().getBoolean(Setting.MARKET_MATERIALS_ENABLE_BOOLEAN.path);
     }
