@@ -2,78 +2,75 @@ package edgrrrr.dce.commands.market;
 
 import edgrrrr.configapi.Setting;
 import edgrrrr.dce.DCEPlugin;
-import edgrrrr.dce.help.Help;
+import edgrrrr.dce.commands.DivinityCommandMarket;
 import edgrrrr.dce.materials.MaterialData;
 import edgrrrr.dce.materials.MaterialPotionData;
 import edgrrrr.dce.player.PlayerInventoryManager;
 import org.bukkit.Material;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 /**
  * A command for getting information about the item the user is currently holding
  */
-public class HandInfo implements CommandExecutor {
-    private final DCEPlugin app;
-    private final Help help;
+public class HandInfo extends DivinityCommandMarket {
 
+    /**
+     * Constructor
+     *
+     * @param app
+     */
     public HandInfo(DCEPlugin app) {
-        this.app = app;
-        this.help = this.app.getHelpManager().get("handinfo");
+        super(app, "handinfo", false, Setting.COMMAND_HAND_INFO_ENABLE_BOOLEAN);
     }
 
-
+    /**
+     * For handling a player calling this command
+     *
+     * @param sender
+     * @param args
+     * @return
+     */
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player)) {
-            return true;
-        }
-
-        Player player = (Player) sender;
-
-        // Ensure command is enabled
-        if (!(this.app.getConfig().getBoolean(Setting.COMMAND_HAND_INFO_ENABLE_BOOLEAN.path))) {
-            this.app.getConsole().severe(player, "This command is not enabled.");
-            return true;
-        }
-
-        // Ensure market is enabled
-        if (!(this.app.getConfig().getBoolean(Setting.MARKET_MATERIALS_ENABLE_BOOLEAN.path))) {
-            this.app.getConsole().severe(player, "The market is not enabled.");
-            return true;
-        }
-
+    public boolean onPlayerCommand(Player sender, String[] args) {
         switch (args.length) {
             case 0:
                 break;
 
             default:
-                this.app.getConsole().usage(player, "Invalid number of arguments.", this.help.getUsages());
+                this.app.getConsole().usage(sender, CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
                 return true;
         }
 
-
-        ItemStack heldItem = PlayerInventoryManager.getHeldItemNotNull(player);
+        ItemStack heldItem = PlayerInventoryManager.getHeldItemNotNull(sender);
         Material material = heldItem.getType();
         MaterialData materialData = this.app.getMaterialManager().getMaterial(material.name());
 
-        this.app.getConsole().info(player, "==[Information for " + materialData.getCleanName() + "]==");
-        this.app.getConsole().info(player, "ID: " + materialData.getMaterialID());
-        this.app.getConsole().info(player, "Type: " + materialData.getType());
-        this.app.getConsole().info(player, "Current Quantity: " + materialData.getQuantity());
-        this.app.getConsole().info(player, "Is Banned: " + !(materialData.getAllowed()));
+        this.app.getConsole().info(sender, "==[Information for " + materialData.getCleanName() + "]==");
+        this.app.getConsole().info(sender, "ID: " + materialData.getMaterialID());
+        this.app.getConsole().info(sender, "Type: " + materialData.getType());
+        this.app.getConsole().info(sender, "Current Quantity: " + materialData.getQuantity());
+        this.app.getConsole().info(sender, "Is Banned: " + !(materialData.getAllowed()));
         if (materialData.getEntityName() != null)
-            this.app.getConsole().info(player, "Entity Name: " + materialData.getEntityName());
+            this.app.getConsole().info(sender, "Entity Name: " + materialData.getEntityName());
         MaterialPotionData pData = materialData.getPotionData();
         if (pData != null) {
-            this.app.getConsole().info(player, "Potion type: " + pData.getType());
-            this.app.getConsole().info(player, "Upgraded potion: " + pData.getUpgraded());
-            this.app.getConsole().info(player, "Extended potion: " + pData.getExtended());
+            this.app.getConsole().info(sender, "Potion type: " + pData.getType());
+            this.app.getConsole().info(sender, "Upgraded potion: " + pData.getUpgraded());
+            this.app.getConsole().info(sender, "Extended potion: " + pData.getExtended());
         }
 
         return true;
+    }
+
+    /**
+     * For the handling of the console calling this command
+     *
+     * @param args
+     * @return
+     */
+    @Override
+    public boolean onConsoleCommand(String[] args) {
+        return false;
     }
 }
