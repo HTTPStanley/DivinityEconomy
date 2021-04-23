@@ -32,16 +32,11 @@ public class Balance extends DivinityCommand {
         // Use case scenarios
         // command - returns the callers balance.
         // command <username> - returns the usernames balance.
-        OfflinePlayer receiverPlayer = null;
+        OfflinePlayer receiverPlayer;
 
         switch (args.length) {
             case 1:
-                // Get online player
-                receiverPlayer = this.app.getServer().getPlayer(args[0]);
-                // If they aren't online or don't exist. Do the dirty offline call.
-                if (receiverPlayer == null) {
-                    receiverPlayer = this.app.getPlayerManager().getOfflinePlayer(args[0], false);
-                }
+                receiverPlayer = this.app.getPlayerManager().getOfflinePlayer(args[0], false);
                 break;
 
             default:
@@ -55,12 +50,7 @@ public class Balance extends DivinityCommand {
             return true;
         }
 
-        double balance = this.app.getEconomyManager().getBalance(receiverPlayer);
-        if (!(sender == receiverPlayer)) {
-            this.app.getConsole().info(sender, String.format(CommandResponse.BalanceResponseOther.message, receiverPlayer.getName(), balance));
-        } else {
-            this.app.getConsole().info(sender, String.format(CommandResponse.BalanceResponse.message, balance));
-        }
+        this.app.getConsole().info(sender, String.format(CommandResponse.BalanceResponseOther.message, receiverPlayer.getName(), this.app.getEconomyManager().getBalance(receiverPlayer)));
         return true;
     }
 
@@ -75,10 +65,7 @@ public class Balance extends DivinityCommand {
         OfflinePlayer player;
         switch (args.length) {
             case 1:
-                player = this.app.getServer().getPlayer(args[0]);
-                if (player == null) {
-                    this.app.getPlayerManager().getOfflinePlayer(args[0], false);
-                }
+                player = this.app.getPlayerManager().getOfflinePlayer(args[0], false);
                 break;
 
             default:
