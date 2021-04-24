@@ -30,6 +30,9 @@ public class MaterialData {
     private final String strPotionExtended = "extended";
     private final String strPotionType = "type";
 
+    // Settings
+    private final int minQuantity = 0;
+
 
     /**
      * Constructor
@@ -83,13 +86,18 @@ public class MaterialData {
      *
      * @param amount - The amount to set the internal stock of this item to
      */
-    public void setQuantity(int amount) {
-        int oldQuantity = this.getQuantity();
-        int change = amount - oldQuantity;
-        if (change >= 0) {
-            this.remQuantity(-change);
+    public boolean setQuantity(int amount) {
+        if (amount >= this.minQuantity) {
+            int oldQuantity = this.getQuantity();
+            int change = amount - oldQuantity;
+            if (change >= 0) {
+                this.remQuantity(-change);
+            } else {
+                this.addQuantity(change);
+            }
+            return true;
         } else {
-            this.addQuantity(change);
+            return false;
         }
     }
 
@@ -215,9 +223,12 @@ public class MaterialData {
      *
      * @param amount - The amount of stock to add to the pile
      */
-    public void addQuantity(int amount) {
+    public boolean addQuantity(int amount) {
+        if (amount < 0) return false;
+
         this.setData(this.strQuantity, this.getQuantity() + amount);
         this.manager.editTotalMaterials(amount);
+        return true;
     }
 
     /**
@@ -225,9 +236,17 @@ public class MaterialData {
      *
      * @param amount - The amount of stock to remove from the pile
      */
-    public void remQuantity(int amount) {
-        this.setData(this.strQuantity, this.getQuantity() - amount);
-        this.manager.editTotalMaterials(amount);
+    public boolean remQuantity(int amount) {
+        if (amount < 0) return false;
+
+        int newQuant = this.getQuantity() - amount;
+        if (newQuant < this.minQuantity) {
+            return false;
+        } else {
+            this.setData(this.strQuantity, newQuant);
+            this.manager.editTotalMaterials(amount);
+            return true;
+        }
     }
 
     /**
