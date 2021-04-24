@@ -66,7 +66,6 @@ public class HelpManager {
 
     public void loadHelp() {
         Map<String, Map<String, Object>> commands = this.app.getDescription().getCommands();
-        this.app.getConsole().debug(Arrays.toString(commands.keySet().toArray(new String[0])));
         for (String command : commands.keySet()) {
             try {
                 Map<String, Object> commandSection = commands.get(command);
