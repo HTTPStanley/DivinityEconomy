@@ -2,42 +2,45 @@ package edgrrrr.dce.commands.admin;
 
 import edgrrrr.configapi.Setting;
 import edgrrrr.dce.DCEPlugin;
-import edgrrrr.dce.help.Help;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
+import edgrrrr.dce.commands.DivinityCommand;
 import org.bukkit.entity.Player;
 
 /**
  * A command for reloading the enchants
  */
-public class ReloadEnchants implements CommandExecutor {
-    private final DCEPlugin app;
-    private final Help help;
+public class ReloadEnchants extends DivinityCommand {
 
+    /**
+     * Constructor
+     *
+     * @param app
+     */
     public ReloadEnchants(DCEPlugin app) {
-        this.app = app;
-        this.help = this.app.getHelpManager().get("reloadenchants");
+        super(app, "reloadenchants", true, Setting.COMMAND_RELOAD_ENCHANTS_ENABLE_BOOLEAN);
     }
 
-
+    /**
+     * For handling a player calling this command
+     *
+     * @param sender
+     * @param args
+     * @return
+     */
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        Player player;
-        if (sender instanceof Player) {
-            player = (Player) sender;
-        } else {
-            player = null;
-        }
-
-        // Ensure command is enabled
-        if (!(this.app.getConfig().getBoolean(Setting.COMMAND_RELOAD_ENCHANTS_ENABLE_BOOLEAN.path))) {
-            this.app.getConsole().severe(player, "This command is not enabled.");
-            return true;
-        }
-
+    public boolean onPlayerCommand(Player sender, String[] args) {
         this.app.getEnchantmentManager().loadEnchants();
-        this.app.getConsole().info(player, "Reloaded Enchants");
+        this.app.getConsole().info(sender, "Reloaded Enchants");
         return true;
+    }
+
+    /**
+     * For the handling of the console calling this command
+     *
+     * @param args
+     * @return
+     */
+    @Override
+    public boolean onConsoleCommand(String[] args) {
+        return this.onPlayerCommand(null, args);
     }
 }
