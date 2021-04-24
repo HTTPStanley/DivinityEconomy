@@ -32,7 +32,7 @@ public class EditBal extends DivinityCommand {
     @Override
     public boolean onPlayerCommand(Player sender, String[] args) {
         // The command receiver
-        OfflinePlayer receiver = null;
+        OfflinePlayer receiver;
         double amount = 0;
 
         // Use case scenarios
@@ -47,13 +47,8 @@ public class EditBal extends DivinityCommand {
 
             case 2:
                 // use case #2
-                receiver = this.app.getServer().getPlayer(args[0]);
+                receiver = this.app.getPlayerManager().getOfflinePlayer(args[0], false);
                 amount = Math.getDouble(args[1]);
-
-                // If player is offline, get offline player and flag player as offline.
-                if (receiver == null) {
-                    receiver = this.app.getPlayerManager().getOfflinePlayer(args[0], false);
-                }
                 break;
 
             default:
@@ -98,7 +93,7 @@ public class EditBal extends DivinityCommand {
     @Override
     public boolean onConsoleCommand(String[] args) {
         // The command receiver
-        OfflinePlayer receiver = null;
+        OfflinePlayer receiver;
         double amount = 0;
 
         // Use case scenarios
@@ -107,13 +102,8 @@ public class EditBal extends DivinityCommand {
         switch (args.length) {
             case 2:
                 // use case #2
-                receiver = this.app.getServer().getPlayer(args[0]);
+                receiver = this.app.getPlayerManager().getOfflinePlayer(args[0], false);
                 amount = Math.getDouble(args[1]);
-
-                // If player is offline, get offline player and flag player as offline.
-                if (receiver == null) {
-                    receiver = this.app.getPlayerManager().getOfflinePlayer(args[0], false);
-                }
                 break;
 
             default:
