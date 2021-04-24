@@ -55,7 +55,7 @@ public class ClearBal extends DivinityCommand {
 
         // Ensure to player exists
         if (player2 == null) {
-            this.app.getConsole().usage(sender, CommandResponse.InvalidPlayerNameResponse.message, this.help.getUsages());
+            this.app.getConsole().usage(sender, CommandResponse.InvalidPlayerName.message, this.help.getUsages());
             return true;
         }
 
@@ -90,13 +90,13 @@ public class ClearBal extends DivinityCommand {
 
             // If any other number of arguments are passed.
             default:
-                this.app.getConsole().usage(null, CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
+                this.app.getConsole().send(CommandResponse.InvalidNumberOfArguments.defaultLogLevel, CommandResponse.InvalidNumberOfArguments.message);
                 return true;
         }
 
         // Ensure to player exists
         if (player == null) {
-            this.app.getConsole().usage(null, CommandResponse.InvalidPlayerNameResponse.message, this.help.getUsages());
+            this.app.getConsole().send(CommandResponse.InvalidPlayerName.defaultLogLevel, CommandResponse.InvalidPlayerName.message);
             return true;
         }
 

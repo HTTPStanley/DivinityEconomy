@@ -46,7 +46,7 @@ public class Balance extends DivinityCommand {
         }
 
         if (receiverPlayer == null) {
-            this.app.getConsole().usage(sender, CommandResponse.InvalidPlayerNameResponse.message, this.help.getUsages());
+            this.app.getConsole().usage(sender, CommandResponse.InvalidPlayerName.message, this.help.getUsages());
             return true;
         }
 
@@ -74,7 +74,7 @@ public class Balance extends DivinityCommand {
         }
 
         if (player == null) {
-            this.app.getConsole().send(CommandResponse.InvalidPlayerNameResponse.defaultLogLevel, CommandResponse.InvalidPlayerNameResponse.message);
+            this.app.getConsole().send(CommandResponse.InvalidPlayerName.defaultLogLevel, CommandResponse.InvalidPlayerName.message);
             return true;
         }
 
