@@ -2,42 +2,45 @@ package edgrrrr.dce.commands.admin;
 
 import edgrrrr.configapi.Setting;
 import edgrrrr.dce.DCEPlugin;
-import edgrrrr.dce.help.Help;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
+import edgrrrr.dce.commands.DivinityCommand;
 import org.bukkit.entity.Player;
 
 /**
  * A command for saving the materials
  */
-public class SaveEnchants implements CommandExecutor {
-    private final DCEPlugin app;
-    private final Help help;
+public class SaveEnchants extends DivinityCommand {
 
+    /**
+     * Constructor
+     *
+     * @param app
+     */
     public SaveEnchants(DCEPlugin app) {
-        this.app = app;
-        this.help = this.app.getHelpManager().get("saveenchants");
+        super(app, "saveenchants", true, Setting.COMMAND_SAVE_ENCHANTS_ENABLE_BOOLEAN);
     }
 
-
+    /**
+     * For handling a player calling this command
+     *
+     * @param sender
+     * @param args
+     * @return
+     */
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        Player player;
-        if (sender instanceof Player) {
-            player = (Player) sender;
-        } else {
-            player = null;
-        }
-
-        // Ensure command is enabled
-        if (!(this.app.getConfig().getBoolean(Setting.COMMAND_SAVE_ENCHANTS_ENABLE_BOOLEAN.path))) {
-            this.app.getConsole().severe(player, "This command is not enabled.");
-            return true;
-        }
-
+    public boolean onPlayerCommand(Player sender, String[] args) {
         this.app.getEnchantmentManager().saveEnchants();
-        this.app.getConsole().info(player, "Saved Enchants");
+        this.app.getConsole().info(sender, "Saved Enchants");
         return true;
+    }
+
+    /**
+     * For the handling of the console calling this command
+     *
+     * @param args
+     * @return
+     */
+    @Override
+    public boolean onConsoleCommand(String[] args) {
+        return this.onPlayerCommand(null, args);
     }
 }
