@@ -2,54 +2,37 @@ package edgrrrr.dce.commands.admin;
 
 import edgrrrr.configapi.Setting;
 import edgrrrr.dce.DCEPlugin;
-import edgrrrr.dce.help.Help;
+import edgrrrr.dce.commands.DivinityCommand;
 import edgrrrr.dce.math.Math;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 /**
  * A command for editing the balances of players.
  */
-public class EditBal implements CommandExecutor {
-    private final DCEPlugin app;
-    // This is the usage for this command
-    private final Help help;
+public class EditBal extends DivinityCommand {
 
     /**
      * Constructor
-     * @param app - The main class
+     *
+     * @param app
      */
     public EditBal(DCEPlugin app) {
-        this.app = app;
-        this.help = this.app.getHelpManager().get("editbal");
+        super(app, "editbal", true, Setting.COMMAND_EDIT_BALANCE_ENABLE_BOOLEAN);
     }
 
     /**
-     * Called whenever the command is called
+     * For handling a player calling this command
+     *
+     * @param sender
+     * @param args
+     * @return
      */
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        // Ensure player
-        if (!(sender instanceof Player)) {
-            return true;
-        }
-
-        // The command sender
-        Player player1 = (Player) sender;
-
-        // Ensure command is enabled
-        if (!(this.app.getConfig().getBoolean(Setting.COMMAND_EDIT_BALANCE_ENABLE_BOOLEAN.path))) {
-            this.app.getConsole().severe(player1, "This command is not enabled.");
-            return true;
-        }
-
-
+    public boolean onPlayerCommand(Player sender, String[] args) {
         // The command receiver
-        OfflinePlayer player2 = null;
+        OfflinePlayer receiver = null;
         double amount = 0;
 
         // Use case scenarios
@@ -58,52 +41,111 @@ public class EditBal implements CommandExecutor {
         switch (args.length) {
             case 1:
                 // use case #1
-                player2 = player1;
+                receiver = sender;
                 amount = Math.getDouble(args[0]);
                 break;
 
             case 2:
                 // use case #2
-                player2 = this.app.getServer().getPlayer(args[0]);
+                receiver = this.app.getServer().getPlayer(args[0]);
                 amount = Math.getDouble(args[1]);
 
                 // If player is offline, get offline player and flag player as offline.
-                if (player2 == null) {
-                    player2 = this.app.getPlayerManager().getOfflinePlayer(args[0], false);
+                if (receiver == null) {
+                    receiver = this.app.getPlayerManager().getOfflinePlayer(args[0], false);
                 }
                 break;
 
             default:
                 // Incorrect number of args
-                this.app.getConsole().usage(player1, "Incorrect number of arguments.", this.help.getUsages());
+                this.app.getConsole().usage(sender, CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
                 return true;
         }
 
         // Ensure to player exists
-        if (player2 == null) {
-            this.app.getConsole().usage(player1, "Invalid player name.", this.help.getUsages());
+        if (receiver == null) {
+            this.app.getConsole().usage(sender, CommandResponse.InvalidPlayerName.message, this.help.getUsages());
+            return true;
+
+        }
+
+        // Edit cash
+        EconomyResponse response;
+        double startingBalance = this.app.getEconomyManager().getBalance(receiver);
+        if (amount > 0) {
+            response = this.app.getEconomyManager().addCash(receiver, amount);
         } else {
+            response = this.app.getEconomyManager().remCash(receiver, -amount);
+        }
 
-            // Edit cash
-            EconomyResponse response;
-            double startingBalance = this.app.getEconomyManager().getBalance(player2);
-            if (amount > 0) {
-                response = this.app.getEconomyManager().addCash(player2, amount);
-            } else {
-                response = this.app.getEconomyManager().remCash(player2, -amount);
-            }
+        // Handles sender, receiver, message, mail and console log
+        if (response.transactionSuccess()) {
+            this.app.getConsole().logBalance(sender, receiver, startingBalance, response.balance, String.format("%s changed your balance", sender.getName()));
 
-            // Handles sender, receiver, message, mail and console log
-            if (response.transactionSuccess()) {
-                this.app.getConsole().logBalance(player1, player2, startingBalance, response.balance, String.format("%s changed your balance", player1.getName()));
+        } else {
+            this.app.getConsole().logFailedBalance(sender, receiver, response.errorMessage);
+        }
 
-            } else {
+        return true;
+    }
 
-                this.app.getConsole().logFailedBalance(player1, player2, response.errorMessage);
-            }
+    /**
+     * For the handling of the console calling this command
+     *
+     * @param args
+     * @return
+     */
+    @Override
+    public boolean onConsoleCommand(String[] args) {
+        // The command receiver
+        OfflinePlayer receiver = null;
+        double amount = 0;
+
+        // Use case scenarios
+        // command <amount> - applies amount to self
+        // command <player> <amount> - applies amount to player
+        switch (args.length) {
+            case 2:
+                // use case #2
+                receiver = this.app.getServer().getPlayer(args[0]);
+                amount = Math.getDouble(args[1]);
+
+                // If player is offline, get offline player and flag player as offline.
+                if (receiver == null) {
+                    receiver = this.app.getPlayerManager().getOfflinePlayer(args[0], false);
+                }
+                break;
+
+            default:
+                // Incorrect number of args
+                this.app.getConsole().send(CommandResponse.InvalidNumberOfArguments.defaultLogLevel, CommandResponse.InvalidNumberOfArguments.message);
+                return true;
+        }
+
+        // Ensure to player exists
+        if (receiver == null) {
+            this.app.getConsole().send(CommandResponse.InvalidPlayerName.defaultLogLevel, CommandResponse.InvalidPlayerName.message);
+            return true;
+
+        }
+
+        // Edit cash
+        EconomyResponse response;
+        double startingBalance = this.app.getEconomyManager().getBalance(receiver);
+        if (amount > 0) {
+            response = this.app.getEconomyManager().addCash(receiver, amount);
+        } else {
+            response = this.app.getEconomyManager().remCash(receiver, -amount);
+        }
+
+        // Handles sender, receiver, message, mail and console log
+        if (response.transactionSuccess()) {
+            this.app.getConsole().logBalance(null, receiver, startingBalance, response.balance, "CONSOLE changed your balance");
+
+        } else {
+            this.app.getConsole().logFailedBalance(null, receiver, response.errorMessage);
         }
 
         return true;
     }
 }
-
