@@ -2,95 +2,125 @@ package edgrrrr.dce.commands.admin;
 
 import edgrrrr.configapi.Setting;
 import edgrrrr.dce.DCEPlugin;
-import edgrrrr.dce.help.Help;
+import edgrrrr.dce.commands.DivinityCommand;
 import edgrrrr.dce.math.Math;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 /**
  * A command for setting the balance of a player
  */
-public class SetBal implements CommandExecutor {
-    private final DCEPlugin app;
-    private final Help help;
+public class SetBal extends DivinityCommand {
 
     /**
      * Constructor
-     * @param app - The main class
+     *
+     * @param app
      */
     public SetBal(DCEPlugin app) {
-        this.app = app;
-        this.help = this.app.getHelpManager().get("setbal");
+        super(app, "setbal", true, Setting.COMMAND_SET_BALANCE_ENABLE_BOOLEAN);
     }
 
     /**
-     * Called everytime the command is called
+     * For handling a player calling this command
+     *
+     * @param sender
+     * @param args
+     * @return
      */
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        // Ensure player
-        if (!(sender instanceof Player)) {
-            return true;
-        }
-
-        // The command sender
-        Player player1 = (Player) sender;
-
-        // Ensure command is enabled
-        if (!(this.app.getConfig().getBoolean(Setting.COMMAND_SET_BALANCE_ENABLE_BOOLEAN.path))) {
-            this.app.getConsole().severe(player1, "This command is not enabled.");
-            return true;
-        }
-
+    public boolean onPlayerCommand(Player sender, String[] args) {
         // Use case scenarios
         // command <amount> - applies amount to self
         // command <player> <amount> - applies amount to player
-        OfflinePlayer player2;
+        OfflinePlayer receiver;
         double amount;
 
         switch (args.length) {
             case 1:
                 // use case #1
-                player2 = player1;
+                receiver = sender;
                 amount = Math.getDouble(args[0]);
                 break;
 
             case 2:
                 // use case #2
-                player2 = this.app.getServer().getPlayer(args[0]);
                 amount = Math.getDouble(args[1]);
-                if (player2 == null) {
-                    player2 = this.app.getPlayerManager().getOfflinePlayer(args[0], false);
-                }
+                receiver = this.app.getPlayerManager().getOfflinePlayer(args[0], false);
                 break;
 
             default:
                 // Incorrect number of args
-                this.app.getConsole().usage(player1, "Incorrect number of arguments.", this.help.getUsages());
+                this.app.getConsole().usage(sender, CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
                 return true;
         }
 
         // Ensure to player exists
-        if (player2 == null) {
-            this.app.getConsole().usage(player1, "Invalid player name.", this.help.getUsages());
+        if (receiver == null) {
+            this.app.getConsole().usage(sender, CommandResponse.InvalidPlayerName.message, this.help.getUsages());
+            return true;
+        }
+
+        double startingBalance = this.app.getEconomyManager().getBalance(receiver);
+        EconomyResponse response = this.app.getEconomyManager().setCash(receiver, amount);
+
+        // Response messages
+        if (response.transactionSuccess()) {
+            // Handles console, player and mail
+            this.app.getConsole().logBalance(sender, receiver, startingBalance, response.balance, String.format("%s set your balance", sender.getName()));
 
         } else {
-            double startingBalance = this.app.getEconomyManager().getBalance(player2);
-            EconomyResponse response = this.app.getEconomyManager().setCash(player2, amount);
+            // Handles console, player and mail
+            this.app.getConsole().logFailedBalance(sender, receiver, response.errorMessage);
+        }
+        return true;
+    }
 
-            // Response messages
-            if (response.transactionSuccess()) {
-                // Handles console, player and mail
-                this.app.getConsole().logBalance(player1, player2, startingBalance, response.balance, String.format("%s set your balance", player1.getName()));
+    /**
+     * For the handling of the console calling this command
+     *
+     * @param args
+     * @return
+     */
+    @Override
+    public boolean onConsoleCommand(String[] args) {
+        // Use case scenarios
+        // command <amount> - applies amount to self
+        // command <player> <amount> - applies amount to player
+        OfflinePlayer receiver;
+        double amount;
 
-            } else {
-                // Handles console, player and mail
-                this.app.getConsole().logFailedBalance(player1, player2, response.errorMessage);
-            }
+        switch (args.length) {
+            case 2:
+                // use case #2
+                amount = Math.getDouble(args[1]);
+                receiver = this.app.getPlayerManager().getOfflinePlayer(args[0], false);
+                break;
+
+            default:
+                // Incorrect number of args
+                this.app.getConsole().send(CommandResponse.InvalidNumberOfArguments.defaultLogLevel, CommandResponse.InvalidNumberOfArguments.message);
+                return true;
+        }
+
+        // Ensure to player exists
+        if (receiver == null) {
+            this.app.getConsole().send(CommandResponse.InvalidPlayerName.defaultLogLevel, CommandResponse.InvalidPlayerName.message);
+            return true;
+        }
+
+        double startingBalance = this.app.getEconomyManager().getBalance(receiver);
+        EconomyResponse response = this.app.getEconomyManager().setCash(receiver, amount);
+
+        // Response messages
+        if (response.transactionSuccess()) {
+            // Handles console, player and mail
+            this.app.getConsole().logBalance(null, receiver, startingBalance, response.balance, "CONSOLE set your balance");
+
+        } else {
+            // Handles console, player and mail
+            this.app.getConsole().logFailedBalance(null, receiver, response.errorMessage);
         }
         return true;
     }
