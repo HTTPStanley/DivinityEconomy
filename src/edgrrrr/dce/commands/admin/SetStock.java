@@ -59,7 +59,7 @@ public class SetStock extends DivinityCommand {
         int previousStock = materialData.getQuantity();
         double previousValue = materialData.getUserPrice();
         materialData.setQuantity(stock);
-        this.app.getConsole().send(sender, CommandResponse.InvalidStockAmount.defaultLogLevel, String.format("Changed stock level from %d(£%,.2f) to %d(£%,.2f).", previousStock, previousValue, stock, materialData.getUserPrice()));
+        this.app.getConsole().send(sender, CommandResponse.StockCountChanged.defaultLogLevel, String.format(CommandResponse.StockCountChanged.message, previousStock, previousValue, stock, materialData.getUserPrice()));
 
         return true;
     }
@@ -72,37 +72,6 @@ public class SetStock extends DivinityCommand {
      */
     @Override
     public boolean onConsoleCommand(String[] args) {
-        MaterialData materialData = null;
-        int stock = -1;
-        switch (args.length) {
-            case 2:
-                materialData = this.app.getMaterialManager().getMaterial(args[0]);
-                stock = Math.getInt(args[1]);
-                break;
-
-            default:
-                this.app.getConsole().send(CommandResponse.InvalidNumberOfArguments.defaultLogLevel, CommandResponse.InvalidNumberOfArguments.message);
-                break;
-        }
-
-        // Ensure material exists
-        if (materialData == null) {
-            this.app.getConsole().send(CommandResponse.InvalidItemName.defaultLogLevel, String.format(CommandResponse.InvalidItemName.message, args[0]));
-            return true;
-        }
-
-        // Ensure stock is greater than 0
-        if (stock < 0) {
-            this.app.getConsole().send(CommandResponse.InvalidStockAmount.defaultLogLevel, String.format(CommandResponse.InvalidStockAmount.message, stock, 0));
-            return true;
-        }
-
-
-        int previousStock = materialData.getQuantity();
-        double previousValue = materialData.getUserPrice();
-        materialData.setQuantity(stock);
-        this.app.getConsole().info(String.format("Changed stock level from %d(£%,.2f) to %d(£%,.2f).", previousStock, previousValue, stock, materialData.getUserPrice()));
-
-        return true;
+        return this.onPlayerCommand(null, args);
     }
 }
