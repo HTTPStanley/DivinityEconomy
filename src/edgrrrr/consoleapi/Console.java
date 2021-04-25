@@ -126,6 +126,14 @@ public class Console implements ConsoleAPI{
     }
 
     /**
+     * Sends a usage command to the console
+     */
+    public void usage(String errorMessage, String[] usages) {
+        this.warn(String.format("Incorrect command usage: %s", errorMessage));
+        this.warn(String.format("Command usage: %s", Arrays.toString(usages)));
+    }
+
+    /**
      * Sends a help message to a player
      * @param player
      * @param command
