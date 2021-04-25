@@ -46,7 +46,7 @@ public class HelpCommand extends DivinityCommand {
                 break;
 
             default:
-                this.app.getConsole().usage(sender, "Not enough arguments.", this.help.getUsages());
+                this.app.getConsole().usage(sender, CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
                 break;
         }
 

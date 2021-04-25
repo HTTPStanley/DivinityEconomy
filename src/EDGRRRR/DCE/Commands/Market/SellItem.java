@@ -57,7 +57,7 @@ public class SellItem extends DivinityCommandMaterials {
 
         // Check amount is greater than  0
         if (amountToSell < 1) {
-            this.app.getConsole().usage(sender, CommandResponse.InvalidAmountGiven.message, this.help.getUsages());
+            this.app.getConsole().send(sender, CommandResponse.InvalidAmountGiven.defaultLogLevel, CommandResponse.InvalidAmountGiven.message);
             return true;
         }
 
@@ -65,7 +65,7 @@ public class SellItem extends DivinityCommandMaterials {
         // Check material given exists
         MaterialData materialData = this.app.getMaterialManager().getMaterial(materialName);
         if (materialData == null) {
-            this.app.getConsole().usage(sender, String.format(CommandResponse.InvalidItemName.message, materialName), this.help.getUsages());
+            this.app.getConsole().send(sender, CommandResponse.InvalidItemName.defaultLogLevel, String.format(CommandResponse.InvalidItemName.message, materialName));
             return true;
         }
 

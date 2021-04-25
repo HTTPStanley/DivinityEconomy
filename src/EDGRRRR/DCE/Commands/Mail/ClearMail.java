@@ -53,13 +53,13 @@ public class ClearMail extends DivinityCommand {
                         break;
 
                     default:
-                        this.app.getConsole().usage(sender, "Invalid arguments.", this.help.getUsages());
+                        this.app.getConsole().usage(sender, CommandResponse.InvalidArguments.message, this.help.getUsages());
                         return true;
                 }
                 break;
 
             default:
-                this.app.getConsole().usage(sender, "Invalid number of arguments.", this.help.getUsages());
+                this.app.getConsole().usage(sender, CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
                 return true;
         }
 

@@ -58,7 +58,7 @@ public class HandValue extends DivinityCommandMaterials {
 
         // Ensure amount is greater than 0
         if (amount < 0) {
-            this.app.getConsole().usage(sender, CommandResponse.InvalidAmountGiven.message, this.help.getUsages());
+            this.app.getConsole().send(sender, CommandResponse.InvalidAmountGiven.defaultLogLevel, CommandResponse.InvalidAmountGiven.message);
             return true;
         }
 
@@ -66,7 +66,7 @@ public class HandValue extends DivinityCommandMaterials {
 
         // Ensure user is holding an item
         if (heldItem == null) {
-            this.app.getConsole().usage(sender, CommandResponse.InvalidItemHeld.message, this.help.getUsages());
+            this.app.getConsole().send(sender, CommandResponse.InvalidItemHeld.defaultLogLevel, CommandResponse.InvalidItemHeld.message);
             return false;
 
         }
@@ -98,14 +98,14 @@ public class HandValue extends DivinityCommandMaterials {
             this.app.getConsole().info(sender, String.format("Buy: %d %s costs £%,.2f", amount, materialData.getCleanName(), buyResponse.value));
 
         } else {
-            this.app.getConsole().usage(sender, String.format("Couldn't determine buy price of %d %s because %s", amount, materialData.getCleanName(), buyResponse.errorMessage), this.help.getUsages());
+            this.app.getConsole().info(sender, String.format("Couldn't determine buy price of %d %s because %s", amount, materialData.getCleanName(), buyResponse.errorMessage));
         }
 
         if (sellResponse.isSuccess()) {
             this.app.getConsole().info(sender, String.format("Sell: %d %s costs £%,.2f", amount, materialData.getCleanName(), sellResponse.value));
 
         } else {
-            this.app.getConsole().usage(sender, String.format("Couldn't determine buy price of %d %s because %s", amount, materialData.getCleanName(), sellResponse.errorMessage), this.help.getUsages());
+            this.app.getConsole().info(sender, String.format("Couldn't determine buy price of %d %s because %s", amount, materialData.getCleanName(), sellResponse.errorMessage));
         }
         return true;
     }

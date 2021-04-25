@@ -51,7 +51,7 @@ public class SendCash extends DivinityCommand {
 
         // Ensure online or offline player exists.
         if (player2 == null) {
-            this.app.getConsole().usage(sender, CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
+            this.app.getConsole().send(sender, CommandResponse.InvalidNumberOfArguments.defaultLogLevel, CommandResponse.InvalidNumberOfArguments.message);
             return true;
         }
 

@@ -50,7 +50,7 @@ public class Balance extends DivinityCommand {
             return true;
         }
 
-        this.app.getConsole().info(sender, String.format(CommandResponse.BalanceResponseOther.message, receiverPlayer.getName(), this.app.getEconomyManager().getBalance(receiverPlayer)));
+        this.app.getConsole().send(sender, CommandResponse.BalanceResponseOther.defaultLogLevel, String.format(CommandResponse.BalanceResponseOther.message, receiverPlayer.getName(), this.app.getEconomyManager().getBalance(receiverPlayer)));
         return true;
     }
 
@@ -69,7 +69,7 @@ public class Balance extends DivinityCommand {
                 break;
 
             default:
-                this.app.getConsole().send(CommandResponse.InvalidNumberOfArguments.defaultLogLevel, CommandResponse.InvalidNumberOfArguments.message);
+                this.app.getConsole().usage(CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
                 return true;
         }
 
@@ -78,7 +78,7 @@ public class Balance extends DivinityCommand {
             return true;
         }
 
-        this.app.getConsole().info(String.format(CommandResponse.BalanceResponseOther.message, player.getName(), this.app.getEconomyManager().getBalance(player)));
+        this.app.getConsole().send(CommandResponse.BalanceResponseOther.defaultLogLevel, String.format(CommandResponse.BalanceResponseOther.message, player.getName(), this.app.getEconomyManager().getBalance(player)));
         return true;
     }
 }

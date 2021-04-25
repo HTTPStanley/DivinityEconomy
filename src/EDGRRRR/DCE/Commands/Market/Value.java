@@ -53,7 +53,7 @@ public class Value extends DivinityCommandMaterials {
         // Ensure given material exists
         MaterialData materialData = this.app.getMaterialManager().getMaterial(materialName);
         if (materialData == null) {
-            this.app.getConsole().usage(sender, String.format(CommandResponse.InvalidItemName.message, materialName), this.help.getUsages());
+            this.app.getConsole().send(sender, CommandResponse.InvalidItemName.defaultLogLevel, String.format(CommandResponse.InvalidItemName.message, materialName));
             return true;
         }
 
@@ -67,14 +67,14 @@ public class Value extends DivinityCommandMaterials {
             this.app.getConsole().info(sender, String.format("Buy: %d %s costs £%,.2f", amount, materialData.getCleanName(), buyResponse.value));
 
         } else {
-            this.app.getConsole().usage(sender, String.format("Couldn't determine buy price of %d %s because %s", amount, materialData.getCleanName(), buyResponse.errorMessage), this.help.getUsages());
+            this.app.getConsole().info(sender, String.format("Couldn't determine buy price of %d %s because %s", amount, materialData.getCleanName(), buyResponse.errorMessage));
         }
 
         if (sellResponse.isSuccess()) {
             this.app.getConsole().info(sender, String.format("Sell: %d %s costs £%,.2f", amount, materialData.getCleanName(), sellResponse.value));
 
         } else {
-            this.app.getConsole().usage(sender, String.format("Couldn't determine buy price of %d %s because %s", amount, materialData.getCleanName(), sellResponse.errorMessage), this.help.getUsages());
+            this.app.getConsole().info(sender, String.format("Couldn't determine buy price of %d %s because %s", amount, materialData.getCleanName(), sellResponse.errorMessage));
         }
 
         return true;

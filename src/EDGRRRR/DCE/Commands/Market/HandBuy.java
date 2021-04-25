@@ -52,7 +52,7 @@ public class HandBuy extends DivinityCommandMaterials {
 
         // Ensure amount given is greater than 0
         if (amountToBuy < 1) {
-            this.app.getConsole().usage(sender, CommandResponse.InvalidAmountGiven.message, this.help.getUsages());
+            this.app.getConsole().send(sender, CommandResponse.InvalidAmountGiven.defaultLogLevel, CommandResponse.InvalidAmountGiven.message);
             return true;
         }
 
@@ -61,7 +61,7 @@ public class HandBuy extends DivinityCommandMaterials {
 
         // Ensure user is holding an item
         if (heldItem == null) {
-            this.app.getConsole().usage(sender, CommandResponse.InvalidItemHeld.message, this.help.getUsages());
+            this.app.getConsole().send(sender, CommandResponse.InvalidAmountGiven.defaultLogLevel, CommandResponse.InvalidItemHeld.message);
             return true;
         }
 

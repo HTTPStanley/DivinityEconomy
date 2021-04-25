@@ -54,7 +54,7 @@ public class HandSell extends DivinityCommandMaterials {
 
         // Ensure amount is above 0
         if (amountToSell < 1) {
-            this.app.getConsole().usage(sender, CommandResponse.InvalidAmountGiven.message, this.help.getUsages());
+            this.app.getConsole().send(sender, CommandResponse.InvalidAmountGiven.defaultLogLevel, CommandResponse.InvalidAmountGiven.message);
             return true;
         }
 
@@ -63,7 +63,7 @@ public class HandSell extends DivinityCommandMaterials {
 
         // Ensure item held is not null
         if (heldItem == null) {
-            this.app.getConsole().usage(sender, CommandResponse.InvalidItemHeld.message, this.help.getUsages());
+            this.app.getConsole().send(sender, CommandResponse.InvalidItemHeld.defaultLogLevel, CommandResponse.InvalidItemHeld.message);
             return true;
         }
 
