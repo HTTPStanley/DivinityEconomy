@@ -1,61 +1,75 @@
 package edgrrrr.dce.commands.admin;
 
+import edgrrrr.configapi.Setting;
 import edgrrrr.dce.DCEPlugin;
-import edgrrrr.dce.help.Help;
+import edgrrrr.dce.commands.DivinityCommand;
 import edgrrrr.dce.materials.MaterialData;
 import edgrrrr.dce.math.Math;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 /**
  * A command for setting the value of an item
  */
-public class SetValue implements CommandExecutor {
-    private final DCEPlugin app;
-    private final Help help;
+public class SetValue extends DivinityCommand {
 
+    /**
+     * Constructor
+     *
+     * @param app
+     */
     public SetValue(DCEPlugin app) {
-        this.app = app;
-        this.help = this.app.getHelpManager().get("setvalue");
+        super(app, "setvalue", true, Setting.COMMAND_SET_VALUE_ENABLE_BOOLEAN);
     }
 
+    /**
+     * For handling a player calling this command
+     *
+     * @param sender
+     * @param args
+     * @return
+     */
     @Override
-    public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
-        Player player;
-        if (commandSender instanceof Player) {
-            player = (Player) commandSender;
-        } else {
-            player = null;
-        }
-
+    public boolean onPlayerCommand(Player sender, String[] args) {
         MaterialData materialData = null;
         double value = -1;
-        switch (strings.length) {
+        switch (args.length) {
             case 2:
-                materialData = this.app.getMaterialManager().getMaterial(strings[0]);
-                value = Math.getDouble(strings[1]);
+                materialData = this.app.getMaterialManager().getMaterial(args[0]);
+                value = Math.getDouble(args[1]);
                 break;
 
             default:
-                this.app.getConsole().usage(player, "Not enough arguments.", this.help.getUsages());
+                this.app.getConsole().usage(sender, CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
                 break;
         }
 
+        // Ensure material exists
         if (materialData == null) {
-            this.app.getConsole().warn(player, String.format("Unrecognized material '%s'", strings[0]));
-        } else {
-            if (value < 0) {
-                this.app.getConsole().warn(player, "Price must be equal to or above 0.");
-            } else {
-                int previousStock = materialData.getQuantity();
-                double previousValue = materialData.getUserPrice();
-                materialData.setPrice(value);
-                this.app.getConsole().info(player, String.format("Changed price from £%,.2f(%d) to £%,.2f(%d).", previousValue, previousStock, value, materialData.getQuantity()));
-            }
+            this.app.getConsole().send(sender, CommandResponse.InvalidItemName.defaultLogLevel, String.format(CommandResponse.InvalidItemName.message, args[0]));
+            return true;
         }
 
+        if (value < 0) {
+            this.app.getConsole().send(sender, CommandResponse.InvalidAmountGiven.defaultLogLevel, String.format(CommandResponse.InvalidAmountGiven.message, value, 0));
+            return true;
+        }
+
+        int previousStock = materialData.getQuantity();
+        double previousValue = materialData.getUserPrice();
+        materialData.setPrice(value);
+        this.app.getConsole().send(sender, CommandResponse.StockValueChanged.defaultLogLevel, String.format(CommandResponse.StockValueChanged.message, previousValue, previousStock, value, materialData.getQuantity()));
+
         return true;
+    }
+
+    /**
+     * For the handling of the console calling this command
+     *
+     * @param args
+     * @return
+     */
+    @Override
+    public boolean onConsoleCommand(String[] args) {
+        return this.onPlayerCommand(null, args);
     }
 }
