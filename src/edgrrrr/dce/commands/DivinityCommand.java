@@ -48,8 +48,12 @@ public abstract class DivinityCommand implements CommandExecutor {
         StockCountChanged("Stock level changed from %d(£%,.2f) to %d(£%,.2f).", LogLevel.INFO),
         StockValueChanged("Stock price from £%,.2f(%d) to £%,.2f(%d).", LogLevel.INFO),
 
+        //Mail
+
+
         // Poly
         InvalidNumberOfArguments("Invalid number of arguments.", LogLevel.WARNING),
+        InvalidArguments("Invalid arguments.", LogLevel.WARNING),
         InvalidPlayerName("Invalid player name.", LogLevel.WARNING),
         InvalidAmountGiven("Invalid amount given.", LogLevel.WARNING),
         InvalidItemName("Invalid item name '%s'.", LogLevel.WARNING),
