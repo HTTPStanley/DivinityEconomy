@@ -2,9 +2,8 @@ package edgrrrr.dce.commands.admin;
 
 import edgrrrr.configapi.Setting;
 import edgrrrr.dce.DCEPlugin;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
+import edgrrrr.dce.commands.DivinityCommandTC;
+import org.bukkit.entity.Player;
 
 import java.util.Arrays;
 import java.util.List;
@@ -12,20 +11,37 @@ import java.util.List;
 /**
  * A tab completer for the setvalue command
  */
-public class SetStockTC implements TabCompleter {
-    private final DCEPlugin app;
+public class SetStockTC extends DivinityCommandTC {
 
+    /**
+     * Constructor
+     *
+     * @param app
+     */
     public SetStockTC(DCEPlugin app) {
-        this.app = app;
+        super(app, true, Setting.COMMAND_SET_STOCK_ENABLE_BOOLEAN);
     }
 
+    /**
+     * For handling a player calling this command
+     *
+     * @param sender
+     * @param args
+     * @return
+     */
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
-        // Ensure player
-        if (!(this.app.getConfig().getBoolean(Setting.COMMAND_SET_STOCK_ENABLE_BOOLEAN.path))) {
-            return null;
-        }
+    public List<String> onPlayerTabCompleter(Player sender, String[] args) {
+        return this.onConsoleTabCompleter(args);
+    }
 
+    /**
+     * For the handling of the console calling this command
+     *
+     * @param args
+     * @return
+     */
+    @Override
+    public List<String> onConsoleTabCompleter(String[] args) {
         String[] strings;
         switch (args.length) {
             // Args 1
@@ -42,3 +58,4 @@ public class SetStockTC implements TabCompleter {
         return Arrays.asList(strings);
     }
 }
+
