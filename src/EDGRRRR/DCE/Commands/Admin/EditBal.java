@@ -59,7 +59,7 @@ public class EditBal extends DivinityCommand {
 
         // Ensure to player exists
         if (receiver == null) {
-            this.app.getConsole().usage(sender, CommandResponse.InvalidPlayerName.message, this.help.getUsages());
+            this.app.getConsole().send(sender, CommandResponse.InvalidPlayerName.defaultLogLevel, CommandResponse.InvalidPlayerName.message);
             return true;
 
         }
@@ -108,7 +108,7 @@ public class EditBal extends DivinityCommand {
 
             default:
                 // Incorrect number of args
-                this.app.getConsole().send(CommandResponse.InvalidNumberOfArguments.defaultLogLevel, CommandResponse.InvalidNumberOfArguments.message);
+                this.app.getConsole().usage(CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
                 return true;
         }
 
