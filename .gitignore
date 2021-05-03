@@ -243,3 +243,7 @@ out/production/DCE/edgrrrr/dce/commands/DivinityCommandEnchant.class
 out/production/DCE/edgrrrr/dce/commands/DivinityCommandEnchantTC.class
 out/production/DCE/edgrrrr/dce/commands/DivinityCommandMaterials.class
 out/production/DCE/edgrrrr/dce/commands/DivinityCommandMaterialsTC.class
+out/production/DCE/edgrrrr/dce/audit/Audit.class
+out/production/DCE/edgrrrr/dce/materials/MaterialKey.class
+out/production/DCE/edgrrrr/dce/materials/MaterialPotionKey.class
+out/production/DCE/edgrrrr/dce/materials/MaterialType.class
