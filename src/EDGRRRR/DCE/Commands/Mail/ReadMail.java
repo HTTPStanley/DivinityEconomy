@@ -6,7 +6,6 @@ import edgrrrr.dce.commands.DivinityCommand;
 import edgrrrr.dce.mail.Mail;
 import edgrrrr.dce.mail.MailList;
 import edgrrrr.dce.math.Math;
-import org.bukkit.command.Command;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
