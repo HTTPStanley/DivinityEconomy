@@ -96,7 +96,7 @@ public class HandSell extends DivinityCommandMaterials {
             }
 
             else {
-                materialData.addQuantity(amountToSell);
+                this.app.getMaterialManager().addQuantity(materialData, amountToSell);
                 // Handles console, player message and mail
                 this.app.getConsole().logSale(sender, amountToSell, response.value, materialData.getCleanName());
             }
