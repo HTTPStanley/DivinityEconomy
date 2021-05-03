@@ -88,7 +88,7 @@ public class BuyItem extends DivinityCommandMaterials {
         // Handle adding items to player and removing quantity from market
         if (saleResponse.transactionSuccess() && priceResponse.isSuccess()) {
             PlayerInventoryManager.addItemsToPlayer(sender, itemStacks);
-            materialData.remQuantity(amountToBuy);
+            this.app.getMaterialManager().remQuantity(materialData, amountToBuy);
 
             // Handles console, message and mail
             this.app.getConsole().logPurchase(sender, amountToBuy, saleResponse.amount, materialData.getCleanName());
