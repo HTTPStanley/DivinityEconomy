@@ -80,6 +80,10 @@ public class MaterialManager {
         return this.materials.get(matID);
     }
 
+    /**
+     * Returns all the material names
+     * @return String[]
+     */
     public String[] getMaterialNames() {
         ArrayList<String> materialNames = new ArrayList<>();
         for (MaterialData materialData : this.materials.values()) {
@@ -92,6 +96,11 @@ public class MaterialManager {
         return materialNames.toArray(new String[0]);
     }
 
+    /**
+     * Returns all the material names that start with startsWith
+     * @param startsWith
+     * @return String[]
+     */
     public String[] getMaterialNames(String startsWith) {
         ArrayList<String> materialNames = new ArrayList<>();
         for (String materialName : this.getMaterialNames()) {
@@ -103,6 +112,11 @@ public class MaterialManager {
         return materialNames.toArray(new String[0]);
     }
 
+    /**
+     * Returns all the material aliases that belong to the material ID given
+     * @param materialID
+     * @return String[]
+     */
     public String[] getMaterialAliases(String materialID) {
         ArrayList<String> aliases = new ArrayList<>();
         for (String alias : this.aliases.keySet()) {
@@ -113,6 +127,12 @@ public class MaterialManager {
         return aliases.toArray(new String[0]);
     }
 
+    /**
+     * Returns all the material aliases that belong to the material id's given, that start with startsWith
+     * @param materialIDs
+     * @param startsWith
+     * @return String[]
+     */
     public String[] getMaterialAliases(String[] materialIDs, String startsWith) {
         String[] materialAliases = this.getMaterialAliases(materialIDs);
         ArrayList<String> newMaterialAliases = new ArrayList<>();
@@ -125,6 +145,11 @@ public class MaterialManager {
         return newMaterialAliases.toArray(new String[0]);
     }
 
+    /**
+     * Returns all the material aliases that belong to the material id's given
+     * @param materialIDs
+     * @return
+     */
     public String[] getMaterialAliases(String[] materialIDs) {
         ArrayList<String> materialAliases = new ArrayList<>();
         for (String materialID : materialIDs) {
@@ -147,6 +172,7 @@ public class MaterialManager {
         // Get meta and cast to damageable, for getting the items durability
         // Get durability and max durability
         Damageable dmg = (Damageable) itemStack.getItemMeta();
+        if (dmg == null) return damageValue;
         double durability = dmg.getDamage();
         double maxDurability = itemStack.getType().getMaxDurability();
 
@@ -154,7 +180,7 @@ public class MaterialManager {
         // Adjust damage value to be the percentage of health left on the item.
         // 50% damaged = .5 scaling (50% of full price)
         // Durability is in the form of 1 = 1 damage (if item has 10 health, 1 durability = 9 health)
-        // Hence maxDura - dura / maxDura
+        // Hence maxDurability - durability / maxDurability
         if (maxDurability > 0) {
             damageValue = (maxDurability - durability) / maxDurability;
         }
@@ -274,7 +300,6 @@ public class MaterialManager {
         return this.getPrice(stock, this.materialSellTax, this.getInflation());
     }
 
-
     /**
      * Returns the user price based on stock
      *
@@ -283,6 +308,60 @@ public class MaterialManager {
      */
     public double getUserPrice(double stock) {
         return this.getPrice(stock, this.materialBuyTax, this.getInflation());
+    }
+
+    /**
+     * Sets the price of a material
+     * @param materialData
+     * @param value
+     */
+    public void setPrice(MaterialData materialData, double value) {
+        materialData.setQuantity(this.calculateStock(value, this.materialBuyTax, this.getInflation()));
+    }
+
+    /**
+     * Adds the quantity given to the material given
+     * @param materialData
+     * @param quantity
+     * @return boolean - success
+     */
+    public boolean addQuantity(MaterialData materialData, int quantity) {
+        if (quantity < 0) return false;
+
+        materialData.setQuantity(materialData.getQuantity() + quantity);
+        this.editTotalMaterials(quantity);
+        return true;
+    }
+
+    /**
+     * Removes the quantity given to the material given
+     * @param materialData
+     * @param quantity
+     * @return boolean - success
+     */
+    public boolean remQuantity(MaterialData materialData, int quantity) {
+        if (quantity < 0) return false;
+
+        int newQuantity = materialData.getQuantity() - quantity;
+        if (newQuantity < materialData.minQuantity) {
+            return false;
+        } else {
+            materialData.setQuantity(newQuantity);
+            this.editTotalMaterials(newQuantity - quantity);
+            return true;
+        }
+    }
+
+    /**
+     * Sets the quantity of material
+     * @param materialData
+     * @param quantity
+     * @return boolean - success
+     */
+    public boolean setQuantity(MaterialData materialData, int quantity) {
+        int change = quantity - materialData.getQuantity();
+        if (change >= 0) return this.addQuantity(materialData, change);
+        else return this.remQuantity(materialData, -change);
     }
 
     /**
@@ -324,7 +403,7 @@ public class MaterialManager {
      * @return int - The level of stock required for this price.
      */
     public int calculateStock(double price, double scale, double inflation) {
-        return (int) ((int) (this.materialBaseQuantity / price) * scale * inflation);
+        return (int) ((this.materialBaseQuantity / price) * scale * inflation);
     }
 
     /**
@@ -350,10 +429,18 @@ public class MaterialManager {
         this.totalMaterials += amount;
     }
 
+    /**
+     * Returns the total number of materials in the market
+     * @return int
+     */
     public int getTotalMaterials() {
         return totalMaterials;
     }
 
+    /**
+     * Returns the total default number of materials in the market
+     * @return int
+     */
     public int getDefaultTotalMaterials() {
         return defaultTotalMaterials;
     }
@@ -389,7 +476,8 @@ public class MaterialManager {
         for (String key : this.config.getKeys(false)) {
             ConfigurationSection data = this.config.getConfigurationSection(key);
             ConfigurationSection defaultData = defaultConf.getConfigurationSection(key);
-            MaterialData mData = new MaterialData(this, data, defaultData);
+            if (data == null) continue;
+            MaterialData mData = new MaterialData(data, defaultData);
             this.defaultTotalMaterials += mData.getDefaultQuantity();
             this.totalMaterials += mData.getQuantity();
             values.put(key, mData);
