@@ -94,7 +94,7 @@ public class SellItem extends DivinityCommandMaterials {
                 this.app.getConsole().logFailedSale(sender, amountToSell, materialData.getCleanName(), economyResponse.errorMessage);
             }
             else {
-                materialData.addQuantity(amountToSell);
+                this.app.getMaterialManager().addQuantity(materialData, amountToSell);
                 // Handles console, player message and mail
                 this.app.getConsole().logSale(sender, amountToSell, response.value, materialData.getCleanName());
             }
