@@ -8,7 +8,6 @@ import org.bukkit.configuration.ConfigurationSection;
  */
 public class MaterialData {
     // The material manager
-    private final MaterialManager manager;
     // The configuration section for this material
     private final ConfigurationSection configData;
     // The configuration section for this material
@@ -16,36 +15,20 @@ public class MaterialData {
     // The potionData for this material
     private final MaterialPotionData potionData;
 
-    // String key names for values
-    private final String strAllowed = "ALLOWED";
-    private final String strQuantity = "QUANTITY";
-    private final String strMaterialID = "MATERIAL";
-    private final String strPotionData = "POTION_DATA";
-    private final String strCleanName = "CLEAN_NAME";
-    private final String strEntity = "ENTITY";
-    private final String strTypeMaterial = "MATERIAL";
-    private final String strTypeEntity = "ENTITY";
-    private final String strTypePotion = "POTION";
-    private final String strPotionUpgraded = "upgraded";
-    private final String strPotionExtended = "extended";
-    private final String strPotionType = "type";
-
     // Settings
-    private final int minQuantity = 0;
+    public final int minQuantity = 0;
 
 
     /**
      * Constructor
      *
-     * @param manager    - The material manager
      * @param configData - The config section containing the data for this material
      * @param defaultConfigData - The default config
      */
-    public MaterialData(MaterialManager manager, ConfigurationSection configData, ConfigurationSection defaultConfigData) {
-        this.manager = manager;
+    public MaterialData(ConfigurationSection configData, ConfigurationSection defaultConfigData) {
         this.configData = configData;
         this.defaultConfigData = defaultConfigData;
-        ConfigurationSection pData = configData.getConfigurationSection(this.strPotionData);
+        ConfigurationSection pData = configData.getConfigurationSection(MaterialKey.POTION_DATA.key);
         if (pData == null) {
             this.potionData = null;
         } else {
@@ -69,7 +52,7 @@ public class MaterialData {
      * @return String - Returns the clean name for this item
      */
     public String getCleanName() {
-        return this.configData.getString(this.strCleanName);
+        return this.configData.getString(MaterialKey.CLEAN_NAME.key);
     }
 
     /**
@@ -78,7 +61,7 @@ public class MaterialData {
      * @return int - The quantity of this item in stock
      */
     public int getQuantity() {
-        return this.configData.getInt(this.strQuantity);
+        return this.configData.getInt(MaterialKey.QUANTITY.key);
     }
 
     /**
@@ -88,26 +71,11 @@ public class MaterialData {
      */
     public boolean setQuantity(int amount) {
         if (amount >= this.minQuantity) {
-            int oldQuantity = this.getQuantity();
-            int change = amount - oldQuantity;
-            if (change >= 0) {
-                this.remQuantity(-change);
-            } else {
-                this.addQuantity(change);
-            }
+            this.setData(MaterialKey.QUANTITY.key, amount);
             return true;
         } else {
             return false;
         }
-    }
-
-    /**
-     * Sets the stock level so that the price of the material is that given.
-     *
-     * @param price - The new price for this material.
-     */
-    public void setPrice(double price) {
-        this.setQuantity(this.manager.calculateStock(price, 1.0, this.manager.getInflation()));
     }
 
     /**
@@ -116,28 +84,9 @@ public class MaterialData {
      * @return int - The default quantity of this item in stock
      */
     public int getDefaultQuantity() {
-        return this.defaultConfigData.getInt(this.strQuantity);
+        return this.defaultConfigData.getInt(MaterialKey.QUANTITY.key);
     }
 
-    /**
-     * Returns the market price of this item
-     * Market price = price for server (user sell price)
-     *
-     * @return double - The market (sell) price of this item
-     */
-    public double getMarketPrice() {
-        return this.manager.getMarketPrice(this.getQuantity());
-    }
-
-    /**
-     * Returns the user price of this item
-     * User price = price for user (user buy price)
-     *
-     * @return double - The user (buy) price of this item
-     */
-    public double getUserPrice() {
-        return this.manager.getUserPrice(this.getQuantity());
-    }
 
     /**
      * Returns the banned state of the material
@@ -147,7 +96,7 @@ public class MaterialData {
      * @return boolean - Whether the item is allowed to be bought/sold or not
      */
     public boolean getAllowed() {
-        return this.configData.getBoolean(this.strAllowed);
+        return this.configData.getBoolean(MaterialKey.ALLOWED.key);
     }
 
     /**
@@ -157,7 +106,7 @@ public class MaterialData {
      * @return String - The internal material name
      */
     public String getMaterialID() {
-        return this.configData.getString(this.strMaterialID);
+        return this.configData.getString(MaterialKey.MATERIAL_ID.key);
     }
 
     /**
@@ -185,7 +134,7 @@ public class MaterialData {
      * @return String - The entity name of this material if an entity.
      */
     public String getEntityName() {
-        return this.configData.getString(this.strEntity);
+        return this.configData.getString(MaterialKey.ENTITY_ID.key);
     }
 
     public boolean has(int amount) {
@@ -202,51 +151,12 @@ public class MaterialData {
      * @return String - The type of object this is.
      */
     public String getType() {
-        String type;
-        // If potion
-        if (!(potionData == null)) {
-            type = this.strTypePotion;
-        }
-        // If entity
-        else if (!(this.getEntityName() == null)) {
-            type = this.strTypeEntity;
-        }
-        // Else is material
-        else {
-            type = this.strTypeMaterial;
-        }
-        return type;
-    }
-
-    /**
-     * Adds the quantity <amount>
-     *
-     * @param amount - The amount of stock to add to the pile
-     */
-    public boolean addQuantity(int amount) {
-        if (amount < 0) return false;
-
-        this.setData(this.strQuantity, this.getQuantity() + amount);
-        this.manager.editTotalMaterials(amount);
-        return true;
-    }
-
-    /**
-     * Removes the quantity <amount>
-     *
-     * @param amount - The amount of stock to remove from the pile
-     */
-    public boolean remQuantity(int amount) {
-        if (amount < 0) return false;
-
-        int newQuant = this.getQuantity() - amount;
-        if (newQuant < this.minQuantity) {
-            return false;
-        } else {
-            this.setData(this.strQuantity, newQuant);
-            this.manager.editTotalMaterials(amount);
-            return true;
-        }
+        // If potiondata isn't null, Potion
+        // else if EntityName isn't null, Entity
+        // else, Material
+        if (!(potionData == null)) return MaterialType.POTION.key;
+        else if (!(this.getEntityName() == null)) return MaterialType.ENTITY.key;
+        else return MaterialType.MATERIAL.key;
     }
 
     /**
