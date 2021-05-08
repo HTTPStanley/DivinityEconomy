@@ -116,7 +116,8 @@ public class Math {
         // Inflation works by calculating the default total items and dividing it by the new total items
         // This results in an increase in price when there are less items in the market than default
         // Or a decrease in price when there are more items in the market than default
-        double value = (getScale(baseQuantity+1, currentQuantity+1)) * scale * inflation;
+        if (currentQuantity == 0) currentQuantity+=1;
+        double value = (getScale(baseQuantity, currentQuantity)) * scale * inflation;
         if (value < 0) value = -value;
         return value;
     }
