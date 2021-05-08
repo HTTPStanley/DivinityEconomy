@@ -48,14 +48,14 @@ commands:
     aliases: [bal, cash, money]
     permission: dce.money.balance
     permission-message: "You do not have the permission to use this command"
-    usage: "/balance|/balance <playername>"
+    usage: "/balance|/balance <player name>"
 
   sendcash:
     description: "Sends cash to another player."
     aliases: [transfer]
     permission: dce.money.sendcash
     permission-message: "You do not have the permission to use this command"
-    usage: "/sendcash <playername> <amount>"
+    usage: "/sendcash <player name> <amount>"
 
   # Market commands
   buy:
@@ -63,14 +63,14 @@ commands:
     aliases: [b]
     permission: dce.market.buy
     permission-message: "You do not have permission to use this command"
-    usage: "/buy <materialname> <amount>"
+    usage: "/buy <material name> <amount>"
 
   sell:
     description: "Sells a material to the market."
     aliases: [s]
     permission: dce.market.sell
     permission-message: "You do not have permission to use this command"
-    usage: "/sell <materialname> <amount>"
+    usage: "/sell <material name> <amount>"
 
   handBuy:
     description: "Buys the material the user is holding from the market."
@@ -91,14 +91,14 @@ commands:
     aliases: [val]
     permission: dce.market.value
     permission-message: "You do not have permission to use this command"
-    usage: "/value <materialname> <amount>"
+    usage: "/value <material name> <amount>"
 
   information:
     description: "Gets information about a material"
     aliases: [materialinfo, minfo, iteminfo]
     permission: dce.market.information
     permission-message: "You do not have permission to use this command"
-    usage: "/information <materialName>"
+    usage: "/information <material name>"
 
   handInformation:
     description: "Gets information about the material the player is holding."
@@ -119,21 +119,28 @@ commands:
     aliases: []
     permission: dce.enchant.eSell
     permission-messaage: "You do not have permission to use this command"
-    usage: "/esell <enchant> <amount>|/esell <enchant>"
+    usage: "/esell <enchant> <levels>|/esell <enchant>"
 
   eBuy:
     description: "Buys an enchant for an item."
     aliases: []
     permission: dce.enchant.eBuy
     permission-messaage: "You do not have permission to use this command"
-    usage: "/esell <enchant> <amount>"
+    usage: "/esell <enchant> <levels>"
 
   eValue:
     description: "Gets the value of an enchant."
     aliases: []
     permission: dce.enchant.eValue
     permission-messaage: "You do not have permission to use this command"
-    usage: "/evalue <enchant> <amount>"
+    usage: "/evalue <enchant> <levels>"
+
+  eHandValue:
+    description: "Gets the value of the enchants on the users held item."
+    aliases: []
+    permission: dce.enchant.eHandValue
+    permission-messaage: "You do not have permission to use this command"
+    usage: "/ehandvalue"
 
   eInfo:
     description: "Gets the information for an enchant."
@@ -149,45 +156,45 @@ commands:
     aliases: []
     permission: dce.admin.editbal
     permission-message: "You do not have the permission to use this command"
-    usage: "/editbal <playername> <amount>|/editbal <amount>"
+    usage: "/editbal <player name> <amount>|/editbal <amount>"
 
   setbal:
     description: "Sets the balance of a player."
     aliases: []
     permission: dce.admin.setbal
     permission-message: "You do not have the permission to use this command"
-    usage: "/setbal <playername> <amount>|/setbal <amount>"
+    usage: "/setbal <player name> <amount>|/setbal <amount>"
 
   clearbal:
     description: "Clears the balance of a player."
     aliases: []
     permission: dce.admin.clearbal
     permission-message: "You do not have the permission to use this command"
-    usage: "/clearbal <playername>|/clearbal"
+    usage: "/clearbal <player name>|/clearbal"
 
   reloadMaterials:
-    description: "Reloads the materials database."
+    description: "Reloads the materials file."
     aliases: []
     permission: dce.admin.reloadMaterials
     permission-message: "You do not have the permission to use this command"
     usage: "/reloadmaterials"
 
   reloadEnchants:
-    description: "Reloads the enchant database."
+    description: "Reloads the enchants file."
     aliases: []
     permission: dce.admin.reloadEnchants
     permission-message: "You do not have the permission to use this command"
     usage: "/reloadenchants"
 
   saveMaterials:
-    description: "Saves the materials database to file."
+    description: "Saves the materials to file."
     aliases: []
     permission: dce.admin.saveMaterials
     permission-message: "You do not have the permission to use this command"
     usage: "/savematerials"
 
   saveEnchants:
-    description: "Saves the enchants database to file."
+    description: "Saves the enchants to file."
     aliases: []
     permission: dce.admin.saveEnchants
     permission-message: "You do not have the permission to use this command"
@@ -198,14 +205,28 @@ commands:
     aliases: [ ]
     permission: dce.admin.setValue
     permission-message: "You do not have permission to use this command"
-    usage: "/setvalue <materialname> <value>"
+    usage: "/setvalue <material name> <value>"
 
   setStock:
     description: "Sets the stock of an item"
     aliases: [ ]
     permission: dce.admin.setStock
     permission-message: "You do not have permission to use this command"
-    usage: "/setstock <materialname> <stock>"
+    usage: "/setstock <material name> <stock>"
+
+  eSetValue:
+    description: "Sets the value of an enchant"
+    aliases: [ ]
+    permission: dce.admin.eSetValue
+    permission-message: "You do not have permission to use this command"
+    usage: "/esetvalue <enchant name> <value>"
+
+  eSetStock:
+    description: "Sets the stock of an enchant"
+    aliases: [ ]
+    permission: dce.admin.eSetStock
+    permission-message: "You do not have permission to use this command"
+    usage: "/esetstock <enchant name> <stock>"
 
 
 
@@ -221,6 +242,7 @@ permissions:
     children:
       dce.enchant.eSell: true
       dce.enchant.eBuy: true
+      dce.enchant.eHandValue: true
       dce.enchant.eValue: true
       dce.enchant.eInfo: true
 
@@ -232,8 +254,12 @@ permissions:
     description: Allows the user to buy enchants for their held item.
     default: true
 
-  dce.enchant.eValue:
+  dce.enchant.eHandValue:
     description: Allows the user to value enchants on their held item.
+    default: true
+
+  dce.enchant.eValue:
+    description: Allows the user to value enchants.
     default: true
 
   dce.enchant.eInfo:
@@ -346,6 +372,8 @@ permissions:
       dce.admin.reloadMaterials: true
       dce.admin.setStock: true
       dce.admin.setValue: true
+      dce.admin.eSetStock: true
+      dce.admin.eSetValue: true
       dce.admin.saveEnchants: true
       dce.admin.saveMaterials: true
       dce.money: true
@@ -388,4 +416,12 @@ permissions:
 
   dce.admin.setValue:
     description: Allows the user to set the value of an item
+    default: op
+
+  dce.admin.eSetStock:
+    description: Allows the user to set the stock of an enchant
+    default: op
+
+  dce.admin.eSetValue:
+    description: Allows the user to set the value of an enchant
     default: op
