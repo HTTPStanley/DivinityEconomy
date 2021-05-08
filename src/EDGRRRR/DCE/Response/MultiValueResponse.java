@@ -86,7 +86,7 @@ public class MultiValueResponse extends Response {
      * @return String
      */
     public String toString(String prefix) {
-        return String.format("%s: %s", prefix, this.toString());
+        return String.format("%s: %s", prefix, this);
     }
 
     /**
