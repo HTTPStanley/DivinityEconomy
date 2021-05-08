@@ -33,7 +33,7 @@ public class EditBal extends DivinityCommand {
     public boolean onPlayerCommand(Player sender, String[] args) {
         // The command receiver
         OfflinePlayer receiver;
-        double amount = 0;
+        double amount;
 
         // Use case scenarios
         // command <amount> - applies amount to self
@@ -94,7 +94,7 @@ public class EditBal extends DivinityCommand {
     public boolean onConsoleCommand(String[] args) {
         // The command receiver
         OfflinePlayer receiver;
-        double amount = 0;
+        double amount;
 
         // Use case scenarios
         // command <amount> - applies amount to self
