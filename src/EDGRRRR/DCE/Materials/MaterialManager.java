@@ -312,56 +312,30 @@ public class MaterialManager {
 
     /**
      * Sets the price of a material
-     * @param materialData
-     * @param value
+     * @param materialData - The material to set
+     * @param value - The value to set the price to
      */
     public void setPrice(MaterialData materialData, double value) {
         materialData.setQuantity(this.calculateStock(value, this.materialBuyTax, this.getInflation()));
     }
 
     /**
-     * Adds the quantity given to the material given
-     * @param materialData
-     * @param quantity
-     * @return boolean - success
+     * Edits the quantity of a material by quantity
+     * @param materialData - The material to edit
+     * @param quantity - The quantity to edit by. Can be negative.
      */
-    public boolean addQuantity(MaterialData materialData, int quantity) {
-        if (quantity < 0) return false;
-
-        materialData.setQuantity(materialData.getQuantity() + quantity);
+    public void editQuantity(MaterialData materialData, int quantity) {
+        materialData.editQuantity(quantity);
         this.editTotalMaterials(quantity);
-        return true;
-    }
-
-    /**
-     * Removes the quantity given to the material given
-     * @param materialData
-     * @param quantity
-     * @return boolean - success
-     */
-    public boolean remQuantity(MaterialData materialData, int quantity) {
-        if (quantity < 0) return false;
-
-        int newQuantity = materialData.getQuantity() - quantity;
-        if (newQuantity < materialData.minQuantity) {
-            return false;
-        } else {
-            materialData.setQuantity(newQuantity);
-            this.editTotalMaterials(newQuantity - quantity);
-            return true;
-        }
     }
 
     /**
      * Sets the quantity of material
-     * @param materialData
-     * @param quantity
-     * @return boolean - success
+     * @param materialData - The material to set.
+     * @param quantity - The quantity to edit by. Can be negative.
      */
-    public boolean setQuantity(MaterialData materialData, int quantity) {
-        int change = quantity - materialData.getQuantity();
-        if (change >= 0) return this.addQuantity(materialData, change);
-        else return this.remQuantity(materialData, -change);
+    public void setQuantity(MaterialData materialData, int quantity) {
+        this.editQuantity(materialData, quantity - materialData.getQuantity());
     }
 
     /**
@@ -425,7 +399,7 @@ public class MaterialManager {
      *
      * @param amount - The amount to add or remove. Negative to remove.
      */
-    public void editTotalMaterials(int amount) {
+    private void editTotalMaterials(int amount) {
         this.totalMaterials += amount;
     }
 
@@ -502,7 +476,7 @@ public class MaterialManager {
      *
      * @param material - The material to save
      */
-    public void saveMaterial(MaterialData material) {
+    private void saveMaterial(MaterialData material) {
         this.setData(material.getMaterialID(), material.getConfigData());
     }
 
@@ -521,7 +495,7 @@ public class MaterialManager {
     /**
      * Saves the config to the config file
      */
-    public void saveFile() {
+    private void saveFile() {
         this.app.getConfigManager().saveFile(this.config, this.materialsFile);
     }
 }
