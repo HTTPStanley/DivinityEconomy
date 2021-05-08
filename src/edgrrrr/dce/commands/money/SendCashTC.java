@@ -43,7 +43,7 @@ public class SendCashTC extends DivinityCommandTC {
             // Args 2
             // just return some numbers
             case 2:
-                String balance = String.format("%,.2f", this.app.getEconomyManager().getBalance((Player) sender));
+                String balance = String.format("%,.2f", this.app.getEconomyManager().getBalance(sender));
                 strings = new String[]{
                         "1", "10", "100", "1000", balance
                 };
