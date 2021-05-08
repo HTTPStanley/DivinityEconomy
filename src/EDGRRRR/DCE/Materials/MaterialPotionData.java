@@ -9,11 +9,6 @@ public class MaterialPotionData {
     // The configuration section for potionData
     private final ConfigurationSection potionData;
 
-    // The string keys for values
-    private final String strExtended = "extended";
-    private final String strUpgraded = "upgraded";
-    private final String strType = "type";
-
     /**
      * Constructor
      *
@@ -29,7 +24,7 @@ public class MaterialPotionData {
      * @return boolean - Whether the potion is extended or not
      */
     public boolean getExtended() {
-        return this.potionData.getBoolean(this.strExtended);
+        return this.potionData.getBoolean(MaterialPotionKey.EXTENDED.key);
     }
 
     /**
@@ -38,7 +33,7 @@ public class MaterialPotionData {
      * @return String - The type of potion
      */
     public String getType() {
-        return this.potionData.getString(this.strType);
+        return this.potionData.getString(MaterialPotionKey.TYPE.key);
     }
 
     /**
@@ -47,7 +42,7 @@ public class MaterialPotionData {
      * @return boolean - Whether the potion is upgraded or not
      */
     public boolean getUpgraded() {
-        return this.potionData.getBoolean(this.strUpgraded);
+        return this.potionData.getBoolean(MaterialPotionKey.UPGRADED.key);
     }
 
     /**
