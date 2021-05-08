@@ -144,8 +144,11 @@ public class DCEPlugin extends JavaPlugin {
             this.getCommand("eSell").setExecutor(new EnchantHandSell(this));
             this.getCommand("eSell").setTabCompleter(new EnchantHandSellTC(this));
 
-            this.getCommand("eValue").setExecutor(new EnchantHandValue(this));
-            this.getCommand("eValue").setTabCompleter(new EnchantHandValueTC(this));
+            this.getCommand("eValue").setExecutor(new EnchantValue(this));
+            this.getCommand("eValue").setTabCompleter(new EnchantValueTC(this));
+
+            this.getCommand("eHandValue").setExecutor(new EnchantHandValue(this));
+            this.getCommand("eHandValue").setTabCompleter(new EnchantHandValueTC(this));
 
             this.getCommand("eBuy").setExecutor(new EnchantHandBuy(this));
             this.getCommand("eBuy").setTabCompleter(new EnchantHandBuyTC(this));
@@ -166,6 +169,12 @@ public class DCEPlugin extends JavaPlugin {
 
             this.getCommand("setValue").setExecutor(new SetValue(this));
             this.getCommand("setValue").setTabCompleter(new SetValueTC(this));
+
+            this.getCommand("eSetStock").setExecutor(new ESetStock(this));
+            this.getCommand("eSetStock").setTabCompleter(new ESetStockTC(this));
+
+            this.getCommand("eSetValue").setExecutor(new ESetValue(this));
+            this.getCommand("eSetValue").setTabCompleter(new ESetValueTC(this));
 
             this.getCommand("ehelp").setExecutor(new HelpCommand(this));
             this.getCommand("ehelp").setTabCompleter(new HelpCommandTC(this));
