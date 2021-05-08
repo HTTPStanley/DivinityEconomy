@@ -36,7 +36,7 @@ public class HandSell extends DivinityCommandMaterials {
      */
     @Override
     public boolean onPlayerCommand(Player sender, String[] args) {
-        int amountToSell = -1;
+        int amountToSell;
 
         switch (args.length) {
             case 0:
@@ -96,7 +96,7 @@ public class HandSell extends DivinityCommandMaterials {
             }
 
             else {
-                this.app.getMaterialManager().addQuantity(materialData, amountToSell);
+                this.app.getMaterialManager().editQuantity(materialData, amountToSell);
                 // Handles console, player message and mail
                 this.app.getConsole().logSale(sender, amountToSell, response.value, materialData.getCleanName());
             }
