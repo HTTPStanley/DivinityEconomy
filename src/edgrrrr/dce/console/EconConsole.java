@@ -113,14 +113,14 @@ public class EconConsole extends Console {
      * @param player2 - The command receiver (Person who's balance is changing)
      * @param error - The error causing the failure.
      */
-    public void logFailedBalance(@Nullable OfflinePlayer player1, @Nullable OfflinePlayer player2, String error) {
+    public void logFailedBalance(@Nullable OfflinePlayer player1, @Nonnull OfflinePlayer player2, String error) {
         // The message to send
         String playerMessage = String.format("Couldn't change %s's balance because %s", player2.getName(), error);
 
         // Send console log of balance change
         this.warn(playerMessage);
 
-        if (player1 != player2 ) {
+        if (player1 != player2) {
             // Handles online and offline messages for sender
             if (player1 != null) {
                 Player onlinePlayer1 = player1.getPlayer();
@@ -132,16 +132,14 @@ public class EconConsole extends Console {
         }
 
         // Handles online and offline messages for receiver#
-        if (player2 != null) {
-            Player onlinePlayer2 = player2.getPlayer();
-            MailList playerMailList = this.app.getMailManager().getMailList(player2.getUniqueId().toString());
-            if (onlinePlayer2 != null) {
-                // Player is online - send message
-                this.warn(onlinePlayer2, playerMessage);
-            } else {
-                // Player is offline - create mail
-                playerMailList.createMail(String.format("%s <aptime>", playerMessage));
-            }
+        Player onlinePlayer2 = player2.getPlayer();
+        MailList playerMailList = this.app.getMailManager().getMailList(player2.getUniqueId().toString());
+        if (onlinePlayer2 != null) {
+            // Player is online - send message
+            this.warn(onlinePlayer2, playerMessage);
+        } else {
+            // Player is offline - create mail
+            playerMailList.createMail(String.format("%s <aptime>", playerMessage));
         }
     }
 
