@@ -15,9 +15,6 @@ public class MaterialData {
     // The potionData for this material
     private final MaterialPotionData potionData;
 
-    // Settings
-    public final int minQuantity = 0;
-
 
     /**
      * Constructor
@@ -69,13 +66,16 @@ public class MaterialData {
      *
      * @param amount - The amount to set the internal stock of this item to
      */
-    public boolean setQuantity(int amount) {
-        if (amount >= this.minQuantity) {
-            this.setData(MaterialKey.QUANTITY.key, amount);
-            return true;
-        } else {
-            return false;
-        }
+    public void setQuantity(int amount) {
+        this.setData(MaterialKey.QUANTITY.key, amount);
+    }
+
+    /**
+     * Edits the quantity by <amount>
+     * @param amount - The amount to edit by. Can be negative.
+     */
+    public void editQuantity(int amount) {
+        this.setQuantity(this.getQuantity() + amount);
     }
 
     /**
@@ -86,7 +86,6 @@ public class MaterialData {
     public int getDefaultQuantity() {
         return this.defaultConfigData.getInt(MaterialKey.QUANTITY.key);
     }
-
 
     /**
      * Returns the banned state of the material
@@ -137,6 +136,11 @@ public class MaterialData {
         return this.configData.getString(MaterialKey.ENTITY_ID.key);
     }
 
+    /**
+     * Returns if the material has enough stock to remove amount
+     * @param amount - The desired amount
+     * @return - If there is enough stock
+     */
     public boolean has(int amount) {
         return this.getQuantity() >= amount;
     }
