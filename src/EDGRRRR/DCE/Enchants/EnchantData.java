@@ -1,15 +1,12 @@
 package edgrrrr.dce.enchants;
 
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.craftbukkit.libs.jline.internal.Nullable;
 import org.bukkit.enchantments.Enchantment;
 
 /**
  * A class that represents an enchant within the economy
  */
 public class EnchantData {
-    // The enchant manager
-    final EnchantmentManager enchantmentManager;
     // The configuration section for this enchant
     private final ConfigurationSection configurationSection;
     // The default configuration section for this enchant
@@ -17,22 +14,13 @@ public class EnchantData {
 
     private Enchantment enchantment;
 
-    // String key names for values
-    private final String strAllowed = "ALLOWED";
-    private final String strMaxLevel = "MAX_LEVEL";
-    private final String strCleanName = "CLEAN_NAME";
-    private final String strID = "ID";
-    private final String strQuantity = "QUANTITY";
-
     /**
      * Constructor
      *
-     * @param enchantmentManager - The enchantment manager
      * @param configurationSection - The configuration section of this enchant
      * @param defaultConfigurationSection - The default config section of this enchant
      */
-    public EnchantData(EnchantmentManager enchantmentManager, ConfigurationSection configurationSection, ConfigurationSection defaultConfigurationSection) {
-        this.enchantmentManager = enchantmentManager;
+    public EnchantData(ConfigurationSection configurationSection, ConfigurationSection defaultConfigurationSection) {
         this.configurationSection = configurationSection;
         this.defaultConfigurationSection = defaultConfigurationSection;
 
@@ -48,9 +36,26 @@ public class EnchantData {
      * Returns the enchant that this represents
      * @return Enchantment
      */
-    @Nullable
     public Enchantment getEnchantment() {
         return this.enchantment;
+    }
+
+    /**
+     * Returns if the enchant has enough stock to remove amount
+     * @param levels - The amount desired in levels
+     * @return Enchant has enough stock
+     */
+    public boolean has(int levels) {
+        return this.getQuantity() >= EnchantData.levelsToBooks(levels);
+    }
+
+    /**
+     * Returns if the enchant has enough stock to remove amount
+     * @param books - The amount desired in books
+     * @return Enchant has enough stock
+     */
+    public boolean has (double books) {
+        return this.has(EnchantData.booksToLevels((int) books));
     }
 
     /**
@@ -74,7 +79,7 @@ public class EnchantData {
      * @return String
      */
     public String getCleanName() {
-        return this.configurationSection.getString(this.strCleanName);
+        return this.configurationSection.getString(EnchantKey.CLEAN_NAME.key);
     }
 
     /**
@@ -82,7 +87,7 @@ public class EnchantData {
      * @return int
      */
     public int getQuantity() {
-        return this.configurationSection.getInt(this.strQuantity);
+        return this.configurationSection.getInt(EnchantKey.QUANTITY.key);
     }
 
     /**
@@ -90,44 +95,7 @@ public class EnchantData {
      * @return int
      */
     public int getDefaultQuantity() {
-        return this.defaultConfigurationSection.getInt(this.strQuantity);
-    }
-
-    /**
-     * Sets the quantity of this enchant in the economy to the amount specified.
-     * Also edits the total amount of items in the market.
-     * This does not save unless the manager saves the material.
-     * @param amount - The amount to add or remove. Can be positive or negative.
-     */
-    public void setQuantity(int amount) {
-        int oldQuantity = this.getQuantity();
-        this.setData(this.strQuantity, amount);
-        int change = oldQuantity - amount;
-        this.enchantmentManager.editTotalEnchants(change);
-    }
-
-    /**
-     * Edits the quantity of the enchant based on the level provided.
-     * @param enchantLevel - The enchantment level
-     */
-    public void editLevelQuantity(int enchantLevel) {
-        this.setQuantity(this.getQuantity() + this.enchantmentManager.getEnchantAmount(enchantLevel));
-    }
-
-    /**
-     * Adds the quantity of the enchant based on the level provided.
-     * @param enchantLevel - The enchantment level
-     */
-    public void addLevelQuantity(int enchantLevel) {
-        this.editLevelQuantity(enchantLevel);
-    }
-
-    /**
-     * Removes the quantity of the enchant based on the level provided.
-     * @param enchantLevel - The enchantment level
-     */
-    public void remLevelQuantity(int enchantLevel) {
-        this.editLevelQuantity(-enchantLevel);
+        return this.defaultConfigurationSection.getInt(EnchantKey.QUANTITY.key);
     }
 
     /**
@@ -139,19 +107,11 @@ public class EnchantData {
     }
 
     /**
-     * Adds the quantity of the enchant based on the amount provided
-     * @param amount - The amount to add
+     * Sets the quantity of the material to the amount given.
+     * @param amount - The amount
      */
-    public void addQuantity(int amount) {
-        this.editQuantity(amount);
-    }
-
-    /**
-     * Removes the quantity of the enchant based on the amount provided
-     * @param amount - The amount to add
-     */
-    public void remQuantity(int amount) {
-        this.editQuantity(-amount);
+    public void setQuantity(int amount) {
+        this.setData(EnchantKey.QUANTITY.key, amount);
     }
 
     /**
@@ -168,7 +128,7 @@ public class EnchantData {
      * @return String
      */
     public String getID() {
-        return this.configurationSection.getString(this.strID);
+        return this.configurationSection.getString(EnchantKey.ENCHANT_ID.key);
     }
 
     /**
@@ -177,7 +137,7 @@ public class EnchantData {
      * @return int
      */
     public int getMaxLevel() {
-        return this.configurationSection.getInt(this.strMaxLevel);
+        return this.configurationSection.getInt(EnchantKey.MAX_LEVEL.key);
     }
 
     /**
@@ -185,6 +145,25 @@ public class EnchantData {
      * @return boolean
      */
     public boolean getAllowed() {
-        return this.configurationSection.getBoolean(this.strAllowed);
+        return this.configurationSection.getBoolean(EnchantKey.ALLOWED.key);
+    }
+
+    /**
+     * Returns the number of books required to make the level provided
+     * @param levels - The number of levels
+     * @return The number of books required to make the level provided
+     */
+    public static int levelsToBooks(int levels) {
+        return (int) Math.pow(2, levels);
+    }
+
+    /**
+     * Returns the number of levels that can be made from the books provided
+     * Rounds to the floor (4/3 = 1)
+     * @param books - The number of books
+     * @return The number of levels that can be created from the books provided
+     */
+    public static int booksToLevels(int books) {
+        return Math.floorDiv((int) Math.log10(books), (int) Math.log10(2));
     }
 }
