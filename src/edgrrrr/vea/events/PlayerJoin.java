@@ -15,7 +15,7 @@ public class PlayerJoin implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        Player player = event.getPlayer();;
+        Player player = event.getPlayer();
         if (!this.economy.hasAccount(player)) {
             this.economy.createPlayerAccount(player);
             //TODO: send message
