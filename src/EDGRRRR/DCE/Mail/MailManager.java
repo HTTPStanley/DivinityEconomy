@@ -53,7 +53,7 @@ public class MailManager {
         int mailCount = 0;
         for (String userID : this.configuration.getKeys(false)) {
             ConfigurationSection mailListSection = this.configuration.getConfigurationSection(userID);
-            MailList mailList = new MailList(this, userID, mailListSection);
+            MailList mailList = new MailList(userID, mailListSection);
             this.addMailList(userID, mailList);
             userCount += 1;
             mailCount += mailList.getMailIDs().size();
@@ -76,7 +76,7 @@ public class MailManager {
      */
     public MailList addPlayer(String uuid) {
         ConfigurationSection mailSection = this.createMailListSection(uuid);
-        MailList mailList = new MailList(this, uuid, mailSection);
+        MailList mailList = new MailList(uuid, mailSection);
         this.addMailList(uuid, mailList);
         return mailList;
     }
