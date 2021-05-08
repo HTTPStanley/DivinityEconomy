@@ -7,8 +7,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class HelpManager {
-    DCEPlugin app;
-    HashMap<String, Help> helpMap;
+    final DCEPlugin app;
+    final HashMap<String, Help> helpMap;
 
     public HelpManager(DCEPlugin app) {
         this.app = app;
