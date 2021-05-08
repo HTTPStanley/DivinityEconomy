@@ -35,8 +35,8 @@ public class EnchantHandBuy extends DivinityCommandEnchant {
      */
     @Override
     public boolean onPlayerCommand(Player sender, String[] args) {
-        String enchantName = "";
-        int enchantLevels = 0;
+        String enchantName;
+        int enchantLevels;
         // How to use
         switch (args.length){
             case 2:
@@ -90,7 +90,7 @@ public class EnchantHandBuy extends DivinityCommandEnchant {
                 this.app.getEconomyManager().setCash(sender, startingBalance);
             } else {
                 this.app.getConsole().logPurchase(sender, enchantLevels, valueResponse.value, enchantName);
-                enchantData.remLevelQuantity(enchantLevels);
+                this.app.getEnchantmentManager().editQuantity(enchantData, -enchantLevels);
             }
         }
         return true;
