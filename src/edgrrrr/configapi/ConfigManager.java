@@ -8,6 +8,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 import java.io.InputStreamReader;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -25,7 +26,7 @@ public class ConfigManager implements ConfigManagerAPI {
         this.app.saveDefaultConfig();
         // Get the config and plugin versions
         String configVersion = this.app.getConfig().getString(Setting.MAIN_VERSION_STRING.path);
-        String pluginVersion = this.app.getDescription().getVersion();
+        String pluginVersion = this.app.getConfig().getDefaults().getString(Setting.MAIN_VERSION_STRING.path);
         this.logger.info("Detected Config Version: " + configVersion + " & Plugin Version: " + pluginVersion);
         // Updates the config by copying defaults over
         // updates the version and saves.
@@ -98,7 +99,7 @@ public class ConfigManager implements ConfigManagerAPI {
         File newFolder = this.getFolder(folder);
         if (newFolder != null) {
             return Arrays.asList(this.getFolder(folder).listFiles());
-        } else return Arrays.asList(new File[0]);
+        } else return Collections.emptyList();
     }
 
 
@@ -137,7 +138,7 @@ public class ConfigManager implements ConfigManagerAPI {
     public FileConfiguration loadFile(String file) {
         // Instantiate default and user config
         FileConfiguration defConfig;
-        FileConfiguration config = null;
+        FileConfiguration config;
         // Load default and user config
         defConfig = this.readResource(file);
         config = this.readFile(file);
