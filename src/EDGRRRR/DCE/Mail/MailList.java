@@ -20,13 +20,11 @@ public class MailList {
     private final ConfigurationSection configurationSection;
     // The player this mail list belongs to
     private final String playerUUID;
-    private MailManager manager;
 
     /**
      * Constructor
      */
-    public MailList(MailManager manager, String UUID, ConfigurationSection configurationSection) {
-        this.manager = manager;
+    public MailList(String UUID, ConfigurationSection configurationSection) {
         this.playerUUID = UUID;
         this.configurationSection = configurationSection;
         this.mail = new HashMap<>();
