@@ -12,18 +12,18 @@ public enum LogLevel {
     WARNING(2, ChatColor.YELLOW, Setting.CHAT_WARNING_COLOR.path),
     SEVERE(3, ChatColor.DARK_RED, Setting.CHAT_SEVERE_COLOR.path);
 
-    private int priority = 0;
-    private ChatColor colour = ChatColor.GRAY;
+    private final int priority;
+    private ChatColor colour;
     private String colourOption;
 
-    private LogLevel(int priority, ChatColor color, String colourOption) {
+    LogLevel(int priority, ChatColor color, String colourOption) {
         this.priority = priority;
         this.colour = color;
         this.colourOption = colourOption;
     }
 
     private void setColour(ChatColor colour) {
-        this.colourOption = colourOption;
+        this.colour = colour;
     }
 
     public int getPriority() {
@@ -47,7 +47,7 @@ public enum LogLevel {
             String value = config.getString(level.getColourOption());
             try { level.setColour( ChatColor.valueOf(value) ); }
             catch (Exception e) {
-                Logger.getLogger("Minecraft").severe(String.format("Exception occurred on log level loading (%s): %s", level.toString(), e.getMessage()));} //TODO: Log warning, bad config value
+                Logger.getLogger("Minecraft").severe(String.format("Exception occurred on log level loading (%s): %s", level, e.getMessage()));} //TODO: Log warning, bad config value
         }
     }
 
