@@ -255,3 +255,4 @@ out/production/DCE/edgrrrr/dce/commands/admin/ESetStockTC.class
 out/production/DCE/edgrrrr/dce/commands/admin/ESetValue.class
 out/production/DCE/edgrrrr/dce/commands/admin/ESetValueTC.class
 out/production/DCE/edgrrrr/dce/enchants/EnchantKey.class
+out/production/DCE/edgrrrr/dce/commands/enchants/EnchantValueTC.class
