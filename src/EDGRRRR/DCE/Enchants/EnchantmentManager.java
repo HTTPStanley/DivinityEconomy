@@ -165,7 +165,7 @@ public class EnchantmentManager {
         for (String key : this.config.getKeys(false)) {
             ConfigurationSection data = this.config.getConfigurationSection(key);
             ConfigurationSection defaultData = defaultConf.getConfigurationSection(key);
-            EnchantData enchantData = new EnchantData(this, data, defaultData);
+            EnchantData enchantData = new EnchantData(data, defaultData);
             this.defaultTotalEnchants += enchantData.getDefaultQuantity();
             this.totalEnchants += enchantData.getQuantity();
             values.put(key, enchantData);
@@ -191,7 +191,7 @@ public class EnchantmentManager {
      * If the level is 5 and you remove 4, the level is set to 1.
      * If the level is 5 and you remove 5, the enchant is removed.
      * @param itemStack - The itemstack to remove the enchant from
-     * @param enchantment - The enchantment to remvoe
+     * @param enchantment - The enchantment to remove
      * @param levels - The levels to remove
      */
     public void removeEnchantLevelsFromItem(ItemStack itemStack, Enchantment enchantment, int levels) {
@@ -203,6 +203,13 @@ public class EnchantmentManager {
         }
     }
 
+    /**
+     * Adds an enchant to an item
+     * @param itemStack - The itemstack
+     * @param enchantment - The enchant
+     * @param levels - The levels
+     * @return Response
+     */
     public Response addEnchantToItem(ItemStack itemStack, Enchantment enchantment, int levels) {
         Response response;
         int newLevel = levels + itemStack.getEnchantmentLevel(enchantment);
@@ -222,23 +229,6 @@ public class EnchantmentManager {
     }
 
     /**
-     * Calculates the number of enchant books required for the level provided.
-     * @param enchantLevel - The enchant level
-     * @return int - The number of enchants required for this level
-     */
-    public int getEnchantAmount(int enchantLevel) {
-        int enchantAmount;
-        if (enchantLevel > 0) {
-            enchantAmount = (int) java.lang.Math.pow(2, enchantLevel);
-        } else if (enchantLevel < 0) {
-            enchantAmount = -(int) java.lang.Math.pow(2, -enchantLevel);
-        } else {
-            enchantAmount = 0;
-        }
-        return enchantAmount;
-    }
-
-    /**
      * Returns the enchantData for the enchantID provided.
      * @param name - The name ID of the enchant
      * @return EnchantData
@@ -250,7 +240,7 @@ public class EnchantmentManager {
 
     /**
      * Returns if an item is enchanted or not.
-     * Supports unenchantable items
+     * Supports un-enchantable items
      * @param itemStack - The itemstack to check
      * @return boolean - Is enchanted / Is not enchanted
      */
@@ -261,8 +251,8 @@ public class EnchantmentManager {
     /**
      * Returns the enchant level of the given enchant on the given itemstack
      * Will return 0 if the enchant does not exist / is not on the itemstack
-     * @param itemStack
-     * @param enchantName
+     * @param itemStack - The itemstack
+     * @param enchantName - The enchant name
      */
     public int getEnchantLevel(ItemStack itemStack, String enchantName) {
         int level = 0;
@@ -290,7 +280,6 @@ public class EnchantmentManager {
         }
         return enchants;
     }
-
 
     /**
      * Returns the total purchase price of all the enchants on an itemstack
@@ -346,7 +335,7 @@ public class EnchantmentManager {
                         response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("level is above max(%d/%d)", level, enchantData.getMaxLevel()));
 
                     } else {
-                        int enchantAmount = this.getEnchantAmount(level);
+                        int enchantAmount = EnchantData.levelsToBooks(level);
                         if (enchantAmount > enchantData.getQuantity()) {
                             response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("not enough stock (%d/%d)", enchantAmount, enchantData.getQuantity()));
 
@@ -411,7 +400,7 @@ public class EnchantmentManager {
             } else {
 
                 if (!enchantData.getAllowed()) {
-                    response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("this enchant is not allowed to be bought or sold."));
+                    response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, "this enchant is not allowed to be bought or sold.");
 
                 } else {
 
@@ -425,7 +414,7 @@ public class EnchantmentManager {
                             response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("item enchant does not have enough levels(%d/%d)", itemStackEnchantLevel, level));
                         } else {
 
-                            response = new ValueResponse(this.calculatePrice(this.getEnchantAmount(level), enchantData.getQuantity(), this.enchantSellTax, false), EconomyResponse.ResponseType.SUCCESS, "");
+                            response = new ValueResponse(this.calculatePrice(EnchantData.levelsToBooks(level), enchantData.getQuantity(), this.enchantSellTax, false), EconomyResponse.ResponseType.SUCCESS, "");
                         }
                     }
                 }
@@ -435,12 +424,40 @@ public class EnchantmentManager {
     }
 
     /**
-     * Edits the total number of enchants in the market
-     * Negative to remove, Positive to add
-     * @param amount - The amount to edit by
+     * Edits the quantity of an enchant & the total quantity of enchants
+     * @param enchantData - The enchant to edit
+     * @param quantity - The quantity to edit by. Can be negative.
      */
-    public void editTotalEnchants(int amount) {
-        this.totalEnchants += amount;
+    public void editQuantity(EnchantData enchantData, int quantity) {
+        quantity = EnchantData.levelsToBooks(quantity);
+        this.editTotalEnchants(quantity);
+        enchantData.editQuantity(quantity);
+    }
+
+    /**
+     * Sets the price of a enchant
+     * @param enchantData - The enchant to set
+     * @param value - The value to set the price to
+     */
+    public void setPrice(EnchantData enchantData, double value) {
+        enchantData.setQuantity(this.calculateStock(value, this.enchantBuyTax, this.getInflation()));
+    }
+
+    /**
+     * Sets the quantity of an enchant & edits the total quantity of enchants
+     * @param enchantData - The enchant
+     * @param quantity - The quantity to set to
+     */
+    public void setQuantity(EnchantData enchantData, int quantity) {
+        this.editQuantity(enchantData, quantity - enchantData.getQuantity());
+    }
+
+    /**
+     * Edits the total quantity of enchants in the market
+     * @param quantity - The quantity to edit by. Can be negative.
+     */
+    private void editTotalEnchants(int quantity) {
+        this.totalEnchants += quantity;
     }
 
     /**
@@ -471,6 +488,10 @@ public class EnchantmentManager {
         return Math.calculatePrice(this.enchantBaseQuantity, stock, this.defaultTotalEnchants, this.totalEnchants, amount, scale, purchase, this.dynamicPricing, this.wholeMarketInflation);
     }
 
+    public int calculateStock(double price, double scale, double inflation) {
+        return (int) ((this.enchantBaseQuantity / price) * scale * inflation);
+    }
+
     /**
      * Returns the inflation of the whole enchant market
      * @return double
@@ -497,6 +518,10 @@ public class EnchantmentManager {
         return Math.getPrice(this.enchantBaseQuantity, stock, scale, inflation);
     }
 
+    public double getUserPrice(EnchantData enchantData) {
+        return this.getUserPrice(enchantData.getQuantity());
+    }
+
     /**
      * Returns the user price of a single enchant
      * @param stock - The stock of the enchant
@@ -504,6 +529,10 @@ public class EnchantmentManager {
      */
     public double getUserPrice(double stock) {
         return this.getPrice(stock, this.enchantBuyTax, this.getInflation());
+    }
+
+    public double getMarketPrice(EnchantData enchantData) {
+        return this.getMarketPrice(enchantData.getQuantity());
     }
 
     /**
@@ -538,7 +567,7 @@ public class EnchantmentManager {
     /**
      * Saves the internal config to the save file
      */
-    public void saveFile() {
+    private void saveFile() {
         this.app.getConfigManager().saveFile(this.config, this.enchantFile);
     }
 }
