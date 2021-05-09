@@ -22,6 +22,7 @@ public class EconomyManager {
     public final double minTransfer;
     public final int roundingDigits;
     public final double minBalance;
+    private final String providerName;
     // Stores the main app
     private final DCEPlugin app;
     // Stores the Vault economy api
@@ -31,9 +32,10 @@ public class EconomyManager {
         this.app = app;
 
         // settings
-        this.minTransfer = this.app.getConfig().getDouble(Setting.ECONOMY_MIN_SEND_AMOUNT_DOUBLE.path);
-        this.roundingDigits = this.app.getConfig().getInt(Setting.ECONOMY_ACCURACY_DIGITS_INTEGER.path);
-        this.minBalance = this.app.getConfig().getDouble(Setting.ECONOMY_MIN_BALANCE_DOUBLE.path);
+        this.minTransfer = this.app.getConfigManager().getDouble(Setting.ECONOMY_MIN_SEND_AMOUNT_DOUBLE);
+        this.roundingDigits = this.app.getConfigManager().getInt(Setting.ECONOMY_ACCURACY_DIGITS_INTEGER);
+        this.minBalance = this.app.getConfigManager().getDouble(Setting.ECONOMY_MIN_BALANCE_DOUBLE);
+        this.providerName = this.app.getConfigManager().getString(Setting.ECONOMY_PROVIDER_STRING);
     }
 
     public Collection<RegisteredServiceProvider<Economy>> getProviders() {
@@ -41,6 +43,11 @@ public class EconomyManager {
     }
 
     public RegisteredServiceProvider<Economy> getPrimaryProvider() {
+        for (RegisteredServiceProvider<Economy> provider : this.getProviders()) {
+            if (provider.getPlugin().getName().equals(this.providerName)) {
+                return provider;
+            }
+        }
         return this.app.getServer().getServicesManager().getRegistration(Economy.class);
     }
 
@@ -76,7 +83,7 @@ public class EconomyManager {
             }
 
             for (RegisteredServiceProvider<Economy> provider : providers) {
-                this.app.getConsole().info(String.format("Registered Economy: '%s' (primary = %s)", provider.getPlugin().getName(), provider.equals(this.getPrimaryProvider())));
+                this.app.getConsole().info(String.format("Registered Economy Provider: '%s' (primary = %s) (selected = %s)", provider.getPlugin().getName(), provider.equals(this.getPrimaryProvider()), provider.getPlugin().getName().equals(this.providerName)));
             }
             this.app.getConsole().info(String.format("Total Economy Providers: %d", providers.size()));
         }
