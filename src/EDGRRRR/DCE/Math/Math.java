@@ -1,7 +1,5 @@
 package edgrrrr.dce.math;
 
-import edgrrrr.dce.DCEPlugin;
-
 import java.util.logging.Logger;
 
 public class Math {
