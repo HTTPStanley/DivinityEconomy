@@ -9,21 +9,22 @@
 # Also supports the colour characters such as &1 &2 &3 &4 &5 &6 &7...
 
 main:
-  version: 1.1.3
+  version: 1.1.5
 
 chat:
   chatDebug: false
   consolePrefix: '&b[DCE v<VERSION>] &b- '
   chatPrefix: '&b[DCE] &b- '
-  infoColour: GREEN
-  severeColour: RED
-  warnColour: YELLOW
-  debugColour: DARK_PURPLE
+  infoColour: 'GREEN'
+  severeColour: 'RED'
+  warnColour: 'YELLOW'
+  debugColour: 'DARK_PURPLE'
 
 economy:
   minAccountBalance: 0.0
   minSendAmount: 0.01
   roundingDigits: 2
+  preferredProvider: 'DCE'
 
 market:
   saveTimer: 600
