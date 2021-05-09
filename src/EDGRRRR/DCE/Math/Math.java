@@ -1,5 +1,9 @@
 package edgrrrr.dce.math;
 
+import edgrrrr.dce.DCEPlugin;
+
+import java.util.logging.Logger;
+
 public class Math {
     /**
      * Calculates the number of ticks from the seconds provided
@@ -84,11 +88,12 @@ public class Math {
             if (marketInflation) {
                 inflation = getInflation(defaultMarketSize, marketSize);
             }
-            value += getPrice(baseQuantity, currentQuantity, scale, inflation);
             if (purchase) {
+                value += getPrice(baseQuantity, currentQuantity, scale, inflation);
                 if (dynamic) currentQuantity -= 1;
                 if (marketInflation) marketSize -= 1;
             } else {
+                value += getPrice(baseQuantity, currentQuantity+1, scale, inflation);
                 if (dynamic) currentQuantity += 1;
                 if (marketInflation) marketSize += 1;
             }
@@ -116,9 +121,48 @@ public class Math {
         // Inflation works by calculating the default total items and dividing it by the new total items
         // This results in an increase in price when there are less items in the market than default
         // Or a decrease in price when there are more items in the market than default
+
+        //Don't accept negatives!
+        // I guess this counts as a fix?
+        boolean error = false;
+        String et = "n/a";
+        if (baseQuantity < 0) {
+            baseQuantity = 1;
+            error = true;
+            et = "BQ";
+        }
+        if (currentQuantity < 0) {
+            currentQuantity = 1;
+            error = true;
+            et = "CQ";
+        }
+        if (scale < 0) {
+            scale = 1d;
+            error = true;
+            et = "S";
+        }
+        if (inflation < 0) {
+            inflation = 1d;
+            error = true;
+            et = "I";
+        }
+
         if (currentQuantity == 0) currentQuantity+=1;
         double value = (getScale(baseQuantity, currentQuantity)) * scale * inflation;
-        if (value < 0) value = -value;
+
+        // TODO: fix this properly? cunt.
+        // YEAH WELL I DON'T FUCKING KNOW WHAT IS WRONG OK??
+        // LOOK, I'VE ADDED THE "DON'T ACCEPT NEGATIVES" CODE, WHICH SHOULD TECHNICALLY FIX THIS????
+        // BUT TECHNICALLY IF THE CASE ARISES WHEREBY ONE OF THE GIVEN VARIABLES ARE NEGATIVE, THERE IS AN ISSUE ELSEWHERE.
+        if (value < 0) {
+            value = -value;
+            error = true;
+        }
+        // TODO: Or don't. lazy dick face.
+
+        if (error) {
+            Logger.getLogger("Minecraft").warning("A math error has occurred in getPrice. (%s) Show this to a developer.");
+        }
         return value;
     }
 
