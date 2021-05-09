@@ -27,12 +27,14 @@ public class ConfigManager implements ConfigManagerAPI {
         // Get the config and plugin versions
         String configVersion = this.app.getConfig().getString(Setting.MAIN_VERSION_STRING.path);
         String pluginVersion = this.app.getConfig().getDefaults().getString(Setting.MAIN_VERSION_STRING.path);
-        this.logger.info("Detected Config Version: " + configVersion + " & Plugin Version: " + pluginVersion);
+
+        this.logger.info(String.format("Detected config versions local/plugin | %s/%s", configVersion, pluginVersion));
         // Updates the config by copying defaults over
         // updates the version and saves.
         if (!(configVersion.equals(pluginVersion))) {
-            this.logger.info("Updating config with defaults, your settings may need updating.");
+            this.logger.info("Updating config with new defaults, your settings may need updating.");
             this.app.getConfig().options().copyDefaults(true);
+            this.app.getConfig().addDefaults(this.app.getConfig().getDefaults());
             this.app.getConfig().set(Setting.MAIN_VERSION_STRING.path, pluginVersion);
             this.app.saveConfig();
         }
