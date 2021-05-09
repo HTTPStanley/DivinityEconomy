@@ -43,6 +43,7 @@ public enum Setting {
 	ECONOMY_MIN_SEND_AMOUNT_DOUBLE    ( SECTION_ECONOMY.path + ".minSendAmount"     ),
 	ECONOMY_ACCURACY_DIGITS_INTEGER   ( SECTION_ECONOMY.path + ".roundingDigits"    ),
 	ECONOMY_MIN_BALANCE_DOUBLE        ( SECTION_ECONOMY.path + ".minAccountBalance" ),
+	ECONOMY_PROVIDER_STRING        ( SECTION_ECONOMY.path + ".preferredProvider" ),
 
 	//Market Settings
 	MARKET_SAVE_TIMER_INTEGER   		     ( SECTION_MARKET.path + ".saveTimer"              ),
