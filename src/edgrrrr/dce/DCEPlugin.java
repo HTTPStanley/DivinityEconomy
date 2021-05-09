@@ -229,19 +229,13 @@ public class DCEPlugin extends JavaPlugin {
         Setting[] marketSettings = {Setting.MARKET_SAVE_TIMER_INTEGER};
 
         Setting[] materialSettings = {Setting.MARKET_MATERIALS_ENABLE_BOOLEAN, Setting.MARKET_MATERIALS_BASE_QUANTITY_INTEGER, Setting.MARKET_MATERIALS_BUY_TAX_FLOAT,
-                Setting.MARKET_MATERIALS_SELL_TAX_FLOAT};
+                Setting.MARKET_MATERIALS_SELL_TAX_FLOAT, Setting.MARKET_MATERIALS_DYN_PRICING_BOOLEAN, Setting.MARKET_MATERIALS_WHOLE_MARKET_INF_BOOLEAN, Setting.MARKET_MATERIALS_ITEM_DMG_SCALING_BOOLEAN};
 
         Setting[] enchantSettings = {Setting.MARKET_ENCHANTS_ENABLE_BOOLEAN, Setting.MARKET_ENCHANTS_BASE_QUANTITY_INTEGER, Setting.MARKET_ENCHANTS_BUY_TAX_FLOAT,
-                Setting.MARKET_ENCHANTS_SELL_TAX_FLOAT};
+                Setting.MARKET_ENCHANTS_SELL_TAX_FLOAT, Setting.MARKET_ENCHANTS_DYN_PRICING_BOOLEAN, Setting.MARKET_ENCHANTS_WHOLE_MARKET_INF_BOOLEAN};
 
-        Setting[] commandSettings = {Setting.COMMAND_PING_ENABLE_BOOLEAN, Setting.COMMAND_BALANCE_ENABLE_BOOLEAN, Setting.COMMAND_SET_BALANCE_ENABLE_BOOLEAN, Setting.COMMAND_EDIT_BALANCE_ENABLE_BOOLEAN,
-                Setting.COMMAND_CLEAR_BALANCE_ENABLE_BOOLEAN, Setting.COMMAND_BALANCE_ENABLE_BOOLEAN, Setting.COMMAND_SEND_CASH_ENABLE_BOOLEAN, Setting.COMMAND_BUY_ITEM_ENABLE_BOOLEAN, Setting.COMMAND_SELL_ITEM_ENABLE_BOOLEAN,
-                Setting.COMMAND_HAND_SELL_ITEM_ENABLE_BOOLEAN, Setting.COMMAND_HAND_BUY_ITEM_ENABLE_BOOLEAN, Setting.COMMAND_VALUE_ENABLE_BOOLEAN, Setting.COMMAND_HAND_VALUE_ENABLE_BOOLEAN,
-                Setting.COMMAND_INFO_ENABLE_BOOLEAN, Setting.COMMAND_HAND_INFO_ENABLE_BOOLEAN, Setting.COMMAND_READ_MAIL_ENABLE_BOOLEAN, Setting.COMMAND_CLEAR_MAIL_ENABLE_BOOLEAN, Setting.COMMAND_E_SELL_ENABLE_BOOLEAN,
-                Setting.COMMAND_E_BUY_ENABLE_BOOLEAN, Setting.COMMAND_E_VALUE_ENABLE_BOOLEAN, Setting.COMMAND_E_INFO_ENABLE_BOOLEAN, Setting.COMMAND_RELOAD_ENCHANTS_ENABLE_BOOLEAN, Setting.COMMAND_RELOAD_MATERIALS_ENABLE_BOOLEAN };
-
-        String[] settingGroups = {"Chat", "Economy", "Market", "|-Materials", "|-Enchants", "Commands"};
-        Setting[][] settings = {chatSettings, economySettings, marketSettings, materialSettings, enchantSettings, commandSettings};
+        String[] settingGroups = {"Chat", "Economy", "Market", "|-Materials", "|-Enchants"};
+        Setting[][] settings = {chatSettings, economySettings, marketSettings, materialSettings, enchantSettings};
 
         this.console.debug("===Describe===");
         this.console.debug("Settings:");
