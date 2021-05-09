@@ -33,7 +33,7 @@ market:
     baseQuantity: 1000000
     buyTax: 0.3
     sellTax: 0.2
-    wholeMarketInflation: true
+    wholeMarketInflation: false
     dynamicPricing: true
 
   materials:
