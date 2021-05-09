@@ -90,7 +90,7 @@ public class EnchantHandBuy extends DivinityCommandEnchant {
                 this.app.getEconomyManager().setCash(sender, startingBalance);
             } else {
                 this.app.getConsole().logPurchase(sender, enchantLevels, valueResponse.value, enchantName);
-                this.app.getEnchantmentManager().editQuantity(enchantData, -enchantLevels);
+                this.app.getEnchantmentManager().editLevelQuantity(enchantData, -enchantLevels);
             }
         }
         return true;

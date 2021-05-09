@@ -429,9 +429,23 @@ public class EnchantmentManager {
      * @param quantity - The quantity to edit by. Can be negative.
      */
     public void editQuantity(EnchantData enchantData, int quantity) {
-        quantity = EnchantData.levelsToBooks(quantity);
         this.editTotalEnchants(quantity);
         enchantData.editQuantity(quantity);
+    }
+
+    /**
+     * Edits the quantity of an enchant & the total quantity of enchants
+     * @param enchantData - The enchant to edit
+     * @param levels - The quantity to edit by, in levels. Can be negative.
+     */
+    public void editLevelQuantity(EnchantData enchantData, int levels) {
+        int books = 0;
+        if (levels > 0) {
+            books = EnchantData.levelsToBooks(levels);
+        } else {
+            books = -EnchantData.levelsToBooks(-levels);
+        }
+        this.editQuantity(enchantData, books);
     }
 
     /**

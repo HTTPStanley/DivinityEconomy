@@ -40,7 +40,7 @@ public class SetStock extends DivinityCommand {
 
             default:
                 this.app.getConsole().usage(sender, CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
-                break;
+                return true;
         }
 
         // Ensure material exists

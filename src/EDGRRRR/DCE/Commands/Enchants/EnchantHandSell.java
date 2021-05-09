@@ -96,7 +96,7 @@ public class EnchantHandSell extends DivinityCommandEnchant {
             } else {
                 for (String enchantID : multiValueResponse.getItemIds()) {
                     EnchantData enchantmentData = this.app.getEnchantmentManager().getEnchant(enchantID);
-                    this.app.getEnchantmentManager().editQuantity(enchantmentData, multiValueResponse.quantities.get(enchantID));
+                    this.app.getEnchantmentManager().editLevelQuantity(enchantmentData, multiValueResponse.quantities.get(enchantID));
                     this.app.getEnchantmentManager().removeEnchantLevelsFromItem(heldItem, enchantmentData.getEnchantment(), multiValueResponse.quantities.get(enchantID));
                 }
                 this.app.getEconomyManager().addCash(sender, multiValueResponse.getTotalValue());
@@ -132,7 +132,7 @@ public class EnchantHandSell extends DivinityCommandEnchant {
 
             // Edit enchant quantity & log
             if (economyResponse.transactionSuccess()) {
-                this.app.getEnchantmentManager().editQuantity(enchantData, enchantLevels);
+                this.app.getEnchantmentManager().editLevelQuantity(enchantData, enchantLevels);
                 this.app.getConsole().logSale(sender, enchantLevels, valueResponse.value, enchantName);
             }
             // Failed funding of account, refund enchant & log
