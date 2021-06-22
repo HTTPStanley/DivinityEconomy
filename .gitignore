@@ -213,3 +213,7 @@ out/production/DCE/edgrrrr/de/response/Response.class
 out/production/DCE/edgrrrr/de/response/ValueResponse.class
 out/production/DCE/edgrrrr/de/utils/ArrayUtils.class
 DCE.jar
+out/production/DCE/edgrrrr/de/commands/market/Buy.class
+out/production/DCE/edgrrrr/de/commands/market/BuyTC.class
+out/production/DCE/edgrrrr/de/commands/market/Sell.class
+out/production/DCE/edgrrrr/de/commands/market/SellTC.class
