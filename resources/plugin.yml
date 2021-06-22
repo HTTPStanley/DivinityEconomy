@@ -1,9 +1,9 @@
-name: DCE
-prefix: DCE
-main: edgrrrr.dce.DCEPlugin
-version: 1.1.0
+name: DE
+prefix: DE
+main: edgrrrr.de.DEPlugin
+version: 1.2.117
 author: EDGRRRR
-description: DivinityCraft Economy plugin.
+description: DivinityEconomy
 api-version: 1.16
 depend: []
 soft-depend: []
