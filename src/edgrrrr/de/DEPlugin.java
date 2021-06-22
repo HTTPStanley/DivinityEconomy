@@ -112,11 +112,11 @@ public class DEPlugin extends JavaPlugin {
             this.getCommand("clearbal").setExecutor(new ClearBal(this));
             this.getCommand("clearbal").setTabCompleter(new ClearBalTC(this));
 
-            this.getCommand("buy").setExecutor(new BuyItem(this));
-            this.getCommand("buy").setTabCompleter(new BuyItemTC(this));
+            this.getCommand("buy").setExecutor(new Buy(this));
+            this.getCommand("buy").setTabCompleter(new BuyTC(this));
 
-            this.getCommand("sell").setExecutor(new SellItem(this));
-            this.getCommand("sell").setTabCompleter(new SellItemTC(this));
+            this.getCommand("sell").setExecutor(new Sell(this));
+            this.getCommand("sell").setTabCompleter(new SellTC(this));
 
             this.getCommand("value").setExecutor(new Value(this));
             this.getCommand("value").setTabCompleter(new ValueTC(this));
