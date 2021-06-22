@@ -46,10 +46,18 @@ public class HandSellTC extends DivinityCommandMaterialsTC {
                 // 1 args
                 // return max stack size for the material given
                 case 1:
+                    int heldAmount = heldItem.getAmount();
+                    int maxStack = materialData.getMaterial().getMaxStackSize();
+                    int totalCount = PlayerInventoryManager.getMaterialCount(sender, materialData.getMaterial());
+
+                    int tempAmount;
+                    if (maxStack < totalCount) tempAmount = maxStack;
+                    else tempAmount = heldAmount;
+
                     strings = new String[]{
-                            String.valueOf(heldItem.getAmount()),
-                            String.valueOf(materialData.getMaterial().getMaxStackSize()),
-                            String.valueOf(PlayerInventoryManager.getMaterialCount(sender, materialData.getMaterial()))
+                            String.valueOf(heldAmount),
+                            String.valueOf(tempAmount),
+                            String.valueOf(maxStack)
                     };
                     break;
 
