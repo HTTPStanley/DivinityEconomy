@@ -49,16 +49,22 @@ public class SellItemTC extends DivinityCommandMaterialsTC {
             // return amount in user inventory
             case 2:
                 materialData = this.app.getMaterialManager().getMaterial(args[0]);
-                int stackSize = 64;
-                int inventoryCount = 1;
-                if (materialData != null) {
+                if (materialData == null) {
+                    strings = new String[]{
+                            "Invalid material entered."
+                    };
+                } else {
                     Material material = materialData.getMaterial();
-                    stackSize = material.getMaxStackSize();
-                    inventoryCount = PlayerInventoryManager.getMaterialCount(sender, material);
+                    int inventoryCount = PlayerInventoryManager.getMaterialCount(sender, material);
+                    int tempAmount = material.getMaxStackSize();
+                    if (inventoryCount < tempAmount) {
+                        tempAmount = inventoryCount;
+                    }
+                    strings = new String[] {
+                            String.valueOf(tempAmount), String.valueOf(inventoryCount)
+                    };
                 }
-                strings = new String[]{
-                        String.valueOf(stackSize), String.valueOf(inventoryCount)
-                };
+
                 break;
 
             case 3:
