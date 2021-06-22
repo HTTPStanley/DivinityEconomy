@@ -67,8 +67,7 @@ public class HandValue extends DivinityCommandMaterials {
         // Ensure user is holding an item
         if (heldItem == null) {
             this.app.getConsole().send(sender, CommandResponse.InvalidItemHeld.defaultLogLevel, CommandResponse.InvalidItemHeld.message);
-            return false;
-
+            return true;
         }
 
         Material material = heldItem.getType();
