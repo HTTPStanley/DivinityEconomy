@@ -2,19 +2,19 @@
 # DCE Github: https://github.com/EDGRRRRs/DCE
 # Plugin author: EDGRRRR
 # Author Github: https://github.com/EDGRRRRs
-# Other helpers:
+# Helpers:
 #   - ExRider111Ryan: https://github.com/RyanA3
 #
 # Colours can be found here: https://jd.bukkit.org/org/bukkit/ChatColor.html
 # Also supports the colour characters such as &1 &2 &3 &4 &5 &6 &7...
 
 main:
-  version: 1.1.5
+  version: 1.2.117
 
 chat:
   chatDebug: false
-  consolePrefix: '&b[DCE v<VERSION>] &b- '
-  chatPrefix: '&b[DCE] &b- '
+  consolePrefix: '&b[DE v<VERSION>] &b- '
+  chatPrefix: '&b[DE] &b- '
   infoColour: 'GREEN'
   severeColour: 'RED'
   warnColour: 'YELLOW'
@@ -22,9 +22,9 @@ chat:
 
 economy:
   minAccountBalance: 0.0
-  minSendAmount: 0.01
+  minSendAmount: 0.001
   roundingDigits: 2
-  preferredProvider: 'DCE'
+  preferredProvider: 'DE'
 
 market:
   saveTimer: 600
