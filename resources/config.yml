@@ -13,8 +13,8 @@ main:
 
 chat:
   chatDebug: false
-  consolePrefix: '&b[DE v<VERSION>] &b- '
-  chatPrefix: '&b[DE] &b- '
+  consolePrefix: '&b[DivinityEconomy v<VERSION>] &b- '
+  chatPrefix: '&b[D.E] &b- '
   infoColour: 'GREEN'
   severeColour: 'RED'
   warnColour: 'YELLOW'
@@ -24,7 +24,7 @@ economy:
   minAccountBalance: 0.0
   minSendAmount: 0.001
   roundingDigits: 2
-  preferredProvider: 'DE'
+  preferredProvider: 'DivinityEconomy'
 
 market:
   saveTimer: 600
