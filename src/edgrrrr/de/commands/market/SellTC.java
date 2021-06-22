@@ -6,22 +6,24 @@ import edgrrrr.de.commands.DivinityCommandMaterialsTC;
 import edgrrrr.de.materials.MaterialData;
 import edgrrrr.de.math.Math;
 import edgrrrr.de.player.PlayerInventoryManager;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
 import java.util.List;
 
 /**
- * A tab completer for the buy item command
+ * A tab completer for the sell item command
  */
-public class BuyItemTC extends DivinityCommandMaterialsTC {
+public class SellTC extends DivinityCommandMaterialsTC {
+
     /**
      * Constructor
      *
      * @param app
      */
-    public BuyItemTC(DEPlugin app) {
-        super(app, false, Setting.COMMAND_BUY_ITEM_ENABLE_BOOLEAN);
+    public SellTC(DEPlugin app) {
+        super(app, false, Setting.COMMAND_SELL_ITEM_ENABLE_BOOLEAN);
     }
 
     /**
@@ -37,41 +39,47 @@ public class BuyItemTC extends DivinityCommandMaterialsTC {
         MaterialData materialData;
         switch (args.length) {
             // 1 args
-            // return names of players starting with arg
+            // return items in user inventory
             case 1:
-                strings = this.app.getMaterialManager().getMaterialNames(args[0]);
+                String[] materials = PlayerInventoryManager.getInventoryMaterials(sender);
+                strings = this.app.getMaterialManager().getMaterialAliases(materials, args[0]);
                 break;
 
             // 2 args
-            // return max stack size for the material given
+            // return amount in user inventory
             case 2:
                 materialData = this.app.getMaterialManager().getMaterial(args[0]);
-                int stackSize = 64;
-                if (materialData != null) {
-                    stackSize = materialData.getMaterial().getMaxStackSize();
+                if (materialData == null) {
+                    strings = new String[]{
+                            "Invalid material entered."
+                    };
+                } else {
+                    Material material = materialData.getMaterial();
+                    int inventoryCount = PlayerInventoryManager.getMaterialCount(sender, material);
+                    int tempAmount = material.getMaxStackSize();
+                    if (inventoryCount < tempAmount) {
+                        tempAmount = inventoryCount;
+                    }
+                    strings = new String[] {
+                            String.valueOf(tempAmount), String.valueOf(inventoryCount)
+                    };
                 }
 
-                strings = new String[] {
-                        String.valueOf(stackSize),
-                        String.valueOf(PlayerInventoryManager.getAvailableSpace(sender, materialData.getMaterial()))
-                };
                 break;
 
-            // 3 args
-            // If uses clicks space after number, returns the value of the amount of item given
             case 3:
                 materialData = this.app.getMaterialManager().getMaterial(args[0]);
                 String value = "unknown";
                 if (materialData != null) {
-                    value = String.format("£%,.2f", this.app.getMaterialManager().calculatePrice(Math.getInt(args[1]), materialData.getQuantity(), this.app.getMaterialManager().materialBuyTax, true));
+                    Material material = materialData.getMaterial();
+                    value = String.format("£%,.2f", this.app.getMaterialManager().getSellValue(PlayerInventoryManager.getMaterialSlotsToCount(sender, material, Math.getInt(args[1]))).value);
                 }
-
                 strings = new String[] {
                         String.format("Value: %s", value)
                 };
                 break;
 
-            // else
+
             default:
                 strings = new String[0];
                 break;
@@ -91,5 +99,3 @@ public class BuyItemTC extends DivinityCommandMaterialsTC {
         return null;
     }
 }
-
-

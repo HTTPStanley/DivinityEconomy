@@ -15,15 +15,15 @@ import org.bukkit.inventory.ItemStack;
 /**
  * A command for selling items to the market
  */
-public class SellItem extends DivinityCommandMaterials {
+public class Sell extends DivinityCommandMaterials {
 
     /**
      * Constructor
      *
      * @param app
      */
-    public SellItem(DEPlugin app) {
-        super(app, "sellitem", false, Setting.COMMAND_SELL_ITEM_ENABLE_BOOLEAN);
+    public Sell(DEPlugin app) {
+        super(app, "sell", false, Setting.COMMAND_SELL_ITEM_ENABLE_BOOLEAN);
     }
 
     /**

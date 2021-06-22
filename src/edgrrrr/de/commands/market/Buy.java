@@ -14,14 +14,14 @@ import org.bukkit.inventory.ItemStack;
 /**
  * A command for buying items from the market
  */
-public class BuyItem extends DivinityCommandMaterials {
+public class Buy extends DivinityCommandMaterials {
     /**
      * Constructor
      *
      * @param app
      */
-    public BuyItem(DEPlugin app) {
-        super(app, "buyitem", false, Setting.COMMAND_BUY_ITEM_ENABLE_BOOLEAN);
+    public Buy(DEPlugin app) {
+        super(app, "buy", false, Setting.COMMAND_BUY_ITEM_ENABLE_BOOLEAN);
     }
 
     /**
