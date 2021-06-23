@@ -7,9 +7,11 @@ import edgrrrr.de.commands.DivinityCommandMaterialsTC;
 import edgrrrr.de.materials.MaterialData;
 import edgrrrr.de.math.Math;
 import edgrrrr.de.player.PlayerInventoryManager;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -46,19 +48,19 @@ public class HandSellTC extends DivinityCommandMaterialsTC {
                 // 1 args
                 // return max stack size for the material given
                 case 1:
+                    Material material = materialData.getMaterial();
+                    ArrayList<String> allStrings = new ArrayList<>();
                     int heldAmount = heldItem.getAmount();
-                    int maxStack = materialData.getMaterial().getMaxStackSize();
-                    int totalCount = PlayerInventoryManager.getMaterialCount(sender, materialData.getMaterial());
+                    int stackSize = material.getMaxStackSize();
+                    int inventoryCount = PlayerInventoryManager.getMaterialCount(sender, material);
 
-                    int tempAmount;
-                    if (maxStack < totalCount) tempAmount = maxStack;
-                    else tempAmount = heldAmount;
+                    allStrings.add(String.valueOf(heldAmount));
+                    if (stackSize < inventoryCount) {
+                        allStrings.add(String.valueOf(stackSize));
+                        allStrings.add(String.valueOf(inventoryCount));
+                    }
 
-                    strings = new String[]{
-                            String.valueOf(heldAmount),
-                            String.valueOf(tempAmount),
-                            String.valueOf(maxStack)
-                    };
+                    strings = allStrings.toArray(new String[0]);
                     break;
 
                 // 2 args
