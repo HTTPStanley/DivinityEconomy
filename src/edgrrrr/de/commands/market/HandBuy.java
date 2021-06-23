@@ -89,7 +89,7 @@ public class HandBuy extends DivinityCommandMaterials {
 
         // If user can afford & valuation was success
         if (saleResponse.transactionSuccess() && priceResponse.isSuccess()) {
-            PlayerInventoryManager.addItemsToPlayer(sender, itemStacks);
+            PlayerInventoryManager.addPlayerItems(sender, itemStacks);
             this.app.getMaterialManager().editQuantity(materialData, -amountToBuy);
 
             // Handles console, message and mail
