@@ -6,6 +6,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -15,27 +16,12 @@ public class EconomyPlayer {
     private final FileConfiguration playerConfig;
 
     private static final BigDecimal MAX_DOUBLE = new BigDecimal(String.valueOf(Double.MAX_VALUE));
+    private static final int DECIMAL_SCALE = Double.MAX_EXPONENT;
 
     public EconomyPlayer(OfflinePlayer offlinePlayer, File file, FileConfiguration playerConfig) {
         this.offlinePlayer = offlinePlayer;
         this.file = file;
         this.playerConfig = playerConfig;
-    }
-
-    private BigDecimal getNearestValue(BigDecimal value, double direction) {
-        double closestValue = value.doubleValue();
-        if (BigDecimal.valueOf(closestValue).compareTo(value) > 0){
-            closestValue = Math.nextAfter(closestValue, direction);
-        }
-        return BigDecimal.valueOf(closestValue);
-    }
-
-    private BigDecimal getNearestValueDown(BigDecimal value) {
-        return this.getNearestValue(value, Math.floor(value.doubleValue()));
-    }
-
-    private BigDecimal getNearestValueUp(BigDecimal value) {
-        return this.getNearestValue(value, Math.ceil(value.doubleValue()));
     }
 
     public boolean isLegal() {
@@ -46,9 +32,16 @@ public class EconomyPlayer {
         return this._getBalance().doubleValue();
     }
 
+    public BigDecimal scale(BigDecimal value) {
+        return value.setScale(EconomyPlayer.DECIMAL_SCALE-1, RoundingMode.DOWN).setScale(EconomyPlayer.DECIMAL_SCALE, RoundingMode.DOWN);
+    }
+
+    public BigDecimal scale(double value) {
+        return this.scale(BigDecimal.valueOf(value));
+    }
+
     private BigDecimal _getBalance() {
-        BigDecimal value = new BigDecimal(this.playerConfig.getString(EconomyFileKeys.BALANCE.key));
-        return this.getNearestValueDown(value);
+        return this.scale(new BigDecimal(this.playerConfig.getString(EconomyFileKeys.BALANCE.key)));
     }
 
     public double withdraw(double amount) {
@@ -56,8 +49,7 @@ public class EconomyPlayer {
     }
 
     private BigDecimal _withdraw(double amount) {
-        BigDecimal newAmount = this._getBalance().subtract(BigDecimal.valueOf(amount));
-        this.setBalance(this.getNearestValueDown(newAmount).doubleValue());
+        this.setBalance(this._getBalance().subtract(this.scale(amount)));
         return this._getBalance();
     }
 
@@ -66,8 +58,7 @@ public class EconomyPlayer {
     }
 
     public BigDecimal _deposit(double amount) {
-        BigDecimal newAmount = this._getBalance().add(BigDecimal.valueOf(amount));
-        this.setBalance(this.getNearestValueDown(newAmount).doubleValue());
+        this.setBalance(this._getBalance().add(this.scale(amount)));
         return this._getBalance();
     }
 
@@ -77,10 +68,6 @@ public class EconomyPlayer {
 
     public boolean canHave(double amount) {
         return EconomyPlayer.canHave(this._getBalance(), amount);
-    }
-
-    public static boolean canHave(double balance, double amount) {
-        return EconomyPlayer.canHave(BigDecimal.valueOf(balance), amount);
     }
 
     public static boolean canHave(BigDecimal balance, double amount) {
@@ -96,7 +83,7 @@ public class EconomyPlayer {
     }
 
     public void setBalance(BigDecimal balance) {
-        this.set(EconomyFileKeys.BALANCE, balance.toString());
+        this.set(EconomyFileKeys.BALANCE, this.scale(balance).toString());
     }
 
     public String getLastKnownName() {
@@ -108,7 +95,7 @@ public class EconomyPlayer {
     }
 
     public UUID getUUID() {
-        return UUID.fromString(Objects.requireNonNull(this.playerConfig.getString(EconomyFileKeys.UUID.key)));
+        return UUID.fromString(this.playerConfig.getString(EconomyFileKeys.UUID.key));
     }
 
     public void setUUID(UUID uuid) {
@@ -146,7 +133,7 @@ public class EconomyPlayer {
 
     public static EconomyPlayer create(OfflinePlayer offlinePlayer, File file, FileConfiguration fileConf, double balance) {
         EconomyPlayer economyPlayer = new EconomyPlayer(offlinePlayer, file, fileConf);
-        economyPlayer.set(EconomyFileKeys.BALANCE, balance);
+        economyPlayer.set(EconomyFileKeys.BALANCE, BigDecimal.valueOf(balance).toString());
         economyPlayer.set(EconomyFileKeys.UUID, offlinePlayer.getUniqueId().toString());
         economyPlayer.set(EconomyFileKeys.NAME, offlinePlayer.getName());
         economyPlayer.save();
