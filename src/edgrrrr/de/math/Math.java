@@ -146,7 +146,7 @@ public class Math {
         }
 
         if (currentQuantity == 0) currentQuantity+=1;
-        double value = (getScale(baseQuantity, currentQuantity)) * scale * inflation;
+        double value = ((getScale(baseQuantity, currentQuantity)) + getScale(baseQuantity, currentQuantity) * getScale(currentQuantity, baseQuantity)) * scale * inflation;
 
         // TODO: fix this properly? cunt.
         // YEAH WELL I DON'T FUCKING KNOW WHAT IS WRONG OK??
