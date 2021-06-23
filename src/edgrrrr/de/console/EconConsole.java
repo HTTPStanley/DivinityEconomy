@@ -9,8 +9,6 @@ import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 
 public class EconConsole extends Console {
     private final DEPlugin app;
