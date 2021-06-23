@@ -9,6 +9,7 @@ import edgrrrr.de.player.PlayerInventoryManager;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -55,14 +56,17 @@ public class SellTC extends DivinityCommandMaterialsTC {
                     };
                 } else {
                     Material material = materialData.getMaterial();
+                    ArrayList<String> allStrings = new ArrayList<>();
+                    int stackSize = material.getMaxStackSize();
                     int inventoryCount = PlayerInventoryManager.getMaterialCount(sender, material);
-                    int tempAmount = material.getMaxStackSize();
-                    if (inventoryCount < tempAmount) {
-                        tempAmount = inventoryCount;
+
+                    if (stackSize < inventoryCount) {
+                        allStrings.add(String.valueOf(stackSize));
                     }
-                    strings = new String[] {
-                            String.valueOf(tempAmount), String.valueOf(inventoryCount)
-                    };
+                    allStrings.add(String.valueOf(inventoryCount));
+
+                    strings = allStrings.toArray(new String[0]);
+                    break;
                 }
 
                 break;
