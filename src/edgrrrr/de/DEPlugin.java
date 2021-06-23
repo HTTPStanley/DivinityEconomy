@@ -27,6 +27,7 @@ import edgrrrr.de.mail.MailManager;
 import edgrrrr.de.materials.MaterialManager;
 import edgrrrr.de.player.PlayerManager;
 import edgrrrr.paa.playerManager.PlayerManagerAPI;
+import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -221,36 +222,15 @@ public class DEPlugin extends JavaPlugin {
      * Such as settings, the materials market variables, the enchant market variables.
      */
     public void describe() {
-        Setting[] chatSettings = {Setting.CHAT_DEBUG_OUTPUT_BOOLEAN, Setting.CHAT_PREFIX_STRING, Setting.CHAT_CONSOLE_PREFIX,
-                Setting.CHAT_INFO_COLOR, Setting.CHAT_WARNING_COLOR, Setting.CHAT_SEVERE_COLOR, Setting.CHAT_DEBUG_COLOR};
-
-        Setting[] economySettings = {Setting.ECONOMY_MIN_SEND_AMOUNT_DOUBLE, Setting.ECONOMY_ACCURACY_DIGITS_INTEGER, Setting.ECONOMY_MIN_BALANCE_DOUBLE};
-
-        Setting[] marketSettings = {Setting.MARKET_SAVE_TIMER_INTEGER};
-
-        Setting[] materialSettings = {Setting.MARKET_MATERIALS_ENABLE_BOOLEAN, Setting.MARKET_MATERIALS_BASE_QUANTITY_INTEGER, Setting.MARKET_MATERIALS_BUY_TAX_FLOAT,
-                Setting.MARKET_MATERIALS_SELL_TAX_FLOAT, Setting.MARKET_MATERIALS_DYN_PRICING_BOOLEAN, Setting.MARKET_MATERIALS_WHOLE_MARKET_INF_BOOLEAN, Setting.MARKET_MATERIALS_ITEM_DMG_SCALING_BOOLEAN};
-
-        Setting[] enchantSettings = {Setting.MARKET_ENCHANTS_ENABLE_BOOLEAN, Setting.MARKET_ENCHANTS_BASE_QUANTITY_INTEGER, Setting.MARKET_ENCHANTS_BUY_TAX_FLOAT,
-                Setting.MARKET_ENCHANTS_SELL_TAX_FLOAT, Setting.MARKET_ENCHANTS_DYN_PRICING_BOOLEAN, Setting.MARKET_ENCHANTS_WHOLE_MARKET_INF_BOOLEAN};
-
-        String[] settingGroups = {"Chat", "Economy", "Market", "|-Materials", "|-Enchants"};
-        Setting[][] settings = {chatSettings, economySettings, marketSettings, materialSettings, enchantSettings};
-
         this.console.debug("===Describe===");
         this.console.debug("Settings:");
-        for (int groupIdx=0; groupIdx < settingGroups.length; groupIdx++) {
-            this.console.debug(String.format("   %s:", settingGroups[groupIdx]));
-            for (int settingIdx=0; settingIdx < settings[groupIdx].length; settingIdx++) {
-                Setting setting = settings[groupIdx][settingIdx];
-                this.console.debug(String.format("      - %s: %s", setting.path, this.getConfig().getString(setting.path)));
-            }
-            this.console.debug("");
+        for (Setting setting : Setting.values()) {
+            Object value = this.getConfigManager().get(setting);
+            if (!(value instanceof MemorySection)) this.getConsole().debug(String.format("   - %s: '%s'", setting.path, value));
         }
         this.console.debug("");
         this.console.debug("Markets:");
         this.console.debug("   - Materials: " + this.materialManager.materials.size());
-        this.console.debug("      - Material Aliases: " + this.materialManager.aliases.size());
         this.console.debug("      - Material Market Size: " + this.materialManager.getTotalMaterials() + " / " + this.materialManager.getDefaultTotalMaterials());
         this.console.debug("      - Material Market Inflation: " + this.materialManager.getInflation() + "%");
         this.console.debug("   - Enchants: " + this.enchantmentManager.enchants.size());
