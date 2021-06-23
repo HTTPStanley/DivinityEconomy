@@ -49,12 +49,17 @@ public class BuyTC extends DivinityCommandMaterialsTC {
                 int stackSize = 64;
                 if (materialData != null) {
                     stackSize = materialData.getMaterial().getMaxStackSize();
+                    strings = new String[] {
+                            String.valueOf(stackSize),
+                            String.valueOf(PlayerInventoryManager.getAvailableSpace(sender, materialData.getMaterial()))
+                    };
+                } else {
+                    strings = new String[]{
+                        "Unknown material."
+                    };
                 }
 
-                strings = new String[] {
-                        String.valueOf(stackSize),
-                        String.valueOf(PlayerInventoryManager.getAvailableSpace(sender, materialData.getMaterial()))
-                };
+
                 break;
 
             // 3 args
