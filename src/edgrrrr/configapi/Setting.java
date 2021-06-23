@@ -38,10 +38,13 @@ public enum Setting {
 	CHAT_INFO_COLOR                   ( SECTION_CHAT.path + ".infoColour"      ),
 	CHAT_WARNING_COLOR                ( SECTION_CHAT.path + ".warnColour"   ),
 	CHAT_SEVERE_COLOR                 ( SECTION_CHAT.path + ".severeColour"    ),
+	CHAT_ECONOMY_DIGITS_INT			   ( SECTION_CHAT.path + ".moneyScale"    ),
+	CHAT_ECONOMY_PREFIX_STRING			   ( SECTION_CHAT.path + ".moneyPrefix"    ),
+	CHAT_ECONOMY_SINGULAR_STRING			   ( SECTION_CHAT.path + ".moneySingular"    ),
+	CHAT_ECONOMY_PLURAL_STRING			   ( SECTION_CHAT.path + ".moneyPlural"    ),
 
 	//Economy Settings
 	ECONOMY_MIN_SEND_AMOUNT_DOUBLE    ( SECTION_ECONOMY.path + ".minSendAmount"     ),
-	ECONOMY_ACCURACY_DIGITS_INTEGER   ( SECTION_ECONOMY.path + ".roundingDigits"    ),
 	ECONOMY_MIN_BALANCE_DOUBLE        ( SECTION_ECONOMY.path + ".minAccountBalance" ),
 	ECONOMY_PROVIDER_STRING        ( SECTION_ECONOMY.path + ".preferredProvider" ),
 
