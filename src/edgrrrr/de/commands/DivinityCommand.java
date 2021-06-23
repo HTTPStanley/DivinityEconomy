@@ -41,12 +41,12 @@ public abstract class DivinityCommand implements CommandExecutor {
         PingResponse("Pong!", LogLevel.INFO),
 
         // Balance
-        BalanceResponse("Balance: £%,.2f.", LogLevel.INFO),
-        BalanceResponseOther("%s's balance: £%,.2f.", LogLevel.INFO),
+        BalanceResponse("Balance: %s.", LogLevel.INFO),
+        BalanceResponseOther("%s's balance: %s.", LogLevel.INFO),
 
         //Stock
-        StockCountChanged("Stock level changed from %d(£%,.2f) to %d(£%,.2f).", LogLevel.INFO),
-        StockValueChanged("Stock price from £%,.2f(%d) to £%,.2f(%d).", LogLevel.INFO),
+        StockCountChanged("Stock level changed from %d(%s) to %d(%s).", LogLevel.INFO),
+        StockValueChanged("Stock price from %s(%d) to %s(%d).", LogLevel.INFO),
 
         //Mail
 

@@ -59,7 +59,7 @@ public class ESetStock extends DivinityCommand {
         int previousStock = enchantData.getQuantity();
         double previousValue = this.app.getEnchantmentManager().getUserPrice(enchantData.getQuantity());
         this.app.getEnchantmentManager().setQuantity(enchantData, stock);
-        this.app.getConsole().send(sender, CommandResponse.StockCountChanged.defaultLogLevel, String.format(CommandResponse.StockCountChanged.message, previousStock, previousValue, stock, this.app.getEnchantmentManager().getUserPrice(enchantData.getQuantity())));
+        this.app.getConsole().send(sender, CommandResponse.StockCountChanged.defaultLogLevel, String.format(CommandResponse.StockCountChanged.message, previousStock, this.app.getConsole().formatMoney(previousValue), stock, this.app.getConsole().formatMoney(this.app.getEnchantmentManager().getUserPrice(enchantData.getQuantity()))));
 
         return true;
     }

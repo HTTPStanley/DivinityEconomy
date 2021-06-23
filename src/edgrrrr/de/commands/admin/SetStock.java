@@ -59,7 +59,7 @@ public class SetStock extends DivinityCommand {
         int previousStock = materialData.getQuantity();
         double previousValue = this.app.getMaterialManager().getUserPrice(materialData.getQuantity());
         this.app.getMaterialManager().setQuantity(materialData, stock);
-        this.app.getConsole().send(sender, CommandResponse.StockCountChanged.defaultLogLevel, String.format(CommandResponse.StockCountChanged.message, previousStock, previousValue, stock, this.app.getMaterialManager().getUserPrice(materialData.getQuantity())));
+        this.app.getConsole().send(sender, CommandResponse.StockCountChanged.defaultLogLevel, String.format(CommandResponse.StockCountChanged.message, previousStock, this.app.getConsole().formatMoney(previousValue), stock, this.app.getConsole().formatMoney(this.app.getMaterialManager().getUserPrice(materialData.getQuantity()))));
 
         return true;
     }

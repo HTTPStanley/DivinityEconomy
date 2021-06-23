@@ -20,7 +20,6 @@ public class EconomyManager {
 
     // Settings
     public final double minTransfer;
-    public final int roundingDigits;
     public final double minBalance;
     private final String providerName;
     // Stores the main app
@@ -33,7 +32,6 @@ public class EconomyManager {
 
         // settings
         this.minTransfer = this.app.getConfigManager().getDouble(Setting.ECONOMY_MIN_SEND_AMOUNT_DOUBLE);
-        this.roundingDigits = this.app.getConfigManager().getInt(Setting.ECONOMY_ACCURACY_DIGITS_INTEGER);
         this.minBalance = this.app.getConfigManager().getDouble(Setting.ECONOMY_MIN_BALANCE_DOUBLE);
         this.providerName = this.app.getConfigManager().getString(Setting.ECONOMY_PROVIDER_STRING);
     }
@@ -62,7 +60,7 @@ public class EconomyManager {
      * Returns if it was successful or not.
      */
     public boolean setupEconomy() {
-        EconomyAPI economy = new EconomyAPI(this.app, this.app.getConfigManager(), this.app.getConsole(), this.app.getPlayerManager(), this.app.getConfigManager().getInt(Setting.ECONOMY_ACCURACY_DIGITS_INTEGER), "coins", "coin");
+        EconomyAPI economy = new EconomyAPI(this.app, this.app.getConfigManager(), this.app.getConsole(), this.app.getPlayerManager(), this.app.getConfigManager().getInt(Setting.CHAT_ECONOMY_DIGITS_INT), this.app.getConfigManager().getString(Setting.CHAT_ECONOMY_PLURAL_STRING), this.app.getConfigManager().getString(Setting.CHAT_ECONOMY_SINGULAR_STRING));
 
         // Look for vault
         if (this.app.getServer().getPluginManager().getPlugin("Vault") == null) {
