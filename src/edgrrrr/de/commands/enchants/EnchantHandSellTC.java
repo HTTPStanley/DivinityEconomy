@@ -10,6 +10,7 @@ import edgrrrr.de.utils.ArrayUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -43,7 +44,11 @@ public class EnchantHandSellTC extends DivinityCommandEnchantTC {
             // 1 args
             // return names of players starting with arg
             case 1:
-                strings = this.app.getEnchantmentManager().getEnchantNames(this.app.getEnchantmentManager().getEnchantNames(heldItem.getEnchantments().keySet()), args[0]);
+                String[] enchantNames = this.app.getEnchantmentManager().getEnchantNames(this.app.getEnchantmentManager().getEnchantNames(heldItem.getEnchantments().keySet()), args[0]);
+                ArrayList<String> allStrings = new ArrayList<>();
+                allStrings.add("*");
+                allStrings.addAll(Arrays.asList(enchantNames));
+                strings = allStrings.toArray(new String[0]);
                 break;
 
             // 2 args
