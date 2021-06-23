@@ -86,11 +86,11 @@ public class HandSell extends DivinityCommandMaterials {
         ValueResponse response = this.app.getMaterialManager().getSellValue(itemStacks);
 
         if (response.isSuccess()) {
-            PlayerInventoryManager.removeMaterialsFromPlayer(itemStacks);
+            PlayerInventoryManager.removePlayerItems(itemStacks);
 
             EconomyResponse economyResponse = this.app.getEconomyManager().addCash(sender, response.value);
             if (!economyResponse.transactionSuccess()) {
-                PlayerInventoryManager.addItemsToPlayer(sender, itemStacksClone);
+                PlayerInventoryManager.addPlayerItems(sender, itemStacksClone);
                 // Handles console, player message and mail
                 this.app.getConsole().logFailedSale(sender, amountToSell, materialData.getCleanName(), economyResponse.errorMessage);
             }
