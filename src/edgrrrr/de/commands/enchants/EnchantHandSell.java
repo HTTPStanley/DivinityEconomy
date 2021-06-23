@@ -44,19 +44,17 @@ public class EnchantHandSell extends DivinityCommandEnchant {
         boolean sellAllEnchants = false;
 
         switch (args.length) {
-            // If user enters only the command
-            // Sell all enchants on item
-            case 0:
-                sellAllEnchants = true;
-                sellAllLevels = true;
-                break;
-
-            // If user enters the name
-            // sell maximum of enchant given
             case 1:
                 enchantName = args[0];
-                sellAllLevels = true;
+                if (enchantName.equals("*")) {
+                    sellAllEnchants = true;
+                    sellAllLevels = true;
+                } else {
+                    this.app.getConsole().usage(sender, CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
+                    return true;
+                }
                 break;
+
 
             // If user enters name and level
             // Sell enchant level times
@@ -85,10 +83,14 @@ public class EnchantHandSell extends DivinityCommandEnchant {
             return true;
         }
 
+        // Create clone in-case of imburse error
+        ItemStack heldItemCopy = PlayerInventoryManager.cloneItem(heldItem);
+
         // If sell all enchants is true
         // Then use MultiValueResponse and use getSellValue of entire item
         // Then add quantity of each enchant / remove enchant from item
         // Then add cash
+        // if cash add fails - reimburse old item
         if (sellAllEnchants) {
             MultiValueResponse multiValueResponse = this.app.getEnchantmentManager().getSellValue(heldItem);
             if (multiValueResponse.isFailure()) {
@@ -99,8 +101,13 @@ public class EnchantHandSell extends DivinityCommandEnchant {
                     this.app.getEnchantmentManager().editLevelQuantity(enchantmentData, multiValueResponse.quantities.get(enchantID));
                     this.app.getEnchantmentManager().removeEnchantLevelsFromItem(heldItem, enchantmentData.getEnchantment(), multiValueResponse.quantities.get(enchantID));
                 }
-                this.app.getEconomyManager().addCash(sender, multiValueResponse.getTotalValue());
-                this.app.getConsole().logSale(sender, multiValueResponse.getTotalQuantity(), multiValueResponse.getTotalValue(), String.format("enchants(%s)", multiValueResponse));
+                EconomyResponse economyResponse = this.app.getEconomyManager().addCash(sender, multiValueResponse.getTotalValue());
+                if (economyResponse.transactionSuccess()) {
+                    this.app.getConsole().logSale(sender, multiValueResponse.getTotalQuantity(), multiValueResponse.getTotalValue(), String.format("enchants(%s)", multiValueResponse));
+                } else {
+                    PlayerInventoryManager.replaceItemStack(sender, heldItem, heldItemCopy);
+                    this.app.getConsole().logFailedSale(sender, multiValueResponse.getTotalQuantity(), multiValueResponse.toString("Enchants: "), multiValueResponse.errorMessage);
+                }
             }
         }
         else {
@@ -137,7 +144,7 @@ public class EnchantHandSell extends DivinityCommandEnchant {
             }
             // Failed funding of account, refund enchant & log
             else {
-                this.app.getEnchantmentManager().addEnchantToItem(heldItem, enchantData.getEnchantment(), enchantLevels);
+                PlayerInventoryManager.replaceItemStack(sender, heldItem, heldItemCopy);
                 this.app.getConsole().logFailedSale(sender, enchantLevels, economyResponse.errorMessage, enchantName);
             }
         }
