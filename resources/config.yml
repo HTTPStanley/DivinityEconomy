@@ -19,11 +19,14 @@ chat:
   severeColour: 'RED'
   warnColour: 'YELLOW'
   debugColour: 'DARK_PURPLE'
+  moneyScale: 2
+  moneyPrefix: "£"
+  moneySingular: "Divinity"
+  moneyPlural: "Divinity's"
 
 economy:
   minAccountBalance: 0.0
-  minSendAmount: 0.001
-  roundingDigits: 2
+  minSendAmount: 0.01
   preferredProvider: 'DivinityEconomy'
 
 market:
@@ -32,16 +35,16 @@ market:
   enchants:
     enable: true
     baseQuantity: 1000000
-    buyTax: 0.3
-    sellTax: 0.2
+    buyTax: 1.0
+    sellTax: 0.9
     wholeMarketInflation: false
     dynamicPricing: true
 
   materials:
     enable: true
     baseQuantity: 1000000
-    buyTax: 0.25
-    sellTax: 0.2
+    buyTax: 1.25
+    sellTax: 1.125
     wholeMarketInflation: false
     dynamicPricing: true
     itemDamageScaling: true
