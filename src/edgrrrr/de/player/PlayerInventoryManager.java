@@ -2,6 +2,7 @@ package edgrrrr.de.player;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -56,18 +57,26 @@ public class PlayerInventoryManager {
      * Removes the specified number of materials from the players inventory
      * The players inventory is parsed via itemStacks
      */
-    public static void removeMaterialsFromPlayer(Player player, Material material, int amount) {
+    public static void removePlayerMaterials(Player player, Material material, int amount) {
         ItemStack[] itemStacks = getMaterialSlotsToCount(player, material, amount);
-        removeMaterialsFromPlayer(itemStacks);
+        PlayerInventoryManager.removePlayerItems(itemStacks);
     }
 
     /**
      * Loops through the items and removes them from the players inventory
      */
-    public static void removeMaterialsFromPlayer(ItemStack[] itemStacks) {
+    public static void removePlayerItems(ItemStack[] itemStacks) {
         for (ItemStack itemStack : itemStacks) {
-            itemStack.setAmount(0);
+            PlayerInventoryManager.removePlayerItems(itemStack);
         }
+    }
+
+    /**
+     * Removes the given item stack from the given player
+     * @param itemStack
+     */
+    public static void removePlayerItems(ItemStack itemStack) {
+        itemStack.setAmount(0);
     }
 
     /**
@@ -99,12 +108,24 @@ public class PlayerInventoryManager {
         return itemStacks.toArray(new ItemStack[0]);
     }
 
+    /**
+     * Clones the given array and returns a non-related array
+     * @param itemStacks - The items to clone
+     */
     public static ItemStack[] cloneItems(ItemStack[] itemStacks) {
         ItemStack[] clones = new ItemStack[itemStacks.length];
         for (int i=0; i<itemStacks.length; i++) {
-            clones[i] = itemStacks[i].clone();
+            clones[i] = PlayerInventoryManager.cloneItem(itemStacks[i]);
         }
         return clones;
+    }
+
+    /**
+     * Clones the given itemstack object.
+     * @param itemStack - The itemstack to clone
+     */
+    public static ItemStack cloneItem(ItemStack itemStack) {
+        return itemStack.clone();
     }
 
     /**
@@ -155,9 +176,9 @@ public class PlayerInventoryManager {
      * @param amount   - The amount to add
      * @return ItemStack[]
      */
-    public static ItemStack[] addItemsToPlayer(Player player, Material material, int amount) {
+    public static ItemStack[] addPlayerMaterials(Player player, Material material, int amount) {
         ItemStack[] itemStacks = createItemStacks(material, amount);
-        addItemsToPlayer(player, itemStacks);
+        addPlayerItems(player, itemStacks);
         return itemStacks;
     }
 
@@ -168,10 +189,21 @@ public class PlayerInventoryManager {
      * @param player     - The player to add the materials to
      * @param itemStacks - The itemStacks to add
      */
-    public static void addItemsToPlayer(Player player, ItemStack[] itemStacks) {
+    public static void addPlayerItems(Player player, ItemStack[] itemStacks) {
+        Inventory inventory = player.getInventory();
         for (ItemStack itemStack : itemStacks) {
-            player.getInventory().addItem(itemStack);
+            inventory.addItem(itemStack);
         }
+    }
+
+    /**
+     * Adds the itemstack to the player
+     * Note that this does not calculate if all of the materials will fit in the players inventory
+     * @param player - The player to add the items to
+     * @param itemStack - The itemstacks to add
+     */
+    public static void addPlayerItems(Player player, ItemStack itemStack) {
+        player.getInventory().addItem(itemStack);
     }
 
     /**
@@ -261,5 +293,27 @@ public class PlayerInventoryManager {
         availableSpace += emptySlots * material.getMaxStackSize();
 
         return availableSpace;
+    }
+
+    /**
+     * Replaces the itemstack1 with the itemstack2
+     * @param player
+     * @param itemStack1
+     * @param itemStack2
+     */
+    public static void replaceItemStack(Player player, ItemStack itemStack1, ItemStack itemStack2) {
+        PlayerInventoryManager.removePlayerItems(itemStack1);
+        PlayerInventoryManager.addPlayerItems(player, itemStack2);
+    }
+
+    /**
+     * Replaces the itemstacks1 with the itemstacks2
+     * @param player
+     * @param itemStacks1
+     * @param itemStacks2
+     */
+    public static void replaceItemStacks(Player player, ItemStack[] itemStacks1, ItemStack[] itemStacks2) {
+        PlayerInventoryManager.removePlayerItems(itemStacks1);
+        PlayerInventoryManager.addPlayerItems(player, itemStacks2);
     }
 }
