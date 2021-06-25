@@ -9,12 +9,12 @@
 # Also supports the colour characters such as &1 &2 &3 &4 &5 &6 &7...
 
 main:
-  version: 1.3.117
+  version: 1.4.117
 
 chat:
   chatDebug: false
-  consolePrefix: '&b[DivinityEconomy v<VERSION>] &b- '
-  chatPrefix: '&b[D.E] &b- '
+  consolePrefix: '&b[DivinityEconomy v<VERSION>]&9> '
+  chatPrefix: '&b[D.E]&9> '
   infoColour: 'GREEN'
   severeColour: 'RED'
   warnColour: 'YELLOW'

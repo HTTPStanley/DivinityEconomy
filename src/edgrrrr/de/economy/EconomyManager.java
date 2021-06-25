@@ -1,10 +1,9 @@
 package edgrrrr.de.economy;
 
-import edgrrrr.configapi.Setting;
 import edgrrrr.de.DEPlugin;
+import edgrrrr.de.DivinityModule;
+import edgrrrr.de.config.Setting;
 import edgrrrr.de.response.EconomyTransferResponse;
-import edgrrrr.vea.economy.EconomyAPI;
-import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import net.milkbowl.vault.economy.EconomyResponse.ResponseType;
 import org.bukkit.OfflinePlayer;
@@ -16,41 +15,58 @@ import java.util.Collection;
 /**
  * An economy manager to simplify tasks for managing the player economy, works with Vault Economy.
  */
-public class EconomyManager {
+public class EconomyManager extends DivinityModule {
 
     // Settings
-    public final double minTransfer;
-    public final double minBalance;
-    private final String providerName;
-    // Stores the main app
-    private final DEPlugin app;
+    public double minTransfer;
+    public double minBalance;
+    private String providerName;
+
     // Stores the Vault economy api
-    private Economy economy;
+    private net.milkbowl.vault.economy.Economy economy;
 
-    public EconomyManager(DEPlugin app) {
-        this.app = app;
+    public EconomyManager(DEPlugin main) {
+        super(main);
+    }
 
+    /**
+     * Initialisation of the object
+     */
+    @Override
+    public void init() {
         // settings
-        this.minTransfer = this.app.getConfigManager().getDouble(Setting.ECONOMY_MIN_SEND_AMOUNT_DOUBLE);
-        this.minBalance = this.app.getConfigManager().getDouble(Setting.ECONOMY_MIN_BALANCE_DOUBLE);
-        this.providerName = this.app.getConfigManager().getString(Setting.ECONOMY_PROVIDER_STRING);
+        this.minTransfer = this.getConfig().getDouble(Setting.ECONOMY_MIN_SEND_AMOUNT_DOUBLE);
+        this.minBalance = this.getConfig().getDouble(Setting.ECONOMY_MIN_BALANCE_DOUBLE);
+        this.providerName = this.getConfig().getString(Setting.ECONOMY_PROVIDER_STRING);
+
+        if (!this.setupEconomy()) {
+            this.getMain().shutdown();
+        }
     }
 
-    public Collection<RegisteredServiceProvider<Economy>> getProviders() {
-        return this.app.getServer().getServicesManager().getRegistrations(Economy.class);
+    /**
+     * Shutdown of the object
+     */
+    @Override
+    public void deinit() {
+
     }
 
-    public RegisteredServiceProvider<Economy> getPrimaryProvider() {
-        for (RegisteredServiceProvider<Economy> provider : this.getProviders()) {
+    public Collection<RegisteredServiceProvider<net.milkbowl.vault.economy.Economy>> getProviders() {
+        return this.getMain().getServer().getServicesManager().getRegistrations(net.milkbowl.vault.economy.Economy.class);
+    }
+
+    public RegisteredServiceProvider<net.milkbowl.vault.economy.Economy> getPrimaryProvider() {
+        for (RegisteredServiceProvider<net.milkbowl.vault.economy.Economy> provider : this.getProviders()) {
             if (provider.getPlugin().getName().equals(this.providerName)) {
                 return provider;
             }
         }
-        return this.app.getServer().getServicesManager().getRegistration(Economy.class);
+        return this.getMain().getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
     }
 
-    public Collection<RegisteredServiceProvider<Economy>> setProvider(Economy economy) {
-        this.app.getServer().getServicesManager().register(Economy.class, economy, this.app, ServicePriority.Normal);
+    public Collection<RegisteredServiceProvider<net.milkbowl.vault.economy.Economy>> setProvider(net.milkbowl.vault.economy.Economy economy) {
+        this.getMain().getServer().getServicesManager().register(net.milkbowl.vault.economy.Economy.class, economy, this.getMain(), ServicePriority.Normal);
         return this.getProviders();
     }
 
@@ -60,30 +76,30 @@ public class EconomyManager {
      * Returns if it was successful or not.
      */
     public boolean setupEconomy() {
-        EconomyAPI economy = new EconomyAPI(this.app, this.app.getConfigManager(), this.app.getConsole(), this.app.getPlayerManager(), this.app.getConfigManager().getInt(Setting.CHAT_ECONOMY_DIGITS_INT), this.app.getConfigManager().getString(Setting.CHAT_ECONOMY_PLURAL_STRING), this.app.getConfigManager().getString(Setting.CHAT_ECONOMY_SINGULAR_STRING));
+        Economy economy = new Economy(this.getMain(), this.getConfig(), this.getConsole(), this.getPlayer(), this.getConfig().getInt(Setting.CHAT_ECONOMY_DIGITS_INT), this.getConfig().getString(Setting.CHAT_ECONOMY_PLURAL_STRING), this.getConfig().getString(Setting.CHAT_ECONOMY_SINGULAR_STRING));
 
         // Look for vault
-        if (this.app.getServer().getPluginManager().getPlugin("Vault") == null) {
-            this.app.getConsole().warn("No plugin 'Vault' detected, this will likely cause issues with plugins not cooperating.");
+        if (this.getMain().getServer().getPluginManager().getPlugin("Vault") == null) {
+            this.getConsole().warn("No plugin 'Vault' detected, this will likely cause issues with plugins not cooperating.");
             this.economy = economy;
 
         } else {
-            this.app.getConsole().info("Vault has been detected.");
+            this.getConsole().info("Vault has been detected.");
 
 
             // Get the service provider
-            Collection<RegisteredServiceProvider<Economy>> providers = this.setProvider(economy);
+            Collection<RegisteredServiceProvider<net.milkbowl.vault.economy.Economy>> providers = this.setProvider(economy);
             if (providers.size() == 0) {
-                this.app.getConsole().severe("Could not register Economy.");
+                this.getConsole().severe("Could not register Economy.");
                 return false;
             } else {
                 this.economy = this.getPrimaryProvider().getProvider();
             }
 
-            for (RegisteredServiceProvider<Economy> provider : providers) {
-                this.app.getConsole().info(String.format("Registered Economy Provider: '%s' (primary = %s) (selected = %s)", provider.getPlugin().getName(), provider.equals(this.getPrimaryProvider()), provider.getPlugin().getName().equals(this.providerName)));
+            for (RegisteredServiceProvider<net.milkbowl.vault.economy.Economy> provider : providers) {
+                this.getConsole().info(String.format("Registered Economy Provider: '%s' (primary = %s) (selected = %s)", provider.getPlugin().getName(), provider.equals(this.getPrimaryProvider()), provider.getPlugin().getName().equals(this.providerName)));
             }
-            this.app.getConsole().info(String.format("Total Economy Providers: %d", providers.size()));
+            this.getConsole().info(String.format("Total Economy Providers: %d", providers.size()));
         }
 
         // return if economy was gotten successfully.
@@ -95,7 +111,7 @@ public class EconomyManager {
      *
      * @return Economy
      */
-    public Economy getEconomy() {
+    public net.milkbowl.vault.economy.Economy getVaultEconomy() {
         return this.economy;
     }
 
@@ -115,9 +131,9 @@ public class EconomyManager {
      * @param amount  - The amount
      */
     public EconomyResponse addCash(OfflinePlayer oPlayer, double amount) {
-        this.app.getConsole().debug(String.format("ADD REQUEST FOR %s £%,.2f", oPlayer.getName(), amount));
+        this.getConsole().debug(String.format("ADD REQUEST FOR %s £%,.2f", oPlayer.getName(), amount));
         EconomyResponse response = this.economy.depositPlayer(oPlayer, amount);
-        this.app.getConsole().debug(String.format("ADD RESULT: %s %s", response.transactionSuccess(), response.errorMessage));
+        this.getConsole().debug(String.format("ADD RESULT: %s %s", response.transactionSuccess(), response.errorMessage));
         return response;
     }
 
@@ -128,9 +144,9 @@ public class EconomyManager {
      * @param amount  - The amount
      */
     public EconomyResponse remCash(OfflinePlayer oPlayer, double amount) {
-        this.app.getConsole().debug(String.format("REM REQUEST FOR %s £%,.2f", oPlayer.getName(), amount));
+        this.getConsole().debug(String.format("REM REQUEST FOR %s £%,.2f", oPlayer.getName(), amount));
         EconomyResponse response = this.economy.withdrawPlayer(oPlayer, amount);
-        this.app.getConsole().debug(String.format("REM RESULT: %s %s", response.transactionSuccess(), response.errorMessage));
+        this.getConsole().debug(String.format("REM RESULT: %s %s", response.transactionSuccess(), response.errorMessage));
 
         return response;
     }
@@ -143,7 +159,7 @@ public class EconomyManager {
      * @return EconomyResponse - The result of the function
      */
     public EconomyResponse setCash(OfflinePlayer oPlayer, double amount) {
-        this.app.getConsole().debug(String.format("SET REQUEST FOR %s £%,.2f", oPlayer.getName(), amount));
+        this.getConsole().debug(String.format("SET REQUEST FOR %s £%,.2f", oPlayer.getName(), amount));
         double balance = this.getBalance(oPlayer);
         double difference = amount - balance;
         EconomyResponse response;
@@ -155,7 +171,7 @@ public class EconomyManager {
             response = new EconomyResponse(difference, this.getBalance(oPlayer), ResponseType.SUCCESS, "");
         }
 
-        this.app.getConsole().debug(String.format("SET RESULT: %s %s", response.transactionSuccess(), response.errorMessage));
+        this.getConsole().debug(String.format("SET RESULT: %s %s", response.transactionSuccess(), response.errorMessage));
 
         return response;
     }

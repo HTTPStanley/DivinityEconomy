@@ -1,4 +1,4 @@
-package edgrrrr.vea.economy;
+package edgrrrr.de.economy;
 
 public enum EconomyFileKeys {
     // Keys

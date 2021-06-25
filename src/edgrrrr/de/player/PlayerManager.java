@@ -1,7 +1,7 @@
 package edgrrrr.de.player;
 
 import edgrrrr.de.DEPlugin;
-import edgrrrr.paa.playerManager.PlayerManagerAPI;
+import edgrrrr.de.DivinityModule;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
@@ -12,15 +12,30 @@ import java.util.UUID;
 /**
  * A class for managing players
  */
-public class PlayerManager implements PlayerManagerAPI {
-    private final DEPlugin app;
+public class PlayerManager extends DivinityModule {
 
     /**
      * Constructor
-     * @param app - The main class
+     * @param main - The main class
      */
-    public PlayerManager(DEPlugin app) {
-        this.app = app;
+    public PlayerManager(DEPlugin main) {
+        super(main);
+    }
+
+    /**
+     * Initialisation of the object
+     */
+    @Override
+    public void init() {
+
+    }
+
+    /**
+     * Shutdown of the object
+     */
+    @Override
+    public void deinit() {
+
     }
 
 
@@ -54,7 +69,7 @@ public class PlayerManager implements PlayerManagerAPI {
      */
     public OfflinePlayer getOfflinePlayer(String name, boolean allowFetch) {
         OfflinePlayer player = null;
-        OfflinePlayer[] oPlayers = this.app.getServer().getOfflinePlayers();
+        OfflinePlayer[] oPlayers = this.getMain().getServer().getOfflinePlayers();
         for (OfflinePlayer oPlayer : oPlayers) {
             String oPlayerName = oPlayer.getName();
             if (oPlayerName != null) {
@@ -66,7 +81,7 @@ public class PlayerManager implements PlayerManagerAPI {
         }
 
         if (allowFetch && (player == null)) {
-            player = this.app.getServer().getOfflinePlayer(name);
+            player = this.getMain().getServer().getOfflinePlayer(name);
         }
 
         return player;
@@ -82,7 +97,7 @@ public class PlayerManager implements PlayerManagerAPI {
      */
     public OfflinePlayer getOfflinePlayer(UUID uuid, boolean allowFetch) {
         OfflinePlayer player = null;
-        OfflinePlayer[] offlinePlayers = this.app.getServer().getOfflinePlayers();
+        OfflinePlayer[] offlinePlayers = this.getMain().getServer().getOfflinePlayers();
         for (OfflinePlayer oPlayer : offlinePlayers) {
             if (oPlayer.getUniqueId().equals(uuid)) {
                 player = oPlayer;
@@ -91,7 +106,7 @@ public class PlayerManager implements PlayerManagerAPI {
         }
 
         if (allowFetch && (player == null)) {
-            player = this.app.getServer().getOfflinePlayer(uuid);
+            player = this.getMain().getServer().getOfflinePlayer(uuid);
         }
 
         return player;
@@ -102,9 +117,8 @@ public class PlayerManager implements PlayerManagerAPI {
      *
      * @param startsWith
      */
-    @Override
     public OfflinePlayer[] getOfflinePlayers(String startsWith) {
-        OfflinePlayer[] offlinePlayers = this.app.getServer().getOfflinePlayers();
+        OfflinePlayer[] offlinePlayers = this.getMain().getServer().getOfflinePlayers();
         ArrayList<OfflinePlayer> players = new ArrayList<>();
         for (OfflinePlayer offlinePlayer : offlinePlayers) {
             if (offlinePlayer.getName() == null) continue;
@@ -120,7 +134,7 @@ public class PlayerManager implements PlayerManagerAPI {
      * Gets all names of offline players
      */
     public String[] getOfflinePlayerNames() {
-        OfflinePlayer[] offlinePlayers = this.app.getServer().getOfflinePlayers();
+        OfflinePlayer[] offlinePlayers = this.getMain().getServer().getOfflinePlayers();
         ArrayList<String> playerNames = new ArrayList<>();
         for (OfflinePlayer offlinePlayer : offlinePlayers) {
             String name = offlinePlayer.getName();

@@ -1,4 +1,4 @@
-package edgrrrr.vea.economy;
+package edgrrrr.de.economy;
 
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;

@@ -1,8 +1,8 @@
 package edgrrrr.de.commands.mail;
 
-import edgrrrr.configapi.Setting;
 import edgrrrr.de.DEPlugin;
 import edgrrrr.de.commands.DivinityCommandTC;
+import edgrrrr.de.config.Setting;
 import edgrrrr.de.mail.MailList;
 import org.bukkit.entity.Player;
 

@@ -1,7 +1,8 @@
 package edgrrrr.de.materials;
 
-import edgrrrr.configapi.Setting;
 import edgrrrr.de.DEPlugin;
+import edgrrrr.de.DivinityModule;
+import edgrrrr.de.config.Setting;
 import edgrrrr.de.math.Math;
 import edgrrrr.de.response.ValueResponse;
 import net.milkbowl.vault.economy.EconomyResponse.ResponseType;
@@ -15,11 +16,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
-public class MaterialManager {
-    // Link back to Main
-    private final DEPlugin app;
+public class MaterialManager extends DivinityModule {
     // Save time scheduler
-    private final BukkitRunnable saveTimer;
+    private BukkitRunnable saveTimer;
     // Stores the default items.json file location
     private final String materialsFile = "materials.yml";
     private final String aliasesFile = "aliases.yml";
@@ -30,12 +29,12 @@ public class MaterialManager {
     private int totalMaterials;
     private int defaultTotalMaterials;
     // Other settings
-    public final double materialBuyTax;
-    public final double materialSellTax;
-    public final double materialBaseQuantity;
-    public final boolean itemDmgScaling;
-    public final boolean dynamicPricing;
-    public final boolean wholeMarketInflation;
+    public double materialBuyTax;
+    public double materialSellTax;
+    public double materialBaseQuantity;
+    public boolean itemDmgScaling;
+    public boolean dynamicPricing;
+    public boolean wholeMarketInflation;
     // Stores items
     private FileConfiguration config;
 
@@ -43,24 +42,42 @@ public class MaterialManager {
      * Constructor You will likely need to call loadMaterials and loadAliases to
      * populate the aliases and materials with data from the program
      *
-     * @param app - The plugin
+     * @param main - The plugin
      */
-    public MaterialManager(DEPlugin app) {
-        this.app = app;
-        this.materialBuyTax = this.app.getConfig().getDouble(Setting.MARKET_MATERIALS_BUY_TAX_FLOAT.path);
-        this.materialSellTax = this.app.getConfig().getDouble(Setting.MARKET_MATERIALS_SELL_TAX_FLOAT.path);
-        this.materialBaseQuantity = this.app.getConfig().getInt(Setting.MARKET_MATERIALS_BASE_QUANTITY_INTEGER.path);
-        this.itemDmgScaling = this.app.getConfig().getBoolean(Setting.MARKET_MATERIALS_ITEM_DMG_SCALING_BOOLEAN.path);
-        this.dynamicPricing = this.app.getConfig().getBoolean(Setting.MARKET_MATERIALS_DYN_PRICING_BOOLEAN.path);
-        this.wholeMarketInflation = this.app.getConfig().getBoolean(Setting.MARKET_MATERIALS_WHOLE_MARKET_INF_BOOLEAN.path);
-        int timer = Math.getTicks(this.app.getConfig().getInt(Setting.MARKET_SAVE_TIMER_INTEGER.path));
+    public MaterialManager(DEPlugin main) {
+        super(main);
+    }
+
+    /**
+     * Initialisation of the object
+     */
+    @Override
+    public void init() {
+        this.materialBuyTax = this.getConfig().getDouble(Setting.MARKET_MATERIALS_BUY_TAX_FLOAT);
+        this.materialSellTax = this.getConfig().getDouble(Setting.MARKET_MATERIALS_SELL_TAX_FLOAT);
+        this.materialBaseQuantity = this.getConfig().getInt(Setting.MARKET_MATERIALS_BASE_QUANTITY_INTEGER);
+        this.itemDmgScaling = this.getConfig().getBoolean(Setting.MARKET_MATERIALS_ITEM_DMG_SCALING_BOOLEAN);
+        this.dynamicPricing = this.getConfig().getBoolean(Setting.MARKET_MATERIALS_DYN_PRICING_BOOLEAN);
+        this.wholeMarketInflation = this.getConfig().getBoolean(Setting.MARKET_MATERIALS_WHOLE_MARKET_INF_BOOLEAN);
+        int timer = Math.getTicks(this.getConfig().getInt(Setting.MARKET_SAVE_TIMER_INTEGER));
         this.saveTimer = new BukkitRunnable() {
             @Override
             public void run() {
                 saveMaterials();
             }
         };
-        this.saveTimer.runTaskTimer(this.app, timer, timer);
+        this.saveTimer.runTaskTimer(this.getMain(), timer, timer);
+        this.loadAliases();
+        this.loadMaterials();
+    }
+
+    /**
+     * Shutdown of the object
+     */
+    @Override
+    public void deinit() {
+        this.saveTimer.cancel();
+        this.saveMaterials();
     }
 
     /**
@@ -227,7 +244,7 @@ public class MaterialManager {
     public ValueResponse getSellValue(ItemStack itemStack) {
         ValueResponse response;
 
-        if (this.app.getEnchantmentManager().isEnchanted(itemStack)) {
+        if (this.getEnchant().isEnchanted(itemStack)) {
             response = new ValueResponse(0.0, ResponseType.FAILURE, "item is enchanted.");
 
         } else {
@@ -423,14 +440,14 @@ public class MaterialManager {
      * Loads aliases from the aliases file into the aliases variable
      */
     public void loadAliases() {
-        FileConfiguration config = this.app.getConfigManager().loadFile(this.aliasesFile);
+        FileConfiguration config = this.getConfig().loadFile(this.aliasesFile);
         HashMap<String, String> values = new HashMap<>();
         for (String key : config.getKeys(false)) {
             String value = config.getString(key);
             values.put(key, value);
         }
         this.aliases = values;
-        this.app.getConsole().info("Loaded " + values.size() + " aliases from " + this.aliasesFile);
+        this.getConsole().info("Loaded " + values.size() + " aliases from " + this.aliasesFile);
     }
 
     /**
@@ -438,8 +455,8 @@ public class MaterialManager {
      */
     public void loadMaterials() {
         // Load the config
-        this.config = this.app.getConfigManager().loadFile(this.materialsFile);
-        FileConfiguration defaultConf = this.app.getConfigManager().readResource(this.materialsFile);
+        this.config = this.getConfig().loadFile(this.materialsFile);
+        FileConfiguration defaultConf = this.getConfig().readResource(this.materialsFile);
         // Set material counts
         this.defaultTotalMaterials = 0;
         this.totalMaterials = 0;
@@ -458,7 +475,7 @@ public class MaterialManager {
         }
         // Copy values into materials
         this.materials = values;
-        this.app.getConsole().info("Loaded " + values.size() + "(" + this.totalMaterials + "/" + this.defaultTotalMaterials + ") materials from " + this.materialsFile);
+        this.getConsole().info("Loaded " + values.size() + "(" + this.totalMaterials + "/" + this.defaultTotalMaterials + ") materials from " + this.materialsFile);
     }
 
     /**
@@ -489,13 +506,13 @@ public class MaterialManager {
             this.saveMaterial(materialD);
         }
         this.saveFile();
-        this.app.getConsole().info("Materials saved.");
+        this.getConsole().info("Materials saved.");
     }
 
     /**
      * Saves the config to the config file
      */
     private void saveFile() {
-        this.app.getConfigManager().saveFile(this.config, this.materialsFile);
+        this.getConfig().saveFile(this.config, this.materialsFile);
     }
 }

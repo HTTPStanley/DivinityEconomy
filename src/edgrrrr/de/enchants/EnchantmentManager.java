@@ -1,7 +1,8 @@
 package edgrrrr.de.enchants;
 
-import edgrrrr.configapi.Setting;
 import edgrrrr.de.DEPlugin;
+import edgrrrr.de.DivinityModule;
+import edgrrrr.de.config.Setting;
 import edgrrrr.de.math.Math;
 import edgrrrr.de.response.MultiValueResponse;
 import edgrrrr.de.response.Response;
@@ -23,11 +24,9 @@ import java.util.Set;
  * Enchant manager
  * Used for managing prices and quantity of enchants
  */
-public class EnchantmentManager {
-    // Link bank to main
-    private final DEPlugin app;
+public class EnchantmentManager extends DivinityModule {
     // Scheduler for saving enchant data
-    private final BukkitRunnable saveTimer;
+    private BukkitRunnable saveTimer;
     // The file config
     private FileConfiguration config;
     // Stores the enchants
@@ -38,34 +37,51 @@ public class EnchantmentManager {
     private int totalEnchants;
     private int defaultTotalEnchants;
     // Settings
-    public final double enchantBuyTax;
-    public final double enchantSellTax;
-    public final int enchantBaseQuantity;
-    public final boolean dynamicPricing;
-    public final boolean wholeMarketInflation;
+    public double enchantBuyTax;
+    public double enchantSellTax;
+    public int enchantBaseQuantity;
+    public boolean dynamicPricing;
+    public boolean wholeMarketInflation;
 
 
     /**
      * Constructor
      * Note that this does not automatically load the enchants.
      * Use #loadEnchants() to read the enchants into memory.
-     * @param app The main class
+     * @param main The main class
      */
-    public EnchantmentManager(DEPlugin app) {
-        this.app = app;
-        this.enchantBuyTax = this.app.getConfig().getDouble(Setting.MARKET_ENCHANTS_BUY_TAX_FLOAT.path);
-        this.enchantSellTax = this.app.getConfig().getDouble(Setting.MARKET_ENCHANTS_SELL_TAX_FLOAT.path);
-        this.enchantBaseQuantity = this.app.getConfig().getInt(Setting.MARKET_ENCHANTS_BASE_QUANTITY_INTEGER.path);
-        this.dynamicPricing = this.app.getConfig().getBoolean(Setting.MARKET_ENCHANTS_DYN_PRICING_BOOLEAN.path);
-        this.wholeMarketInflation = this.app.getConfig().getBoolean(Setting.MARKET_ENCHANTS_WHOLE_MARKET_INF_BOOLEAN.path);
-        int timer = Math.getTicks(this.app.getConfig().getInt(Setting.MARKET_SAVE_TIMER_INTEGER.path));
+    public EnchantmentManager(DEPlugin main) {
+        super(main);
+    }
+
+    /**
+     * Initialisation of the object
+     */
+    @Override
+    public void init() {
+        this.enchantBuyTax = this.getConfig().getDouble(Setting.MARKET_ENCHANTS_BUY_TAX_FLOAT);
+        this.enchantSellTax = this.getConfig().getDouble(Setting.MARKET_ENCHANTS_SELL_TAX_FLOAT);
+        this.enchantBaseQuantity = this.getConfig().getInt(Setting.MARKET_ENCHANTS_BASE_QUANTITY_INTEGER);
+        this.dynamicPricing = this.getConfig().getBoolean(Setting.MARKET_ENCHANTS_DYN_PRICING_BOOLEAN);
+        this.wholeMarketInflation = this.getConfig().getBoolean(Setting.MARKET_ENCHANTS_WHOLE_MARKET_INF_BOOLEAN);
+        int timer = Math.getTicks(this.getConfig().getInt(Setting.MARKET_SAVE_TIMER_INTEGER));
         this.saveTimer = new BukkitRunnable() {
             @Override
             public void run() {
                 saveEnchants();
             }
         };
-        this.saveTimer.runTaskTimer(this.app, timer, timer);
+        this.saveTimer.runTaskTimer(this.getMain(), timer, timer);
+        this.loadEnchants();
+    }
+
+    /**
+     * Shutdown of the object
+     */
+    @Override
+    public void deinit() {
+        this.saveTimer.cancel();
+        this.saveEnchants();
     }
 
     /**
@@ -153,8 +169,8 @@ public class EnchantmentManager {
      */
     public void loadEnchants() {
         // Load the config
-        this.config = this.app.getConfigManager().loadFile(this.enchantFile);
-        FileConfiguration defaultConf = this.app.getConfigManager().readResource(this.enchantFile);
+        this.config = this.getConfig().loadFile(this.enchantFile);
+        FileConfiguration defaultConf = this.getConfig().readResource(this.enchantFile);
         // Set material counts
         this.defaultTotalEnchants = 0;
         this.totalEnchants = 0;
@@ -172,7 +188,7 @@ public class EnchantmentManager {
         }
         // Copy values into materials
         this.enchants = values;
-        this.app.getConsole().info("Loaded " + values.size() + "(" + this.totalEnchants + "/" + this.defaultTotalEnchants + ") enchantments from " + this.enchantFile);
+        this.getConsole().info("Loaded " + values.size() + "(" + this.totalEnchants + "/" + this.defaultTotalEnchants + ") enchantments from " + this.enchantFile);
     }
 
     /**
@@ -575,13 +591,13 @@ public class EnchantmentManager {
             this.saveEnchant(enchantData);
         }
         this.saveFile();
-        this.app.getConsole().info("Enchants saved.");
+        this.getConsole().info("Enchants saved.");
     }
 
     /**
      * Saves the internal config to the save file
      */
     private void saveFile() {
-        this.app.getConfigManager().saveFile(this.config, this.enchantFile);
+        this.getConfig().saveFile(this.config, this.enchantFile);
     }
 }

@@ -1,8 +1,7 @@
 package edgrrrr.de.console;
 
-import edgrrrr.configapi.Setting;
-import edgrrrr.consoleapi.Console;
 import edgrrrr.de.DEPlugin;
+import edgrrrr.de.config.Setting;
 import edgrrrr.de.mail.MailList;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -11,17 +10,18 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class EconConsole extends Console {
-    private final DEPlugin app;
 
-    private final int scale;
-    private final String currencyPrefix;
+    private int scale;
+    private String currencyPrefix;
 
     public EconConsole(DEPlugin app) {
         super(app);
-        this.app = app;
+    }
 
-        this.scale = this.app.getConfigManager().getInt(Setting.CHAT_ECONOMY_DIGITS_INT);
-        this.currencyPrefix = this.app.getConfigManager().getString(Setting.CHAT_ECONOMY_PREFIX_STRING);
+    @Override
+    public void init() {
+        this.scale = this.getConfig().getInt(Setting.CHAT_ECONOMY_DIGITS_INT);
+        this.currencyPrefix = this.getConfig().getString(Setting.CHAT_ECONOMY_PREFIX_STRING);
     }
 
     public String formatMoney(double value) {
@@ -29,7 +29,7 @@ public class EconConsole extends Console {
     }
 
     public String getFormattedBalance(OfflinePlayer player) {
-        return this.formatMoney(this.app.getEconomyManager().getBalance(player));
+        return this.formatMoney(this.getEconomy().getBalance(player));
     }
 
     /**
@@ -46,7 +46,7 @@ public class EconConsole extends Console {
 
         // Handles online & offline messages for sender
         Player onlinePlayer1 = player1.getPlayer();
-        MailList player1MailList = this.app.getMailManager().getMailList(player1.getUniqueId().toString());
+        MailList player1MailList = this.getMail().getMailList(player1.getUniqueId().toString());
         String player1Message = String.format("Sent %s to %s", stringAmount, player2.getName());
         if (onlinePlayer1 != null) {
             this.info(onlinePlayer1, player1Message);
@@ -56,7 +56,7 @@ public class EconConsole extends Console {
 
         // Handle online & offline messages for receiver
         Player onlinePlayer2 = player2.getPlayer();
-        MailList player2MailList = this.app.getMailManager().getMailList(player2.getUniqueId().toString());
+        MailList player2MailList = this.getMail().getMailList(player2.getUniqueId().toString());
         String player2Message = String.format("Received %s from %s", stringAmount, player1.getName());
         if (onlinePlayer2 != null) {
             this.info(onlinePlayer2, player2Message);
@@ -79,7 +79,7 @@ public class EconConsole extends Console {
 
         // Handles online and offline messages for sender
         Player onlinePlayer1 = player1.getPlayer();
-        MailList player1MailList = this.app.getMailManager().getMailList(player1.getUniqueId().toString());
+        MailList player1MailList = this.getMail().getMailList(player1.getUniqueId().toString());
         String player1Message = String.format("Couldn't send %s to %s because %s", stringAmount, player2.getName(), error);
         if (onlinePlayer1 != null) {
             this.warn(onlinePlayer1, player1Message);
@@ -118,7 +118,7 @@ public class EconConsole extends Console {
 
         // Handles online and offline messages for receiver
         Player onlinePlayer2 = player2.getPlayer();
-        MailList playerMailList2 = this.app.getMailManager().getMailList(player2.getUniqueId().toString());
+        MailList playerMailList2 = this.getMail().getMailList(player2.getUniqueId().toString());
         String playerMessage2 = String.format("Your balance changed from %s to %s because %s", stringBalance1, stringBalance2, reason);
         if (onlinePlayer2 != null) {
             this.info(onlinePlayer2, playerMessage2);
@@ -154,7 +154,7 @@ public class EconConsole extends Console {
 
         // Handles online and offline messages for receiver#
         Player onlinePlayer2 = player2.getPlayer();
-        MailList playerMailList = this.app.getMailManager().getMailList(player2.getUniqueId().toString());
+        MailList playerMailList = this.getMail().getMailList(player2.getUniqueId().toString());
         if (onlinePlayer2 != null) {
             // Player is online - send message
             this.warn(onlinePlayer2, playerMessage);
@@ -179,7 +179,7 @@ public class EconConsole extends Console {
 
         // Handles online and offline messages for sender
         Player onlinePlayer = player.getPlayer();
-        MailList playerMailList = this.app.getMailManager().getMailList(player.getUniqueId().toString());
+        MailList playerMailList = this.getMail().getMailList(player.getUniqueId().toString());
         String player1Message = String.format("Purchased %d %s for %s", amount, materialName, stringCost);
         if (onlinePlayer != null) {
             this.info(onlinePlayer, player1Message);
@@ -200,7 +200,7 @@ public class EconConsole extends Console {
 
         // Handles online and offline messages for sender
         Player onlinePlayer = player.getPlayer();
-        MailList playerMailList = this.app.getMailManager().getMailList(player.getUniqueId().toString());
+        MailList playerMailList = this.getMail().getMailList(player.getUniqueId().toString());
         String player1Message = String.format("Couldn't purchase %d %s because %s", amount, materialName, error);
         if (onlinePlayer != null) {
             this.warn(onlinePlayer, player1Message);
@@ -223,7 +223,7 @@ public class EconConsole extends Console {
 
         // Handles online and offline messages for sender
         Player onlinePlayer = player.getPlayer();
-        MailList playerMailList = this.app.getMailManager().getMailList(player.getUniqueId().toString());
+        MailList playerMailList = this.getMail().getMailList(player.getUniqueId().toString());
         String player1Message = String.format("Sold %d %s for %s", amount, materialName, stringValue);
         if (onlinePlayer != null) {
             this.info(onlinePlayer, player1Message);
@@ -244,7 +244,7 @@ public class EconConsole extends Console {
 
         // Handles online and offline messages for sender
         Player onlinePlayer = player.getPlayer();
-        MailList playerMailList = this.app.getMailManager().getMailList(player.getUniqueId().toString());
+        MailList playerMailList = this.getMail().getMailList(player.getUniqueId().toString());
         String player1Message = String.format("Couldn't sell %d %s because %s", amount, materialName, error);
         if (onlinePlayer != null) {
             this.warn(onlinePlayer, player1Message);

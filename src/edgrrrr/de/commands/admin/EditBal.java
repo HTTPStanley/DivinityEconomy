@@ -1,8 +1,8 @@
 package edgrrrr.de.commands.admin;
 
-import edgrrrr.configapi.Setting;
 import edgrrrr.de.DEPlugin;
 import edgrrrr.de.commands.DivinityCommand;
+import edgrrrr.de.config.Setting;
 import edgrrrr.de.math.Math;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.OfflinePlayer;

@@ -1,6 +1,6 @@
-package edgrrrr.consoleapi;
+package edgrrrr.de.console;
 
-import edgrrrr.configapi.Setting;
+import edgrrrr.de.config.Setting;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 

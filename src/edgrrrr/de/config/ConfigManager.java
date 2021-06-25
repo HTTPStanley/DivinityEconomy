@@ -1,92 +1,122 @@
-package edgrrrr.configapi;
+package edgrrrr.de.config;
 
+import edgrrrr.de.DEPlugin;
+import edgrrrr.de.DivinityModule;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.craftbukkit.libs.jline.internal.Nullable;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * Console class for sending uniform messages to players and the console.
  */
-public class ConfigManager implements ConfigManagerAPI {
-    private final JavaPlugin app;
-    private final Logger logger;
+public class ConfigManager extends DivinityModule {
 
-    public ConfigManager(JavaPlugin app) {
-        this.app = app;
-        this.logger = app.getLogger();
+    public ConfigManager(DEPlugin main) {
+        super(main);
+
         // Saves the .Jar config to the folder, if it doesn't exist.
-        this.app.saveDefaultConfig();
-        // Get the config and plugin versions
-        String configVersion = this.app.getConfig().getString(Setting.MAIN_VERSION_STRING.path);
-        String pluginVersion = this.app.getConfig().getDefaults().getString(Setting.MAIN_VERSION_STRING.path);
+        this.getMain().saveDefaultConfig();
+    }
 
-        this.logger.info(String.format("Detected config versions local/plugin | %s/%s", configVersion, pluginVersion));
+    /**
+     * Initialisation of the object
+     */
+    @Override
+    public void init() {
+        // Get the config and plugin versions
+        String configVersion = this.getMain().getConfig().getString(Setting.MAIN_VERSION_STRING.path);
+        String pluginVersion = this.getMain().getConfig().getDefaults().getString(Setting.MAIN_VERSION_STRING.path);
+
+        this.getConsole().info(String.format("Detected config versions local/plugin | %s/%s", configVersion, pluginVersion));
         // Updates the config by copying defaults over
         // updates the version and saves.
         if (!(configVersion.equals(pluginVersion))) {
-            this.logger.info("Updating config with new defaults, your settings may need updating.");
-            this.app.getConfig().options().copyDefaults(true);
-            this.app.getConfig().addDefaults(this.app.getConfig().getDefaults());
-            this.app.getConfig().set(Setting.MAIN_VERSION_STRING.path, pluginVersion);
-            this.app.saveConfig();
+            this.getConsole().info("Updating config with new defaults, your settings may need updating.");
+            this.getMain().getConfig().options().copyDefaults(true);
+            this.getMain().getConfig().addDefaults(this.getMain().getConfig().getDefaults());
+            this.getMain().getConfig().set(Setting.MAIN_VERSION_STRING.path, pluginVersion);
+            this.getMain().saveConfig();
         }
     }
 
+    /**
+     * Shutdown of the object
+     */
     @Override
+    public void deinit() {
+
+    }
+
+    /**
+     * Returns a generic object from the config
+     */
     public Object get(Setting setting) {
-        return this.app.getConfig().get(setting.path, this.app.getConfig().getDefaults().get(setting.path));
+        return this.getMain().getConfig().get(setting.path, this.getMain().getConfig().getDefaults().get(setting.path));
     }
 
-    @Override
+    /**
+     * Returns an integer from the config
+     */
     public Integer getInt(Setting setting) {
-        return this.app.getConfig().getInt(setting.path, this.app.getConfig().getDefaults().getInt(setting.path));
+        return this.getMain().getConfig().getInt(setting.path, this.getMain().getConfig().getDefaults().getInt(setting.path));
     }
 
-    @Override
+    /**
+     * Returns a boolean from the config
+     */
     public Boolean getBoolean(Setting setting) {
-        return this.app.getConfig().getBoolean(setting.path, this.app.getConfig().getDefaults().getBoolean(setting.path));
+        return this.getMain().getConfig().getBoolean(setting.path, this.getMain().getConfig().getDefaults().getBoolean(setting.path));
     }
 
-    @Override
+    /**
+     * Returns a double from the config
+     */
     public Double getDouble(Setting setting) {
-        return this.app.getConfig().getDouble(setting.path, this.app.getConfig().getDefaults().getDouble(setting.path));
+        return this.getMain().getConfig().getDouble(setting.path, this.getMain().getConfig().getDefaults().getDouble(setting.path));
     }
 
-    @Override
+    /**
+     * Returns a string from the config
+     */
     public String getString(Setting setting) {
-        return this.app.getConfig().getString(setting.path, this.app.getConfig().getDefaults().getString(setting.path));
+        return this.getMain().getConfig().getString(setting.path, this.getMain().getConfig().getDefaults().getString(setting.path));
     }
 
-    @Override
+    /**
+     * Returns a string list from the config
+     */
     public List<String> getStringList(Setting setting) {
-        return this.app.getConfig().getStringList(setting.path);
+        return this.getMain().getConfig().getStringList(setting.path);
     }
 
-    @Override
+    /**
+     * Sets a setting path to the given value
+     */
     public void set(Setting setting, Object value) {
-        this.app.getConfig().set(setting.path, value);
+        this.getMain().getConfig().set(setting.path, value);
     }
 
+    /**
+     * Returns a file from the root folder
+     */
     public File getFile(String file) {
-        return new File(this.app.getDataFolder(), file);
+        return new File(this.getMain().getDataFolder(), file);
     }
 
+    /**
+     * Returns a file from the given folder
+     */
     public File getFile(File folder, String file) {
         return new File(folder, file);
     }
 
-    @Override
-    @Nullable
     public File getFolder(String folder) {
-        File newFolder = new File(this.app.getDataFolder(), folder);
+        File newFolder = new File(this.getMain().getDataFolder(), folder);
         if (!newFolder.exists()) {
             if (newFolder.mkdir()) return newFolder;
             else return null;
@@ -96,7 +126,6 @@ public class ConfigManager implements ConfigManagerAPI {
         }
     }
 
-    @Override
     public List<File> getFolderFiles(String folder) {
         File newFolder = this.getFolder(folder);
         if (newFolder != null) {
@@ -111,9 +140,8 @@ public class ConfigManager implements ConfigManagerAPI {
      * @param file - The filename of the file
      * @return FileConfiguration - The file config
      */
-    @Override
     public FileConfiguration readResource(String file) {
-        return YamlConfiguration.loadConfiguration(new InputStreamReader(this.app.getResource(file)));
+        return YamlConfiguration.loadConfiguration(new InputStreamReader(this.getMain().getResource(file)));
     }
 
     /**
@@ -122,11 +150,16 @@ public class ConfigManager implements ConfigManagerAPI {
      * @param file - The filename of the file
      * @return FileConfiguration - The file config
      */
-    @Override
     public FileConfiguration readFile(String file) {
         return this.readFile(this.getFile(file));
     }
 
+    /**
+     * Reads and loads a config
+     *
+     * @param file - The filename of the file
+     * @return FileConfiguration - The file config
+     */
     public FileConfiguration readFile(File file) {
         return YamlConfiguration.loadConfiguration(file);
     }
@@ -136,7 +169,6 @@ public class ConfigManager implements ConfigManagerAPI {
      *
      * @param file
      */
-    @Override
     public FileConfiguration loadFile(String file) {
         // Instantiate default and user config
         FileConfiguration defConfig;
@@ -152,9 +184,9 @@ public class ConfigManager implements ConfigManagerAPI {
             config.options().copyDefaults(true);
 
             try {
-                config.save(new File(this.app.getDataFolder(), file));
+                config.save(new File(this.getMain().getDataFolder(), file));
             } catch (Exception e) {
-                this.logger.severe(String.format("Couldn't save config with new values: %s", file));
+                this.getConsole().severe(String.format("Couldn't save config with new values: %s", file));
             }
         }
 
@@ -167,12 +199,11 @@ public class ConfigManager implements ConfigManagerAPI {
      * @param file     - The file config to save
      * @param fileName - The file name to save to
      */
-    @Override
     public void saveFile(FileConfiguration file, String fileName) {
         try {
-            file.save(new File(this.app.getDataFolder(), fileName));
+            file.save(new File(this.getMain().getDataFolder(), fileName));
         } catch (Exception e) {
-            this.logger.severe("Couldn't handle " + fileName + " :" + e.getMessage());
+            this.getConsole().severe("Couldn't handle " + fileName + " :" + e.getMessage());
         }
     }
 }

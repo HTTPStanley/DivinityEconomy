@@ -1,8 +1,8 @@
 package edgrrrr.de.commands;
 
-import edgrrrr.configapi.Setting;
 import edgrrrr.de.DEPlugin;
 import edgrrrr.de.commands.DivinityCommand.CommandResponse;
+import edgrrrr.de.config.Setting;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;

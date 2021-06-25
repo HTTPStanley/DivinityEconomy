@@ -1,18 +1,34 @@
 package edgrrrr.de.help;
 
 import edgrrrr.de.DEPlugin;
+import edgrrrr.de.DivinityModule;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class HelpManager {
-    final DEPlugin app;
+public class HelpManager extends DivinityModule {
     final HashMap<String, Help> helpMap;
 
-    public HelpManager(DEPlugin app) {
-        this.app = app;
+    public HelpManager(DEPlugin main) {
+        super(main);
         this.helpMap = new HashMap<>();
+    }
+
+    /**
+     * Initialisation of the object
+     */
+    @Override
+    public void init() {
+        this.loadHelp();
+    }
+
+    /**
+     * Shutdown of the object
+     */
+    @Override
+    public void deinit() {
+
     }
 
     public Help get(String command) {
@@ -64,20 +80,20 @@ public class HelpManager {
     }
 
     public void loadHelp() {
-        Map<String, Map<String, Object>> commands = this.app.getDescription().getCommands();
+        Map<String, Map<String, Object>> commands = this.getMain().getDescription().getCommands();
         for (String command : commands.keySet()) {
             try {
                 Map<String, Object> commandSection = commands.get(command);
                 if (commandSection == null) {
-                    this.app.getConsole().severe(String.format("%s is null", command));
+                    this.getConsole().severe(String.format("%s is null", command));
                 } else {
                     String commandName = command.toLowerCase();
                     this.helpMap.put(commandName, Help.fromConfig(commandName, commandSection));
                 }
             } catch (Exception e) {
-                this.app.getConsole().severe(String.format("%s raised %s", command, e.getMessage()));
+                this.getConsole().severe(String.format("%s raised %s", command, e.getMessage()));
             }
         }
-        this.app.getConsole().info(String.format("Loaded %d help objects", this.helpMap.size()));
+        this.getConsole().info(String.format("Loaded %d help objects", this.helpMap.size()));
     }
 }

@@ -1,13 +1,13 @@
 package edgrrrr.de.mail;
 
 import edgrrrr.de.DEPlugin;
+import edgrrrr.de.DivinityModule;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.HashMap;
 
-public class MailManager {
-    private final DEPlugin app;
+public class MailManager extends DivinityModule {
     // The mail file
     private final String mailFile = "mail.yml";
     // Where mail is stored against the player
@@ -20,11 +20,29 @@ public class MailManager {
      * Constructor
      * Use loadAllMail() after constructor for setup and reading of mail.
      *
-     * @param app - The java plugin
+     * @param main - The java plugin
      */
-    public MailManager(DEPlugin app) {
-        this.app = app;
+    public MailManager(DEPlugin main) {
+        super(main);
     }
+
+    /**
+     * Initialisation of the object
+     */
+    @Override
+    public void init() {
+        this.setupMailFile();
+        this.loadAllMail();
+    }
+
+    /**
+     * Shutdown of the object
+     */
+    @Override
+    public void deinit() {
+        this.saveAllMail();
+    }
+
 
     /**
      * Setup the mail file in the config folder
@@ -39,7 +57,7 @@ public class MailManager {
      * @return FileConfiguration - The contents of the mail file
      */
     public FileConfiguration readMailFile() {
-        return this.app.getConfigManager().loadFile(this.mailFile);
+        return this.getConfig().loadFile(this.mailFile);
     }
 
     /**
@@ -47,7 +65,7 @@ public class MailManager {
      * Mail cannot be read unless this is called!
      */
     public void loadAllMail() {
-        this.configuration = this.app.getConfigManager().loadFile(this.mailFile);
+        this.configuration = this.getConfig().loadFile(this.mailFile);
         this.mailMap = new HashMap<>();
         int userCount = 0;
         int mailCount = 0;
@@ -59,7 +77,7 @@ public class MailManager {
             mailCount += mailList.getMailIDs().size();
         }
 
-        this.app.getConsole().info("Read " + mailCount + " mail for " + userCount + " users.");
+        this.getConsole().info("Read " + mailCount + " mail for " + userCount + " users.");
     }
 
     /**
@@ -107,7 +125,7 @@ public class MailManager {
     }
 
     private void saveMailFile() {
-        this.app.getConfigManager().saveFile(this.configuration, this.mailFile);
+        this.getConfig().saveFile(this.configuration, this.mailFile);
     }
 
     /**
@@ -123,6 +141,6 @@ public class MailManager {
         }
 
         this.saveMailFile();
-        this.app.getConsole().info("Saved " + mailCount + " mail for " + userCount + " users");
+        this.getConsole().info("Saved " + mailCount + " mail for " + userCount + " users");
     }
 }

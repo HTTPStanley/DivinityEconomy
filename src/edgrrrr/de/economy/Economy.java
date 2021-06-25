@@ -1,9 +1,9 @@
-package edgrrrr.vea.economy;
+package edgrrrr.de.economy;
 
-import edgrrrr.configapi.ConfigManagerAPI;
-import edgrrrr.consoleapi.ConsoleAPI;
-import edgrrrr.paa.playerManager.PlayerManagerAPI;
-import edgrrrr.vea.events.PlayerJoin;
+import edgrrrr.de.config.ConfigManager;
+import edgrrrr.de.console.EconConsole;
+import edgrrrr.de.events.PlayerJoin;
+import edgrrrr.de.player.PlayerManager;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -16,11 +16,11 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-public class EconomyAPI implements net.milkbowl.vault.economy.Economy {
+public class Economy implements net.milkbowl.vault.economy.Economy {
     private final JavaPlugin app;
-    private final ConfigManagerAPI configManager;
-    private final ConsoleAPI console;
-    private final PlayerManagerAPI playerManager;
+    private final ConfigManager configManager;
+    private final EconConsole console;
+    private final PlayerManager playerManager;
     private final int fractionalDigits;
     private final String currencyNamePlural;
     private final String currencyNameSingular;
@@ -29,12 +29,13 @@ public class EconomyAPI implements net.milkbowl.vault.economy.Economy {
 
     private static final String foldername = "userdata";
 
-    public EconomyAPI(JavaPlugin app,
-                      ConfigManagerAPI configManager,
-                      ConsoleAPI console,
-                      PlayerManagerAPI playerManager, int fractionalDigits,
-                      String currencyNamePlural,
-                      String currencyNameSingular) {
+    public Economy(JavaPlugin app,
+                   ConfigManager configManager,
+                   EconConsole console,
+                   PlayerManager playerManager,
+                   int fractionalDigits,
+                   String currencyNamePlural,
+                   String currencyNameSingular) {
 
         this.app = app;
         this.configManager = configManager;
@@ -44,7 +45,7 @@ public class EconomyAPI implements net.milkbowl.vault.economy.Economy {
         this.currencyNamePlural = currencyNamePlural;
         this.currencyNameSingular = currencyNameSingular;
         this.economyPlayerMap = new HashMap<>();
-        this.userFolder = this.configManager.getFolder(EconomyAPI.foldername);
+        this.userFolder = this.configManager.getFolder(Economy.foldername);
 
         this.registerPlayers();
         this.app.getServer().getPluginManager().registerEvents(new PlayerJoin(this), this.app);
@@ -85,7 +86,8 @@ public class EconomyAPI implements net.milkbowl.vault.economy.Economy {
         // allowFetch = false | for this reason
         // could return null still, at which point there's a bug elsewhere.
         if (economyPlayer == null) {
-            this.createPlayerAccount(this.playerManager.getOfflinePlayer(uuid, false));
+            OfflinePlayer player = this.playerManager.getOfflinePlayer(uuid, false);
+            this.createPlayerAccount(player);
         }
 
         return this.economyPlayerMap.get(uuid);

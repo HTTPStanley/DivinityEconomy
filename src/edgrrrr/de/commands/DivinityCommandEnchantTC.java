@@ -1,7 +1,7 @@
 package edgrrrr.de.commands;
 
-import edgrrrr.configapi.Setting;
 import edgrrrr.de.DEPlugin;
+import edgrrrr.de.config.Setting;
 import org.bukkit.entity.Player;
 
 import java.util.List;

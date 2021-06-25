@@ -1,8 +1,8 @@
 package edgrrrr.de.commands.money;
 
-import edgrrrr.configapi.Setting;
 import edgrrrr.de.DEPlugin;
 import edgrrrr.de.commands.DivinityCommand;
+import edgrrrr.de.config.Setting;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 

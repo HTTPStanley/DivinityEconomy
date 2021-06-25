@@ -1,8 +1,8 @@
 package edgrrrr.de.commands.market;
 
-import edgrrrr.configapi.Setting;
 import edgrrrr.de.DEPlugin;
 import edgrrrr.de.commands.DivinityCommandMaterials;
+import edgrrrr.de.config.Setting;
 import edgrrrr.de.materials.MaterialData;
 import edgrrrr.de.materials.MaterialPotionData;
 import edgrrrr.de.player.PlayerInventoryManager;

@@ -1,18 +1,19 @@
-package edgrrrr.consoleapi;
+package edgrrrr.de.console;
 
-import edgrrrr.configapi.Setting;
+import edgrrrr.de.DEPlugin;
+import edgrrrr.de.DivinityModule;
+import edgrrrr.de.config.Setting;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Arrays;
 
 /**
  * Console class for sending uniform messages to players and the console.
  */
-public class Console implements ConsoleAPI{
+public class Console extends DivinityModule {
     private final ConsoleCommandSender consoleSender;
 
     // Settings
@@ -24,20 +25,37 @@ public class Console implements ConsoleAPI{
     private static final String[] variables = {"<VERSION>"};
     private static final String[] variableValues = {"<VERSION>"};
 
-    public Console(JavaPlugin plugin) {
-        this.consoleSender = plugin.getServer().getConsoleSender();
+    public Console(DEPlugin main) {
+        super(main);
+        this.consoleSender = main.getServer().getConsoleSender();
 
         // insert version into variables
-        Console.variableValues[0] = plugin.getDescription().getVersion();
+        Console.variableValues[0] = main.getDescription().getVersion();
 
         // Get settings
-        FileConfiguration conf = plugin.getConfig();
+        FileConfiguration conf = main.getConfig();
         this.debugMode = conf.getBoolean(Setting.CHAT_DEBUG_OUTPUT_BOOLEAN.path);
         String prefix = conf.getString(Setting.CHAT_PREFIX_STRING.path);
         String conPrefix = conf.getString(Setting.CHAT_CONSOLE_PREFIX.path);
         this.chatPrefix = insertColours(prefix);
         conPrefix = insertColours(conPrefix);
         this.consolePrefix = insertVariables(conPrefix);
+    }
+
+    /**
+     * Initialisation of the object
+     */
+    @Override
+    public void init() {
+
+    }
+
+    /**
+     * Shutdown of the object
+     */
+    @Override
+    public void deinit() {
+
     }
 
     private static String insertVariables(String string) {

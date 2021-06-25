@@ -1,8 +1,8 @@
 package edgrrrr.de.commands.enchants;
 
-import edgrrrr.configapi.Setting;
 import edgrrrr.de.DEPlugin;
 import edgrrrr.de.commands.DivinityCommandEnchantTC;
+import edgrrrr.de.config.Setting;
 import edgrrrr.de.enchants.EnchantData;
 import edgrrrr.de.utils.ArrayUtils;
 import org.bukkit.entity.Player;

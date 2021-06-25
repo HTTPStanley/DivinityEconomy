@@ -1,9 +1,5 @@
 package edgrrrr.de;
 
-import edgrrrr.configapi.ConfigManager;
-import edgrrrr.configapi.ConfigManagerAPI;
-import edgrrrr.configapi.Setting;
-import edgrrrr.consoleapi.LogLevel;
 import edgrrrr.de.commands.admin.*;
 import edgrrrr.de.commands.enchants.*;
 import edgrrrr.de.commands.help.HelpCommand;
@@ -18,7 +14,10 @@ import edgrrrr.de.commands.money.Balance;
 import edgrrrr.de.commands.money.BalanceTC;
 import edgrrrr.de.commands.money.SendCash;
 import edgrrrr.de.commands.money.SendCashTC;
+import edgrrrr.de.config.ConfigManager;
+import edgrrrr.de.config.Setting;
 import edgrrrr.de.console.EconConsole;
+import edgrrrr.de.console.LogLevel;
 import edgrrrr.de.economy.EconomyManager;
 import edgrrrr.de.enchants.EnchantmentManager;
 import edgrrrr.de.events.MailEvent;
@@ -26,7 +25,6 @@ import edgrrrr.de.help.HelpManager;
 import edgrrrr.de.mail.MailManager;
 import edgrrrr.de.materials.MaterialManager;
 import edgrrrr.de.player.PlayerManager;
-import edgrrrr.paa.playerManager.PlayerManagerAPI;
 import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.PluginManager;
@@ -38,7 +36,7 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 public class DEPlugin extends JavaPlugin {
     // The config
-    private ConfigManagerAPI config;
+    private ConfigManager config;
     // The console
     private EconConsole console;
     // The economy
@@ -48,7 +46,7 @@ public class DEPlugin extends JavaPlugin {
     // The mail manager
     private MailManager mailManager;
     // The player manager
-    private PlayerManagerAPI playerManager;
+    private PlayerManager playerManager;
     // The enchantment manager
     private EnchantmentManager enchantmentManager;
     // The help manager
@@ -60,26 +58,20 @@ public class DEPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         // Config
-        this.config = new ConfigManager(this);
-        //Setup Managers
-        this.console = new EconConsole(this);
         LogLevel.loadValuesFromConfig((YamlConfiguration) this.getConfig());
+        this.config = new ConfigManager(this);
+        this.console = new EconConsole(this);
         this.economyManager = new EconomyManager(this);
-        if (!this.economyManager.setupEconomy()) {
-            this.shutdown();
-            return;
-        }
         this.materialManager = new MaterialManager(this);
-        this.materialManager.loadAliases();
-        this.materialManager.loadMaterials();
         this.enchantmentManager = new EnchantmentManager(this);
-        this.enchantmentManager.loadEnchants();
         this.playerManager = new PlayerManager(this);
         this.mailManager = new MailManager(this);
-        this.mailManager.setupMailFile();
-        this.mailManager.loadAllMail();
         this.helpManager = new HelpManager(this);
-        this.helpManager.loadHelp();
+
+        DivinityModule.runInit();
+
+        this.materialManager.loadAliases();
+        this.materialManager.loadMaterials();
 
         // setup events
         try {
@@ -197,16 +189,7 @@ public class DEPlugin extends JavaPlugin {
      */
     @Override
     public void onDisable() {
-        // Save materials, enchants and mail if data was loaded.
-        if (this.materialManager != null) {
-            this.materialManager.saveMaterials();
-        }
-        if (this.enchantmentManager != null) {
-            this.enchantmentManager.saveEnchants();
-        }
-        if (this.mailManager != null) {
-            this.mailManager.saveAllMail();
-        }
+        DivinityModule.runDeinit();
         this.console.warn("Plugin Disabled");
     }
 
@@ -239,7 +222,7 @@ public class DEPlugin extends JavaPlugin {
         this.console.debug("");
     }
 
-    public ConfigManagerAPI getConfigManager() {
+    public ConfigManager getConfigManager() {
         return this.config;
     }
 
@@ -279,7 +262,7 @@ public class DEPlugin extends JavaPlugin {
      * This is currently used for getting Player and OfflinePlayer objects
      * @return PlayerManager
      */
-    public PlayerManagerAPI getPlayerManager() {
+    public PlayerManager getPlayerManager() {
         return this.playerManager;
     }
 

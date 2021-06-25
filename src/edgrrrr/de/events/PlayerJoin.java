@@ -1,15 +1,15 @@
-package edgrrrr.vea.events;
+package edgrrrr.de.events;
 
-import edgrrrr.vea.economy.EconomyAPI;
+import edgrrrr.de.economy.Economy;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 public class PlayerJoin implements Listener {
-    private final EconomyAPI economy;
+    private final Economy economy;
 
-    public PlayerJoin(EconomyAPI economy) {
+    public PlayerJoin(Economy economy) {
         this.economy = economy;
     }
 

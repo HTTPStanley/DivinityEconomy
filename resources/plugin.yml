@@ -1,7 +1,7 @@
 name: DivinityEconomy
-prefix: de
+prefix: DivinityEconomy
 main: edgrrrr.de.DEPlugin
-version: 1.3.117
+version: 1.4.117
 author: EDGRRRR
 description: Divinity Economy - The dynamic global economy plugin.
 api-version: 1.16

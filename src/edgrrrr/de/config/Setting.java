@@ -1,4 +1,4 @@
-package edgrrrr.configapi;
+package edgrrrr.de.config;
 
 public enum Setting {
 

@@ -1,8 +1,8 @@
 package edgrrrr.de.commands.help;
 
-import edgrrrr.configapi.Setting;
 import edgrrrr.de.DEPlugin;
 import edgrrrr.de.commands.DivinityCommand;
+import edgrrrr.de.config.Setting;
 import edgrrrr.de.help.Help;
 import edgrrrr.de.math.Math;
 import org.bukkit.entity.Player;

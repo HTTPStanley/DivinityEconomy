@@ -1,8 +1,8 @@
 package edgrrrr.de.commands;
 
-import edgrrrr.configapi.Setting;
-import edgrrrr.consoleapi.LogLevel;
 import edgrrrr.de.DEPlugin;
+import edgrrrr.de.config.Setting;
+import edgrrrr.de.console.LogLevel;
 import edgrrrr.de.help.Help;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
