@@ -217,3 +217,12 @@ out/production/DCE/edgrrrr/de/commands/market/Buy.class
 out/production/DCE/edgrrrr/de/commands/market/BuyTC.class
 out/production/DCE/edgrrrr/de/commands/market/Sell.class
 out/production/DCE/edgrrrr/de/commands/market/SellTC.class
+out/production/DCE/edgrrrr/de/config/ConfigManager.class
+out/production/DCE/edgrrrr/de/config/Setting.class
+out/production/DCE/edgrrrr/de/console/Console.class
+out/production/DCE/edgrrrr/de/console/LogLevel.class
+out/production/DCE/edgrrrr/de/DivinityModule.class
+out/production/DCE/edgrrrr/de/economy/Economy.class
+out/production/DCE/edgrrrr/de/economy/EconomyFileKeys.class
+out/production/DCE/edgrrrr/de/economy/EconomyPlayer.class
+out/production/DCE/edgrrrr/de/events/PlayerJoin.class
