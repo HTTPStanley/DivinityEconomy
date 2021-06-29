@@ -23,8 +23,8 @@ public class MaterialManager extends DivinityModule {
     private final String materialsFile = "materials.yml";
     private final String aliasesFile = "aliases.yml";
     // Stores the materials and the aliases
-    public HashMap<String, String> aliases;
-    public HashMap<String, MaterialData> materials;
+    private HashMap<String, String> aliases;
+    private HashMap<String, MaterialData> materials;
     // Used for calculating inflation/deflation
     private int totalMaterials;
     private int defaultTotalMaterials;
@@ -67,8 +67,8 @@ public class MaterialManager extends DivinityModule {
             }
         };
         this.saveTimer.runTaskTimer(this.getMain(), timer, timer);
-        this.loadAliases();
         this.loadMaterials();
+        this.loadAliases();
     }
 
     /**
@@ -91,10 +91,23 @@ public class MaterialManager extends DivinityModule {
         // Check aliases
         // If alias is empty then get directly from materials list
         // get the material and return it, could be Null
-        String matID = aliases.get(alias);
+        String matID = this.aliases.get(alias);
         if (matID == null)
             matID = alias;
         return this.materials.get(matID);
+    }
+
+    /**
+     * Returns a material from the materialData HashMap, Will be none if no direct name is found.
+     *
+     * @param exactID - The alias or name of the material to get.
+     * @return MaterialData - Returns the material data corresponding to the string supplied.
+     */
+    public MaterialData getMaterialID(String exactID) {
+        // Check aliases
+        // If alias is empty then get directly from materials list
+        // get the material and return it, could be Null
+        return this.materials.get(exactID);
     }
 
     /**
@@ -174,6 +187,14 @@ public class MaterialManager extends DivinityModule {
         }
 
         return materialAliases.toArray(new String[0]);
+    }
+
+    public int getMaterialCount() {
+        return this.materials.size();
+    }
+
+    public int getAliasCount() {
+        return this.aliases.size();
     }
 
     /**
@@ -444,10 +465,14 @@ public class MaterialManager extends DivinityModule {
         HashMap<String, String> values = new HashMap<>();
         for (String key : config.getKeys(false)) {
             String value = config.getString(key);
+            if (this.getMaterialID(value) == null) {
+                if (!this.getConfig().getBoolean(Setting.IGNORE_ALIAS_ERRORS_BOOLEAN)) this.getConsole().warn("Bad config value in %s: '%s' - Corresponding value '%s' does not exist.", this.aliasesFile, key, value);
+                continue;
+            }
             values.put(key, value);
         }
         this.aliases = values;
-        this.getConsole().info("Loaded " + values.size() + " aliases from " + this.aliasesFile);
+        this.getConsole().info("Loaded %s aliases from %s", values.size(), this.aliasesFile);
     }
 
     /**
@@ -467,15 +492,23 @@ public class MaterialManager extends DivinityModule {
         for (String key : this.config.getKeys(false)) {
             ConfigurationSection data = this.config.getConfigurationSection(key);
             ConfigurationSection defaultData = defaultConf.getConfigurationSection(key);
-            if (data == null) continue;
+            if (data == null) {
+                if (!this.getConfig().getBoolean(Setting.IGNORE_MATERIAL_ERRORS_BOOLEAN)) this.getConsole().warn("Bad config value in %s: '%s' - Data is null", this.materialsFile, key);
+                continue;
+            }
+
             MaterialData mData = new MaterialData(data, defaultData);
+            if (mData.getMaterial() == null) {
+                if (!this.getConfig().getBoolean(Setting.IGNORE_MATERIAL_ERRORS_BOOLEAN)) this.getConsole().warn("Bad config value in %s: '%s' - Material does not exist.", this.materialsFile, key);
+                continue;
+            }
             this.defaultTotalMaterials += mData.getDefaultQuantity();
             this.totalMaterials += mData.getQuantity();
             values.put(key, mData);
         }
         // Copy values into materials
         this.materials = values;
-        this.getConsole().info("Loaded " + values.size() + "(" + this.totalMaterials + "/" + this.defaultTotalMaterials + ") materials from " + this.materialsFile);
+        this.getConsole().info("Loaded %s materials (current/default quantities: %s / %s) from %s", values.size(), this.totalMaterials, this.defaultTotalMaterials, this.materialsFile);
     }
 
     /**
@@ -502,9 +535,12 @@ public class MaterialManager extends DivinityModule {
      * Then saves the config to the config file
      */
     public void saveMaterials() {
+        // Save materials
         for (MaterialData materialD : materials.values()) {
             this.saveMaterial(materialD);
         }
+
+        // save
         this.saveFile();
         this.getConsole().info("Materials saved.");
     }
@@ -513,6 +549,14 @@ public class MaterialManager extends DivinityModule {
      * Saves the config to the config file
      */
     private void saveFile() {
-        this.getConfig().saveFile(this.config, this.materialsFile);
+        // load back all info
+        FileConfiguration config = this.getConfig().loadFile(this.materialsFile);
+        for (String key : config.getKeys(false)) {
+            if (!this.materials.containsKey(key)) continue;
+
+            config.set(key, this.config.get(key));
+        }
+
+        this.getConfig().saveFile(config, this.materialsFile);
     }
 }
