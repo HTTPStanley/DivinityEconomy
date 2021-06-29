@@ -9,19 +9,24 @@ import me.edgrrrr.de.mail.MailManager;
 import me.edgrrrr.de.materials.MaterialManager;
 import me.edgrrrr.de.player.PlayerManager;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
 public abstract class DivinityModule {
     private final DEPlugin main;
-    private static List<DivinityModule> inits = new LinkedList<>();
+    private static final List<DivinityModule> modules = Collections.synchronizedList(new LinkedList<>());
+    private static final List<DivinityModule> initialisedModules = Collections.synchronizedList(new LinkedList<>());
 
     /**
      * Runs the initialisation of all modules
      */
     public static void runInit() {
-        for (DivinityModule module : inits) {
+        // Make sure to deinitialise before initialising.
+        DivinityModule.runDeinit();
+        for (DivinityModule module : DivinityModule.modules) {
             module.init();
+            initialisedModules.add(module);
         }
     }
 
@@ -29,8 +34,8 @@ public abstract class DivinityModule {
      * Runs the de-initialisation of all modules from the rear to the front
      */
     public static void runDeinit() {
-        for (int i = inits.size()-1; i > 0; i--) {
-            inits.get(i).deinit();
+        for (int i = initialisedModules.size()-1; i > 0; i--) {
+            initialisedModules.remove(i).deinit();
         }
     }
 
@@ -40,23 +45,23 @@ public abstract class DivinityModule {
      */
     public DivinityModule(DEPlugin main) {
         this.main = main;
-        DivinityModule.inits.add(this);
+        DivinityModule.modules.add(this);
     }
 
     public DivinityModule(DEPlugin main, boolean addInit) {
         this.main = main;
-        if (addInit) DivinityModule.inits.add(this);
+        if (addInit) DivinityModule.modules.add(this);
     }
 
     /**
      * Initialisation of the object
      */
-    public abstract void init();
+    protected abstract void init();
 
     /**
      * Shutdown of the object
      */
-    public abstract void deinit();
+    protected abstract void deinit();
 
     /**
      * Returns the help manager
