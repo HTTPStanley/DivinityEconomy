@@ -14,6 +14,7 @@ public enum Setting {
 	SECTION_MAIN       ( "main"     ),
 	SECTION_CHAT       ( "chat"     ),
 	SECTION_ECONOMY    ( "economy"  ),
+	SECTION_MESSAGES    ( "messageIgnore"),
 	SECTION_COMMANDS   ( "commands" ),
 	SECTION_MARKET     ( "market"   ),
 
@@ -42,6 +43,12 @@ public enum Setting {
 	CHAT_ECONOMY_PREFIX_STRING			   ( SECTION_CHAT.path + ".moneyPrefix"    ),
 	CHAT_ECONOMY_SINGULAR_STRING			   ( SECTION_CHAT.path + ".moneySingular"    ),
 	CHAT_ECONOMY_PLURAL_STRING			   ( SECTION_CHAT.path + ".moneyPlural"    ),
+
+	// Error bypass
+	IGNORE_ALIAS_ERRORS_BOOLEAN			   ( SECTION_MESSAGES.path + ".ignoreAliasErrors"    ),
+	IGNORE_MATERIAL_ERRORS_BOOLEAN			   ( SECTION_MESSAGES.path + ".ignoreMaterialErrors"    ),
+	IGNORE_ENCHANT_ERRORS_BOOLEAN			   ( SECTION_MESSAGES.path + ".ignoreEnchantErrors"    ),
+	IGNORE_COMMAND_REGISTRY_BOOLEAN			   ( SECTION_MESSAGES.path + ".ignoreCommandRegistry"    ),
 
 	//Economy Settings
 	ECONOMY_MIN_SEND_AMOUNT_DOUBLE    ( SECTION_ECONOMY.path + ".minSendAmount"     ),
