@@ -49,7 +49,7 @@ public class Economy implements net.milkbowl.vault.economy.Economy {
 
         this.registerPlayers();
         this.app.getServer().getPluginManager().registerEvents(new PlayerJoin(this), this.app);
-        this.console.info(String.format("Loaded %d players", this.economyPlayerMap.size()));
+        this.console.info("Loaded %d players", this.economyPlayerMap.size());
     }
 
     private void registerPlayers() {
@@ -61,7 +61,7 @@ public class Economy implements net.milkbowl.vault.economy.Economy {
                 try {
                     this.addPlayer(file);
                 } catch (Exception e) {
-                    this.console.warn(String.format("Player (%s) could not be registered from file because %s.", file, e.getMessage()));
+                    this.console.warn("Player (%s) could not be registered from file because %s.", file, e.getMessage());
                 }
             }
         }
@@ -189,6 +189,7 @@ public class Economy implements net.milkbowl.vault.economy.Economy {
      * @deprecated As of VaultAPI 1.4 use {@link #hasAccount(OfflinePlayer)} instead.
      */
     @Override
+    @Deprecated
     public boolean hasAccount(String playerName) {
         return this.get(playerName) != null;
     }
@@ -212,6 +213,7 @@ public class Economy implements net.milkbowl.vault.economy.Economy {
      * @deprecated As of VaultAPI 1.4 use {@link #hasAccount(OfflinePlayer, String)} instead.
      */
     @Override
+    @Deprecated
     public boolean hasAccount(String playerName, String worldName) {
         return hasAccount(playerName);
     }
@@ -235,6 +237,7 @@ public class Economy implements net.milkbowl.vault.economy.Economy {
      * @deprecated As of VaultAPI 1.4 use {@link #getBalance(OfflinePlayer)} instead.
      */
     @Override
+    @Deprecated
     public double getBalance(String playerName) {
         EconomyPlayer player = this.get(playerName);
         if (player == null) {
@@ -261,6 +264,7 @@ public class Economy implements net.milkbowl.vault.economy.Economy {
      * @deprecated As of VaultAPI 1.4 use {@link #getBalance(OfflinePlayer, String)} instead.
      */
     @Override
+    @Deprecated
     public double getBalance(String playerName, String world) {
         return this.getBalance(playerName);
     }
@@ -284,6 +288,7 @@ public class Economy implements net.milkbowl.vault.economy.Economy {
      * @deprecated As of VaultAPI 1.4 use {@link #has(OfflinePlayer, double)} instead.
      */
     @Override
+    @Deprecated
     public boolean has(String playerName, double amount) {
         EconomyPlayer player = this.get(playerName);
         if (player != null) return player.has(amount);
@@ -309,6 +314,7 @@ public class Economy implements net.milkbowl.vault.economy.Economy {
      * @deprecated As of VaultAPI 1.4 use @{link {@link #has(OfflinePlayer, String, double)} instead.
      */
     @Override
+    @Deprecated
     public boolean has(String playerName, String worldName, double amount) {
         return this.has(playerName, amount);
     }
@@ -333,6 +339,7 @@ public class Economy implements net.milkbowl.vault.economy.Economy {
      * @deprecated As of VaultAPI 1.4 use {@link #withdrawPlayer(OfflinePlayer, double)} instead.
      */
     @Override
+    @Deprecated
     public EconomyResponse withdrawPlayer(String playerName, double amount) {
         EconomyPlayer player = this.get(playerName);
         if (player == null) return new EconomyResponse(amount, 0.0, EconomyResponse.ResponseType.FAILURE, "unknown player");
@@ -364,6 +371,7 @@ public class Economy implements net.milkbowl.vault.economy.Economy {
      * @deprecated As of VaultAPI 1.4 use {@link #withdrawPlayer(OfflinePlayer, String, double)} instead.
      */
     @Override
+    @Deprecated
     public EconomyResponse withdrawPlayer(String playerName, String worldName, double amount) {
         return this.withdrawPlayer(playerName, amount);
     }
@@ -388,6 +396,7 @@ public class Economy implements net.milkbowl.vault.economy.Economy {
      * @deprecated As of VaultAPI 1.4 use {@link #depositPlayer(OfflinePlayer, double)} instead.
      */
     @Override
+    @Deprecated
     public EconomyResponse depositPlayer(String playerName, double amount) {
         EconomyPlayer player = this.get(playerName);
         if (player == null) return new EconomyResponse(amount, 0.0, EconomyResponse.ResponseType.FAILURE, "unknown player");
@@ -420,6 +429,7 @@ public class Economy implements net.milkbowl.vault.economy.Economy {
      * @deprecated As of VaultAPI 1.4 use {@link #depositPlayer(OfflinePlayer, String, double)} instead.
      */
     @Override
+    @Deprecated
     public EconomyResponse depositPlayer(String playerName, String worldName, double amount) {
         return this.depositPlayer(playerName, amount);
     }
@@ -434,6 +444,7 @@ public class Economy implements net.milkbowl.vault.economy.Economy {
      * @return Detailed response of transaction
      */
     @Override
+    @Deprecated
     public EconomyResponse depositPlayer(OfflinePlayer player, String worldName, double amount) {
         return this.depositPlayer(player, amount);
     }
@@ -445,6 +456,7 @@ public class Economy implements net.milkbowl.vault.economy.Economy {
      * @deprecated As of VaultAPI 1.4 use {{@link #createBank(String, OfflinePlayer)} instead.
      */
     @Override
+    @Deprecated
     public EconomyResponse createBank(String name, String player) {
         return null;
     }
@@ -521,6 +533,7 @@ public class Economy implements net.milkbowl.vault.economy.Economy {
      * @return EconomyResponse Object
      */
     @Override
+    @Deprecated
     public EconomyResponse bankDeposit(String name, double amount) {
         return null;
     }
@@ -532,6 +545,7 @@ public class Economy implements net.milkbowl.vault.economy.Economy {
      * @deprecated As of VaultAPI 1.4 use {{@link #isBankOwner(String, OfflinePlayer)} instead.
      */
     @Override
+    @Deprecated
     public EconomyResponse isBankOwner(String name, String playerName) {
         return null;
     }
@@ -545,6 +559,7 @@ public class Economy implements net.milkbowl.vault.economy.Economy {
      * @return EconomyResponse Object
      */
     @Override
+    @Deprecated
     public EconomyResponse isBankOwner(String name, OfflinePlayer player) {
         return null;
     }
@@ -556,6 +571,7 @@ public class Economy implements net.milkbowl.vault.economy.Economy {
      * @deprecated As of VaultAPI 1.4 use {{@link #isBankMember(String, OfflinePlayer)} instead.
      */
     @Override
+    @Deprecated
     public EconomyResponse isBankMember(String name, String playerName) {
         return null;
     }
@@ -580,6 +596,7 @@ public class Economy implements net.milkbowl.vault.economy.Economy {
      * @return the List of Banks
      */
     @Override
+    @Deprecated
     public List<String> getBanks() {
         return null;
     }
@@ -589,6 +606,7 @@ public class Economy implements net.milkbowl.vault.economy.Economy {
      * @deprecated As of VaultAPI 1.4 use {{@link #createPlayerAccount(OfflinePlayer)} instead.
      */
     @Override
+    @Deprecated
     public boolean createPlayerAccount(String playerName) {
         OfflinePlayer player = this.playerManager.getOfflinePlayer(playerName, false);
         if (player == null) return false;
@@ -617,6 +635,7 @@ public class Economy implements net.milkbowl.vault.economy.Economy {
      * @deprecated As of VaultAPI 1.4 use {{@link #createPlayerAccount(OfflinePlayer, String)} instead.
      */
     @Override
+    @Deprecated
     public boolean createPlayerAccount(String playerName, String worldName) {
         return this.createPlayerAccount(playerName);
     }
