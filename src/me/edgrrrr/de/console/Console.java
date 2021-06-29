@@ -73,65 +73,68 @@ public class Console extends DivinityModule {
     }
 
     // CONSOLE COMMANDS
+    /**
+     * Sends a formatted message to the console
+     * @param level - The log level
+     * @param message - The message to send
+     * @param args - The arguments
+     */
+    public void send(LogLevel level, String message, Object... args) {
+        this.consoleSender.sendMessage(consolePrefix + level.getColour() + String.format(message, args));
+    }
 
     /**
-     * Sends a message to the console
+     * Sends a formatted (default green) message to the console
      *
      * @param message - The message to send
      */
-    public void send(LogLevel level, String message) {
-        this.consoleSender.sendMessage(consolePrefix + level.getColour() + message);
+    public void info(String message, Object... args) {
+        this.send(LogLevel.INFO, message, args);
     }
 
     /**
      * Sends a (default green) message to the console
      *
      * @param message - The message to send
+     * @param args - The args
      */
-    public void info(String message) {
-        this.send(LogLevel.INFO, message);
+    public void debug(String message, Object... args) {
+        if (debugMode) this.send(LogLevel.DEBUG, message, args);
     }
 
     /**
-     * Sends a (default green) message to the console
+     * Sends a formatted (default yellow) message to the console
      *
      * @param message - The message to send
+     * @param args - The args
      */
-    public void debug(String message) {
-        if (debugMode) this.send(LogLevel.DEBUG, message);
+    public void warn(String message, Object... args) {
+        this.send(LogLevel.WARNING, message, args);
     }
 
     /**
-     * Sends a (default yellow) message to the console
+     * Sends a formatted (default red) message to the console
      *
      * @param message - The message to send
+     * @param args - The args
      */
-    public void warn(String message) {
-        this.send(LogLevel.WARNING, message);
-    }
-
-    /**
-     * Sends a (default red) message to the console
-     *
-     * @param message - The message to send
-     */
-    public void severe(String message) {
-        this.send(LogLevel.SEVERE, message);
+    public void severe(String message, Object... args) {
+        this.send(LogLevel.SEVERE, message, args);
     }
 
     // PLAYER
-
     /**
-     * Sends a message to a player
+     * Sends a formatted message to a player
      *
      * @param player  - The player to send to
      * @param message - The message to send
+     * @param args - The args
      */
-    public void send(Player player, LogLevel level, String message) {
+    public void send(Player player, LogLevel level, String message, Object... args) {
         if (player != null) {
-            player.sendMessage(chatPrefix + level.getColour() + message);
+            player.sendMessage(chatPrefix + level.getColour() + String.format(message, args));
         } else {
-            this.send(level, message);
+            this.send(level, message, args);
         }
     }
 
@@ -172,8 +175,8 @@ public class Console extends DivinityModule {
      * @param player  - The player to send to
      * @param message - The message to send
      */
-    public void info(Player player, String message) {
-        this.send(player, LogLevel.INFO, message);
+    public void info(Player player, String message, Object... args) {
+        this.send(player, LogLevel.INFO, message, args);
     }
 
     /**
@@ -182,8 +185,8 @@ public class Console extends DivinityModule {
      * @param player  - The player to send to
      * @param message - The message to send
      */
-    public void warn(Player player, String message) {
-        this.send(player, LogLevel.WARNING, message);
+    public void warn(Player player, String message, Object... args) {
+        this.send(player, LogLevel.WARNING, message, args);
     }
 
     /**
@@ -192,7 +195,7 @@ public class Console extends DivinityModule {
      * @param player  - The player to send to
      * @param message - The message to send
      */
-    public void severe(Player player, String message) {
-        this.send(player, LogLevel.SEVERE, message);
+    public void severe(Player player, String message, Object... args) {
+        this.send(player, LogLevel.SEVERE, message, args);
     }
 }
