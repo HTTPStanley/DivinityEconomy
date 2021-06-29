@@ -9,7 +9,7 @@
 # Also supports the colour characters such as &1 &2 &3 &4 &5 &6 &7...
 
 main:
-  version: 1.4.117
+  version: 1.5.117
 
 chat:
   chatDebug: false
@@ -24,6 +24,12 @@ chat:
   moneySingular: "Divinity"
   moneyPlural: "Divinity's"
 
+messageIgnore:
+  ignoreAliasErrors: false
+  ignoreMaterialErrors: false
+  ignoreEnchantErrors: false
+  ignoreCommandRegistry: true
+
 economy:
   minAccountBalance: 0.0
   minSendAmount: 0.01
@@ -35,16 +41,16 @@ market:
   enchants:
     enable: true
     baseQuantity: 1000000
-    buyTax: 1.0
-    sellTax: 0.9
+    buyTax: 1.1
+    sellTax: 1.0
     wholeMarketInflation: false
     dynamicPricing: true
 
   materials:
     enable: true
     baseQuantity: 1000000
-    buyTax: 1.25
-    sellTax: 1.125
+    buyTax: 1.0
+    sellTax: 0.9
     wholeMarketInflation: false
     dynamicPricing: true
     itemDamageScaling: true
