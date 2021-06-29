@@ -85,15 +85,15 @@ public class HelpManager extends DivinityModule {
             try {
                 Map<String, Object> commandSection = commands.get(command);
                 if (commandSection == null) {
-                    this.getConsole().severe(String.format("%s is null", command));
+                    this.getConsole().severe("%s is null", command);
                 } else {
                     String commandName = command.toLowerCase();
                     this.helpMap.put(commandName, Help.fromConfig(commandName, commandSection));
                 }
             } catch (Exception e) {
-                this.getConsole().severe(String.format("%s raised %s", command, e.getMessage()));
+                this.getConsole().severe("%s raised %s", command, e.getMessage());
             }
         }
-        this.getConsole().info(String.format("Loaded %d help objects", this.helpMap.size()));
+        this.getConsole().info("Loaded %d help objects", this.helpMap.size());
     }
 }
