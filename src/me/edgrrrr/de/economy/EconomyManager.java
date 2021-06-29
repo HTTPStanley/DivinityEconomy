@@ -97,9 +97,9 @@ public class EconomyManager extends DivinityModule {
             }
 
             for (RegisteredServiceProvider<net.milkbowl.vault.economy.Economy> provider : providers) {
-                this.getConsole().info(String.format("Registered Economy Provider: '%s' (primary = %s) (selected = %s)", provider.getPlugin().getName(), provider.equals(this.getPrimaryProvider()), provider.getPlugin().getName().equals(this.providerName)));
+                this.getConsole().info("Registered Economy Provider: '%s' (primary = %s) (selected = %s)", provider.getPlugin().getName(), provider.equals(this.getPrimaryProvider()), provider.getPlugin().getName().equals(this.providerName));
             }
-            this.getConsole().info(String.format("Total Economy Providers: %d", providers.size()));
+            this.getConsole().info("Total Economy Providers: %d", providers.size());
         }
 
         // return if economy was gotten successfully.
@@ -131,9 +131,9 @@ public class EconomyManager extends DivinityModule {
      * @param amount  - The amount
      */
     public EconomyResponse addCash(OfflinePlayer oPlayer, double amount) {
-        this.getConsole().debug(String.format("ADD REQUEST FOR %s £%,.2f", oPlayer.getName(), amount));
+        this.getConsole().debug("ADD REQUEST FOR %s £%,.2f", oPlayer.getName(), amount);
         EconomyResponse response = this.economy.depositPlayer(oPlayer, amount);
-        this.getConsole().debug(String.format("ADD RESULT: %s %s", response.transactionSuccess(), response.errorMessage));
+        this.getConsole().debug("ADD RESULT: %s %s", response.transactionSuccess(), response.errorMessage);
         return response;
     }
 
@@ -144,9 +144,9 @@ public class EconomyManager extends DivinityModule {
      * @param amount  - The amount
      */
     public EconomyResponse remCash(OfflinePlayer oPlayer, double amount) {
-        this.getConsole().debug(String.format("REM REQUEST FOR %s £%,.2f", oPlayer.getName(), amount));
+        this.getConsole().debug("REM REQUEST FOR %s £%,.2f", oPlayer.getName(), amount);
         EconomyResponse response = this.economy.withdrawPlayer(oPlayer, amount);
-        this.getConsole().debug(String.format("REM RESULT: %s %s", response.transactionSuccess(), response.errorMessage));
+        this.getConsole().debug("REM RESULT: %s %s", response.transactionSuccess(), response.errorMessage);
 
         return response;
     }
@@ -159,7 +159,7 @@ public class EconomyManager extends DivinityModule {
      * @return EconomyResponse - The result of the function
      */
     public EconomyResponse setCash(OfflinePlayer oPlayer, double amount) {
-        this.getConsole().debug(String.format("SET REQUEST FOR %s £%,.2f", oPlayer.getName(), amount));
+        this.getConsole().debug("SET REQUEST FOR %s £%,.2f", oPlayer.getName(), amount);
         double balance = this.getBalance(oPlayer);
         double difference = amount - balance;
         EconomyResponse response;
@@ -171,7 +171,7 @@ public class EconomyManager extends DivinityModule {
             response = new EconomyResponse(difference, this.getBalance(oPlayer), ResponseType.SUCCESS, "");
         }
 
-        this.getConsole().debug(String.format("SET RESULT: %s %s", response.transactionSuccess(), response.errorMessage));
+        this.getConsole().debug("SET RESULT: %s %s", response.transactionSuccess(), response.errorMessage);
 
         return response;
     }
