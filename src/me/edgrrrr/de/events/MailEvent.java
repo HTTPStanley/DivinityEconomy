@@ -22,7 +22,7 @@ public class MailEvent implements Listener {
         Player player = event.getPlayer();
         MailList mailList = this.app.getMailManager().getMailList(player.getUniqueId().toString());
         if (mailList.hasMail()) {
-            this.app.getConsole().info(player, "You have " + mailList.getReadMail().size() + " read and " + mailList.getUnreadMail().size() + " unread mail");
+            this.app.getConsole().info(player, "You have %s previously read and %s unread mail", mailList.getReadMail().size(), mailList.getUnreadMail().size());
         } else {
             this.app.getConsole().info(player, "You have no mail. ");
         }
