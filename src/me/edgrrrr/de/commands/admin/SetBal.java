@@ -47,32 +47,32 @@ public class SetBal extends DivinityCommand {
             case 2:
                 // use case #2
                 amount = Math.getDouble(args[1]);
-                receiver = this.app.getPlayerManager().getOfflinePlayer(args[0], false);
+                receiver = this.getMain().getPlayerManager().getOfflinePlayer(args[0], false);
                 break;
 
             default:
                 // Incorrect number of args
-                this.app.getConsole().usage(sender, CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
+                this.getMain().getConsole().usage(sender, CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
                 return true;
         }
 
         // Ensure to player exists
         if (receiver == null) {
-            this.app.getConsole().send(sender, CommandResponse.InvalidPlayerName.defaultLogLevel, CommandResponse.InvalidPlayerName.message);
+            this.getMain().getConsole().send(sender, CommandResponse.InvalidPlayerName.defaultLogLevel, CommandResponse.InvalidPlayerName.message);
             return true;
         }
 
-        double startingBalance = this.app.getEconomyManager().getBalance(receiver);
-        EconomyResponse response = this.app.getEconomyManager().setCash(receiver, amount);
+        double startingBalance = this.getMain().getEconomyManager().getBalance(receiver);
+        EconomyResponse response = this.getMain().getEconomyManager().setCash(receiver, amount);
 
         // Response messages
         if (response.transactionSuccess()) {
             // Handles console, player and mail
-            this.app.getConsole().logBalance(sender, receiver, startingBalance, response.balance, String.format("%s set your balance", sender.getName()));
+            this.getMain().getConsole().logBalance(sender, receiver, startingBalance, response.balance, String.format("%s set your balance", sender.getName()));
 
         } else {
             // Handles console, player and mail
-            this.app.getConsole().logFailedBalance(sender, receiver, response.errorMessage);
+            this.getMain().getConsole().logFailedBalance(sender, receiver, response.errorMessage);
         }
         return true;
     }
@@ -95,32 +95,32 @@ public class SetBal extends DivinityCommand {
             case 2:
                 // use case #2
                 amount = Math.getDouble(args[1]);
-                receiver = this.app.getPlayerManager().getOfflinePlayer(args[0], false);
+                receiver = this.getMain().getPlayerManager().getOfflinePlayer(args[0], false);
                 break;
 
             default:
                 // Incorrect number of args
-                this.app.getConsole().usage(CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
+                this.getMain().getConsole().usage(CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
                 return true;
         }
 
         // Ensure to player exists
         if (receiver == null) {
-            this.app.getConsole().send(CommandResponse.InvalidPlayerName.defaultLogLevel, CommandResponse.InvalidPlayerName.message);
+            this.getMain().getConsole().send(CommandResponse.InvalidPlayerName.defaultLogLevel, CommandResponse.InvalidPlayerName.message);
             return true;
         }
 
-        double startingBalance = this.app.getEconomyManager().getBalance(receiver);
-        EconomyResponse response = this.app.getEconomyManager().setCash(receiver, amount);
+        double startingBalance = this.getMain().getEconomyManager().getBalance(receiver);
+        EconomyResponse response = this.getMain().getEconomyManager().setCash(receiver, amount);
 
         // Response messages
         if (response.transactionSuccess()) {
             // Handles console, player and mail
-            this.app.getConsole().logBalance(null, receiver, startingBalance, response.balance, "CONSOLE set your balance");
+            this.getMain().getConsole().logBalance(null, receiver, startingBalance, response.balance, "CONSOLE set your balance");
 
         } else {
             // Handles console, player and mail
-            this.app.getConsole().logFailedBalance(null, receiver, response.errorMessage);
+            this.getMain().getConsole().logFailedBalance(null, receiver, response.errorMessage);
         }
         return true;
     }

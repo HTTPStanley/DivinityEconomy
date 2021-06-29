@@ -45,32 +45,32 @@ public class ReadMail extends DivinityCommand {
                 break;
 
             default:
-                this.app.getConsole().usage(sender, CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
+                this.getMain().getConsole().usage(sender, CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
                 return true;
         }
         if (page < 0) {
-            this.app.getConsole().usage(sender, "Invalid page.", this.help.getUsages());
+            this.getMain().getConsole().usage(sender, "Invalid page.", this.help.getUsages());
 
         } else {
 
-            MailList mailList = this.app.getMailManager().getMailList(sender.getUniqueId().toString());
+            MailList mailList = this.getMain().getMailManager().getMailList(sender.getUniqueId().toString());
 
             if (mailList.getAllMail().isEmpty()) {
-                this.app.getConsole().warn(sender, "You have no mail.");
+                this.getMain().getConsole().warn(sender, "You have no mail.");
             } else {
                 HashMap<Integer, Mail[]> mailPages = mailList.getPages(pageSize);
 
                 if ((page + 1) > mailPages.size()) {
-                    this.app.getConsole().warn(sender, "Invalid page. Choose a number up to " + mailPages.size());
+                    this.getMain().getConsole().warn(sender, "Invalid page. Choose a number up to %s", mailPages.size());
                 } else {
                     Mail[] mailPage = mailPages.get(page);
-                    this.app.getConsole().info(sender, "Mail List (" + (page + 1) + "/" + mailPages.size() + ")");
+                    this.getMain().getConsole().info(sender, "Mail List (%s / %s)", (page + 1), mailPages.size());
                     int idx = 1;
                     for (Mail mail : mailPage) {
                         if (mail == null) {
                             break;
                         }
-                        this.app.getConsole().info(sender, idx + ": " + mail.getMessage());
+                        this.getMain().getConsole().info(sender, "%s: %s", idx, mail.getMessage());
                         mail.setRead(true);
                         idx += 1;
                     }

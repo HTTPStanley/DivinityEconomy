@@ -55,15 +55,15 @@ public class EnchantValue extends DivinityCommandEnchant {
 
             // If wrong number of arguments
             default:
-                this.app.getConsole().usage(sender, CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
+                this.getMain().getConsole().usage(sender, CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
                 return true;
         }
 
         // If only handling one enchant
         // Ensure enchant exists
-        EnchantData enchantData = this.app.getEnchantmentManager().getEnchant(enchantName);
+        EnchantData enchantData = this.getMain().getEnchantmentManager().getEnchant(enchantName);
         if (enchantData == null) {
-            this.app.getConsole().usage(sender, String.format(CommandResponse.InvalidEnchantName.message, enchantName), this.help.getUsages());
+            this.getMain().getConsole().usage(sender, String.format(CommandResponse.InvalidEnchantName.message, enchantName), this.help.getUsages());
             return true;
         }
 
@@ -72,17 +72,17 @@ public class EnchantValue extends DivinityCommandEnchant {
 
         // Get value
         // Remove enchants, add quantity and add cash
-        ValueResponse valueResponse1 = this.app.getEnchantmentManager().getSellValue(itemStack, enchantName, enchantLevels);
-        ValueResponse valueResponse2 = this.app.getEnchantmentManager().getBuyValue(enchantName, enchantLevels);
+        ValueResponse valueResponse1 = this.getMain().getEnchantmentManager().getSellValue(itemStack, enchantName, enchantLevels);
+        ValueResponse valueResponse2 = this.getMain().getEnchantmentManager().getBuyValue(enchantName, enchantLevels);
         if (valueResponse2.isFailure()) {
-            this.app.getConsole().warn(sender, String.format("Couldn't determine buy value of &d %s because %s", enchantLevels, enchantName, valueResponse2.errorMessage));
+            this.getMain().getConsole().warn(sender, "Couldn't determine buy value of &d %s because %s", enchantLevels, enchantName, valueResponse2.errorMessage);
         } else {
-            this.app.getConsole().info(sender, String.format("Buy: %d %s costs £%,.2f", enchantLevels, enchantName, valueResponse2.value));
+            this.getMain().getConsole().info(sender, "Buy: %d %s costs £%,.2f", enchantLevels, enchantName, valueResponse2.value);
         }
         if (valueResponse1.isFailure()) {
-            this.app.getConsole().warn(sender, String.format("Couldn't determine sell value of &d %s because %s", enchantLevels, enchantName, valueResponse1.errorMessage));
+            this.getMain().getConsole().warn(sender, "Couldn't determine sell value of &d %s because %s", enchantLevels, enchantName, valueResponse1.errorMessage);
         } else {
-            this.app.getConsole().info(sender, String.format("Sell: %d %s costs £%,.2f", enchantLevels, enchantName, valueResponse1.value));
+            this.getMain().getConsole().info(sender, "Sell: %d %s costs £%,.2f", enchantLevels, enchantName, valueResponse1.value);
         }
 
         // Graceful exit :)

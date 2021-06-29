@@ -24,7 +24,7 @@ public class HandBuyTC extends DivinityCommandMaterialsTC {
      * @param app
      */
     public HandBuyTC(DEPlugin app) {
-        super(app, false, Setting.COMMAND_HAND_BUY_ITEM_ENABLE_BOOLEAN);
+        super(app, "handbuy", false, Setting.COMMAND_HAND_BUY_ITEM_ENABLE_BOOLEAN);
     }
 
     /**
@@ -42,7 +42,7 @@ public class HandBuyTC extends DivinityCommandMaterialsTC {
         if (heldItem == null) {
             strings = new String[]{DivinityCommand.CommandResponse.InvalidItemHeld.message};
         } else {
-            MaterialData materialData = this.app.getMaterialManager().getMaterial(heldItem.getType().toString());
+            MaterialData materialData = this.getMain().getMaterialManager().getMaterial(heldItem.getType().toString());
             switch (args.length) {
                 // 1 args
                 // return max stack size for the material given
@@ -58,7 +58,7 @@ public class HandBuyTC extends DivinityCommandMaterialsTC {
                 // If uses clicks space after number, returns the value of the amount of item given
                 case 2:
                     strings = new String[]{
-                            String.format("Value: £%,.2f", this.app.getMaterialManager().calculatePrice(Math.getInt(args[0]), materialData.getQuantity(), this.app.getMaterialManager().materialBuyTax, true))
+                            String.format("Value: £%,.2f", this.getMain().getMaterialManager().calculatePrice(Math.getInt(args[0]), materialData.getQuantity(), this.getMain().getMaterialManager().materialBuyTax, true))
                     };
                     break;
             }

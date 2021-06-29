@@ -53,17 +53,17 @@ public class ClearMail extends DivinityCommand {
                         break;
 
                     default:
-                        this.app.getConsole().usage(sender, CommandResponse.InvalidArguments.message, this.help.getUsages());
+                        this.getMain().getConsole().usage(sender, CommandResponse.InvalidArguments.message, this.help.getUsages());
                         return true;
                 }
                 break;
 
             default:
-                this.app.getConsole().usage(sender, CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
+                this.getMain().getConsole().usage(sender, CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
                 return true;
         }
 
-        MailList mailList = this.app.getMailManager().getMailList(sender.getUniqueId().toString());
+        MailList mailList = this.getMain().getMailManager().getMailList(sender.getUniqueId().toString());
         HashMap<String, Mail> allMail = mailList.getAllMail();
         ArrayList<String> readMail = mailList.getReadMail();
         ArrayList<String> unreadMail = mailList.getUnreadMail();
@@ -72,7 +72,7 @@ public class ClearMail extends DivinityCommand {
         int unreadMailCleared = 0;
 
         if (allMail.isEmpty()) {
-            this.app.getConsole().warn(sender, "You have no mail to clear.");
+            this.getMain().getConsole().warn(sender, "You have no mail to clear.");
         } else {
             if (clearRead) {
                 mailToClear.addAll(readMail);
@@ -86,7 +86,7 @@ public class ClearMail extends DivinityCommand {
             for (String mailID : mailToClear) {
                 mailList.removeMail(mailID);
             }
-            this.app.getConsole().info(sender, String.format("Removed %d mail. (%d unread & %d read)", mailToClear.size(), unreadMailCleared, readMailCleared));
+            this.getMain().getConsole().info(sender, "Removed %d mail. (%d unread & %d read)", mailToClear.size(), unreadMailCleared, readMailCleared);
 
         }
         return true;

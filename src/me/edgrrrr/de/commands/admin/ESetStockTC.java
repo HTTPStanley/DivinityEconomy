@@ -19,7 +19,7 @@ public class ESetStockTC extends DivinityCommandTC {
      * @param app
      */
     public ESetStockTC(DEPlugin app) {
-        super(app, true, Setting.COMMAND_E_SET_STOCK_ENABLE_BOOLEAN);
+        super(app, "esetstock", true, Setting.COMMAND_E_SET_STOCK_ENABLE_BOOLEAN);
     }
 
     /**
@@ -54,7 +54,7 @@ public class ESetStockTC extends DivinityCommandTC {
                 break;
         }
 
-        return Arrays.asList(this.app.getEnchantmentManager().getEnchantNames(arg));
+        return Arrays.asList(this.getMain().getEnchantmentManager().getEnchantNames(arg));
     }
 }
 

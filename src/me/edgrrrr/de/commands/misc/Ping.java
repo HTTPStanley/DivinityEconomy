@@ -27,7 +27,7 @@ public class Ping extends DivinityCommand {
      */
     @Override
     public boolean onPlayerCommand(Player sender, String[] args) {
-        this.app.getConsole().send(sender, CommandResponse.PingResponse.defaultLogLevel, CommandResponse.PingResponse.message);
+        this.getMain().getConsole().send(sender, CommandResponse.PingResponse.defaultLogLevel, CommandResponse.PingResponse.message);
         return true;
     }
 
@@ -39,7 +39,7 @@ public class Ping extends DivinityCommand {
      */
     @Override
     public boolean onConsoleCommand(String[] args) {
-        this.app.getConsole().send(CommandResponse.PingResponse.defaultLogLevel, CommandResponse.PingResponse.message);
+        this.getMain().getConsole().send(CommandResponse.PingResponse.defaultLogLevel, CommandResponse.PingResponse.message);
         return true;
     }
 }

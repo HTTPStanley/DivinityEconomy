@@ -19,7 +19,7 @@ public class SetStockTC extends DivinityCommandTC {
      * @param app
      */
     public SetStockTC(DEPlugin app) {
-        super(app, true, Setting.COMMAND_SET_STOCK_ENABLE_BOOLEAN);
+        super(app, "setstock", true, Setting.COMMAND_SET_STOCK_ENABLE_BOOLEAN);
     }
 
     /**
@@ -47,7 +47,7 @@ public class SetStockTC extends DivinityCommandTC {
             // Args 1
             // get player names that start with args[0]
             case 1:
-                strings = this.app.getMaterialManager().getMaterialNames();
+                strings = this.getMain().getMaterialManager().getMaterialNames();
                 break;
 
             default:

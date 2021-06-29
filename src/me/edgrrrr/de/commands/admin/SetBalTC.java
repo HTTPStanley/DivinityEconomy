@@ -19,7 +19,7 @@ public class SetBalTC extends DivinityCommandTC {
      * @param app
      */
     public SetBalTC(DEPlugin app) {
-        super(app, true, Setting.COMMAND_SET_BALANCE_ENABLE_BOOLEAN);
+        super(app, "setbal", true, Setting.COMMAND_SET_BALANCE_ENABLE_BOOLEAN);
     }
 
     /**
@@ -47,7 +47,7 @@ public class SetBalTC extends DivinityCommandTC {
             // Args 1
             // get player names that start with args[0]
             case 1:
-                strings = this.app.getPlayerManager().getOfflinePlayerNames(args[0]);
+                strings = this.getMain().getPlayerManager().getOfflinePlayerNames(args[0]);
                 break;
 
             // Args 2

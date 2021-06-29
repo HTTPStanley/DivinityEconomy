@@ -21,7 +21,7 @@ public class ReadMailTC extends DivinityCommandTC {
      * @param app
      */
     public ReadMailTC(DEPlugin app) {
-        super(app, false, Setting.COMMAND_READ_MAIL_ENABLE_BOOLEAN);
+        super(app, "readmail", false, Setting.COMMAND_READ_MAIL_ENABLE_BOOLEAN);
     }
 
     /**
@@ -34,7 +34,7 @@ public class ReadMailTC extends DivinityCommandTC {
     @Override
     public List<String> onPlayerTabCompleter(Player sender, String[] args) {
         String[] strings;
-        MailList mailList = this.app.getMailManager().getMailList((sender).getUniqueId().toString());
+        MailList mailList = this.getMain().getMailManager().getMailList((sender).getUniqueId().toString());
         switch (args.length) {
             // 1 arg
             // return list of page numbers

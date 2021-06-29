@@ -37,26 +37,26 @@ public class Info extends DivinityCommand {
                 break;
 
             default:
-                this.app.getConsole().usage(sender, CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
+                this.getMain().getConsole().usage(sender, CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
                 return true;
         }
 
-        MaterialData material = this.app.getMaterialManager().getMaterial(materialName);
+        MaterialData material = this.getMain().getMaterialManager().getMaterial(materialName);
         if (material == null) {
-            this.app.getConsole().usage(sender, "Unknown Item: " + materialName, this.help.getUsages());
+            this.getMain().getConsole().usage(sender, String.format("Unknown Item: %s", materialName), this.help.getUsages());
         } else {
-            this.app.getConsole().info(sender, "==[Information for " + material.getCleanName() + "]==");
-            this.app.getConsole().info(sender, "ID: " + material.getMaterialID());
-            this.app.getConsole().info(sender, "Type: " + material.getType());
-            this.app.getConsole().info(sender, "Current Quantity: " + material.getQuantity());
-            this.app.getConsole().info(sender, "Is Banned: " + !(material.getAllowed()));
+            this.getMain().getConsole().info(sender, "==[Information for %s]==", material.getCleanName());
+            this.getMain().getConsole().info(sender, "ID: %s", material.getMaterialID());
+            this.getMain().getConsole().info(sender, "Type: %s", material.getType());
+            this.getMain().getConsole().info(sender, "Current Quantity: %s", material.getQuantity());
+            this.getMain().getConsole().info(sender, "Is Banned: %s", !(material.getAllowed()));
             if (material.getEntityName() != null)
-                this.app.getConsole().info(sender, "Entity Name: " + material.getEntityName());
+                this.getMain().getConsole().info(sender, "Entity Name: %s", material.getEntityName());
             MaterialPotionData pData = material.getPotionData();
             if (pData != null) {
-                this.app.getConsole().info(sender, "Potion type: " + pData.getType());
-                this.app.getConsole().info(sender, "Upgraded potion: " + pData.getUpgraded());
-                this.app.getConsole().info(sender, "Extended potion: " + pData.getExtended());
+                this.getMain().getConsole().info(sender, "Potion type: %s", pData.getType());
+                this.getMain().getConsole().info(sender, "Upgraded potion: %s", pData.getUpgraded());
+                this.getMain().getConsole().info(sender, "Extended potion: %s", pData.getExtended());
             }
         }
 

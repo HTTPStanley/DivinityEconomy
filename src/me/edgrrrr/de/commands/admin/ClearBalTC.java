@@ -19,7 +19,7 @@ public class ClearBalTC extends DivinityCommandTC {
      * @param app
      */
     public ClearBalTC(DEPlugin app) {
-        super(app, true, Setting.COMMAND_CLEAR_BALANCE_ENABLE_BOOLEAN);
+        super(app, "clearbal", true, Setting.COMMAND_CLEAR_BALANCE_ENABLE_BOOLEAN);
     }
 
     /**
@@ -36,7 +36,7 @@ public class ClearBalTC extends DivinityCommandTC {
             // 1 args
             // return names of players starting with arg
             case 1:
-                playerNames = this.app.getPlayerManager().getOfflinePlayerNames(args[0]);
+                playerNames = this.getMain().getPlayerManager().getOfflinePlayerNames(args[0]);
                 break;
 
             default:

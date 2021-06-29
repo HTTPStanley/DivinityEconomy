@@ -48,13 +48,13 @@ public class HandSell extends DivinityCommandMaterials {
                 break;
 
             default:
-                this.app.getConsole().usage(sender, CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
+                this.getMain().getConsole().usage(sender, CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
                 return true;
         }
 
         // Ensure amount is above 0
         if (amountToSell < 1) {
-            this.app.getConsole().send(sender, CommandResponse.InvalidAmountGiven.defaultLogLevel, CommandResponse.InvalidAmountGiven.message);
+            this.getMain().getConsole().send(sender, CommandResponse.InvalidAmountGiven.defaultLogLevel, CommandResponse.InvalidAmountGiven.message);
             return true;
         }
 
@@ -63,18 +63,18 @@ public class HandSell extends DivinityCommandMaterials {
 
         // Ensure item held is not null
         if (heldItem == null) {
-            this.app.getConsole().send(sender, CommandResponse.InvalidItemHeld.defaultLogLevel, CommandResponse.InvalidItemHeld.message);
+            this.getMain().getConsole().send(sender, CommandResponse.InvalidItemHeld.defaultLogLevel, CommandResponse.InvalidItemHeld.message);
             return true;
         }
 
         Material material = heldItem.getType();
         String materialName = material.name();
-        MaterialData materialData = this.app.getMaterialManager().getMaterial(materialName);
+        MaterialData materialData = this.getMain().getMaterialManager().getMaterial(materialName);
         int materialCount = PlayerInventoryManager.getMaterialCount(PlayerInventoryManager.getMaterialSlots(sender, material));
 
         // Ensure player inventory has enough
         if (materialCount < amountToSell) {
-            this.app.getConsole().logFailedSale(sender, amountToSell, materialData.getCleanName(), String.format(CommandResponse.InvalidInventoryStock.message, materialCount, amountToSell));
+            this.getMain().getConsole().logFailedSale(sender, amountToSell, materialData.getCleanName(), String.format(CommandResponse.InvalidInventoryStock.message, materialCount, amountToSell));
             return true;
         }
 
@@ -83,28 +83,28 @@ public class HandSell extends DivinityCommandMaterials {
         // Get the value
         ItemStack[] itemStacks = PlayerInventoryManager.getMaterialSlotsToCount(sender, material, amountToSell);
         ItemStack[] itemStacksClone = PlayerInventoryManager.cloneItems(itemStacks);
-        ValueResponse response = this.app.getMaterialManager().getSellValue(itemStacks);
+        ValueResponse response = this.getMain().getMaterialManager().getSellValue(itemStacks);
 
         if (response.isSuccess()) {
             PlayerInventoryManager.removePlayerItems(itemStacks);
 
-            EconomyResponse economyResponse = this.app.getEconomyManager().addCash(sender, response.value);
+            EconomyResponse economyResponse = this.getMain().getEconomyManager().addCash(sender, response.value);
             if (!economyResponse.transactionSuccess()) {
                 PlayerInventoryManager.addPlayerItems(sender, itemStacksClone);
                 // Handles console, player message and mail
-                this.app.getConsole().logFailedSale(sender, amountToSell, materialData.getCleanName(), economyResponse.errorMessage);
+                this.getMain().getConsole().logFailedSale(sender, amountToSell, materialData.getCleanName(), economyResponse.errorMessage);
             }
 
             else {
-                this.app.getMaterialManager().editQuantity(materialData, amountToSell);
+                this.getMain().getMaterialManager().editQuantity(materialData, amountToSell);
                 // Handles console, player message and mail
-                this.app.getConsole().logSale(sender, amountToSell, response.value, materialData.getCleanName());
+                this.getMain().getConsole().logSale(sender, amountToSell, response.value, materialData.getCleanName());
             }
         }
 
         else {
             // Handles console, player message and mail
-            this.app.getConsole().logFailedSale(sender, amountToSell, materialData.getCleanName(), response.errorMessage);
+            this.getMain().getConsole().logFailedSale(sender, amountToSell, materialData.getCleanName(), response.errorMessage);
         }
         return true;
     }

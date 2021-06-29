@@ -36,7 +36,7 @@ public class Balance extends DivinityCommand {
 
         switch (args.length) {
             case 1:
-                receiverPlayer = this.app.getPlayerManager().getOfflinePlayer(args[0], false);
+                receiverPlayer = this.getMain().getPlayerManager().getOfflinePlayer(args[0], false);
                 break;
 
             default:
@@ -46,11 +46,11 @@ public class Balance extends DivinityCommand {
         }
 
         if (receiverPlayer == null) {
-            this.app.getConsole().usage(sender, CommandResponse.InvalidPlayerName.message, this.help.getUsages());
+            this.getMain().getConsole().usage(sender, CommandResponse.InvalidPlayerName.message, this.help.getUsages());
             return true;
         }
 
-        this.app.getConsole().send(sender, CommandResponse.BalanceResponseOther.defaultLogLevel, String.format(CommandResponse.BalanceResponseOther.message, receiverPlayer.getName(), this.app.getConsole().getFormattedBalance(receiverPlayer)));
+        this.getMain().getConsole().send(sender, CommandResponse.BalanceResponseOther.defaultLogLevel, CommandResponse.BalanceResponseOther.message, receiverPlayer.getName(), this.getMain().getConsole().getFormattedBalance(receiverPlayer));
         return true;
     }
 
@@ -65,20 +65,20 @@ public class Balance extends DivinityCommand {
         OfflinePlayer player;
         switch (args.length) {
             case 1:
-                player = this.app.getPlayerManager().getOfflinePlayer(args[0], false);
+                player = this.getMain().getPlayerManager().getOfflinePlayer(args[0], false);
                 break;
 
             default:
-                this.app.getConsole().usage(CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
+                this.getMain().getConsole().usage(CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
                 return true;
         }
 
         if (player == null) {
-            this.app.getConsole().send(CommandResponse.InvalidPlayerName.defaultLogLevel, CommandResponse.InvalidPlayerName.message);
+            this.getMain().getConsole().send(CommandResponse.InvalidPlayerName.defaultLogLevel, CommandResponse.InvalidPlayerName.message);
             return true;
         }
 
-        this.app.getConsole().send(CommandResponse.BalanceResponseOther.defaultLogLevel, String.format(CommandResponse.BalanceResponseOther.message, player.getName(), this.app.getConsole().getFormattedBalance(player)));
+        this.getMain().getConsole().send(CommandResponse.BalanceResponseOther.defaultLogLevel, CommandResponse.BalanceResponseOther.message, player.getName(), this.getMain().getConsole().getFormattedBalance(player));
         return true;
     }
 }

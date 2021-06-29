@@ -19,7 +19,7 @@ public class InfoTC extends DivinityCommandMaterialsTC {
      * @param app
      */
     public InfoTC(DEPlugin app) {
-        super(app, true, Setting.COMMAND_INFO_ENABLE_BOOLEAN);
+        super(app, "information", true, Setting.COMMAND_INFO_ENABLE_BOOLEAN);
     }
 
     /**
@@ -47,7 +47,7 @@ public class InfoTC extends DivinityCommandMaterialsTC {
             // 1 args
             // return names of players starting with arg
             case 1:
-                strings = this.app.getMaterialManager().getMaterialNames(args[0]);
+                strings = this.getMain().getMaterialManager().getMaterialNames(args[0]);
                 break;
 
             // else

@@ -18,7 +18,7 @@ public class EnchantHandValueTC extends DivinityCommandEnchantTC {
      * @param app
      */
     public EnchantHandValueTC(DEPlugin app) {
-        super(app, false, Setting.COMMAND_E_VALUE_ENABLE_BOOLEAN);
+        super(app, "ehandvalue", false, Setting.COMMAND_E_VALUE_ENABLE_BOOLEAN);
     }
 
     /**

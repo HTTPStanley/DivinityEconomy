@@ -28,8 +28,8 @@ public class ReloadEnchants extends DivinityCommand {
      */
     @Override
     public boolean onPlayerCommand(Player sender, String[] args) {
-        this.app.getEnchantmentManager().loadEnchants();
-        this.app.getConsole().info(sender, "Reloaded Enchants");
+        this.getMain().getEnchantmentManager().loadEnchants();
+        this.getMain().getConsole().info(sender, "Reloaded Enchants");
         return true;
     }
 

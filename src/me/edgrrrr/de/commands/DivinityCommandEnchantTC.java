@@ -18,9 +18,9 @@ public abstract class DivinityCommandEnchantTC extends DivinityCommandTC {
      * @param hasConsoleSupport
      * @param commandSetting
      */
-    public DivinityCommandEnchantTC(DEPlugin app, boolean hasConsoleSupport, Setting commandSetting) {
-        super(app, hasConsoleSupport, commandSetting);
-        this.marketIsEnabled = this.app.getConfig().getBoolean(Setting.MARKET_ENCHANTS_ENABLE_BOOLEAN.path);
+    public DivinityCommandEnchantTC(DEPlugin app, String registeredCommandName, boolean hasConsoleSupport, Setting commandSetting) {
+        super(app, registeredCommandName, hasConsoleSupport, commandSetting);
+        this.marketIsEnabled = this.getMain().getConfig().getBoolean(Setting.MARKET_ENCHANTS_ENABLE_BOOLEAN.path);
     }
 
     /**

@@ -22,7 +22,7 @@ public class HandValueTC extends DivinityCommandMaterialsTC {
      * @param app
      */
     public HandValueTC(DEPlugin app) {
-        super(app, false, Setting.COMMAND_HAND_VALUE_ENABLE_BOOLEAN);
+        super(app, "handvalue", false, Setting.COMMAND_HAND_VALUE_ENABLE_BOOLEAN);
     }
 
     /**
@@ -39,7 +39,7 @@ public class HandValueTC extends DivinityCommandMaterialsTC {
         if (heldItem == null) {
             strings = new String[]{"You are not holding any item."};
         } else {
-            MaterialData materialData = this.app.getMaterialManager().getMaterial(heldItem.getType().toString());
+            MaterialData materialData = this.getMain().getMaterialManager().getMaterial(heldItem.getType().toString());
             // 1 args
             // return max stack size for the material given
             if (args.length == 1) {

@@ -24,7 +24,7 @@ public class SellTC extends DivinityCommandMaterialsTC {
      * @param app
      */
     public SellTC(DEPlugin app) {
-        super(app, false, Setting.COMMAND_SELL_ITEM_ENABLE_BOOLEAN);
+        super(app, "sell", false, Setting.COMMAND_SELL_ITEM_ENABLE_BOOLEAN);
     }
 
     /**
@@ -43,13 +43,13 @@ public class SellTC extends DivinityCommandMaterialsTC {
             // return items in user inventory
             case 1:
                 String[] materials = PlayerInventoryManager.getInventoryMaterials(sender);
-                strings = this.app.getMaterialManager().getMaterialAliases(materials, args[0]);
+                strings = this.getMain().getMaterialManager().getMaterialAliases(materials, args[0]);
                 break;
 
             // 2 args
             // return amount in user inventory
             case 2:
-                materialData = this.app.getMaterialManager().getMaterial(args[0]);
+                materialData = this.getMain().getMaterialManager().getMaterial(args[0]);
                 if (materialData == null) {
                     strings = new String[]{
                             "Invalid material entered."
@@ -72,11 +72,11 @@ public class SellTC extends DivinityCommandMaterialsTC {
                 break;
 
             case 3:
-                materialData = this.app.getMaterialManager().getMaterial(args[0]);
+                materialData = this.getMain().getMaterialManager().getMaterial(args[0]);
                 String value = "unknown";
                 if (materialData != null) {
                     Material material = materialData.getMaterial();
-                    value = String.format("£%,.2f", this.app.getMaterialManager().getSellValue(PlayerInventoryManager.getMaterialSlotsToCount(sender, material, Math.getInt(args[1]))).value);
+                    value = String.format("£%,.2f", this.getMain().getMaterialManager().getSellValue(PlayerInventoryManager.getMaterialSlotsToCount(sender, material, Math.getInt(args[1]))).value);
                 }
                 strings = new String[] {
                         String.format("Value: %s", value)

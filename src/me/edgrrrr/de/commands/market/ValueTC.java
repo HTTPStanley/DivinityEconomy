@@ -20,7 +20,7 @@ public class ValueTC extends DivinityCommandMaterialsTC {
      * @param app
      */
     public ValueTC(DEPlugin app) {
-        super(app, true, Setting.COMMAND_VALUE_ENABLE_BOOLEAN);
+        super(app, "value", true, Setting.COMMAND_VALUE_ENABLE_BOOLEAN);
     }
 
     /**
@@ -38,13 +38,13 @@ public class ValueTC extends DivinityCommandMaterialsTC {
             // 1 args
             // return names of players starting with arg
             case 1:
-                strings = this.app.getMaterialManager().getMaterialNames(args[0]);
+                strings = this.getMain().getMaterialManager().getMaterialNames(args[0]);
                 break;
 
             // 2 args
             // return max stack size for the material given
             case 2:
-                materialData = this.app.getMaterialManager().getMaterial(args[0]);
+                materialData = this.getMain().getMaterialManager().getMaterial(args[0]);
                 int stackSize = 64;
                 if (materialData != null) {
                     stackSize = materialData.getMaterial().getMaxStackSize();

@@ -45,52 +45,52 @@ public class EnchantHandBuy extends DivinityCommandEnchant {
                 break;
 
             default:
-                this.app.getConsole().usage(sender, CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
+                this.getMain().getConsole().usage(sender, CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
                 return true;
         }
 
         // Ensure amount is more than one
         if (enchantLevels < 1) {
-            this.app.getConsole().warn(sender, CommandResponse.InvalidAmountGiven.message);
+            this.getMain().getConsole().warn(sender, CommandResponse.InvalidAmountGiven.message);
             return true;
         }
 
         // Ensure user is holding an item
         ItemStack heldItem = PlayerInventoryManager.getHeldItem(sender);
         if (heldItem == null) {
-            this.app.getConsole().warn(sender, CommandResponse.InvalidItemHeld.message);
+            this.getMain().getConsole().warn(sender, CommandResponse.InvalidItemHeld.message);
             return true;
         }
 
         // Ensure item valuation was successful
-        ValueResponse valueResponse = this.app.getEnchantmentManager().getBuyValue(enchantName, enchantLevels);
+        ValueResponse valueResponse = this.getMain().getEnchantmentManager().getBuyValue(enchantName, enchantLevels);
         if (valueResponse.isFailure()) {
-            this.app.getConsole().logFailedPurchase(sender, enchantLevels, enchantName, valueResponse.errorMessage);
+            this.getMain().getConsole().logFailedPurchase(sender, enchantLevels, enchantName, valueResponse.errorMessage);
             return true;
         }
 
         // Ensure given enchant exists
-        EnchantData enchantData = this.app.getEnchantmentManager().getEnchant(enchantName);
+        EnchantData enchantData = this.getMain().getEnchantmentManager().getEnchant(enchantName);
         if (enchantData == null) {
-            this.app.getConsole().logFailedPurchase(sender, enchantLevels, enchantName, String.format(CommandResponse.InvalidEnchantName.message, enchantName));
+            this.getMain().getConsole().logFailedPurchase(sender, enchantLevels, enchantName, String.format(CommandResponse.InvalidEnchantName.message, enchantName));
             return true;
         }
 
 
-        double startingBalance = this.app.getEconomyManager().getBalance(sender);
-        EconomyResponse economyResponse = this.app.getEconomyManager().remCash(sender, valueResponse.value);
+        double startingBalance = this.getMain().getEconomyManager().getBalance(sender);
+        EconomyResponse economyResponse = this.getMain().getEconomyManager().remCash(sender, valueResponse.value);
 
         if (!economyResponse.transactionSuccess()) {
-            this.app.getConsole().logFailedPurchase(sender, enchantLevels, enchantName, economyResponse.errorMessage);
-            this.app.getEconomyManager().setCash(sender, startingBalance);
+            this.getMain().getConsole().logFailedPurchase(sender, enchantLevels, enchantName, economyResponse.errorMessage);
+            this.getMain().getEconomyManager().setCash(sender, startingBalance);
         } else {
-            Response response = this.app.getEnchantmentManager().addEnchantToItem(heldItem, enchantData.getEnchantment(), enchantLevels);
+            Response response = this.getMain().getEnchantmentManager().addEnchantToItem(heldItem, enchantData.getEnchantment(), enchantLevels);
             if (response.isFailure()) {
-                this.app.getConsole().logFailedPurchase(sender, enchantLevels, enchantName, response.errorMessage);
-                this.app.getEconomyManager().setCash(sender, startingBalance);
+                this.getMain().getConsole().logFailedPurchase(sender, enchantLevels, enchantName, response.errorMessage);
+                this.getMain().getEconomyManager().setCash(sender, startingBalance);
             } else {
-                this.app.getConsole().logPurchase(sender, enchantLevels, valueResponse.value, enchantName);
-                this.app.getEnchantmentManager().editLevelQuantity(enchantData, -enchantLevels);
+                this.getMain().getConsole().logPurchase(sender, enchantLevels, valueResponse.value, enchantName);
+                this.getMain().getEnchantmentManager().editLevelQuantity(enchantData, -enchantLevels);
             }
         }
         return true;

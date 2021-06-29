@@ -38,33 +38,33 @@ public class EnchantHandValue extends DivinityCommandEnchant {
         // ensure it is not null
         ItemStack heldItem = PlayerInventoryManager.getHeldItem(sender);
         if (heldItem == null) {
-            this.app.getConsole().usage(sender, CommandResponse.InvalidItemHeld.message, this.help.getUsages());
+            this.getMain().getConsole().usage(sender, CommandResponse.InvalidItemHeld.message, this.help.getUsages());
             return true;
         }
 
         // Ensure item is enchanted
-        if (!this.app.getEnchantmentManager().isEnchanted(heldItem)){
-            this.app.getConsole().usage(sender, CommandResponse.InvalidItemHeld.message, this.help.getUsages());
+        if (!this.getMain().getEnchantmentManager().isEnchanted(heldItem)){
+            this.getMain().getConsole().usage(sender, CommandResponse.InvalidItemHeld.message, this.help.getUsages());
             return true;
         }
 
-        MultiValueResponse multiValueResponse1 = this.app.getEnchantmentManager().getBuyValue(heldItem);
+        MultiValueResponse multiValueResponse1 = this.getMain().getEnchantmentManager().getBuyValue(heldItem);
         if (multiValueResponse1.isFailure()) {
-            this.app.getConsole().warn(sender, String.format("Couldn't determine buy value of &d Enchants(%s) because %s", multiValueResponse1.getTotalQuantity(), multiValueResponse1, multiValueResponse1.errorMessage));
+            this.getMain().getConsole().warn(sender, "Couldn't determine buy value of &d Enchants(%s) because %s", multiValueResponse1.getTotalQuantity(), multiValueResponse1, multiValueResponse1.errorMessage);
         } else {
-            this.app.getConsole().info(sender, String.format("Buy: %d enchants costs £%,.2f", multiValueResponse1.getTotalQuantity(), multiValueResponse1.getTotalValue()));
+            this.getMain().getConsole().info(sender, "Buy: %d enchants costs £%,.2f", multiValueResponse1.getTotalQuantity(), multiValueResponse1.getTotalValue());
             for (String enchant : multiValueResponse1.getItemIds()) {
-                this.app.getConsole().info(sender, String.format("  -Buy: %d %s costs £%,.2f", multiValueResponse1.quantities.get(enchant), enchant, multiValueResponse1.values.get(enchant)));
+                this.getMain().getConsole().info(sender, "  -Buy: %d %s costs £%,.2f", multiValueResponse1.quantities.get(enchant), enchant, multiValueResponse1.values.get(enchant));
             }
         }
 
-        MultiValueResponse multiValueResponse2 = this.app.getEnchantmentManager().getSellValue(heldItem);
+        MultiValueResponse multiValueResponse2 = this.getMain().getEnchantmentManager().getSellValue(heldItem);
         if (multiValueResponse2.isFailure()) {
-            this.app.getConsole().warn(sender, String.format("Couldn't determine sell value of &d Enchants(%s) because %s", multiValueResponse2.getTotalQuantity(), multiValueResponse2, multiValueResponse2.errorMessage));
+            this.getMain().getConsole().warn(sender, "Couldn't determine sell value of &d Enchants(%s) because %s", multiValueResponse2.getTotalQuantity(), multiValueResponse2, multiValueResponse2.errorMessage);
         } else {
-            this.app.getConsole().info(sender, String.format("Sell: %d enchants costs £%,.2f", multiValueResponse2.getTotalQuantity(), multiValueResponse2.getTotalValue()));
+            this.getMain().getConsole().info(sender, "Sell: %d enchants costs £%,.2f", multiValueResponse2.getTotalQuantity(), multiValueResponse2.getTotalValue());
             for (String enchant : multiValueResponse2.getItemIds()) {
-                this.app.getConsole().info(sender, String.format("  -Sell: %d %s costs £%,.2f", multiValueResponse2.quantities.get(enchant), enchant, multiValueResponse2.values.get(enchant)));
+                this.getMain().getConsole().info(sender, "  -Sell: %d %s costs £%,.2f", multiValueResponse2.quantities.get(enchant), enchant, multiValueResponse2.values.get(enchant));
             }
         }
         return true;

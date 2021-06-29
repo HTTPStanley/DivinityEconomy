@@ -40,29 +40,29 @@ public class SendCash extends DivinityCommand {
         switch (args.length) {
             case 2:
                 // Get online player
-                player2 = this.app.getPlayerManager().getOfflinePlayer(args[0], false);
+                player2 = this.getMain().getPlayerManager().getOfflinePlayer(args[0], false);
                 amount = Math.getDouble(args[1]);
                 break;
 
             default:
-                this.app.getConsole().usage(sender, CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
+                this.getMain().getConsole().usage(sender, CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
                 return true;
         }
 
         // Ensure online or offline player exists.
         if (player2 == null) {
-            this.app.getConsole().send(sender, CommandResponse.InvalidNumberOfArguments.defaultLogLevel, CommandResponse.InvalidNumberOfArguments.message);
+            this.getMain().getConsole().send(sender, CommandResponse.InvalidNumberOfArguments.defaultLogLevel, CommandResponse.InvalidNumberOfArguments.message);
             return true;
         }
 
         // Sendcash response
-        EconomyTransferResponse response = this.app.getEconomyManager().sendCash(sender, player2, amount);
+        EconomyTransferResponse response = this.getMain().getEconomyManager().sendCash(sender, player2, amount);
 
         // Handles console, message and mail
         if (response.responseType == EconomyResponse.ResponseType.SUCCESS) {
-            this.app.getConsole().logTransfer(sender, player2, amount);
+            this.getMain().getConsole().logTransfer(sender, player2, amount);
         } else {
-            this.app.getConsole().logFailedTransfer(sender, player2, amount, response.errorMessage);
+            this.getMain().getConsole().logFailedTransfer(sender, player2, amount, response.errorMessage);
         }
         return true;
     }

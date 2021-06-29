@@ -25,7 +25,7 @@ public class EnchantHandSellTC extends DivinityCommandEnchantTC {
      * @param app
      */
     public EnchantHandSellTC(DEPlugin app) {
-        super(app, false, Setting.COMMAND_E_SELL_ENABLE_BOOLEAN);
+        super(app, "esell", false, Setting.COMMAND_E_SELL_ENABLE_BOOLEAN);
     }
 
     /**
@@ -44,7 +44,7 @@ public class EnchantHandSellTC extends DivinityCommandEnchantTC {
             // 1 args
             // return names of players starting with arg
             case 1:
-                String[] enchantNames = this.app.getEnchantmentManager().getEnchantNames(this.app.getEnchantmentManager().getEnchantNames(heldItem.getEnchantments().keySet()), args[0]);
+                String[] enchantNames = this.getMain().getEnchantmentManager().getEnchantNames(this.getMain().getEnchantmentManager().getEnchantNames(heldItem.getEnchantments().keySet()), args[0]);
                 ArrayList<String> allStrings = new ArrayList<>();
                 allStrings.add("*");
                 allStrings.addAll(Arrays.asList(enchantNames));
@@ -54,7 +54,7 @@ public class EnchantHandSellTC extends DivinityCommandEnchantTC {
             // 2 args
             // return max stack size for the material given
             case 2:
-                enchantData = this.app.getEnchantmentManager().getEnchant(args[0]);
+                enchantData = this.getMain().getEnchantmentManager().getEnchant(args[0]);
                 int maxLevel = 1;
                 if (enchantData != null) {
                     maxLevel = heldItem.getEnchantmentLevel(enchantData.getEnchantment());
@@ -66,10 +66,10 @@ public class EnchantHandSellTC extends DivinityCommandEnchantTC {
             // 3 args
             // If uses clicks space after number, returns the value of the amount of item given
             case 3:
-                enchantData = this.app.getEnchantmentManager().getEnchant(args[0]);
+                enchantData = this.getMain().getEnchantmentManager().getEnchant(args[0]);
                 String value = "unknown";
                 if (enchantData != null) {
-                    value = String.format("£%,.2f", this.app.getEnchantmentManager().calculatePrice(EnchantData.levelsToBooks(Math.getInt(args[1])), enchantData.getQuantity(), this.app.getEnchantmentManager().enchantSellTax, false));
+                    value = String.format("£%,.2f", this.getMain().getEnchantmentManager().calculatePrice(EnchantData.levelsToBooks(Math.getInt(args[1])), enchantData.getQuantity(), this.getMain().getEnchantmentManager().enchantSellTax, false));
                 }
 
                 strings = new String[] {

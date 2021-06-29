@@ -21,7 +21,7 @@ public class BuyTC extends DivinityCommandMaterialsTC {
      * @param app
      */
     public BuyTC(DEPlugin app) {
-        super(app, false, Setting.COMMAND_BUY_ITEM_ENABLE_BOOLEAN);
+        super(app, "buy", false, Setting.COMMAND_BUY_ITEM_ENABLE_BOOLEAN);
     }
 
     /**
@@ -39,13 +39,13 @@ public class BuyTC extends DivinityCommandMaterialsTC {
             // 1 args
             // return names of players starting with arg
             case 1:
-                strings = this.app.getMaterialManager().getMaterialNames(args[0]);
+                strings = this.getMain().getMaterialManager().getMaterialNames(args[0]);
                 break;
 
             // 2 args
             // return max stack size for the material given
             case 2:
-                materialData = this.app.getMaterialManager().getMaterial(args[0]);
+                materialData = this.getMain().getMaterialManager().getMaterial(args[0]);
                 int stackSize = 64;
                 if (materialData != null) {
                     stackSize = materialData.getMaterial().getMaxStackSize();
@@ -65,10 +65,10 @@ public class BuyTC extends DivinityCommandMaterialsTC {
             // 3 args
             // If uses clicks space after number, returns the value of the amount of item given
             case 3:
-                materialData = this.app.getMaterialManager().getMaterial(args[0]);
+                materialData = this.getMain().getMaterialManager().getMaterial(args[0]);
                 String value = "unknown";
                 if (materialData != null) {
-                    value = String.format("£%,.2f", this.app.getMaterialManager().calculatePrice(Math.getInt(args[1]), materialData.getQuantity(), this.app.getMaterialManager().materialBuyTax, true));
+                    value = String.format("£%,.2f", this.getMain().getMaterialManager().calculatePrice(Math.getInt(args[1]), materialData.getQuantity(), this.getMain().getMaterialManager().materialBuyTax, true));
                 }
 
                 strings = new String[] {

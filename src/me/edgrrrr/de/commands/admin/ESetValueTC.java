@@ -19,7 +19,7 @@ public class ESetValueTC extends DivinityCommandTC {
      * @param app
      */
     public ESetValueTC(DEPlugin app) {
-        super(app, true, Setting.COMMAND_E_SET_VALUE_ENABLE_BOOLEAN);
+        super(app, "esetvalue", true, Setting.COMMAND_E_SET_VALUE_ENABLE_BOOLEAN);
     }
 
     /**
@@ -55,6 +55,6 @@ public class ESetValueTC extends DivinityCommandTC {
                 break;
         }
 
-        return Arrays.asList(this.app.getEnchantmentManager().getEnchantNames(arg));
+        return Arrays.asList(this.getMain().getEnchantmentManager().getEnchantNames(arg));
     }
 }

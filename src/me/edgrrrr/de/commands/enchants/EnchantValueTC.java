@@ -21,7 +21,7 @@ public class EnchantValueTC extends DivinityCommandEnchantTC {
      * @param app
      */
     public EnchantValueTC(DEPlugin app) {
-        super(app, true, Setting.COMMAND_E_VALUE_ENABLE_BOOLEAN);
+        super(app, "evalue", true, Setting.COMMAND_E_VALUE_ENABLE_BOOLEAN);
     }
 
     /**
@@ -39,13 +39,13 @@ public class EnchantValueTC extends DivinityCommandEnchantTC {
             // 1 args
             // return names of players starting with arg
             case 1:
-                strings = this.app.getEnchantmentManager().getEnchantNames(args[0]);
+                strings = this.getMain().getEnchantmentManager().getEnchantNames(args[0]);
                 break;
 
             // 2 args
             // return max stack size for the material given
             case 2:
-                enchantData = this.app.getEnchantmentManager().getEnchant(args[0]);
+                enchantData = this.getMain().getEnchantmentManager().getEnchant(args[0]);
                 int maxLevel = 1;
                 if (enchantData != null) {
                     maxLevel = enchantData.getMaxLevel();
@@ -56,7 +56,7 @@ public class EnchantValueTC extends DivinityCommandEnchantTC {
 
             // else
             default:
-                strings = this.app.getEnchantmentManager().getEnchantNames();
+                strings = this.getMain().getEnchantmentManager().getEnchantNames();
                 break;
         }
 

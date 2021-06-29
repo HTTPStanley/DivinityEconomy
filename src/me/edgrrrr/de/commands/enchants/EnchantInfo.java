@@ -36,18 +36,18 @@ public class EnchantInfo extends DivinityCommandEnchant {
                 break;
 
             default:
-                this.app.getConsole().usage(sender, CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
+                this.getMain().getConsole().usage(sender, CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
                 return true;
         }
 
-        EnchantData enchantData = this.app.getEnchantmentManager().getEnchant(enchantName);
+        EnchantData enchantData = this.getMain().getEnchantmentManager().getEnchant(enchantName);
         if (enchantData == null) {
-            this.app.getConsole().usage(sender, "Unknown Item: " + enchantName, this.help.getUsages());
+            this.getMain().getConsole().usage(sender, String.format("Unknown Item: %s", enchantName), this.help.getUsages());
         } else {
-            this.app.getConsole().info(sender, "==[Information for " + enchantData.getCleanName() + "]==");
-            this.app.getConsole().info(sender, "ID: " + enchantData.getID());
-            this.app.getConsole().info(sender, "Current Quantity: " + enchantData.getQuantity());
-            this.app.getConsole().info(sender, "Is Banned: " + !(enchantData.getAllowed()));
+            this.getMain().getConsole().info(sender, "==[Information for %s]==", enchantData.getCleanName());
+            this.getMain().getConsole().info(sender, "ID: %s", enchantData.getID());
+            this.getMain().getConsole().info(sender, "Current Quantity: %s", enchantData.getQuantity());
+            this.getMain().getConsole().info(sender, "Is Banned: %s", !(enchantData.getAllowed()));
         }
 
         return true;

@@ -5,6 +5,7 @@ import me.edgrrrr.de.commands.DivinityCommand.CommandResponse;
 import me.edgrrrr.de.config.Setting;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
@@ -17,20 +18,33 @@ public abstract class DivinityCommandTC implements TabCompleter {
     // Link to app
     // Whether the command is enabled or not
     // Whether the command supports console input
-    protected final DEPlugin app;
+    private final DEPlugin main;
     protected final boolean isEnabled;
     protected final boolean hasConsoleSupport;
 
     /**
      * Constructor
-     * @param app
+     * @param main
+     * @param registeredCommandName
      * @param hasConsoleSupport
      * @param commandSetting
      */
-    public DivinityCommandTC(DEPlugin app, boolean hasConsoleSupport, Setting commandSetting) {
-        this.app = app;
+    public DivinityCommandTC(DEPlugin main, String registeredCommandName, boolean hasConsoleSupport, Setting commandSetting) {
+        this.main = main;
         this.hasConsoleSupport = hasConsoleSupport;
-        this.isEnabled = this.app.getConfig().getBoolean(commandSetting.path);
+        this.isEnabled = this.main.getConfig().getBoolean(commandSetting.path);
+
+        PluginCommand command;
+        if ((command = this.getMain().getCommand(registeredCommandName)) == null) {
+            this.getMain().getConsole().warn("Command TabCompleter '%s' is incorrectly setup", registeredCommandName);
+        } else {
+            command.setTabCompleter(this);
+            if (!this.getMain().getConfigManager().getBoolean(Setting.IGNORE_COMMAND_REGISTRY_BOOLEAN)) this.getMain().getConsole().info("CommandTC %s registered", registeredCommandName);
+        }
+    }
+
+    protected DEPlugin getMain() {
+        return this.main;
     }
 
     /**
@@ -50,7 +64,7 @@ public abstract class DivinityCommandTC implements TabCompleter {
                 return this._onConsoleTabComplete(args);
             }
         } catch (Exception e) {
-            this.app.getConsole().send(CommandResponse.ErrorOnCommand.defaultLogLevel, String.format(CommandResponse.ErrorOnCommand.message, this.getClass().getCanonicalName(), e.getMessage()));
+            this.main.getConsole().send(CommandResponse.ErrorOnCommand.defaultLogLevel, CommandResponse.ErrorOnCommand.message, this.getClass().getCanonicalName(), e.getMessage());
             return null;
         }
     }

@@ -28,9 +28,9 @@ public class ReloadMaterials extends DivinityCommand {
      */
     @Override
     public boolean onPlayerCommand(Player sender, String[] args) {
-        this.app.getMaterialManager().loadMaterials();
-        this.app.getMaterialManager().loadAliases();
-        this.app.getConsole().info(sender, "Reloaded Materials");
+        this.getMain().getMaterialManager().loadMaterials();
+        this.getMain().getMaterialManager().loadAliases();
+        this.getMain().getConsole().info(sender, "Reloaded Materials");
         return true;
     }
 

@@ -19,7 +19,7 @@ public class EnchantInfoTC extends DivinityCommandEnchantTC {
      * @param app
      */
     public EnchantInfoTC(DEPlugin app) {
-        super(app, true, Setting.COMMAND_E_INFO_ENABLE_BOOLEAN);
+        super(app, "einfo", true, Setting.COMMAND_E_INFO_ENABLE_BOOLEAN);
     }
 
     /**
@@ -36,7 +36,7 @@ public class EnchantInfoTC extends DivinityCommandEnchantTC {
             // 1 args
             // return names of players starting with arg
             case 1:
-                strings = this.app.getEnchantmentManager().getEnchantNames(args[0]);
+                strings = this.getMain().getEnchantmentManager().getEnchantNames(args[0]);
                 break;
 
             // else

@@ -46,13 +46,13 @@ public class HandBuy extends DivinityCommandMaterials {
                 break;
 
             default:
-                this.app.getConsole().usage(sender, CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
+                this.getMain().getConsole().usage(sender, CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
                 return true;
         }
 
         // Ensure amount given is greater than 0
         if (amountToBuy < 1) {
-            this.app.getConsole().send(sender, CommandResponse.InvalidAmountGiven.defaultLogLevel, CommandResponse.InvalidAmountGiven.message);
+            this.getMain().getConsole().send(sender, CommandResponse.InvalidAmountGiven.defaultLogLevel, CommandResponse.InvalidAmountGiven.message);
             return true;
         }
 
@@ -61,22 +61,22 @@ public class HandBuy extends DivinityCommandMaterials {
 
         // Ensure user is holding an item
         if (heldItem == null) {
-            this.app.getConsole().send(sender, CommandResponse.InvalidAmountGiven.defaultLogLevel, CommandResponse.InvalidItemHeld.message);
+            this.getMain().getConsole().send(sender, CommandResponse.InvalidAmountGiven.defaultLogLevel, CommandResponse.InvalidItemHeld.message);
             return true;
         }
 
-        MaterialData materialData = this.app.getMaterialManager().getMaterial(heldItem.getType().name());
+        MaterialData materialData = this.getMain().getMaterialManager().getMaterial(heldItem.getType().name());
         int availableSpace = PlayerInventoryManager.getAvailableSpace(sender, materialData.getMaterial());
 
         // Ensure user has inventory space
         if (amountToBuy > availableSpace) {
-            this.app.getConsole().logFailedPurchase(sender, amountToBuy, materialData.getCleanName(), String.format(CommandResponse.InvalidInventorySpace.message, availableSpace, amountToBuy));
+            this.getMain().getConsole().logFailedPurchase(sender, amountToBuy, materialData.getCleanName(), String.format(CommandResponse.InvalidInventorySpace.message, availableSpace, amountToBuy));
             return true;
         }
 
         // Ensure market has enough
         if (!materialData.has(amountToBuy)) {
-            this.app.getConsole().logFailedPurchase(sender, amountToBuy, materialData.getCleanName(), String.format(CommandResponse.InvalidStockAmount.message, materialData.getQuantity(), amountToBuy));
+            this.getMain().getConsole().logFailedPurchase(sender, amountToBuy, materialData.getCleanName(), String.format(CommandResponse.InvalidStockAmount.message, materialData.getQuantity(), amountToBuy));
             return true;
         }
 
@@ -84,16 +84,16 @@ public class HandBuy extends DivinityCommandMaterials {
         // Get value of item stacks
         // Remove value from user
         ItemStack[] itemStacks = PlayerInventoryManager.createItemStacks(materialData.getMaterial(), amountToBuy);
-        ValueResponse priceResponse = this.app.getMaterialManager().getBuyValue(itemStacks);
-        EconomyResponse saleResponse = this.app.getEconomyManager().remCash(sender, priceResponse.value);
+        ValueResponse priceResponse = this.getMain().getMaterialManager().getBuyValue(itemStacks);
+        EconomyResponse saleResponse = this.getMain().getEconomyManager().remCash(sender, priceResponse.value);
 
         // If user can afford & valuation was success
         if (saleResponse.transactionSuccess() && priceResponse.isSuccess()) {
             PlayerInventoryManager.addPlayerItems(sender, itemStacks);
-            this.app.getMaterialManager().editQuantity(materialData, -amountToBuy);
+            this.getMain().getMaterialManager().editQuantity(materialData, -amountToBuy);
 
             // Handles console, message and mail
-            this.app.getConsole().logPurchase(sender, amountToBuy, saleResponse.amount, materialData.getCleanName());
+            this.getMain().getConsole().logPurchase(sender, amountToBuy, saleResponse.amount, materialData.getCleanName());
 
 
         }
@@ -108,7 +108,7 @@ public class HandBuy extends DivinityCommandMaterials {
             }
 
             // Handles console, message and mail
-            this.app.getConsole().logFailedPurchase(sender, amountToBuy, materialData.getCleanName(), errorMessage);
+            this.getMain().getConsole().logFailedPurchase(sender, amountToBuy, materialData.getCleanName(), errorMessage);
         }
         return true;
     }

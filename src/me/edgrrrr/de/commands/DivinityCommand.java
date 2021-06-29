@@ -7,6 +7,7 @@ import me.edgrrrr.de.help.Help;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.Player;
 
 /**
@@ -17,7 +18,7 @@ public abstract class DivinityCommand implements CommandExecutor {
     // The help object for this command
     // Whether the command is enabled or not
     // Whether the command supports console input
-    protected final DEPlugin app;
+    private final DEPlugin main;
     protected final Help help;
     protected final boolean isEnabled;
     protected final boolean hasConsoleSupport;
@@ -74,16 +75,24 @@ public abstract class DivinityCommand implements CommandExecutor {
 
     /**
      * Constructor
-     * @param app
+     * @param main
      * @param registeredCommandName
      * @param hasConsoleSupport
      * @param commandSetting
      */
-    public DivinityCommand(DEPlugin app, String registeredCommandName, boolean hasConsoleSupport, Setting commandSetting) {
-        this.app = app;
-        this.help = this.app.getHelpManager().get(registeredCommandName);
+    public DivinityCommand(DEPlugin main, String registeredCommandName, boolean hasConsoleSupport, Setting commandSetting) {
+        this.main = main;
+        this.help = this.getMain().getHelpManager().get(registeredCommandName);
         this.hasConsoleSupport = hasConsoleSupport;
-        this.isEnabled = this.app.getConfig().getBoolean(commandSetting.path);
+        this.isEnabled = this.getMain().getConfig().getBoolean(commandSetting.path);
+
+        PluginCommand command;
+        if ((command = this.getMain().getCommand(registeredCommandName)) == null) {
+            this.getMain().getConsole().warn("Command Executor '%s' is incorrectly setup", registeredCommandName);
+        } else {
+            command.setExecutor(this);
+            if (!this.getMain().getConfigManager().getBoolean(Setting.IGNORE_COMMAND_REGISTRY_BOOLEAN)) this.getMain().getConsole().info("Command %s registered", registeredCommandName);
+        }
     }
 
     /**
@@ -104,7 +113,7 @@ public abstract class DivinityCommand implements CommandExecutor {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            this.app.getConsole().send(CommandResponse.ErrorOnCommand.defaultLogLevel, String.format(CommandResponse.ErrorOnCommand.message, command, e.getMessage()));
+            this.getMain().getConsole().send(CommandResponse.ErrorOnCommand.defaultLogLevel, CommandResponse.ErrorOnCommand.message, command, e.getMessage());
             return false;
         }
     }
@@ -118,7 +127,7 @@ public abstract class DivinityCommand implements CommandExecutor {
      */
     public boolean _onPlayerCommand(Player sender, String[] args){
         if (!this.isEnabled) {
-            this.app.getConsole().send(sender, CommandResponse.PlayerCommandIsDisabled.defaultLogLevel, CommandResponse.PlayerCommandIsDisabled.message);
+            this.getMain().getConsole().send(sender, CommandResponse.PlayerCommandIsDisabled.defaultLogLevel, CommandResponse.PlayerCommandIsDisabled.message);
             return true;
         } else {
             return this.onPlayerCommand(sender, args);
@@ -142,10 +151,10 @@ public abstract class DivinityCommand implements CommandExecutor {
      */
     public boolean _onConsoleCommand(String[] args) {
         if (!this.isEnabled) {
-            this.app.getConsole().send(CommandResponse.ConsoleCommandIsDisabled.defaultLogLevel, CommandResponse.ConsoleCommandIsDisabled.message);
+            this.getMain().getConsole().send(CommandResponse.ConsoleCommandIsDisabled.defaultLogLevel, CommandResponse.ConsoleCommandIsDisabled.message);
             return true;
         } else if (!this.hasConsoleSupport) {
-            this.app.getConsole().send(CommandResponse.ConsoleSupportNotAdded.defaultLogLevel, CommandResponse.ConsoleSupportNotAdded.message);
+            this.getMain().getConsole().send(CommandResponse.ConsoleSupportNotAdded.defaultLogLevel, CommandResponse.ConsoleSupportNotAdded.message);
             return true;
         } else {
             return this.onConsoleCommand(args);
@@ -159,4 +168,12 @@ public abstract class DivinityCommand implements CommandExecutor {
      * @return
      */
     public abstract boolean onConsoleCommand(String[] args);
+
+    /**
+     * Returns the main module
+     * @return
+     */
+    public DEPlugin getMain() {
+        return this.main;
+    }
 }

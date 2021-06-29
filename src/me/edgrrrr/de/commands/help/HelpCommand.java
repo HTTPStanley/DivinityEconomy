@@ -42,29 +42,29 @@ public class HelpCommand extends DivinityCommand {
 
             case 1:
                 pageNumber = Math.getInt(args[0]);
-                help =  this.app.getHelpManager().get(args[0]);
+                help =  this.getMain().getHelpManager().get(args[0]);
                 break;
 
             default:
-                this.app.getConsole().usage(sender, CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
+                this.getMain().getConsole().usage(sender, CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
                 break;
         }
 
-        Map<Integer, Help[]> helpPages = this.app.getHelpManager().getPages(8);
+        Map<Integer, Help[]> helpPages = this.getMain().getHelpManager().getPages(8);
         if (help == null && !helpPages.containsKey(pageNumber-1)) {
-            this.app.getConsole().usage(sender, "invalid command or page number", this.help.getUsages());
+            this.getMain().getConsole().usage(sender, "invalid command or page number", this.help.getUsages());
 
         } else {
             int maxLength = 30;
             String string;
             if (helpPages.containsKey(pageNumber-1)) {
-                this.app.getConsole().info(sender, String.format("Help page %s/%s", pageNumber, helpPages.size()));
+                this.getMain().getConsole().info(sender, "Help page %s/%s", pageNumber, helpPages.size());
                 for (Help helpCom : helpPages.get(pageNumber-1)) {
-                    this.app.getConsole().info(sender, String.format("%s: %s...", helpCom.getCommand(), helpCom.getDescription(20)));
+                    this.getMain().getConsole().info(sender, "%s: %s...", helpCom.getCommand(), helpCom.getDescription(20));
                 }
 
             } else {
-                this.app.getConsole().help(sender, help.getCommand(), help.getDescription(), help.getUsages(), help.getAliases());
+                this.getMain().getConsole().help(sender, help.getCommand(), help.getDescription(), help.getUsages(), help.getAliases());
             }
         }
 

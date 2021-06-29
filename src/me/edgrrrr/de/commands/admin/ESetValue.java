@@ -34,30 +34,30 @@ public class ESetValue extends DivinityCommand {
         double value = -1;
         switch (args.length) {
             case 2:
-                enchantData = this.app.getEnchantmentManager().getEnchant(args[0]);
+                enchantData = this.getMain().getEnchantmentManager().getEnchant(args[0]);
                 value = Math.getDouble(args[1]);
                 break;
 
             default:
-                this.app.getConsole().usage(sender, CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
+                this.getMain().getConsole().usage(sender, CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
                 return true;
         }
 
         // Ensure material exists
         if (enchantData == null) {
-            this.app.getConsole().send(sender, CommandResponse.InvalidEnchantName.defaultLogLevel, String.format(CommandResponse.InvalidItemName.message, args[0]));
+            this.getMain().getConsole().send(sender, CommandResponse.InvalidEnchantName.defaultLogLevel, CommandResponse.InvalidItemName.message, args[0]);
             return true;
         }
 
         if (value < 0) {
-            this.app.getConsole().send(sender, CommandResponse.InvalidAmountGiven.defaultLogLevel, String.format(CommandResponse.InvalidAmountGiven.message, value, 0));
+            this.getMain().getConsole().send(sender, CommandResponse.InvalidAmountGiven.defaultLogLevel, CommandResponse.InvalidAmountGiven.message, value, 0);
             return true;
         }
 
         int previousStock = enchantData.getQuantity();
-        double previousValue = this.app.getEnchantmentManager().getUserPrice(enchantData.getQuantity());
-        this.app.getEnchantmentManager().setPrice(enchantData, value);
-        this.app.getConsole().send(sender, CommandResponse.StockValueChanged.defaultLogLevel, String.format(CommandResponse.StockValueChanged.message, this.app.getConsole().formatMoney(previousValue), previousStock, this.app.getConsole().formatMoney(value), enchantData.getQuantity()));
+        double previousValue = this.getMain().getEnchantmentManager().getUserPrice(enchantData.getQuantity());
+        this.getMain().getEnchantmentManager().setPrice(enchantData, value);
+        this.getMain().getConsole().send(sender, CommandResponse.StockValueChanged.defaultLogLevel, CommandResponse.StockValueChanged.message, this.getMain().getConsole().formatMoney(previousValue), previousStock, this.getMain().getConsole().formatMoney(value), enchantData.getQuantity());
 
         return true;
     }

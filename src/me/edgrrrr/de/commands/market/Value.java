@@ -46,35 +46,35 @@ public class Value extends DivinityCommandMaterials {
                 break;
 
             default:
-                this.app.getConsole().usage(sender, CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
+                this.getMain().getConsole().usage(sender, CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
                 return true;
         }
 
         // Ensure given material exists
-        MaterialData materialData = this.app.getMaterialManager().getMaterial(materialName);
+        MaterialData materialData = this.getMain().getMaterialManager().getMaterial(materialName);
         if (materialData == null) {
-            this.app.getConsole().send(sender, CommandResponse.InvalidItemName.defaultLogLevel, String.format(CommandResponse.InvalidItemName.message, materialName));
+            this.getMain().getConsole().send(sender, CommandResponse.InvalidItemName.defaultLogLevel, CommandResponse.InvalidItemName.message, materialName);
             return true;
         }
 
         // Create items
         // Get buy & sell value
         ItemStack[] itemStacks = PlayerInventoryManager.createItemStacks(materialData.getMaterial(), amount);
-        ValueResponse buyResponse = this.app.getMaterialManager().getBuyValue(itemStacks);
-        ValueResponse sellResponse = this.app.getMaterialManager().getSellValue(itemStacks);
+        ValueResponse buyResponse = this.getMain().getMaterialManager().getBuyValue(itemStacks);
+        ValueResponse sellResponse = this.getMain().getMaterialManager().getSellValue(itemStacks);
 
         if (buyResponse.isSuccess()) {
-            this.app.getConsole().info(sender, String.format("Buy: %d %s costs £%,.2f", amount, materialData.getCleanName(), buyResponse.value));
+            this.getMain().getConsole().info(sender, "Buy: %d %s costs £%,.2f", amount, materialData.getCleanName(), buyResponse.value);
 
         } else {
-            this.app.getConsole().info(sender, String.format("Couldn't determine buy price of %d %s because %s", amount, materialData.getCleanName(), buyResponse.errorMessage));
+            this.getMain().getConsole().info(sender, "Couldn't determine buy price of %d %s because %s", amount, materialData.getCleanName(), buyResponse.errorMessage);
         }
 
         if (sellResponse.isSuccess()) {
-            this.app.getConsole().info(sender, String.format("Sell: %d %s costs £%,.2f", amount, materialData.getCleanName(), sellResponse.value));
+            this.getMain().getConsole().info(sender, "Sell: %d %s costs £%,.2f", amount, materialData.getCleanName(), sellResponse.value);
 
         } else {
-            this.app.getConsole().info(sender, String.format("Couldn't determine buy price of %d %s because %s", amount, materialData.getCleanName(), sellResponse.errorMessage));
+            this.getMain().getConsole().info(sender, "Couldn't determine buy price of %d %s because %s", amount, materialData.getCleanName(), sellResponse.errorMessage);
         }
 
         return true;

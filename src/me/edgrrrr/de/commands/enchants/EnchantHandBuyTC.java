@@ -24,7 +24,7 @@ public class EnchantHandBuyTC extends DivinityCommandEnchantTC {
      * @param app
      */
     public EnchantHandBuyTC(DEPlugin app) {
-        super(app, false, Setting.COMMAND_E_BUY_ENABLE_BOOLEAN);
+        super(app, "ebuy", false, Setting.COMMAND_E_BUY_ENABLE_BOOLEAN);
     }
 
     /**
@@ -43,13 +43,13 @@ public class EnchantHandBuyTC extends DivinityCommandEnchantTC {
             // 1 args
             // return names of players starting with arg
             case 1:
-                strings = this.app.getEnchantmentManager().getCompatibleEnchants(heldItem, args[0]);
+                strings = this.getMain().getEnchantmentManager().getCompatibleEnchants(heldItem, args[0]);
                 break;
 
             // 2 args
             // return max stack size for the material given
             case 2:
-                enchantData = this.app.getEnchantmentManager().getEnchant(args[0]);
+                enchantData = this.getMain().getEnchantmentManager().getEnchant(args[0]);
                 int maxLevel = 1;
                 if (enchantData != null) {
                     maxLevel = enchantData.getMaxLevel() - heldItem.getEnchantmentLevel(enchantData.getEnchantment());
@@ -61,10 +61,10 @@ public class EnchantHandBuyTC extends DivinityCommandEnchantTC {
             // 3 args
             // If uses clicks space after number, returns the value of the amount of item given
             case 3:
-                enchantData = this.app.getEnchantmentManager().getEnchant(args[0]);
+                enchantData = this.getMain().getEnchantmentManager().getEnchant(args[0]);
                 String value = "unknown";
                 if (enchantData != null) {
-                    value = String.format("£%,.2f", this.app.getEnchantmentManager().calculatePrice(EnchantData.levelsToBooks(Math.getInt(args[1])), enchantData.getQuantity(), this.app.getEnchantmentManager().enchantBuyTax, true));
+                    value = String.format("£%,.2f", this.getMain().getEnchantmentManager().calculatePrice(EnchantData.levelsToBooks(Math.getInt(args[1])), enchantData.getQuantity(), this.getMain().getEnchantmentManager().enchantBuyTax, true));
                 }
 
                 strings = new String[] {

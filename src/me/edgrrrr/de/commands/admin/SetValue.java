@@ -34,30 +34,30 @@ public class SetValue extends DivinityCommand {
         double value = -1;
         switch (args.length) {
             case 2:
-                materialData = this.app.getMaterialManager().getMaterial(args[0]);
+                materialData = this.getMain().getMaterialManager().getMaterial(args[0]);
                 value = Math.getDouble(args[1]);
                 break;
 
             default:
-                this.app.getConsole().usage(sender, CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
+                this.getMain().getConsole().usage(sender, CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
                 return true;
         }
 
         // Ensure material exists
         if (materialData == null) {
-            this.app.getConsole().send(sender, CommandResponse.InvalidItemName.defaultLogLevel, String.format(CommandResponse.InvalidItemName.message, args[0]));
+            this.getMain().getConsole().send(sender, CommandResponse.InvalidItemName.defaultLogLevel, String.format(CommandResponse.InvalidItemName.message, args[0]));
             return true;
         }
 
         if (value < 0) {
-            this.app.getConsole().send(sender, CommandResponse.InvalidAmountGiven.defaultLogLevel, String.format(CommandResponse.InvalidAmountGiven.message, value, 0));
+            this.getMain().getConsole().send(sender, CommandResponse.InvalidAmountGiven.defaultLogLevel, String.format(CommandResponse.InvalidAmountGiven.message, value, 0));
             return true;
         }
 
         int previousStock = materialData.getQuantity();
-        double previousValue = this.app.getMaterialManager().getUserPrice(materialData.getQuantity());
-        this.app.getMaterialManager().setPrice(materialData, value);
-        this.app.getConsole().send(sender, CommandResponse.StockValueChanged.defaultLogLevel, String.format(CommandResponse.StockValueChanged.message, this.app.getConsole().formatMoney(previousValue), previousStock, this.app.getConsole().formatMoney(value), materialData.getQuantity()));
+        double previousValue = this.getMain().getMaterialManager().getUserPrice(materialData.getQuantity());
+        this.getMain().getMaterialManager().setPrice(materialData, value);
+        this.getMain().getConsole().send(sender, CommandResponse.StockValueChanged.defaultLogLevel, String.format(CommandResponse.StockValueChanged.message, this.getMain().getConsole().formatMoney(previousValue), previousStock, this.getMain().getConsole().formatMoney(value), materialData.getQuantity()));
 
         return true;
     }

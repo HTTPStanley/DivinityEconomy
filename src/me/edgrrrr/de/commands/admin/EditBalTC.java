@@ -19,7 +19,7 @@ public class EditBalTC extends DivinityCommandTC {
      * @param app
      */
     public EditBalTC(DEPlugin app) {
-        super(app, true, Setting.COMMAND_EDIT_BALANCE_ENABLE_BOOLEAN);
+        super(app, "editbal", true, Setting.COMMAND_EDIT_BALANCE_ENABLE_BOOLEAN);
     }
 
     /**
@@ -47,7 +47,7 @@ public class EditBalTC extends DivinityCommandTC {
             // Args 1
             // get player names that start with args[0]
             case 1:
-                strings = this.app.getPlayerManager().getOfflinePlayerNames(args[0]);
+                strings = this.getMain().getPlayerManager().getOfflinePlayerNames(args[0]);
                 break;
 
             // Args 2

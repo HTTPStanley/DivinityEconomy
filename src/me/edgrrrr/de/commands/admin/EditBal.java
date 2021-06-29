@@ -47,38 +47,38 @@ public class EditBal extends DivinityCommand {
 
             case 2:
                 // use case #2
-                receiver = this.app.getPlayerManager().getOfflinePlayer(args[0], false);
+                receiver = this.getMain().getPlayerManager().getOfflinePlayer(args[0], false);
                 amount = Math.getDouble(args[1]);
                 break;
 
             default:
                 // Incorrect number of args
-                this.app.getConsole().usage(sender, CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
+                this.getMain().getConsole().usage(sender, CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
                 return true;
         }
 
         // Ensure to player exists
         if (receiver == null) {
-            this.app.getConsole().send(sender, CommandResponse.InvalidPlayerName.defaultLogLevel, CommandResponse.InvalidPlayerName.message);
+            this.getMain().getConsole().send(sender, CommandResponse.InvalidPlayerName.defaultLogLevel, CommandResponse.InvalidPlayerName.message);
             return true;
 
         }
 
         // Edit cash
         EconomyResponse response;
-        double startingBalance = this.app.getEconomyManager().getBalance(receiver);
+        double startingBalance = this.getMain().getEconomyManager().getBalance(receiver);
         if (amount > 0) {
-            response = this.app.getEconomyManager().addCash(receiver, amount);
+            response = this.getMain().getEconomyManager().addCash(receiver, amount);
         } else {
-            response = this.app.getEconomyManager().remCash(receiver, -amount);
+            response = this.getMain().getEconomyManager().remCash(receiver, -amount);
         }
 
         // Handles sender, receiver, message, mail and console log
         if (response.transactionSuccess()) {
-            this.app.getConsole().logBalance(sender, receiver, startingBalance, response.balance, String.format("%s changed your balance", sender.getName()));
+            this.getMain().getConsole().logBalance(sender, receiver, startingBalance, response.balance, String.format("%s changed your balance", sender.getName()));
 
         } else {
-            this.app.getConsole().logFailedBalance(sender, receiver, response.errorMessage);
+            this.getMain().getConsole().logFailedBalance(sender, receiver, response.errorMessage);
         }
 
         return true;
@@ -102,38 +102,38 @@ public class EditBal extends DivinityCommand {
         switch (args.length) {
             case 2:
                 // use case #2
-                receiver = this.app.getPlayerManager().getOfflinePlayer(args[0], false);
+                receiver = this.getMain().getPlayerManager().getOfflinePlayer(args[0], false);
                 amount = Math.getDouble(args[1]);
                 break;
 
             default:
                 // Incorrect number of args
-                this.app.getConsole().usage(CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
+                this.getMain().getConsole().usage(CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
                 return true;
         }
 
         // Ensure to player exists
         if (receiver == null) {
-            this.app.getConsole().send(CommandResponse.InvalidPlayerName.defaultLogLevel, CommandResponse.InvalidPlayerName.message);
+            this.getMain().getConsole().send(CommandResponse.InvalidPlayerName.defaultLogLevel, CommandResponse.InvalidPlayerName.message);
             return true;
 
         }
 
         // Edit cash
         EconomyResponse response;
-        double startingBalance = this.app.getEconomyManager().getBalance(receiver);
+        double startingBalance = this.getMain().getEconomyManager().getBalance(receiver);
         if (amount > 0) {
-            response = this.app.getEconomyManager().addCash(receiver, amount);
+            response = this.getMain().getEconomyManager().addCash(receiver, amount);
         } else {
-            response = this.app.getEconomyManager().remCash(receiver, -amount);
+            response = this.getMain().getEconomyManager().remCash(receiver, -amount);
         }
 
         // Handles sender, receiver, message, mail and console log
         if (response.transactionSuccess()) {
-            this.app.getConsole().logBalance(null, receiver, startingBalance, response.balance, "CONSOLE changed your balance");
+            this.getMain().getConsole().logBalance(null, receiver, startingBalance, response.balance, "CONSOLE changed your balance");
 
         } else {
-            this.app.getConsole().logFailedBalance(null, receiver, response.errorMessage);
+            this.getMain().getConsole().logFailedBalance(null, receiver, response.errorMessage);
         }
 
         return true;

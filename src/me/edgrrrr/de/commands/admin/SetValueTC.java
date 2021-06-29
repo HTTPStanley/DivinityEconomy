@@ -19,7 +19,7 @@ public class SetValueTC extends DivinityCommandTC {
      * @param app
      */
     public SetValueTC(DEPlugin app) {
-        super(app, true, Setting.COMMAND_SET_VALUE_ENABLE_BOOLEAN);
+        super(app, "setvalue", true, Setting.COMMAND_SET_VALUE_ENABLE_BOOLEAN);
     }
 
     /**
@@ -47,7 +47,7 @@ public class SetValueTC extends DivinityCommandTC {
             // Args 1
             // get player names that start with args[0]
             case 1:
-                strings = this.app.getMaterialManager().getMaterialNames();
+                strings = this.getMain().getMaterialManager().getMaterialNames();
                 break;
 
             default:

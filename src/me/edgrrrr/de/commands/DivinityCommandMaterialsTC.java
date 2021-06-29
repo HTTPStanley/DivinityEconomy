@@ -18,9 +18,9 @@ public abstract class DivinityCommandMaterialsTC extends DivinityCommandTC {
      * @param hasConsoleSupport
      * @param commandSetting
      */
-    public DivinityCommandMaterialsTC(DEPlugin app, boolean hasConsoleSupport, Setting commandSetting) {
-        super(app, hasConsoleSupport, commandSetting);
-        this.marketIsEnabled = this.app.getConfig().getBoolean(Setting.MARKET_MATERIALS_ENABLE_BOOLEAN.path);
+    public DivinityCommandMaterialsTC(DEPlugin app, String registeredCommandName, boolean hasConsoleSupport, Setting commandSetting) {
+        super(app, registeredCommandName, hasConsoleSupport, commandSetting);
+        this.marketIsEnabled = this.getMain().getConfig().getBoolean(Setting.MARKET_MATERIALS_ENABLE_BOOLEAN.path);
     }
 
     /**

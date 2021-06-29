@@ -19,7 +19,7 @@ public class ClearMailTC extends DivinityCommandTC {
      * @param
      */
     public ClearMailTC(DEPlugin app) {
-        super(app, false, Setting.COMMAND_CLEAR_MAIL_ENABLE_BOOLEAN);
+        super(app, "clearmail", false, Setting.COMMAND_CLEAR_MAIL_ENABLE_BOOLEAN);
     }
 
     /**

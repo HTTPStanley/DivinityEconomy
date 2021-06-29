@@ -38,26 +38,26 @@ public class HandInfo extends DivinityCommandMaterials {
                 break;
 
             default:
-                this.app.getConsole().usage(sender, CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
+                this.getMain().getConsole().usage(sender, CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
                 return true;
         }
 
         ItemStack heldItem = PlayerInventoryManager.getHeldItemNotNull(sender);
         Material material = heldItem.getType();
-        MaterialData materialData = this.app.getMaterialManager().getMaterial(material.name());
+        MaterialData materialData = this.getMain().getMaterialManager().getMaterial(material.name());
 
-        this.app.getConsole().info(sender, "==[Information for " + materialData.getCleanName() + "]==");
-        this.app.getConsole().info(sender, "ID: " + materialData.getMaterialID());
-        this.app.getConsole().info(sender, "Type: " + materialData.getType());
-        this.app.getConsole().info(sender, "Current Quantity: " + materialData.getQuantity());
-        this.app.getConsole().info(sender, "Is Banned: " + !(materialData.getAllowed()));
+        this.getMain().getConsole().info(sender, "==[Information for " + materialData.getCleanName() + "]==");
+        this.getMain().getConsole().info(sender, "ID: " + materialData.getMaterialID());
+        this.getMain().getConsole().info(sender, "Type: " + materialData.getType());
+        this.getMain().getConsole().info(sender, "Current Quantity: " + materialData.getQuantity());
+        this.getMain().getConsole().info(sender, "Is Banned: " + !(materialData.getAllowed()));
         if (materialData.getEntityName() != null)
-            this.app.getConsole().info(sender, "Entity Name: " + materialData.getEntityName());
+            this.getMain().getConsole().info(sender, "Entity Name: " + materialData.getEntityName());
         MaterialPotionData pData = materialData.getPotionData();
         if (pData != null) {
-            this.app.getConsole().info(sender, "Potion type: " + pData.getType());
-            this.app.getConsole().info(sender, "Upgraded potion: " + pData.getUpgraded());
-            this.app.getConsole().info(sender, "Extended potion: " + pData.getExtended());
+            this.getMain().getConsole().info(sender, "Potion type: " + pData.getType());
+            this.getMain().getConsole().info(sender, "Upgraded potion: " + pData.getUpgraded());
+            this.getMain().getConsole().info(sender, "Extended potion: " + pData.getExtended());
         }
 
         return true;

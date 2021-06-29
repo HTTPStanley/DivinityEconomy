@@ -52,13 +52,13 @@ public class HandValue extends DivinityCommandMaterials {
                 break;
 
             default:
-                this.app.getConsole().usage(sender, CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
+                this.getMain().getConsole().usage(sender, CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
                 return true;
         }
 
         // Ensure amount is greater than 0
         if (amount < 0) {
-            this.app.getConsole().send(sender, CommandResponse.InvalidAmountGiven.defaultLogLevel, CommandResponse.InvalidAmountGiven.message);
+            this.getMain().getConsole().send(sender, CommandResponse.InvalidAmountGiven.defaultLogLevel, CommandResponse.InvalidAmountGiven.message);
             return true;
         }
 
@@ -66,12 +66,12 @@ public class HandValue extends DivinityCommandMaterials {
 
         // Ensure user is holding an item
         if (heldItem == null) {
-            this.app.getConsole().send(sender, CommandResponse.InvalidItemHeld.defaultLogLevel, CommandResponse.InvalidItemHeld.message);
+            this.getMain().getConsole().send(sender, CommandResponse.InvalidItemHeld.defaultLogLevel, CommandResponse.InvalidItemHeld.message);
             return true;
         }
 
         Material material = heldItem.getType();
-        MaterialData materialData = this.app.getMaterialManager().getMaterial(material.name());
+        MaterialData materialData = this.getMain().getMaterialManager().getMaterial(material.name());
         ItemStack[] buyStacks;
         ItemStack[] sellStacks;
         ItemStack[] itemStacks = PlayerInventoryManager.getMaterialSlots(sender, material);
@@ -90,21 +90,21 @@ public class HandValue extends DivinityCommandMaterials {
             buyStacks = sellStacks;
         }
 
-        ValueResponse buyResponse = this.app.getMaterialManager().getBuyValue(buyStacks);
-        ValueResponse sellResponse = this.app.getMaterialManager().getSellValue(sellStacks);
+        ValueResponse buyResponse = this.getMain().getMaterialManager().getBuyValue(buyStacks);
+        ValueResponse sellResponse = this.getMain().getMaterialManager().getSellValue(sellStacks);
 
         if (buyResponse.isSuccess()) {
-            this.app.getConsole().info(sender, String.format("Buy: %d %s costs £%,.2f", amount, materialData.getCleanName(), buyResponse.value));
+            this.getMain().getConsole().info(sender, "Buy: %d %s costs £%,.2f", amount, materialData.getCleanName(), buyResponse.value);
 
         } else {
-            this.app.getConsole().info(sender, String.format("Couldn't determine buy price of %d %s because %s", amount, materialData.getCleanName(), buyResponse.errorMessage));
+            this.getMain().getConsole().info(sender, "Couldn't determine buy price of %d %s because %s", amount, materialData.getCleanName(), buyResponse.errorMessage);
         }
 
         if (sellResponse.isSuccess()) {
-            this.app.getConsole().info(sender, String.format("Sell: %d %s costs £%,.2f", amount, materialData.getCleanName(), sellResponse.value));
+            this.getMain().getConsole().info(sender, "Sell: %d %s costs £%,.2f", amount, materialData.getCleanName(), sellResponse.value);
 
         } else {
-            this.app.getConsole().info(sender, String.format("Couldn't determine buy price of %d %s because %s", amount, materialData.getCleanName(), sellResponse.errorMessage));
+            this.getMain().getConsole().info(sender, "Couldn't determine buy price of %d %s because %s", amount, materialData.getCleanName(), sellResponse.errorMessage);
         }
         return true;
     }

@@ -48,33 +48,33 @@ public class Buy extends DivinityCommandMaterials {
                 break;
 
             default:
-                this.app.getConsole().usage(sender, CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
+                this.getMain().getConsole().usage(sender, CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
                 return true;
         }
 
         // Ensure amount is greater than 0
         if (amountToBuy < 1) {
-            this.app.getConsole().send(sender, CommandResponse.InvalidAmountGiven.defaultLogLevel, CommandResponse.InvalidAmountGiven.message);
+            this.getMain().getConsole().send(sender, CommandResponse.InvalidAmountGiven.defaultLogLevel, CommandResponse.InvalidAmountGiven.message);
             return true;
         }
 
         // Ensure Material given exists.
-        MaterialData materialData = this.app.getMaterialManager().getMaterial(materialName);
+        MaterialData materialData = this.getMain().getMaterialManager().getMaterial(materialName);
         if (materialData == null) {
-            this.app.getConsole().send(sender, CommandResponse.InvalidItemName.defaultLogLevel, String.format(CommandResponse.InvalidItemName.message, materialName));
+            this.getMain().getConsole().send(sender, CommandResponse.InvalidItemName.defaultLogLevel, CommandResponse.InvalidItemName.message, materialName);
             return true;
         }
 
         // Ensure player has the available inventory space
         int availableSpace = PlayerInventoryManager.getAvailableSpace(sender, materialData.getMaterial());
         if (amountToBuy > availableSpace) {
-            this.app.getConsole().logFailedPurchase(sender, amountToBuy, materialData.getCleanName(), String.format(CommandResponse.InvalidInventorySpace.message, availableSpace, amountToBuy));
+            this.getMain().getConsole().logFailedPurchase(sender, amountToBuy, materialData.getCleanName(), String.format(CommandResponse.InvalidInventorySpace.message, availableSpace, amountToBuy));
             return true;
         }
 
         // Ensure market has enough stock
         if (!materialData.has(amountToBuy)) {
-            this.app.getConsole().logFailedPurchase(sender, amountToBuy, materialData.getCleanName(), String.format(CommandResponse.InvalidStockAmount.message, materialData.getQuantity(), amountToBuy));
+            this.getMain().getConsole().logFailedPurchase(sender, amountToBuy, materialData.getCleanName(), String.format(CommandResponse.InvalidStockAmount.message, materialData.getQuantity(), amountToBuy));
             return true;
         }
 
@@ -82,16 +82,16 @@ public class Buy extends DivinityCommandMaterials {
         // Get the value of the item stacks
         // Remove the value of the items from the player
         ItemStack[] itemStacks = PlayerInventoryManager.createItemStacks(materialData.getMaterial(), amountToBuy);
-        ValueResponse priceResponse = this.app.getMaterialManager().getBuyValue(itemStacks);
-        EconomyResponse saleResponse = this.app.getEconomyManager().remCash(sender, priceResponse.value);
+        ValueResponse priceResponse = this.getMain().getMaterialManager().getBuyValue(itemStacks);
+        EconomyResponse saleResponse = this.getMain().getEconomyManager().remCash(sender, priceResponse.value);
 
         // Handle adding items to player and removing quantity from market
         if (saleResponse.transactionSuccess() && priceResponse.isSuccess()) {
             PlayerInventoryManager.addPlayerItems(sender, itemStacks);
-            this.app.getMaterialManager().editQuantity(materialData, -amountToBuy);
+            this.getMain().getMaterialManager().editQuantity(materialData, -amountToBuy);
 
             // Handles console, message and mail
-            this.app.getConsole().logPurchase(sender, amountToBuy, saleResponse.amount, materialData.getCleanName());
+            this.getMain().getConsole().logPurchase(sender, amountToBuy, saleResponse.amount, materialData.getCleanName());
         }
 
         // If the transaction or valuation failed then the user is returned an error.
@@ -101,7 +101,7 @@ public class Buy extends DivinityCommandMaterials {
             else if (priceResponse.isFailure()) errorMessage = priceResponse.errorMessage;
 
             // Handles console, message and mail
-            this.app.getConsole().logFailedPurchase(sender, amountToBuy, materialData.getCleanName(), errorMessage);
+            this.getMain().getConsole().logFailedPurchase(sender, amountToBuy, materialData.getCleanName(), errorMessage);
         }
 
 

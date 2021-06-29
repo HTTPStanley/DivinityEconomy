@@ -19,7 +19,7 @@ public class BalanceTC extends DivinityCommandTC {
      * @param app
      */
     public BalanceTC(DEPlugin app) {
-        super(app, true, Setting.COMMAND_BALANCE_ENABLE_BOOLEAN);
+        super(app, "balance", true, Setting.COMMAND_BALANCE_ENABLE_BOOLEAN);
     }
 
     /**
@@ -47,7 +47,7 @@ public class BalanceTC extends DivinityCommandTC {
             // 1 args
             // return names of players starting with arg
             case 1:
-                playerNames = this.app.getPlayerManager().getOfflinePlayerNames(args[0]);
+                playerNames = this.getMain().getPlayerManager().getOfflinePlayerNames(args[0]);
                 break;
 
             default:
