@@ -73,7 +73,7 @@ public class EnchantValue extends DivinityCommandEnchant {
         // Get value
         // Remove enchants, add quantity and add cash
         ValueResponse valueResponse1 = this.getMain().getEnchantmentManager().getSellValue(itemStack, enchantName, enchantLevels);
-        ValueResponse valueResponse2 = this.getMain().getEnchantmentManager().getBuyValue(enchantName, enchantLevels);
+        ValueResponse valueResponse2 = this.getMain().getEnchantmentManager().getBuyValue(itemStack, enchantName, enchantLevels);
         if (valueResponse2.isFailure()) {
             this.getMain().getConsole().warn(sender, "Couldn't determine buy value of &d %s because %s", enchantLevels, enchantName, valueResponse2.errorMessage);
         } else {

@@ -1,5 +1,6 @@
 package me.edgrrrr.de.enchants;
 
+import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
 
@@ -12,7 +13,7 @@ public class EnchantData {
     // The default configuration section for this enchant
     private final ConfigurationSection defaultConfigurationSection;
 
-    private Enchantment enchantment;
+    private final Enchantment enchantment;
 
     /**
      * Constructor
@@ -23,13 +24,7 @@ public class EnchantData {
     public EnchantData(ConfigurationSection configurationSection, ConfigurationSection defaultConfigurationSection) {
         this.configurationSection = configurationSection;
         this.defaultConfigurationSection = defaultConfigurationSection;
-
-        for (Enchantment enchantment : Enchantment.values()) {
-            if (this.getID().equals(enchantment.getKey().getKey())){
-                this.enchantment = enchantment;
-                break;
-            }
-        }
+        this.enchantment = Enchantment.getByKey(NamespacedKey.fromString(this.getID()));
     }
 
     /**
@@ -46,17 +41,17 @@ public class EnchantData {
      * @return Enchant has enough stock
      */
     public boolean has(int levels) {
-        return this.getQuantity() >= EnchantData.levelsToBooks(levels);
+        return this.getQuantity() >= EnchantData.levelsToBooks(0, levels);
     }
 
-    /**
-     * Returns if the enchant has enough stock to remove amount
-     * @param books - The amount desired in books
-     * @return Enchant has enough stock
-     */
-    public boolean has (double books) {
-        return this.has(EnchantData.booksToLevels((int) books));
-    }
+//    /**
+//     * Returns if the enchant has enough stock to remove amount
+//     * @param books - The amount desired in books
+//     * @return Enchant has enough stock
+//     */
+//    public boolean has (double books) {
+//        return this.has(EnchantData.booksToLevels((int) books));
+//    }
 
     /**
      * Returns the configuration section containing the data of this enchant
@@ -150,20 +145,25 @@ public class EnchantData {
 
     /**
      * Returns the number of books required to make the level provided
-     * @param levels - The number of levels
+     * @param currentLevels - The current number of levels
+     * @param newLevels - The new number of levels
      * @return The number of books required to make the level provided
      */
-    public static int levelsToBooks(int levels) {
-        return (int) Math.pow(2, levels);
+    public static int levelsToBooks(int currentLevels, int newLevels) {
+        int newTotal = (int) Math.pow(2, newLevels);
+        int oldTotal = (int) Math.pow(2, currentLevels);
+        int delta = newTotal - oldTotal;
+        if (delta > 0) return delta;
+        else return -delta;
     }
 
-    /**
-     * Returns the number of levels that can be made from the books provided
-     * Rounds to the floor (4/3 = 1)
-     * @param books - The number of books
-     * @return The number of levels that can be created from the books provided
-     */
-    public static int booksToLevels(int books) {
-        return Math.floorDiv((int) Math.log10(books), (int) Math.log10(2));
-    }
+//    /**
+//     * Returns the number of levels that can be made from the books provided
+//     * Rounds to the floor (4/3 = 1)
+//     * @param books - The number of books
+//     * @return The number of levels that can be created from the books provided
+//     */
+//    public static int booksToLevels(int books) {
+//        return Math.floorDiv((int) Math.log10(books), (int) Math.log10(2));
+//    }
 }

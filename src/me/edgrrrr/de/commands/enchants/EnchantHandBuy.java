@@ -63,7 +63,7 @@ public class EnchantHandBuy extends DivinityCommandEnchant {
         }
 
         // Ensure item valuation was successful
-        ValueResponse valueResponse = this.getMain().getEnchantmentManager().getBuyValue(enchantName, enchantLevels);
+        ValueResponse valueResponse = this.getMain().getEnchantmentManager().getBuyValue(heldItem, enchantName, enchantLevels);
         if (valueResponse.isFailure()) {
             this.getMain().getConsole().logFailedPurchase(sender, enchantLevels, enchantName, valueResponse.errorMessage);
             return true;

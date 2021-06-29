@@ -8,6 +8,7 @@ import me.edgrrrr.de.response.MultiValueResponse;
 import me.edgrrrr.de.response.Response;
 import me.edgrrrr.de.response.ValueResponse;
 import net.milkbowl.vault.economy.EconomyResponse;
+import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
@@ -30,7 +31,7 @@ public class EnchantmentManager extends DivinityModule {
     // The file config
     private FileConfiguration config;
     // Stores the enchants
-    public HashMap<String, EnchantData> enchants;
+    private HashMap<String, EnchantData> enchants;
     // File and resource filename
     private final String enchantFile = "enchantments.yml";
     // total and default total enchants in market
@@ -164,6 +165,10 @@ public class EnchantmentManager extends DivinityModule {
         return this.getEnchantNames(this.getEnchantNames(), startsWith);
     }
 
+    public int getEnchantCount() {
+        return this.enchants.size();
+    }
+
     /**
      * Loads all enchants in the config file into the internal cache.
      */
@@ -181,14 +186,22 @@ public class EnchantmentManager extends DivinityModule {
         for (String key : this.config.getKeys(false)) {
             ConfigurationSection data = this.config.getConfigurationSection(key);
             ConfigurationSection defaultData = defaultConf.getConfigurationSection(key);
+            if (data == null) {
+                if (!this.getConfig().getBoolean(Setting.IGNORE_ENCHANT_ERRORS_BOOLEAN)) this.getConsole().warn("Bad config value in %s: '%s' - Data is null", this.enchantFile, key);
+                continue;
+            }
             EnchantData enchantData = new EnchantData(data, defaultData);
+            if (Enchantment.getByKey(NamespacedKey.fromString(key)) == null) {
+                if (!this.getConfig().getBoolean(Setting.IGNORE_ENCHANT_ERRORS_BOOLEAN)) this.getConsole().warn("Bad config value in %s: '%s' - Enchantment does not exist.", this.enchantFile, key);
+                continue;
+            }
             this.defaultTotalEnchants += enchantData.getDefaultQuantity();
             this.totalEnchants += enchantData.getQuantity();
             values.put(key, enchantData);
         }
         // Copy values into materials
         this.enchants = values;
-        this.getConsole().info("Loaded " + values.size() + "(" + this.totalEnchants + "/" + this.defaultTotalEnchants + ") enchantments from " + this.enchantFile);
+        this.getConsole().info("Loaded %s enchants (current/default quantities: %s / %s) from %s", values.size(), this.totalEnchants, this.defaultTotalEnchants, this.enchantFile);
     }
 
     /**
@@ -312,7 +325,7 @@ public class EnchantmentManager extends DivinityModule {
         for (Enchantment enchantment : enchantmentLevels.keySet()) {
             int level = enchantmentLevels.get(enchantment);
             String enchantID = enchantment.getKey().getKey();
-            ValueResponse valueResponse = this.getBuyValue(enchantID, level);
+            ValueResponse valueResponse = this.getBuyValue(itemStack, enchantID, level);
             if (valueResponse.isFailure()) {
                 errorMessage = valueResponse.errorMessage;
                 responseType = valueResponse.responseType;
@@ -330,9 +343,10 @@ public class EnchantmentManager extends DivinityModule {
      * Returns the purchase value of the enchantID provided at the given level.
      * @param enchantID - The enchantment ID
      * @param level - The enchantment level
+     * @param itemStack - The itemStack to apply to
      * @return EnchantValueResponse - The value of the enchant
      */
-    public ValueResponse getBuyValue(String enchantID, Integer level) {
+    public ValueResponse getBuyValue(ItemStack itemStack, String enchantID, Integer level) {
         EnchantData enchantData = this.getEnchant(enchantID);
         ValueResponse response;
         if (enchantData == null) {
@@ -351,7 +365,8 @@ public class EnchantmentManager extends DivinityModule {
                         response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("level is above max(%d/%d)", level, enchantData.getMaxLevel()));
 
                     } else {
-                        int enchantAmount = EnchantData.levelsToBooks(level);
+                        int enchantLevels = itemStack.getEnchantmentLevel(enchantData.getEnchantment());
+                        int enchantAmount = EnchantData.levelsToBooks(enchantLevels, level+enchantLevels);
                         if (enchantAmount > enchantData.getQuantity()) {
                             response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("not enough stock (%d/%d)", enchantAmount, enchantData.getQuantity()));
 
@@ -430,7 +445,7 @@ public class EnchantmentManager extends DivinityModule {
                             response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("item enchant does not have enough levels(%d/%d)", itemStackEnchantLevel, level));
                         } else {
 
-                            response = new ValueResponse(this.calculatePrice(EnchantData.levelsToBooks(level), enchantData.getQuantity(), this.enchantSellTax, false), EconomyResponse.ResponseType.SUCCESS, "");
+                            response = new ValueResponse(this.calculatePrice(EnchantData.levelsToBooks(itemStackEnchantLevel, level-itemStackEnchantLevel), enchantData.getQuantity(), this.enchantSellTax, false), EconomyResponse.ResponseType.SUCCESS, "");
                         }
                     }
                 }
@@ -457,9 +472,9 @@ public class EnchantmentManager extends DivinityModule {
     public void editLevelQuantity(EnchantData enchantData, int levels) {
         int books = 0;
         if (levels > 0) {
-            books = EnchantData.levelsToBooks(levels);
+            books = EnchantData.levelsToBooks(0, levels);
         } else {
-            books = -EnchantData.levelsToBooks(-levels);
+            books = -EnchantData.levelsToBooks(0, -levels);
         }
         this.editQuantity(enchantData, books);
     }
@@ -598,6 +613,14 @@ public class EnchantmentManager extends DivinityModule {
      * Saves the internal config to the save file
      */
     private void saveFile() {
-        this.getConfig().saveFile(this.config, this.enchantFile);
+        // load back all info
+        FileConfiguration config = this.getConfig().loadFile(this.enchantFile);
+        for (String key : config.getKeys(false)) {
+            if (!this.enchants.containsKey(key)) continue;
+
+            config.set(key, this.config.get(key));
+        }
+
+        this.getConfig().saveFile(config, this.enchantFile);
     }
 }
