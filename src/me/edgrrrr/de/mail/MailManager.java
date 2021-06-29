@@ -77,7 +77,7 @@ public class MailManager extends DivinityModule {
             mailCount += mailList.getMailIDs().size();
         }
 
-        this.getConsole().info("Read " + mailCount + " mail for " + userCount + " users.");
+        this.getConsole().info("Loaded %s mail for %s users", mailCount, userCount);
     }
 
     /**
@@ -141,6 +141,6 @@ public class MailManager extends DivinityModule {
         }
 
         this.saveMailFile();
-        this.getConsole().info("Saved " + mailCount + " mail for " + userCount + " users");
+        this.getConsole().info("Saved %s mail for %s users", mailCount, userCount);
     }
 }
