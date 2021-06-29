@@ -32,7 +32,7 @@ public class ConfigManager extends DivinityModule {
         String configVersion = this.getMain().getConfig().getString(Setting.MAIN_VERSION_STRING.path);
         String pluginVersion = this.getMain().getConfig().getDefaults().getString(Setting.MAIN_VERSION_STRING.path);
 
-        this.getConsole().info(String.format("Detected config versions local/plugin | %s/%s", configVersion, pluginVersion));
+        this.getConsole().info("Detected config versions local/plugin | %s/%s", configVersion, pluginVersion);
         // Updates the config by copying defaults over
         // updates the version and saves.
         if (!(configVersion.equals(pluginVersion))) {
@@ -186,7 +186,7 @@ public class ConfigManager extends DivinityModule {
             try {
                 config.save(new File(this.getMain().getDataFolder(), file));
             } catch (Exception e) {
-                this.getConsole().severe(String.format("Couldn't save config with new values: %s", file));
+                this.getConsole().severe("Couldn't save config with new values: %s", file);
             }
         }
 
@@ -203,7 +203,7 @@ public class ConfigManager extends DivinityModule {
         try {
             file.save(new File(this.getMain().getDataFolder(), fileName));
         } catch (Exception e) {
-            this.getConsole().severe("Couldn't handle " + fileName + " :" + e.getMessage());
+            this.getConsole().severe("Couldn't handle %s: %s", fileName, e.getMessage());
         }
     }
 }
