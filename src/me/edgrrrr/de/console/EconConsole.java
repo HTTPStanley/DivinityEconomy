@@ -42,7 +42,7 @@ public class EconConsole extends Console {
         String stringAmount = this.formatMoney(amount);
 
         // Send console log of transaction
-        this.info(String.format("%s sent %s to %s", player1.getName(), stringAmount, player2.getName()));
+        this.info("%s sent %s to %s", player1.getName(), stringAmount, player2.getName());
 
         // Handles online & offline messages for sender
         Player onlinePlayer1 = player1.getPlayer();
@@ -75,7 +75,7 @@ public class EconConsole extends Console {
     public void logFailedTransfer(OfflinePlayer player1, OfflinePlayer player2, double amount, String error) {
         String stringAmount = this.formatMoney(amount);
         // Send console log of transaction
-        this.warn(String.format("%s couldn't send %s to %s because %s", player1.getName(), stringAmount, player2.getName(), error));
+        this.warn("%s couldn't send %s to %s because %s", player1.getName(), stringAmount, player2.getName(), error);
 
         // Handles online and offline messages for sender
         Player onlinePlayer1 = player1.getPlayer();
@@ -102,7 +102,7 @@ public class EconConsole extends Console {
         String stringBalance2 = this.formatMoney(balance2);
 
         // Send console log of balance change
-        this.info(String.format("%s's balance changed from %s to %s because %s", player2.getName(), stringBalance1, stringBalance2, reason));
+        this.info("%s's balance changed from %s to %s because %s", player2.getName(), stringBalance1, stringBalance2, reason);
 
         // Only handle sender if sender is not also the receiver
         if (player1 != player2) {
@@ -175,7 +175,7 @@ public class EconConsole extends Console {
         String stringCost = this.formatMoney(cost);
 
         // Send console log for purchase
-        this.info(String.format("%s purchased %d %s for %s", player.getName(), amount, materialName, stringCost));
+        this.info("%s purchased %d %s for %s", player.getName(), amount, materialName, stringCost);
 
         // Handles online and offline messages for sender
         Player onlinePlayer = player.getPlayer();
@@ -196,7 +196,7 @@ public class EconConsole extends Console {
      * @param error - The error
      */
     public void logFailedPurchase(OfflinePlayer player, int amount, String materialName, String error) {
-        this.warn(String.format("%s couldn't purchase %d %s because %s", player.getName(), amount, materialName, error));
+        this.warn("%s couldn't purchase %d %s because %s", player.getName(), amount, materialName, error);
 
         // Handles online and offline messages for sender
         Player onlinePlayer = player.getPlayer();
@@ -219,7 +219,7 @@ public class EconConsole extends Console {
     public void logSale(OfflinePlayer player, int amount, double value, String materialName) {
         String stringValue = this.formatMoney(value);
         // Send console log for sale
-        this.info(String.format("%s sold %d %s for %s", player.getName(), amount, materialName, stringValue));
+        this.info("%s sold %d %s for %s", player.getName(), amount, materialName, stringValue);
 
         // Handles online and offline messages for sender
         Player onlinePlayer = player.getPlayer();
@@ -240,7 +240,7 @@ public class EconConsole extends Console {
      * @param error - The error
      */
     public void logFailedSale(OfflinePlayer player, int amount, String materialName, String error) {
-        this.warn(String.format("%s couldn't sell %d %s because %s", player.getName(), amount, materialName, error));
+        this.warn("%s couldn't sell %d %s because %s", player.getName(), amount, materialName, error);
 
         // Handles online and offline messages for sender
         Player onlinePlayer = player.getPlayer();
