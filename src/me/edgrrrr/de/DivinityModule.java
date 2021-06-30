@@ -9,14 +9,13 @@ import me.edgrrrr.de.mail.MailManager;
 import me.edgrrrr.de.materials.MaterialManager;
 import me.edgrrrr.de.player.PlayerManager;
 
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
 public abstract class DivinityModule {
     private final DEPlugin main;
-    private static final List<DivinityModule> modules = Collections.synchronizedList(new LinkedList<>());
-    private static final List<DivinityModule> initialisedModules = Collections.synchronizedList(new LinkedList<>());
+    private static final List<DivinityModule> modules = new LinkedList<>();
+    private static final List<DivinityModule> initialisedModules = new LinkedList<>();
 
     /**
      * Runs the initialisation of all modules
