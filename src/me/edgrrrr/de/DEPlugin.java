@@ -24,6 +24,7 @@ import me.edgrrrr.de.events.MailEvent;
 import me.edgrrrr.de.help.HelpManager;
 import me.edgrrrr.de.mail.MailManager;
 import me.edgrrrr.de.materials.MaterialManager;
+import me.edgrrrr.de.placeholderAPI.ExpansionManager;
 import me.edgrrrr.de.player.PlayerManager;
 import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -51,6 +52,8 @@ public class DEPlugin extends JavaPlugin {
     private EnchantmentManager enchantmentManager;
     // The help manager
     private HelpManager helpManager;
+    // The placeholder api expansion manager
+    private ExpansionManager expansionManager;
 
     /**
      * Called when the plugin is enabled
@@ -152,6 +155,10 @@ public class DEPlugin extends JavaPlugin {
         new BalanceTC(this);
         new SendCash(this);
         new SendCashTC(this);
+
+        // Placeholder API - handled differently to submodules
+        // Automatically initiates - but must be last
+        this.expansionManager = new ExpansionManager(this);
 
         // Done :)
         this.describe();
