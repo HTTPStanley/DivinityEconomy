@@ -76,19 +76,19 @@ public class EconomyManager extends DivinityModule {
      * Returns if it was successful or not.
      */
     public boolean setupEconomy() {
-        Economy economy = new Economy(this.getMain(), this.getConfig(), this.getConsole(), this.getPlayer(), this.getConfig().getInt(Setting.CHAT_ECONOMY_DIGITS_INT), this.getConfig().getString(Setting.CHAT_ECONOMY_PLURAL_STRING), this.getConfig().getString(Setting.CHAT_ECONOMY_SINGULAR_STRING));
+        DivinityEconomy divinityEconomy = new DivinityEconomy(this.getMain(), this.getConfig(), this.getConsole(), this.getPlayer(), this.getConfig().getInt(Setting.CHAT_ECONOMY_DIGITS_INT), this.getConfig().getString(Setting.CHAT_ECONOMY_PLURAL_STRING), this.getConfig().getString(Setting.CHAT_ECONOMY_SINGULAR_STRING));
 
         // Look for vault
         if (this.getMain().getServer().getPluginManager().getPlugin("Vault") == null) {
             this.getConsole().warn("No plugin 'Vault' detected, this will likely cause issues with plugins not cooperating.");
-            this.economy = economy;
+            this.economy = divinityEconomy;
 
         } else {
             this.getConsole().info("Vault has been detected.");
 
 
             // Get the service provider
-            Collection<RegisteredServiceProvider<net.milkbowl.vault.economy.Economy>> providers = this.setProvider(economy);
+            Collection<RegisteredServiceProvider<net.milkbowl.vault.economy.Economy>> providers = this.setProvider(divinityEconomy);
             if (providers.size() == 0) {
                 this.getConsole().severe("Could not register Economy.");
                 return false;

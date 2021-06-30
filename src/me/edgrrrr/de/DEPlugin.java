@@ -25,6 +25,7 @@ import me.edgrrrr.de.help.HelpManager;
 import me.edgrrrr.de.mail.MailManager;
 import me.edgrrrr.de.materials.MaterialManager;
 import me.edgrrrr.de.placeholderAPI.ExpansionManager;
+import me.edgrrrr.de.placeholderAPI.expansions.*;
 import me.edgrrrr.de.player.PlayerManager;
 import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -158,7 +159,15 @@ public class DEPlugin extends JavaPlugin {
 
         // Placeholder API - handled differently to submodules
         // Automatically initiates - but must be last
-        this.expansionManager = new ExpansionManager(this);
+
+        // If placeholder api found, register
+        if (this.getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            this.expansionManager = new ExpansionManager(this);
+            this.expansionManager.register();
+            this.getConsole().info("Registered %s placeholders", this.expansionManager.getExpansionCount());
+        } else {
+            this.getConsole().warn("PlaceholderAPI was not found, disabling expansions.");
+        }
 
         // Done :)
         this.describe();

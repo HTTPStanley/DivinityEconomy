@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-public class Economy implements net.milkbowl.vault.economy.Economy {
+public class DivinityEconomy implements net.milkbowl.vault.economy.Economy {
     private final JavaPlugin app;
     private final ConfigManager configManager;
     private final EconConsole console;
@@ -29,13 +29,13 @@ public class Economy implements net.milkbowl.vault.economy.Economy {
 
     private static final String foldername = "userdata";
 
-    public Economy(JavaPlugin app,
-                   ConfigManager configManager,
-                   EconConsole console,
-                   PlayerManager playerManager,
-                   int fractionalDigits,
-                   String currencyNamePlural,
-                   String currencyNameSingular) {
+    public DivinityEconomy(JavaPlugin app,
+                           ConfigManager configManager,
+                           EconConsole console,
+                           PlayerManager playerManager,
+                           int fractionalDigits,
+                           String currencyNamePlural,
+                           String currencyNameSingular) {
 
         this.app = app;
         this.configManager = configManager;
@@ -45,7 +45,7 @@ public class Economy implements net.milkbowl.vault.economy.Economy {
         this.currencyNamePlural = currencyNamePlural;
         this.currencyNameSingular = currencyNameSingular;
         this.economyPlayerMap = new HashMap<>();
-        this.userFolder = this.configManager.getFolder(Economy.foldername);
+        this.userFolder = this.configManager.getFolder(DivinityEconomy.foldername);
 
         this.registerPlayers();
         this.app.getServer().getPluginManager().registerEvents(new PlayerJoin(this), this.app);

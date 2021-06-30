@@ -16,28 +16,18 @@ public class ExpansionManager extends PlaceholderExpansion {
     public ExpansionManager(DEPlugin main) {
         this.main = main;
         this.expansions = new LinkedList<>();
-
-        // If placeholder api found, register
-        if (this.main.getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
-            this.register();
-
-            // Expansions
-            this.expansions.add(new materialInflation(this.main));
-            this.expansions.add(new materialTotalDefaultQuantity(this.main));
-            this.expansions.add(new materialTotalQuantity(this.main));
-            this.expansions.add(new enchantInflation(this.main));
-            this.expansions.add(new enchantTotalDefaultQuantity(this.main));
-            this.expansions.add(new enchantTotalQuantity(this.main));
-            this.expansions.add(new playerBalance(this.main));
-            this.expansions.add(new rawPlayerBalance(this.main));
-            this.expansions.add(new formatMoney(this.main));
-            this.expansions.add(new rawBalanceMath(this.main));
-            this.expansions.add(new balanceMath(this.main));
-
-            this.getMain().getConsole().info("Registered %s placeholders", this.expansions.size());
-        } else {
-            this.getMain().getConsole().warn("PlaceholderAPI was not found, disabling expansions.");
-        }
+        // Expansions
+        this.expansions.add(new materialInflation(this.main));
+        this.expansions.add(new materialTotalDefaultQuantity(this.main));
+        this.expansions.add(new materialTotalQuantity(this.main));
+        this.expansions.add(new enchantInflation(this.main));
+        this.expansions.add(new enchantTotalDefaultQuantity(this.main));
+        this.expansions.add(new enchantTotalQuantity(this.main));
+        this.expansions.add(new playerBalance(this.main));
+        this.expansions.add(new rawPlayerBalance(this.main));
+        this.expansions.add(new formatMoney(this.main));
+        this.expansions.add(new rawBalanceMath(this.main));
+        this.expansions.add(new balanceMath(this.main));
     }
 
     /**
@@ -121,5 +111,9 @@ public class ExpansionManager extends PlaceholderExpansion {
     // Returns the main class
     private DEPlugin getMain() {
         return this.main;
+    }
+
+    public int getExpansionCount() {
+        return this.expansions.size();
     }
 }
