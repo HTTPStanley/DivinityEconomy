@@ -150,9 +150,29 @@ public class EnchantData {
      * @return The number of books required to make the level provided
      */
     public static int levelsToBooks(int currentLevels, int newLevels) {
-        int newTotal = (int) Math.pow(2, newLevels);
-        int oldTotal = (int) Math.pow(2, currentLevels);
-        int delta = newTotal - oldTotal;
+        int currentBooks;
+        int newBooks;
+        int delta;
+
+        if (currentLevels == 1) {
+            currentBooks = 1;
+        } else {
+            currentBooks = (int) Math.pow(2, currentLevels);
+        }
+        if (newLevels == 1) {
+            newBooks = 1;
+        } else {
+            newBooks = (int) Math.pow(2, newLevels);
+        }
+
+        if (currentLevels == 0) {
+            delta = newBooks;
+        } else if (newLevels == 0) {
+            delta = currentBooks;
+        } else {
+            delta = newBooks - currentBooks;
+        }
+
         if (delta > 0) return delta;
         else return -delta;
     }
