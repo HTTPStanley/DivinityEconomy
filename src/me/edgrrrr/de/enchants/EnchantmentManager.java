@@ -165,6 +165,9 @@ public class EnchantmentManager extends DivinityModule {
         return this.getEnchantNames(this.getEnchantNames(), startsWith);
     }
 
+    /**
+     * Returns the number of enchants, each enchant being worth one enchant, not the stock of the enchants.
+     */
     public int getEnchantCount() {
         return this.enchants.size();
     }
@@ -342,11 +345,11 @@ public class EnchantmentManager extends DivinityModule {
     /**
      * Returns the purchase value of the enchantID provided at the given level.
      * @param enchantID - The enchantment ID
-     * @param level - The enchantment level
+     * @param levelsToBuy - The enchantment level
      * @param itemStack - The itemStack to apply to
      * @return EnchantValueResponse - The value of the enchant
      */
-    public ValueResponse getBuyValue(ItemStack itemStack, String enchantID, Integer level) {
+    public ValueResponse getBuyValue(ItemStack itemStack, String enchantID, int levelsToBuy) {
         EnchantData enchantData = this.getEnchant(enchantID);
         ValueResponse response;
         if (enchantData == null) {
@@ -361,12 +364,13 @@ public class EnchantmentManager extends DivinityModule {
                     response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, "enchant is not allowed to be bought or sold");
 
                 } else {
-                    if (enchantData.getMaxLevel() < level) {
-                        response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("level is above max(%d/%d)", level, enchantData.getMaxLevel()));
+                    int itemStackEnchantmentLevel = itemStack.getEnchantmentLevel(enchantData.getEnchantment());
+                    int newTotalLevel = itemStackEnchantmentLevel + levelsToBuy;
+                    if (enchantData.getMaxLevel() < newTotalLevel) {
+                        response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("level would be above max(%d/%d)", newTotalLevel, enchantData.getMaxLevel()));
 
                     } else {
-                        int enchantLevels = itemStack.getEnchantmentLevel(enchantData.getEnchantment());
-                        int enchantAmount = EnchantData.levelsToBooks(enchantLevels, level+enchantLevels);
+                        int enchantAmount = EnchantData.levelsToBooks(itemStackEnchantmentLevel, newTotalLevel);
                         if (enchantAmount > enchantData.getQuantity()) {
                             response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("not enough stock (%d/%d)", enchantAmount, enchantData.getQuantity()));
 
@@ -414,10 +418,10 @@ public class EnchantmentManager extends DivinityModule {
      * Returns the value of an enchant on an item.
      * @param itemStack - The itemstack to check
      * @param enchantID - The enchant ID to check for
-     * @param level - The level to value
+     * @param levelsToSell - The level to value
      * @return ValueResponse
      */
-    public ValueResponse getSellValue(ItemStack itemStack, String enchantID, int level) {
+    public ValueResponse getSellValue(ItemStack itemStack, String enchantID, int levelsToSell) {
         EnchantData enchantData = this.getEnchant(enchantID);
         ValueResponse response;
         if (enchantData == null) {
@@ -438,14 +442,15 @@ public class EnchantmentManager extends DivinityModule {
                     Map<Enchantment, Integer> itemStackEnchants = itemStack.getEnchantments();
                     if (!itemStackEnchants.containsKey(enchantment)) {
                         response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("item does not have enchant %s", enchantID));
+
                     } else {
 
                         int itemStackEnchantLevel = itemStackEnchants.get(enchantment);
-                        if (itemStackEnchantLevel < level) {
-                            response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("item enchant does not have enough levels(%d/%d)", itemStackEnchantLevel, level));
+                        if (itemStackEnchantLevel < levelsToSell) {
+                            response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("item enchant does not have enough levels(%d/%d)", itemStackEnchantLevel, levelsToSell));
                         } else {
 
-                            response = new ValueResponse(this.calculatePrice(EnchantData.levelsToBooks(itemStackEnchantLevel, level-itemStackEnchantLevel), enchantData.getQuantity(), this.enchantSellTax, false), EconomyResponse.ResponseType.SUCCESS, "");
+                            response = new ValueResponse(this.calculatePrice(EnchantData.levelsToBooks(itemStackEnchantLevel, itemStackEnchantLevel-levelsToSell), enchantData.getQuantity(), this.enchantSellTax, false), EconomyResponse.ResponseType.SUCCESS, "");
                         }
                     }
                 }
@@ -470,7 +475,7 @@ public class EnchantmentManager extends DivinityModule {
      * @param levels - The quantity to edit by, in levels. Can be negative.
      */
     public void editLevelQuantity(EnchantData enchantData, int levels) {
-        int books = 0;
+        int books;
         if (levels > 0) {
             books = EnchantData.levelsToBooks(0, levels);
         } else {
@@ -533,6 +538,12 @@ public class EnchantmentManager extends DivinityModule {
         return Math.calculatePrice(this.enchantBaseQuantity, stock, this.defaultTotalEnchants, this.totalEnchants, amount, scale, purchase, this.dynamicPricing, this.wholeMarketInflation);
     }
 
+    /**
+     * Calculates the stock of enchants based on the given parameters.
+     * @param price - The price of the enchant
+     * @param scale - The economy scaling
+     * @param inflation - The economy inflation
+     */
     public int calculateStock(double price, double scale, double inflation) {
         return (int) ((this.enchantBaseQuantity / price) * scale * inflation);
     }
