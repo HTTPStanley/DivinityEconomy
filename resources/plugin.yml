@@ -1,12 +1,12 @@
 name: DivinityEconomy
 prefix: DivinityEconomy
 main: me.edgrrrr.de.DEPlugin
-version: 1.5.117
+version: 1.6.117
 author: EDGRRRR
 description: Divinity Economy - The dynamic global economy plugin.
 api-version: 1.16
 depend: []
-soft-depend: []
+soft-depend: [PlaceholderAPI, Vault]
 load: STARTUP
 
 
