@@ -68,21 +68,21 @@ public class EnchantValue extends DivinityCommandEnchant {
         }
 
         ItemStack itemStack = new ItemStack(Material.DIAMOND_SWORD);
-        itemStack.addUnsafeEnchantment(enchantData.getEnchantment(), enchantLevels);
 
         // Get value
         // Remove enchants, add quantity and add cash
-        ValueResponse valueResponse1 = this.getMain().getEnchantmentManager().getSellValue(itemStack, enchantName, enchantLevels);
-        ValueResponse valueResponse2 = this.getMain().getEnchantmentManager().getBuyValue(itemStack, enchantName, enchantLevels);
-        if (valueResponse2.isFailure()) {
-            this.getMain().getConsole().warn(sender, "Couldn't determine buy value of &d %s because %s", enchantLevels, enchantName, valueResponse2.errorMessage);
-        } else {
-            this.getMain().getConsole().info(sender, "Buy: %d %s costs £%,.2f", enchantLevels, enchantName, valueResponse2.value);
-        }
+        ValueResponse valueResponse1 = this.getMain().getEnchantmentManager().getBuyValue(itemStack, enchantName, enchantLevels);
+        itemStack.addUnsafeEnchantment(enchantData.getEnchantment(), enchantLevels);
+        ValueResponse valueResponse2 = this.getMain().getEnchantmentManager().getSellValue(itemStack, enchantName, enchantLevels);
         if (valueResponse1.isFailure()) {
-            this.getMain().getConsole().warn(sender, "Couldn't determine sell value of &d %s because %s", enchantLevels, enchantName, valueResponse1.errorMessage);
+            this.getMain().getConsole().warn(sender, "Couldn't determine buy value of %d %s because %s", enchantLevels, enchantName, valueResponse1.errorMessage);
         } else {
-            this.getMain().getConsole().info(sender, "Sell: %d %s costs £%,.2f", enchantLevels, enchantName, valueResponse1.value);
+            this.getMain().getConsole().info(sender, "Buy: %d %s costs £%,.2f", enchantLevels, enchantName, valueResponse1.value);
+        }
+        if (valueResponse2.isFailure()) {
+            this.getMain().getConsole().warn(sender, "Couldn't determine sell value of %d %s because %s", enchantLevels, enchantName, valueResponse2.errorMessage);
+        } else {
+            this.getMain().getConsole().info(sender, "Sell: %d %s costs £%,.2f", enchantLevels, enchantName, valueResponse2.value);
         }
 
         // Graceful exit :)
