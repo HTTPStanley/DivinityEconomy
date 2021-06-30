@@ -50,7 +50,7 @@ public class EnchantHandValue extends DivinityCommandEnchant {
 
         MultiValueResponse multiValueResponse1 = this.getMain().getEnchantmentManager().getBuyValue(heldItem);
         if (multiValueResponse1.isFailure()) {
-            this.getMain().getConsole().warn(sender, "Couldn't determine buy value of &d Enchants(%s) because %s", multiValueResponse1.getTotalQuantity(), multiValueResponse1, multiValueResponse1.errorMessage);
+            this.getMain().getConsole().warn(sender, "Couldn't determine buy value of %d Enchants(%s) because %s", multiValueResponse1.getTotalQuantity(), multiValueResponse1, multiValueResponse1.errorMessage);
         } else {
             this.getMain().getConsole().info(sender, "Buy: %d enchants costs £%,.2f", multiValueResponse1.getTotalQuantity(), multiValueResponse1.getTotalValue());
             for (String enchant : multiValueResponse1.getItemIds()) {
@@ -60,7 +60,7 @@ public class EnchantHandValue extends DivinityCommandEnchant {
 
         MultiValueResponse multiValueResponse2 = this.getMain().getEnchantmentManager().getSellValue(heldItem);
         if (multiValueResponse2.isFailure()) {
-            this.getMain().getConsole().warn(sender, "Couldn't determine sell value of &d Enchants(%s) because %s", multiValueResponse2.getTotalQuantity(), multiValueResponse2, multiValueResponse2.errorMessage);
+            this.getMain().getConsole().warn(sender, "Couldn't determine sell value of %d Enchants(%s) because %s", multiValueResponse2.getTotalQuantity(), multiValueResponse2, multiValueResponse2.errorMessage);
         } else {
             this.getMain().getConsole().info(sender, "Sell: %d enchants costs £%,.2f", multiValueResponse2.getTotalQuantity(), multiValueResponse2.getTotalValue());
             for (String enchant : multiValueResponse2.getItemIds()) {
