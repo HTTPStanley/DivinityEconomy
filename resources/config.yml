@@ -7,9 +7,21 @@
 #
 # Colours can be found here: https://jd.bukkit.org/org/bukkit/ChatColor.html
 # Also supports the colour characters such as &1 &2 &3 &4 &5 &6 &7...
+# PlaceholderAPI support:
+#  %de_material_inflation%                    | The material market inflation double
+#  %de_material_total_quantity%               | The material market item quantity
+#  %de_material_total__default_quantity%      | The material market default item quantity
+#  %de_enchant_inflation%                     | The enchant market inflation double
+#  %de_enchant_total_quantity%                | The enchant market item quantity
+#  %de_enchant_total__default_quantity%       | The enchant market default item quantity
+#  %de_format_money_<valueToFormat>%          | Returns a DE money formatted message - This supports bracket variables such as format_money_{placeholderapi_variable}
+#  %de_balance_math_<expression><value>%      | Returns a DE formatted value of the player's balance <operator> <value> - for example: math_+1000 - returns player balance + 1000
+#  %de_raw_balance_math_<expression><value>%  | Returns a raw value of the player's balance <operator> <value> - for example: math_+1000 - returns player balance + 1000
+#  %de_raw_player_balance%                    | Returns a raw value of the player's balance
+#  %de_player_balance%                        | Returns a DE formatted value of the player's balance
 
 main:
-  version: 1.5.117
+  version: 1.6.117
 
 chat:
   chatDebug: false
