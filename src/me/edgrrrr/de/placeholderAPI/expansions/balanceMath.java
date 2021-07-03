@@ -7,7 +7,7 @@ import org.mariuszgromada.math.mxparser.Expression;
 
 public class balanceMath extends DivinityExpansion {
     public balanceMath(DEPlugin main) {
-        super(main, "^balance_math_([+-/*])([0-9]*)$");
+        super(main, "^balance_math_([+-/*])_([0-9]*)$");
     }
 
     @Override

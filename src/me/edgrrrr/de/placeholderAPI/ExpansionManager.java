@@ -28,6 +28,10 @@ public class ExpansionManager extends PlaceholderExpansion {
         this.expansions.add(new formatMoney(this.main));
         this.expansions.add(new rawBalanceMath(this.main));
         this.expansions.add(new balanceMath(this.main));
+        this.expansions.add(new rawMaterialBValue(this.main));
+        this.expansions.add(new rawMaterialSValue(this.main));
+        this.expansions.add(new materialBValue(this.main));
+        this.expansions.add(new materialSValue(this.main));
     }
 
     /**
