@@ -65,7 +65,7 @@ public class EnchantHandBuyTC extends DivinityCommandEnchantTC {
                 String value = "unknown";
                 if (enchantData != null) {
                     int ui = heldItem.getEnchantmentLevel(enchantData.getEnchantment());
-                    value = String.format("£%,.2f", this.getMain().getEnchantmentManager().calculatePrice(EnchantData.levelsToBooks(ui, ui+Math.getInt(args[1])), enchantData.getQuantity(), this.getMain().getEnchantmentManager().enchantBuyTax, true));
+                    value = String.format("£%,.2f", this.getMain().getEnchantmentManager().calculatePrice(EnchantData.levelsToBooks(ui, ui+Math.getInt(args[1])), enchantData.getQuantity(), this.getMain().getEnchantmentManager().getBuyScale(), true));
                 }
 
                 strings = new String[] {

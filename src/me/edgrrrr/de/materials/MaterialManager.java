@@ -29,12 +29,12 @@ public class MaterialManager extends DivinityModule {
     private int totalMaterials;
     private int defaultTotalMaterials;
     // Other settings
-    public double materialBuyTax;
-    public double materialSellTax;
-    public double materialBaseQuantity;
-    public boolean itemDmgScaling;
-    public boolean dynamicPricing;
-    public boolean wholeMarketInflation;
+    private double buyScale;
+    private double sellScale;
+    private double baseQuantity;
+    private boolean itemDmgScaling;
+    private boolean dynamicPricing;
+    private boolean wholeMarketInflation;
     // Stores items
     private FileConfiguration config;
 
@@ -53,9 +53,9 @@ public class MaterialManager extends DivinityModule {
      */
     @Override
     public void init() {
-        this.materialBuyTax = this.getConfig().getDouble(Setting.MARKET_MATERIALS_BUY_TAX_FLOAT);
-        this.materialSellTax = this.getConfig().getDouble(Setting.MARKET_MATERIALS_SELL_TAX_FLOAT);
-        this.materialBaseQuantity = this.getConfig().getInt(Setting.MARKET_MATERIALS_BASE_QUANTITY_INTEGER);
+        this.buyScale = this.getConfig().getDouble(Setting.MARKET_MATERIALS_BUY_TAX_FLOAT);
+        this.sellScale = this.getConfig().getDouble(Setting.MARKET_MATERIALS_SELL_TAX_FLOAT);
+        this.baseQuantity = this.getConfig().getInt(Setting.MARKET_MATERIALS_BASE_QUANTITY_INTEGER);
         this.itemDmgScaling = this.getConfig().getBoolean(Setting.MARKET_MATERIALS_ITEM_DMG_SCALING_BOOLEAN);
         this.dynamicPricing = this.getConfig().getBoolean(Setting.MARKET_MATERIALS_DYN_PRICING_BOOLEAN);
         this.wholeMarketInflation = this.getConfig().getBoolean(Setting.MARKET_MATERIALS_WHOLE_MARKET_INF_BOOLEAN);
@@ -78,6 +78,20 @@ public class MaterialManager extends DivinityModule {
     public void deinit() {
         this.saveTimer.cancel();
         this.saveMaterials();
+    }
+
+    /**
+     * Returns the /buy price scaling
+     */
+    public double getBuyScale() {
+        return this.buyScale;
+    }
+
+    /**
+     * Returns the /sell price scaling
+     */
+    public double getSellScale() {
+        return this.sellScale;
     }
 
     /**
@@ -277,7 +291,7 @@ public class MaterialManager extends DivinityModule {
                 if (!materialData.getAllowed()) {
                     response = new ValueResponse(0.0, ResponseType.FAILURE, "item is banned.");
                 } else {
-                    response = new ValueResponse(this.calculatePrice(itemStack.getAmount(), materialData.getQuantity(), (this.materialSellTax * this.getDamageScaling(itemStack)), false), ResponseType.SUCCESS, "");
+                    response = new ValueResponse(this.calculatePrice(itemStack.getAmount(), materialData.getQuantity(), (this.sellScale * this.getDamageScaling(itemStack)), false), ResponseType.SUCCESS, "");
                 }
             }
         }
@@ -321,7 +335,7 @@ public class MaterialManager extends DivinityModule {
             if (!materialData.getAllowed()) {
                 response = new ValueResponse(0.0, ResponseType.FAILURE, "item cannot be bought or sold.");
             } else {
-                response = new ValueResponse(this.calculatePrice(itemStack.getAmount(), materialData.getQuantity(), this.materialBuyTax, true), ResponseType.SUCCESS, "");
+                response = new ValueResponse(this.calculatePrice(itemStack.getAmount(), materialData.getQuantity(), this.buyScale, true), ResponseType.SUCCESS, "");
             }
         }
 
@@ -335,7 +349,7 @@ public class MaterialManager extends DivinityModule {
      * @return double
      */
     public double getMarketPrice(double stock) {
-        return this.getPrice(stock, this.materialSellTax, this.getInflation());
+        return this.getPrice(stock, this.sellScale, this.getInflation());
     }
 
     /**
@@ -345,7 +359,7 @@ public class MaterialManager extends DivinityModule {
      * @return double
      */
     public double getUserPrice(double stock) {
-        return this.getPrice(stock, this.materialBuyTax, this.getInflation());
+        return this.getPrice(stock, this.buyScale, this.getInflation());
     }
 
     /**
@@ -354,7 +368,7 @@ public class MaterialManager extends DivinityModule {
      * @param value - The value to set the price to
      */
     public void setPrice(MaterialData materialData, double value) {
-        materialData.setQuantity(this.calculateStock(value, this.materialBuyTax, this.getInflation()));
+        materialData.setQuantity(this.calculateStock(value, this.buyScale, this.getInflation()));
     }
 
     /**
@@ -387,7 +401,7 @@ public class MaterialManager extends DivinityModule {
      * @return double
      */
     public double calculatePrice(double amount, double stock, double scale, boolean purchase) {
-        return Math.calculatePrice(this.materialBaseQuantity, stock, this.defaultTotalMaterials, this.totalMaterials, amount, scale, purchase, this.dynamicPricing, this.wholeMarketInflation);
+        return Math.calculatePrice(this.baseQuantity, stock, this.defaultTotalMaterials, this.totalMaterials, amount, scale, purchase, this.dynamicPricing, this.wholeMarketInflation);
     }
 
     /**
@@ -403,7 +417,7 @@ public class MaterialManager extends DivinityModule {
         if (!this.wholeMarketInflation) {
             inflation = 1.0;
         }
-        return Math.getPrice(this.materialBaseQuantity, stock, scale, inflation);
+        return Math.getPrice(this.baseQuantity, stock, scale, inflation);
     }
 
     /**
@@ -415,7 +429,7 @@ public class MaterialManager extends DivinityModule {
      * @return int - The level of stock required for this price.
      */
     public int calculateStock(double price, double scale, double inflation) {
-        return (int) ((this.materialBaseQuantity / price) * scale * inflation);
+        return (int) ((this.baseQuantity / price) * scale * inflation);
     }
 
     /**

@@ -21,7 +21,7 @@
 #  %de_player_balance%                        | Returns a DE formatted value of the player's balance
 
 main:
-  version: 1.6.117
+  version: 1.7.117
 
 chat:
   chatDebug: false
@@ -53,16 +53,16 @@ market:
   enchants:
     enable: true
     baseQuantity: 1000000
-    buyTax: 1.1
-    sellTax: 1.0
+    buyScale: 1.1
+    sellScale: 1.0
     wholeMarketInflation: false
     dynamicPricing: true
 
   materials:
     enable: true
     baseQuantity: 1000000
-    buyTax: 1.0
-    sellTax: 0.9
+    buyScale: 1.0
+    sellScale: 0.9
     wholeMarketInflation: false
     dynamicPricing: true
     itemDamageScaling: true

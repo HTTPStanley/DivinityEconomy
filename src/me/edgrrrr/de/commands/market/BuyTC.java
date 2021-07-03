@@ -68,7 +68,7 @@ public class BuyTC extends DivinityCommandMaterialsTC {
                 materialData = this.getMain().getMaterialManager().getMaterial(args[0]);
                 String value = "unknown";
                 if (materialData != null) {
-                    value = String.format("£%,.2f", this.getMain().getMaterialManager().calculatePrice(Math.getInt(args[1]), materialData.getQuantity(), this.getMain().getMaterialManager().materialBuyTax, true));
+                    value = String.format("£%,.2f", this.getMain().getMaterialManager().calculatePrice(Math.getInt(args[1]), materialData.getQuantity(), this.getMain().getMaterialManager().getBuyScale(), true));
                 }
 
                 strings = new String[] {

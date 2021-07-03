@@ -38,11 +38,11 @@ public class EnchantmentManager extends DivinityModule {
     private int totalEnchants;
     private int defaultTotalEnchants;
     // Settings
-    public double enchantBuyTax;
-    public double enchantSellTax;
-    public int enchantBaseQuantity;
-    public boolean dynamicPricing;
-    public boolean wholeMarketInflation;
+    private double buyScale;
+    private double sellScale;
+    private int baseQuantity;
+    private boolean dynamicPricing;
+    private boolean wholeMarketInflation;
 
 
     /**
@@ -60,9 +60,9 @@ public class EnchantmentManager extends DivinityModule {
      */
     @Override
     public void init() {
-        this.enchantBuyTax = this.getConfig().getDouble(Setting.MARKET_ENCHANTS_BUY_TAX_FLOAT);
-        this.enchantSellTax = this.getConfig().getDouble(Setting.MARKET_ENCHANTS_SELL_TAX_FLOAT);
-        this.enchantBaseQuantity = this.getConfig().getInt(Setting.MARKET_ENCHANTS_BASE_QUANTITY_INTEGER);
+        this.buyScale = this.getConfig().getDouble(Setting.MARKET_ENCHANTS_BUY_TAX_FLOAT);
+        this.sellScale = this.getConfig().getDouble(Setting.MARKET_ENCHANTS_SELL_TAX_FLOAT);
+        this.baseQuantity = this.getConfig().getInt(Setting.MARKET_ENCHANTS_BASE_QUANTITY_INTEGER);
         this.dynamicPricing = this.getConfig().getBoolean(Setting.MARKET_ENCHANTS_DYN_PRICING_BOOLEAN);
         this.wholeMarketInflation = this.getConfig().getBoolean(Setting.MARKET_ENCHANTS_WHOLE_MARKET_INF_BOOLEAN);
         int timer = Math.getTicks(this.getConfig().getInt(Setting.MARKET_SAVE_TIMER_INTEGER));
@@ -83,6 +83,20 @@ public class EnchantmentManager extends DivinityModule {
     public void deinit() {
         this.saveTimer.cancel();
         this.saveEnchants();
+    }
+
+    /**
+     * Returns the /ebuy price scaling
+     */
+    public double getBuyScale() {
+        return this.buyScale;
+    }
+
+    /**
+     * Returns the /esell price scaling
+     */
+    public double getSellScale() {
+        return this.sellScale;
     }
 
     /**
@@ -375,7 +389,7 @@ public class EnchantmentManager extends DivinityModule {
                             response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("not enough stock (%d/%d)", enchantAmount, enchantData.getQuantity()));
 
                         } else {
-                            double price = this.calculatePrice(enchantAmount, enchantData.getQuantity(), this.enchantBuyTax, false);
+                            double price = this.calculatePrice(enchantAmount, enchantData.getQuantity(), this.buyScale, false);
                             response = new ValueResponse(price, EconomyResponse.ResponseType.SUCCESS, "");
                         }
                     }
@@ -450,7 +464,7 @@ public class EnchantmentManager extends DivinityModule {
                             response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("item enchant does not have enough levels(%d/%d)", itemStackEnchantLevel, levelsToSell));
                         } else {
 
-                            response = new ValueResponse(this.calculatePrice(EnchantData.levelsToBooks(itemStackEnchantLevel, itemStackEnchantLevel-levelsToSell), enchantData.getQuantity(), this.enchantSellTax, false), EconomyResponse.ResponseType.SUCCESS, "");
+                            response = new ValueResponse(this.calculatePrice(EnchantData.levelsToBooks(itemStackEnchantLevel, itemStackEnchantLevel-levelsToSell), enchantData.getQuantity(), this.sellScale, false), EconomyResponse.ResponseType.SUCCESS, "");
                         }
                     }
                 }
@@ -490,7 +504,7 @@ public class EnchantmentManager extends DivinityModule {
      * @param value - The value to set the price to
      */
     public void setPrice(EnchantData enchantData, double value) {
-        enchantData.setQuantity(this.calculateStock(value, this.enchantBuyTax, this.getInflation()));
+        enchantData.setQuantity(this.calculateStock(value, this.buyScale, this.getInflation()));
     }
 
     /**
@@ -535,7 +549,7 @@ public class EnchantmentManager extends DivinityModule {
      * @return double - the price of amount of this enchant
      */
     public double calculatePrice(double amount, double stock, double scale, boolean purchase) {
-        return Math.calculatePrice(this.enchantBaseQuantity, stock, this.defaultTotalEnchants, this.totalEnchants, amount, scale, purchase, this.dynamicPricing, this.wholeMarketInflation);
+        return Math.calculatePrice(this.baseQuantity, stock, this.defaultTotalEnchants, this.totalEnchants, amount, scale, purchase, this.dynamicPricing, this.wholeMarketInflation);
     }
 
     /**
@@ -545,7 +559,7 @@ public class EnchantmentManager extends DivinityModule {
      * @param inflation - The economy inflation
      */
     public int calculateStock(double price, double scale, double inflation) {
-        return (int) ((this.enchantBaseQuantity / price) * scale * inflation);
+        return (int) ((this.baseQuantity / price) * scale * inflation);
     }
 
     /**
@@ -571,7 +585,7 @@ public class EnchantmentManager extends DivinityModule {
         if (!this.wholeMarketInflation) {
             inflation = 1.0;
         }
-        return Math.getPrice(this.enchantBaseQuantity, stock, scale, inflation);
+        return Math.getPrice(this.baseQuantity, stock, scale, inflation);
     }
 
     public double getUserPrice(EnchantData enchantData) {
@@ -584,7 +598,7 @@ public class EnchantmentManager extends DivinityModule {
      * @return double
      */
     public double getUserPrice(double stock) {
-        return this.getPrice(stock, this.enchantBuyTax, this.getInflation());
+        return this.getPrice(stock, this.buyScale, this.getInflation());
     }
 
     public double getMarketPrice(EnchantData enchantData) {
@@ -597,7 +611,7 @@ public class EnchantmentManager extends DivinityModule {
      * @return double
      */
     public double getMarketPrice(double stock) {
-        return this.getPrice(stock, this.enchantSellTax, this.getInflation());
+        return this.getPrice(stock, this.sellScale, this.getInflation());
     }
 
     /**
