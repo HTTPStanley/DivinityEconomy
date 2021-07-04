@@ -25,12 +25,16 @@ import me.edgrrrr.de.help.HelpManager;
 import me.edgrrrr.de.mail.MailManager;
 import me.edgrrrr.de.materials.MaterialManager;
 import me.edgrrrr.de.placeholderAPI.ExpansionManager;
-import me.edgrrrr.de.placeholderAPI.expansions.*;
 import me.edgrrrr.de.player.PlayerManager;
 import org.bukkit.configuration.MemorySection;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 /**
  * The Main Class of the plugin
@@ -167,6 +171,24 @@ public class DEPlugin extends JavaPlugin {
             this.getConsole().info("Registered %s placeholders", this.expansionManager.getExpansionCount());
         } else {
             this.getConsole().warn("PlaceholderAPI was not found, disabling expansions.");
+        }
+
+        String infoFileName = "info.txt";
+        try {
+            InputStream resource = this.getResource(infoFileName);
+            if (resource != null) {
+                File resourceFile = this.getConfigManager().getFile(infoFileName);
+                if (resourceFile.exists()) resourceFile.delete();
+                Files.copy(resource, Path.of(resourceFile.toURI()));
+                this.getConsole().info("Wrote config info to '%s'", infoFileName);
+            } else {
+                this.getConsole().severe("Couldn't write config info to '%s' because: resource is null", infoFileName);
+            }
+        } catch (IOException e) {
+            this.getConsole().severe("Couldn't write config info to '%s' because: %s | Stacktrace¬", infoFileName, e.getMessage());
+            for (StackTraceElement ste : e.getStackTrace()) {
+                this.getConsole().severe("%s", ste);
+            }
         }
 
         // Done :)
