@@ -5,8 +5,8 @@ import me.edgrrrr.de.placeholderAPI.DivinityExpansion;
 import org.bukkit.OfflinePlayer;
 import org.mariuszgromada.math.mxparser.Expression;
 
-public class balanceMath extends DivinityExpansion {
-    public balanceMath(DEPlugin main) {
+public class PAPIBalanceMath extends DivinityExpansion {
+    public PAPIBalanceMath(DEPlugin main) {
         super(main, "^balance_math_([+-/*])_([0-9]*)$");
     }
 

@@ -4,8 +4,8 @@ import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.placeholderAPI.DivinityExpansion;
 import org.bukkit.OfflinePlayer;
 
-public class enchantTotalDefaultQuantity extends DivinityExpansion {
-    public enchantTotalDefaultQuantity(DEPlugin main) {
+public class PAPIEnchantTotalDefaultQuantity extends DivinityExpansion {
+    public PAPIEnchantTotalDefaultQuantity(DEPlugin main) {
         super(main, "^enchant_total_default_quantity$");
     }
 

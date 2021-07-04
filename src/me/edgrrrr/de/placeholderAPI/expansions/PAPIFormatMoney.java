@@ -4,8 +4,8 @@ import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.placeholderAPI.DivinityExpansion;
 import org.bukkit.OfflinePlayer;
 
-public class formatMoney extends DivinityExpansion {
-    public formatMoney(DEPlugin main) {
+public class PAPIFormatMoney extends DivinityExpansion {
+    public PAPIFormatMoney(DEPlugin main) {
         super(main, "^format_money_(.*)$");
     }
 

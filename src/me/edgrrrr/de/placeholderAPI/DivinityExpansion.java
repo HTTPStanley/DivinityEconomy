@@ -2,7 +2,6 @@ package me.edgrrrr.de.placeholderAPI;
 
 import me.edgrrrr.de.DEPlugin;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
 
 public abstract class DivinityExpansion {
     private final DEPlugin main;

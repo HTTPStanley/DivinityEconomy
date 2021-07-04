@@ -6,10 +6,9 @@ import me.edgrrrr.de.math.Math;
 import me.edgrrrr.de.placeholderAPI.DivinityExpansion;
 import me.edgrrrr.de.player.PlayerInventoryManager;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.inventory.ItemStack;
 
-public class materialSValue extends DivinityExpansion {
-    public materialSValue(DEPlugin main) {
+public class PAPIMaterialSValue extends DivinityExpansion {
+    public PAPIMaterialSValue(DEPlugin main) {
         super(main, "^material_svalue_(.*)_([0-9]*)$");
     }
 

@@ -4,8 +4,8 @@ import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.placeholderAPI.DivinityExpansion;
 import org.bukkit.OfflinePlayer;
 
-public class rawPlayerBalance extends DivinityExpansion {
-    public rawPlayerBalance(DEPlugin main) {
+public class PAPIRawPlayerBalance extends DivinityExpansion {
+    public PAPIRawPlayerBalance(DEPlugin main) {
         super(main, "^raw_player_balance$");
     }
 

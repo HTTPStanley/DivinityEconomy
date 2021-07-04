@@ -4,8 +4,8 @@ import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.placeholderAPI.DivinityExpansion;
 import org.bukkit.OfflinePlayer;
 
-public class materialTotalDefaultQuantity extends DivinityExpansion {
-    public materialTotalDefaultQuantity(DEPlugin main) {
+public class PAPIMaterialTotalDefaultQuantity extends DivinityExpansion {
+    public PAPIMaterialTotalDefaultQuantity(DEPlugin main) {
         super(main, "^material_total_default_quantity$");
     }
 

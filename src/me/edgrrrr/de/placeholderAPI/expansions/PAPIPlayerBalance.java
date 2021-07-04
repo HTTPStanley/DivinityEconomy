@@ -4,13 +4,13 @@ import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.placeholderAPI.DivinityExpansion;
 import org.bukkit.OfflinePlayer;
 
-public class enchantInflation extends DivinityExpansion {
-    public enchantInflation(DEPlugin main) {
-        super(main, "^enchant_inflation$");
+public class PAPIPlayerBalance extends DivinityExpansion {
+    public PAPIPlayerBalance(DEPlugin main) {
+        super(main, "^player_balance$");
     }
 
     @Override
     public String getResult(OfflinePlayer player, String value) {
-        return String.format("%,.2f", this.getMain().getEnchantmentManager().getInflation());
+        return this.getMain().getConsole().getFormattedBalance(player);
     }
 }

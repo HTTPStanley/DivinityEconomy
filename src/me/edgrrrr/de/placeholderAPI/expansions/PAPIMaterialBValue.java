@@ -6,11 +6,10 @@ import me.edgrrrr.de.math.Math;
 import me.edgrrrr.de.placeholderAPI.DivinityExpansion;
 import me.edgrrrr.de.player.PlayerInventoryManager;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.inventory.ItemStack;
 
-public class rawMaterialBValue extends DivinityExpansion {
-    public rawMaterialBValue(DEPlugin main) {
-        super(main, "^raw_material_bvalue_(.*)_([0-9]*)$");
+public class PAPIMaterialBValue extends DivinityExpansion {
+    public PAPIMaterialBValue(DEPlugin main) {
+        super(main, "^material_bvalue_(.*)_([0-9]*)$");
     }
 
     @Override
@@ -18,7 +17,7 @@ public class rawMaterialBValue extends DivinityExpansion {
         String material = value.replaceFirst(this.value, "$1");
         int amount = Math.getInt(value.replaceFirst(this.value, "$2"));
         MaterialData materialData = this.getMain().getMaterialManager().getMaterial(material);
-        if (materialData != null) return String.format("%,.2f", this.getMain().getMaterialManager().getBuyValue(PlayerInventoryManager.createItemStacks(materialData.getMaterial(), amount)).value);
+        if (materialData != null) return this.getMain().getConsole().formatMoney(this.getMain().getMaterialManager().getBuyValue(PlayerInventoryManager.createItemStacks(materialData.getMaterial(), amount)).value);
         else return String.format("Unknown material '%s'", material);
     }
 }

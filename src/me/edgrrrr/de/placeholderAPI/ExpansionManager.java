@@ -17,21 +17,23 @@ public class ExpansionManager extends PlaceholderExpansion {
         this.main = main;
         this.expansions = new LinkedList<>();
         // Expansions
-        this.expansions.add(new materialInflation(this.main));
-        this.expansions.add(new materialTotalDefaultQuantity(this.main));
-        this.expansions.add(new materialTotalQuantity(this.main));
-        this.expansions.add(new enchantInflation(this.main));
-        this.expansions.add(new enchantTotalDefaultQuantity(this.main));
-        this.expansions.add(new enchantTotalQuantity(this.main));
-        this.expansions.add(new playerBalance(this.main));
-        this.expansions.add(new rawPlayerBalance(this.main));
-        this.expansions.add(new formatMoney(this.main));
-        this.expansions.add(new rawBalanceMath(this.main));
-        this.expansions.add(new balanceMath(this.main));
-        this.expansions.add(new rawMaterialBValue(this.main));
-        this.expansions.add(new rawMaterialSValue(this.main));
-        this.expansions.add(new materialBValue(this.main));
-        this.expansions.add(new materialSValue(this.main));
+        this.expansions.add(new PAPIMaterialInflation(this.main));
+        this.expansions.add(new PAPIMaterialTotalDefaultQuantity(this.main));
+        this.expansions.add(new PAPIMaterialTotalQuantity(this.main));
+        this.expansions.add(new PAPIEnchantInflation(this.main));
+        this.expansions.add(new PAPIEnchantTotalDefaultQuantity(this.main));
+        this.expansions.add(new PAPIEnchantTotalQuantity(this.main));
+        this.expansions.add(new PAPIPlayerBalance(this.main));
+        this.expansions.add(new PAPIRawPlayerBalance(this.main));
+        this.expansions.add(new PAPIFormatMoney(this.main));
+        this.expansions.add(new PAPIRawBalanceMath(this.main));
+        this.expansions.add(new PAPIBalanceMath(this.main));
+        this.expansions.add(new PAPIRawMaterialBValue(this.main));
+        this.expansions.add(new PAPIRawMaterialSValue(this.main));
+        this.expansions.add(new PAPIMaterialBValue(this.main));
+        this.expansions.add(new PAPIMaterialSValue(this.main));
+        this.expansions.add(new PAPIEnchantStock(this.main));
+        this.expansions.add(new PAPIMaterialStock(this.main));
     }
 
     /**
