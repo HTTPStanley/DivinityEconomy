@@ -390,7 +390,11 @@ public class EnchantmentManager extends DivinityModule {
 
                         } else {
                             double price = this.calculatePrice(enchantAmount, enchantData.getQuantity(), this.buyScale, false);
-                            response = new ValueResponse(price, EconomyResponse.ResponseType.SUCCESS, "");
+                            if (price > 0) {
+                                response = new ValueResponse(price, EconomyResponse.ResponseType.SUCCESS, "");
+                            } else {
+                                response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, "market is saturated.");
+                            }
                         }
                     }
                 }
@@ -463,8 +467,12 @@ public class EnchantmentManager extends DivinityModule {
                         if (itemStackEnchantLevel < levelsToSell) {
                             response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("item enchant does not have enough levels(%d/%d)", itemStackEnchantLevel, levelsToSell));
                         } else {
-
-                            response = new ValueResponse(this.calculatePrice(EnchantData.levelsToBooks(itemStackEnchantLevel, itemStackEnchantLevel-levelsToSell), enchantData.getQuantity(), this.sellScale, false), EconomyResponse.ResponseType.SUCCESS, "");
+                            double value = this.calculatePrice(EnchantData.levelsToBooks(itemStackEnchantLevel, itemStackEnchantLevel-levelsToSell), enchantData.getQuantity(), this.sellScale, false);
+                            if (value > 0) {
+                                response = new ValueResponse(value, EconomyResponse.ResponseType.SUCCESS, "");
+                            } else {
+                                response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, "market is saturated.");
+                            }
                         }
                     }
                 }

@@ -291,7 +291,12 @@ public class MaterialManager extends DivinityModule {
                 if (!materialData.getAllowed()) {
                     response = new ValueResponse(0.0, ResponseType.FAILURE, "item is banned.");
                 } else {
-                    response = new ValueResponse(this.calculatePrice(itemStack.getAmount(), materialData.getQuantity(), (this.sellScale * this.getDamageScaling(itemStack)), false), ResponseType.SUCCESS, "");
+                    double value = this.calculatePrice(itemStack.getAmount(), materialData.getQuantity(), (this.sellScale * this.getDamageScaling(itemStack)), false);
+                    if (value > 0) {
+                        response = new ValueResponse(value, ResponseType.SUCCESS, "");
+                    } else {
+                        response = new ValueResponse(0.0, ResponseType.FAILURE, "market is saturated.");
+                    }
                 }
             }
         }
@@ -335,7 +340,12 @@ public class MaterialManager extends DivinityModule {
             if (!materialData.getAllowed()) {
                 response = new ValueResponse(0.0, ResponseType.FAILURE, "item cannot be bought or sold.");
             } else {
-                response = new ValueResponse(this.calculatePrice(itemStack.getAmount(), materialData.getQuantity(), this.buyScale, true), ResponseType.SUCCESS, "");
+                double value = this.calculatePrice(itemStack.getAmount(), materialData.getQuantity(), this.buyScale, true);
+                if (value > 0) {
+                    response = new ValueResponse(value, ResponseType.SUCCESS, "");
+                } else {
+                    response = new ValueResponse(0.0, ResponseType.FAILURE, "market is saturated.");
+                }
             }
         }
 

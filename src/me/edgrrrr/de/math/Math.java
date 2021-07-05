@@ -1,5 +1,7 @@
 package me.edgrrrr.de.math;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.logging.Logger;
 
 public class Math {
@@ -109,59 +111,27 @@ public class Math {
      * @return double
      */
     public static double getPrice(double baseQuantity, double currentQuantity, double scale, double inflation) {
-        // Price breakdown
-        // Prices were balanced in data.csv
-        // Prices are determined by quantity
-        // Price = $1 @ 1000000 (1 million) items
-        // Price = $2 @ 500000 (5 hundred-thousand) items
-        // Price is then scaled - such as the addition of tax (20% by default)
-        // Price is then scaled for inflation
-        // Inflation works by calculating the default total items and dividing it by the new total items
-        // This results in an increase in price when there are less items in the market than default
-        // Or a decrease in price when there are more items in the market than default
-
-        //Don't accept negatives!
-        // I guess this counts as a fix?
-        boolean error = false;
-        String et = "n/a";
-        if (baseQuantity < 0) {
-            baseQuantity = 1;
-            error = true;
-            et = "BQ";
-        }
-        if (currentQuantity < 0) {
-            currentQuantity = 1;
-            error = true;
-            et = "CQ";
-        }
-        if (scale < 0) {
-            scale = 1d;
-            error = true;
-            et = "S";
-        }
-        if (inflation < 0) {
-            inflation = 1d;
-            error = true;
-            et = "I";
-        }
-
         if (currentQuantity == 0) currentQuantity+=1;
-        double value = ((getScale(baseQuantity, currentQuantity)) + getScale(baseQuantity, currentQuantity) * getScale(currentQuantity, baseQuantity)) * scale * inflation;
 
-        // TODO: fix this properly? cunt.
-        // YEAH WELL I DON'T FUCKING KNOW WHAT IS WRONG OK??
-        // LOOK, I'VE ADDED THE "DON'T ACCEPT NEGATIVES" CODE, WHICH SHOULD TECHNICALLY FIX THIS????
-        // BUT TECHNICALLY IF THE CASE ARISES WHEREBY ONE OF THE GIVEN VARIABLES ARE NEGATIVE, THERE IS AN ISSUE ELSEWHERE.
-        if (value < 0) {
-            value = -value;
-            error = true;
-        }
-        // TODO: Or don't. lazy dick face.
+        return Math.getRawPrice(baseQuantity, currentQuantity).multiply(
+                BigDecimal.valueOf(scale).setScale(8, RoundingMode.HALF_DOWN)
+        ).multiply(
+                BigDecimal.valueOf(inflation).setScale(8, RoundingMode.HALF_DOWN)
+        ).doubleValue();
+    }
 
-        if (error) {
-            Logger.getLogger("Minecraft").warning("A math error has occurred in getPrice. (%s) Show this to a developer.");
-        }
-        return value;
+    private static BigDecimal getRawPrice(double baseQuantity, double currentQuantity) {
+        return BigDecimal.valueOf(
+                getScale(baseQuantity, currentQuantity)
+        ).setScale(8, RoundingMode.HALF_DOWN).multiply(
+                BigDecimal.valueOf(10).setScale(8, RoundingMode.HALF_DOWN)
+        ).add(
+                BigDecimal.valueOf(
+                        getScale(baseQuantity, currentQuantity)
+                ).multiply(
+                        BigDecimal.valueOf(5)
+                ).setScale(8, RoundingMode.HALF_DOWN)
+        );
     }
 
     /**
