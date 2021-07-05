@@ -46,6 +46,7 @@ PlaceholderAPI support - Requires PlaceholderAPI to be installed, which can be f
 %de_raw_material_BValue_<materialName>_<amount>| Returns a raw buy value of a material
 %de_material_stock_<materialName>              | Returns the amount of the material in stock
 %de_enchant_stock_<enchantName>                | Returns the amount of the enchant in stock
+%de_material_stack_<materialName>              | Returns the max stack size for the material given
 
 Config Help - Changing these values will not do anything here. Open config.yml
 
