@@ -371,3 +371,6 @@ out/production/DCE/me/edgrrrr/de/placeholderAPI/expansions/PAPIRawMaterialBValue
 out/production/DCE/me/edgrrrr/de/placeholderAPI/expansions/PAPIRawMaterialSValue.class
 out/production/DCE/me/edgrrrr/de/placeholderAPI/expansions/PAPIRawPlayerBalance.class
 out/production/DCE/me/edgrrrr/de/placeholderAPI/expansions/PAPIMaterialStack.class
+.idea/.name
+out/production/DCE/me/edgrrrr/de/commands/market/SellAll.class
+out/production/DCE/me/edgrrrr/de/commands/market/SellAllTC.class
