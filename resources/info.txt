@@ -214,13 +214,14 @@ commands:
     readMail: true
 
   market:
-    buyItem: true
+    buy: true
     handBuy: true
     handInfo: true
     handSell: true
     handValue: true
     info: true
-    sellItem: true
+    sell: true
+    sellall: true
     value: true
 
   misc:
