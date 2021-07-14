@@ -57,6 +57,7 @@ public class SellTC extends DivinityCommandMaterialsTC {
                 } else {
                     Material material = materialData.getMaterial();
                     ArrayList<String> allStrings = new ArrayList<>();
+                    allStrings.add("max");
                     int stackSize = material.getMaxStackSize();
                     int inventoryCount = PlayerInventoryManager.getMaterialCount(sender, material);
 

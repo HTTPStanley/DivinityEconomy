@@ -2,7 +2,6 @@ package me.edgrrrr.de.math;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.logging.Logger;
 
 public class Math {
     /**

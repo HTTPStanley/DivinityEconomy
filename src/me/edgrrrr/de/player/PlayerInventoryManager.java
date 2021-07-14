@@ -316,4 +316,16 @@ public class PlayerInventoryManager {
         PlayerInventoryManager.removePlayerItems(itemStacks1);
         PlayerInventoryManager.addPlayerItems(player, itemStacks2);
     }
+
+    public static ItemStack[] getNonNullItemsInInventory(Player player) {
+        ItemStack[] inventory = player.getInventory().getStorageContents();
+        ArrayList<ItemStack> itemStacks = new ArrayList<>();
+        for (ItemStack itemStack : inventory) {
+            if (itemStack != null) {
+                itemStacks.add(itemStack);
+            }
+        }
+
+        return itemStacks.toArray(new ItemStack[0]);
+    }
 }

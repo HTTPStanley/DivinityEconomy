@@ -46,7 +46,7 @@ public class EnchantHandSellTC extends DivinityCommandEnchantTC {
             case 1:
                 String[] enchantNames = this.getMain().getEnchantmentManager().getEnchantNames(this.getMain().getEnchantmentManager().getEnchantNames(heldItem.getEnchantments().keySet()), args[0]);
                 ArrayList<String> allStrings = new ArrayList<>();
-                allStrings.add("*");
+                allStrings.add("max");
                 allStrings.addAll(Arrays.asList(enchantNames));
                 strings = allStrings.toArray(new String[0]);
                 break;

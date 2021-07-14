@@ -37,6 +37,7 @@ public class Sell extends DivinityCommandMaterials {
     public boolean onPlayerCommand(Player sender, String[] args) {
         String materialName;
         int amountToSell = 1;
+        boolean sellAll = false;
 
         switch (args.length) {
             // Just material, used default amount of 1
@@ -47,7 +48,12 @@ public class Sell extends DivinityCommandMaterials {
             // Material & Amount
             case 2:
                 materialName = args[0];
-                amountToSell = Math.getInt(args[1]);
+                String arg = args[1];
+                if (arg.equalsIgnoreCase("max")) {
+                    sellAll = true;
+                } else {
+                    amountToSell = Math.getInt(args[1]);
+                }
                 break;
 
             default:
@@ -72,6 +78,9 @@ public class Sell extends DivinityCommandMaterials {
         // Ensure player has enough of the material to sell.
         Material material = materialData.getMaterial();
         int materialCount = PlayerInventoryManager.getMaterialCount(PlayerInventoryManager.getMaterialSlots(sender, material));
+        if (sellAll) {
+            amountToSell = materialCount;
+        }
         if (materialCount < amountToSell) {
             this.getMain().getConsole().logFailedSale(sender, amountToSell, materialData.getCleanName(), String.format(CommandResponse.InvalidInventoryStock.message, materialCount, amountToSell));
             return true;

@@ -1,5 +1,5 @@
 main:
-  version: 1.10.117
+  version: 1.11.117
 
 chat:
   chatDebug: false
@@ -76,14 +76,15 @@ commands:
     readMail: true
 
   market:
-    buyItem: true
+    buy: true
     handBuy: true
     handInfo: true
     handSell: true
     handValue: true
     info: true
-    sellItem: true
+    sell: true
     value: true
+    sellall: true
 
   misc:
     ping: true

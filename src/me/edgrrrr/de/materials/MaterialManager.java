@@ -4,8 +4,10 @@ import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.DivinityModule;
 import me.edgrrrr.de.config.Setting;
 import me.edgrrrr.de.math.Math;
+import me.edgrrrr.de.response.MultiValueResponse;
 import me.edgrrrr.de.response.ValueResponse;
 import net.milkbowl.vault.economy.EconomyResponse.ResponseType;
+import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
@@ -302,6 +304,46 @@ public class MaterialManager extends DivinityModule {
         }
 
         return response;
+    }
+
+    public MultiValueResponse getBulkSellValue(ItemStack[] itemStacks) {
+        // Store values
+        HashMap<String, Double> values = MultiValueResponse.createValues();
+        // Store quantities
+        HashMap<String, Integer> quantities = MultiValueResponse.createQuantities();
+        // Error
+        String error = "";
+        // Error type
+        ResponseType response = ResponseType.SUCCESS;
+
+        // Loop through stacks
+        for (ItemStack itemStack : itemStacks) {
+            // Get this stack value
+            ValueResponse valueResponse = this.getSellValue(itemStack);
+
+            // If valuation succeeded
+            if (valueResponse.isSuccess()) {
+                // get material id
+                MaterialData materialData = this.getMaterialID(itemStack.getType().name());
+                Material material = materialData.getMaterial();
+                // If values contains key, add together
+                if (values.containsKey(material.name())) {
+                    values.put(material.name(), valueResponse.value + values.remove(material.name()));
+                    quantities.put(material.name(), itemStack.getAmount() + quantities.remove(material.name()));
+                }
+                // Else just add value response
+                else {
+                    values.put(material.name(), valueResponse.value);
+                    quantities.put(material.name(), itemStack.getAmount());
+                }
+            } else {
+                response = valueResponse.responseType;
+                error = valueResponse.errorMessage;
+                break;
+            }
+        }
+
+        return new MultiValueResponse(values, quantities, response, error);
     }
 
     /**

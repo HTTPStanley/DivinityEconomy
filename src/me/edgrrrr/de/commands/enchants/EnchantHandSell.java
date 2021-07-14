@@ -46,7 +46,7 @@ public class EnchantHandSell extends DivinityCommandEnchant {
         switch (args.length) {
             case 1:
                 enchantName = args[0];
-                if (enchantName.equals("*")) {
+                if (enchantName.equalsIgnoreCase("max")) {
                     sellAllEnchants = true;
                     sellAllLevels = true;
                 } else {

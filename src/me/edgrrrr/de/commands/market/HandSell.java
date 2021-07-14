@@ -36,15 +36,20 @@ public class HandSell extends DivinityCommandMaterials {
      */
     @Override
     public boolean onPlayerCommand(Player sender, String[] args) {
-        int amountToSell;
+        int amountToSell = 1;
+        boolean sellAll = false;
 
         switch (args.length) {
             case 0:
-                amountToSell = 1;
                 break;
 
             case 1:
-                amountToSell = Math.getInt(args[0]);
+                String arg = args[0];
+                if (arg.equalsIgnoreCase("max")) {
+                    sellAll = true;
+                } else {
+                    amountToSell = Math.getInt(args[0]);
+                }
                 break;
 
             default:
@@ -71,6 +76,10 @@ public class HandSell extends DivinityCommandMaterials {
         String materialName = material.name();
         MaterialData materialData = this.getMain().getMaterialManager().getMaterial(materialName);
         int materialCount = PlayerInventoryManager.getMaterialCount(PlayerInventoryManager.getMaterialSlots(sender, material));
+
+        if (sellAll) {
+            amountToSell = materialCount;
+        }
 
         // Ensure player inventory has enough
         if (materialCount < amountToSell) {

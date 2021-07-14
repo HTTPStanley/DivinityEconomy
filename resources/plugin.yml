@@ -1,7 +1,7 @@
 name: DivinityEconomy
 prefix: DivinityEconomy
 main: me.edgrrrr.de.DEPlugin
-version: 1.10.117
+version: 1.11.117
 author: EDGRRRR
 description: Divinity Economy - The dynamic global economy plugin.
 api-version: 1.16
@@ -60,17 +60,24 @@ commands:
   # Market commands
   buy:
     description: "Buys a material from the market."
-    aliases: [b]
+    aliases: []
     permission: de.market.buy
     permission-message: "You do not have permission to use this command"
     usage: "/buy <material name> <amount>"
 
   sell:
     description: "Sells a material to the market."
-    aliases: [s]
+    aliases: []
     permission: de.market.sell
     permission-message: "You do not have permission to use this command"
     usage: "/sell <material name> <amount>"
+
+  sellall:
+    description: "Sells all items in the user's inventory"
+    aliases: []
+    permission: de.market.sellall
+    permission-message: "You do not have permission to use this command"
+    usage: "/sellall !<items,to,not,sell> | /sellall <items,to,sell>"
 
   handBuy:
     description: "Buys the material the user is holding from the market."

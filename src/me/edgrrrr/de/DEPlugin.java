@@ -150,6 +150,8 @@ public class DEPlugin extends JavaPlugin {
         new InfoTC(this);
         new Sell(this);
         new SellTC(this);
+        new SellAll(this);
+        new SellAllTC(this);
         new Value(this);
         new ValueTC(this);
 
