@@ -3,7 +3,7 @@ package me.edgrrrr.de.commands.enchants;
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.commands.DivinityCommandEnchant;
 import me.edgrrrr.de.config.Setting;
-import me.edgrrrr.de.enchants.EnchantData;
+import me.edgrrrr.de.market.items.enchants.MarketableEnchant;
 import org.bukkit.entity.Player;
 
 /**
@@ -40,7 +40,7 @@ public class EnchantInfo extends DivinityCommandEnchant {
                 return true;
         }
 
-        EnchantData enchantData = this.getMain().getEnchantmentManager().getEnchant(enchantName);
+        MarketableEnchant enchantData = this.getMain().getEnchMan().getEnchant(enchantName);
         if (enchantData == null) {
             this.getMain().getConsole().usage(sender, String.format("Unknown Item: %s", enchantName), this.help.getUsages());
         } else {

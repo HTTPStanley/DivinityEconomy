@@ -15,15 +15,16 @@ import java.util.List;
  * The default inherited class for all Divinity Command Tab Completer
  */
 public abstract class DivinityCommandTC implements TabCompleter {
+    protected final boolean isEnabled;
+    protected final boolean hasConsoleSupport;
     // Link to app
     // Whether the command is enabled or not
     // Whether the command supports console input
     private final DEPlugin main;
-    protected final boolean isEnabled;
-    protected final boolean hasConsoleSupport;
 
     /**
      * Constructor
+     *
      * @param main
      * @param registeredCommandName
      * @param hasConsoleSupport
@@ -38,8 +39,10 @@ public abstract class DivinityCommandTC implements TabCompleter {
         if ((command = this.getMain().getCommand(registeredCommandName)) == null) {
             this.getMain().getConsole().warn("Command TabCompleter '%s' is incorrectly setup", registeredCommandName);
         } else {
-            command.setTabCompleter(this);
-            if (!this.getMain().getConfigManager().getBoolean(Setting.IGNORE_COMMAND_REGISTRY_BOOLEAN)) this.getMain().getConsole().info("CommandTC %s registered", registeredCommandName);
+            if (this.isEnabled)
+                command.setTabCompleter(this);
+            if (!this.getMain().getConfMan().getBoolean(Setting.IGNORE_COMMAND_REGISTRY_BOOLEAN))
+                this.getMain().getConsole().info("CommandTC %s registered", registeredCommandName);
         }
     }
 
@@ -49,6 +52,7 @@ public abstract class DivinityCommandTC implements TabCompleter {
 
     /**
      * The command event all user commands call upon send
+     *
      * @param sender
      * @param command
      * @param label
@@ -64,7 +68,8 @@ public abstract class DivinityCommandTC implements TabCompleter {
                 return this._onConsoleTabComplete(args);
             }
         } catch (Exception e) {
-            this.main.getConsole().send(CommandResponse.ErrorOnCommand.defaultLogLevel, CommandResponse.ErrorOnCommand.message, this.getClass().getCanonicalName(), e.getMessage());
+            this.main.getConsole().send(CommandResponse.ErrorOnCommand.defaultLogLevel, CommandResponse.ErrorOnCommand.message, this.getClass().getName(), e.getMessage());
+            e.printStackTrace();
             return null;
         }
     }
@@ -72,11 +77,12 @@ public abstract class DivinityCommandTC implements TabCompleter {
     /**
      * The pre-handling of onPlayerCommand
      * Checks the command is enabled
+     *
      * @param sender
      * @param args
      * @return
      */
-    public List<String> _onPlayerTabComplete(Player sender, String[] args){
+    public List<String> _onPlayerTabComplete(Player sender, String[] args) {
         if (!this.isEnabled) {
             return null;
         } else {
@@ -87,6 +93,7 @@ public abstract class DivinityCommandTC implements TabCompleter {
     /**
      * ###To be overridden by the actual command
      * For handling a player calling this command
+     *
      * @param sender
      * @param args
      * @return
@@ -96,6 +103,7 @@ public abstract class DivinityCommandTC implements TabCompleter {
     /**
      * The pre-handling of the onConsoleCommand
      * Checks the command is enabled and has console support
+     *
      * @param args
      * @return
      */
@@ -112,6 +120,7 @@ public abstract class DivinityCommandTC implements TabCompleter {
     /**
      * ###To be overridden by the actual command
      * For the handling of the console calling this command
+     *
      * @param args
      * @return
      */

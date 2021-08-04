@@ -19,12 +19,15 @@ import me.edgrrrr.de.config.Setting;
 import me.edgrrrr.de.console.EconConsole;
 import me.edgrrrr.de.console.LogLevel;
 import me.edgrrrr.de.economy.EconomyManager;
-import me.edgrrrr.de.enchants.EnchantmentManager;
 import me.edgrrrr.de.events.MailEvent;
 import me.edgrrrr.de.help.HelpManager;
 import me.edgrrrr.de.mail.MailManager;
-import me.edgrrrr.de.materials.MaterialManager;
-import me.edgrrrr.de.placeholderAPI.ExpansionManager;
+import me.edgrrrr.de.market.items.enchants.EnchantManager;
+import me.edgrrrr.de.market.items.materials.MarketManager;
+import me.edgrrrr.de.market.items.materials.block.BlockManager;
+import me.edgrrrr.de.market.items.materials.entity.EntityManager;
+import me.edgrrrr.de.market.items.materials.potion.PotionManager;
+import me.edgrrrr.de.placeholders.ExpansionManager;
 import me.edgrrrr.de.player.PlayerManager;
 import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -48,18 +51,25 @@ public class DEPlugin extends JavaPlugin {
     private EconConsole console;
     // The economy
     private EconomyManager economyManager;
-    // The material manager
-    private MaterialManager materialManager;
     // The mail manager
     private MailManager mailManager;
     // The player manager
     private PlayerManager playerManager;
-    // The enchantment manager
-    private EnchantmentManager enchantmentManager;
     // The help manager
     private HelpManager helpManager;
     // The placeholder api expansion manager
     private ExpansionManager expansionManager;
+    // The market manager
+    private MarketManager marketManager;
+    // The market manager
+    private BlockManager blockManager;
+    // The market manager
+    private EntityManager entityManager;
+    // The market manager
+    private PotionManager potionManager;
+    // The enchant manager
+    private EnchantManager enchantManager;
+
 
     /**
      * Called when the plugin is enabled
@@ -71,8 +81,11 @@ public class DEPlugin extends JavaPlugin {
         this.config = new ConfigManager(this);
         this.console = new EconConsole(this);
         this.economyManager = new EconomyManager(this);
-        this.materialManager = new MaterialManager(this);
-        this.enchantmentManager = new EnchantmentManager(this);
+        this.marketManager = new MarketManager(this);
+        this.blockManager = new BlockManager(this);
+        this.potionManager = new PotionManager(this);
+        this.entityManager = new EntityManager(this);
+        this.enchantManager = new EnchantManager(this);
         this.playerManager = new PlayerManager(this);
         this.mailManager = new MailManager(this);
         this.helpManager = new HelpManager(this);
@@ -113,6 +126,7 @@ public class DEPlugin extends JavaPlugin {
         new SetStockTC(this);
         new SetValue(this);
         new SetValueTC(this);
+        new Reload(this);
 
         // Enchant
         new EnchantHandBuy(this);
@@ -154,6 +168,8 @@ public class DEPlugin extends JavaPlugin {
         new SellAllTC(this);
         new Value(this);
         new ValueTC(this);
+        new ItemList(this);
+        new ItemListTC(this);
 
         // Misc
         new Ping(this);
@@ -163,6 +179,7 @@ public class DEPlugin extends JavaPlugin {
         new BalanceTC(this);
         new SendCash(this);
         new SendCashTC(this);
+        new Baltop(this);
 
         // Placeholder API - handled differently to submodules
         // Automatically initiates - but must be last
@@ -180,7 +197,7 @@ public class DEPlugin extends JavaPlugin {
         try {
             InputStream resource = this.getResource(infoFileName);
             if (resource != null) {
-                File resourceFile = this.getConfigManager().getFile(infoFileName);
+                File resourceFile = this.getConfMan().getFile(infoFileName);
                 if (resourceFile.exists()) resourceFile.delete();
                 Files.copy(resource, Path.of(resourceFile.toURI()));
                 this.getConsole().info("Wrote config info to '%s'", infoFileName);
@@ -223,24 +240,24 @@ public class DEPlugin extends JavaPlugin {
         this.console.debug("===Describe===");
         this.console.debug("Settings:");
         for (Setting setting : Setting.values()) {
-            Object value = this.getConfigManager().get(setting);
+            Object value = this.getConfMan().get(setting);
             if (!(value instanceof MemorySection)) this.getConsole().debug("   - %s: '%s'", setting.path, value);
         }
         this.console.debug("");
         this.console.debug("Markets:");
-        this.console.debug("   - Materials: %s", this.materialManager.getMaterialCount());
-        this.console.debug("      - Material Market Size: %s / %s", this.materialManager.getTotalMaterials(), this.materialManager.getDefaultTotalMaterials());
-        this.console.debug("      - Material Market Inflation: %s%%", this.materialManager.getInflation());
-        this.console.debug("   - Enchants: %s", this.enchantmentManager.getEnchantCount());
-        this.console.debug("      - Enchant Market Size: %s / %s", this.enchantmentManager.getTotalEnchants(), this.enchantmentManager.getDefaultTotalEnchants());
-        this.console.debug("      - Enchant Market Inflation: %s%%", this.enchantmentManager.getInflation());
+        this.console.debug("   - Materials: %s", this.blockManager.getItemCount());
+        this.console.debug("      - Material Market Size: %s / %s", this.blockManager.getTotalItems(), this.blockManager.getDefaultTotalItems());
+        this.console.debug("      - Material Market Inflation: %s%%", this.blockManager.getInflation());
+        this.console.debug("   - Enchants: %s", this.enchantManager.getEnchantCount());
+        this.console.debug("      - Enchant Market Size: %s / %s", this.enchantManager.getTotalItems(), this.enchantManager.getDefaultTotalItems());
+        this.console.debug("      - Enchant Market Inflation: %s%%", this.enchantManager.getInflation());
         this.console.debug("");
     }
 
     /**
      * Returns the config manager
      */
-    public ConfigManager getConfigManager() {
+    public ConfigManager getConfMan() {
         return this.config;
     }
 
@@ -254,49 +271,94 @@ public class DEPlugin extends JavaPlugin {
     /**
      * Returns the economy manager
      * Handles all Vault API actions. Such as sending, adding, removing and setting cash.
+     *
      * @return EconomyManager
      */
-    public EconomyManager getEconomyManager() {
+    public EconomyManager getEconMan() {
         return this.economyManager;
+    }
+
+    /**
+     * Returns the market manager
+     * Manages all material items that can exist in ones inventory
+     *
+     * @return MarketManager
+     */
+    public MarketManager getMarkMan() {
+        return this.marketManager;
     }
 
     /**
      * Returns the Material Manager
      * This is used for managing materials and their value.
+     *
      * @return MaterialManager
      */
-    public MaterialManager getMaterialManager() {
-        return this.materialManager;
+    public BlockManager getMatMan() {
+        return this.blockManager;
+    }
+
+    /**
+     * Returns the Potion Manager
+     * This is used for managing potions and their value.
+     *
+     * @return PotionManager
+     */
+    public PotionManager getPotMan() {
+        return this.potionManager;
+    }
+
+    /**
+     * Returns the Entity Manager
+     * This is used for managing entities and their value.
+     *
+     * @return EntityManager
+     */
+    public EntityManager getEntMan() {
+        return this.entityManager;
     }
 
     /**
      * Returns the mail manager
      * Used to getting, creating and setting Mail for, mostly offline, users.
+     *
      * @return MailManager
      */
-    public MailManager getMailManager() {
+    public MailManager getMailMan() {
         return this.mailManager;
     }
 
     /**
      * Returns the player manager
      * This is currently used for getting Player and OfflinePlayer objects
+     *
      * @return PlayerManager
      */
-    public PlayerManager getPlayerManager() {
+    public PlayerManager getPlayMan() {
         return this.playerManager;
     }
 
     /**
      * Returns the enchantment manager
      * This is used for handling enchantments on items and determining their value.
+     *
      * @return EnchantmentManager
      */
-    public EnchantmentManager getEnchantmentManager() { return this.enchantmentManager; }
+    public EnchantManager getEnchMan() {
+        return this.enchantManager;
+    }
 
     /**
      * Returns the help manager
      */
-    public HelpManager getHelpManager() {return this.helpManager;}
+    public HelpManager getHelpMan() {
+        return this.helpManager;
+    }
 
+    /**
+     * Returns the expansion manager
+     */
+    public ExpansionManager getExpansionManager() {
+        return this.expansionManager;
+    }
 }

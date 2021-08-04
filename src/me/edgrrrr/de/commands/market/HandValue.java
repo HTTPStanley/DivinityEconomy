@@ -3,11 +3,10 @@ package me.edgrrrr.de.commands.market;
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.commands.DivinityCommandMaterials;
 import me.edgrrrr.de.config.Setting;
-import me.edgrrrr.de.materials.MaterialData;
+import me.edgrrrr.de.market.items.materials.MarketableMaterial;
 import me.edgrrrr.de.math.Math;
-import me.edgrrrr.de.player.PlayerInventoryManager;
+import me.edgrrrr.de.player.PlayerManager;
 import me.edgrrrr.de.response.ValueResponse;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -62,7 +61,7 @@ public class HandValue extends DivinityCommandMaterials {
             return true;
         }
 
-        ItemStack heldItem = PlayerInventoryManager.getHeldItem(sender);
+        ItemStack heldItem = PlayerManager.getHeldItem(sender);
 
         // Ensure user is holding an item
         if (heldItem == null) {
@@ -70,41 +69,40 @@ public class HandValue extends DivinityCommandMaterials {
             return true;
         }
 
-        Material material = heldItem.getType();
-        MaterialData materialData = this.getMain().getMaterialManager().getMaterial(material.name());
+        MarketableMaterial marketableMaterial = this.getMain().getMarkMan().getItem(heldItem);
         ItemStack[] buyStacks;
         ItemStack[] sellStacks;
-        ItemStack[] itemStacks = PlayerInventoryManager.getMaterialSlots(sender, material);
+        ItemStack[] itemStacks = marketableMaterial.getMaterialSlots(sender);
 
         if (valueHand) {
             amount = heldItem.getAmount();
-            buyStacks = PlayerInventoryManager.createItemStacks(material, amount);
+            buyStacks = marketableMaterial.getItemStacks(amount);
             sellStacks = new ItemStack[1];
             sellStacks[0] = heldItem;
         } else if (valueAll) {
-            amount = PlayerInventoryManager.getMaterialCount(itemStacks);
+            amount = MarketableMaterial.getMaterialCount(itemStacks);
             sellStacks = itemStacks;
-            buyStacks = PlayerInventoryManager.createItemStacks(material, amount);
+            buyStacks = marketableMaterial.getItemStacks(amount);
         } else {
-            sellStacks = PlayerInventoryManager.createItemStacks(material, amount);
+            sellStacks = marketableMaterial.getItemStacks(amount);
             buyStacks = sellStacks;
         }
 
-        ValueResponse buyResponse = this.getMain().getMaterialManager().getBuyValue(buyStacks);
-        ValueResponse sellResponse = this.getMain().getMaterialManager().getSellValue(sellStacks);
+        ValueResponse buyResponse = marketableMaterial.getManager().getBuyValue(buyStacks);
+        ValueResponse sellResponse = marketableMaterial.getManager().getSellValue(sellStacks);
 
         if (buyResponse.isSuccess()) {
-            this.getMain().getConsole().info(sender, "Buy: %d %s costs £%,.2f", amount, materialData.getCleanName(), buyResponse.value);
+            this.getMain().getConsole().info(sender, "Buy: %d %s costs £%,.2f", amount, marketableMaterial.getCleanName(), buyResponse.value);
 
         } else {
-            this.getMain().getConsole().info(sender, "Couldn't determine buy price of %d %s because %s", amount, materialData.getCleanName(), buyResponse.errorMessage);
+            this.getMain().getConsole().info(sender, "Couldn't determine buy price of %d %s because %s", amount, marketableMaterial.getCleanName(), buyResponse.errorMessage);
         }
 
         if (sellResponse.isSuccess()) {
-            this.getMain().getConsole().info(sender, "Sell: %d %s costs £%,.2f", amount, materialData.getCleanName(), sellResponse.value);
+            this.getMain().getConsole().info(sender, "Sell: %d %s costs £%,.2f", amount, marketableMaterial.getCleanName(), sellResponse.value);
 
         } else {
-            this.getMain().getConsole().info(sender, "Couldn't determine buy price of %d %s because %s", amount, materialData.getCleanName(), sellResponse.errorMessage);
+            this.getMain().getConsole().info(sender, "Couldn't determine sell price of %d %s because %s", amount, marketableMaterial.getCleanName(), sellResponse.errorMessage);
         }
         return true;
     }

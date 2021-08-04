@@ -11,7 +11,8 @@ public class ValueResponse extends Response {
 
     /**
      * Constructor
-     * @param value - The value of the enchant
+     *
+     * @param value        - The value of the enchant
      * @param responseType - The type of response
      * @param errorMessage - The error, if any.
      */

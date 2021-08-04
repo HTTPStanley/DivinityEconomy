@@ -14,14 +14,128 @@ import org.bukkit.entity.Player;
  * The default inherited class for all Divinity Commands
  */
 public abstract class DivinityCommand implements CommandExecutor {
+    protected final Help help;
+    protected final boolean isEnabled;
+    protected final boolean hasConsoleSupport;
     // Link to app
     // The help object for this command
     // Whether the command is enabled or not
     // Whether the command supports console input
     private final DEPlugin main;
-    protected final Help help;
-    protected final boolean isEnabled;
-    protected final boolean hasConsoleSupport;
+
+    /**
+     * Constructor
+     *
+     * @param main
+     * @param registeredCommandName
+     * @param hasConsoleSupport
+     * @param commandSetting
+     */
+    public DivinityCommand(DEPlugin main, String registeredCommandName, boolean hasConsoleSupport, Setting commandSetting) {
+        this.main = main;
+        this.help = this.getMain().getHelpMan().get(registeredCommandName);
+        this.hasConsoleSupport = hasConsoleSupport;
+        this.isEnabled = this.getMain().getConfig().getBoolean(commandSetting.path);
+
+        PluginCommand command;
+        if ((command = this.getMain().getCommand(registeredCommandName)) == null) {
+            this.getMain().getConsole().warn("Command Executor '%s' is incorrectly setup", registeredCommandName);
+        } else {
+            command.setExecutor(this);
+            if (!this.getMain().getConfMan().getBoolean(Setting.IGNORE_COMMAND_REGISTRY_BOOLEAN))
+                this.getMain().getConsole().info("Command %s registered", registeredCommandName);
+        }
+    }
+
+    /**
+     * The command event all user commands call upon send
+     *
+     * @param sender
+     * @param command
+     * @param label
+     * @param args
+     * @return
+     */
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        try {
+            if (sender instanceof Player) {
+                _onPlayerCommand((Player) sender, args);
+            } else {
+                _onConsoleCommand(args);
+            }
+            return true;
+
+        } catch (Exception e) {
+            this.getMain().getConsole().send(CommandResponse.ErrorOnCommand.defaultLogLevel, CommandResponse.ErrorOnCommand.message, command, e.getMessage());
+            e.printStackTrace();
+            return true;
+        }
+    }
+
+    /**
+     * The pre-handling of onPlayerCommand
+     * Checks the command is enabled
+     *
+     * @param sender
+     * @param args
+     * @return
+     */
+    public boolean _onPlayerCommand(Player sender, String[] args) {
+        if (!this.isEnabled) {
+            this.getMain().getConsole().send(sender, CommandResponse.PlayerCommandIsDisabled.defaultLogLevel, CommandResponse.PlayerCommandIsDisabled.message);
+            return true;
+        } else {
+            return this.onPlayerCommand(sender, args);
+        }
+    }
+
+    /**
+     * ###To be overridden by the actual command
+     * For handling a player calling this command
+     *
+     * @param sender
+     * @param args
+     * @return
+     */
+    public abstract boolean onPlayerCommand(Player sender, String[] args);
+
+    /**
+     * The pre-handling of the onConsoleCommand
+     * Checks the command is enabled and has console support
+     *
+     * @param args
+     * @return
+     */
+    public boolean _onConsoleCommand(String[] args) {
+        if (!this.isEnabled) {
+            this.getMain().getConsole().send(CommandResponse.ConsoleCommandIsDisabled.defaultLogLevel, CommandResponse.ConsoleCommandIsDisabled.message);
+            return true;
+        } else if (!this.hasConsoleSupport) {
+            this.getMain().getConsole().send(CommandResponse.ConsoleSupportNotAdded.defaultLogLevel, CommandResponse.ConsoleSupportNotAdded.message);
+            return true;
+        } else {
+            return this.onConsoleCommand(args);
+        }
+    }
+
+    /**
+     * ###To be overridden by the actual command
+     * For the handling of the console calling this command
+     *
+     * @param args
+     * @return
+     */
+    public abstract boolean onConsoleCommand(String[] args);
+
+    /**
+     * Returns the main module
+     *
+     * @return
+     */
+    public DEPlugin getMain() {
+        return this.main;
+    }
 
     /**
      * Default Message for standardized messaging across the commands.
@@ -63,117 +177,13 @@ public abstract class DivinityCommand implements CommandExecutor {
         InvalidInventorySpace("Missing inventory space %d/%d.", LogLevel.WARNING),
         InvalidStockAmount("Missing stock %d/%d.", LogLevel.WARNING),
         InvalidInventoryStock("Missing inventory stock %d/%d", LogLevel.WARNING),
-        UnknownError("Unknown error.", LogLevel.WARNING)
-        ;
-        public String message;
-        public LogLevel defaultLogLevel;
+        UnknownError("Unknown error.", LogLevel.WARNING);
+        public final String message;
+        public final LogLevel defaultLogLevel;
+
         CommandResponse(String message, LogLevel defaultLevel) {
             this.message = message;
             this.defaultLogLevel = defaultLevel;
         }
-    }
-
-    /**
-     * Constructor
-     * @param main
-     * @param registeredCommandName
-     * @param hasConsoleSupport
-     * @param commandSetting
-     */
-    public DivinityCommand(DEPlugin main, String registeredCommandName, boolean hasConsoleSupport, Setting commandSetting) {
-        this.main = main;
-        this.help = this.getMain().getHelpManager().get(registeredCommandName);
-        this.hasConsoleSupport = hasConsoleSupport;
-        this.isEnabled = this.getMain().getConfig().getBoolean(commandSetting.path);
-
-        PluginCommand command;
-        if ((command = this.getMain().getCommand(registeredCommandName)) == null) {
-            this.getMain().getConsole().warn("Command Executor '%s' is incorrectly setup", registeredCommandName);
-        } else {
-            command.setExecutor(this);
-            if (!this.getMain().getConfigManager().getBoolean(Setting.IGNORE_COMMAND_REGISTRY_BOOLEAN)) this.getMain().getConsole().info("Command %s registered", registeredCommandName);
-        }
-    }
-
-    /**
-     * The command event all user commands call upon send
-     * @param sender
-     * @param command
-     * @param label
-     * @param args
-     * @return
-     */
-    @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        try {
-            if (sender instanceof Player) {
-                return this._onPlayerCommand((Player) sender, args);
-            } else {
-                return this._onConsoleCommand(args);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            this.getMain().getConsole().send(CommandResponse.ErrorOnCommand.defaultLogLevel, CommandResponse.ErrorOnCommand.message, command, e.getMessage());
-            return false;
-        }
-    }
-
-    /**
-     * The pre-handling of onPlayerCommand
-     * Checks the command is enabled
-     * @param sender
-     * @param args
-     * @return
-     */
-    public boolean _onPlayerCommand(Player sender, String[] args){
-        if (!this.isEnabled) {
-            this.getMain().getConsole().send(sender, CommandResponse.PlayerCommandIsDisabled.defaultLogLevel, CommandResponse.PlayerCommandIsDisabled.message);
-            return true;
-        } else {
-            return this.onPlayerCommand(sender, args);
-        }
-    }
-
-    /**
-     * ###To be overridden by the actual command
-     * For handling a player calling this command
-     * @param sender
-     * @param args
-     * @return
-     */
-    public abstract boolean onPlayerCommand(Player sender, String[] args);
-
-    /**
-     * The pre-handling of the onConsoleCommand
-     * Checks the command is enabled and has console support
-     * @param args
-     * @return
-     */
-    public boolean _onConsoleCommand(String[] args) {
-        if (!this.isEnabled) {
-            this.getMain().getConsole().send(CommandResponse.ConsoleCommandIsDisabled.defaultLogLevel, CommandResponse.ConsoleCommandIsDisabled.message);
-            return true;
-        } else if (!this.hasConsoleSupport) {
-            this.getMain().getConsole().send(CommandResponse.ConsoleSupportNotAdded.defaultLogLevel, CommandResponse.ConsoleSupportNotAdded.message);
-            return true;
-        } else {
-            return this.onConsoleCommand(args);
-        }
-    }
-
-    /**
-     * ###To be overridden by the actual command
-     * For the handling of the console calling this command
-     * @param args
-     * @return
-     */
-    public abstract boolean onConsoleCommand(String[] args);
-
-    /**
-     * Returns the main module
-     * @return
-     */
-    public DEPlugin getMain() {
-        return this.main;
     }
 }

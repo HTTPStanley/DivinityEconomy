@@ -47,7 +47,7 @@ public class SetStockTC extends DivinityCommandTC {
             // Args 1
             // get player names that start with args[0]
             case 1:
-                strings = this.getMain().getMaterialManager().getMaterialNames();
+                strings = this.getMain().getMarkMan().getItemNames();
                 break;
 
             default:

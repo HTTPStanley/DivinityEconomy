@@ -44,7 +44,7 @@ public class ClearBal extends DivinityCommand {
 
             // 1 arg
             case 1:
-                player2 = this.getMain().getPlayerManager().getOfflinePlayer(args[0], false);
+                player2 = this.getMain().getPlayMan().getOfflinePlayer(args[0], false);
                 break;
 
             // If any other number of arguments are passed.
@@ -60,8 +60,8 @@ public class ClearBal extends DivinityCommand {
         }
 
         // Set balance to 0
-        double startingBalance = this.getMain().getEconomyManager().getBalance(player2);
-        EconomyResponse response = this.getMain().getEconomyManager().setCash(player2, 0);
+        double startingBalance = this.getMain().getEconMan().getBalance(player2);
+        EconomyResponse response = this.getMain().getEconMan().setCash(player2, 0);
 
         // Handles sender, receiver, message, mail and console log
         if (response.transactionSuccess()) {
@@ -85,7 +85,7 @@ public class ClearBal extends DivinityCommand {
         switch (args.length) {
             // 1 arg
             case 1:
-                player = this.getMain().getPlayerManager().getOfflinePlayer(args[0], false);
+                player = this.getMain().getPlayMan().getOfflinePlayer(args[0], false);
                 break;
 
             // If any other number of arguments are passed.
@@ -101,8 +101,8 @@ public class ClearBal extends DivinityCommand {
         }
 
         // Set balance to 0
-        double startingBalance = this.getMain().getEconomyManager().getBalance(player);
-        EconomyResponse response = this.getMain().getEconomyManager().setCash(player, 0);
+        double startingBalance = this.getMain().getEconMan().getBalance(player);
+        EconomyResponse response = this.getMain().getEconMan().setCash(player, 0);
 
         // Handles sender, receiver, message, mail and console log
         if (response.transactionSuccess()) {

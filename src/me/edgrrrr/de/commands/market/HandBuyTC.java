@@ -4,9 +4,9 @@ import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.commands.DivinityCommand;
 import me.edgrrrr.de.commands.DivinityCommandMaterialsTC;
 import me.edgrrrr.de.config.Setting;
-import me.edgrrrr.de.materials.MaterialData;
+import me.edgrrrr.de.market.items.materials.MarketableMaterial;
 import me.edgrrrr.de.math.Math;
-import me.edgrrrr.de.player.PlayerInventoryManager;
+import me.edgrrrr.de.player.PlayerManager;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -38,19 +38,19 @@ public class HandBuyTC extends DivinityCommandMaterialsTC {
     @Override
     public List<String> onPlayerTabCompleter(Player sender, String[] args) {
         String[] strings = new String[0];
-        ItemStack heldItem = PlayerInventoryManager.getHeldItem(sender);
+        ItemStack heldItem = PlayerManager.getHeldItem(sender);
         if (heldItem == null) {
             strings = new String[]{DivinityCommand.CommandResponse.InvalidItemHeld.message};
         } else {
-            MaterialData materialData = this.getMain().getMaterialManager().getMaterial(heldItem.getType().toString());
+            MarketableMaterial marketableMaterial = this.getMain().getMarkMan().getItem(heldItem);
             switch (args.length) {
                 // 1 args
                 // return max stack size for the material given
                 case 1:
                     strings = new String[]{
-                            String.valueOf(materialData.getMaterial().getMaxStackSize() - heldItem.getAmount()),
-                            String.valueOf(materialData.getMaterial().getMaxStackSize()),
-                            String.valueOf(PlayerInventoryManager.getAvailableSpace(sender, materialData.getMaterial()))
+                            String.valueOf(marketableMaterial.getMaterial().getMaxStackSize() - heldItem.getAmount()),
+                            String.valueOf(marketableMaterial.getMaterial().getMaxStackSize()),
+                            String.valueOf(marketableMaterial.getAvailableSpace(sender))
                     };
                     break;
 
@@ -58,7 +58,7 @@ public class HandBuyTC extends DivinityCommandMaterialsTC {
                 // If uses clicks space after number, returns the value of the amount of item given
                 case 2:
                     strings = new String[]{
-                            String.format("Value: £%,.2f", this.getMain().getMaterialManager().calculatePrice(Math.getInt(args[0]), materialData.getQuantity(), this.getMain().getMaterialManager().getBuyScale(), true))
+                            String.format("Value: £%,.2f", marketableMaterial.getManager().calculatePrice(Math.getInt(args[0]), marketableMaterial.getQuantity(), marketableMaterial.getManager().getBuyScale(), true))
                     };
                     break;
             }

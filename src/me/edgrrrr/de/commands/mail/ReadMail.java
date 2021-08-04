@@ -8,7 +8,7 @@ import me.edgrrrr.de.mail.MailList;
 import me.edgrrrr.de.math.Math;
 import org.bukkit.entity.Player;
 
-import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A command for reading mail
@@ -53,12 +53,12 @@ public class ReadMail extends DivinityCommand {
 
         } else {
 
-            MailList mailList = this.getMain().getMailManager().getMailList(sender.getUniqueId().toString());
+            MailList mailList = this.getMain().getMailMan().getMailList(sender.getUniqueId().toString());
 
             if (mailList.getAllMail().isEmpty()) {
                 this.getMain().getConsole().warn(sender, "You have no mail.");
             } else {
-                HashMap<Integer, Mail[]> mailPages = mailList.getPages(pageSize);
+                Map<Integer, Mail[]> mailPages = mailList.getPages(pageSize);
 
                 if ((page + 1) > mailPages.size()) {
                     this.getMain().getConsole().warn(sender, "Invalid page. Choose a number up to %s", mailPages.size());

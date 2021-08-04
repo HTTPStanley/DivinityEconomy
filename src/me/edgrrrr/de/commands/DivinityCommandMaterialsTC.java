@@ -14,6 +14,7 @@ public abstract class DivinityCommandMaterialsTC extends DivinityCommandTC {
 
     /**
      * Constructor
+     *
      * @param app
      * @param hasConsoleSupport
      * @param commandSetting
@@ -26,6 +27,7 @@ public abstract class DivinityCommandMaterialsTC extends DivinityCommandTC {
     /**
      * The pre-handling of onPlayerCommand
      * Checks the command is enabled
+     *
      * @param sender
      * @param args
      * @return
@@ -43,6 +45,7 @@ public abstract class DivinityCommandMaterialsTC extends DivinityCommandTC {
     /**
      * The pre-handling of the onConsoleCommand
      * Checks the command is enabled and has console support
+     *
      * @param args
      * @return
      */

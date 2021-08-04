@@ -5,13 +5,14 @@ import me.edgrrrr.de.DivinityModule;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 
-import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class MailManager extends DivinityModule {
     // The mail file
     private final String mailFile = "mail.yml";
     // Where mail is stored against the player
-    private HashMap<String, MailList> mailMap;
+    private Map<String, MailList> mailMap;
     // Where the config is stored
     private FileConfiguration configuration;
 
@@ -57,7 +58,7 @@ public class MailManager extends DivinityModule {
      * @return FileConfiguration - The contents of the mail file
      */
     public FileConfiguration readMailFile() {
-        return this.getConfig().loadFile(this.mailFile);
+        return this.getConfMan().loadFile(this.mailFile);
     }
 
     /**
@@ -65,8 +66,8 @@ public class MailManager extends DivinityModule {
      * Mail cannot be read unless this is called!
      */
     public void loadAllMail() {
-        this.configuration = this.getConfig().loadFile(this.mailFile);
-        this.mailMap = new HashMap<>();
+        this.configuration = this.getConfMan().loadFile(this.mailFile);
+        this.mailMap = new ConcurrentHashMap<>();
         int userCount = 0;
         int mailCount = 0;
         for (String userID : this.configuration.getKeys(false)) {
@@ -82,6 +83,7 @@ public class MailManager extends DivinityModule {
 
     /**
      * Adds a mail list and stores it against the player
+     *
      * @param mailList - The mail list to store
      */
     public void addMailList(String uuid, MailList mailList) {
@@ -106,6 +108,7 @@ public class MailManager extends DivinityModule {
     /**
      * Returns a players mail list
      * If the user does not have one, it will create an empty mail list and return it.
+     *
      * @return MailList - The mail list for this player
      */
     public MailList getMailList(String uuid) {
@@ -125,7 +128,7 @@ public class MailManager extends DivinityModule {
     }
 
     private void saveMailFile() {
-        this.getConfig().saveFile(this.configuration, this.mailFile);
+        this.getConfMan().saveFile(this.configuration, this.mailFile);
     }
 
     /**

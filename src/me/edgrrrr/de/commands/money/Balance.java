@@ -36,7 +36,7 @@ public class Balance extends DivinityCommand {
 
         switch (args.length) {
             case 1:
-                receiverPlayer = this.getMain().getPlayerManager().getOfflinePlayer(args[0], false);
+                receiverPlayer = this.getMain().getPlayMan().getOfflinePlayer(args[0], false);
                 break;
 
             default:
@@ -65,7 +65,7 @@ public class Balance extends DivinityCommand {
         OfflinePlayer player;
         switch (args.length) {
             case 1:
-                player = this.getMain().getPlayerManager().getOfflinePlayer(args[0], false);
+                player = this.getMain().getPlayMan().getOfflinePlayer(args[0], false);
                 break;
 
             default:

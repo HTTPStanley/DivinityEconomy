@@ -40,7 +40,7 @@ public class SendCash extends DivinityCommand {
         switch (args.length) {
             case 2:
                 // Get online player
-                player2 = this.getMain().getPlayerManager().getOfflinePlayer(args[0], false);
+                player2 = this.getMain().getPlayMan().getOfflinePlayer(args[0], false);
                 amount = Math.getDouble(args[1]);
                 break;
 
@@ -56,7 +56,7 @@ public class SendCash extends DivinityCommand {
         }
 
         // Sendcash response
-        EconomyTransferResponse response = this.getMain().getEconomyManager().sendCash(sender, player2, amount);
+        EconomyTransferResponse response = this.getMain().getEconMan().sendCash(sender, player2, amount);
 
         // Handles console, message and mail
         if (response.responseType == EconomyResponse.ResponseType.SUCCESS) {

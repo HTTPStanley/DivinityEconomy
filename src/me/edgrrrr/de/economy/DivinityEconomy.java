@@ -11,12 +11,14 @@ import org.bukkit.craftbukkit.libs.jline.internal.Nullable;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class DivinityEconomy implements net.milkbowl.vault.economy.Economy {
+    private static final String foldername = "userdata";
     private final JavaPlugin app;
     private final ConfigManager configManager;
     private final EconConsole console;
@@ -24,11 +26,8 @@ public class DivinityEconomy implements net.milkbowl.vault.economy.Economy {
     private final int fractionalDigits;
     private final String currencyNamePlural;
     private final String currencyNameSingular;
-    private final HashMap<UUID, EconomyPlayer> economyPlayerMap;
+    private final Map<UUID, EconomyPlayer> economyPlayerMap;
     private final File userFolder;
-
-    private static final String foldername = "userdata";
-
     public DivinityEconomy(JavaPlugin app,
                            ConfigManager configManager,
                            EconConsole console,
@@ -44,7 +43,7 @@ public class DivinityEconomy implements net.milkbowl.vault.economy.Economy {
         this.fractionalDigits = fractionalDigits;
         this.currencyNamePlural = currencyNamePlural;
         this.currencyNameSingular = currencyNameSingular;
-        this.economyPlayerMap = new HashMap<>();
+        this.economyPlayerMap = new ConcurrentHashMap<>();
         this.userFolder = this.configManager.getFolder(DivinityEconomy.foldername);
 
         this.registerPlayers();
@@ -128,6 +127,7 @@ public class DivinityEconomy implements net.milkbowl.vault.economy.Economy {
     }
 
     //TODO
+
     /**
      * Returns true if the given implementation supports banks.
      *
@@ -342,9 +342,11 @@ public class DivinityEconomy implements net.milkbowl.vault.economy.Economy {
     @Deprecated
     public EconomyResponse withdrawPlayer(String playerName, double amount) {
         EconomyPlayer player = this.get(playerName);
-        if (player == null) return new EconomyResponse(amount, 0.0, EconomyResponse.ResponseType.FAILURE, "unknown player");
+        if (player == null)
+            return new EconomyResponse(amount, 0.0, EconomyResponse.ResponseType.FAILURE, "unknown player");
         return this.withdrawPlayer(player.getOfflinePlayer(), amount);
     }
+
     /**
      * Withdraw an amount from a player - DO NOT USE NEGATIVE AMOUNTS
      *
@@ -356,9 +358,11 @@ public class DivinityEconomy implements net.milkbowl.vault.economy.Economy {
     public EconomyResponse withdrawPlayer(OfflinePlayer player, double amount) {
         EconomyPlayer economyPlayer = this.get(player.getUniqueId());
 
-        if (amount < 0) return new EconomyResponse(amount, economyPlayer.getBalance(), EconomyResponse.ResponseType.FAILURE, "negative amounts are not allowed");
+        if (amount < 0)
+            return new EconomyResponse(amount, economyPlayer.getBalance(), EconomyResponse.ResponseType.FAILURE, "negative amounts are not allowed");
 
-        if (!economyPlayer.has(amount)) return new EconomyResponse(amount, economyPlayer.getBalance(), EconomyResponse.ResponseType.FAILURE, "withdrawal would lead to overdraft");
+        if (!economyPlayer.has(amount))
+            return new EconomyResponse(amount, economyPlayer.getBalance(), EconomyResponse.ResponseType.FAILURE, "withdrawal would lead to overdraft");
 
         double balance = economyPlayer.withdraw(amount);
         return new EconomyResponse(amount, balance, EconomyResponse.ResponseType.SUCCESS, "");
@@ -399,7 +403,8 @@ public class DivinityEconomy implements net.milkbowl.vault.economy.Economy {
     @Deprecated
     public EconomyResponse depositPlayer(String playerName, double amount) {
         EconomyPlayer player = this.get(playerName);
-        if (player == null) return new EconomyResponse(amount, 0.0, EconomyResponse.ResponseType.FAILURE, "unknown player");
+        if (player == null)
+            return new EconomyResponse(amount, 0.0, EconomyResponse.ResponseType.FAILURE, "unknown player");
         return this.depositPlayer(player.getOfflinePlayer(), amount);
     }
 
@@ -414,9 +419,11 @@ public class DivinityEconomy implements net.milkbowl.vault.economy.Economy {
     public EconomyResponse depositPlayer(OfflinePlayer player, double amount) {
         EconomyPlayer economyPlayer = this.get(player.getUniqueId());
 
-        if (amount < 0) return new EconomyResponse(amount, economyPlayer.getBalance(), EconomyResponse.ResponseType.FAILURE, "negative amounts are not allowed");
+        if (amount < 0)
+            return new EconomyResponse(amount, economyPlayer.getBalance(), EconomyResponse.ResponseType.FAILURE, "negative amounts are not allowed");
 
-        if (!economyPlayer.canHave(amount)) return new EconomyResponse(amount, economyPlayer.getBalance(), EconomyResponse.ResponseType.FAILURE, "balance may be too large");
+        if (!economyPlayer.canHave(amount))
+            return new EconomyResponse(amount, economyPlayer.getBalance(), EconomyResponse.ResponseType.FAILURE, "balance may be too large");
 
         double balance = economyPlayer.deposit(amount);
         return new EconomyResponse(amount, balance, EconomyResponse.ResponseType.SUCCESS, "");
@@ -450,6 +457,7 @@ public class DivinityEconomy implements net.milkbowl.vault.economy.Economy {
     }
 
     //TODO
+
     /**
      * @param name
      * @param player
@@ -462,6 +470,7 @@ public class DivinityEconomy implements net.milkbowl.vault.economy.Economy {
     }
 
     //TODO
+
     /**
      * Creates a bank account with the specified name and the player as the owner
      *
@@ -475,6 +484,7 @@ public class DivinityEconomy implements net.milkbowl.vault.economy.Economy {
     }
 
     //TODO
+
     /**
      * Deletes a bank account with the specified name.
      *
@@ -487,6 +497,7 @@ public class DivinityEconomy implements net.milkbowl.vault.economy.Economy {
     }
 
     //TODO
+
     /**
      * Returns the amount the bank has
      *
@@ -499,6 +510,7 @@ public class DivinityEconomy implements net.milkbowl.vault.economy.Economy {
     }
 
     //TODO
+
     /**
      * Returns true or false whether the bank has the amount specified - DO NOT USE NEGATIVE AMOUNTS
      *
@@ -512,6 +524,7 @@ public class DivinityEconomy implements net.milkbowl.vault.economy.Economy {
     }
 
     //TODO
+
     /**
      * Withdraw an amount from a bank account - DO NOT USE NEGATIVE AMOUNTS
      *
@@ -525,6 +538,7 @@ public class DivinityEconomy implements net.milkbowl.vault.economy.Economy {
     }
 
     //TODO
+
     /**
      * Deposit an amount into a bank account - DO NOT USE NEGATIVE AMOUNTS
      *
@@ -539,6 +553,7 @@ public class DivinityEconomy implements net.milkbowl.vault.economy.Economy {
     }
 
     //TODO
+
     /**
      * @param name
      * @param playerName
@@ -551,6 +566,7 @@ public class DivinityEconomy implements net.milkbowl.vault.economy.Economy {
     }
 
     //TODO
+
     /**
      * Check if a player is the owner of a bank account
      *
@@ -565,6 +581,7 @@ public class DivinityEconomy implements net.milkbowl.vault.economy.Economy {
     }
 
     //TODO
+
     /**
      * @param name
      * @param playerName
@@ -577,6 +594,7 @@ public class DivinityEconomy implements net.milkbowl.vault.economy.Economy {
     }
 
     //TODO
+
     /**
      * Check if the player is a member of the bank account
      *
@@ -590,6 +608,7 @@ public class DivinityEconomy implements net.milkbowl.vault.economy.Economy {
     }
 
     //TODO
+
     /**
      * Gets the list of banks
      *

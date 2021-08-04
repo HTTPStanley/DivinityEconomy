@@ -47,7 +47,7 @@ public class SetBal extends DivinityCommand {
             case 2:
                 // use case #2
                 amount = Math.getDouble(args[1]);
-                receiver = this.getMain().getPlayerManager().getOfflinePlayer(args[0], false);
+                receiver = this.getMain().getPlayMan().getOfflinePlayer(args[0], false);
                 break;
 
             default:
@@ -62,8 +62,8 @@ public class SetBal extends DivinityCommand {
             return true;
         }
 
-        double startingBalance = this.getMain().getEconomyManager().getBalance(receiver);
-        EconomyResponse response = this.getMain().getEconomyManager().setCash(receiver, amount);
+        double startingBalance = this.getMain().getEconMan().getBalance(receiver);
+        EconomyResponse response = this.getMain().getEconMan().setCash(receiver, amount);
 
         // Response messages
         if (response.transactionSuccess()) {
@@ -95,7 +95,7 @@ public class SetBal extends DivinityCommand {
             case 2:
                 // use case #2
                 amount = Math.getDouble(args[1]);
-                receiver = this.getMain().getPlayerManager().getOfflinePlayer(args[0], false);
+                receiver = this.getMain().getPlayMan().getOfflinePlayer(args[0], false);
                 break;
 
             default:
@@ -110,8 +110,8 @@ public class SetBal extends DivinityCommand {
             return true;
         }
 
-        double startingBalance = this.getMain().getEconomyManager().getBalance(receiver);
-        EconomyResponse response = this.getMain().getEconomyManager().setCash(receiver, amount);
+        double startingBalance = this.getMain().getEconMan().getBalance(receiver);
+        EconomyResponse response = this.getMain().getEconMan().setCash(receiver, amount);
 
         // Response messages
         if (response.transactionSuccess()) {

@@ -3,15 +3,16 @@ package me.edgrrrr.de.commands.market;
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.commands.DivinityCommandMaterials;
 import me.edgrrrr.de.config.Setting;
-import me.edgrrrr.de.materials.MaterialData;
-import me.edgrrrr.de.player.PlayerInventoryManager;
+import me.edgrrrr.de.market.items.materials.MarketableMaterial;
+import me.edgrrrr.de.player.PlayerManager;
 import me.edgrrrr.de.response.MultiValueResponse;
 import net.milkbowl.vault.economy.EconomyResponse;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * A command for selling all items to the market
@@ -39,7 +40,7 @@ public class SellAll extends DivinityCommandMaterials {
         // Whether the material names are items to sell or blocked materials
         boolean blocking = false;
         // The material data
-        ArrayList<Material> materials = new ArrayList<>();
+        Set<MarketableMaterial> marketableMaterials = new HashSet<>();
 
         switch (args.length) {
             case 0:
@@ -53,12 +54,12 @@ public class SellAll extends DivinityCommandMaterials {
                     arg = arg.replaceFirst("!", "");
                 }
                 for (String materialName : arg.split(",")) {
-                    MaterialData materialData = this.getMain().getMaterialManager().getMaterial(materialName);
-                    if (materialData == null) {
+                    MarketableMaterial marketableMaterial = this.getMain().getMarkMan().getItem(materialName);
+                    if (marketableMaterial == null) {
                         this.getMain().getConsole().send(sender, CommandResponse.InvalidItemName.defaultLogLevel, CommandResponse.InvalidItemName.message, materialName);
                         return true;
                     } else {
-                        materials.add(materialData.getMaterial());
+                        marketableMaterials.add(marketableMaterial);
                     }
                 }
                 break;
@@ -70,10 +71,11 @@ public class SellAll extends DivinityCommandMaterials {
 
         // Get player inventory
         // Copy all inventory items over to itemStacks that are either specified or blocked
-        ItemStack[] playerInventory = PlayerInventoryManager.getNonNullItemsInInventory(sender);
+        ItemStack[] playerInventory = PlayerManager.getInventoryMaterials(sender);
         ArrayList<ItemStack> itemStackList = new ArrayList<>();
         for (ItemStack itemStack : playerInventory) {
-            if ((blocking && !materials.contains(itemStack.getType())) || (!blocking && materials.contains(itemStack.getType())) || (!blocking && materials.size() == 0)) {
+            MarketableMaterial marketableMaterial = this.getMain().getMarkMan().getItem(itemStack);
+            if ((blocking && !marketableMaterials.contains(marketableMaterial)) || (!blocking && marketableMaterials.contains(marketableMaterial)) || (!blocking && marketableMaterials.size() == 0)) {
                 itemStackList.add(itemStack);
             }
         }
@@ -82,28 +84,27 @@ public class SellAll extends DivinityCommandMaterials {
         // Clone incase need to be refunded
         // Get valuation
         ItemStack[] itemStacks = itemStackList.toArray(new ItemStack[0]);
-        ItemStack[] itemStacksClone = PlayerInventoryManager.cloneItems(itemStacks);
-        MultiValueResponse response = this.getMain().getMaterialManager().getBulkSellValue(itemStacks);
+        ItemStack[] itemStacksClone = MarketableMaterial.cloneItems(itemStacks);
+        MultiValueResponse response = this.getMain().getMarkMan().getBulkSellValue(itemStacks);
 
         if (response.isSuccess()) {
-            PlayerInventoryManager.removePlayerItems(itemStacks);
+            PlayerManager.removePlayerItems(itemStacks);
 
-            EconomyResponse economyResponse = this.getMain().getEconomyManager().addCash(sender, response.getTotalValue());
+            EconomyResponse economyResponse = this.getMain().getEconMan().addCash(sender, response.getTotalValue());
             if (!economyResponse.transactionSuccess()) {
-                PlayerInventoryManager.addPlayerItems(sender, itemStacksClone);
+                PlayerManager.addPlayerItems(sender, itemStacksClone);
                 // Handles console, player message and mail
                 this.getMain().getConsole().logFailedSale(sender, response.getTotalQuantity(), "items", economyResponse.errorMessage);
-            }
-            else {
+            } else {
                 for (ItemStack itemStack : itemStacksClone) {
-                    this.getMain().getMaterialManager().editQuantity(this.getMain().getMaterialManager().getMaterialID(itemStack.getType().name()), response.quantities.get(itemStack.getType().name()));
+                    MarketableMaterial material = this.getMain().getMarkMan().getItem(itemStack);
+                    material.getManager().editQuantity(material, response.quantities.get(material.getID()));
                 }
 
                 // Handles console, player message and mail
                 this.getMain().getConsole().logSale(sender, response.getTotalQuantity(), response.getTotalValue(), "items");
             }
-        }
-        else {
+        } else {
             // Handles console, player message and mail
             this.getMain().getConsole().logFailedSale(sender, response.getTotalQuantity(), "items", response.errorMessage);
         }

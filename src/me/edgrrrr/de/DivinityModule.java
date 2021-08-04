@@ -3,43 +3,28 @@ package me.edgrrrr.de;
 import me.edgrrrr.de.config.ConfigManager;
 import me.edgrrrr.de.console.EconConsole;
 import me.edgrrrr.de.economy.EconomyManager;
-import me.edgrrrr.de.enchants.EnchantmentManager;
 import me.edgrrrr.de.help.HelpManager;
 import me.edgrrrr.de.mail.MailManager;
-import me.edgrrrr.de.materials.MaterialManager;
+import me.edgrrrr.de.market.items.enchants.EnchantManager;
+import me.edgrrrr.de.market.items.materials.MarketManager;
+import me.edgrrrr.de.market.items.materials.block.BlockManager;
+import me.edgrrrr.de.market.items.materials.entity.EntityManager;
+import me.edgrrrr.de.market.items.materials.potion.PotionManager;
 import me.edgrrrr.de.player.PlayerManager;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.ArrayDeque;
+import java.util.Queue;
+import java.util.logging.Logger;
 
 public abstract class DivinityModule {
+    private static final Logger logger = Logger.getLogger("Minecraft");
+    private static final Queue<DivinityModule> modules = new ArrayDeque<>();
+    private static final Queue<DivinityModule> initialisedModules = new ArrayDeque<>();
     private final DEPlugin main;
-    private static final List<DivinityModule> modules = new LinkedList<>();
-    private static final List<DivinityModule> initialisedModules = new LinkedList<>();
-
-    /**
-     * Runs the initialisation of all modules
-     */
-    public static void runInit() {
-        // Make sure to deinitialise before initialising.
-        DivinityModule.runDeinit();
-        for (DivinityModule module : DivinityModule.modules) {
-            module.init();
-            initialisedModules.add(module);
-        }
-    }
-
-    /**
-     * Runs the de-initialisation of all modules from the rear to the front
-     */
-    public static void runDeinit() {
-        for (int i = initialisedModules.size()-1; i > 0; i--) {
-            initialisedModules.remove(i).deinit();
-        }
-    }
 
     /**
      * Use init() to prevent NPE from getters.
+     *
      * @param main
      */
     public DivinityModule(DEPlugin main) {
@@ -50,6 +35,39 @@ public abstract class DivinityModule {
     public DivinityModule(DEPlugin main, boolean addInit) {
         this.main = main;
         if (addInit) DivinityModule.modules.add(this);
+    }
+
+    /**
+     * Runs the initialisation of all modules
+     */
+    public static void runInit() {
+        // Make sure to deinitialise before initialising.
+        if (initialisedModules.size() > 0) DivinityModule.runDeinit();
+
+        for (DivinityModule module : DivinityModule.modules) {
+            try {
+                module.init();
+                initialisedModules.add(module);
+            } catch (Exception e) {
+                logger.severe(String.format("Module '%s' failed to initialise: %s", module.getClass().getName(), e.getMessage()));
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * Runs the de-initialisation of all modules from the rear to the front
+     */
+    public static void runDeinit() {
+        while (!DivinityModule.initialisedModules.isEmpty()) {
+            DivinityModule module = initialisedModules.remove();
+            try {
+                module.deinit();
+            } catch (Exception e) {
+                logger.severe(String.format("Module '%s' failed to deinitialise: %s", module.getClass().getName(), e.getMessage()));
+                e.printStackTrace();
+            }
+        }
     }
 
     /**
@@ -65,50 +83,71 @@ public abstract class DivinityModule {
     /**
      * Returns the help manager
      */
-    public HelpManager getHelp() {
-        return this.getMain().getHelpManager();
+    public HelpManager getHelpMan() {
+        return this.getMain().getHelpMan();
     }
 
     /**
      * Returns the material manager
      */
-    public EnchantmentManager getEnchant() {
-        return this.getMain().getEnchantmentManager();
+    public EnchantManager getEnchMan() {
+        return this.getMain().getEnchMan();
     }
 
     /**
      * Returns the material manager
      */
-    public MaterialManager getMaterial() {
-        return this.getMain().getMaterialManager();
+    public BlockManager getMatMan() {
+        return this.getMain().getMatMan();
+    }
+
+    /**
+     * Returns the potion manager
+     */
+    public PotionManager getPotMan() {
+        return this.getMain().getPotMan();
+    }
+
+    /**
+     * Returns the entity manager
+     */
+    public EntityManager getEntMan() {
+        return this.getMain().getEntMan();
+    }
+
+    /**
+     * Returns the market manager
+     */
+    public MarketManager getMarkMan() {
+        return this.getMain().getMarkMan();
     }
 
     /**
      * Returns the config manager
      */
-    public ConfigManager getConfig() {
-        return this.getMain().getConfigManager();
+    public ConfigManager getConfMan() {
+        return this.getMain().getConfMan();
     }
 
     /**
      * Returns the economy manager
      */
-    public EconomyManager getEconomy() {
-        return this.getMain().getEconomyManager();
+    public EconomyManager getEconMan() {
+        return this.getMain().getEconMan();
     }
 
     /**
      * Returns the mail manager
      */
-    public MailManager getMail() {
-        return this.getMain().getMailManager();
+    public MailManager getMailMan() {
+        return this.getMain().getMailMan();
     }
 
     /**
      * Returns the player manager
      */
-    public PlayerManager getPlayer() {
-        return this.getMain().getPlayerManager();
+    public PlayerManager getPlayMan() {
+        return this.getMain().getPlayMan();
     }
 
     /**

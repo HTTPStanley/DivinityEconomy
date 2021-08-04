@@ -3,13 +3,9 @@ package me.edgrrrr.de.commands.market;
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.commands.DivinityCommandMaterialsTC;
 import me.edgrrrr.de.config.Setting;
-import me.edgrrrr.de.materials.MaterialData;
-import me.edgrrrr.de.math.Math;
-import me.edgrrrr.de.player.PlayerInventoryManager;
-import org.bukkit.Material;
+import me.edgrrrr.de.market.items.materials.block.MarketableBlock;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -37,7 +33,7 @@ public class SellAllTC extends DivinityCommandMaterialsTC {
     @Override
     public List<String> onPlayerTabCompleter(Player sender, String[] args) {
         String[] strings;
-        MaterialData materialData;
+        MarketableBlock materialData;
         switch (args.length) {
             // 1 args
             // return items in user inventory

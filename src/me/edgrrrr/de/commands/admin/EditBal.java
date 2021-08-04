@@ -47,7 +47,7 @@ public class EditBal extends DivinityCommand {
 
             case 2:
                 // use case #2
-                receiver = this.getMain().getPlayerManager().getOfflinePlayer(args[0], false);
+                receiver = this.getMain().getPlayMan().getOfflinePlayer(args[0], false);
                 amount = Math.getDouble(args[1]);
                 break;
 
@@ -66,11 +66,11 @@ public class EditBal extends DivinityCommand {
 
         // Edit cash
         EconomyResponse response;
-        double startingBalance = this.getMain().getEconomyManager().getBalance(receiver);
+        double startingBalance = this.getMain().getEconMan().getBalance(receiver);
         if (amount > 0) {
-            response = this.getMain().getEconomyManager().addCash(receiver, amount);
+            response = this.getMain().getEconMan().addCash(receiver, amount);
         } else {
-            response = this.getMain().getEconomyManager().remCash(receiver, -amount);
+            response = this.getMain().getEconMan().remCash(receiver, -amount);
         }
 
         // Handles sender, receiver, message, mail and console log
@@ -102,7 +102,7 @@ public class EditBal extends DivinityCommand {
         switch (args.length) {
             case 2:
                 // use case #2
-                receiver = this.getMain().getPlayerManager().getOfflinePlayer(args[0], false);
+                receiver = this.getMain().getPlayMan().getOfflinePlayer(args[0], false);
                 amount = Math.getDouble(args[1]);
                 break;
 
@@ -121,11 +121,11 @@ public class EditBal extends DivinityCommand {
 
         // Edit cash
         EconomyResponse response;
-        double startingBalance = this.getMain().getEconomyManager().getBalance(receiver);
+        double startingBalance = this.getMain().getEconMan().getBalance(receiver);
         if (amount > 0) {
-            response = this.getMain().getEconomyManager().addCash(receiver, amount);
+            response = this.getMain().getEconMan().addCash(receiver, amount);
         } else {
-            response = this.getMain().getEconomyManager().remCash(receiver, -amount);
+            response = this.getMain().getEconMan().remCash(receiver, -amount);
         }
 
         // Handles sender, receiver, message, mail and console log

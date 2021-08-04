@@ -20,7 +20,7 @@ public class MailEvent implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        MailList mailList = this.app.getMailManager().getMailList(player.getUniqueId().toString());
+        MailList mailList = this.app.getMailMan().getMailList(player.getUniqueId().toString());
         if (mailList.hasMail()) {
             this.app.getConsole().info(player, "You have %s previously read and %s unread mail", mailList.getReadMail().size(), mailList.getUnreadMail().size());
         } else {

@@ -1,11 +1,10 @@
 package me.edgrrrr.de.mail;
 
+import me.edgrrrr.de.utils.ArrayUtils;
 import org.bukkit.configuration.ConfigurationSection;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class MailList {
     // Variables for the dictionary keys
@@ -16,7 +15,7 @@ public class MailList {
     public final String strSource = "source";
     public final String strRead = "read";
     // Where the mail is stored
-    private final HashMap<String, Mail> mail;
+    private final Map<String, Mail> mail;
     private final ConfigurationSection configurationSection;
     // The player this mail list belongs to
     private final String playerUUID;
@@ -27,7 +26,7 @@ public class MailList {
     public MailList(String UUID, ConfigurationSection configurationSection) {
         this.playerUUID = UUID;
         this.configurationSection = configurationSection;
-        this.mail = new HashMap<>();
+        this.mail = new ConcurrentHashMap<>();
 
         for (String mailID : this.configurationSection.getKeys(false)) {
             ConfigurationSection mailSection = this.configurationSection.getConfigurationSection(mailID);
@@ -40,29 +39,14 @@ public class MailList {
      * Returns "pages" of mail.
      *
      * @param pageSize - The size of each page.
-     * @return HashMap<Integer, Mail []> - Pages of mail.
+     * @return HashMap<Integer, Mail [ ]> - Pages of mail.
      */
-    public HashMap<Integer, Mail[]> getPages(int pageSize) {
-        HashMap<Integer, Mail[]> pages = new HashMap<>();
+    public Map<Integer, Mail[]> getPages(int pageSize) {
         Mail[] allMail = this.getAllMail().values().toArray(new Mail[0]);
-
-        int pageNum = 0;
-        ArrayList<Mail> page = new ArrayList<>();
-        for (Mail value : allMail) {
-            if (page.size() == pageSize) {
-                pages.put(pageNum, page.toArray(new Mail[0]));
-                pageNum += 1;
-                page = new ArrayList<>();
-            }
-
-            page.add(value);
-        }
-
-        if (!pages.containsKey(pageNum)) {
-            pages.put(pageNum, page.toArray(new Mail[0]));
-        }
-
-        return pages;
+        Map<Integer, List<Object>> toPages = ArrayUtils.toPages(allMail, pageSize);
+        Map<Integer, Mail[]> mailPages = new ConcurrentHashMap<>();
+        toPages.keySet().forEach(integer -> mailPages.put(integer, (Mail[]) toPages.get(integer).toArray()));
+        return mailPages;
     }
 
     /**
@@ -122,7 +106,7 @@ public class MailList {
      *
      * @return HashMap<String, Mail> - The internal mail storage
      */
-    public HashMap<String, Mail> getAllMail() {
+    public Map<String, Mail> getAllMail() {
         return this.mail;
     }
 

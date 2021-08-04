@@ -4,15 +4,16 @@ import org.bukkit.configuration.ConfigurationSection;
 
 import java.time.Duration;
 import java.util.Calendar;
-import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * A class representing ingame mail.
  * Message variables:
- *  <daysAgo> - The days since event
- *  <hoursAgo> - The hours since the event
- *  <minsAgo> - The minutes since the event
- *  <aptime> - The appropriate time since the event
+ * <daysAgo> - The days since event
+ * <hoursAgo> - The hours since the event
+ * <minsAgo> - The minutes since the event
+ * <aptime> - The appropriate time since the event
  */
 public class Mail {
     private final MailList mailList;
@@ -52,7 +53,7 @@ public class Mail {
         message = message.replace("<daysAgo>", String.valueOf(this.getDaysSince()));
         message = message.replace("<hoursAgo>", String.valueOf(this.getHoursSince()));
         message = message.replace("<minsAgo>", String.valueOf(this.getMinutesSince()));
-        HashMap<String, Object> aptime = this.getApTimeSince();
+        Map<String, Object> aptime = this.getApTimeSince();
         message = message.replace("<aptime>", String.format("%s %s ago", aptime.get("value"), aptime.get("type")));
         return message;
     }
@@ -89,26 +90,33 @@ public class Mail {
 
     /**
      * Returns the number of hours between the creation date and now
+     *
      * @return int
      */
-    public int getHoursSince(){return (int) this.getTimeSince().toHours();}
+    public int getHoursSince() {
+        return (int) this.getTimeSince().toHours();
+    }
 
     /**
      * Returns the number of minutes between the creation date and now
+     *
      * @return int
      */
-    public int getMinutesSince(){return (int) this.getTimeSince().toMinutes();}
+    public int getMinutesSince() {
+        return (int) this.getTimeSince().toMinutes();
+    }
 
     /**
      * Returns the appropriate time since the creation date.
+     *
      * @return String, Integer - The type, the value
      */
-    public HashMap<String, Object> getApTimeSince(){
+    public Map<String, Object> getApTimeSince() {
         int days = this.getDaysSince();
         int hours = this.getHoursSince();
         int minutes = this.getMinutesSince();
 
-        HashMap<String, Object> result = new HashMap<>();
+        Map<String, Object> result = new ConcurrentHashMap<>();
 
         if (minutes <= 120) {
             result.put("value", minutes);

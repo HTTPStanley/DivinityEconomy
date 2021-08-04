@@ -47,7 +47,7 @@ public class BalanceTC extends DivinityCommandTC {
             // 1 args
             // return names of players starting with arg
             case 1:
-                playerNames = this.getMain().getPlayerManager().getOfflinePlayerNames(args[0]);
+                playerNames = this.getMain().getPlayMan().getOfflinePlayerNames(args[0]);
                 break;
 
             default:

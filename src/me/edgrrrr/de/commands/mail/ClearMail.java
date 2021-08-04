@@ -8,7 +8,7 @@ import me.edgrrrr.de.mail.MailList;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A command for clearing mail
@@ -63,8 +63,8 @@ public class ClearMail extends DivinityCommand {
                 return true;
         }
 
-        MailList mailList = this.getMain().getMailManager().getMailList(sender.getUniqueId().toString());
-        HashMap<String, Mail> allMail = mailList.getAllMail();
+        MailList mailList = this.getMain().getMailMan().getMailList(sender.getUniqueId().toString());
+        Map<String, Mail> allMail = mailList.getAllMail();
         ArrayList<String> readMail = mailList.getReadMail();
         ArrayList<String> unreadMail = mailList.getUnreadMail();
         ArrayList<String> mailToClear = new ArrayList<>();

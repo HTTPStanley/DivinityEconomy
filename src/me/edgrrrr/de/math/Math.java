@@ -15,16 +15,6 @@ public class Math {
     }
 
     /**
-     * Calculates the number of ticks from the milliseconds provided
-     *
-     * @param milliseconds - The number of milliseconds
-     * @return int - Ticks
-     */
-    public static int getTicks(long milliseconds) {
-        return getTicks((int) milliseconds / 1000);
-    }
-
-    /**
      * A function for extracting a double from a String
      * will return null if an error occurs (such as the string not containing a double)
      *
@@ -54,8 +44,9 @@ public class Math {
     /**
      * Gets the level of inflation based on the parameters supplied
      * Just returns getScale(default, actual)
-     * @param defaultMarketSize   - The base quantity of materials in the market
-     * @param actualMarketSize - The actual current quantity of materials in the market
+     *
+     * @param defaultMarketSize - The base quantity of materials in the market
+     * @param actualMarketSize  - The actual current quantity of materials in the market
      * @return double - The level of inflation
      */
     public static double getInflation(double defaultMarketSize, double actualMarketSize) {
@@ -64,13 +55,14 @@ public class Math {
 
     /**
      * Calculates the price of an amount of items
-     * @param baseQuantity - The base quantity of the item
-     * @param currentQuantity - The current quantity of the item
+     *
+     * @param baseQuantity      - The base quantity of the item
+     * @param currentQuantity   - The current quantity of the item
      * @param defaultMarketSize - The default market size
-     * @param marketSize - The current market size
-     * @param amount - The amount of the item to buy
-     * @param scale - The price scaling (e.g. tax)
-     * @param purchase - Whether this is a purchase or a sale.
+     * @param marketSize        - The current market size
+     * @param amount            - The amount of the item to buy
+     * @param scale             - The price scaling (e.g. tax)
+     * @param purchase          - Whether this is a purchase or a sale.
      * @return double
      */
     public static double calculatePrice(double baseQuantity, double currentQuantity, double defaultMarketSize, double marketSize, double amount, double scale, boolean purchase, boolean dynamic, boolean marketInflation) {
@@ -83,19 +75,22 @@ public class Math {
         // remove 1 stock to simulate decrease
         // if purchase = false
         // add 1 stock to simulate increase
-        for (int i = 1; i <= amount; i++) {
+        for (int i = 0; i < amount; i++) {
             if (marketInflation) {
                 inflation = getInflation(defaultMarketSize, marketSize);
             }
+
             if (purchase) {
                 value += getPrice(baseQuantity, currentQuantity, scale, inflation);
                 if (dynamic) currentQuantity -= 1;
                 if (marketInflation) marketSize -= 1;
+
             } else {
-                value += getPrice(baseQuantity, currentQuantity+1, scale, inflation);
+                value += getPrice(baseQuantity, currentQuantity + 1, scale, inflation);
                 if (dynamic) currentQuantity += 1;
                 if (marketInflation) marketSize += 1;
             }
+
         }
 
         return value;
@@ -103,14 +98,15 @@ public class Math {
 
     /**
      * Gets the price of a product based on the parameters supplied
-     * @param baseQuantity - The base quantity of items in the market
+     *
+     * @param baseQuantity    - The base quantity of items in the market
      * @param currentQuantity - The current quantity of items in the market
-     * @param scale - The scaling to apply to the price
-     * @param inflation - The inflation of the market
+     * @param scale           - The scaling to apply to the price
+     * @param inflation       - The inflation of the market
      * @return double
      */
     public static double getPrice(double baseQuantity, double currentQuantity, double scale, double inflation) {
-        if (currentQuantity == 0) currentQuantity+=1;
+        if (currentQuantity == 0) currentQuantity += 1;
 
         return Math.getRawPrice(baseQuantity, currentQuantity).multiply(
                 BigDecimal.valueOf(scale).setScale(8, RoundingMode.HALF_DOWN)
@@ -136,7 +132,8 @@ public class Math {
     /**
      * Returns the scale of a number compared to it's base value
      * base / current
-     * @param baseQuantity - The base quantity of items
+     *
+     * @param baseQuantity    - The base quantity of items
      * @param currentQuantity - The current quantity of items
      * @return double
      */

@@ -3,9 +3,8 @@ package me.edgrrrr.de.commands.market;
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.commands.DivinityCommandMaterials;
 import me.edgrrrr.de.config.Setting;
-import me.edgrrrr.de.materials.MaterialData;
-import me.edgrrrr.de.materials.MaterialPotionData;
-import me.edgrrrr.de.player.PlayerInventoryManager;
+import me.edgrrrr.de.market.items.materials.MarketableMaterial;
+import me.edgrrrr.de.player.PlayerManager;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -42,24 +41,15 @@ public class HandInfo extends DivinityCommandMaterials {
                 return true;
         }
 
-        ItemStack heldItem = PlayerInventoryManager.getHeldItemNotNull(sender);
+        ItemStack heldItem = PlayerManager.getHeldItem(sender, new ItemStack(Material.AIR, 0));
         Material material = heldItem.getType();
-        MaterialData materialData = this.getMain().getMaterialManager().getMaterial(material.name());
+        MarketableMaterial marketableMaterial = this.getMain().getMarkMan().getItem(material.name());
 
-        this.getMain().getConsole().info(sender, "==[Information for " + materialData.getCleanName() + "]==");
-        this.getMain().getConsole().info(sender, "ID: " + materialData.getMaterialID());
-        this.getMain().getConsole().info(sender, "Type: " + materialData.getType());
-        this.getMain().getConsole().info(sender, "Current Quantity: " + materialData.getQuantity());
-        this.getMain().getConsole().info(sender, "Is Banned: " + !(materialData.getAllowed()));
-        if (materialData.getEntityName() != null)
-            this.getMain().getConsole().info(sender, "Entity Name: " + materialData.getEntityName());
-        MaterialPotionData pData = materialData.getPotionData();
-        if (pData != null) {
-            this.getMain().getConsole().info(sender, "Potion type: " + pData.getType());
-            this.getMain().getConsole().info(sender, "Upgraded potion: " + pData.getUpgraded());
-            this.getMain().getConsole().info(sender, "Extended potion: " + pData.getExtended());
-        }
-
+        this.getMain().getConsole().info(sender, "==[Information for " + marketableMaterial.getCleanName() + "]==");
+        this.getMain().getConsole().info(sender, "TYPE: " + marketableMaterial.getManager().getType());
+        this.getMain().getConsole().info(sender, "ID: " + marketableMaterial.getID());
+        this.getMain().getConsole().info(sender, "Current Quantity: " + marketableMaterial.getQuantity());
+        this.getMain().getConsole().info(sender, "Is Banned: " + !(marketableMaterial.getAllowed()));
         return true;
     }
 

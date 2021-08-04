@@ -3,12 +3,11 @@ package me.edgrrrr.de.commands.market;
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.commands.DivinityCommandMaterials;
 import me.edgrrrr.de.config.Setting;
-import me.edgrrrr.de.materials.MaterialData;
+import me.edgrrrr.de.market.items.materials.MarketableMaterial;
 import me.edgrrrr.de.math.Math;
-import me.edgrrrr.de.player.PlayerInventoryManager;
+import me.edgrrrr.de.player.PlayerManager;
 import me.edgrrrr.de.response.ValueResponse;
 import net.milkbowl.vault.economy.EconomyResponse;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -64,7 +63,7 @@ public class HandSell extends DivinityCommandMaterials {
         }
 
 
-        ItemStack heldItem = PlayerInventoryManager.getHeldItem(sender);
+        ItemStack heldItem = PlayerManager.getHeldItem(sender);
 
         // Ensure item held is not null
         if (heldItem == null) {
@@ -72,10 +71,8 @@ public class HandSell extends DivinityCommandMaterials {
             return true;
         }
 
-        Material material = heldItem.getType();
-        String materialName = material.name();
-        MaterialData materialData = this.getMain().getMaterialManager().getMaterial(materialName);
-        int materialCount = PlayerInventoryManager.getMaterialCount(PlayerInventoryManager.getMaterialSlots(sender, material));
+        MarketableMaterial marketableMaterial = this.getMain().getMarkMan().getItem(heldItem);
+        int materialCount = marketableMaterial.getMaterialCount(sender);
 
         if (sellAll) {
             amountToSell = materialCount;
@@ -83,37 +80,33 @@ public class HandSell extends DivinityCommandMaterials {
 
         // Ensure player inventory has enough
         if (materialCount < amountToSell) {
-            this.getMain().getConsole().logFailedSale(sender, amountToSell, materialData.getCleanName(), String.format(CommandResponse.InvalidInventoryStock.message, materialCount, amountToSell));
+            this.getMain().getConsole().logFailedSale(sender, amountToSell, marketableMaterial.getCleanName(), String.format(CommandResponse.InvalidInventoryStock.message, materialCount, amountToSell));
             return true;
         }
 
         // Get item stacks to remove
-        // Clone item stacks incase they need to be refunded
+        // Clone item stacks in case they need to be refunded
         // Get the value
-        ItemStack[] itemStacks = PlayerInventoryManager.getMaterialSlotsToCount(sender, material, amountToSell);
-        ItemStack[] itemStacksClone = PlayerInventoryManager.cloneItems(itemStacks);
-        ValueResponse response = this.getMain().getMaterialManager().getSellValue(itemStacks);
+        ItemStack[] itemStacks = marketableMaterial.getMaterialSlotsToCount(sender, amountToSell);
+        ItemStack[] itemStacksClone = MarketableMaterial.cloneItems(itemStacks);
+        ValueResponse response = marketableMaterial.getManager().getSellValue(itemStacks);
 
         if (response.isSuccess()) {
-            PlayerInventoryManager.removePlayerItems(itemStacks);
+            PlayerManager.removePlayerItems(itemStacks);
 
-            EconomyResponse economyResponse = this.getMain().getEconomyManager().addCash(sender, response.value);
+            EconomyResponse economyResponse = this.getMain().getEconMan().addCash(sender, response.value);
             if (!economyResponse.transactionSuccess()) {
-                PlayerInventoryManager.addPlayerItems(sender, itemStacksClone);
+                PlayerManager.addPlayerItems(sender, itemStacksClone);
                 // Handles console, player message and mail
-                this.getMain().getConsole().logFailedSale(sender, amountToSell, materialData.getCleanName(), economyResponse.errorMessage);
-            }
-
-            else {
-                this.getMain().getMaterialManager().editQuantity(materialData, amountToSell);
+                this.getMain().getConsole().logFailedSale(sender, amountToSell, marketableMaterial.getCleanName(), economyResponse.errorMessage);
+            } else {
+                marketableMaterial.getManager().editQuantity(marketableMaterial, amountToSell);
                 // Handles console, player message and mail
-                this.getMain().getConsole().logSale(sender, amountToSell, response.value, materialData.getCleanName());
+                this.getMain().getConsole().logSale(sender, amountToSell, response.value, marketableMaterial.getCleanName());
             }
-        }
-
-        else {
+        } else {
             // Handles console, player message and mail
-            this.getMain().getConsole().logFailedSale(sender, amountToSell, materialData.getCleanName(), response.errorMessage);
+            this.getMain().getConsole().logFailedSale(sender, amountToSell, marketableMaterial.getCleanName(), response.errorMessage);
         }
         return true;
     }

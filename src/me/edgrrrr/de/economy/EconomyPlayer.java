@@ -10,17 +10,34 @@ import java.math.RoundingMode;
 import java.util.UUID;
 
 public class EconomyPlayer {
+    private static final BigDecimal MAX_DOUBLE = new BigDecimal(String.valueOf(Double.MAX_VALUE));
+    private static final int DECIMAL_SCALE = Double.MAX_EXPONENT;
     private final OfflinePlayer offlinePlayer;
     private final File file;
     private final FileConfiguration playerConfig;
-
-    private static final BigDecimal MAX_DOUBLE = new BigDecimal(String.valueOf(Double.MAX_VALUE));
-    private static final int DECIMAL_SCALE = Double.MAX_EXPONENT;
 
     public EconomyPlayer(OfflinePlayer offlinePlayer, File file, FileConfiguration playerConfig) {
         this.offlinePlayer = offlinePlayer;
         this.file = file;
         this.playerConfig = playerConfig;
+    }
+
+    public static boolean canHave(BigDecimal balance, double amount) {
+        return balance.add(BigDecimal.valueOf(amount)).compareTo(EconomyPlayer.MAX_DOUBLE) < 0;
+    }
+
+    public static String getFilename(OfflinePlayer offlinePlayer) {
+        return String.format("%s.yml", offlinePlayer.getUniqueId().toString().toLowerCase());
+    }
+
+    public static EconomyPlayer create(OfflinePlayer offlinePlayer, File file, FileConfiguration fileConf, double balance) {
+        EconomyPlayer economyPlayer = new EconomyPlayer(offlinePlayer, file, fileConf);
+        economyPlayer.set(EconomyFileKeys.BALANCE, BigDecimal.valueOf(balance).toString());
+        economyPlayer.set(EconomyFileKeys.UUID, offlinePlayer.getUniqueId().toString());
+        economyPlayer.set(EconomyFileKeys.NAME, offlinePlayer.getName());
+        economyPlayer.save();
+
+        return economyPlayer;
     }
 
     public boolean isLegal() {
@@ -31,8 +48,16 @@ public class EconomyPlayer {
         return this._getBalance().doubleValue();
     }
 
+    public void setBalance(double balance) {
+        this.set(EconomyFileKeys.BALANCE, BigDecimal.valueOf(balance).toString());
+    }
+
+    public void setBalance(BigDecimal balance) {
+        this.set(EconomyFileKeys.BALANCE, this.scale(balance).toString());
+    }
+
     public BigDecimal scale(BigDecimal value) {
-        return value.setScale(EconomyPlayer.DECIMAL_SCALE-1, RoundingMode.DOWN).setScale(EconomyPlayer.DECIMAL_SCALE, RoundingMode.DOWN);
+        return value.setScale(EconomyPlayer.DECIMAL_SCALE - 1, RoundingMode.DOWN).setScale(EconomyPlayer.DECIMAL_SCALE, RoundingMode.DOWN);
     }
 
     public BigDecimal scale(double value) {
@@ -69,20 +94,8 @@ public class EconomyPlayer {
         return EconomyPlayer.canHave(this._getBalance(), amount);
     }
 
-    public static boolean canHave(BigDecimal balance, double amount) {
-        return balance.add(BigDecimal.valueOf(amount)).compareTo(EconomyPlayer.MAX_DOUBLE) < 0;
-    }
-
     public void update() {
         this.setName(this.offlinePlayer.getName());
-    }
-
-    public void setBalance(double balance) {
-        this.set(EconomyFileKeys.BALANCE, BigDecimal.valueOf(balance).toString());
-    }
-
-    public void setBalance(BigDecimal balance) {
-        this.set(EconomyFileKeys.BALANCE, this.scale(balance).toString());
     }
 
     public String getLastKnownName() {
@@ -124,19 +137,5 @@ public class EconomyPlayer {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public static String getFilename(OfflinePlayer offlinePlayer) {
-        return String.format("%s.yml", offlinePlayer.getUniqueId().toString().toLowerCase());
-    }
-
-    public static EconomyPlayer create(OfflinePlayer offlinePlayer, File file, FileConfiguration fileConf, double balance) {
-        EconomyPlayer economyPlayer = new EconomyPlayer(offlinePlayer, file, fileConf);
-        economyPlayer.set(EconomyFileKeys.BALANCE, BigDecimal.valueOf(balance).toString());
-        economyPlayer.set(EconomyFileKeys.UUID, offlinePlayer.getUniqueId().toString());
-        economyPlayer.set(EconomyFileKeys.NAME, offlinePlayer.getName());
-        economyPlayer.save();
-
-        return economyPlayer;
     }
 }

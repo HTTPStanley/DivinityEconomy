@@ -1,7 +1,7 @@
 package me.edgrrrr.de.help;
 
-import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 public class Help {
     private final String command;
@@ -16,6 +16,14 @@ public class Help {
         this.aliases = aliases;
         this.permissionNode = permissionNode;
         this.usages = usages;
+    }
+
+    public static Help fromConfig(String command, Map<String, Object> commandSection) {
+        String description = (String) commandSection.get("description");
+        String[] aliases = Stream.of(commandSection.get("aliases")).map(Object::toString).toArray(String[]::new);
+        String permissionNode = (String) commandSection.get("permission");
+        String[] usages = ((String) commandSection.get("usage")).split("\\|");
+        return new Help(command, description, aliases, permissionNode, usages);
     }
 
     public String getCommand() {
@@ -38,19 +46,10 @@ public class Help {
         return usages;
     }
 
-    public static Help fromConfig(String command, Map<String, Object> commandSection) {
-        String description = (String) commandSection.get("description");
-        // Unchecked but works.
-        String[] aliases = ((List<String>) commandSection.get("aliases")).toArray(new String[0]);
-        String permissionNode = (String) commandSection.get("permission");
-        String[] usages = ((String) commandSection.get("usage")).split("\\|");
-        return new Help(command, description, aliases, permissionNode, usages);
-    }
-
     public String getDescription(int length) {
         StringBuilder stringBuilder = new StringBuilder();
         char[] chars = this.description.toCharArray();
-        for (int idx=0; idx < length && idx < chars.length; idx++) {
+        for (int idx = 0; idx < length && idx < chars.length; idx++) {
             stringBuilder.append(chars[idx]);
         }
 

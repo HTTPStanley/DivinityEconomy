@@ -3,7 +3,7 @@ package me.edgrrrr.de.commands.admin;
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.commands.DivinityCommand;
 import me.edgrrrr.de.config.Setting;
-import me.edgrrrr.de.enchants.EnchantData;
+import me.edgrrrr.de.market.items.enchants.MarketableEnchant;
 import me.edgrrrr.de.math.Math;
 import org.bukkit.entity.Player;
 
@@ -30,11 +30,11 @@ public class ESetStock extends DivinityCommand {
      */
     @Override
     public boolean onPlayerCommand(Player sender, String[] args) {
-        EnchantData enchantData = null;
-        int stock = -1;
+        MarketableEnchant enchantData;
+        int stock;
         switch (args.length) {
             case 2:
-                enchantData = this.getMain().getEnchantmentManager().getEnchant(args[0]);
+                enchantData = this.getMain().getEnchMan().getEnchant(args[0]);
                 stock = Math.getInt(args[1]);
                 break;
 
@@ -57,9 +57,9 @@ public class ESetStock extends DivinityCommand {
 
 
         int previousStock = enchantData.getQuantity();
-        double previousValue = this.getMain().getEnchantmentManager().getUserPrice(enchantData.getQuantity());
-        this.getMain().getEnchantmentManager().setQuantity(enchantData, stock);
-        this.getMain().getConsole().send(sender, CommandResponse.StockCountChanged.defaultLogLevel, CommandResponse.StockCountChanged.message, previousStock, this.getMain().getConsole().formatMoney(previousValue), stock, this.getMain().getConsole().formatMoney(this.getMain().getEnchantmentManager().getUserPrice(enchantData.getQuantity())));
+        double previousValue = this.getMain().getEnchMan().getBuyPrice(enchantData.getQuantity());
+        this.getMain().getEnchMan().setQuantity(enchantData, stock);
+        this.getMain().getConsole().send(sender, CommandResponse.StockCountChanged.defaultLogLevel, CommandResponse.StockCountChanged.message, previousStock, this.getMain().getConsole().formatMoney(previousValue), stock, this.getMain().getConsole().formatMoney(this.getMain().getEnchMan().getBuyPrice(enchantData.getQuantity())));
 
         return true;
     }

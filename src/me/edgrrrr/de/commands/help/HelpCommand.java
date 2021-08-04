@@ -35,14 +35,14 @@ public class HelpCommand extends DivinityCommand {
         Help help = null;
         int pageNumber = -1;
 
-        switch(args.length) {
+        switch (args.length) {
             case 0:
                 pageNumber = 0;
                 break;
 
             case 1:
                 pageNumber = Math.getInt(args[0]);
-                help =  this.getMain().getHelpManager().get(args[0]);
+                help = this.getMain().getHelpMan().get(args[0]);
                 break;
 
             default:
@@ -50,16 +50,16 @@ public class HelpCommand extends DivinityCommand {
                 break;
         }
 
-        Map<Integer, Help[]> helpPages = this.getMain().getHelpManager().getPages(8);
-        if (help == null && !helpPages.containsKey(pageNumber-1)) {
+        Map<Integer, Help[]> helpPages = this.getMain().getHelpMan().getPages(8);
+        if (help == null && !helpPages.containsKey(pageNumber - 1)) {
             this.getMain().getConsole().usage(sender, "invalid command or page number", this.help.getUsages());
 
         } else {
             int maxLength = 30;
             String string;
-            if (helpPages.containsKey(pageNumber-1)) {
+            if (helpPages.containsKey(pageNumber - 1)) {
                 this.getMain().getConsole().info(sender, "Help page %s/%s", pageNumber, helpPages.size());
-                for (Help helpCom : helpPages.get(pageNumber-1)) {
+                for (Help helpCom : helpPages.get(pageNumber - 1)) {
                     this.getMain().getConsole().info(sender, "%s: %s...", helpCom.getCommand(), helpCom.getDescription(20));
                 }
 

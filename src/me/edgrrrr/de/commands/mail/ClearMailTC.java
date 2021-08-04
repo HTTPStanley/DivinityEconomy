@@ -36,7 +36,7 @@ public class ClearMailTC extends DivinityCommandTC {
             // 1 arg
             // return list of page numbers
             case 1:
-                strings = new String[] {
+                strings = new String[]{
                         "read", "unread", "all"
                 };
                 break;

@@ -28,7 +28,9 @@ public class SaveMaterials extends DivinityCommand {
      */
     @Override
     public boolean onPlayerCommand(Player sender, String[] args) {
-        this.getMain().getMaterialManager().saveMaterials();
+        this.getMain().getMatMan().saveItems();
+        this.getMain().getPotMan().saveItems();
+        this.getMain().getEntMan().saveItems();
         return true;
     }
 

@@ -1,5 +1,5 @@
 main:
-  version: 1.11.117
+  version: 1.17
 
 chat:
   chatDebug: false
@@ -16,14 +16,14 @@ chat:
 
 messageIgnore:
   ignoreAliasErrors: false
-  ignoreMaterialErrors: false
-  ignoreEnchantErrors: false
+  ignoreItemErrors: false
   ignoreCommandRegistry: true
 
 economy:
   minAccountBalance: 0.0
   minSendAmount: 0.01
   preferredProvider: 'DivinityEconomy'
+  baltopRefreshTimer: 300
 
 market:
   saveTimer: 600
@@ -35,6 +35,7 @@ market:
     sellScale: 1.0
     wholeMarketInflation: false
     dynamicPricing: true
+    allowUnsafeEnchants: false
 
   materials:
     enable: true
@@ -59,10 +60,12 @@ commands:
     eSetValue: true
     saveMaterials: true
     saveEnchants: true
+    reload: true
 
   economy:
     balance: true
     sendCash: true
+    baltop: true
 
   enchant:
     eBuy: true
@@ -85,6 +88,7 @@ commands:
     sell: true
     value: true
     sellall: true
+    listitems: true
 
   misc:
     ping: true

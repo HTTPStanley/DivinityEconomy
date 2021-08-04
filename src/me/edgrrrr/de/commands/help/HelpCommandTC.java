@@ -34,10 +34,10 @@ public class HelpCommandTC extends DivinityCommandTC {
         switch (args.length) {
             case 1:
                 ArrayList<String> allStrings = new ArrayList<>();
-                for (Integer i : this.getMain().getHelpManager().getPages(8).keySet()) {
-                    allStrings.add(String.valueOf(i+1));
+                for (Integer i : this.getMain().getHelpMan().getPages(8).keySet()) {
+                    allStrings.add(String.valueOf(i + 1));
                 }
-                allStrings.addAll(Arrays.asList(this.getMain().getHelpManager().getAllNames(args[0])));
+                allStrings.addAll(Arrays.asList(this.getMain().getHelpMan().getAllNames(args[0])));
                 strings = allStrings.toArray(new String[0]);
                 break;
 

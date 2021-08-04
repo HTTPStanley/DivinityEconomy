@@ -2,32 +2,53 @@ package me.edgrrrr.de.response;
 
 import net.milkbowl.vault.economy.EconomyResponse;
 
-import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * A multiple value response
  */
 public class MultiValueResponse extends Response {
-    public final HashMap<String, Double> values;
-    public final HashMap<String, Integer> quantities;
+    public final Map<String, Double> values;
+    public final Map<String, Integer> quantities;
 
 
     /**
      * Constructor
+     *
      * @param values       - A HashMap<String, Double> for storing ItemIds and their individual values.
      * @param quantities   - A HashMap<String, Integer> for storing ItemIds and their individual quantities.
      * @param responseType - The type of response
      * @param errorMessage - The error, if any.
      */
-    public MultiValueResponse(HashMap<String, Double> values, HashMap<String, Integer> quantities, EconomyResponse.ResponseType responseType, String errorMessage) {
+    public MultiValueResponse(Map<String, Double> values, Map<String, Integer> quantities, EconomyResponse.ResponseType responseType, String errorMessage) {
         super(responseType, errorMessage);
         this.values = values;
         this.quantities = quantities;
     }
 
     /**
+     * A method for creating a hashmap with the necessary data types for the values
+     *
+     * @return HashMap<String, Double>
+     */
+    public static Map<String, Double> createValues() {
+        return new ConcurrentHashMap<>();
+    }
+
+    /**
+     * A method for creating a hashmap with the necessary data types for the quantities
+     *
+     * @return HashMap<String, Integer>
+     */
+    public static Map<String, Integer> createQuantities() {
+        return new ConcurrentHashMap<>();
+    }
+
+    /**
      * Returns the sum of all values
+     *
      * @return double
      */
     public double getTotalValue() {
@@ -40,6 +61,7 @@ public class MultiValueResponse extends Response {
 
     /**
      * Returns the sum of all quantities
+     *
      * @return int
      */
     public int getTotalQuantity() {
@@ -51,23 +73,8 @@ public class MultiValueResponse extends Response {
     }
 
     /**
-     * A method for creating a hashmap with the necessary data types for the values
-     * @return HashMap<String, Double>
-     */
-    public static HashMap<String, Double> createValues() {
-        return new HashMap<>();
-    }
-
-    /**
-     * A method for creating a hashmap with the necessary data types for the quantities
-     * @return HashMap<String, Integer>
-     */
-    public static HashMap<String, Integer> createQuantities() {
-        return new HashMap<>();
-    }
-
-    /**
      * A method for returning the Set of item id's
+     *
      * @return Set<String>
      */
     public Set<String> getItemIds() {
@@ -82,6 +89,7 @@ public class MultiValueResponse extends Response {
 
     /**
      * Returns all items with a prefix before them
+     *
      * @param prefix - The string to concatenate at the beginning
      * @return String
      */
@@ -91,6 +99,7 @@ public class MultiValueResponse extends Response {
 
     /**
      * Returns a string containing all item id's within the Quantities alongside their quantity
+     *
      * @return String
      */
     @Override

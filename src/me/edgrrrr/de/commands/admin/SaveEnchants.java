@@ -28,7 +28,7 @@ public class SaveEnchants extends DivinityCommand {
      */
     @Override
     public boolean onPlayerCommand(Player sender, String[] args) {
-        this.getMain().getEnchantmentManager().saveEnchants();
+        this.getMain().getEnchMan().saveItems();
         return true;
     }
 

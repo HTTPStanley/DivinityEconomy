@@ -34,7 +34,7 @@ public class ReadMailTC extends DivinityCommandTC {
     @Override
     public List<String> onPlayerTabCompleter(Player sender, String[] args) {
         String[] strings;
-        MailList mailList = this.getMain().getMailManager().getMailList((sender).getUniqueId().toString());
+        MailList mailList = this.getMain().getMailMan().getMailList((sender).getUniqueId().toString());
         switch (args.length) {
             // 1 arg
             // return list of page numbers

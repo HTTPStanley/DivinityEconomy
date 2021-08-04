@@ -3,9 +3,10 @@ package me.edgrrrr.de.commands.market;
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.commands.DivinityCommandMaterials;
 import me.edgrrrr.de.config.Setting;
-import me.edgrrrr.de.materials.MaterialData;
+import me.edgrrrr.de.market.items.materials.MarketableMaterial;
+import me.edgrrrr.de.market.items.materials.MaterialManager;
 import me.edgrrrr.de.math.Math;
-import me.edgrrrr.de.player.PlayerInventoryManager;
+import me.edgrrrr.de.player.PlayerManager;
 import me.edgrrrr.de.response.ValueResponse;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.entity.Player;
@@ -59,14 +60,15 @@ public class Buy extends DivinityCommandMaterials {
         }
 
         // Ensure Material given exists.
-        MaterialData materialData = this.getMain().getMaterialManager().getMaterial(materialName);
+        MarketableMaterial materialData = this.getMain().getMarkMan().getItem(materialName);
         if (materialData == null) {
             this.getMain().getConsole().send(sender, CommandResponse.InvalidItemName.defaultLogLevel, CommandResponse.InvalidItemName.message, materialName);
             return true;
         }
+        MaterialManager manager = materialData.getManager();
 
         // Ensure player has the available inventory space
-        int availableSpace = PlayerInventoryManager.getAvailableSpace(sender, materialData.getMaterial());
+        int availableSpace = materialData.getAvailableSpace(sender);
         if (amountToBuy > availableSpace) {
             this.getMain().getConsole().logFailedPurchase(sender, amountToBuy, materialData.getCleanName(), String.format(CommandResponse.InvalidInventorySpace.message, availableSpace, amountToBuy));
             return true;
@@ -81,14 +83,14 @@ public class Buy extends DivinityCommandMaterials {
         // Get item stacks to buy
         // Get the value of the item stacks
         // Remove the value of the items from the player
-        ItemStack[] itemStacks = PlayerInventoryManager.createItemStacks(materialData.getMaterial(), amountToBuy);
-        ValueResponse priceResponse = this.getMain().getMaterialManager().getBuyValue(itemStacks);
-        EconomyResponse saleResponse = this.getMain().getEconomyManager().remCash(sender, priceResponse.value);
+        ItemStack[] itemStacks = materialData.getItemStacks(amountToBuy);
+        ValueResponse priceResponse = manager.getBuyValue(itemStacks);
+        EconomyResponse saleResponse = this.getMain().getEconMan().remCash(sender, priceResponse.value);
 
         // Handle adding items to player and removing quantity from market
         if (saleResponse.transactionSuccess() && priceResponse.isSuccess()) {
-            PlayerInventoryManager.addPlayerItems(sender, itemStacks);
-            this.getMain().getMaterialManager().editQuantity(materialData, -amountToBuy);
+            PlayerManager.addPlayerItems(sender, itemStacks);
+            manager.editQuantity(materialData, -amountToBuy);
 
             // Handles console, message and mail
             this.getMain().getConsole().logPurchase(sender, amountToBuy, saleResponse.amount, materialData.getCleanName());

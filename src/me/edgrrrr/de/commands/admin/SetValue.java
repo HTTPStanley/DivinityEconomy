@@ -3,7 +3,7 @@ package me.edgrrrr.de.commands.admin;
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.commands.DivinityCommand;
 import me.edgrrrr.de.config.Setting;
-import me.edgrrrr.de.materials.MaterialData;
+import me.edgrrrr.de.market.items.materials.MarketableMaterial;
 import me.edgrrrr.de.math.Math;
 import org.bukkit.entity.Player;
 
@@ -30,11 +30,11 @@ public class SetValue extends DivinityCommand {
      */
     @Override
     public boolean onPlayerCommand(Player sender, String[] args) {
-        MaterialData materialData = null;
-        double value = -1;
+        MarketableMaterial marketableMaterial;
+        double value;
         switch (args.length) {
             case 2:
-                materialData = this.getMain().getMaterialManager().getMaterial(args[0]);
+                marketableMaterial = this.getMain().getMarkMan().getItem(args[0]);
                 value = Math.getDouble(args[1]);
                 break;
 
@@ -44,7 +44,7 @@ public class SetValue extends DivinityCommand {
         }
 
         // Ensure material exists
-        if (materialData == null) {
+        if (marketableMaterial == null) {
             this.getMain().getConsole().send(sender, CommandResponse.InvalidItemName.defaultLogLevel, String.format(CommandResponse.InvalidItemName.message, args[0]));
             return true;
         }
@@ -54,10 +54,10 @@ public class SetValue extends DivinityCommand {
             return true;
         }
 
-        int previousStock = materialData.getQuantity();
-        double previousValue = this.getMain().getMaterialManager().getUserPrice(materialData.getQuantity());
-        this.getMain().getMaterialManager().setPrice(materialData, value);
-        this.getMain().getConsole().send(sender, CommandResponse.StockValueChanged.defaultLogLevel, String.format(CommandResponse.StockValueChanged.message, this.getMain().getConsole().formatMoney(previousValue), previousStock, this.getMain().getConsole().formatMoney(value), materialData.getQuantity()));
+        int previousStock = marketableMaterial.getQuantity();
+        double previousValue = marketableMaterial.getManager().getBuyPrice(marketableMaterial.getQuantity());
+        marketableMaterial.getManager().setPrice(marketableMaterial, value);
+        this.getMain().getConsole().send(sender, CommandResponse.StockValueChanged.defaultLogLevel, String.format(CommandResponse.StockValueChanged.message, this.getMain().getConsole().formatMoney(previousValue), previousStock, this.getMain().getConsole().formatMoney(value), marketableMaterial.getQuantity()));
 
         return true;
     }

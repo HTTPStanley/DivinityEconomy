@@ -49,11 +49,12 @@ PlaceholderAPI support - Requires PlaceholderAPI to be installed, which can be f
 %de_material_stack_<materialName>              | Returns the max stack size for the material given
 
 Config Help - Changing these values will not do anything here. Open config.yml
+To reset a value, delete the key.
 
 # Main settings
 main:
     # DO NOT TOUCH THIS - Used to track config changes
-  version: 1.8.117
+  version: <version>
 
 # Chat settings
 chat:
@@ -95,10 +96,7 @@ messageIgnore:
   ignoreAliasErrors: false
 
     # Whether to ignore internal material warnings
-  ignoreMaterialErrors: false
-
-    # Whether to ignore internal enchant warnings
-  ignoreEnchantErrors: false
+  ignoreItemErrors: false
 
     # Whether to ignore command registry messages
   ignoreCommandRegistry: true
@@ -114,6 +112,10 @@ economy:
     # The preferred economy provider, such as EssentialsX and so on.
     # By default 'DivinityEconomy' uses the internal economy provider, regardless of other plugins or Vault's presence.
   preferredProvider: 'DivinityEconomy'
+
+    # How often the internal baltop task will run.
+    # 300 = 5 minutes
+  baltopRefreshTimer: 300
 
 # Market settings
 market:
@@ -148,6 +150,9 @@ market:
         # Whether to enable dynamic pricing or not
         # Disabling this means that enchant quantities are static and do not change
     dynamicPricing: true
+
+      # Whether to allow users to buy enchants for items that do not support the enchant or have conflicting enchants.
+    allowUnsafeEnchants: false
 
     # Material settings
   materials:
@@ -201,6 +206,7 @@ commands:
   economy:
     balance: true
     sendCash: true
+    baltop: true
 
   enchant:
     eBuy: true
@@ -223,6 +229,7 @@ commands:
     sell: true
     sellall: true
     value: true
+    listitems: true
 
   misc:
     ping: true

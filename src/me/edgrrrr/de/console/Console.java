@@ -14,16 +14,14 @@ import java.util.Arrays;
  * Console class for sending uniform messages to players and the console.
  */
 public class Console extends DivinityModule {
+    private static final String[] variables = {"<VERSION>"};
+    private static final String[] variableValues = {"<VERSION>"};
+    private static Console i;
     private final ConsoleCommandSender consoleSender;
-
     // Settings
     private final boolean debugMode;
     private final String chatPrefix;
     private final String consolePrefix;
-
-
-    private static final String[] variables = {"<VERSION>"};
-    private static final String[] variableValues = {"<VERSION>"};
 
     public Console(DEPlugin main) {
         super(main);
@@ -40,6 +38,25 @@ public class Console extends DivinityModule {
         this.chatPrefix = insertColours(prefix);
         conPrefix = insertColours(conPrefix);
         this.consolePrefix = insertVariables(conPrefix);
+        Console.i = this;
+    }
+
+    public static Console get() {
+        return Console.i;
+    }
+
+    private static String insertVariables(String string) {
+        for (int idx = 0; idx < variables.length; idx++) {
+            string = string.replace(variables[idx], variableValues[idx]);
+        }
+        return string;
+    }
+
+    private static String insertColours(String string) {
+        for (ChatColor colour : ChatColor.values()) {
+            string = string.replaceAll(String.format("(&%s)|(%s)", colour.getChar(), colour.name()), colour.toString());
+        }
+        return string;
     }
 
     /**
@@ -58,26 +75,14 @@ public class Console extends DivinityModule {
 
     }
 
-    private static String insertVariables(String string) {
-        for (int idx=0; idx < variables.length; idx++) {
-            string = string.replace(variables[idx], variableValues[idx]);
-        }
-        return string;
-    }
-
-    private static String insertColours(String string) {
-        for (ChatColor colour : ChatColor.values()) {
-            string = string.replaceAll(String.format("(&%s)|(%s)", colour.getChar(), colour.name()), colour.toString());
-        }
-        return string;
-    }
-
     // CONSOLE COMMANDS
+
     /**
      * Sends a formatted message to the console
-     * @param level - The log level
+     *
+     * @param level   - The log level
      * @param message - The message to send
-     * @param args - The arguments
+     * @param args    - The arguments
      */
     public void send(LogLevel level, String message, Object... args) {
         this.consoleSender.sendMessage(consolePrefix + level.getColour() + String.format(message, args));
@@ -96,7 +101,7 @@ public class Console extends DivinityModule {
      * Sends a (default green) message to the console
      *
      * @param message - The message to send
-     * @param args - The args
+     * @param args    - The args
      */
     public void debug(String message, Object... args) {
         if (debugMode) this.send(LogLevel.DEBUG, message, args);
@@ -106,7 +111,7 @@ public class Console extends DivinityModule {
      * Sends a formatted (default yellow) message to the console
      *
      * @param message - The message to send
-     * @param args - The args
+     * @param args    - The args
      */
     public void warn(String message, Object... args) {
         this.send(LogLevel.WARNING, message, args);
@@ -116,19 +121,20 @@ public class Console extends DivinityModule {
      * Sends a formatted (default red) message to the console
      *
      * @param message - The message to send
-     * @param args - The args
+     * @param args    - The args
      */
     public void severe(String message, Object... args) {
         this.send(LogLevel.SEVERE, message, args);
     }
 
     // PLAYER
+
     /**
      * Sends a formatted message to a player
      *
      * @param player  - The player to send to
      * @param message - The message to send
-     * @param args - The args
+     * @param args    - The args
      */
     public void send(Player player, LogLevel level, String message, Object... args) {
         if (player != null) {
@@ -156,6 +162,7 @@ public class Console extends DivinityModule {
 
     /**
      * Sends a help message to a player
+     *
      * @param player
      * @param command
      * @param description

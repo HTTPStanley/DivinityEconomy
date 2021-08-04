@@ -14,7 +14,7 @@ public enum LogLevel {
 
     private final int priority;
     private ChatColor colour;
-    private String colourOption;
+    private final String colourOption;
 
     LogLevel(int priority, ChatColor color, String colourOption) {
         this.priority = priority;
@@ -22,8 +22,15 @@ public enum LogLevel {
         this.colourOption = colourOption;
     }
 
-    private void setColour(ChatColor colour) {
-        this.colour = colour;
+    public static void loadValuesFromConfig(YamlConfiguration config) {
+        for (LogLevel level : values()) {
+            String value = config.getString(level.getColourOption());
+            try {
+                level.setColour(ChatColor.valueOf(value));
+            } catch (Exception e) {
+                Logger.getLogger("Minecraft").severe(String.format("Exception occurred on log level loading (%s): %s", level, e.getMessage()));
+            }
+        }
     }
 
     public int getPriority() {
@@ -34,6 +41,10 @@ public enum LogLevel {
         return colour;
     }
 
+    private void setColour(ChatColor colour) {
+        this.colour = colour;
+    }
+
     public String getColourOption() {
         return colourOption;
     }
@@ -41,15 +52,4 @@ public enum LogLevel {
     public boolean hasPriority(LogLevel over) {
         return priority > over.priority;
     }
-
-    public static void loadValuesFromConfig(YamlConfiguration config) {
-        for(LogLevel level : values()) {
-            String value = config.getString(level.getColourOption());
-            try { level.setColour( ChatColor.valueOf(value) ); }
-            catch (Exception e) {
-                Logger.getLogger("Minecraft").severe(String.format("Exception occurred on log level loading (%s): %s", level, e.getMessage()));} //TODO: Log warning, bad config value
-        }
-    }
-
-
 }

@@ -1,7 +1,7 @@
 name: DivinityEconomy
 prefix: DivinityEconomy
 main: me.edgrrrr.de.DEPlugin
-version: 1.11.117
+version: 1.17
 author: EDGRRRR
 description: Divinity Economy - The dynamic global economy plugin.
 api-version: 1.16
@@ -18,6 +18,7 @@ commands:
     permission: de.help
     permission-message: "You do not have the permission to use this command"
     usage: "/ehelp"
+
   # Mail commands
 
   readMail:
@@ -52,12 +53,26 @@ commands:
 
   sendcash:
     description: "Sends cash to another player."
-    aliases: [transfer]
+    aliases: [transfer, pay]
     permission: de.money.sendcash
     permission-message: "You do not have the permission to use this command"
     usage: "/sendcash <player name> <amount>"
 
+  baltop:
+    description: "Lists users by their balances."
+    aliases: [bt, moneytop, listbal]
+    permission: de.money.baltop
+    permission-message: "You do not have the permission to use this command"
+    usage: "/baltop <page number>"
+
   # Market commands
+  listitems:
+    description: "Lists items in the market."
+    aliases: [ itemlist, itemslist, items, find, search ]
+    permission: de.market.listitems
+    permission-message: "You do not have the permission to use this command"
+    usage: "/search <item name> <order type> <page number>"
+
   buy:
     description: "Buys a material from the market."
     aliases: []
@@ -158,23 +173,30 @@ commands:
 
 
   # Admin commands
+  reload:
+    description: "Reloads the plugin."
+    aliases: []
+    permission: de.admin.reload
+    permission-message: "You do not have the permission to use this command"
+    usage: "/reload"
+
   editbal:
     description: "Edits the balance of a player."
-    aliases: []
+    aliases: [changebal]
     permission: de.admin.editbal
     permission-message: "You do not have the permission to use this command"
     usage: "/editbal <player name> <amount>|/editbal <amount>"
 
   setbal:
     description: "Sets the balance of a player."
-    aliases: []
+    aliases: [setcash]
     permission: de.admin.setbal
     permission-message: "You do not have the permission to use this command"
     usage: "/setbal <player name> <amount>|/setbal <amount>"
 
   clearbal:
     description: "Clears the balance of a player."
-    aliases: []
+    aliases: [clearcash]
     permission: de.admin.clearbal
     permission-message: "You do not have the permission to use this command"
     usage: "/clearbal <player name>|/clearbal"
@@ -305,8 +327,13 @@ permissions:
     description: Allows the user to use all commands under the money branch of permissions.
     default: true
     children:
-      de.balance: true
-      de.sendcash: true
+      de.money.balance: true
+      de.money.sendcash: true
+      de.money.baltop: true
+
+  de.money.baltop:
+    description: Allows the user to view a list of user balances
+    default: true
 
   de.money.balance:
     description: Allows the user to view their balance.
@@ -330,6 +357,16 @@ permissions:
       de.market.value: true
       de.market.handValue: true
       de.market.handInformation: true
+      de.market.sellall: true
+      de.market.listitems: true
+
+  de.market.listitems:
+      description: Allows the user to list items in the market
+      default: true
+
+  de.market.sellall:
+    description: Allows the user to sell multiple items at once
+    default: true
 
   de.market.handValue:
     description: Allows the user to value the item in their hand
@@ -383,11 +420,11 @@ permissions:
       de.admin.eSetValue: true
       de.admin.saveEnchants: true
       de.admin.saveMaterials: true
-      de.money: true
-      de.market: true
-      de.misc: true
-      de.enchant: true
-      de.mail: true
+      de.admin.reload: true
+
+  de.admin.reload:
+    description: Allows the user to reload the plugin
+    default: op
 
   de.admin.saveEnchants:
     description: Allows the user to save enchants from the file.

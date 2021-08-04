@@ -3,7 +3,7 @@ package me.edgrrrr.de.commands.admin;
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.commands.DivinityCommand;
 import me.edgrrrr.de.config.Setting;
-import me.edgrrrr.de.enchants.EnchantData;
+import me.edgrrrr.de.market.items.enchants.MarketableEnchant;
 import me.edgrrrr.de.math.Math;
 import org.bukkit.entity.Player;
 
@@ -30,11 +30,11 @@ public class ESetValue extends DivinityCommand {
      */
     @Override
     public boolean onPlayerCommand(Player sender, String[] args) {
-        EnchantData enchantData = null;
-        double value = -1;
+        MarketableEnchant enchantData;
+        double value;
         switch (args.length) {
             case 2:
-                enchantData = this.getMain().getEnchantmentManager().getEnchant(args[0]);
+                enchantData = this.getMain().getEnchMan().getEnchant(args[0]);
                 value = Math.getDouble(args[1]);
                 break;
 
@@ -55,8 +55,8 @@ public class ESetValue extends DivinityCommand {
         }
 
         int previousStock = enchantData.getQuantity();
-        double previousValue = this.getMain().getEnchantmentManager().getUserPrice(enchantData.getQuantity());
-        this.getMain().getEnchantmentManager().setPrice(enchantData, value);
+        double previousValue = this.getMain().getEnchMan().getBuyPrice(enchantData.getQuantity());
+        this.getMain().getEnchMan().setPrice(enchantData, value);
         this.getMain().getConsole().send(sender, CommandResponse.StockValueChanged.defaultLogLevel, CommandResponse.StockValueChanged.message, this.getMain().getConsole().formatMoney(previousValue), previousStock, this.getMain().getConsole().formatMoney(value), enchantData.getQuantity());
 
         return true;

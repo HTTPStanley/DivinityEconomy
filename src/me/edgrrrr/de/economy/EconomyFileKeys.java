@@ -8,6 +8,7 @@ public enum EconomyFileKeys {
     ;
     //END
     public final String key;
+
     EconomyFileKeys(String key) {
         this.key = key;
     }

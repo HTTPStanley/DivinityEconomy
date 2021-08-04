@@ -4,15 +4,15 @@ import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.DivinityModule;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class HelpManager extends DivinityModule {
-    final HashMap<String, Help> helpMap;
+    final Map<String, Help> helpMap;
 
     public HelpManager(DEPlugin main) {
         super(main);
-        this.helpMap = new HashMap<>();
+        this.helpMap = new ConcurrentHashMap<>();
     }
 
     /**
@@ -56,8 +56,8 @@ public class HelpManager extends DivinityModule {
         return nameArrayList.toArray(new String[0]);
     }
 
-    public HashMap<Integer, Help[]> getPages(int pageSize) {
-        HashMap<Integer, Help[]> pages = new HashMap<>();
+    public Map<Integer, Help[]> getPages(int pageSize) {
+        Map<Integer, Help[]> pages = new ConcurrentHashMap<>();
         Help[] allHelp = this.helpMap.values().toArray(new Help[0]);
 
         int pageNum = 0;
