@@ -1,0 +1,228 @@
+AQUA_AFFINITY:
+  ALLOWED: true
+  CLEAN_NAME: Aqua Affinity
+  ENCHANT_ID: aqua_affinity
+  MAX_LEVEL: 1
+  QUANTITY: 1000
+BANE_OF_ARTHROPODS:
+  ALLOWED: true
+  CLEAN_NAME: Bane Of Arthropods
+  ENCHANT_ID: bane_of_arthropods
+  MAX_LEVEL: 5
+  QUANTITY: 1000
+BINDING_CURSE:
+  ALLOWED: false
+  CLEAN_NAME: Curse Of Binding
+  ENCHANT_ID: binding_curse
+  MAX_LEVEL: 1
+  QUANTITY: 0
+BLAST_PROTECTION:
+  ALLOWED: true
+  CLEAN_NAME: Blast Protection
+  ENCHANT_ID: blast_protection
+  MAX_LEVEL: 4
+  QUANTITY: 1000
+CHANNELING:
+  ALLOWED: true
+  CLEAN_NAME: Channeling
+  ENCHANT_ID: channeling
+  MAX_LEVEL: 1
+  QUANTITY: 750
+DEPTH_STRIDER:
+  ALLOWED: true
+  CLEAN_NAME: Depth Strider
+  ENCHANT_ID: depth_strider
+  MAX_LEVEL: 3
+  QUANTITY: 2000
+EFFICIENCY:
+  ALLOWED: true
+  CLEAN_NAME: Efficiency
+  ENCHANT_ID: efficiency
+  MAX_LEVEL: 5
+  QUANTITY: 2000
+FEATHER_FALLING:
+  ALLOWED: true
+  CLEAN_NAME: Feather Falling
+  ENCHANT_ID: feather_falling
+  MAX_LEVEL: 4
+  QUANTITY: 750
+FIRE_ASPECT:
+  ALLOWED: true
+  CLEAN_NAME: Fire Aspect
+  ENCHANT_ID: fire_aspect
+  MAX_LEVEL: 2
+  QUANTITY: 500
+FIRE_PROTECTION:
+  ALLOWED: true
+  CLEAN_NAME: Fire Protection
+  ENCHANT_ID: fire_protection
+  MAX_LEVEL: 4
+  QUANTITY: 1000
+FLAME:
+  ALLOWED: true
+  CLEAN_NAME: Flame
+  ENCHANT_ID: flame
+  MAX_LEVEL: 1
+  QUANTITY: 500
+FORTUNE:
+  ALLOWED: true
+  CLEAN_NAME: Fortune
+  ENCHANT_ID: fortune
+  MAX_LEVEL: 3
+  QUANTITY: 1000
+FROST_WALKER:
+  ALLOWED: true
+  CLEAN_NAME: Frost Walker
+  ENCHANT_ID: frost_walker
+  MAX_LEVEL: 2
+  QUANTITY: 750
+IMPALING:
+  ALLOWED: true
+  CLEAN_NAME: Impaling
+  ENCHANT_ID: impaling
+  MAX_LEVEL: 5
+  QUANTITY: 250
+INFINITY:
+  ALLOWED: true
+  CLEAN_NAME: Infinity
+  ENCHANT_ID: infinity
+  MAX_LEVEL: 1
+  QUANTITY: 100
+KNOCKBACK:
+  ALLOWED: true
+  CLEAN_NAME: Knockback
+  ENCHANT_ID: knockback
+  MAX_LEVEL: 2
+  QUANTITY: 2000
+LOOTING:
+  ALLOWED: true
+  CLEAN_NAME: Looting
+  ENCHANT_ID: looting
+  MAX_LEVEL: 3
+  QUANTITY: 2000
+LOYALTY:
+  ALLOWED: true
+  CLEAN_NAME: Loyalty
+  ENCHANT_ID: loyalty
+  MAX_LEVEL: 3
+  QUANTITY: 1000
+LUCK_OF_THE_SEA:
+  ALLOWED: true
+  CLEAN_NAME: Luck Of The Sea
+  ENCHANT_ID: luck_of_the_sea
+  MAX_LEVEL: 3
+  QUANTITY: 5000
+LURE:
+  ALLOWED: true
+  CLEAN_NAME: Lure
+  ENCHANT_ID: lure
+  MAX_LEVEL: 3
+  QUANTITY: 2000
+MENDING:
+  ALLOWED: true
+  CLEAN_NAME: Mending
+  ENCHANT_ID: mending
+  MAX_LEVEL: 1
+  QUANTITY: 50
+MULTISHOT:
+  ALLOWED: true
+  CLEAN_NAME: Multishot
+  ENCHANT_ID: multishot
+  MAX_LEVEL: 1
+  QUANTITY: 500
+PIERCING:
+  ALLOWED: true
+  CLEAN_NAME: Piercing
+  ENCHANT_ID: piercing
+  MAX_LEVEL: 4
+  QUANTITY: 100
+POWER:
+  ALLOWED: true
+  CLEAN_NAME: Power
+  ENCHANT_ID: power
+  MAX_LEVEL: 5
+  QUANTITY: 500
+PROJECTILE_PROTECTION:
+  ALLOWED: true
+  CLEAN_NAME: Projectile Protection
+  ENCHANT_ID: projectile_protection
+  MAX_LEVEL: 4
+  QUANTITY: 1000
+PROTECTION:
+  ALLOWED: true
+  CLEAN_NAME: Protection
+  ENCHANT_ID: protection
+  MAX_LEVEL: 4
+  QUANTITY: 5000
+PUNCH:
+  ALLOWED: true
+  CLEAN_NAME: Punch
+  ENCHANT_ID: punch
+  MAX_LEVEL: 2
+  QUANTITY: 1000
+QUICK_CHARGE:
+  ALLOWED: true
+  CLEAN_NAME: Quick Charge
+  ENCHANT_ID: quick_charge
+  MAX_LEVEL: 3
+  QUANTITY: 250
+RESPIRATION:
+  ALLOWED: true
+  CLEAN_NAME: Respiration
+  ENCHANT_ID: respiration
+  MAX_LEVEL: 3
+  QUANTITY: 1000
+RIPTIDE:
+  ALLOWED: true
+  CLEAN_NAME: Riptide
+  ENCHANT_ID: riptide
+  MAX_LEVEL: 3
+  QUANTITY: 500
+SHARPNESS:
+  ALLOWED: true
+  CLEAN_NAME: Sharpness
+  ENCHANT_ID: sharpness
+  MAX_LEVEL: 5
+  QUANTITY: 500
+SILK_TOUCH:
+  ALLOWED: true
+  CLEAN_NAME: Silk Touch
+  ENCHANT_ID: silk_touch
+  MAX_LEVEL: 1
+  QUANTITY: 100
+SMITE:
+  ALLOWED: true
+  CLEAN_NAME: Smite
+  ENCHANT_ID: smite
+  MAX_LEVEL: 5
+  QUANTITY: 1000
+SOUL_SPEED:
+  ALLOWED: true
+  CLEAN_NAME: Soul Speed
+  ENCHANT_ID: soul_speed
+  MAX_LEVEL: 3
+  QUANTITY: 1000
+SWEEPING:
+  ALLOWED: true
+  CLEAN_NAME: Sweeping
+  ENCHANT_ID: sweeping
+  MAX_LEVEL: 3
+  QUANTITY: 500
+THORNS:
+  ALLOWED: true
+  CLEAN_NAME: Thorns
+  ENCHANT_ID: thorns
+  MAX_LEVEL: 3
+  QUANTITY: 250
+UNBREAKING:
+  ALLOWED: true
+  CLEAN_NAME: Unbreaking
+  ENCHANT_ID: unbreaking
+  MAX_LEVEL: 3
+  QUANTITY: 2000
+VANISHING_CURSE:
+  ALLOWED: false
+  CLEAN_NAME: Curse Of Vanishing
+  ENCHANT_ID: vanishing_curse
+  MAX_LEVEL: 1
+  QUANTITY: 0
