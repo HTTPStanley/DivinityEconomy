@@ -85,7 +85,7 @@ public class DivinityEconomy implements net.milkbowl.vault.economy.Economy {
         // allowFetch = false | for this reason
         // could return null still, at which point there's a bug elsewhere.
         if (economyPlayer == null) {
-            OfflinePlayer player = this.playerManager.getOfflinePlayer(uuid, false);
+            OfflinePlayer player = this.playerManager.getOfflinePlayer(uuid, true);
             this.createPlayerAccount(player);
         }
 
@@ -627,7 +627,7 @@ public class DivinityEconomy implements net.milkbowl.vault.economy.Economy {
     @Override
     @Deprecated
     public boolean createPlayerAccount(String playerName) {
-        OfflinePlayer player = this.playerManager.getOfflinePlayer(playerName, false);
+        OfflinePlayer player = this.playerManager.getOfflinePlayer(playerName, true);
         if (player == null) return false;
         else return this.createPlayerAccount(player);
     }
