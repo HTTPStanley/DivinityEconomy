@@ -1,5 +1,6 @@
 package me.edgrrrr.de.economy;
 
+import me.edgrrrr.de.console.EconConsole;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
 
@@ -31,6 +32,10 @@ public class EconomyPlayer {
     }
 
     public static EconomyPlayer create(OfflinePlayer offlinePlayer, File file, FileConfiguration fileConf, double balance) {
+        if (offlinePlayer == null) {
+            EconConsole.get().severe("A Null Offline Player was handed to the economy player create function.");
+            return null;
+        }
         EconomyPlayer economyPlayer = new EconomyPlayer(offlinePlayer, file, fileConf);
         economyPlayer.set(EconomyFileKeys.BALANCE, BigDecimal.valueOf(balance).toString());
         economyPlayer.set(EconomyFileKeys.UUID, offlinePlayer.getUniqueId().toString());
