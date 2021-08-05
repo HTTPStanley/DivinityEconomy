@@ -236,7 +236,7 @@ public abstract class TokenManager extends DivinityModule {
      * @return double
      */
     public double getBuyPrice(double stock) {
-        return this.getPrice(stock, this.sellScale, this.getInflation());
+        return this.getPrice(stock, this.buyScale, this.getInflation());
     }
 
     /**
@@ -246,7 +246,7 @@ public abstract class TokenManager extends DivinityModule {
      * @return double
      */
     public double getSellPrice(double stock) {
-        return this.getPrice(stock, this.buyScale, this.getInflation());
+        return this.getPrice(stock, this.sellScale, this.getInflation());
     }
 
     /**
@@ -494,9 +494,7 @@ public abstract class TokenManager extends DivinityModule {
      */
     public void saveItems() {
         // Save items
-        for (MarketableToken itemData : itemMap.values()) {
-            this.saveItem(itemData);
-        }
+        this.itemMap.values().forEach(this::saveItem);
 
         // save
         this.saveFile();
@@ -510,7 +508,8 @@ public abstract class TokenManager extends DivinityModule {
         // load back all info
         FileConfiguration config = this.getConfMan().loadFile(this.itemFile);
         for (String key : config.getKeys(false)) {
-            if (!this.itemMap.containsKey(key)) continue;
+            String internalKey = key.toLowerCase().replace(" ", "");
+            if (!this.itemMap.containsKey(internalKey)) continue;
 
             config.set(key, this.config.get(key));
         }
