@@ -173,7 +173,8 @@ public class MarketManager extends DivinityModule {
 
             if (marketableMaterial != null) {
                 // Get this stack value
-                ValueResponse valueResponse = marketableMaterial.getManager().getSellValue(itemStack, itemCounts.get(itemStack));
+                int itemCount = itemCounts.get(itemStack);
+                ValueResponse valueResponse = marketableMaterial.getManager().getSellValue(itemStack, itemCount);
 
                 // If valuation succeeded
                 if (valueResponse.isSuccess()) {
@@ -182,7 +183,7 @@ public class MarketManager extends DivinityModule {
 
                     // add value response
                     values.put(ID, valueResponse.value);
-                    quantities.put(ID, itemStack.getAmount());
+                    quantities.put(ID, itemCount);
 
                 } else {
                     response = valueResponse.responseType;

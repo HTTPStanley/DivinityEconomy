@@ -96,8 +96,8 @@ public class SellAll extends DivinityCommandMaterials {
                 // Handles console, player message and mail
                 this.getMain().getConsole().logFailedSale(sender, response.getTotalQuantity(), "items", economyResponse.errorMessage);
             } else {
-                for (ItemStack itemStack : itemStacksClone) {
-                    MarketableMaterial material = this.getMain().getMarkMan().getItem(itemStack);
+                for (String string: response.quantities.keySet()) {
+                    MarketableMaterial material = this.getMain().getMarkMan().getItem(string);
                     material.getManager().editQuantity(material, response.quantities.get(material.getID()));
                 }
 
