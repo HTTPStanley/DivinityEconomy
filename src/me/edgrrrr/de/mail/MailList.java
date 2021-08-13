@@ -45,7 +45,12 @@ public class MailList {
         Mail[] allMail = this.getAllMail().values().toArray(new Mail[0]);
         Map<Integer, List<Object>> toPages = ArrayUtils.toPages(allMail, pageSize);
         Map<Integer, Mail[]> mailPages = new ConcurrentHashMap<>();
-        toPages.keySet().forEach(integer -> mailPages.put(integer, (Mail[]) toPages.get(integer).toArray()));
+        for (int pageNum : toPages.keySet()) {
+            List<Object> objects = toPages.get(pageNum);
+            List<Mail> mail = new ArrayList<>();
+            objects.forEach(obj -> mail.add((Mail) obj));
+            mailPages.put(pageNum, mail.toArray(new Mail[0]));
+        }
         return mailPages;
     }
 
