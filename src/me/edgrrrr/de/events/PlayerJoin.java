@@ -1,5 +1,6 @@
 package me.edgrrrr.de.events;
 
+import me.edgrrrr.de.console.Console;
 import me.edgrrrr.de.economy.DivinityEconomy;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -18,7 +19,7 @@ public class PlayerJoin implements Listener {
         Player player = event.getPlayer();
         if (!this.divinityEconomy.hasAccount(player)) {
             this.divinityEconomy.createPlayerAccount(player);
-            //TODO: send message
+            Console.get().debug("Player '%s' (%s) did not previously have an account, one has been created for them.", player.getName(), player.getUniqueId());
         }
     }
 }
