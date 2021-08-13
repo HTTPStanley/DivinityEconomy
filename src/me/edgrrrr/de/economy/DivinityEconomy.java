@@ -72,10 +72,8 @@ public class DivinityEconomy implements net.milkbowl.vault.economy.Economy {
         OfflinePlayer offlinePlayer = this.app.getServer().getOfflinePlayer(playerUUID);
         EconomyPlayer player = new EconomyPlayer(offlinePlayer, file, fileConf);
 
-        if (player.isLegal()) {
-            player.update();
-            this.economyPlayerMap.put(playerUUID, player);
-        }
+        player.update();
+        this.economyPlayerMap.put(playerUUID, player);
     }
 
     @Nullable
