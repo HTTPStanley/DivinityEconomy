@@ -54,12 +54,6 @@ public class MarketManager extends DivinityModule {
         return strings.toArray(new String[0]);
     }
 
-    public String[] searchItemNames(String term) {
-        ArrayList<String> strings = new ArrayList<>();
-        this.managers.forEach(manager -> strings.addAll(Arrays.asList(manager.searchItemNames(manager.getItemIDs(), term))));
-        return strings.toArray(new String[0]);
-    }
-
     public MarketableMaterial getItem(ItemStack itemStack) {
         MarketableMaterial material = null;
 
@@ -133,22 +127,28 @@ public class MarketManager extends DivinityModule {
      * @return
      */
     public String[] getItemNames(String[] itemIds, String startWith) {
-        return this.filterItemNames(this.getItemNames(itemIds), startWith.toLowerCase());
+        return this.searchItemNames(this.getItemNames(itemIds), startWith.toLowerCase());
     }
 
     /**
      * @param items
-     * @param startsWith
+     * @param term
      * @return
      */
-    public String[] filterItemNames(String[] items, String startsWith) {
+    public String[] searchItemNames(String[] items, String term) {
         ArrayList<String> itemNames = new ArrayList<>();
 
         for (MaterialManager man : this.managers) {
-            itemNames.addAll(Arrays.asList(man.filterItemNames(items, startsWith)));
+            itemNames.addAll(Arrays.asList(man.searchItemNames(items, term)));
         }
 
         return itemNames.toArray(new String[0]);
+    }
+
+    public String[] searchItemNames(String term) {
+        ArrayList<String> strings = new ArrayList<>();
+        this.managers.forEach(manager -> strings.addAll(Arrays.asList(manager.searchItemNames(manager.getItemIDs(), term))));
+        return strings.toArray(new String[0]);
     }
 
     /**

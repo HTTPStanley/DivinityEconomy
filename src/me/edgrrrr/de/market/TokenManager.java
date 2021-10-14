@@ -4,12 +4,15 @@ import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.DivinityModule;
 import me.edgrrrr.de.config.Setting;
 import me.edgrrrr.de.math.Math;
+import me.xdrop.fuzzywuzzy.FuzzySearch;
+import me.xdrop.fuzzywuzzy.model.ExtractedResult;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
@@ -138,7 +141,7 @@ public abstract class TokenManager extends DivinityModule {
      * @return String[]
      */
     public String[] getItemIDs(String startsWith) {
-        return filterItemNames(this.getItemIDs(), startsWith);
+        return searchItemNames(this.getItemIDs(), startsWith);
     }
 
     /**
@@ -159,7 +162,7 @@ public abstract class TokenManager extends DivinityModule {
      * @return String[]
      */
     public String[] getItemNames(String startsWith) {
-        return this.filterItemNames(this.getItemNames(), startsWith.toLowerCase());
+        return this.searchItemNames(this.getItemNames(), startsWith.toLowerCase());
     }
 
     /**
@@ -182,24 +185,11 @@ public abstract class TokenManager extends DivinityModule {
      * @return
      */
     public String[] getItemNames(String[] itemIds, String startWith) {
-        return this.filterItemNames(this.getItemNames(itemIds), startWith.toLowerCase());
+        return this.searchItemNames(this.getItemNames(itemIds), startWith.toLowerCase());
     }
 
     /**
      * Filters through the given item names
-     *
-     * @param items
-     * @param startsWith
-     * @return
-     */
-    public String[] filterItemNames(String[] items, String startsWith) {
-        ArrayList<String> itemNames = new ArrayList<>();
-        Arrays.stream(items).filter(string -> string.toLowerCase().startsWith(startsWith.toLowerCase())).forEach(itemNames::add);
-        return itemNames.toArray(new String[0]);
-    }
-
-    /**
-     * Filters through the given item names and searches for the term
      *
      * @param items
      * @param term
@@ -207,7 +197,14 @@ public abstract class TokenManager extends DivinityModule {
      */
     public String[] searchItemNames(String[] items, String term) {
         ArrayList<String> itemNames = new ArrayList<>();
-        Arrays.stream(items).filter(string -> string.toLowerCase().contains(term.toLowerCase())).forEach(itemNames::add);
+
+        if (this.getConfMan().getBoolean(Setting.TAB_USE_FUZZY_BOOLEAN)) {
+            List<ExtractedResult> results = FuzzySearch.extractSorted(term, Arrays.asList(items), this.getConfMan().getInt(Setting.TAB_MAX_RESULTS_INT));
+            results.stream().filter(result -> result.getScore() > this.getConfMan().getDouble(Setting.TAB_MIN_FUZZY_SCORE_DOUBLE)).forEach(result -> itemNames.add(result.getString()));
+        } else {
+            Arrays.stream(items).filter(string -> string.toLowerCase().startsWith(term.toLowerCase()) || string.toLowerCase().contains(term.toLowerCase())).forEach(itemNames::add);
+        }
+
         return itemNames.toArray(new String[0]);
     }
 

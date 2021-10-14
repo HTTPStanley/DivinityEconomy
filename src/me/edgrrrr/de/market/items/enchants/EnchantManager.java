@@ -323,7 +323,7 @@ public class EnchantManager extends ItemManager {
     }
 
     public String[] getCompatibleEnchants(ItemStack itemStack, String startsWith) {
-        return this.filterItemNames(this.getCompatibleEnchants(itemStack), startsWith);
+        return this.searchItemNames(this.getCompatibleEnchants(itemStack), startsWith);
     }
 
     /**
@@ -335,7 +335,7 @@ public class EnchantManager extends ItemManager {
      */
     @Override
     public String[] getItemNames(ItemStack itemStack, String startswith) {
-        return this.filterItemNames(this.getItemNames(itemStack), startswith);
+        return this.searchItemNames(this.getItemNames(itemStack), startswith);
     }
 
     /**

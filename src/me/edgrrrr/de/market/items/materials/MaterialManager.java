@@ -57,7 +57,7 @@ public abstract class MaterialManager extends ItemManager {
      */
     @Override
     public String[] getItemNames(ItemStack itemStack, String startswith) {
-        return this.filterItemNames(this.getItemNames(itemStack), startswith);
+        return this.searchItemNames(this.getItemNames(itemStack), startswith);
     }
 
     /**
