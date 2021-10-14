@@ -1,95 +1,101 @@
-main:
-  version: 1.18
+Main:
+  Version: 1.18.1
 
-chat:
-  chatDebug: false
-  consolePrefix: '&b[DivinityEconomy v<VERSION>]&9> '
-  chatPrefix: '&b[D.E]&9> '
-  infoColour: 'GREEN'
-  severeColour: 'RED'
-  warnColour: 'YELLOW'
-  debugColour: 'DARK_PURPLE'
-  moneyScale: 2
-  moneyPrefix: "£"
-  moneySingular: "Divinity"
-  moneyPlural: "Divinity's"
+Chat:
+  Chat Debug: false
+  Console Prefix: '&b[DivinityEconomy v<VERSION>]&9> '
+  Chat Prefix: '&b[D.E]&9> '
+  Info Colour: 'GREEN'
+  Severe Colour: 'RED'
+  Warn Colour: 'YELLOW'
+  Debug Colour: 'DARK_PURPLE'
+  Money Scale: 2
+  Money Prefix: "£"
+  Money Singular: "Divinity"
+  Money Plural: "Divinity's"
 
-messageIgnore:
-  ignoreAliasErrors: false
-  ignoreItemErrors: false
-  ignoreCommandRegistry: true
+Tab Completion:
+  Use Fuzzy Search: true
+  Fuzzy Search:
+    Min Score: 70.0
+    Max Results: 50
 
-economy:
-  minAccountBalance: 0.0
-  minSendAmount: 0.01
-  preferredProvider: 'DivinityEconomy'
-  baltopRefreshTimer: 300
+Message Ignore:
+  Ignore Alias Errors: false
+  Ignore Item Errors: false
+  Ignore Command Registry: true
 
-market:
-  saveTimer: 600
+Economy:
+  Min Account Balance: 0.0
+  Min Send Amount: 0.01
+  Preferred Provider: 'DivinityEconomy'
+  Baltop Refresh Timer: 300
 
-  enchants:
-    enable: true
-    baseQuantity: 1000000
-    buyScale: 1.1
-    sellScale: 1.0
-    wholeMarketInflation: false
-    dynamicPricing: true
-    allowUnsafeEnchants: false
+Market:
+  Save Timer: 600
 
-  materials:
-    enable: true
-    baseQuantity: 1000000
-    buyScale: 1.0
-    sellScale: 0.9
-    wholeMarketInflation: false
-    dynamicPricing: true
-    itemDamageScaling: true
+  Enchants:
+    Enable: true
+    Base Quantity: 1000000
+    Buy Scale: 1.1
+    Sell Scale: 1.0
+    Whole Market Inflation: false
+    Dynamic Pricing: true
+    Allow Unsafe Enchants: false
+
+  Materials:
+    Enable: true
+    Base Quantity: 1000000
+    Buy Scale: 1.0
+    Sell Scale: 0.9
+    Whole Market Inflation: false
+    Dynamic Pricing: true
+    Item Damage Scaling: true
 
 
-commands:
-  admin:
-    clearBal: true
-    editBal: true
-    setBal: true
-    reloadMaterials: true
-    reloadEnchants: true
-    setStock: true
-    setValue: true
-    eSetStock: true
-    eSetValue: true
-    saveMaterials: true
-    saveEnchants: true
-    reload: true
+Commands:
+  Admin:
+    Clear Bal: true
+    Edit Bal: true
+    Set Bal: true
+    Reload Materials: true
+    Reload Enchants: true
+    Set Stock: true
+    Set Value: true
+    E Set Stock: true
+    E Set Value: true
+    Save Materials: true
+    Save Enchants: true
+    Reload: true
 
-  economy:
-    balance: true
-    sendCash: true
-    baltop: true
+  Economy:
+    Balance: true
+    Send Cash: true
+    Baltop: true
 
-  enchant:
-    eBuy: true
-    eInfo: true
-    eSell: true
-    eValue: true
-    eHandValue: true
+  Enchant:
+    E Buy: true
+    E Info: true
+    E Sell: true
+    E Value: true
+    E Hand Value: true
 
-  mail:
-    clearMail: true
-    readMail: true
+  Mail:
+    Clear Mail: true
+    Read Mail: true
 
-  market:
-    buy: true
-    handBuy: true
-    handInfo: true
-    handSell: true
-    handValue: true
-    info: true
-    sell: true
-    value: true
-    sellall: true
-    listitems: true
+  Market:
+    Buy: true
+    Hand Buy: true
+    Hand Info: true
+    Hand Sell: true
+    Hand Value: true
+    Info: true
+    Sell: true
+    Value: true
+    Sell All: true
+    List Items: true
 
-  misc:
-    ping: true
-    ehelp: true
+  Misc:
+    Ping: true
+    E Help: true

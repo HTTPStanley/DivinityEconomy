@@ -1,13 +1,14 @@
-DivinityEconomy Config Information
+DivinityEconomy Config Information - This file you are viewing is not the config
 DivinityEconomy Github: https://github.com/EDGRRRRs/DivinityEconomy
 DivinityEconomyLite Github: https://github.com/EDGRRRRs/DivinityEconomyLite
 Plugin author: EDGRRRR
 Author Github: https://github.com/EDGRRRRs
 Contributors:
     - ExRider111Ryan: https://github.com/RyanA3
+    - Fuzzy Search Source: https://github.com/xdrop/fuzzywuzzy
 
-Officially supported versions: 1.16.5, 1.17
-API version: 1.16 (likely means versions below 1.16 will refuse to work)
+Officially supported versions: 1.16.5, 1.17.*
+API version: 1.16 (means versions below 1.16 will refuse to work)
 
 Colours for the chat config can be found here: https://jd.bukkit.org/org/bukkit/ChatColor.html
 &0 - Black
@@ -51,186 +52,155 @@ PlaceholderAPI support - Requires PlaceholderAPI to be installed, which can be f
 Config Help - Changing these values will not do anything here. Open config.yml
 To reset a value, delete the key.
 
-# Main settings
-main:
-    # DO NOT TOUCH THIS - Used to track config changes
-  version: <version>
+# Do Not Touch!!
+# This is used for tracking and updating the config / plugin
+# If you want to reset the config, either delete the key:value pair, reset the version to 0 or delete the file.
+Main:
+  Version: 1.18.1
 
-# Chat settings
-chat:
-    # Enables/disables debugging - More verbose descriptions of internal events
-  chatDebug: false
+# Chat configuration
+Chat:
+  # Enable/Disable Debugging
+  Chat Debug: false
+  # The message prefix used in the Console
+  Console Prefix: '&b[DivinityEconomy v<VERSION>]&9> '
+  # The message prefix used in the game chat
+  Chat Prefix: '&b[D.E]&9> '
+  # The colour of information level messages
+  Info Colour: 'GREEN'
+  # The colour of severe level messages
+  Severe Colour: 'RED'
+  # The colour of warn level messages
+  Warn Colour: 'YELLOW'
+  # The colour of debug level messages
+  Debug Colour: 'DARK_PURPLE'
+  # The number of digits to round to when printing amounts
+  Money Scale: 2
+  # The currency type / prefix for displaying money - (prefix)(amount)
+  Money Prefix: "£"
+  # Unused settings, used for vault.
+  Money Singular: "Divinity"
+  Money Plural: "Divinity's"
 
-    # The console message prefix
-    # Variables = <VERSION> - The version of the plugin
-  consolePrefix: '&b[DivinityEconomy v<VERSION>]&9> '
+# Tab Completion configuration
+Tab Completion:
+  # Enables the use of fuzzy search, can cause a reduction in performance however is reccommended to keep on.
+  Use Fuzzy Search: true
+  Fuzzy Search:
+    # The minimum score an alias can achieve before it is not shown
+    Min Score: 70.0
+    # The maximum number of results to show (more may result in a loss in performance)
+    Max Results: 50
 
-    # The in-game chat message prefix
-  chatPrefix: '&b[D.E]&9> '
+# Message ignore configuration
+Message Ignore:
+  Ignore Alias Errors: false
+  Ignore Item Errors: false
+  Ignore Command Registry: true
 
-    # Colour of information messages
-  infoColour: 'GREEN'
+# Economy configuration
+Economy:
+  # The minimum balance a player can have
+  Min Account Balance: 0.0
+  # The minimum amount of cash a player can send to another player
+  Min Send Amount: 0.01
+  # The preferred economy provider - reccommended you leave this alone.
+  Preferred Provider: 'DivinityEconomy'
+  # The seconds between /baltop refreshes (Do not set below 60 as this will cause lag)
+  Baltop Refresh Timer: 300
 
-    # Colour of severe messages
-  severeColour: 'RED'
+# Market configuration
+Market:
+  # The seconds between saving memory to disk
+  Save Timer: 600
 
-    # Colour of warning messages
-  warnColour: 'YELLOW'
+  # Enchant configuration
+  Enchants:
+    # Enables/Disables the enchant market
+    Enable: true
+    # The base number of items in the market (Lower value = increase price/rate of change)
+    Base Quantity: 1000000
+    # The scaling to apply to purchases and sales of items
+    # If the sale scale is greater or equal to the buy scale this may introduce an infinite cash glitch.
+    Buy Scale: 1.1
+    Sell Scale: 1.0
+    # Whether to calculate inflation based on the whole market size
+    # For example: selling lots of dirt could cause the price of diamonds to fall
+    Whole Market Inflation: false
+    # Whether to enable dynamic pricing of items
+    # This is the main feature of the plugin as it allows the price of materials to rise/fall based on their availability 
+    Dynamic Pricing: true
+    # Whether to allow users to purchase conflicting/unsafe enchants for their items.
+    # For example purchasing smite on a shovel
+    # For example purchasing both smite & sharpness on a sword
+    Allow Unsafe Enchants: false
 
-    # Colour of debugging messages
-  debugColour: 'DARK_PURPLE'
+  # Material configuration
+  Materials:
+    # Enables/Disables the material market
+    Enable: true
+    # The base number of items in the market (Lower value = increase price/rate of change)
+    Base Quantity: 1000000
+    # The scaling to apply to purchases and sales of items
+    # If the sale scale is greater or equal to the buy scale this may introduce an infinite cash glitch.
+    Buy Scale: 1.0
+    Sell Scale: 0.9
+    # Whether to calculate inflation based on the whole market size
+    # For example: selling lots of dirt could cause the price of diamonds to fall
+    Whole Market Inflation: false
+    # Whether to enable dynamic pricing of items
+    # This is the main feature of the plugin as it allows the price of materials to rise/fall based on their availability 
+    Dynamic Pricing: true
+    # Whether to scale the value of an item based on it's durability
+    # 50% health = 50% value
+    # A diamond shovel worth £5000 will sell for £2500 at 50% durability
+    Item Damage Scaling: true
 
-    # The number of decimal digits in money values
-  moneyScale: 2
 
-    # The prefix symbol for money
-  moneyPrefix: "£"
+# Enable/Disable commands here by setting their value to true/false
+Commands:
+  Admin:
+    Clear Bal: true
+    Edit Bal: true
+    Set Bal: true
+    Reload Materials: true
+    Reload Enchants: true
+    Set Stock: true
+    Set Value: true
+    E Set Stock: true
+    E Set Value: true
+    Save Materials: true
+    Save Enchants: true
+    Reload: true
 
-    # Currently used for VAULT -  has no impact on DivinityEconomy
-  moneySingular: "Divinity"
-  moneyPlural: "Divinity's"
+  Economy:
+    Balance: true
+    Send Cash: true
+    Baltop: true
 
-# Message ignore settings - Quiet down spammy messages from the plugin.
-messageIgnore:
-    # Whether to ignore internal alias warnings
-  ignoreAliasErrors: false
+  Enchant:
+    E Buy: true
+    E Info: true
+    E Sell: true
+    E Value: true
+    E Hand Value: true
 
-    # Whether to ignore internal material warnings
-  ignoreItemErrors: false
+  Mail:
+    Clear Mail: true
+    Read Mail: true
 
-    # Whether to ignore command registry messages
-  ignoreCommandRegistry: true
+  Market:
+    Buy: true
+    Hand Buy: true
+    Hand Info: true
+    Hand Sell: true
+    Hand Value: true
+    Info: true
+    Sell: true
+    Value: true
+    Sell All: true
+    List Items: true
 
-# Economy settings
-economy:
-    # The minimum amount of cash a user can have in their bank account
-  minAccountBalance: 0.0
-
-    # The minimum amount of cash a player can send when using /sendcash
-  minSendAmount: 0.01
-
-    # The preferred economy provider, such as EssentialsX and so on.
-    # By default 'DivinityEconomy' uses the internal economy provider, regardless of other plugins or Vault's presence.
-  preferredProvider: 'DivinityEconomy'
-
-    # How often the internal baltop task will run.
-    # 300 = 5 minutes
-  baltopRefreshTimer: 300
-
-# Market settings
-market:
-    # The internal save timer for autosaving enchant/material data in seconds.
-    # 600 seconds = 10 minutes.
-  saveTimer: 600
-
-    # Enchant settings
-  enchants:
-        # Whether to enable the enchant market or not
-    enable: true
-
-        # The base quantity of an enchant.
-        # This is the price at which an enchant costs £1 before scaling, inflation and other market scaling is applied.
-    baseQuantity: 1000000
-
-        # The scaling to apply to purchases
-        # 1.1 means a £1 enchant will cost £1.10 to purchase.
-    buyScale: 1.1
-
-        # The scaling to apply to sales
-        # 1.0 means a £1 enchant will yield £1.00 when sold.
-    sellScale: 1.0
-            # This scaling is done to prevent buying and selling the same enchant for easy profit
-
-        # Whether to enable whole market inflation dynamics
-        # This works by scaling the price of enchant by the over abundance or lack of enchants in the market.
-        # If there is a 10% reduction in enchant in the market, the prices will be scaled inversely.
-        # for example, 10% less items = 1.1 * price
-    wholeMarketInflation: false
-
-        # Whether to enable dynamic pricing or not
-        # Disabling this means that enchant quantities are static and do not change
-    dynamicPricing: true
-
-      # Whether to allow users to buy enchants for items that do not support the enchant or have conflicting enchants.
-    allowUnsafeEnchants: false
-
-    # Material settings
-  materials:
-       # Whether to enable the enchant market or not
-   enable: true
-
-        # The base quantity of an enchant.
-        # This is the price at which an enchant costs £1 before scaling, inflation and other market scaling is applied.
-    baseQuantity: 1000000
-
-        # The scaling to apply to purchases
-        # 1.1 means a £1 enchant will cost £1.10 to purchase.
-    buyScale: 1.1
-
-        # The scaling to apply to sales
-        # 1.0 means a £1 enchant will yield £1.00 when sold.
-    sellScale: 1.0
-        # This scaling is done to prevent buying and selling the same enchant for easy profit
-
-        # Whether to enable whole market inflation dynamics
-        # This works by scaling the price of enchant by the over abundance or lack of enchants in the market.
-        # If there is a 10% reduction in enchant in the market, the prices will be scaled inversely.
-        # for example, 10% less items = 1.1 * price
-    wholeMarketInflation: false
-
-        # Whether to enable dynamic pricing or not
-        # Disabling this means that enchant quantities are static and do not change
-    dynamicPricing: true
-
-        # Whether to enable item damage scaling to sales
-        # An item with half HP will sell for half as much
-    itemDamageScaling: true
-
-# Command settings
-# Setting these values to true will enable the corresponding commands
-# Setting these values to false will disable the corresponding commands
-commands:
-  admin:
-    clearBal: true
-    editBal: true
-    setBal: true
-    reloadMaterials: true
-    reloadEnchants: true
-    setStock: true
-    setValue: true
-    eSetStock: true
-    eSetValue: true
-    saveMaterials: true
-    saveEnchants: true
-
-  economy:
-    balance: true
-    sendCash: true
-    baltop: true
-
-  enchant:
-    eBuy: true
-    eInfo: true
-    eSell: true
-    eValue: true
-    eHandValue: true
-
-  mail:
-    clearMail: true
-    readMail: true
-
-  market:
-    buy: true
-    handBuy: true
-    handInfo: true
-    handSell: true
-    handValue: true
-    info: true
-    sell: true
-    sellall: true
-    value: true
-    listitems: true
-
-  misc:
-    ping: true
-    ehelp: true
+  Misc:
+    Ping: true
+    E Help: true
