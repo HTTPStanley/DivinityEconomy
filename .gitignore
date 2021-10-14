@@ -427,3 +427,5 @@ out/production/DCE/me/edgrrrr/de/placeholders/expansions/PAPIRawPlayerBalance.cl
 out/production/DCE/potionAliases.yml
 out/production/DCE/potions.yml
 out/production/DCE/me/edgrrrr/de/economy/StockMarket.class
+.idea/libraries/fuzzywuzzy_1_3_0.xml
+lib/fuzzywuzzy-1.3.0.jar
