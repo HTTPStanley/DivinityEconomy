@@ -39,6 +39,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Locale;
 
 /**
  * The Main Class of the plugin
@@ -76,6 +77,7 @@ public class DEPlugin extends JavaPlugin {
      */
     @Override
     public void onEnable() {
+        Locale.setDefault(new Locale("en", "GB"));
         // Instantiates all modules
         LogLevel.loadValuesFromConfig((YamlConfiguration) this.getConfig());
         this.config = new ConfigManager(this);
