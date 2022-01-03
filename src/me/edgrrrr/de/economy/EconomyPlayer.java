@@ -31,15 +31,27 @@ public class EconomyPlayer {
         return String.format("%s.yml", offlinePlayer.getUniqueId().toString().toLowerCase());
     }
 
+    public static String getUserName(OfflinePlayer offlinePlayer) {
+        // if name is null or empty, use uuid (to support non players)
+        String name = offlinePlayer.getName();
+
+        if (name == null || name.strip().equals("")) {
+            return offlinePlayer.getUniqueId().toString();
+        } else {
+            return name;
+        }
+    }
+
     public static EconomyPlayer create(OfflinePlayer offlinePlayer, File file, FileConfiguration fileConf, double balance) {
         if (offlinePlayer == null) {
             EconConsole.get().severe("A Null Offline Player was handed to the economy player create function.");
             return null;
         }
+
         EconomyPlayer economyPlayer = new EconomyPlayer(offlinePlayer, file, fileConf);
         economyPlayer.set(EconomyFileKeys.BALANCE, BigDecimal.valueOf(balance).toString());
         economyPlayer.set(EconomyFileKeys.UUID, offlinePlayer.getUniqueId().toString());
-        economyPlayer.set(EconomyFileKeys.NAME, offlinePlayer.getName());
+        economyPlayer.set(EconomyFileKeys.NAME, getUserName(offlinePlayer));
         economyPlayer.save();
 
         return economyPlayer;
@@ -100,7 +112,7 @@ public class EconomyPlayer {
     }
 
     public void update() {
-        this.setName(this.offlinePlayer.getName());
+        this.setName(getUserName(this.offlinePlayer));
     }
 
     public String getLastKnownName() {

@@ -157,7 +157,7 @@ public class DivinityEconomy implements net.milkbowl.vault.economy.Economy {
      */
     @Override
     public String format(double amount) {
-        return String.format("%,." + this.fractionalDigits + "%", amount);
+        return String.format("%,." + this.fractionalDigits + "f", amount);
     }
 
     /**
