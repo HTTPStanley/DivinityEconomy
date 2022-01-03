@@ -2,14 +2,10 @@ package me.edgrrrr.de.events;
 
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.mail.MailList;
-import me.edgrrrr.de.player.PlayerManager;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.inventory.ItemStack;
 
 /**
  * A mail event for telling players if they have pending mail or not
