@@ -1,11 +1,13 @@
 package me.edgrrrr.de.config;
 
+import com.tchristofferson.configupdater.ConfigUpdater;
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.DivinityModule;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.Collections;
@@ -33,15 +35,13 @@ public class ConfigManager extends DivinityModule {
         String pluginVersion = this.getMain().getConfig().getDefaults().getString(Setting.MAIN_VERSION_STRING.path);
 
         this.getConsole().info("Detected config versions local/plugin | %s/%s", configVersion, pluginVersion);
-        // Updates the config by copying defaults over
-        // updates the version and saves.
-        if (!(configVersion.equals(pluginVersion))) {
-            this.getConsole().info("Updating config with new defaults, your settings may need updating.");
+
+        try {
+            ConfigUpdater.update(this.getMain(), "config.yml", this.getFile("config.yml"), Collections.emptyList());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        this.getMain().getConfig().options().copyDefaults(true);
-        this.getMain().getConfig().addDefaults(this.getMain().getConfig().getDefaults());
-        this.getMain().getConfig().set(Setting.MAIN_VERSION_STRING.path, pluginVersion);
-        this.getMain().saveConfig();
+        this.getMain().reloadConfig();
     }
 
     /**

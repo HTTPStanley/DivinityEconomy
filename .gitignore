@@ -430,3 +430,7 @@ out/production/DCE/me/edgrrrr/de/economy/StockMarket.class
 .idea/libraries/fuzzywuzzy_1_3_0.xml
 lib/fuzzywuzzy-1.3.0.jar
 out/production/DCE/me/edgrrrr/de/utils/Converter.class
+out/production/DCE/me/edgrrrr/de/economy/EconomyPlayerMemory.class
+out/production/DCE/com/tchristofferson/configupdater/ConfigUpdater.class
+out/production/DCE/com/tchristofferson/configupdater/KeyBuilder.class
+out/production/DCE/me/edgrrrr/de/economy/SmartMemoryPlayerManager.class
