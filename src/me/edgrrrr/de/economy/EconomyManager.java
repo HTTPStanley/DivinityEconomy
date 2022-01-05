@@ -3,11 +3,11 @@ package me.edgrrrr.de.economy;
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.DivinityModule;
 import me.edgrrrr.de.config.Setting;
-import me.edgrrrr.de.math.Math;
 import me.edgrrrr.de.response.EconomyTransferResponse;
 import me.edgrrrr.de.utils.ArrayUtils;
+import me.edgrrrr.de.utils.Converter;
+import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
-import net.milkbowl.vault.economy.EconomyResponse.ResponseType;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.ServicePriority;
@@ -40,7 +40,7 @@ public class EconomyManager extends DivinityModule {
                 Collections.sort(sortedPlayers, Map.Entry.comparingByValue());
                 Collections.reverse(sortedPlayers);
                 Map<Integer, Map.Entry<UUID, Double>[]> playersByPage = new ConcurrentHashMap<>();
-                for (Map.Entry<Integer, List<Object>> entry : ArrayUtils.toPages(sortedPlayers.toArray(new Map.Entry[0]), 10).entrySet()) {
+                for (Map.Entry<Integer, List<Object>> entry : ArrayUtils.paginator(sortedPlayers.toArray(new Map.Entry[0]), 10).entrySet()) {
                     ArrayList<Map.Entry<UUID, Double>> entries = new ArrayList<>();
                     entry.getValue().forEach(obj -> entries.add((Map.Entry<UUID, Double>) obj));
                     playersByPage.put(entry.getKey(), entries.toArray(new Map.Entry[0]));
@@ -68,7 +68,7 @@ public class EconomyManager extends DivinityModule {
     private String providerName;
 
     // Stores the Vault economy api
-    private net.milkbowl.vault.economy.Economy economy;
+    private Economy economy;
 
     public EconomyManager(DEPlugin main) {
         super(main);
@@ -90,7 +90,7 @@ public class EconomyManager extends DivinityModule {
         }
 
         // Setup baltop task scheduler
-        int timer = Math.getTicks(this.getMain().getConfMan().getInt(Setting.ECONOMY_BALTOP_REFRESH_INTEGER));
+        int timer = Converter.getTicks(this.getMain().getConfMan().getInt(Setting.ECONOMY_BALTOP_REFRESH_INTEGER));
         this.baltopTask.runTaskTimerAsynchronously(this.getMain(), 0, timer);
     }
 
@@ -131,22 +131,31 @@ public class EconomyManager extends DivinityModule {
         return this.orderedBalances;
     }
 
-    public Collection<RegisteredServiceProvider<net.milkbowl.vault.economy.Economy>> getProviders() {
-        return this.getMain().getServer().getServicesManager().getRegistrations(net.milkbowl.vault.economy.Economy.class);
+    public Collection<RegisteredServiceProvider<Economy>> getProviders() {
+        return this.getMain().getServer().getServicesManager().getRegistrations(Economy.class);
     }
 
-    public RegisteredServiceProvider<net.milkbowl.vault.economy.Economy> getPrimaryProvider() {
-        for (RegisteredServiceProvider<net.milkbowl.vault.economy.Economy> provider : this.getProviders()) {
+    public RegisteredServiceProvider<Economy> getPrimaryProvider() {
+        for (RegisteredServiceProvider<Economy> provider : this.getProviders()) {
             if (provider.getPlugin().getName().equals(this.providerName)) {
                 return provider;
             }
         }
-        return this.getMain().getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
+        return this.getMain().getServer().getServicesManager().getRegistration(Economy.class);
     }
 
-    public Collection<RegisteredServiceProvider<net.milkbowl.vault.economy.Economy>> setProvider(net.milkbowl.vault.economy.Economy economy) {
-        this.getMain().getServer().getServicesManager().register(net.milkbowl.vault.economy.Economy.class, economy, this.getMain(), ServicePriority.Normal);
+    public Collection<RegisteredServiceProvider<Economy>> setProvider(Economy economy) {
+        this.getMain().getServer().getServicesManager().register(Economy.class, economy, this.getMain(), ServicePriority.Normal);
         return this.getProviders();
+    }
+
+    public Collection<RegisteredServiceProvider<Economy>> unregisterProvider(Economy economy) {
+        this.getMain().getServer().getServicesManager().unregister(economy);
+        return this.getProviders();
+    }
+
+    public DivinityEconomy createDivEcon() {
+        return new DivinityEconomy(this.getMain(), this.getConfMan(), this.getConsole(), this.getPlayMan(), this.getConfMan().getInt(Setting.CHAT_ECONOMY_DIGITS_INT), this.getConfMan().getString(Setting.CHAT_ECONOMY_PLURAL_STRING), this.getConfMan().getString(Setting.CHAT_ECONOMY_SINGULAR_STRING));
     }
 
 
@@ -155,30 +164,35 @@ public class EconomyManager extends DivinityModule {
      * Returns if it was successful or not.
      */
     public boolean setupEconomy() {
-        DivinityEconomy divinityEconomy = new DivinityEconomy(this.getMain(), this.getConfMan(), this.getConsole(), this.getPlayMan(), this.getConfMan().getInt(Setting.CHAT_ECONOMY_DIGITS_INT), this.getConfMan().getString(Setting.CHAT_ECONOMY_PLURAL_STRING), this.getConfMan().getString(Setting.CHAT_ECONOMY_SINGULAR_STRING));
 
         // Look for vault
         if (this.getMain().getServer().getPluginManager().getPlugin("Vault") == null) {
             this.getConsole().warn("No plugin 'Vault' detected, this will likely cause issues with plugins not cooperating.");
-            this.economy = divinityEconomy;
+            this.economy = this.createDivEcon();
 
         } else {
             this.getConsole().info("Vault has been detected.");
 
 
             // Get the service provider
-            Collection<RegisteredServiceProvider<net.milkbowl.vault.economy.Economy>> providers = this.setProvider(divinityEconomy);
-            if (providers.size() == 0) {
-                this.getConsole().severe("Could not register Economy.");
-                return false;
-            } else {
-                this.economy = this.getPrimaryProvider().getProvider();
+            Collection<RegisteredServiceProvider<Economy>> providers = this.getProviders();
+            for (RegisteredServiceProvider<Economy> provider : providers) {
+                this.getConsole().info("Registered Economy Provider: '%s' (selected = %s)", provider.getPlugin().getName(), provider.getPlugin().getName().equalsIgnoreCase(this.providerName));
+                if (provider.getPlugin().getName().equalsIgnoreCase(this.providerName)) {
+                    this.economy = this.getPrimaryProvider().getProvider();
+                }
             }
 
-            for (RegisteredServiceProvider<net.milkbowl.vault.economy.Economy> provider : providers) {
-                this.getConsole().info("Registered Economy Provider: '%s' (primary = %s) (selected = %s)", provider.getPlugin().getName(), provider.equals(this.getPrimaryProvider()), provider.getPlugin().getName().equals(this.providerName));
+            if (this.economy == null){
+                this.economy = this.createDivEcon();
+                if (this.setProvider(this.economy).size() == 0) {
+                    this.getConsole().warn("Could not register economy.");
+                    return false;
+                }
             }
-            this.getConsole().info("Total Economy Providers: %d", providers.size());
+
+
+            this.getConsole().info("Economy Provider: %s", this.economy.getName());
         }
 
         // return if economy was gotten successfully.
@@ -190,7 +204,7 @@ public class EconomyManager extends DivinityModule {
      *
      * @return Economy
      */
-    public net.milkbowl.vault.economy.Economy getVaultEconomy() {
+    public Economy getVaultEconomy() {
         return this.economy;
     }
 
@@ -248,7 +262,7 @@ public class EconomyManager extends DivinityModule {
         } else if (difference > 0) {
             response = this.addCash(oPlayer, difference);
         } else {
-            response = new EconomyResponse(difference, this.getBalance(oPlayer), ResponseType.SUCCESS, "");
+            response = new EconomyResponse(difference, this.getBalance(oPlayer), EconomyResponse.ResponseType.SUCCESS, "");
         }
 
         this.getConsole().debug("SET RESULT: %s %s", response.transactionSuccess(), response.errorMessage);
@@ -275,29 +289,29 @@ public class EconomyManager extends DivinityModule {
         double toBalance = this.getBalance(to);
 
         if (from == to) {
-            response = new EconomyTransferResponse(fromBalance, toBalance, 0.0, ResponseType.FAILURE, "cannot send money to yourself!");
+            response = new EconomyTransferResponse(fromBalance, toBalance, 0.0, EconomyResponse.ResponseType.FAILURE, "cannot send money to yourself!");
         } else {
             // Ensure amount is above or equal to the minimum send amount
             if (amount < this.minTransfer) {
-                response = new EconomyTransferResponse(fromBalance, toBalance, 0.0, ResponseType.FAILURE, String.format("cannot send less than £%f", this.minTransfer));
+                response = new EconomyTransferResponse(fromBalance, toBalance, 0.0, EconomyResponse.ResponseType.FAILURE, String.format("cannot send less than £%f", this.minTransfer));
             } else {
 
                 // Take money from sender
                 EconomyResponse takeResponse = this.remCash(from, amount);
-                if (takeResponse.type == ResponseType.FAILURE) {
-                    response = new EconomyTransferResponse(fromBalance, toBalance, 0.0, ResponseType.FAILURE, takeResponse.errorMessage);
+                if (takeResponse.type == EconomyResponse.ResponseType.FAILURE) {
+                    response = new EconomyTransferResponse(fromBalance, toBalance, 0.0, EconomyResponse.ResponseType.FAILURE, takeResponse.errorMessage);
 
                 } else {
 
                     // Send money to receiver
                     EconomyResponse sendResponse = this.addCash(to, amount);
-                    if (sendResponse.type == ResponseType.FAILURE) {
+                    if (sendResponse.type == EconomyResponse.ResponseType.FAILURE) {
                         // Since takeResponse was a success
                         // We have to reset their balance
                         this.setCash(from, fromBalance);
-                        response = new EconomyTransferResponse(this.getBalance(from), toBalance, 0.0, ResponseType.FAILURE, sendResponse.errorMessage);
+                        response = new EconomyTransferResponse(this.getBalance(from), toBalance, 0.0, EconomyResponse.ResponseType.FAILURE, sendResponse.errorMessage);
                     } else {
-                        response = new EconomyTransferResponse(this.getBalance(from), this.getBalance(from), amount, ResponseType.SUCCESS, "");
+                        response = new EconomyTransferResponse(this.getBalance(from), this.getBalance(from), amount, EconomyResponse.ResponseType.SUCCESS, "");
                     }
                 }
             }

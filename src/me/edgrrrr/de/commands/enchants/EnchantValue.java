@@ -4,8 +4,8 @@ import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.commands.DivinityCommandEnchant;
 import me.edgrrrr.de.config.Setting;
 import me.edgrrrr.de.market.items.enchants.MarketableEnchant;
-import me.edgrrrr.de.math.Math;
 import me.edgrrrr.de.response.ValueResponse;
+import me.edgrrrr.de.utils.Converter;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -50,7 +50,7 @@ public class EnchantValue extends DivinityCommandEnchant {
             // Sell enchant level times
             case 2:
                 enchantName = args[0];
-                enchantLevels = Math.getInt(args[1]);
+                enchantLevels = Converter.getInt(args[1]);
                 break;
 
             // If wrong number of arguments

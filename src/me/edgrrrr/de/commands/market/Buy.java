@@ -5,9 +5,9 @@ import me.edgrrrr.de.commands.DivinityCommandMaterials;
 import me.edgrrrr.de.config.Setting;
 import me.edgrrrr.de.market.items.materials.MarketableMaterial;
 import me.edgrrrr.de.market.items.materials.MaterialManager;
-import me.edgrrrr.de.math.Math;
 import me.edgrrrr.de.player.PlayerManager;
 import me.edgrrrr.de.response.ValueResponse;
+import me.edgrrrr.de.utils.Converter;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -45,7 +45,7 @@ public class Buy extends DivinityCommandMaterials {
             // Material & Amount
             case 2:
                 materialName = args[0];
-                amountToBuy = Math.getInt(args[1]);
+                amountToBuy = Converter.getInt(args[1]);
                 break;
 
             default:

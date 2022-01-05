@@ -56,6 +56,7 @@ public enum Setting {
     IGNORE_ALIAS_ERRORS_BOOLEAN(SECTION_MESSAGES.path + ".Ignore Alias Errors"),
     IGNORE_ITEM_ERRORS_BOOLEAN(SECTION_MESSAGES.path + ".Ignore Item Errors"),
     IGNORE_COMMAND_REGISTRY_BOOLEAN(SECTION_MESSAGES.path + ".Ignore Command Registry"),
+    IGNORE_SAVE_MESSAGE_BOOLEAN(SECTION_MESSAGES.path + ".Ignore Save Messages"),
 
     //Economy Settings
     ECONOMY_MIN_SEND_AMOUNT_DOUBLE(SECTION_ECONOMY.path + ".Min Send Amount"),
@@ -65,6 +66,8 @@ public enum Setting {
 
     //Market Settings
     MARKET_SAVE_TIMER_INTEGER(SECTION_MARKET.path + ".Save Timer"),
+    MARKET_MAX_ITEM_VALUE_DOUBLE(SECTION_MARKET.path + ".Max Item Value"),
+    MARKET_MIN_ITEM_VALUE_DOUBLE(SECTION_MARKET.path + ".Min Item Value"),
 
     MARKET_MATERIALS_ENABLE_BOOLEAN(SECTION_MARKET_MATERIALS.path + ".Enable"),
     MARKET_MATERIALS_BASE_QUANTITY_INTEGER(SECTION_MARKET_MATERIALS.path + ".Base Quantity"),

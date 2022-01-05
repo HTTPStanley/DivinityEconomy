@@ -1,5 +1,5 @@
 Main:
-  Version: 1.18.2
+  Version: 1.18.3
 
 Chat:
   Chat Debug: false
@@ -24,6 +24,7 @@ Message Ignore:
   Ignore Alias Errors: false
   Ignore Item Errors: false
   Ignore Command Registry: true
+  Ignore Save Messages: false
 
 Economy:
   Min Account Balance: 0.0
@@ -33,6 +34,8 @@ Economy:
 
 Market:
   Save Timer: 600
+  Max Item Value: -1
+  Min Item Value: .001
 
   Enchants:
     Enable: true

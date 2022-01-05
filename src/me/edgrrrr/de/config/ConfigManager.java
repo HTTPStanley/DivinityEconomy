@@ -37,11 +37,11 @@ public class ConfigManager extends DivinityModule {
         // updates the version and saves.
         if (!(configVersion.equals(pluginVersion))) {
             this.getConsole().info("Updating config with new defaults, your settings may need updating.");
-            this.getMain().getConfig().options().copyDefaults(true);
-            this.getMain().getConfig().addDefaults(this.getMain().getConfig().getDefaults());
-            this.getMain().getConfig().set(Setting.MAIN_VERSION_STRING.path, pluginVersion);
-            this.getMain().saveConfig();
         }
+        this.getMain().getConfig().options().copyDefaults(true);
+        this.getMain().getConfig().addDefaults(this.getMain().getConfig().getDefaults());
+        this.getMain().getConfig().set(Setting.MAIN_VERSION_STRING.path, pluginVersion);
+        this.getMain().saveConfig();
     }
 
     /**

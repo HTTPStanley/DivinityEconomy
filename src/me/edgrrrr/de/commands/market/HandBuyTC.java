@@ -5,8 +5,8 @@ import me.edgrrrr.de.commands.DivinityCommand;
 import me.edgrrrr.de.commands.DivinityCommandMaterialsTC;
 import me.edgrrrr.de.config.Setting;
 import me.edgrrrr.de.market.items.materials.MarketableMaterial;
-import me.edgrrrr.de.math.Math;
 import me.edgrrrr.de.player.PlayerManager;
+import me.edgrrrr.de.utils.Converter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -58,7 +58,7 @@ public class HandBuyTC extends DivinityCommandMaterialsTC {
                 // If uses clicks space after number, returns the value of the amount of item given
                 case 2:
                     strings = new String[]{
-                            String.format("Value: £%,.2f", marketableMaterial.getManager().calculatePrice(Math.getInt(args[0]), marketableMaterial.getQuantity(), marketableMaterial.getManager().getBuyScale(), true))
+                            String.format("Value: £%,.2f", marketableMaterial.getManager().calculatePrice(Converter.getInt(args[0]), marketableMaterial.getQuantity(), marketableMaterial.getManager().getBuyScale(), true))
                     };
                     break;
             }

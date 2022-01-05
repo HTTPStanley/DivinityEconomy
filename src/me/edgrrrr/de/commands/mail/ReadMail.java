@@ -5,7 +5,7 @@ import me.edgrrrr.de.commands.DivinityCommand;
 import me.edgrrrr.de.config.Setting;
 import me.edgrrrr.de.mail.Mail;
 import me.edgrrrr.de.mail.MailList;
-import me.edgrrrr.de.math.Math;
+import me.edgrrrr.de.utils.Converter;
 import org.bukkit.entity.Player;
 
 import java.util.Map;
@@ -41,7 +41,7 @@ public class ReadMail extends DivinityCommand {
                 break;
 
             case 1:
-                page = Math.getInt(args[0]) - 1;
+                page = Converter.getInt(args[0]) - 1;
                 break;
 
             default:

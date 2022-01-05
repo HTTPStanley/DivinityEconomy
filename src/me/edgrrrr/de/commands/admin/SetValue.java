@@ -4,7 +4,7 @@ import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.commands.DivinityCommand;
 import me.edgrrrr.de.config.Setting;
 import me.edgrrrr.de.market.items.materials.MarketableMaterial;
-import me.edgrrrr.de.math.Math;
+import me.edgrrrr.de.utils.Converter;
 import org.bukkit.entity.Player;
 
 /**
@@ -35,7 +35,7 @@ public class SetValue extends DivinityCommand {
         switch (args.length) {
             case 2:
                 marketableMaterial = this.getMain().getMarkMan().getItem(args[0]);
-                value = Math.getDouble(args[1]);
+                value = Converter.getDouble(args[1]);
                 break;
 
             default:

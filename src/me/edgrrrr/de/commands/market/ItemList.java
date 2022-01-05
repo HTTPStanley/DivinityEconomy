@@ -5,8 +5,8 @@ import me.edgrrrr.de.commands.DivinityCommand;
 import me.edgrrrr.de.config.Setting;
 import me.edgrrrr.de.console.LogLevel;
 import me.edgrrrr.de.market.items.materials.MarketableMaterial;
-import me.edgrrrr.de.math.Math;
 import me.edgrrrr.de.utils.ArrayUtils;
+import me.edgrrrr.de.utils.Converter;
 import org.bukkit.entity.Player;
 
 import java.util.*;
@@ -71,7 +71,7 @@ public class ItemList extends DivinityCommand {
         switch (args.length) {
             case 3:
                 String arg3 = args[2];
-                pageNumber = Math.getInt(arg3) - 1;
+                pageNumber = Converter.getInt(arg3) - 1;
 
             case 2:
                 String arg2 = args[1];
@@ -133,7 +133,7 @@ public class ItemList extends DivinityCommand {
             Collections.sort(sortedArray, Map.Entry.comparingByValue());
             if (!ascending) Collections.reverse(sortedArray);
 
-            Map<Integer, List<Object>> itemPages = ArrayUtils.toPages(sortedArray.toArray(new Map.Entry[0]), 10);
+            Map<Integer, List<Object>> itemPages = ArrayUtils.paginator(sortedArray.toArray(new Map.Entry[0]), 10);
             // Ensure page number fits within item pages
             if (pageNumber > itemPages.size() - 1 || pageNumber < 0) {
                 this.getMain().getConsole().send(sender, CommandResponse.InvalidAmountGiven.defaultLogLevel, CommandResponse.InvalidAmountGiven.message);
@@ -163,7 +163,7 @@ public class ItemList extends DivinityCommand {
             Collections.sort(sortedArray, Map.Entry.comparingByValue());
             if (!ascending) Collections.reverse(sortedArray);
 
-            Map<Integer, List<Object>> itemPages = ArrayUtils.toPages(sortedArray.toArray(new Map.Entry[0]), 10);
+            Map<Integer, List<Object>> itemPages = ArrayUtils.paginator(sortedArray.toArray(new Map.Entry[0]), 10);
             // Ensure page number fits within item pages
             if (pageNumber > itemPages.size() - 1 || pageNumber < 0) {
                 this.getMain().getConsole().send(sender, CommandResponse.InvalidAmountGiven.defaultLogLevel, CommandResponse.InvalidAmountGiven.message);
@@ -191,7 +191,7 @@ public class ItemList extends DivinityCommand {
             Collections.sort(sortedArray, Map.Entry.comparingByValue());
             if (ascending) Collections.reverse(sortedArray);
 
-            Map<Integer, List<Object>> itemPages = ArrayUtils.toPages(sortedArray.toArray(new Map.Entry[0]), 10);
+            Map<Integer, List<Object>> itemPages = ArrayUtils.paginator(sortedArray.toArray(new Map.Entry[0]), 10);
             // Ensure page number fits within item pages
             if (pageNumber > itemPages.size() - 1 || pageNumber < 0) {
                 this.getMain().getConsole().send(sender, CommandResponse.InvalidAmountGiven.defaultLogLevel, CommandResponse.InvalidAmountGiven.message);

@@ -43,7 +43,7 @@ public class MailList {
      */
     public Map<Integer, Mail[]> getPages(int pageSize) {
         Mail[] allMail = this.getAllMail().values().toArray(new Mail[0]);
-        Map<Integer, List<Object>> toPages = ArrayUtils.toPages(allMail, pageSize);
+        Map<Integer, List<Object>> toPages = ArrayUtils.paginator(allMail, pageSize);
         Map<Integer, Mail[]> mailPages = new ConcurrentHashMap<>();
         for (int pageNum : toPages.keySet()) {
             List<Object> objects = toPages.get(pageNum);

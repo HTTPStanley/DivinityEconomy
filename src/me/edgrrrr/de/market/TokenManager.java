@@ -3,13 +3,15 @@ package me.edgrrrr.de.market;
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.DivinityModule;
 import me.edgrrrr.de.config.Setting;
-import me.edgrrrr.de.math.Math;
+import me.edgrrrr.de.utils.Converter;
 import me.xdrop.fuzzywuzzy.FuzzySearch;
 import me.xdrop.fuzzywuzzy.model.ExtractedResult;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -33,11 +35,14 @@ public abstract class TokenManager extends DivinityModule {
     protected int totalItems;
     protected int defaultTotalItems;
     // Other settings
+    protected double maxItemValue;
+    protected double minItemValue;
     protected double buyScale;
     protected double sellScale;
     protected double baseQuantity;
     protected boolean dynamicPricing;
     protected boolean wholeMarketInflation;
+    protected boolean saveMessagesDisabled;
     // Stores config
     protected FileConfiguration config;
 
@@ -61,12 +66,21 @@ public abstract class TokenManager extends DivinityModule {
      */
     @Override
     public void init() {
+        this.saveMessagesDisabled = this.getConfMan().getBoolean(Setting.IGNORE_SAVE_MESSAGE_BOOLEAN);
         this.buyScale = this.getConfMan().getDouble(Setting.MARKET_MATERIALS_BUY_TAX_FLOAT);
         this.sellScale = this.getConfMan().getDouble(Setting.MARKET_MATERIALS_SELL_TAX_FLOAT);
         this.baseQuantity = this.getConfMan().getInt(Setting.MARKET_MATERIALS_BASE_QUANTITY_INTEGER);
         this.dynamicPricing = this.getConfMan().getBoolean(Setting.MARKET_MATERIALS_DYN_PRICING_BOOLEAN);
         this.wholeMarketInflation = this.getConfMan().getBoolean(Setting.MARKET_MATERIALS_WHOLE_MARKET_INF_BOOLEAN);
-        int timer = Math.getTicks(this.getConfMan().getInt(Setting.MARKET_SAVE_TIMER_INTEGER));
+        this.maxItemValue = this.getConfMan().getDouble(Setting.MARKET_MAX_ITEM_VALUE_DOUBLE);
+        if (this.maxItemValue < 0) {
+            this.maxItemValue = Double.MAX_VALUE;
+        }
+        this.minItemValue = this.getConfMan().getDouble(Setting.MARKET_MIN_ITEM_VALUE_DOUBLE);
+        if (this.minItemValue < 0) {
+            this.minItemValue = Double.MIN_VALUE;
+        }
+        int timer = Converter.getTicks(this.getConfMan().getInt(Setting.MARKET_SAVE_TIMER_INTEGER));
         this.saveTimer = new BukkitRunnable() {
             @Override
             public void run() {
@@ -99,6 +113,20 @@ public abstract class TokenManager extends DivinityModule {
      */
     public double getSellScale() {
         return this.sellScale;
+    }
+
+    /**
+     * Returns maximum item value
+     */
+    public double getMaxItemValue() {
+        return this.maxItemValue;
+    }
+
+    /**
+     * Returns minimum item value
+     */
+    public double getMinItemValue() {
+        return this.minItemValue;
     }
 
     /**
@@ -288,7 +316,7 @@ public abstract class TokenManager extends DivinityModule {
      * @return double
      */
     public double calculatePrice(double amount, double stock, double scale, boolean purchase) {
-        return Math.calculatePrice(this.baseQuantity, stock, this.defaultTotalItems, this.totalItems, amount, scale, purchase, this.dynamicPricing, this.wholeMarketInflation);
+        return calculatePrice(this.baseQuantity, stock, this.defaultTotalItems, this.totalItems, amount, scale, purchase, this.dynamicPricing, this.wholeMarketInflation);
     }
 
     /**
@@ -304,7 +332,24 @@ public abstract class TokenManager extends DivinityModule {
         if (!this.wholeMarketInflation) {
             inflation = 1.0;
         }
-        return Math.getPrice(this.baseQuantity, stock, scale, inflation);
+        return this.fitPriceToConstraints(getPrice(this.baseQuantity, stock, scale, inflation));
+    }
+
+    /**
+     * Returns the price of an item fit to the max and min constraints
+     * @param price
+     * @return
+     */
+    public double fitPriceToConstraints(double price) {
+        if (price > this.maxItemValue) {
+            price = this.maxItemValue;
+        }
+
+        if (price < this.minItemValue) {
+            price = this.minItemValue;
+        }
+
+        return price;
     }
 
     /**
@@ -326,7 +371,7 @@ public abstract class TokenManager extends DivinityModule {
      */
     public double getInflation() {
         if (this.wholeMarketInflation) {
-            return Math.getInflation(this.defaultTotalItems, this.totalItems);
+            return getInflation(this.defaultTotalItems, this.totalItems);
         } else {
             return 1.0;
         }
@@ -495,7 +540,9 @@ public abstract class TokenManager extends DivinityModule {
 
         // save
         this.saveFile();
-        this.getConsole().info("%s saved.", this.itemFile);
+        if (!this.saveMessagesDisabled) {
+            this.getConsole().info("%s saved.", this.itemFile);
+        }
     }
 
     /**
@@ -514,4 +561,104 @@ public abstract class TokenManager extends DivinityModule {
         this.getConfMan().saveFile(config, this.itemFile);
     }
 
+
+    /**
+     * Calculates the price of an amount of items
+     *
+     * @param baseQuantity      - The base quantity of the item
+     * @param currentQuantity   - The current quantity of the item
+     * @param defaultMarketSize - The default market size
+     * @param marketSize        - The current market size
+     * @param amount            - The amount of the item to buy
+     * @param scale             - The price scaling (e.g. tax)
+     * @param purchase          - Whether this is a purchase or a sale.
+     * @return double
+     */
+    public double calculatePrice(double baseQuantity, double currentQuantity, double defaultMarketSize, double marketSize, double amount, double scale, boolean purchase, boolean dynamic, boolean marketInflation) {
+        double value = 0;
+        double inflation = 1.0;
+
+        // Loop for amount
+        // Get the price and add it to the value
+        // if purchase = true
+        // remove 1 stock to simulate decrease
+        // if purchase = false
+        // add 1 stock to simulate increase
+        for (int i = 0; i < amount; i++) {
+            if (marketInflation) {
+                inflation = getInflation(defaultMarketSize, marketSize);
+            }
+
+            if (purchase) {
+                value += getPrice(baseQuantity, currentQuantity, scale, inflation);
+                if (dynamic) currentQuantity -= 1;
+                if (marketInflation) marketSize -= 1;
+
+            } else {
+                value += getPrice(baseQuantity, currentQuantity + 1, scale, inflation);
+                if (dynamic) currentQuantity += 1;
+                if (marketInflation) marketSize += 1;
+            }
+
+        }
+
+        return value;
+    }
+
+    /**
+     * Gets the price of a product based on the parameters supplied
+     *
+     * @param baseQuantity    - The base quantity of items in the market
+     * @param currentQuantity - The current quantity of items in the market
+     * @param scale           - The scaling to apply to the price
+     * @param inflation       - The inflation of the market
+     * @return double
+     */
+    public double getPrice(double baseQuantity, double currentQuantity, double scale, double inflation) {
+        if (currentQuantity == 0) currentQuantity += 1;
+
+        return getRawPrice(baseQuantity, currentQuantity).multiply(
+                BigDecimal.valueOf(scale).setScale(8, RoundingMode.HALF_DOWN)
+        ).multiply(
+                BigDecimal.valueOf(inflation).setScale(8, RoundingMode.HALF_DOWN)
+        ).doubleValue();
+    }
+
+    private BigDecimal getRawPrice(double baseQuantity, double currentQuantity) {
+        return BigDecimal.valueOf(fitPriceToConstraints(BigDecimal.valueOf(
+                getScale(baseQuantity, currentQuantity)
+        ).setScale(8, RoundingMode.HALF_DOWN).multiply(
+                BigDecimal.valueOf(10).setScale(8, RoundingMode.HALF_DOWN)
+        ).add(
+                BigDecimal.valueOf(
+                        getScale(baseQuantity, currentQuantity)
+                ).multiply(
+                        BigDecimal.valueOf(5)
+                ).setScale(8, RoundingMode.HALF_DOWN)
+        ).doubleValue()));
+    }
+
+    /**
+     * Gets the level of inflation based on the parameters supplied
+     * Just returns getScale(default, actual)
+     *
+     * @param defaultMarketSize - The base quantity of materials in the market
+     * @param actualMarketSize  - The actual current quantity of materials in the market
+     * @return double - The level of inflation
+     */
+    public double getInflation(double defaultMarketSize, double actualMarketSize) {
+        return getScale(defaultMarketSize, actualMarketSize);
+    }
+
+    /**
+     * Returns the scale of a number compared to it's base value
+     * base / current
+     *
+     * @param baseQuantity    - The base quantity of items
+     * @param currentQuantity - The current quantity of items
+     * @return double
+     */
+    public double getScale(double baseQuantity, double currentQuantity) {
+        return baseQuantity / currentQuantity;
+    }
 }
