@@ -4,9 +4,9 @@ import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.commands.DivinityCommandEnchantTC;
 import me.edgrrrr.de.config.Setting;
 import me.edgrrrr.de.market.items.enchants.MarketableEnchant;
-import me.edgrrrr.de.math.Math;
 import me.edgrrrr.de.player.PlayerManager;
 import me.edgrrrr.de.utils.ArrayUtils;
+import me.edgrrrr.de.utils.Converter;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -70,7 +70,7 @@ public class EnchantHandSellTC extends DivinityCommandEnchantTC {
                 String value = "unknown";
                 if (enchantData != null) {
                     int ui = heldItem.getEnchantmentLevel(enchantData.getEnchantment());
-                    value = String.format("£%,.2f", this.getMain().getEnchMan().calculatePrice(MarketableEnchant.levelsToBooks(ui, ui - Math.getInt(args[1])), enchantData.getQuantity(), this.getMain().getEnchMan().getSellScale(), false));
+                    value = String.format("£%,.2f", this.getMain().getEnchMan().calculatePrice(MarketableEnchant.levelsToBooks(ui, ui - Converter.getInt(args[1])), enchantData.getQuantity(), this.getMain().getEnchMan().getSellScale(), false));
                 }
 
                 strings = new String[]{

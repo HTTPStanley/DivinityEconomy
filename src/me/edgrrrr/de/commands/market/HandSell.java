@@ -4,9 +4,9 @@ import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.commands.DivinityCommandMaterials;
 import me.edgrrrr.de.config.Setting;
 import me.edgrrrr.de.market.items.materials.MarketableMaterial;
-import me.edgrrrr.de.math.Math;
 import me.edgrrrr.de.player.PlayerManager;
 import me.edgrrrr.de.response.ValueResponse;
+import me.edgrrrr.de.utils.Converter;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -47,7 +47,7 @@ public class HandSell extends DivinityCommandMaterials {
                 if (arg.equalsIgnoreCase("max")) {
                     sellAll = true;
                 } else {
-                    amountToSell = Math.getInt(args[0]);
+                    amountToSell = Converter.getInt(args[0]);
                 }
                 break;
 

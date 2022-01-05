@@ -4,7 +4,7 @@ import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.commands.DivinityCommand;
 import me.edgrrrr.de.config.Setting;
 import me.edgrrrr.de.help.Help;
-import me.edgrrrr.de.math.Math;
+import me.edgrrrr.de.utils.Converter;
 import org.bukkit.entity.Player;
 
 import java.util.Map;
@@ -41,7 +41,7 @@ public class HelpCommand extends DivinityCommand {
                 break;
 
             case 1:
-                pageNumber = Math.getInt(args[0]);
+                pageNumber = Converter.getInt(args[0]);
                 help = this.getMain().getHelpMan().get(args[0]);
                 break;
 

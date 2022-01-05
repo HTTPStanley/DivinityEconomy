@@ -4,8 +4,8 @@ import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.commands.DivinityCommandMaterialsTC;
 import me.edgrrrr.de.config.Setting;
 import me.edgrrrr.de.market.items.materials.MarketableMaterial;
-import me.edgrrrr.de.math.Math;
 import me.edgrrrr.de.player.PlayerManager;
+import me.edgrrrr.de.utils.Converter;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
@@ -76,7 +76,7 @@ public class SellTC extends DivinityCommandMaterialsTC {
                 marketableMaterial = this.getMain().getMarkMan().getItem(args[0]);
                 String value = "unknown";
                 if (marketableMaterial != null) {
-                    value = String.format("£%,.2f", marketableMaterial.getManager().getSellValue(marketableMaterial.getMaterialSlotsToCount(sender, Math.getInt(args[1]))).value);
+                    value = String.format("£%,.2f", marketableMaterial.getManager().getSellValue(marketableMaterial.getMaterialSlotsToCount(sender, Converter.getInt(args[1]))).value);
                 }
                 strings = new String[]{
                         String.format("Value: %s", value)

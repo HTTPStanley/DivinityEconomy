@@ -4,10 +4,10 @@ import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.commands.DivinityCommandEnchant;
 import me.edgrrrr.de.config.Setting;
 import me.edgrrrr.de.market.items.enchants.MarketableEnchant;
-import me.edgrrrr.de.math.Math;
 import me.edgrrrr.de.player.PlayerManager;
 import me.edgrrrr.de.response.Response;
 import me.edgrrrr.de.response.ValueResponse;
+import me.edgrrrr.de.utils.Converter;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -41,7 +41,7 @@ public class EnchantHandBuy extends DivinityCommandEnchant {
         switch (args.length) {
             case 2:
                 enchantName = args[0];
-                enchantLevels = Math.getInt(args[1]);
+                enchantLevels = Converter.getInt(args[1]);
                 break;
 
             default:

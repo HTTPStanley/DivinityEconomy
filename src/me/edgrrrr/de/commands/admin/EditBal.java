@@ -3,7 +3,7 @@ package me.edgrrrr.de.commands.admin;
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.commands.DivinityCommand;
 import me.edgrrrr.de.config.Setting;
-import me.edgrrrr.de.math.Math;
+import me.edgrrrr.de.utils.Converter;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -42,13 +42,13 @@ public class EditBal extends DivinityCommand {
             case 1:
                 // use case #1
                 receiver = sender;
-                amount = Math.getDouble(args[0]);
+                amount = Converter.getDouble(args[0]);
                 break;
 
             case 2:
                 // use case #2
                 receiver = this.getMain().getPlayMan().getOfflinePlayer(args[0], false);
-                amount = Math.getDouble(args[1]);
+                amount = Converter.getDouble(args[1]);
                 break;
 
             default:
@@ -103,7 +103,7 @@ public class EditBal extends DivinityCommand {
             case 2:
                 // use case #2
                 receiver = this.getMain().getPlayMan().getOfflinePlayer(args[0], false);
-                amount = Math.getDouble(args[1]);
+                amount = Converter.getDouble(args[1]);
                 break;
 
             default:

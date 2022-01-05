@@ -30,7 +30,7 @@ public class ArrayUtils {
         return Arrays.stream(rangeArray).mapToObj(String::valueOf).toArray(String[]::new);
     }
 
-    public static Map<Integer, List<Object>> toPages(Object[] objects, int pageSize) {
+    public static Map<Integer, List<Object>> paginator(Object[] objects, int pageSize) {
         Map<Integer, List<Object>> pages = new ConcurrentHashMap<>();
 
         int pageNum = 0;

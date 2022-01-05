@@ -3,7 +3,7 @@ package me.edgrrrr.de.commands.market;
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.commands.DivinityCommand;
 import me.edgrrrr.de.config.Setting;
-import me.edgrrrr.de.math.Math;
+import me.edgrrrr.de.utils.Converter;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -41,7 +41,7 @@ public class Baltop extends DivinityCommand {
                 break;
 
             case 1:
-                pageNumber = Math.getInt(args[0]) - 1;
+                pageNumber = Converter.getInt(args[0]) - 1;
                 break;
 
             default:
