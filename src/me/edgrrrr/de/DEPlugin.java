@@ -34,11 +34,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Locale;
 
 /**
@@ -187,30 +182,12 @@ public class DEPlugin extends JavaPlugin {
         // Automatically initiates - but must be last
 
         // If placeholder api found, register
-        if (this.getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
+        if (this.getServer().getPluginManager().getPlugin("PlaceholderAPI") != null && this.getConfMan().getBoolean(Setting.MAIN_ENABLE_PAPI_BOOLEAN)) {
             this.expansionManager = new ExpansionManager(this);
             this.expansionManager.register();
             this.getConsole().info("Registered %s placeholders", this.expansionManager.getExpansionCount());
         } else {
             this.getConsole().warn("PlaceholderAPI was not found, disabling expansions.");
-        }
-
-        String infoFileName = "info.txt";
-        try {
-            InputStream resource = this.getResource(infoFileName);
-            if (resource != null) {
-                File resourceFile = this.getConfMan().getFile(infoFileName);
-                if (resourceFile.exists()) resourceFile.delete();
-                Files.copy(resource, Path.of(resourceFile.toURI()));
-                this.getConsole().info("Wrote config info to '%s'", infoFileName);
-            } else {
-                this.getConsole().severe("Couldn't write config info to '%s' because: resource is null", infoFileName);
-            }
-        } catch (IOException e) {
-            this.getConsole().severe("Couldn't write config info to '%s' because: %s | Stacktrace¬", infoFileName, e.getMessage());
-            for (StackTraceElement ste : e.getStackTrace()) {
-                this.getConsole().severe("%s", ste);
-            }
         }
 
         // Done :)

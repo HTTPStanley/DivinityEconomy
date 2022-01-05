@@ -3,8 +3,8 @@ package me.edgrrrr.de.economy;
 public enum EconomyFileKeys {
     // Keys
     BALANCE("balance"),
-    UUID("uuid"),
     NAME("last-known-name"),
+    LOGS("logs")
     ;
     //END
     public final String key;

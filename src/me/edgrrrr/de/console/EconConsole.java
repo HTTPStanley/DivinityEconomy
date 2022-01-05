@@ -13,6 +13,7 @@ public class EconConsole extends Console {
 
     private int scale;
     private String currencyPrefix;
+    private String currencySuffix;
 
     public EconConsole(DEPlugin app) {
         super(app);
@@ -22,10 +23,11 @@ public class EconConsole extends Console {
     public void init() {
         this.scale = this.getConfMan().getInt(Setting.CHAT_ECONOMY_DIGITS_INT);
         this.currencyPrefix = this.getConfMan().getString(Setting.CHAT_ECONOMY_PREFIX_STRING);
+        this.currencySuffix = this.getConfMan().getString(Setting.CHAT_ECONOMY_SUFFIX_STRING);
     }
 
     public String formatMoney(double value) {
-        return String.format("%s%,." + this.scale + "f", this.currencyPrefix, value);
+        return String.format("%s%,." + this.scale + "f%s", this.currencyPrefix, value, this.currencySuffix);
     }
 
     public String getFormattedBalance(OfflinePlayer player) {

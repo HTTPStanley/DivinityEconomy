@@ -599,7 +599,6 @@ public abstract class TokenManager extends DivinityModule {
                 if (dynamic) currentQuantity += 1;
                 if (marketInflation) marketSize += 1;
             }
-
         }
 
         return value;
@@ -617,11 +616,11 @@ public abstract class TokenManager extends DivinityModule {
     public double getPrice(double baseQuantity, double currentQuantity, double scale, double inflation) {
         if (currentQuantity == 0) currentQuantity += 1;
 
-        return getRawPrice(baseQuantity, currentQuantity).multiply(
+        return fitPriceToConstraints(getRawPrice(baseQuantity, currentQuantity).multiply(
                 BigDecimal.valueOf(scale).setScale(8, RoundingMode.HALF_DOWN)
         ).multiply(
                 BigDecimal.valueOf(inflation).setScale(8, RoundingMode.HALF_DOWN)
-        ).doubleValue();
+        ).doubleValue());
     }
 
     private BigDecimal getRawPrice(double baseQuantity, double currentQuantity) {

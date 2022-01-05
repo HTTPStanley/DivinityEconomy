@@ -1,135 +1,159 @@
 package me.edgrrrr.de.economy;
 
-import me.edgrrrr.de.config.ConfigManager;
-import me.edgrrrr.de.console.EconConsole;
-import me.edgrrrr.de.events.PlayerJoin;
-import me.edgrrrr.de.player.PlayerManager;
+import me.edgrrrr.de.DEPlugin;
+import me.edgrrrr.de.config.Setting;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.craftbukkit.libs.jline.internal.Nullable;
-import org.bukkit.plugin.java.JavaPlugin;
 
+import javax.annotation.Nullable;
 import java.io.File;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class DivinityEconomy implements net.milkbowl.vault.economy.Economy {
-    private static final String foldername = "userdata";
-    private final JavaPlugin app;
-    private final ConfigManager configManager;
-    private final EconConsole console;
-    private final PlayerManager playerManager;
+    private static final String userdata = "userdata";
+    private static final String bankdata = "bankdata";
+    private final DEPlugin main;
     private final int fractionalDigits;
     private final String currencyNamePlural;
     private final String currencyNameSingular;
-    private final Map<UUID, EconomyPlayer> economyPlayerMap;
+    private final SmartMemoryPlayerManager economyPlayerMap;
     private final File userFolder;
-    public DivinityEconomy(JavaPlugin app,
-                           ConfigManager configManager,
-                           EconConsole console,
-                           PlayerManager playerManager,
-                           int fractionalDigits,
-                           String currencyNamePlural,
-                           String currencyNameSingular) {
+    private final File bankData;
 
-        this.app = app;
-        this.configManager = configManager;
-        this.console = console;
-        this.playerManager = playerManager;
-        this.fractionalDigits = fractionalDigits;
-        this.currencyNamePlural = currencyNamePlural;
-        this.currencyNameSingular = currencyNameSingular;
-        this.economyPlayerMap = new ConcurrentHashMap<>();
-        this.userFolder = this.configManager.getFolder(DivinityEconomy.foldername);
+    public DivinityEconomy(DEPlugin main) {
+        this.main = main;
+        this.fractionalDigits = this.main.getConfMan().getInt(Setting.CHAT_ECONOMY_DIGITS_INT);
+        this.currencyNamePlural = this.main.getConfMan().getString(Setting.CHAT_ECONOMY_PLURAL_STRING);
+        this.currencyNameSingular = this.main.getConfMan().getString(Setting.CHAT_ECONOMY_SINGULAR_STRING);
+        EconomyPlayer.maxLogs = this.main.getConfMan().getInt(Setting.ECONOMY_MAX_LOGS_INTEGER);
+        this.userFolder = this.main.getConfMan().getFolder(DivinityEconomy.userdata);
+        this.bankData = this.main.getConfMan().getFolder(DivinityEconomy.bankdata);
+        this.economyPlayerMap = new SmartMemoryPlayerManager(this.main, userFolder);
 
-        this.registerPlayers();
-        this.app.getServer().getPluginManager().registerEvents(new PlayerJoin(this), this.app);
-        this.console.info("Loaded %d players", this.economyPlayerMap.size());
+        // this.main.getServer().getPluginManager().registerEvents(new PlayerJoin(this), this.main);
     }
 
-    private void registerPlayers() {
-        File[] files = Objects.requireNonNull(this.userFolder.listFiles());
-        if (files.length > 0) {
-            for (File file : files) {
-                if (!file.isFile()) continue;
+    // DIVINITY ECONOMY CODE
 
-                try {
-                    this.addPlayer(file);
-                } catch (Exception e) {
-                    this.console.warn("Player (%s) could not be registered from file because %s.", file, e.getMessage());
-                }
-            }
-        }
-    }
-
-    private void addPlayer(File file) {
-        FileConfiguration fileConf = this.configManager.readFile(file);
-        UUID playerUUID = UUID.fromString(Objects.requireNonNull(fileConf.getString(EconomyFileKeys.UUID.key)));
-        OfflinePlayer offlinePlayer = this.app.getServer().getOfflinePlayer(playerUUID);
-        EconomyPlayer player = new EconomyPlayer(offlinePlayer, file, fileConf);
-
-        player.update();
-        this.economyPlayerMap.put(playerUUID, player);
-    }
-
-    @Nullable
-    private EconomyPlayer get(UUID uuid) {
-        EconomyPlayer economyPlayer = this.economyPlayerMap.get(uuid);
-        // If the player has uuid, they must have joined before.
-        // allowFetch = false | for this reason
-        // could return null still, at which point there's a bug elsewhere.
-        if (economyPlayer == null) {
-            OfflinePlayer player = this.playerManager.getOfflinePlayer(uuid, true);
-            this.createPlayerAccount(player);
-        }
-
-        return this.economyPlayerMap.get(uuid);
-    }
-
-    @Nullable
-    private EconomyPlayer get(String playerName) {
-        EconomyPlayer economyPlayer = null;
-        playerName = playerName.toLowerCase();
-        for (EconomyPlayer player : this.economyPlayerMap.values()) {
-            if (player.getLastKnownName().toLowerCase().equals(playerName)) {
-                economyPlayer = player;
-                break;
-            }
-        }
-
-        return economyPlayer;
+    /**
+     * Gets a player that does or doesn't exist.
+     * This is the same as using query but query does not create users.
+     * @param s - Player name
+     * @return EconomyPlayer2
+     */
+    @Deprecated
+    public EconomyPlayer get(String s) {
+        EconomyPlayer player = this.economyPlayerMap.get(s);
+        return player.update(null, s);
     }
 
     /**
-     * Checks if economy method is enabled.
-     *
-     * @return Success or Failure
+     * Gets a player that does or doesn't exist.
+     * This is the same as using query but query does not create users.
+     * @param offlinePlayer
+     * @return EconomyPlayer2
+     */
+    public EconomyPlayer get(OfflinePlayer offlinePlayer) {
+        EconomyPlayer player = this.economyPlayerMap.get(offlinePlayer.getUniqueId());
+        return player.update(offlinePlayer, null);
+    }
+
+    /**
+     * A query simply searches for a player matching the given constraints
+     * @param s - Player name
+     * @return EconomyPlayer2
+     */
+    @Nullable
+    public EconomyPlayer query(String s) {
+        for (EconomyPlayer player : this.economyPlayerMap.values()) {
+            if (player.getName().equalsIgnoreCase(s)) {
+                return player;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * A query simply searches for a player matching the given constraints
+     * @param uuid
+     * @return EconomyPlayer2
+     */
+    @Nullable
+    public EconomyPlayer query(UUID uuid) {
+        return this.economyPlayerMap.query(uuid);
+    }
+
+    /**
+     * A query simply searches for a player matching the given constraints
+     * @param offlinePlayer
+     * @return EconomyPlayer2
+     */
+    @Nullable
+    public EconomyPlayer query(OfflinePlayer offlinePlayer) {
+        return this.query(offlinePlayer.getUniqueId());
+    }
+
+    /**
+     * Returns an economy response detailing the result of the withdraw request
+     * @param p - the player
+     * @param v - value
+     * @return EconomyResponse
+     */
+    public EconomyResponse withdrawPlayer(EconomyPlayer p, double v) {
+        if (v < 0) {
+            return new EconomyResponse(v, p.getBalance(), EconomyResponse.ResponseType.FAILURE, "negative amounts are not allowed");
+        }
+
+        if (!p.has(v)) {
+            return new EconomyResponse(v, p.getBalance(), EconomyResponse.ResponseType.FAILURE, "withdrawal would lead to overdraft");
+        }
+
+        double balance = p.withdraw(v);
+        return new EconomyResponse(v, balance, EconomyResponse.ResponseType.SUCCESS, "");
+    }
+
+    /**
+     * Returns an economy response detailing the result of the deposit request
+     * @param p
+     * @param v
+     * @return
+     */
+    public EconomyResponse depositPlayer(EconomyPlayer p, double v) {
+        if (v < 0)
+            return new EconomyResponse(v, p.getBalance(), EconomyResponse.ResponseType.FAILURE, "negative amounts are not allowed");
+
+        if (!p.canHave(v))
+            return new EconomyResponse(v, p.getBalance(), EconomyResponse.ResponseType.FAILURE, "balance may be too large");
+
+        double balance = p.deposit(v);
+        return new EconomyResponse(v, balance, EconomyResponse.ResponseType.SUCCESS, "");
+    }
+
+
+    // VAULT CODE
+
+    /**
+     * Returns if this is enabled
+     * @return always true
      */
     @Override
     public boolean isEnabled() {
-        return this.economyPlayerMap != null;
+        return true;
     }
 
     /**
-     * Gets name of economy method
-     *
-     * @return Name of Economy Method
+     * Returns the name of this provider
+     * @return The name of the plugin
      */
     @Override
     public String getName() {
-        return this.app.getName();
+        return this.main.getName();
     }
 
-    //TODO
-
     /**
-     * Returns true if the given implementation supports banks.
-     *
-     * @return true if the implementation supports banks
+     * Returns if the provider has bank support
+     * @return always true
      */
     @Override
     public boolean hasBankSupport() {
@@ -137,11 +161,8 @@ public class DivinityEconomy implements net.milkbowl.vault.economy.Economy {
     }
 
     /**
-     * Some economy plugins round off after a certain number of digits.
-     * This function returns the number of digits the plugin keeps
-     * or -1 if no rounding occurs.
-     *
-     * @return number of digits after the decimal point kept
+     * Returns the fractional digits
+     * @return int
      */
     @Override
     public int fractionalDigits() {
@@ -149,22 +170,18 @@ public class DivinityEconomy implements net.milkbowl.vault.economy.Economy {
     }
 
     /**
-     * Format amount into a human readable String This provides translation into
-     * economy specific formatting to improve consistency between plugins.
-     *
-     * @param amount to format
-     * @return Human readable string describing amount
+     * Returns the double given string formatted
+     * @param v
+     * @return %,.<fractionDigits>f
      */
     @Override
-    public String format(double amount) {
-        return String.format("%,." + this.fractionalDigits + "f", amount);
+    public String format(double v) {
+        return String.format("%,." + this.fractionalDigits + "f", v);
     }
 
     /**
-     * Returns the name of the currency in plural form.
-     * If the economy being used does not support currency names then an empty string will be returned.
-     *
-     * @return name of the currency (plural)
+     * Returns the plural currency name
+     * @return String
      */
     @Override
     public String currencyNamePlural() {
@@ -172,10 +189,8 @@ public class DivinityEconomy implements net.milkbowl.vault.economy.Economy {
     }
 
     /**
-     * Returns the name of the currency in singular form.
-     * If the economy being used does not support currency names then an empty string will be returned.
-     *
-     * @return name of the currency (singular)
+     * Returns the singular currency name
+     * @return String
      */
     @Override
     public String currencyNameSingular() {
@@ -183,490 +198,353 @@ public class DivinityEconomy implements net.milkbowl.vault.economy.Economy {
     }
 
     /**
-     * @param playerName
-     * @deprecated As of VaultAPI 1.4 use {@link #hasAccount(OfflinePlayer)} instead.
+     * Returns if the user given has an account
+     * @param s - Player name
+     * @return boolean
      */
     @Override
     @Deprecated
-    public boolean hasAccount(String playerName) {
-        return this.get(playerName) != null;
+    public boolean hasAccount(String s) {
+        return this.query(s) != null;
     }
 
     /**
-     * Checks if this player has an account on the server yet
-     * This will always return true if the player has joined the server at least once
-     * as all major economy plugins auto-generate a player account when the player joins the server
-     *
-     * @param player to check
-     * @return if the player has an account
+     * Returns if the user given has an account
+     * @param offlinePlayer
+     * @return boolean
      */
     @Override
-    public boolean hasAccount(OfflinePlayer player) {
-        return this.economyPlayerMap.containsKey(player.getUniqueId());
+    public boolean hasAccount(OfflinePlayer offlinePlayer) {
+        return this.query(offlinePlayer) != null;
     }
 
     /**
-     * @param playerName
-     * @param worldName
-     * @deprecated As of VaultAPI 1.4 use {@link #hasAccount(OfflinePlayer, String)} instead.
-     */
-    @Override
-    @Deprecated
-    public boolean hasAccount(String playerName, String worldName) {
-        return hasAccount(playerName);
-    }
-
-    /**
-     * Checks if this player has an account on the server yet on the given world
-     * This will always return true if the player has joined the server at least once
-     * as all major economy plugins auto-generate a player account when the player joins the server
-     *
-     * @param player    to check in the world
-     * @param worldName world-specific account
-     * @return if the player has an account
-     */
-    @Override
-    public boolean hasAccount(OfflinePlayer player, String worldName) {
-        return this.hasAccount(player);
-    }
-
-    /**
-     * @param playerName
-     * @deprecated As of VaultAPI 1.4 use {@link #getBalance(OfflinePlayer)} instead.
+     * Returns if the user given has an account in the world given
+     * @param s - The player name
+     * @param s1 - The world (THIS IS NOT SUPPORTED AND WILL BE IGNORED)
+     * @return boolean
      */
     @Override
     @Deprecated
-    public double getBalance(String playerName) {
-        EconomyPlayer player = this.get(playerName);
-        if (player == null) {
-            return 0;
-        } else {
-            return player.getBalance();
-        }
+    public boolean hasAccount(String s, String s1) {
+        return this.hasAccount(s);
     }
 
     /**
-     * Gets balance of a player
-     *
-     * @param player of the player
-     * @return Amount currently held in players account
+     * Returns if the user given has an account in the world given
+     * @param offlinePlayer
+     * @param s - The world (THIS IS NOT SUPPORTED AND WILL BE IGNORED)
+     * @return boolean
      */
     @Override
-    public double getBalance(OfflinePlayer player) {
-        return this.get(player.getUniqueId()).getBalance();
+    public boolean hasAccount(OfflinePlayer offlinePlayer, String s) {
+        return this.hasAccount(offlinePlayer);
     }
 
     /**
-     * @param playerName
-     * @param world
-     * @deprecated As of VaultAPI 1.4 use {@link #getBalance(OfflinePlayer, String)} instead.
+     * Returns the balance of the player given
+     * @param s - The player name
+     * @return double
      */
     @Override
     @Deprecated
-    public double getBalance(String playerName, String world) {
-        return this.getBalance(playerName);
+    public double getBalance(String s) {
+        return this.get(s).getBalance();
     }
 
     /**
-     * Gets balance of a player on the specified world.
-     * IMPLEMENTATION SPECIFIC - if an economy plugin does not support this the global balance will be returned.
-     *
-     * @param player to check
-     * @param world  name of the world
-     * @return Amount currently held in players account
+     * Returns the balance of the player given
+     * @param offlinePlayer
+     * @return double
      */
     @Override
-    public double getBalance(OfflinePlayer player, String world) {
-        return this.get(player.getUniqueId()).getBalance();
+    public double getBalance(OfflinePlayer offlinePlayer) {
+        return this.get(offlinePlayer).getBalance();
     }
 
     /**
-     * @param playerName
-     * @param amount
-     * @deprecated As of VaultAPI 1.4 use {@link #has(OfflinePlayer, double)} instead.
-     */
-    @Override
-    @Deprecated
-    public boolean has(String playerName, double amount) {
-        EconomyPlayer player = this.get(playerName);
-        if (player != null) return player.has(amount);
-        else return false;
-    }
-
-    /**
-     * Checks if the player account has the amount - DO NOT USE NEGATIVE AMOUNTS
-     *
-     * @param player to check
-     * @param amount to check for
-     * @return True if <b>player</b> has <b>amount</b>, False else wise
-     */
-    @Override
-    public boolean has(OfflinePlayer player, double amount) {
-        return this.get(player.getUniqueId()).has(amount);
-    }
-
-    /**
-     * @param playerName
-     * @param worldName
-     * @param amount
-     * @deprecated As of VaultAPI 1.4 use @{link {@link #has(OfflinePlayer, String, double)} instead.
+     * Returns the balance of the player given in the world given
+     * @param s - The player name
+     * @param s1 - The world (THIS IS NOT SUPPORTED AND WILL BE IGNORED)
+     * @return double
      */
     @Override
     @Deprecated
-    public boolean has(String playerName, String worldName, double amount) {
-        return this.has(playerName, amount);
+    public double getBalance(String s, String s1) {
+        return this.getBalance(s);
     }
 
     /**
-     * Checks if the player account has the amount in a given world - DO NOT USE NEGATIVE AMOUNTS
-     * IMPLEMENTATION SPECIFIC - if an economy plugin does not support this the global balance will be returned.
-     *
-     * @param player    to check
-     * @param worldName to check with
-     * @param amount    to check for
-     * @return True if <b>player</b> has <b>amount</b>, False else wise
+     * Returns the balance of the player given in the world given
+     * @param offlinePlayer
+     * @param s - The world (THIS IS NOT SUPPORTED AND WILL BE IGNORED)
+     * @return double
      */
     @Override
-    public boolean has(OfflinePlayer player, String worldName, double amount) {
-        return this.has(player, amount);
+    public double getBalance(OfflinePlayer offlinePlayer, String s) {
+        return this.getBalance(offlinePlayer);
     }
 
     /**
-     * @param playerName
-     * @param amount
-     * @deprecated As of VaultAPI 1.4 use {@link #withdrawPlayer(OfflinePlayer, double)} instead.
-     */
-    @Override
-    @Deprecated
-    public EconomyResponse withdrawPlayer(String playerName, double amount) {
-        EconomyPlayer player = this.get(playerName);
-        if (player == null)
-            return new EconomyResponse(amount, 0.0, EconomyResponse.ResponseType.FAILURE, "unknown player");
-        return this.withdrawPlayer(player.getOfflinePlayer(), amount);
-    }
-
-    /**
-     * Withdraw an amount from a player - DO NOT USE NEGATIVE AMOUNTS
-     *
-     * @param player to withdraw from
-     * @param amount Amount to withdraw
-     * @return Detailed response of transaction
-     */
-    @Override
-    public EconomyResponse withdrawPlayer(OfflinePlayer player, double amount) {
-        EconomyPlayer economyPlayer = this.get(player.getUniqueId());
-
-        if (amount < 0)
-            return new EconomyResponse(amount, economyPlayer.getBalance(), EconomyResponse.ResponseType.FAILURE, "negative amounts are not allowed");
-
-        if (!economyPlayer.has(amount))
-            return new EconomyResponse(amount, economyPlayer.getBalance(), EconomyResponse.ResponseType.FAILURE, "withdrawal would lead to overdraft");
-
-        double balance = economyPlayer.withdraw(amount);
-        return new EconomyResponse(amount, balance, EconomyResponse.ResponseType.SUCCESS, "");
-    }
-
-    /**
-     * @param playerName
-     * @param worldName
-     * @param amount
-     * @deprecated As of VaultAPI 1.4 use {@link #withdrawPlayer(OfflinePlayer, String, double)} instead.
+     * Returns if the player given at-least has the amount given
+     * @param s - player name
+     * @param v - value
+     * @return boolean
      */
     @Override
     @Deprecated
-    public EconomyResponse withdrawPlayer(String playerName, String worldName, double amount) {
-        return this.withdrawPlayer(playerName, amount);
+    public boolean has(String s, double v) {
+        return this.get(s).has(v);
     }
 
     /**
-     * Withdraw an amount from a player on a given world - DO NOT USE NEGATIVE AMOUNTS
-     * IMPLEMENTATION SPECIFIC - if an economy plugin does not support this the global balance will be returned.
-     *
-     * @param player    to withdraw from
-     * @param worldName - name of the world
-     * @param amount    Amount to withdraw
-     * @return Detailed response of transaction
+     * Returns if the player given at-least has the amount given
+     * @param offlinePlayer
+     * @param v - value
+     * @return boolean
      */
     @Override
-    public EconomyResponse withdrawPlayer(OfflinePlayer player, String worldName, double amount) {
-        return this.withdrawPlayer(player, amount);
+    public boolean has(OfflinePlayer offlinePlayer, double v) {
+        return this.get(offlinePlayer).has(v);
     }
 
     /**
-     * @param playerName
-     * @param amount
-     * @deprecated As of VaultAPI 1.4 use {@link #depositPlayer(OfflinePlayer, double)} instead.
-     */
-    @Override
-    @Deprecated
-    public EconomyResponse depositPlayer(String playerName, double amount) {
-        EconomyPlayer player = this.get(playerName);
-        if (player == null)
-            return new EconomyResponse(amount, 0.0, EconomyResponse.ResponseType.FAILURE, "unknown player");
-        return this.depositPlayer(player.getOfflinePlayer(), amount);
-    }
-
-    /**
-     * Deposit an amount to a player - DO NOT USE NEGATIVE AMOUNTS
-     *
-     * @param player to deposit to
-     * @param amount Amount to deposit
-     * @return Detailed response of transaction
-     */
-    @Override
-    public EconomyResponse depositPlayer(OfflinePlayer player, double amount) {
-        EconomyPlayer economyPlayer = this.get(player.getUniqueId());
-
-        if (amount < 0)
-            return new EconomyResponse(amount, economyPlayer.getBalance(), EconomyResponse.ResponseType.FAILURE, "negative amounts are not allowed");
-
-        if (!economyPlayer.canHave(amount))
-            return new EconomyResponse(amount, economyPlayer.getBalance(), EconomyResponse.ResponseType.FAILURE, "balance may be too large");
-
-        double balance = economyPlayer.deposit(amount);
-        return new EconomyResponse(amount, balance, EconomyResponse.ResponseType.SUCCESS, "");
-    }
-
-    /**
-     * @param playerName
-     * @param worldName
-     * @param amount
-     * @deprecated As of VaultAPI 1.4 use {@link #depositPlayer(OfflinePlayer, String, double)} instead.
+     * Returns if the playerr given at-least has the amount given in the world given
+     * @param s - The player name
+     * @param s1 - The world (THIS IS NOT SUPPORTED AND WILL BE IGNORED)
+     * @param v - value
+     * @return boolean
      */
     @Override
     @Deprecated
-    public EconomyResponse depositPlayer(String playerName, String worldName, double amount) {
-        return this.depositPlayer(playerName, amount);
+    public boolean has(String s, String s1, double v) {
+        return this.has(s, v);
     }
 
     /**
-     * Deposit an amount to a player - DO NOT USE NEGATIVE AMOUNTS
-     * IMPLEMENTATION SPECIFIC - if an economy plugin does not support this the global balance will be returned.
-     *
-     * @param player    to deposit to
-     * @param worldName name of the world
-     * @param amount    Amount to deposit
-     * @return Detailed response of transaction
+     * Returns if the player given at-least has the amount given in the world given
+     * @param offlinePlayer
+     * @param s - The world (THIS IS NOT SUPPORTED AND WILL BE IGNORED)
+     * @param v - value
+     * @return boolean
      */
     @Override
-    @Deprecated
-    public EconomyResponse depositPlayer(OfflinePlayer player, String worldName, double amount) {
-        return this.depositPlayer(player, amount);
+    public boolean has(OfflinePlayer offlinePlayer, String s, double v) {
+        return this.has(offlinePlayer, v);
     }
 
-    //TODO
-
     /**
-     * @param name
-     * @param player
-     * @deprecated As of VaultAPI 1.4 use {{@link #createBank(String, OfflinePlayer)} instead.
+     * Returns an economy response detailing the result of the withdraw request
+     * @param s - The player name
+     * @param v - value
+     * @return EconomyResponse
      */
     @Override
     @Deprecated
-    public EconomyResponse createBank(String name, String player) {
+    public EconomyResponse withdrawPlayer(String s, double v) {
+        return withdrawPlayer(this.get(s), v);
+    }
+
+    /**
+     * Returns an economy response detailing the result of the withdraw request
+     * @param offlinePlayer
+     * @param v - value
+     * @return EconomyResponse
+     */
+    @Override
+    public EconomyResponse withdrawPlayer(OfflinePlayer offlinePlayer, double v) {
+        return withdrawPlayer(this.get(offlinePlayer), v);
+    }
+
+    /**
+     * Returns an economy response detailing the result of the withdraw request
+     * @param s - The player name
+     * @param s1 - The world (THIS IS NOT SUPPORTED AND WILL BE IGNORED)
+     * @param v - value
+     * @return EconomyResponse
+     */
+    @Override
+    @Deprecated
+    public EconomyResponse withdrawPlayer(String s, String s1, double v) {
+        return this.withdrawPlayer(s, v);
+    }
+
+    /**
+     * Returns an economy response detailing the result of the withdraw request
+     * @param offlinePlayer
+     * @param s - The world (THIS IS NOT SUPPORTED AND WILL BE IGNORED)
+     * @param v - value
+     * @return EconomyResponse
+     */
+    @Override
+    public EconomyResponse withdrawPlayer(OfflinePlayer offlinePlayer, String s, double v) {
+        return this.withdrawPlayer(offlinePlayer, v);
+    }
+
+    /**
+     * Returns an economy response detailing the result of the deposit request
+     * @param s - The player name
+     * @param v - value
+     * @return EconomyResponse
+     */
+    @Override
+    @Deprecated
+    public EconomyResponse depositPlayer(String s, double v) {
+        return this.depositPlayer(this.get(s), v);
+    }
+
+    /**
+     * Returns an economy response detailing the result of the deposit request
+     * @param offlinePlayer
+     * @param v - value
+     * @return EconomyResponse
+     */
+    @Override
+    public EconomyResponse depositPlayer(OfflinePlayer offlinePlayer, double v) {
+        return this.depositPlayer(this.get(offlinePlayer), v);
+    }
+
+    /**
+     * Returns an economy response detailing the result of the deposit request
+     * @param s - The player name
+     * @param s1 - The world (THIS IS NOT SUPPORTED AND WILL BE IGNORED)
+     * @param v - value
+     * @return EconomyResponse
+     */
+    @Override
+    @Deprecated
+    public EconomyResponse depositPlayer(String s, String s1, double v) {
+        return this.depositPlayer(this.get(s), v);
+    }
+
+    /**
+     * Returns an economy response detailing the result of the deposit request
+     * @param offlinePlayer
+     * @param s - The world (THIS IS NOT SUPPORTED AND WILL BE IGNORED)
+     * @param v - value
+     * @return EconomyResponse
+     */
+    @Override
+    public EconomyResponse depositPlayer(OfflinePlayer offlinePlayer, String s, double v) {
+        return this.depositPlayer(this.get(offlinePlayer), v);
+    }
+
+    /**
+     * @param s
+     * @param s1
+     * @deprecated
+     */
+    @Override
+    public EconomyResponse createBank(String s, String s1) {
         return null;
     }
 
-    //TODO
-
-    /**
-     * Creates a bank account with the specified name and the player as the owner
-     *
-     * @param name   of account
-     * @param player the account should be linked to
-     * @return EconomyResponse Object
-     */
     @Override
-    public EconomyResponse createBank(String name, OfflinePlayer player) {
+    public EconomyResponse createBank(String s, OfflinePlayer offlinePlayer) {
         return null;
     }
 
-    //TODO
-
-    /**
-     * Deletes a bank account with the specified name.
-     *
-     * @param name of the back to delete
-     * @return if the operation completed successfully
-     */
     @Override
-    public EconomyResponse deleteBank(String name) {
+    public EconomyResponse deleteBank(String s) {
         return null;
     }
 
-    //TODO
-
-    /**
-     * Returns the amount the bank has
-     *
-     * @param name of the account
-     * @return EconomyResponse Object
-     */
     @Override
-    public EconomyResponse bankBalance(String name) {
+    public EconomyResponse bankBalance(String s) {
         return null;
     }
 
-    //TODO
-
-    /**
-     * Returns true or false whether the bank has the amount specified - DO NOT USE NEGATIVE AMOUNTS
-     *
-     * @param name   of the account
-     * @param amount to check for
-     * @return EconomyResponse Object
-     */
     @Override
-    public EconomyResponse bankHas(String name, double amount) {
+    public EconomyResponse bankHas(String s, double v) {
         return null;
     }
 
-    //TODO
-
-    /**
-     * Withdraw an amount from a bank account - DO NOT USE NEGATIVE AMOUNTS
-     *
-     * @param name   of the account
-     * @param amount to withdraw
-     * @return EconomyResponse Object
-     */
     @Override
-    public EconomyResponse bankWithdraw(String name, double amount) {
+    public EconomyResponse bankWithdraw(String s, double v) {
         return null;
     }
 
-    //TODO
-
-    /**
-     * Deposit an amount into a bank account - DO NOT USE NEGATIVE AMOUNTS
-     *
-     * @param name   of the account
-     * @param amount to deposit
-     * @return EconomyResponse Object
-     */
     @Override
-    @Deprecated
-    public EconomyResponse bankDeposit(String name, double amount) {
+    public EconomyResponse bankDeposit(String s, double v) {
         return null;
     }
 
-    //TODO
-
     /**
-     * @param name
-     * @param playerName
-     * @deprecated As of VaultAPI 1.4 use {{@link #isBankOwner(String, OfflinePlayer)} instead.
+     * @param s
+     * @param s1
+     * @deprecated
      */
     @Override
-    @Deprecated
-    public EconomyResponse isBankOwner(String name, String playerName) {
+    public EconomyResponse isBankOwner(String s, String s1) {
         return null;
     }
 
-    //TODO
-
-    /**
-     * Check if a player is the owner of a bank account
-     *
-     * @param name   of the account
-     * @param player to check for ownership
-     * @return EconomyResponse Object
-     */
     @Override
-    @Deprecated
-    public EconomyResponse isBankOwner(String name, OfflinePlayer player) {
+    public EconomyResponse isBankOwner(String s, OfflinePlayer offlinePlayer) {
         return null;
     }
 
-    //TODO
-
     /**
-     * @param name
-     * @param playerName
-     * @deprecated As of VaultAPI 1.4 use {{@link #isBankMember(String, OfflinePlayer)} instead.
+     * @param s
+     * @param s1
+     * @deprecated
      */
     @Override
-    @Deprecated
-    public EconomyResponse isBankMember(String name, String playerName) {
+    public EconomyResponse isBankMember(String s, String s1) {
         return null;
     }
 
-    //TODO
-
-    /**
-     * Check if the player is a member of the bank account
-     *
-     * @param name   of the account
-     * @param player to check membership
-     * @return EconomyResponse Object
-     */
     @Override
-    public EconomyResponse isBankMember(String name, OfflinePlayer player) {
+    public EconomyResponse isBankMember(String s, OfflinePlayer offlinePlayer) {
         return null;
     }
 
-    //TODO
-
-    /**
-     * Gets the list of banks
-     *
-     * @return the List of Banks
-     */
     @Override
-    @Deprecated
     public List<String> getBanks() {
         return null;
     }
 
     /**
-     * @param playerName
-     * @deprecated As of VaultAPI 1.4 use {{@link #createPlayerAccount(OfflinePlayer)} instead.
+     * Creates a player account
+     * @param s - the player name
+     * @return boolean
      */
     @Override
     @Deprecated
-    public boolean createPlayerAccount(String playerName) {
-        OfflinePlayer player = this.playerManager.getOfflinePlayer(playerName, true);
-        if (player == null) return false;
-        else return this.createPlayerAccount(player);
+    public boolean createPlayerAccount(String s) {
+        return this.get(s) != null;
     }
 
     /**
-     * Attempts to create a player account for the given player
-     *
-     * @param player OfflinePlayer
-     * @return if the account creation was successful
+     * Creates a player account
+     * @param offlinePlayer
+     * @return boolean
      */
     @Override
-    public boolean createPlayerAccount(OfflinePlayer player) {
-        File file = this.configManager.getFile(this.userFolder, EconomyPlayer.getFilename(player));
-        FileConfiguration fileConf = this.configManager.readFile(file);
-        EconomyPlayer.create(player, file, fileConf, 0.0);
-        this.addPlayer(file);
-
-        return this.hasAccount(player);
+    public boolean createPlayerAccount(OfflinePlayer offlinePlayer) {
+        return this.get(offlinePlayer) != null;
     }
 
     /**
-     * @param playerName
-     * @param worldName
-     * @deprecated As of VaultAPI 1.4 use {{@link #createPlayerAccount(OfflinePlayer, String)} instead.
+     * Creates a player account
+     * @param s - the player name
+     * @param s1 - the world (THIS IS NOT SUPPORTED AND WILL BE IGNORED)
+     * @return boolean
      */
     @Override
     @Deprecated
-    public boolean createPlayerAccount(String playerName, String worldName) {
-        return this.createPlayerAccount(playerName);
+    public boolean createPlayerAccount(String s, String s1) {
+        return this.get(s) != null;
     }
 
     /**
-     * Attempts to create a player account for the given player on the specified world
-     * IMPLEMENTATION SPECIFIC - if an economy plugin does not support this then false will always be returned.
-     *
-     * @param player    OfflinePlayer
-     * @param worldName String name of the world
-     * @return if the account creation was successful
+     * Creates a player account
+     * @param offlinePlayer
+     * @param s - the world (THIS IS NOT SUPPORTED AND WILL BE IGNORED)
+     * @return boolean
      */
     @Override
-    public boolean createPlayerAccount(OfflinePlayer player, String worldName) {
-        return this.createPlayerAccount(player);
+    public boolean createPlayerAccount(OfflinePlayer offlinePlayer, String s) {
+        return this.get(offlinePlayer) != null;
     }
 }

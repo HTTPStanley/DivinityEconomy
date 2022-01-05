@@ -81,7 +81,6 @@ public class EconomyManager extends DivinityModule {
     public void init() {
         // settings
         this.minTransfer = this.getConfMan().getDouble(Setting.ECONOMY_MIN_SEND_AMOUNT_DOUBLE);
-        this.minBalance = this.getConfMan().getDouble(Setting.ECONOMY_MIN_BALANCE_DOUBLE);
         this.providerName = this.getConfMan().getString(Setting.ECONOMY_PROVIDER_STRING);
 
         // If economy setup fails, plugin shuts down
@@ -155,7 +154,7 @@ public class EconomyManager extends DivinityModule {
     }
 
     public DivinityEconomy createDivEcon() {
-        return new DivinityEconomy(this.getMain(), this.getConfMan(), this.getConsole(), this.getPlayMan(), this.getConfMan().getInt(Setting.CHAT_ECONOMY_DIGITS_INT), this.getConfMan().getString(Setting.CHAT_ECONOMY_PLURAL_STRING), this.getConfMan().getString(Setting.CHAT_ECONOMY_SINGULAR_STRING));
+        return new DivinityEconomy(this.getMain());
     }
 
 

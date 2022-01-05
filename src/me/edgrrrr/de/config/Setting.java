@@ -33,6 +33,7 @@ public enum Setting {
 
     //Main Settings
     MAIN_VERSION_STRING(SECTION_MAIN.path + ".Version"),
+    MAIN_ENABLE_PAPI_BOOLEAN(SECTION_MAIN.path + ".Enable PAPI"),
 
     //Tab completion settings
     TAB_USE_FUZZY_BOOLEAN(SECTION_TAB.path + ".Use Fuzzy Search"),
@@ -49,6 +50,7 @@ public enum Setting {
     CHAT_SEVERE_COLOR(SECTION_CHAT.path + ".Severe Colour"),
     CHAT_ECONOMY_DIGITS_INT(SECTION_CHAT.path + ".Money Scale"),
     CHAT_ECONOMY_PREFIX_STRING(SECTION_CHAT.path + ".Money Prefix"),
+    CHAT_ECONOMY_SUFFIX_STRING(SECTION_CHAT.path + ".Money Suffix"),
     CHAT_ECONOMY_SINGULAR_STRING(SECTION_CHAT.path + ".Money Singular"),
     CHAT_ECONOMY_PLURAL_STRING(SECTION_CHAT.path + ".Money Plural"),
 
@@ -60,9 +62,10 @@ public enum Setting {
 
     //Economy Settings
     ECONOMY_MIN_SEND_AMOUNT_DOUBLE(SECTION_ECONOMY.path + ".Min Send Amount"),
-    ECONOMY_MIN_BALANCE_DOUBLE(SECTION_ECONOMY.path + ".Min Account Balance"),
     ECONOMY_PROVIDER_STRING(SECTION_ECONOMY.path + ".Preferred Provider"),
     ECONOMY_BALTOP_REFRESH_INTEGER(SECTION_ECONOMY.path + ".Baltop Refresh Timer"),
+    ECONOMY_SSM_INTEGER(SECTION_ECONOMY.path + ".Smart Storage Max Size"),
+    ECONOMY_MAX_LOGS_INTEGER(SECTION_ECONOMY.path + ".Max Logs"),
 
     //Market Settings
     MARKET_SAVE_TIMER_INTEGER(SECTION_MARKET.path + ".Save Timer"),
