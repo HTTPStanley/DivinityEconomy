@@ -3,6 +3,7 @@ package me.edgrrrr.de.economy;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
 
+import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -135,10 +136,32 @@ public class EconomyPlayer {
 
     /**
      * Returns the on-file stored name of the player
-     * @return
+     * @return String
      */
     public String getName() {
         return (String) this.get(EconomyFileKeys.NAME, "PLAYER-HAS-NO-SET-NAME");
+    }
+
+    /**
+     * Returns the on-file stored uuid of the player
+     * @return String
+     */
+    @Nullable
+    public String getUUID() {
+        return (String) this.get(EconomyFileKeys.UUID, null);
+    }
+
+    /**
+     * Returns the file of the player
+     * @return File
+     */
+    @Nullable
+    public File getFile() {
+        return this.file;
+    }
+
+    public String getFileID() {
+        return this.file.getName().replace(".yml", "");
     }
 
     /**
@@ -151,6 +174,7 @@ public class EconomyPlayer {
     public EconomyPlayer update(OfflinePlayer player, String s) {
         if (player != null) {
             this.get(EconomyFileKeys.NAME, player.getName());
+            this.get(EconomyFileKeys.UUID, player.getUniqueId().toString());
         } else if (s != null) {
             this.get(EconomyFileKeys.NAME, s);
         }

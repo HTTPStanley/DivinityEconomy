@@ -2,13 +2,16 @@ package me.edgrrrr.de.economy;
 
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.config.Setting;
+import me.edgrrrr.de.events.PlayerJoin;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.OfflinePlayer;
 
 import javax.annotation.Nullable;
 import java.io.File;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class DivinityEconomy implements net.milkbowl.vault.economy.Economy {
     private static final String userdata = "userdata";
@@ -18,6 +21,7 @@ public class DivinityEconomy implements net.milkbowl.vault.economy.Economy {
     private final String currencyNamePlural;
     private final String currencyNameSingular;
     private final SmartMemoryPlayerManager economyPlayerMap;
+    private final Map<String, String> userNameMap;
     private final File userFolder;
     private final File bankData;
 
@@ -30,8 +34,9 @@ public class DivinityEconomy implements net.milkbowl.vault.economy.Economy {
         this.userFolder = this.main.getConfMan().getFolder(DivinityEconomy.userdata);
         this.bankData = this.main.getConfMan().getFolder(DivinityEconomy.bankdata);
         this.economyPlayerMap = new SmartMemoryPlayerManager(this.main, userFolder);
+        this.userNameMap = new ConcurrentHashMap<>();
 
-        // this.main.getServer().getPluginManager().registerEvents(new PlayerJoin(this), this.main);
+         this.main.getServer().getPluginManager().registerEvents(new PlayerJoin(this), this.main);
     }
 
     // DIVINITY ECONOMY CODE
@@ -44,8 +49,31 @@ public class DivinityEconomy implements net.milkbowl.vault.economy.Economy {
      */
     @Deprecated
     public EconomyPlayer get(String s) {
-        EconomyPlayer player = this.economyPlayerMap.get(s);
-        return player.update(null, s);
+        // Attempt to find user in user name map (prevents having to run this loop every time)
+        if (this.userNameMap.containsKey(s)) {
+            return this.economyPlayerMap.get(this.userNameMap.get(s));
+        }
+
+        // Attempt to find player by name
+        EconomyPlayer result = null;
+        for (EconomyPlayer player : this.economyPlayerMap.values()) {
+            if (player.getName().equalsIgnoreCase(s)) {
+                result = player.update(null, s);
+                break;
+            }
+        }
+
+        // Else just create a new player.
+        if (result == null) {
+            result = this.economyPlayerMap.get(s);
+        }
+
+        // If the result is finally found, place name into map.
+        if (result != null) {
+            this.userNameMap.put(s, result.getFileID());
+        }
+
+        return result;
     }
 
     /**
@@ -432,9 +460,9 @@ public class DivinityEconomy implements net.milkbowl.vault.economy.Economy {
     /**
      * @param s
      * @param s1
-     * @deprecated
      */
     @Override
+    @Deprecated
     public EconomyResponse createBank(String s, String s1) {
         return null;
     }
@@ -472,9 +500,9 @@ public class DivinityEconomy implements net.milkbowl.vault.economy.Economy {
     /**
      * @param s
      * @param s1
-     * @deprecated
      */
     @Override
+    @Deprecated
     public EconomyResponse isBankOwner(String s, String s1) {
         return null;
     }
@@ -487,9 +515,9 @@ public class DivinityEconomy implements net.milkbowl.vault.economy.Economy {
     /**
      * @param s
      * @param s1
-     * @deprecated
      */
     @Override
+    @Deprecated
     public EconomyResponse isBankMember(String s, String s1) {
         return null;
     }

@@ -4,6 +4,7 @@ public enum EconomyFileKeys {
     // Keys
     BALANCE("balance"),
     NAME("last-known-name"),
+    UUID("uuid"),
     LOGS("logs")
     ;
     //END
