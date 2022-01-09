@@ -73,7 +73,7 @@ public class EconomyPlayer {
      * @return BigDecimal
      */
     private BigDecimal _getBalance() {
-        return this.scale(new BigDecimal(this.playerConfig.getString(EconomyFileKeys.BALANCE.key)));
+        return this.scale(new BigDecimal(this.gets(EconomyFileKeys.BALANCE, 0)));
     }
 
     /**
@@ -139,7 +139,7 @@ public class EconomyPlayer {
      * @return String
      */
     public String getName() {
-        return (String) this.get(EconomyFileKeys.NAME, "PLAYER-HAS-NO-SET-NAME");
+        return this.gets(EconomyFileKeys.NAME, "PLAYER-HAS-NO-SET-NAME");
     }
 
     /**
@@ -148,7 +148,7 @@ public class EconomyPlayer {
      */
     @Nullable
     public String getUUID() {
-        return (String) this.get(EconomyFileKeys.UUID, null);
+        return this.gets(EconomyFileKeys.UUID, null);
     }
 
     /**
@@ -160,6 +160,10 @@ public class EconomyPlayer {
         return this.file;
     }
 
+    /**
+     * Returns the file name, less the extension
+     * @return String
+     */
     public String getFileID() {
         return this.file.getName().replace(".yml", "");
     }
@@ -182,6 +186,17 @@ public class EconomyPlayer {
         this.get(EconomyFileKeys.BALANCE, 0);
 
         return this;
+    }
+
+    /**
+     * Returns the requested key, if the key does not exist then it is overwritten with the given default_ value
+     * The requested value is then returned nested in String.valueOf
+     * @param key
+     * @param default_
+     * @return String
+     */
+    public String gets(EconomyFileKeys key, Object default_) {
+        return String.valueOf(this.get(key, default_));
     }
 
     /**
