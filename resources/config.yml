@@ -63,9 +63,9 @@
 # Main Settings
 Main:
   # This is the plugin config version
-  Version: 1.18.4-RC2
+  Version: 1.18.4-RC3
   # Should placeholder api support be enabled? ( use "true" / "false" )
-  Enable Papi: true
+  Enable PAPI: true
 
 # Chat Settings
 Chat:

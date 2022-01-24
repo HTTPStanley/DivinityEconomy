@@ -182,10 +182,14 @@ public class DEPlugin extends JavaPlugin {
         // Automatically initiates - but must be last
 
         // If placeholder api found, register
-        if (this.getServer().getPluginManager().getPlugin("PlaceholderAPI") != null && this.getConfMan().getBoolean(Setting.MAIN_ENABLE_PAPI_BOOLEAN)) {
-            this.expansionManager = new ExpansionManager(this);
-            this.expansionManager.register();
-            this.getConsole().info("Registered %s placeholders", this.expansionManager.getExpansionCount());
+        if (this.getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            if (this.getConfMan().getBoolean(Setting.MAIN_ENABLE_PAPI_BOOLEAN)) {
+                this.expansionManager = new ExpansionManager(this);
+                this.expansionManager.register();
+                this.getConsole().info("PlaceholderAPI was found and is enabled, %s placeholders have been registered.", this.expansionManager.getExpansionCount());
+            } else {
+                this.getConsole().warn("PlaceholderAPI was found but is not enabled, disabling expansions.");
+            }
         } else {
             this.getConsole().warn("PlaceholderAPI was not found, disabling expansions.");
         }
