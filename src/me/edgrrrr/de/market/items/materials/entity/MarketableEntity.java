@@ -11,21 +11,12 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BlockStateMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-
 public class MarketableEntity extends MarketableMaterial {
-    private static final Set<String> allowedMaterials = new HashSet<>(
-            Arrays.asList(
-                    "SPAWNER"
-            )
-    );
 
     private final EntityType entityType;
 
     public MarketableEntity(DEPlugin main, EntityManager itemManager, String ID, ConfigurationSection config, ConfigurationSection defaultConfig) {
-        super(main, itemManager, ID, config, defaultConfig, allowedMaterials);
+        super(main, itemManager, ID, config, defaultConfig);
 
         EntityType entityType = null;
         try {

@@ -79,16 +79,12 @@ public abstract class MaterialManager extends ItemManager {
      * @return ? extends DivinityMaterial
      */
     public MarketableMaterial getItem(ItemStack itemStack) {
-        MarketableMaterial result = null;
         for (MarketableToken thisMat : this.itemMap.values()) {
             MarketableMaterial genMat = (MarketableMaterial) thisMat;
-            if (genMat.equals(itemStack)) {
-                result = genMat;
-                break;
-            }
+            if (genMat.equals(itemStack)) return genMat;
         }
 
-        return result;
+        return null;
     }
 
     /**

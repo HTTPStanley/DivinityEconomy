@@ -35,11 +35,6 @@ public enum Setting {
     MAIN_VERSION_STRING(SECTION_MAIN.path + ".Version"),
     MAIN_ENABLE_PAPI_BOOLEAN(SECTION_MAIN.path + ".Enable PAPI"),
 
-    //Tab completion settings
-    TAB_USE_FUZZY_BOOLEAN(SECTION_TAB.path + ".Use Fuzzy Search"),
-    TAB_MAX_RESULTS_INT(SECTION_FUZZY.path + ".Max Results"),
-    TAB_MIN_FUZZY_SCORE_DOUBLE(SECTION_FUZZY.path + ".Min Score"),
-
     //Chat Settings
     CHAT_DEBUG_OUTPUT_BOOLEAN(SECTION_CHAT.path + ".Chat Debug"),
     CHAT_PREFIX_STRING(SECTION_CHAT.path + ".Chat Prefix"),

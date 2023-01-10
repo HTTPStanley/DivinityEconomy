@@ -13,9 +13,8 @@
 #   - Vault Source: https://github.com/milkbowl/Vault
 #   - mxParser Source: https://github.com/mariuszgromada/MathParser.org-mXparser
 #
-# Officially supported versions: 1.16.*, 1.17.*
-# Officially half-supported versions: 1.18.*
-# API version: 1.16 (means versions below 1.16 will refuse to work)
+# Officially supported versions: 1.19.*
+# API version: 1.19
 #
 # Colours for the chat config can be found here: https://jd.bukkit.org/org/bukkit/ChatColor.html
 # &0 - Black
@@ -63,7 +62,7 @@
 # Main Settings
 Main:
   # This is the plugin config version
-  Version: 1.18.4-RC3
+  Version: 1.19.3-RC1.0
   # Should placeholder api support be enabled? ( use "true" / "false" )
   Enable PAPI: true
 
@@ -95,19 +94,6 @@ Chat:
   # Un-used
   Money Singular: "Divinity"
   Money Plural: "Divinity's"
-
-# Tab Completion Settings
-Tab Completion:
-  # Enable fuzzy search? ( use "true" / "false" )
-  # If disabled a more conventional search is used
-  # Fuzzy search is slower but can be more useful
-  Use Fuzzy Search: true
-  # Fuzzy search customisation
-  Fuzzy Search:
-    # The minimum scoring required for a search result to be shown. ( use any decimal value above 0.0 ) | recommended being left at 70.
-    Min Score: 70.0
-    # The maximum number of results to show to the user. ( use any whole number above 0 ) | recommended being left below 50.
-    Max Results: 10
 
 # Message Ignore Settings
 Message Ignore:

@@ -56,7 +56,7 @@ public class DivinityEconomy implements net.milkbowl.vault.economy.Economy {
 
         // Attempt to find player by name
         EconomyPlayer result = null;
-        for (EconomyPlayer player : this.economyPlayerMap.values()) {
+        for (EconomyPlayer player : this.economyPlayerMap.getPlayerValues()) {
             if (player.getName().equalsIgnoreCase(s)) {
                 result = player.update(null, s);
                 break;
@@ -94,7 +94,7 @@ public class DivinityEconomy implements net.milkbowl.vault.economy.Economy {
      */
     @Nullable
     public EconomyPlayer query(String s) {
-        for (EconomyPlayer player : this.economyPlayerMap.values()) {
+        for (EconomyPlayer player : this.economyPlayerMap.getPlayerValues()) {
             if (player.getName().equalsIgnoreCase(s)) {
                 return player;
             }

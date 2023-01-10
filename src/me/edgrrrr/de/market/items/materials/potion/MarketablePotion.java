@@ -10,24 +10,12 @@ import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionType;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-
 public class MarketablePotion extends MarketableMaterial {
-    private static final Set<String> allowedMaterials = new HashSet<>(
-            Arrays.asList(
-                    "POTION",
-                    "LINGERING_POTION",
-                    "SPLASH_POTION",
-                    "TIPPED_ARROW"
-            )
-    );
 
     private final PotionType potionType;
 
     public MarketablePotion(DEPlugin main, PotionManager itemManager, String ID, ConfigurationSection config, ConfigurationSection defaultConfig) {
-        super(main, itemManager, ID, config, defaultConfig, allowedMaterials);
+        super(main, itemManager, ID, config, defaultConfig);
         PotionType potionType = null;
         try {
             potionType = PotionType.valueOf(config.getString(MapKeys.POTION_TYPE.key));

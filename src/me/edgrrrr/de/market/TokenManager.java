@@ -1,20 +1,20 @@
 package me.edgrrrr.de.market;
 
+import com.tchristofferson.configupdater.ConfigUpdater;
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.DivinityModule;
 import me.edgrrrr.de.config.Setting;
 import me.edgrrrr.de.utils.Converter;
-import me.xdrop.fuzzywuzzy.FuzzySearch;
-import me.xdrop.fuzzywuzzy.model.ExtractedResult;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
@@ -29,6 +29,7 @@ public abstract class TokenManager extends DivinityModule {
     // Aliases are lower case
     // DivinityItem id's are upper case
     protected Map<String, String> aliasMap;
+    protected int maxAliasReturns = 50;
     protected Map<String, String[]> revAliasMap;
     protected Map<String, ? extends MarketableToken> itemMap;
     // Used for calculating inflation/deflation
@@ -224,14 +225,58 @@ public abstract class TokenManager extends DivinityModule {
      * @return
      */
     public String[] searchItemNames(String[] items, String term) {
-        ArrayList<String> itemNames = new ArrayList<>();
+        term = term.toLowerCase().strip(); // Standardise term
+        ArrayList<String> itemNames = new ArrayList<>(); // Create itemNames array
 
-        if (this.getConfMan().getBoolean(Setting.TAB_USE_FUZZY_BOOLEAN)) {
-            List<ExtractedResult> results = FuzzySearch.extractSorted(term, Arrays.asList(items), this.getConfMan().getInt(Setting.TAB_MAX_RESULTS_INT));
-            results.stream().filter(result -> result.getScore() > this.getConfMan().getDouble(Setting.TAB_MIN_FUZZY_SCORE_DOUBLE)).forEach(result -> itemNames.add(result.getString()));
-        } else {
-            Arrays.stream(items).filter(string -> string.toLowerCase().startsWith(term.toLowerCase()) || string.toLowerCase().contains(term.toLowerCase())).forEach(itemNames::add);
+        // Priority store
+        ArrayList<String> priority0ArrayList = new ArrayList<>();
+        ArrayList<String> priority1ArrayList = new ArrayList<>();
+        ArrayList<String> priority2ArrayList = new ArrayList<>();
+        ArrayList<String> priority3ArrayList = new ArrayList<>();
+
+        // Loop through items, add any item that
+        // - contains <term>
+        // - equals <term>
+        // - startswith <term>
+        // - endswith <term>
+        for (int i = 0; i < items.length; i++) {
+            if (itemNames.size() >= this.maxAliasReturns) {
+                break;
+            } // Size limitation check
+
+            String thisItemUnstandard = items[i]; // Get non-standardised item
+            String thisItem = thisItemUnstandard.toLowerCase().strip(); // Get & Standardise item
+
+            // Matches - priority 0
+            if (thisItem.equalsIgnoreCase(term)) {
+                priority0ArrayList.add(thisItemUnstandard);
+                continue;
+            }
+
+            // Begins with - priority 1
+            if (thisItem.startsWith(term)) {
+                priority1ArrayList.add(thisItemUnstandard);
+                continue;
+            }
+
+            // Contains - priority 2
+            if (thisItem.contains(term)) {
+                priority2ArrayList.add(thisItemUnstandard);
+                continue;
+            }
+
+            // Endswith - priority 3
+            if (thisItem.endsWith(term)) {
+                priority3ArrayList.add(thisItemUnstandard);
+                continue;
+            }
         }
+
+        // Add by priority
+        itemNames.addAll(priority0ArrayList);
+        itemNames.addAll(priority1ArrayList);
+        itemNames.addAll(priority2ArrayList);
+        itemNames.addAll(priority3ArrayList);
 
         return itemNames.toArray(new String[0]);
     }
@@ -409,7 +454,16 @@ public abstract class TokenManager extends DivinityModule {
      * Loads aliases from the aliases file into the aliases variable
      */
     public void loadAliases() {
+        // Update config
+        try {
+            ConfigUpdater.update(this.getMain(), this.aliasFile, this.getConfMan().getFile(this.aliasFile), Collections.emptyList());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Load config
         FileConfiguration config = this.getConfMan().loadFile(this.aliasFile);
+
         // Store the alias -> ItemID pairs
         Map<String, String> values = new ConcurrentHashMap<>();
         // Store ItemID -> arraylist to migrate to ItemID -> String[] pairs
@@ -462,9 +516,17 @@ public abstract class TokenManager extends DivinityModule {
      * Loads the items from the items file into the items variable
      */
     public void loadItems() {
+        // Update config
+        try {
+            ConfigUpdater.update(this.getMain(), this.itemFile, this.getConfMan().getFile(this.itemFile), Collections.emptyList());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         // Load the config
         this.config = this.getConfMan().loadFile(this.itemFile);
         FileConfiguration defaultConf = this.getConfMan().readResource(this.itemFile);
+
         // Set material counts
         this.defaultTotalItems = 0;
         this.totalItems = 0;
@@ -472,14 +534,14 @@ public abstract class TokenManager extends DivinityModule {
         Map<String, MarketableToken> values = new ConcurrentHashMap<>();
         // Loop through keys and get data
         // Add data to a MaterialData and put in HashMap under key
-        for (String key : this.config.getKeys(false)) {
+        for (String key : defaultConf.getKeys(false)) {
 
             ConfigurationSection data = this.config.getConfigurationSection(key);
             ConfigurationSection defaultData = defaultConf.getConfigurationSection(key);
 
             if (data == null) {
                 if (!this.getConfMan().getBoolean(Setting.IGNORE_ITEM_ERRORS_BOOLEAN))
-                    this.getConsole().warn("Bad config value in %s: '%s' - Data is null", this.itemFile, key);
+                    this.getConsole().warn("Bad config value in %s: '%s' - Data is null, setting default.", this.itemFile, key);
                 continue;
             }
 

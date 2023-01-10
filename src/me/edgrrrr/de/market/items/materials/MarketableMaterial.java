@@ -12,23 +12,15 @@ import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
-import java.util.Set;
 
 public abstract class MarketableMaterial extends MarketableItem {
     protected final Material material;
-    protected final Set<String> allowedMaterials;
 
-    public MarketableMaterial(DEPlugin main, MaterialManager itemManager, String ID, ConfigurationSection config, ConfigurationSection defaultConfig, Set<String> allowedMaterials) {
+    public MarketableMaterial(DEPlugin main, MaterialManager itemManager, String ID, ConfigurationSection config, ConfigurationSection defaultConfig) {
         super(main, itemManager, ID, config, defaultConfig);
-        this.allowedMaterials = allowedMaterials;
 
         String materialName = config.getString(MapKeys.MATERIAL_ID.key);
         this.material = getMaterial(materialName);
-        if (this.material == null) {
-            this.error = String.format("unknown material '%s'", materialName);
-        } else if (!this.allowedMaterials.contains(this.material.name())) {
-            this.error = String.format("material not allowed '%s'. Allowed: '%s'", materialName, allowedMaterials);
-        }
     }
 
     public static Material getMaterial(String materialID) {

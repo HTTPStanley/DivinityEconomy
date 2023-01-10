@@ -11,6 +11,8 @@ import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.EnchantmentStorageMeta;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -50,6 +52,10 @@ public class EnchantManager extends ItemManager {
      * Returns if the enchantment given is supported by the itemstack given.
      */
     public boolean supportsEnchant(ItemStack itemStack, Enchantment enchantment) {
+        if (itemStack.getItemMeta() instanceof EnchantmentStorageMeta && false) {
+            return true;
+        }
+
         return enchantment.canEnchantItem(itemStack);
     }
 
@@ -72,18 +78,6 @@ public class EnchantManager extends ItemManager {
     }
 
     /**
-     * Removes the given enchants and levels from the itemStack given.
-     *
-     * @param itemStack            - The itemstack to remove the enchants from
-     * @param enchantmentAndLevels - The enchantments and the level to remove
-     */
-    public void removeEnchantLevelsFromItem(ItemStack itemStack, ConcurrentHashMap<Enchantment, Integer> enchantmentAndLevels) {
-        for (Enchantment enchantment : enchantmentAndLevels.keySet()) {
-            this.removeEnchantLevelsFromItem(itemStack, enchantment, enchantmentAndLevels.get(enchantment));
-        }
-    }
-
-    /**
      * Reduces an enchant level on an itemstack by levels amount
      * If the level is 5 and you remove 4, the level is set to 1.
      * If the level is 5 and you remove 5, the enchant is removed.
@@ -93,11 +87,29 @@ public class EnchantManager extends ItemManager {
      * @param levels      - The levels to remove
      */
     public void removeEnchantLevelsFromItem(ItemStack itemStack, Enchantment enchantment, int levels) {
-        int currentLevel = itemStack.getEnchantmentLevel(enchantment);
-        itemStack.removeEnchantment(enchantment);
-        int levelsLeft = currentLevel - levels;
-        if (levelsLeft > 0) {
-            itemStack.addUnsafeEnchantment(enchantment, levelsLeft);
+        ItemMeta itemMeta = itemStack.getItemMeta();
+
+        // If item can store enchants
+        if (itemMeta instanceof EnchantmentStorageMeta && false) {
+            EnchantmentStorageMeta enchantmentStorageMeta = (EnchantmentStorageMeta) itemMeta;
+            int currentLevel = enchantmentStorageMeta.getStoredEnchantLevel(enchantment);
+            enchantmentStorageMeta.removeStoredEnchant(enchantment);
+            int levelsLeft = currentLevel - levels;
+            if (levelsLeft > 0) {
+                enchantmentStorageMeta.addStoredEnchant(enchantment, levelsLeft, true);
+            }
+
+            itemStack.setItemMeta(enchantmentStorageMeta);
+        }
+
+        // If item itself is enchanted
+        else {
+            int currentLevel = itemStack.getEnchantmentLevel(enchantment);
+            itemStack.removeEnchantment(enchantment);
+            int levelsLeft = currentLevel - levels;
+            if (levelsLeft > 0) {
+                itemStack.addUnsafeEnchantment(enchantment, levelsLeft);
+            }
         }
     }
 
@@ -110,21 +122,42 @@ public class EnchantManager extends ItemManager {
      * @return Response
      */
     public Response addEnchantToItem(ItemStack itemStack, Enchantment enchantment, int levels) {
-        Response response;
+
+        // Get meta
+        ItemMeta itemMeta = itemStack.getItemMeta();
+
+        // Get new desired level
         int newLevel = levels + itemStack.getEnchantmentLevel(enchantment);
+
+        // Get enchant data from economy
         MarketableEnchant enchantData = (MarketableEnchant) this.getItem(enchantment.getKey().getKey());
+
+
+        // If enchant data is null, return failure.
         if (enchantData == null) {
-            response = new Response(EconomyResponse.ResponseType.FAILURE, "enchant is not supported");
-        } else {
-            if (enchantData.getMaxLevel() < newLevel) {
-                response = new Response(EconomyResponse.ResponseType.FAILURE, String.format("level is greater than max (%d/%d)", newLevel, enchantData.getMaxLevel()));
-            } else {
-                itemStack.addUnsafeEnchantment(enchantment, newLevel);
-                response = new Response(EconomyResponse.ResponseType.SUCCESS, "");
-            }
+            return new Response(EconomyResponse.ResponseType.FAILURE, "enchant is not supported");
         }
 
-        return response;
+        // If enchant level is greater than maximum, return failure.
+        if (enchantData.getMaxLevel() < newLevel) {
+            return new Response(EconomyResponse.ResponseType.FAILURE, String.format("level is greater than max (%d/%d)", newLevel, enchantData.getMaxLevel()));
+        }
+
+
+        // Add ItemMeta Stored Enchant
+        if (itemMeta instanceof EnchantmentStorageMeta && false) {
+            EnchantmentStorageMeta enchantmentStorageMeta = (EnchantmentStorageMeta) itemMeta;
+            enchantmentStorageMeta.addStoredEnchant(enchantment, newLevel, true);
+
+            itemStack.setItemMeta(enchantmentStorageMeta);
+        }
+
+        // Add ItemStack enchant
+        else {
+            itemStack.addUnsafeEnchantment(enchantment, newLevel);
+        }
+
+        return new Response(EconomyResponse.ResponseType.SUCCESS, "");
     }
 
     /**
@@ -135,23 +168,17 @@ public class EnchantManager extends ItemManager {
      * @return boolean - Is enchanted / Is not enchanted
      */
     public boolean isEnchanted(ItemStack itemStack) {
-        return itemStack.getEnchantments().size() >= 1;
-    }
 
-    /**
-     * Returns A hashmap of the enchantdata, level
-     * If there are no enchants, the hashmap will be empty.
-     * Supports unenchantable items
-     *
-     * @param itemStack - The itemstack to check.
-     * @return HashMap<EnchantData, Integer> - The Enchants and their respective level
-     */
-    public Map<MarketableEnchant, Integer> getEnchantLevels(ItemStack itemStack) {
-        Map<MarketableEnchant, Integer> enchants = new ConcurrentHashMap<>();
-        for (Enchantment enchantment : itemStack.getEnchantments().keySet()) {
-            enchants.put((MarketableEnchant) this.getItem(enchantment.getKey().getKey()), itemStack.getEnchantmentLevel(enchantment));
+        // Get item meta
+        ItemMeta itemMeta = itemStack.getItemMeta();
+
+        // If item is has enchantedment storage
+        if (itemMeta instanceof EnchantmentStorageMeta && false) {
+            return ((EnchantmentStorageMeta) itemMeta).hasStoredEnchants();
         }
-        return enchants;
+
+        // Else return itemstack meta.
+        return itemMeta.hasEnchants();
     }
 
     /**
@@ -218,47 +245,54 @@ public class EnchantManager extends ItemManager {
      * @return EnchantValueResponse - The value of the enchant
      */
     public ValueResponse getBuyValue(ItemStack itemStack, String enchantID, int levelsToBuy) {
+        // Get enchant data
         MarketableEnchant enchantData = (MarketableEnchant) this.getItem(enchantID);
-        ValueResponse response;
-        if (enchantData == null) {
-            response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("enchant id %s does not exist", enchantID));
 
-        } else {
-            if (enchantData.getEnchantment() == null) {
-                response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("enchant id %s does not exist in the store", enchantID));
 
-            } else {
-                if (!(enchantData.getAllowed())) {
-                    response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, "enchant is banned");
+        // Enchant data is null
+        if (enchantData == null) return new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("enchant id %s does not exist", enchantID));
 
-                } else {
-                    if (!(this.allowUnsafe || (this.supportsEnchant(itemStack, enchantData.getEnchantment()) && !this.allowUnsafe))) {
-                        response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, "this item does not support that enchant");
-                    } else {
-                        int itemStackEnchantmentLevel = itemStack.getEnchantmentLevel(enchantData.getEnchantment());
-                        int newTotalLevel = itemStackEnchantmentLevel + levelsToBuy;
-                        if (enchantData.getMaxLevel() < newTotalLevel) {
-                            response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("level would be above max(%d/%d)", newTotalLevel, enchantData.getMaxLevel()));
 
-                        } else {
-                            int enchantAmount = MarketableEnchant.levelsToBooks(itemStackEnchantmentLevel, newTotalLevel);
-                            if (enchantAmount > enchantData.getQuantity()) {
-                                response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("not enough stock (%d/%d)", enchantAmount, enchantData.getQuantity()));
+        // Check enchant exists in store
+        if (enchantData.getEnchantment() == null) return new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("enchant id %s does not exist in the store", enchantID));
 
-                            } else {
-                                double price = this.calculatePrice(enchantAmount, enchantData.getQuantity(), this.buyScale, false);
-                                if (price > 0) {
-                                    response = new ValueResponse(price, EconomyResponse.ResponseType.SUCCESS, "");
-                                } else {
-                                    response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, "market is saturated.");
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return response;
+
+        // Check enchant is allowed
+        if (!(enchantData.getAllowed())) return new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, "enchant is banned");
+
+
+        // Check enchant is supported on item
+        if (!(this.supportsEnchant(itemStack, enchantData.getEnchantment()) || this.allowUnsafe)) return new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, "this item does not support that enchant");
+
+
+        // Get current and new enchantment level
+        Map<Enchantment, Integer> enchantments = EnchantManager.getEnchantments(itemStack);
+        int itemStackEnchantmentLevel = enchantments.getOrDefault(enchantData.getEnchantment(), 0);
+        int newTotalLevel = itemStackEnchantmentLevel + levelsToBuy;
+
+
+        // Check new level isn't greater than max
+        if (enchantData.getMaxLevel() < newTotalLevel) return new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("level would be above max(%d/%d)", newTotalLevel, enchantData.getMaxLevel()));
+
+
+        // Get levels to books amount (enchant purchase count)
+        int enchantAmount = MarketableEnchant.levelsToBooks(itemStackEnchantmentLevel, newTotalLevel);
+
+
+        // Check store has enough
+        if (enchantAmount > enchantData.getQuantity()) return  new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("not enough stock (%d/%d)", enchantAmount, enchantData.getQuantity()));
+
+
+        // Get enchant price
+        double price = this.calculatePrice(enchantAmount, enchantData.getQuantity(), this.buyScale, false);
+
+
+        // Check market isn't saturated
+        if (price <= 0) return new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, "market is saturated.");
+
+
+        // Return success
+        return  new ValueResponse(price, EconomyResponse.ResponseType.SUCCESS, "");
     }
 
     /**
@@ -360,44 +394,48 @@ public class EnchantManager extends ItemManager {
      */
     public ValueResponse getSellValue(ItemStack itemStack, String enchantID, int levelsToSell) {
         MarketableEnchant enchantData = (MarketableEnchant) this.getItem(enchantID);
-        ValueResponse response;
-        if (enchantData == null) {
-            response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("unknown enchant id %s", enchantID));
-        } else {
 
-            Enchantment enchantment = enchantData.getEnchantment();
-            if (enchantment == null) {
-                response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("unknown enchant id %s", enchantID));
+        // No enchant data
+        if (enchantData == null) return new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("unknown enchant id %s", enchantID));
 
-            } else {
 
-                if (!enchantData.getAllowed()) {
-                    response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, "enchant is banned");
+        // Get enchantment
+        Enchantment enchantment = enchantData.getEnchantment();
 
-                } else {
 
-                    Map<Enchantment, Integer> itemStackEnchants = itemStack.getEnchantments();
-                    if (!itemStackEnchants.containsKey(enchantment)) {
-                        response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("item does not have enchant %s", enchantID));
+        // No enchantment
+        if (enchantment == null) return new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("unknown enchant id %s", enchantID));
 
-                    } else {
 
-                        int itemStackEnchantLevel = itemStackEnchants.get(enchantment);
-                        if (itemStackEnchantLevel < levelsToSell) {
-                            response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("item enchant does not have enough levels(%d/%d)", itemStackEnchantLevel, levelsToSell));
-                        } else {
-                            double value = this.calculatePrice(MarketableEnchant.levelsToBooks(itemStackEnchantLevel, itemStackEnchantLevel - levelsToSell), enchantData.getQuantity(), this.sellScale, false);
-                            if (value > 0) {
-                                response = new ValueResponse(value, EconomyResponse.ResponseType.SUCCESS, "");
-                            } else {
-                                response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, "market is saturated.");
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return response;
+        // Check enchant is allowed
+        if (!enchantData.getAllowed()) return new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, "enchant is banned");
+
+
+        // Get itemstack enchantments
+        Map<Enchantment, Integer> itemStackEnchants = EnchantManager.getEnchantments(itemStack);
+
+
+        // Check stored enchants contain given enchant
+        if (!itemStackEnchants.containsKey(enchantment)) return new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("item does not have enchant %s", enchantID));
+
+
+        // Get enchantment stack level
+        int itemStackEnchantLevel = itemStackEnchants.get(enchantment);
+
+
+        // Check enough levels to sell
+        if (itemStackEnchantLevel < levelsToSell) return new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("item enchant does not have enough levels(%d/%d)", itemStackEnchantLevel, levelsToSell));
+
+
+        // Get value
+        double value = this.calculatePrice(MarketableEnchant.levelsToBooks(itemStackEnchantLevel, itemStackEnchantLevel - levelsToSell), enchantData.getQuantity(), this.sellScale, false);
+
+
+        // Value equal or less than 0, return saturation
+        if (value <= 0) return new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, "market is saturated.");
+
+
+        return new ValueResponse(value, EconomyResponse.ResponseType.SUCCESS, "");
     }
 
     /**
@@ -414,5 +452,21 @@ public class EnchantManager extends ItemManager {
             books = -MarketableEnchant.levelsToBooks(0, -levels);
         }
         this.editQuantity(enchantData, books);
+    }
+
+
+
+    public static Map<Enchantment, Integer> getEnchantments(ItemStack itemStack) {
+        // Get item stack meta
+        ItemMeta itemMeta = itemStack.getItemMeta();
+
+        // Item can store enchants, return stored enchants
+        if (itemMeta instanceof EnchantmentStorageMeta && false) {
+            EnchantmentStorageMeta enchantmentStorageMeta = (EnchantmentStorageMeta) itemMeta;
+            return enchantmentStorageMeta.getStoredEnchants();
+        }
+
+        // Return direct enchants
+        return itemMeta.getEnchants();
     }
 }

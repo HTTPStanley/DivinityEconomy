@@ -58,7 +58,6 @@ public class BuyTC extends DivinityCommandMaterialsTC {
                     };
                 }
 
-
                 break;
 
             // 3 args
