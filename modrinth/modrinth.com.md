@@ -70,3 +70,7 @@
     <li><strong>Reload</strong> - Reload the enchants, items or config.</li>
     <li><strong>Save</strong> - Save the enchants or items to disk.</li>
 </ul>
+
+<hr>
+
+<h4><a href="https://github.com/HTTPStanley/DivinityEconomy" target="_blank" rel="noopener noreferrer">View On Github</a></h4>
