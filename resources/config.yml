@@ -1,14 +1,13 @@
 # DivinityEconomy Config
-# DivinityEconomy Github: https://github.com/EDGRRRRs/DivinityEconomy
-# DivinityEconomyLite Github: https://github.com/EDGRRRRs/DivinityEconomyLite
+# DivinityEconomy Github: https://github.com/HTTPStanley/DivinityEconomy
+# DivinityEconomyLite Github: https://github.com/HTTPStanley/DivinityEconomyLite
 # Plugin author: EDGRRRR
-# Author Github: https://github.com/EDGRRRRs
+# Author Github: https://github.com/HTTPStanley
 #
 # Contributors:
 #   - ExRider111Ryan: https://github.com/RyanA3
 #
 # Other Source:
-#   - Fuzzy Search Source: https://github.com/xdrop/fuzzywuzzy
 #   - Config Updater Source: https://github.com/tchristofferson/Config-Updater
 #   - Vault Source: https://github.com/milkbowl/Vault
 #   - mxParser Source: https://github.com/mariuszgromada/MathParser.org-mXparser
@@ -87,7 +86,7 @@ Chat:
   # 3 = 2.000
   Money Scale: 2
   # The chat money prefix - what character should be printed before the money? ( use any character )
-  Money Prefix: "£"
+  Money Prefix: "$"
   # The chat money suffix - what character should be printed before the money? ( use any character )
   Money Suffix: ""
   # Vault money names ( use any string )
