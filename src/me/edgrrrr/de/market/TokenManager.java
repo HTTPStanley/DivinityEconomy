@@ -9,6 +9,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -456,7 +457,14 @@ public abstract class TokenManager extends DivinityModule {
     public void loadAliases() {
         // Update config
         try {
-            ConfigUpdater.update(this.getMain(), this.aliasFile, this.getConfMan().getFile(this.aliasFile), Collections.emptyList());
+            // Create alias file, if necessary
+            File aliasFile = this.getConfMan().getFile(this.aliasFile);
+            if (!aliasFile.exists()) {
+                aliasFile.createNewFile();
+            }
+
+            // Run Update
+            ConfigUpdater.update(this.getMain(), this.aliasFile, aliasFile, Collections.emptyList());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -518,6 +526,13 @@ public abstract class TokenManager extends DivinityModule {
     public void loadItems() {
         // Update config
         try {
+            // Create item file, if necessary
+            File itemFile = this.getConfMan().getFile(this.itemFile);
+            if (!itemFile.exists()) {
+                itemFile.createNewFile();
+            }
+
+            // Run Update
             ConfigUpdater.update(this.getMain(), this.itemFile, this.getConfMan().getFile(this.itemFile), Collections.emptyList());
         } catch (IOException e) {
             e.printStackTrace();
