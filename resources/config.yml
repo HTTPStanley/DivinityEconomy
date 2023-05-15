@@ -60,7 +60,7 @@
 # Main Settings
 Main:
   # This is the plugin config version
-  Version: 1.19.3-RC1.0
+  Version: 1.19.4-RC1.0
   # Should placeholder api support be enabled? ( use "true" / "false" )
   Enable PAPI: true
 
@@ -134,8 +134,8 @@ Market:
     Base Quantity: 1000000
     # What scaling should be applied to purchases and sales? ( use any decimal above 0 )
     # Make sure to scale sales less than purchases or you risk creating an infinite cash bug.
-    Buy Scale: 1.0
-    Sell Scale: 0.9
+    Buy Scale: 0.01
+    Sell Scale: 0.08
     # Should the whole market be used to determine the value of items in the form of inflation? ( use "true" / "false" ) | warning, this has not been extensively tested.
     Whole Market Inflation: false
     # Should dynamic pricing be enabled? ( use "true" / "false" )
@@ -152,8 +152,8 @@ Market:
     Base Quantity: 1000000
     # What scaling should be applied to purchases and sales? ( use any decimal above 0 )
     # Make sure to scale sales less than purchases or you risk creating an infinite cash bug.
-    Buy Scale: 1.0
-    Sell Scale: 0.9
+    Buy Scale: 0.01
+    Sell Scale: 0.08
     # Should the whole market be used to determine the value of items in the form of inflation? ( use "true" / "false" ) | warning, this has not been extensively tested.
     Whole Market Inflation: false
     # Should dynamic pricing be enabled? ( use "true" / "false" )
