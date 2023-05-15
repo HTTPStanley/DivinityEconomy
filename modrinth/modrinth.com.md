@@ -1,6 +1,13 @@
 <h1>🌟 Introducing DivinityEconomy: The Next Generation of Minecraft Economy Plugins 🌟</h1>
 <p>DivinityEconomy is a revolutionary Minecraft plugin 🛠️ that offers an immersive and customizable in-game economy experience 💰 for servers running Bukkit or Spigot. Building on the legacy of HyperConomy, DivinityEconomy incorporates a range of advanced features that cater to the diverse needs of server owners and players alike.</p>
 
+<h2>💹 Check It Out (Official Server Links)</h2>
+<p><strong>Discord</strong>: <a href="https://discord.com/invite/K7DY6UD" target="_blank" rel="noopener noreferrer">Click To Join</a></p>
+<p><strong>Minecraft Server Java</strong>: DivinityCraft.org:25565</p>
+<p><strong>Minecraft Server Bedrock</strong>: DivinityCraft.org:25565</p>
+<p><strong>Dynmap</strong>: <a href="http://DivinityCraft.org:25566" target="_blank" rel="noopener noreferrer">Click To View</a></p>
+
+
 <h2>🔑 Key Features:</h2>
 <p><strong>1️⃣. Dynamic Market System 📊:</strong> DivinityEconomy boasts a sophisticated market system that adjusts item prices based on supply and demand. Server owners have the option to disable this feature if desired. Additionally, the plugin supports item damage scaling 🔧 to further enhance the realism of the in-game economy.</p>
 <p><strong>2️⃣. Customizable Taxation and Fees 💸:</strong> The plugin allows server owners to set up custom taxes and fees for various transactions, such as buying, selling, or trading items. This feature provides more control over the economy's structure and encourages strategic financial decision-making among players.</p>
@@ -73,4 +80,4 @@
 
 <hr>
 
-<h4><a href="https://github.com/HTTPStanley/DivinityEconomy" target="_blank" rel="noopener noreferrer">View On Github</a></h4>
+<a href="https://github.com/HTTPStanley/DivinityEconomy" target="_blank" rel="noopener noreferrer">View On Github</a>
