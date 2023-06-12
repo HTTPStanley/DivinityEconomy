@@ -168,6 +168,7 @@ public abstract class DivinityCommand implements CommandExecutor {
 
         // Poly
         InvalidNumberOfArguments("Invalid number of arguments.", LogLevel.WARNING),
+        EnchantedItemsRemoved("After skipping enchanted items, there is nothing left to sell.", LogLevel.WARNING),
         InvalidArguments("Invalid arguments.", LogLevel.WARNING),
         InvalidPlayerName("Invalid player name.", LogLevel.WARNING),
         InvalidAmountGiven("Invalid amount given.", LogLevel.WARNING),

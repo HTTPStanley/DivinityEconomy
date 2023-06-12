@@ -1,0 +1,4 @@
+Updated to Spigot 1.20.
+When selling items, enchanted items are now skipped. Meaning that when selling many items, they will not block the sale of other items.
+Updated, materials, potions, entities and enchantments to 1.20.
+The buy command now accepts "max" as a purchasing amount.

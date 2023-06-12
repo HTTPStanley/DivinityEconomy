@@ -8,6 +8,7 @@ import me.edgrrrr.de.response.MultiValueResponse;
 import me.edgrrrr.de.response.Response;
 import me.edgrrrr.de.response.ValueResponse;
 import net.milkbowl.vault.economy.EconomyResponse;
+import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
@@ -52,7 +53,7 @@ public class EnchantManager extends ItemManager {
      * Returns if the enchantment given is supported by the itemstack given.
      */
     public boolean supportsEnchant(ItemStack itemStack, Enchantment enchantment) {
-        if (itemStack.getItemMeta() instanceof EnchantmentStorageMeta && false) {
+        if (itemStack.getItemMeta() instanceof EnchantmentStorageMeta) {
             return true;
         }
 
@@ -90,13 +91,16 @@ public class EnchantManager extends ItemManager {
         ItemMeta itemMeta = itemStack.getItemMeta();
 
         // If item can store enchants
-        if (itemMeta instanceof EnchantmentStorageMeta && false) {
-            EnchantmentStorageMeta enchantmentStorageMeta = (EnchantmentStorageMeta) itemMeta;
+        if (itemMeta instanceof EnchantmentStorageMeta enchantmentStorageMeta) {
             int currentLevel = enchantmentStorageMeta.getStoredEnchantLevel(enchantment);
             enchantmentStorageMeta.removeStoredEnchant(enchantment);
             int levelsLeft = currentLevel - levels;
             if (levelsLeft > 0) {
                 enchantmentStorageMeta.addStoredEnchant(enchantment, levelsLeft, true);
+            } else {
+                if (itemStack.getType() == Material.ENCHANTED_BOOK) {
+                    itemStack.setType(Material.BOOK);
+                }
             }
 
             itemStack.setItemMeta(enchantmentStorageMeta);
@@ -145,11 +149,12 @@ public class EnchantManager extends ItemManager {
 
 
         // Add ItemMeta Stored Enchant
-        if (itemMeta instanceof EnchantmentStorageMeta && false) {
-            EnchantmentStorageMeta enchantmentStorageMeta = (EnchantmentStorageMeta) itemMeta;
+        if (itemMeta instanceof EnchantmentStorageMeta enchantmentStorageMeta) {
             enchantmentStorageMeta.addStoredEnchant(enchantment, newLevel, true);
-
             itemStack.setItemMeta(enchantmentStorageMeta);
+            if (itemStack.getType() == Material.BOOK) {
+                itemStack.setType(Material.ENCHANTED_BOOK);
+            }
         }
 
         // Add ItemStack enchant
@@ -173,7 +178,7 @@ public class EnchantManager extends ItemManager {
         ItemMeta itemMeta = itemStack.getItemMeta();
 
         // If item is has enchantedment storage
-        if (itemMeta instanceof EnchantmentStorageMeta && false) {
+        if (itemMeta instanceof EnchantmentStorageMeta) {
             return ((EnchantmentStorageMeta) itemMeta).hasStoredEnchants();
         }
 
@@ -215,7 +220,7 @@ public class EnchantManager extends ItemManager {
      * Use getBulkBuyValue(ItemStack)
      *
      * @param itemStack - The item stack to get the value of
-     * @return
+     * @return ValueResponse
      */
     @Deprecated
     @Override
@@ -226,10 +231,10 @@ public class EnchantManager extends ItemManager {
     /**
      * Returns the item given as base class DivinityItem is abstract and cannot be instantiated
      *
-     * @param data
-     * @param defaultData
-     * @param ID
-     * @return
+     * @param data       - The data to load
+     * @param defaultData - The default data to load
+     * @param ID        - The ID of the item
+     * @return MarketableToken
      */
     @Override
     public MarketableToken loadItem(String ID, ConfigurationSection data, ConfigurationSection defaultData) {
@@ -345,14 +350,49 @@ public class EnchantManager extends ItemManager {
      */
     @Override
     public String[] getItemNames(ItemStack itemStack) {
+        // Array list for enchants
         ArrayList<String> itemNames = new ArrayList<>();
-        this.itemMap.values().stream().filter(enchant -> itemStack.containsEnchantment(((MarketableEnchant) enchant).getEnchant())).forEach(enchant -> itemNames.addAll(Arrays.asList(this.revAliasMap.get((enchant.getID().toLowerCase())))));
+
+        // Get item meta
+        ItemMeta itemMeta = itemStack.getItemMeta();
+
+        // Loop through enchants in storage meta
+        // Add enchants to array list
+        Map<Enchantment, Integer> enchantments = EnchantManager.getEnchantments(itemStack);
+        for (Enchantment enchantment : enchantments.keySet()) {
+            itemNames.add(enchantment.getKey().getKey());
+        }
+
         return itemNames.toArray(new String[0]);
     }
 
     public String[] getCompatibleEnchants(ItemStack itemStack) {
+        // Array list for enchants
         ArrayList<String> itemNames = new ArrayList<>();
-        this.itemMap.values().stream().filter(enchant -> ((MarketableEnchant) enchant).getEnchant().canEnchantItem(itemStack) || allowUnsafe).forEach(enchant -> itemNames.addAll(Arrays.asList(this.revAliasMap.get((enchant.getID().toLowerCase())))));
+
+        // Get item meta
+        ItemMeta itemMeta = itemStack.getItemMeta();
+
+        // Loop through enchants in storage meta
+        // Add enchants to array list - if they are compatible with the item or allowUnsafe is true
+        for (MarketableToken token : this.itemMap.values()) {
+            MarketableEnchant enchant = (MarketableEnchant) token;
+
+            // Check if addable
+            boolean canAdd = false;
+            if (allowUnsafe) {
+                canAdd = true;
+            } else if (enchant.getEnchant().canEnchantItem(itemStack)) {
+                canAdd = true;
+            } else if (itemMeta instanceof EnchantmentStorageMeta) {
+                canAdd = true;
+            }
+
+            // Add if you can add
+            if (canAdd) {
+                itemNames.addAll(Arrays.asList(this.revAliasMap.get((enchant.getID().toLowerCase()))));
+            }
+        }
         return itemNames.toArray(new String[0]);
     }
 
@@ -461,7 +501,7 @@ public class EnchantManager extends ItemManager {
         ItemMeta itemMeta = itemStack.getItemMeta();
 
         // Item can store enchants, return stored enchants
-        if (itemMeta instanceof EnchantmentStorageMeta && false) {
+        if (itemMeta instanceof EnchantmentStorageMeta) {
             EnchantmentStorageMeta enchantmentStorageMeta = (EnchantmentStorageMeta) itemMeta;
             return enchantmentStorageMeta.getStoredEnchants();
         }

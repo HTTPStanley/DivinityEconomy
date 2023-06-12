@@ -4894,6 +4894,8 @@ lifestrongtippedarrow: STRONG_HEALING_TIPPED_ARROW
 lifetarr: HEALING_TIPPED_ARROW
 lifetarrow: HEALING_TIPPED_ARROW
 lifetippedarrow: HEALING_TIPPED_ARROW
+lingering_potion: LINGERING_POTION
+lingeringpotion: LINGERING_POTION
 lingerpotacid: POISON_LINGERING_POTION
 lingerpotacid2: LONG_POISON_LINGERING_POTION
 lingerpotacidex: LONG_POISON_LINGERING_POTION
@@ -5933,6 +5935,7 @@ poisonstrongtippedarrow: STRONG_POISON_TIPPED_ARROW
 poisontarr: POISON_TIPPED_ARROW
 poisontarrow: POISON_TIPPED_ARROW
 poisontippedarrow: POISON_TIPPED_ARROW
+potion: POTION
 potionofacid: POISON_POTION
 potionofacid2: LONG_POISON_POTION
 potionofacidex: LONG_POISON_POTION
@@ -7801,6 +7804,7 @@ splacidpot: POISON_SPLASH_POTION
 splacidpotion: POISON_SPLASH_POTION
 splacidstrongpot: STRONG_POISON_SPLASH_POTION
 splacidstrongpotion: STRONG_POISON_SPLASH_POTION
+splash_potion: SPLASH_POTION
 splashacid2pot: LONG_POISON_SPLASH_POTION
 splashacid2potion: LONG_POISON_SPLASH_POTION
 splashacidexpot: LONG_POISON_SPLASH_POTION
@@ -8187,6 +8191,7 @@ splashpoisonpot: POISON_SPLASH_POTION
 splashpoisonpotion: POISON_SPLASH_POTION
 splashpoisonstrongpot: STRONG_POISON_SPLASH_POTION
 splashpoisonstrongpotion: STRONG_POISON_SPLASH_POTION
+splashpotion: SPLASH_POTION
 splashppot: POISON_SPLASH_POTION
 splashppotion: POISON_SPLASH_POTION
 splashpstrongpot: STRONG_POISON_SPLASH_POTION
@@ -9985,6 +9990,8 @@ thicksplashpotion: THICK_SPLASH_POTION
 thicktarr: THICK_TIPPED_ARROW
 thicktarrow: THICK_TIPPED_ARROW
 thicktippedarrow: THICK_TIPPED_ARROW
+tipped_arrow: TIPPED_ARROW
+tippedarrow: TIPPED_ARROW
 tm2pot: LONG_TURTLE_MASTER_POTION
 tm2potion: LONG_TURTLE_MASTER_POTION
 tm2splashpot: LONG_TURTLE_MASTER_SPLASH_POTION

@@ -44,8 +44,27 @@ public class Buy extends DivinityCommandMaterials {
 
             // Material & Amount
             case 2:
+                // Get the material name
                 materialName = args[0];
-                amountToBuy = Converter.getInt(args[1]);
+
+                // Check if the player wants to buy the max amount
+                if (args[1].equalsIgnoreCase("max")) {
+
+                    // Get the marketable material
+                    MarketableMaterial marketableMaterial = this.getMain().getMarkMan().getItem(materialName);
+                    // Ensure the material exists
+                    if (marketableMaterial != null) {
+                        amountToBuy = marketableMaterial.getAvailableSpace(sender);
+                    }
+                    // Else, set the amount to buy to 0
+                    else {
+                        amountToBuy = 0;
+                    }
+                }
+                // Else, set the amount to buy to the given amount
+                else {
+                    amountToBuy = Converter.getInt(args[1]);
+                }
                 break;
 
             default:

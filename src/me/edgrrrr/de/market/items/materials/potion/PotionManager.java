@@ -5,9 +5,11 @@ import me.edgrrrr.de.market.items.materials.MarketableMaterial;
 import me.edgrrrr.de.market.items.materials.MaterialManager;
 import me.edgrrrr.de.response.ValueResponse;
 import net.milkbowl.vault.economy.EconomyResponse;
+import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Arrays;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class PotionManager extends MaterialManager {
@@ -25,6 +27,7 @@ public class PotionManager extends MaterialManager {
     public String getType() {
         return "POTION";
     }
+
 
     /**
      * Returns the sell value for a single stack of items.

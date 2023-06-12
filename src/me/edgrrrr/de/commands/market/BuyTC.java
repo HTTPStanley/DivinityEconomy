@@ -50,6 +50,7 @@ public class BuyTC extends DivinityCommandMaterialsTC {
                     stackSize = marketableMaterial.getMaterial().getMaxStackSize();
                     strings = new String[]{
                             String.valueOf(stackSize),
+                            "max",
                             String.valueOf(marketableMaterial.getAvailableSpace(sender))
                     };
                 } else {

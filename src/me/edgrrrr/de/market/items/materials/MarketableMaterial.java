@@ -8,6 +8,7 @@ import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,6 +33,27 @@ public abstract class MarketableMaterial extends MarketableItem {
         }
 
         return material;
+    }
+
+    /**
+     * Returns the number of books required to make the level provided
+     * @param itemStacks - The item stacks to check
+     * @return The number of books required to make the level provided
+     */
+    public static ItemStack[] removeEnchantedItems(ItemStack[] itemStacks) {
+        ArrayList<ItemStack> nonEnchanted = new ArrayList<>();
+        Arrays.stream(itemStacks).forEach(stack -> {
+            if (stack.getEnchantments().isEmpty()) {
+                nonEnchanted.add(stack);
+            } else {
+                if (stack.getItemMeta() instanceof EnchantmentStorageMeta meta) {
+                    if (meta.getStoredEnchants().isEmpty()) {
+                        nonEnchanted.add(stack);
+                    }
+                }
+            }
+        });
+        return nonEnchanted.toArray(new ItemStack[0]);
     }
 
     /**

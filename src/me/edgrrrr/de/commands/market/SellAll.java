@@ -81,10 +81,19 @@ public class SellAll extends DivinityCommandMaterials {
         }
 
         // Get item stacks
+        // Remove enchanted items
         // Clone incase need to be refunded
         // Get valuation
-        ItemStack[] itemStacks = itemStackList.toArray(new ItemStack[0]);
+        ItemStack[] allStacks = itemStackList.toArray(new ItemStack[0]);
+        ItemStack[] itemStacks = MarketableMaterial.removeEnchantedItems(allStacks);
         ItemStack[] itemStacksClone = MarketableMaterial.cloneItems(itemStacks);
+
+        // Check for removed items
+        if (itemStacks.length != allStacks.length) {
+            this.getMain().getConsole().logFailedSale(sender, 0, "items", CommandResponse.EnchantedItemsRemoved.message.toLowerCase());
+            return true;
+        }
+
         MultiValueResponse response = this.getMain().getMarkMan().getBulkSellValue(itemStacks);
 
         if (response.isSuccess()) {

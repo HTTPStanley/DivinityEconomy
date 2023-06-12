@@ -51,6 +51,13 @@ public abstract class ItemManager extends TokenManager {
     public ValueResponse getSellValue(ItemStack[] itemStacks) {
         double value = 0.0;
 
+
+        // If no items, return 0
+        if (itemStacks == null || itemStacks.length == 0) {
+            return new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, "No items to sell.");
+        }
+
+
         // Loop through items and add up the sell value of each item
         Map<ItemStack, Integer> itemCounts = resolveItemStacks(itemStacks);
         for (ItemStack itemStack : itemCounts.keySet()) {
@@ -91,6 +98,12 @@ public abstract class ItemManager extends TokenManager {
      */
     public ValueResponse getBuyValue(ItemStack[] itemStacks) {
         double value = 0.0;
+
+        // If no items, return 0
+        if (itemStacks == null || itemStacks.length == 0) {
+            return new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, "no items to buy.");
+        }
+
         Map<ItemStack, Integer> itemCounts = resolveItemStacks(itemStacks);
         for (ItemStack itemStack : itemCounts.keySet()) {
             ValueResponse mv = this.getBuyValue(itemStack, itemCounts.get(itemStack));
