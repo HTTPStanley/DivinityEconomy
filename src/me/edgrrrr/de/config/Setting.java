@@ -7,8 +7,6 @@ public enum Setting {
      * a configurable value
      * Values not starting with "SECTION" are individual configurable values and
      * can be set/got, they end in the type they return
-     *
-     * @param path
      */
 
     //Setting Sections
@@ -27,9 +25,12 @@ public enum Setting {
     SECTION_COMMANDS_MISC(SECTION_COMMANDS.path + ".Misc"),
     SECTION_COMMANDS_MARKET(SECTION_COMMANDS.path + ".Market"),
     SECTION_COMMANDS_ENCHANT(SECTION_COMMANDS.path + ".Enchant"),
+    SECTION_COMMANDS_EXPERIENCE(SECTION_COMMANDS.path + ".Experience"),
 
     SECTION_MARKET_MATERIALS(SECTION_MARKET.path + ".Materials"),
     SECTION_MARKET_ENCHANTS(SECTION_MARKET.path + ".Enchants"),
+
+    SECTION_MARKET_EXP(SECTION_MARKET.path + ".Experience"),
 
     //Main Settings
     MAIN_VERSION_STRING(SECTION_MAIN.path + ".Version"),
@@ -83,6 +84,13 @@ public enum Setting {
     MARKET_ENCHANTS_WHOLE_MARKET_INF_BOOLEAN(SECTION_MARKET_ENCHANTS.path + ".Whole Market Inflation"),
     MARKET_ENCHANTS_ALLOW_UNSAFE_BOOLEAN(SECTION_MARKET_ENCHANTS.path + ".Allow Unsafe Enchants"),
 
+    MARKET_EXP_ENABLE_BOOLEAN(SECTION_MARKET_EXP.path + ".Enable"),
+    MARKET_EXP_BASE_QUANTITY_INTEGER(SECTION_MARKET_EXP.path + ".Base Quantity"),
+    MARKET_EXP_BUY_TAX_FLOAT(SECTION_MARKET_EXP.path + ".Buy Scale"),
+    MARKET_EXP_SELL_TAX_FLOAT(SECTION_MARKET_EXP.path + ".Sell Scale"),
+    MARKET_EXP_DYN_PRICING_BOOLEAN(SECTION_MARKET_EXP.path + ".Dynamic Pricing"),
+    MARKET_EXP_WHOLE_MARKET_INF_BOOLEAN(SECTION_MARKET_EXP.path + ".Whole Market Inflation"),
+
     //Commands Settings
     COMMAND_PING_ENABLE_BOOLEAN(SECTION_COMMANDS_MISC.path + ".Ping"),
     COMMAND_SET_BALANCE_ENABLE_BOOLEAN(SECTION_COMMANDS_ADMIN.path + ".Set Bal"),
@@ -108,6 +116,8 @@ public enum Setting {
     COMMAND_E_HAND_VALUE_ENABLE_BOOLEAN(SECTION_COMMANDS_ENCHANT.path + ".E Hand Value"),
     COMMAND_E_VALUE_ENABLE_BOOLEAN(SECTION_COMMANDS_ENCHANT.path + ".E Value"),
     COMMAND_E_INFO_ENABLE_BOOLEAN(SECTION_COMMANDS_ENCHANT.path + ".E Info"),
+    COMMAND_EXP_SELL_ENABLE_BOOLEAN(SECTION_COMMANDS_EXPERIENCE.path + ".EXP Sell"),
+    COMMAND_EXP_BUY_ENABLE_BOOLEAN(SECTION_COMMANDS_EXPERIENCE.path + ".EXP Buy"),
     COMMAND_SET_STOCK_ENABLE_BOOLEAN(SECTION_COMMANDS_ADMIN.path + ".Set Stock"),
     COMMAND_SET_VALUE_ENABLE_BOOLEAN(SECTION_COMMANDS_ADMIN.path + ".Set Value"),
     COMMAND_E_SET_STOCK_ENABLE_BOOLEAN(SECTION_COMMANDS_ADMIN.path + ".E Set Stock"),

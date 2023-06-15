@@ -41,14 +41,14 @@ public class SellTC extends DivinityCommandMaterialsTC {
         switch (args.length) {
             // 1 args
             // return items in user inventory
-            case 1:
+            case 1 -> {
                 String[] materials = PlayerManager.getInventoryMaterialNames(sender);
                 strings = this.getMain().getMarkMan().getItemNames(materials, args[0]);
-                break;
+            }
 
             // 2 args
             // return amount in user inventory
-            case 2:
+            case 2 -> {
                 marketableMaterial = this.getMain().getMarkMan().getItem(args[0]);
                 if (marketableMaterial == null) {
                     strings = new String[]{
@@ -67,26 +67,25 @@ public class SellTC extends DivinityCommandMaterialsTC {
                     allStrings.add(String.valueOf(inventoryCount));
 
                     strings = allStrings.toArray(new String[0]);
-                    break;
                 }
-
-                break;
-
-            case 3:
+            }
+            case 3 -> {
                 marketableMaterial = this.getMain().getMarkMan().getItem(args[0]);
-                String value = "unknown";
+                String value = "unknown.";
                 if (marketableMaterial != null) {
-                    value = String.format("£%,.2f", marketableMaterial.getManager().getSellValue(marketableMaterial.getMaterialSlotsToCount(sender, Converter.getInt(args[1]))).value);
+                    int amount;
+                    if (args[1].equalsIgnoreCase("max")) {
+                        amount = marketableMaterial.getAvailableSpace(sender);
+                    } else {
+                        amount = Converter.getInt(args[1]);
+                    }
+                    value = String.format("£%,.2f", marketableMaterial.getManager().getSellValue(marketableMaterial.getMaterialSlotsToCount(sender, amount)).value);
                 }
                 strings = new String[]{
                         String.format("Value: %s", value)
                 };
-                break;
-
-
-            default:
-                strings = new String[0];
-                break;
+            }
+            default -> strings = new String[0];
         }
 
         return Arrays.asList(strings);

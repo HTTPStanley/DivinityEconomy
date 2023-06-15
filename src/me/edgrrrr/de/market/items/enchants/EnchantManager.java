@@ -7,6 +7,8 @@ import me.edgrrrr.de.market.items.ItemManager;
 import me.edgrrrr.de.response.MultiValueResponse;
 import me.edgrrrr.de.response.Response;
 import me.edgrrrr.de.response.ValueResponse;
+import me.edgrrrr.de.utils.ArrayUtils;
+import me.edgrrrr.de.utils.Converter;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -14,7 +16,10 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.scheduler.BukkitRunnable;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
@@ -41,8 +46,37 @@ public class EnchantManager extends ItemManager {
 
     @Override
     public void init() {
-        super.init();
         this.allowUnsafe = this.getConfMan().getBoolean(Setting.MARKET_ENCHANTS_ALLOW_UNSAFE_BOOLEAN);
+        this.saveMessagesDisabled = this.getConfMan().getBoolean(Setting.IGNORE_SAVE_MESSAGE_BOOLEAN);
+        this.buyScale = this.getConfMan().getDouble(Setting.MARKET_ENCHANTS_BUY_TAX_FLOAT);
+        this.sellScale = this.getConfMan().getDouble(Setting.MARKET_ENCHANTS_SELL_TAX_FLOAT);
+        this.baseQuantity = this.getConfMan().getInt(Setting.MARKET_ENCHANTS_BASE_QUANTITY_INTEGER);
+        this.dynamicPricing = this.getConfMan().getBoolean(Setting.MARKET_ENCHANTS_DYN_PRICING_BOOLEAN);
+        this.wholeMarketInflation = this.getConfMan().getBoolean(Setting.MARKET_ENCHANTS_WHOLE_MARKET_INF_BOOLEAN);
+        this.maxItemValue = this.getConfMan().getDouble(Setting.MARKET_MAX_ITEM_VALUE_DOUBLE);
+        if (this.maxItemValue < 0) {
+            this.maxItemValue = Double.MAX_VALUE;
+        }
+        this.minItemValue = this.getConfMan().getDouble(Setting.MARKET_MIN_ITEM_VALUE_DOUBLE);
+        if (this.minItemValue < 0) {
+            this.minItemValue = Double.MIN_VALUE;
+        }
+        int timer = Converter.getTicks(this.getConfMan().getInt(Setting.MARKET_SAVE_TIMER_INTEGER));
+        this.saveTimer = new BukkitRunnable() {
+            @Override
+            public void run() {
+                saveItems();
+            }
+        };
+        this.saveTimer.runTaskTimerAsynchronously(this.getMain(), timer, timer);
+        this.loadItems();
+        this.loadAliases();
+    }
+
+    @Override
+    public void deinit() {
+        this.saveTimer.cancel();
+        this.saveItems();
     }
 
     public MarketableEnchant getEnchant(String alias) {
@@ -53,11 +87,12 @@ public class EnchantManager extends ItemManager {
      * Returns if the enchantment given is supported by the itemstack given.
      */
     public boolean supportsEnchant(ItemStack itemStack, Enchantment enchantment) {
-        if (itemStack.getItemMeta() instanceof EnchantmentStorageMeta) {
-            return true;
-        }
-
-        return enchantment.canEnchantItem(itemStack);
+        return (
+            allowUnsafe ||
+            (itemStack.getType() == Material.BOOK) ||
+            (itemStack.getItemMeta() instanceof EnchantmentStorageMeta enchantmentStorageMeta && !enchantmentStorageMeta.hasConflictingStoredEnchant(enchantment)) ||
+            enchantment.canEnchantItem(itemStack)
+        );
     }
 
     /**
@@ -126,10 +161,6 @@ public class EnchantManager extends ItemManager {
      * @return Response
      */
     public Response addEnchantToItem(ItemStack itemStack, Enchantment enchantment, int levels) {
-
-        // Get meta
-        ItemMeta itemMeta = itemStack.getItemMeta();
-
         // Get new desired level
         int newLevel = levels + itemStack.getEnchantmentLevel(enchantment);
 
@@ -147,17 +178,21 @@ public class EnchantManager extends ItemManager {
             return new Response(EconomyResponse.ResponseType.FAILURE, String.format("level is greater than max (%d/%d)", newLevel, enchantData.getMaxLevel()));
         }
 
-
-        // Add ItemMeta Stored Enchant
-        if (itemMeta instanceof EnchantmentStorageMeta enchantmentStorageMeta) {
-            enchantmentStorageMeta.addStoredEnchant(enchantment, newLevel, true);
-            itemStack.setItemMeta(enchantmentStorageMeta);
-            if (itemStack.getType() == Material.BOOK) {
-                itemStack.setType(Material.ENCHANTED_BOOK);
-            }
+        // Check if item is a book
+        if (itemStack.getType() == Material.BOOK) {
+            itemStack.setType(Material.ENCHANTED_BOOK);
+            EnchantmentStorageMeta esm = (EnchantmentStorageMeta) itemStack.getItemMeta();
+            esm.addStoredEnchant(enchantment, newLevel, true);
+            itemStack.setItemMeta(esm);
         }
 
-        // Add ItemStack enchant
+        // If item has enchantment storage
+        else if (itemStack.getItemMeta() instanceof EnchantmentStorageMeta enchantmentStorageMeta) {
+            enchantmentStorageMeta.addStoredEnchant(enchantment, newLevel, true);
+            itemStack.setItemMeta(enchantmentStorageMeta);
+        }
+
+        // Add enchantment to itemstack
         else {
             itemStack.addUnsafeEnchantment(enchantment, newLevel);
         }
@@ -173,7 +208,6 @@ public class EnchantManager extends ItemManager {
      * @return boolean - Is enchanted / Is not enchanted
      */
     public boolean isEnchanted(ItemStack itemStack) {
-
         // Get item meta
         ItemMeta itemMeta = itemStack.getItemMeta();
 
@@ -198,7 +232,7 @@ public class EnchantManager extends ItemManager {
         EconomyResponse.ResponseType responseType = EconomyResponse.ResponseType.SUCCESS;
         String errorMessage = "";
 
-        Map<Enchantment, Integer> enchantmentLevels = itemStack.getEnchantments();
+        Map<Enchantment, Integer> enchantmentLevels = EnchantManager.getEnchantments(itemStack);
         for (Enchantment enchantment : enchantmentLevels.keySet()) {
             int level = enchantmentLevels.get(enchantment);
             String enchantID = enchantment.getKey().getKey();
@@ -312,7 +346,7 @@ public class EnchantManager extends ItemManager {
         EconomyResponse.ResponseType responseType = EconomyResponse.ResponseType.SUCCESS;
         String errorMessage = "";
 
-        Map<Enchantment, Integer> itemStackEnchants = itemStack.getEnchantments();
+        Map<Enchantment, Integer> itemStackEnchants = EnchantManager.getEnchantments(itemStack);
         for (Enchantment enchantment : itemStackEnchants.keySet()) {
             int level = itemStackEnchants.get(enchantment);
             String enchantID = enchantment.getKey().getKey();
@@ -353,9 +387,6 @@ public class EnchantManager extends ItemManager {
         // Array list for enchants
         ArrayList<String> itemNames = new ArrayList<>();
 
-        // Get item meta
-        ItemMeta itemMeta = itemStack.getItemMeta();
-
         // Loop through enchants in storage meta
         // Add enchants to array list
         Map<Enchantment, Integer> enchantments = EnchantManager.getEnchantments(itemStack);
@@ -378,18 +409,7 @@ public class EnchantManager extends ItemManager {
         for (MarketableToken token : this.itemMap.values()) {
             MarketableEnchant enchant = (MarketableEnchant) token;
 
-            // Check if addable
-            boolean canAdd = false;
-            if (allowUnsafe) {
-                canAdd = true;
-            } else if (enchant.getEnchant().canEnchantItem(itemStack)) {
-                canAdd = true;
-            } else if (itemMeta instanceof EnchantmentStorageMeta) {
-                canAdd = true;
-            }
-
-            // Add if you can add
-            if (canAdd) {
+            if (this.supportsEnchant(itemStack, enchant.getEnchantment())) {
                 itemNames.addAll(Arrays.asList(this.revAliasMap.get((enchant.getID().toLowerCase()))));
             }
         }
@@ -478,6 +498,7 @@ public class EnchantManager extends ItemManager {
         return new ValueResponse(value, EconomyResponse.ResponseType.SUCCESS, "");
     }
 
+
     /**
      * Edits the quantity of an enchant & the total quantity of enchants
      *
@@ -495,14 +516,86 @@ public class EnchantManager extends ItemManager {
     }
 
 
+    /**
+     * Returns the string buy value of an enchant on an item.
+     * @param heldItem - The itemstack to check
+     * @param enchantID - The enchant ID to check for
+     * @param levels - The level to value
+     * @return String
+     */
+    public String getBuyValueString(@Nonnull ItemStack heldItem, @Nonnull String enchantID, int levels) {
+        ValueResponse value = this.getBuyValue(heldItem, enchantID, levels);
+        if (value.isFailure()) {
+            return String.format("Error: %s", value.errorMessage);
+        }
 
-    public static Map<Enchantment, Integer> getEnchantments(ItemStack itemStack) {
+        return String.format("Value: %s", this.getConsole().formatMoney(value.value));
+    }
+
+    /**
+     * Returns the string sell value of an enchant on an item.
+     * @param heldItem - The itemstack to check
+     * @param enchantID - The enchant ID to check for
+     * @param levels - The level to value
+     * @return
+     */
+    public String getSellValueString(@Nonnull ItemStack heldItem, @Nonnull String enchantID, int levels) {
+        ValueResponse value = this.getSellValue(heldItem, enchantID, levels);
+        if (value.isFailure()) {
+            return String.format("Error: %s", value.errorMessage);
+        }
+
+        return String.format("Value: %s", this.getConsole().formatMoney(value.value));
+    }
+
+    /**
+     * Returns the string bulk sell value of an item.
+     * @param heldItem - The itemstack to check
+     * @return String
+     */
+    public String getBulkSellValueString(@Nonnull ItemStack heldItem) {
+        MultiValueResponse mvr = this.getBulkSellValue(heldItem);
+        if (mvr.isFailure()) {
+            return String.format("Error: %s", mvr.errorMessage);
+        }
+
+        return String.format("Value: %s", this.getConsole().formatMoney(mvr.getTotalValue()));
+    }
+
+
+    /**
+     * Returns an array of strings of the levels of an enchant on an item.
+     * @param heldItem - The itemstack to check
+     * @param enchantData - The enchant to check for
+     * @return String[]
+     */
+    public String[] getUpgradeValueString(@Nonnull ItemStack heldItem, @Nullable String enchantID) {
+        MarketableEnchant enchantData = this.getEnchant(enchantID);
+        int maxLevel = 1;
+        if (enchantData != null) {
+            maxLevel = enchantData.getMaxLevel() - heldItem.getEnchantmentLevel(enchantData.getEnchantment());
+        }
+
+        return ArrayUtils.strRange(1, maxLevel);
+    }
+
+    public String[] getDowngradeValueString(@Nonnull ItemStack heldItem, @Nullable String enchantID) {
+        MarketableEnchant enchantData = this.getEnchant(enchantID);
+        int maxLevel = 1;
+        if (enchantData != null) {
+            maxLevel = heldItem.getEnchantmentLevel(enchantData.getEnchantment());
+        }
+
+        return ArrayUtils.strRange(1, maxLevel);
+    }
+
+
+    public static Map<Enchantment, Integer> getEnchantments(@Nonnull ItemStack itemStack) {
         // Get item stack meta
         ItemMeta itemMeta = itemStack.getItemMeta();
 
         // Item can store enchants, return stored enchants
-        if (itemMeta instanceof EnchantmentStorageMeta) {
-            EnchantmentStorageMeta enchantmentStorageMeta = (EnchantmentStorageMeta) itemMeta;
+        if (itemMeta instanceof EnchantmentStorageMeta enchantmentStorageMeta) {
             return enchantmentStorageMeta.getStoredEnchants();
         }
 

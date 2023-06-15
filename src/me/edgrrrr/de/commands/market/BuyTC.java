@@ -37,13 +37,12 @@ public class BuyTC extends DivinityCommandMaterialsTC {
         switch (args.length) {
             // 1 args
             // return names of players starting with arg
-            case 1:
-                strings = this.getMain().getMarkMan().getItemNames(args[0]);
-                break;
+            case 1 -> strings = this.getMain().getMarkMan().getItemNames(args[0]);
+
 
             // 2 args
             // return max stack size for the material given
-            case 2:
+            case 2 -> {
                 marketableMaterial = this.getMain().getMarkMan().getItem(args[0]);
                 int stackSize;
                 if (marketableMaterial != null) {
@@ -58,27 +57,30 @@ public class BuyTC extends DivinityCommandMaterialsTC {
                             "Unknown material."
                     };
                 }
-
-                break;
+            }
 
             // 3 args
             // If uses clicks space after number, returns the value of the amount of item given
-            case 3:
+            case 3 -> {
                 marketableMaterial = this.getMain().getMarkMan().getItem(args[0]);
-                String value = "unknown";
+                String value = "unknown.";
                 if (marketableMaterial != null) {
-                    value = String.format("£%,.2f", marketableMaterial.getManager().calculatePrice(Converter.getInt(args[1]), marketableMaterial.getQuantity(), marketableMaterial.getManager().getBuyScale(), true));
+                    int amount;
+                    if (args[1].equalsIgnoreCase("max")) {
+                        amount = marketableMaterial.getAvailableSpace(sender);
+                    } else {
+                        amount = Converter.getInt(args[1]);
+                    }
+                    value = String.format("£%,.2f", marketableMaterial.getManager().calculatePrice(amount, marketableMaterial.getQuantity(), marketableMaterial.getManager().getBuyScale(), true));
                 }
 
                 strings = new String[]{
                         String.format("Value: %s", value)
                 };
-                break;
+            }
 
             // else
-            default:
-                strings = new String[0];
-                break;
+            default -> strings = new String[0];
         }
 
         return Arrays.asList(strings);

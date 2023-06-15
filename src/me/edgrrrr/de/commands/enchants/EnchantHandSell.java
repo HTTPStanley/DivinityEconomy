@@ -49,9 +49,6 @@ public class EnchantHandSell extends DivinityCommandEnchant {
                 if (enchantName.equalsIgnoreCase("max")) {
                     sellAllEnchants = true;
                     sellAllLevels = true;
-                } else {
-                    this.getMain().getConsole().usage(sender, CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
-                    return true;
                 }
                 break;
 
@@ -109,7 +106,8 @@ public class EnchantHandSell extends DivinityCommandEnchant {
                     this.getMain().getConsole().logFailedSale(sender, multiValueResponse.getTotalQuantity(), multiValueResponse.toString("Enchants: "), multiValueResponse.errorMessage);
                 }
             }
-        } else {
+        }
+        else {
             // If only handling one enchant
             // Ensure enchant exists
             MarketableEnchant enchantData = this.getMain().getEnchMan().getEnchant(enchantName);
@@ -125,7 +123,7 @@ public class EnchantHandSell extends DivinityCommandEnchant {
             }
 
             // Get value
-            ValueResponse valueResponse = this.getMain().getEnchMan().getSellValue(heldItem, enchantData.getCleanName(), enchantLevels);
+            ValueResponse valueResponse = this.getMain().getEnchMan().getSellValue(heldItem, enchantData.getID(), enchantLevels);
 
             // Ensure valuation was successful
             if (valueResponse.isFailure()) {

@@ -20,20 +20,54 @@ public class Converter {
      */
     public static double getDouble(String arg) {
         // Instantiate amount
-        double amount;
+        double amount = 0;
 
         // Try to parse the double
         // Catch the error and set to null
         try {
             amount = Double.parseDouble(arg);
-        } catch (Exception e) {
-            amount = 0.0;
-        }
+        } catch (Exception e) {}
 
         return amount;
     }
 
     public static int getInt(String arg) {
-        return (int) Converter.getDouble(arg);
+        // Instantiate amount
+        int amount = 0;
+
+        // Try to parse the integer
+        // Catch the error and set to null
+        try {
+            amount = Integer.parseInt(arg);
+        } catch (Exception e) {}
+
+        return amount;
+    }
+
+    public static long getLong(String arg) {
+        // Instantiate amount
+        long amount = 0;
+
+        // Try to parse the integer
+        // Catch the error and set to null
+        try {
+            amount = Long.parseLong(arg);
+        } catch (Exception e) {}
+
+        return amount;
+    }
+
+    public static int constrainInt(int value, int min, int max) {
+        return Math.min(Math.max(value, min), max);
+    }
+
+
+    public static long constrainLong(long value, long min, long max) {
+        return Math.min(Math.max(value, min), max);
+    }
+
+
+    public static double constrainDouble(double value, double min, double max) {
+        return Math.min(Math.max(value, min), max);
     }
 }

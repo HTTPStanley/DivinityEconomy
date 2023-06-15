@@ -4,7 +4,6 @@ import com.tchristofferson.configupdater.ConfigUpdater;
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.DivinityModule;
 import me.edgrrrr.de.config.Setting;
-import me.edgrrrr.de.utils.Converter;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -34,8 +33,8 @@ public abstract class TokenManager extends DivinityModule {
     protected Map<String, String[]> revAliasMap;
     protected Map<String, ? extends MarketableToken> itemMap;
     // Used for calculating inflation/deflation
-    protected int totalItems;
-    protected int defaultTotalItems;
+    protected long totalItems;
+    protected long defaultTotalItems;
     // Other settings
     protected double maxItemValue;
     protected double minItemValue;
@@ -61,46 +60,6 @@ public abstract class TokenManager extends DivinityModule {
         this.aliasMap = new ConcurrentHashMap<>();
         this.revAliasMap = new ConcurrentHashMap<>();
         this.itemMap = itemMap;
-    }
-
-    /**
-     * Initialisation of the object
-     */
-    @Override
-    public void init() {
-        this.saveMessagesDisabled = this.getConfMan().getBoolean(Setting.IGNORE_SAVE_MESSAGE_BOOLEAN);
-        this.buyScale = this.getConfMan().getDouble(Setting.MARKET_MATERIALS_BUY_TAX_FLOAT);
-        this.sellScale = this.getConfMan().getDouble(Setting.MARKET_MATERIALS_SELL_TAX_FLOAT);
-        this.baseQuantity = this.getConfMan().getInt(Setting.MARKET_MATERIALS_BASE_QUANTITY_INTEGER);
-        this.dynamicPricing = this.getConfMan().getBoolean(Setting.MARKET_MATERIALS_DYN_PRICING_BOOLEAN);
-        this.wholeMarketInflation = this.getConfMan().getBoolean(Setting.MARKET_MATERIALS_WHOLE_MARKET_INF_BOOLEAN);
-        this.maxItemValue = this.getConfMan().getDouble(Setting.MARKET_MAX_ITEM_VALUE_DOUBLE);
-        if (this.maxItemValue < 0) {
-            this.maxItemValue = Double.MAX_VALUE;
-        }
-        this.minItemValue = this.getConfMan().getDouble(Setting.MARKET_MIN_ITEM_VALUE_DOUBLE);
-        if (this.minItemValue < 0) {
-            this.minItemValue = Double.MIN_VALUE;
-        }
-        int timer = Converter.getTicks(this.getConfMan().getInt(Setting.MARKET_SAVE_TIMER_INTEGER));
-        this.saveTimer = new BukkitRunnable() {
-            @Override
-            public void run() {
-                saveItems();
-            }
-        };
-        this.saveTimer.runTaskTimerAsynchronously(this.getMain(), timer, timer);
-        this.loadItems();
-        this.loadAliases();
-    }
-
-    /**
-     * Shutdown of the object
-     */
-    @Override
-    public void deinit() {
-        this.saveTimer.cancel();
-        this.saveItems();
     }
 
     /**
@@ -438,7 +397,7 @@ public abstract class TokenManager extends DivinityModule {
      *
      * @return int
      */
-    public int getTotalItems() {
+    public long getTotalItems() {
         return totalItems;
     }
 
@@ -447,7 +406,7 @@ public abstract class TokenManager extends DivinityModule {
      *
      * @return int
      */
-    public int getDefaultTotalItems() {
+    public long getDefaultTotalItems() {
         return defaultTotalItems;
     }
 
@@ -543,8 +502,8 @@ public abstract class TokenManager extends DivinityModule {
         FileConfiguration defaultConf = this.getConfMan().readResource(this.itemFile);
 
         // Set material counts
-        this.defaultTotalItems = 0;
-        this.totalItems = 0;
+        this.defaultTotalItems = 0L;
+        this.totalItems = 0L;
         // Create a HashMap to store the values
         Map<String, MarketableToken> values = new ConcurrentHashMap<>();
         // Loop through keys and get data

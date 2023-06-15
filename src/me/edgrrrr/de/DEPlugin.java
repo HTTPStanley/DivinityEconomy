@@ -2,6 +2,7 @@ package me.edgrrrr.de;
 
 import me.edgrrrr.de.commands.admin.*;
 import me.edgrrrr.de.commands.enchants.*;
+import me.edgrrrr.de.commands.experience.*;
 import me.edgrrrr.de.commands.help.HelpCommand;
 import me.edgrrrr.de.commands.help.HelpCommandTC;
 import me.edgrrrr.de.commands.mail.ClearMail;
@@ -22,6 +23,7 @@ import me.edgrrrr.de.economy.EconomyManager;
 import me.edgrrrr.de.events.MailEvent;
 import me.edgrrrr.de.help.HelpManager;
 import me.edgrrrr.de.mail.MailManager;
+import me.edgrrrr.de.market.exp.ExpManager;
 import me.edgrrrr.de.market.items.enchants.EnchantManager;
 import me.edgrrrr.de.market.items.materials.MarketManager;
 import me.edgrrrr.de.market.items.materials.block.BlockManager;
@@ -65,6 +67,8 @@ public class DEPlugin extends JavaPlugin {
     private PotionManager potionManager;
     // The enchant manager
     private EnchantManager enchantManager;
+    // Experience manager
+    private ExpManager expManager;
 
 
     /**
@@ -83,6 +87,7 @@ public class DEPlugin extends JavaPlugin {
         this.potionManager = new PotionManager(this);
         this.entityManager = new EntityManager(this);
         this.enchantManager = new EnchantManager(this);
+        this.expManager = new ExpManager(this);
         this.playerManager = new PlayerManager(this);
         this.mailManager = new MailManager(this);
         this.helpManager = new HelpManager(this);
@@ -124,6 +129,12 @@ public class DEPlugin extends JavaPlugin {
         new SetValue(this);
         new SetValueTC(this);
         new Reload(this);
+
+        // Experience
+        new ExperienceBuy(this);
+        new ExperienceBuyTC(this);
+        new ExperienceSell(this);
+        new ExperienceSellTC(this);
 
         // Enchant
         new EnchantHandBuy(this);
@@ -299,6 +310,16 @@ public class DEPlugin extends JavaPlugin {
      */
     public EntityManager getEntMan() {
         return this.entityManager;
+    }
+
+    /**
+     * Returns the Experience Manager
+     * This is used for managing experience and its value.
+     *
+     * @return ExpManager
+     */
+    public ExpManager getExpMan() {
+    	return this.expManager;
     }
 
     /**

@@ -1,12 +1,15 @@
 package me.edgrrrr.de.market.items.materials;
 
 import me.edgrrrr.de.DEPlugin;
+import me.edgrrrr.de.config.Setting;
 import me.edgrrrr.de.market.MarketableToken;
 import me.edgrrrr.de.market.items.ItemManager;
 import me.edgrrrr.de.response.MultiValueResponse;
 import me.edgrrrr.de.response.ValueResponse;
+import me.edgrrrr.de.utils.Converter;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Map;
 
@@ -27,13 +30,37 @@ public abstract class MaterialManager extends ItemManager {
 
     @Override
     public void init() {
-        super.init();
+        this.saveMessagesDisabled = this.getConfMan().getBoolean(Setting.IGNORE_SAVE_MESSAGE_BOOLEAN);
+        this.buyScale = this.getConfMan().getDouble(Setting.MARKET_MATERIALS_BUY_TAX_FLOAT);
+        this.sellScale = this.getConfMan().getDouble(Setting.MARKET_MATERIALS_SELL_TAX_FLOAT);
+        this.baseQuantity = this.getConfMan().getInt(Setting.MARKET_MATERIALS_BASE_QUANTITY_INTEGER);
+        this.dynamicPricing = this.getConfMan().getBoolean(Setting.MARKET_MATERIALS_DYN_PRICING_BOOLEAN);
+        this.wholeMarketInflation = this.getConfMan().getBoolean(Setting.MARKET_MATERIALS_WHOLE_MARKET_INF_BOOLEAN);
+        this.maxItemValue = this.getConfMan().getDouble(Setting.MARKET_MAX_ITEM_VALUE_DOUBLE);
+        if (this.maxItemValue < 0) {
+            this.maxItemValue = Double.MAX_VALUE;
+        }
+        this.minItemValue = this.getConfMan().getDouble(Setting.MARKET_MIN_ITEM_VALUE_DOUBLE);
+        if (this.minItemValue < 0) {
+            this.minItemValue = Double.MIN_VALUE;
+        }
+        int timer = Converter.getTicks(this.getConfMan().getInt(Setting.MARKET_SAVE_TIMER_INTEGER));
+        this.saveTimer = new BukkitRunnable() {
+            @Override
+            public void run() {
+                saveItems();
+            }
+        };
+        this.saveTimer.runTaskTimerAsynchronously(this.getMain(), timer, timer);
+        this.loadItems();
+        this.loadAliases();
         this.getMarkMan().addManager(this);
     }
 
     @Override
     public void deinit() {
-        super.deinit();
+        this.saveTimer.cancel();
+        this.saveItems();
         this.getMarkMan().removeManager(this);
     }
 

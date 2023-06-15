@@ -171,6 +171,20 @@ commands:
     permission-messaage: "You do not have permission to use this command"
     usage: "/einfo <enchant>"
 
+  xpSell:
+    description: "Sells EXP."
+    aliases: ['xps', 'expsell', 'leveldown']
+    permission: de.exp.xpSell
+    permission-messaage: "You do not have permission to use this command"
+    usage: "/xpsell <amount>|/xpsell <amount>"
+
+  xpBuy:
+    description: "Buys EXP."
+    aliases: ['xpb', 'expbuy', 'levelup']
+    permission: de.exp.xpBuy
+    permission-messaage: "You do not have permission to use this command"
+    usage: "/esell <amount>"
+
 
   # Admin commands
   reload:

@@ -3,6 +3,7 @@ package me.edgrrrr.de.market.items.materials;
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.market.MapKeys;
 import me.edgrrrr.de.market.items.MarketableItem;
+import me.edgrrrr.de.market.items.enchants.EnchantManager;
 import me.edgrrrr.de.player.PlayerManager;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -43,7 +44,7 @@ public abstract class MarketableMaterial extends MarketableItem {
     public static ItemStack[] removeEnchantedItems(ItemStack[] itemStacks) {
         ArrayList<ItemStack> nonEnchanted = new ArrayList<>();
         Arrays.stream(itemStacks).forEach(stack -> {
-            if (stack.getEnchantments().isEmpty()) {
+            if (EnchantManager.getEnchantments(stack).isEmpty()) {
                 nonEnchanted.add(stack);
             } else {
                 if (stack.getItemMeta() instanceof EnchantmentStorageMeta meta) {
@@ -70,7 +71,7 @@ public abstract class MarketableMaterial extends MarketableItem {
     public static ItemStack clone(ItemStack itemStack) {
         ItemStack newItemStack = new ItemStack(itemStack.getType(), itemStack.getAmount());
         newItemStack.setItemMeta(itemStack.getItemMeta());
-        newItemStack.addUnsafeEnchantments(itemStack.getEnchantments());
+        newItemStack.addUnsafeEnchantments(EnchantManager.getEnchantments(itemStack));
         newItemStack.setData(itemStack.getData());
         return newItemStack;
     }

@@ -125,24 +125,6 @@ Market:
   Max Item Value: -1
   Min Item Value: .001
 
-  # Enchant Settings
-  Enchants:
-    # Should the enchant market be enabled? ( use "true" / "false" )
-    Enable: true
-    # What is the base quantity? ( use any number above 0 )
-    # Changing this number affects both the overall value of items and the rate at which prices change.
-    Base Quantity: 1000000
-    # What scaling should be applied to purchases and sales? ( use any decimal above 0 )
-    # Make sure to scale sales less than purchases or you risk creating an infinite cash bug.
-    Buy Scale: 0.01
-    Sell Scale: 0.08
-    # Should the whole market be used to determine the value of items in the form of inflation? ( use "true" / "false" ) | warning, this has not been extensively tested.
-    Whole Market Inflation: false
-    # Should dynamic pricing be enabled? ( use "true" / "false" )
-    Dynamic Pricing: true
-    # Should unsafe enchants be allowed? This allows conflicting enchants to be purchased. Such as Power on a sword, or efficiency on a bow. ( use "true" / "false" )
-    Allow Unsafe Enchants: false
-
   # Material Settings
   Materials:
     # Should the material market be enabled? ( use "true" / "false" )
@@ -152,7 +134,7 @@ Market:
     Base Quantity: 1000000
     # What scaling should be applied to purchases and sales? ( use any decimal above 0 )
     # Make sure to scale sales less than purchases or you risk creating an infinite cash bug.
-    Buy Scale: 0.01
+    Buy Scale: 0.1
     Sell Scale: 0.08
     # Should the whole market be used to determine the value of items in the form of inflation? ( use "true" / "false" ) | warning, this has not been extensively tested.
     Whole Market Inflation: false
@@ -160,6 +142,40 @@ Market:
     Dynamic Pricing: true
     # Should items such as swords have their values scaled as per the damage applied to them? ( use "true" / "false" )
     Item Damage Scaling: true
+
+  # Enchant Settings
+  Enchants:
+    # Should the enchant market be enabled? ( use "true" / "false" )
+    Enable: true
+    # What is the base quantity? ( use any number above 0 )
+    # Changing this number affects both the overall value of items and the rate at which prices change.
+    Base Quantity: 1000000
+    # What scaling should be applied to purchases and sales? ( use any decimal above 0 )
+    # Make sure to scale sales less than purchases or you risk creating an infinite cash bug.
+    Buy Scale: 0.1
+    Sell Scale: 0.08
+    # Should the whole market be used to determine the value of items in the form of inflation? ( use "true" / "false" ) | warning, this has not been extensively tested.
+    Whole Market Inflation: false
+    # Should dynamic pricing be enabled? ( use "true" / "false" )
+    Dynamic Pricing: true
+    # Should unsafe enchants be allowed? This allows conflicting enchants to be purchased. Such as Power on a sword, or efficiency on a bow. ( use "true" / "false" )
+    Allow Unsafe Enchants: false
+
+  # Experience Settings
+  Experience:
+    # Should the experience market be enabled? ( use "true" / "false" )
+    Enable: true
+    # What is the base quantity? ( use any number above 0 )
+    # Changing this number affects both the overall value of items and the rate at which prices change.
+    Base Quantity: 10000000000
+    # What scaling should be applied to purchases and sales? ( use any decimal above 0 )
+    # Make sure to scale sales less than purchases or you risk creating an infinite cash bug.
+    Buy Scale: 1
+    Sell Scale: .8
+    # Should the whole market be used to determine the value of items in the form of inflation? ( use "true" / "false" ) | warning, this has not been extensively tested.
+    Whole Market Inflation: false
+    # Should dynamic pricing be enabled? ( use "true" / "false" )
+    Dynamic Pricing: true
 
 
 # Command Settings
@@ -184,17 +200,6 @@ Commands:
     Send Cash: true
     Baltop: true
 
-  Enchant:
-    E Buy: true
-    E Info: true
-    E Sell: true
-    E Value: true
-    E Hand Value: true
-
-  Mail:
-    Clear Mail: true
-    Read Mail: true
-
   Market:
     Buy: true
     Hand Buy: true
@@ -206,6 +211,21 @@ Commands:
     Value: true
     Sell All: true
     List Items: true
+
+  Enchant:
+    E Buy: true
+    E Info: true
+    E Sell: true
+    E Value: true
+    E Hand Value: true
+
+  Experience:
+    EXP Buy: true
+    EXP Sell: true
+
+  Mail:
+    Clear Mail: true
+    Read Mail: true
 
   Misc:
     Ping: true

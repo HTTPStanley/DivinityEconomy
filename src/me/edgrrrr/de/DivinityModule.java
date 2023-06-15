@@ -5,6 +5,7 @@ import me.edgrrrr.de.console.EconConsole;
 import me.edgrrrr.de.economy.EconomyManager;
 import me.edgrrrr.de.help.HelpManager;
 import me.edgrrrr.de.mail.MailManager;
+import me.edgrrrr.de.market.exp.ExpManager;
 import me.edgrrrr.de.market.items.enchants.EnchantManager;
 import me.edgrrrr.de.market.items.materials.MarketManager;
 import me.edgrrrr.de.market.items.materials.block.BlockManager;
@@ -114,6 +115,14 @@ public abstract class DivinityModule {
     public EntityManager getEntMan() {
         return this.getMain().getEntMan();
     }
+
+    /**
+     * Returns the experience manager
+     */
+    public ExpManager getExpMan() {
+        return this.getMain().getExpMan();
+    }
+
 
     /**
      * Returns the market manager

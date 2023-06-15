@@ -36,17 +36,18 @@ public class EnchantHandBuy extends DivinityCommandEnchant {
     @Override
     public boolean onPlayerCommand(Player sender, String[] args) {
         String enchantName;
-        int enchantLevels;
+        int enchantLevels = 1;
         // How to use
         switch (args.length) {
-            case 2:
+            case 1 -> enchantName = args[0];
+            case 2 -> {
                 enchantName = args[0];
                 enchantLevels = Converter.getInt(args[1]);
-                break;
-
-            default:
+            }
+            default -> {
                 this.getMain().getConsole().usage(sender, CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
                 return true;
+            }
         }
 
         // Ensure amount is more than one
