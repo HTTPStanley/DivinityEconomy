@@ -167,11 +167,11 @@ Market:
     Enable: true
     # What is the base quantity? ( use any number above 0 )
     # Changing this number affects both the overall value of items and the rate at which prices change.
-    Base Quantity: 10000000000
+    Base Quantity: 100000000000
     # What scaling should be applied to purchases and sales? ( use any decimal above 0 )
     # Make sure to scale sales less than purchases or you risk creating an infinite cash bug.
-    Buy Scale: 1
-    Sell Scale: .8
+    Buy Scale: .3
+    Sell Scale: .2
     # Should the whole market be used to determine the value of items in the form of inflation? ( use "true" / "false" ) | warning, this has not been extensively tested.
     Whole Market Inflation: false
     # Should dynamic pricing be enabled? ( use "true" / "false" )
