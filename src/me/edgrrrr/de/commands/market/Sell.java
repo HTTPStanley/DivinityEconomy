@@ -93,7 +93,7 @@ public class Sell extends DivinityCommandMaterials {
         ItemStack[] itemStacksClone = MarketableMaterial.cloneItems(itemStacks);
 
         // Check for removed items
-        if (itemStacks.length != allStacks.length) {
+        if (itemStacks.length == 0) {
             this.getMain().getConsole().logFailedSale(sender, amountToSell, marketableMaterial.getCleanName(), CommandResponse.EnchantedItemsRemoved.message.toLowerCase());
             return true;
         }
