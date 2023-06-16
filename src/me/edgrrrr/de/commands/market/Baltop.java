@@ -53,8 +53,14 @@ public class Baltop extends DivinityCommand {
         Map<Integer, Map.Entry<UUID, Double>[]> orderedBalances = this.getMain().getEconMan().getOrderedBalances();
         double totalAmount = this.getMain().getEconMan().getTotalEconomySize();
 
+        // Ensure total pages greater than 0
+        if (totalPages == 0) {
+            this.getMain().getConsole().send(sender, CommandResponse.NothingToDisplay.defaultLogLevel, CommandResponse.NothingToDisplay.message);
+            return true;
+        }
+
         // Ensure page limit inside
-        if (pageNumber >  totalPages - 1 || pageNumber < 0) {
+        if (pageNumber > totalPages - 1 || pageNumber < 0) {
             this.getMain().getConsole().send(sender, CommandResponse.InvalidAmountGiven.defaultLogLevel, CommandResponse.InvalidAmountGiven.message);
             return true;
         }

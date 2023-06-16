@@ -158,6 +158,7 @@ public abstract class DivinityCommand implements CommandExecutor {
         // Balance
         BalanceResponse("Balance: %s.", LogLevel.INFO),
         BalanceResponseOther("%s's balance: %s.", LogLevel.INFO),
+        NothingToDisplay("Nothing to display yet.", LogLevel.INFO),
 
         //Stock
         StockCountChanged("Stock level changed from %d(%s) to %d(%s).", LogLevel.INFO),
