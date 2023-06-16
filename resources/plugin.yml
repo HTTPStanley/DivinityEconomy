@@ -14,7 +14,7 @@ commands:
   # Help
   ehelp:
     description: "Help!"
-    aliases: [de]
+    aliases: [ 'de' ]
     permission: de.help
     permission-message: "You do not have the permission to use this command"
     usage: "/ehelp"
@@ -23,14 +23,14 @@ commands:
 
   readMail:
     description: "Reads your economy mail."
-    aliases: [mailread]
+    aliases: [ 'mailread' ]
     permission: de.mail.readMail
     permission-message: "You do not have the permission to use this command"
     usage: "/readmail|/readmail <page number>"
 
   clearMail:
     description: "Deletes your economy mail."
-    aliases: [mailclear]
+    aliases: [ 'mailclear' ]
     permission: de.mail.clearMail
     permission-message: "You do not have the permission to use this command"
     usage: "/clearmail all|/clearmail unread|/clearmail read"
@@ -46,21 +46,21 @@ commands:
   # Money commands
   balance:
     description: "Gets the balance of a player."
-    aliases: [bal, cash, money]
+    aliases: [ 'bal', 'cash', 'money' ]
     permission: de.money.balance
     permission-message: "You do not have the permission to use this command"
     usage: "/balance|/balance <player name>"
 
   sendcash:
     description: "Sends cash to another player."
-    aliases: [transfer, pay]
+    aliases: [ 'transfer', 'pay' ]
     permission: de.money.sendcash
     permission-message: "You do not have the permission to use this command"
     usage: "/sendcash <player name> <amount>"
 
   baltop:
     description: "Lists users by their balances."
-    aliases: [bt, moneytop, listbal]
+    aliases: [ 'bt', 'moneytop', 'listbal' ]
     permission: de.money.baltop
     permission-message: "You do not have the permission to use this command"
     usage: "/baltop <page number>"
@@ -68,7 +68,7 @@ commands:
   # Market commands
   listitems:
     description: "Lists items in the market."
-    aliases: [ itemlist, itemslist, items, find, search ]
+    aliases: [ 'itemlist', 'itemslist', 'items', 'find', 'search' ]
     permission: de.market.listitems
     permission-message: "You do not have the permission to use this command"
     usage: "/search <item name> <order type> <page number>"
@@ -96,77 +96,77 @@ commands:
 
   handBuy:
     description: "Buys the material the user is holding from the market."
-    aliases: [hb]
+    aliases: [ 'hb' ]
     permission: de.market.handBuy
     permission-message: "You do not have permission to use this command"
     usage: "/handbuy <amount>"
 
   handSell:
     description: "Sells the material the user is holding to the market."
-    aliases: [hs]
+    aliases: [ 'hs' ]
     permission: de.market.handSell
     permission-message: "You do not have permission to use this command"
     usage: "/handsell <amount>"
 
   value:
     description: "Gets the buy & sell value of an enchant."
-    aliases: [val]
+    aliases: [ 'val' ]
     permission: de.market.value
     permission-message: "You do not have permission to use this command"
     usage: "/value <material name> <amount>"
 
   information:
     description: "Gets information about a material"
-    aliases: [materialinfo, minfo, iteminfo]
+    aliases: [ 'materialinfo', 'minfo', 'iteminfo' ]
     permission: de.market.information
     permission-message: "You do not have permission to use this command"
     usage: "/information <material name>"
 
   handInformation:
     description: "Gets information about the material the player is holding."
-    aliases: [handinfo]
+    aliases: [ 'handinfo' ]
     permission: de.market.handInformation
     permission-message: "You do not have permission to use this command"
     usage: "/handinformation"
 
   handValue:
     description: "Gets the value of the material the player is holding."
-    aliases: [hv]
+    aliases: [ 'hv' ]
     permission: de.market.handValue
     permission-message: "You do not have permission to use this command"
     usage: "/handvalue <amount>"
 
   eSell:
     description: "Sells an enchant on an item."
-    aliases: []
+    aliases: [ 'es' ]
     permission: de.enchant.eSell
     permission-messaage: "You do not have permission to use this command"
     usage: "/esell <enchant> <levels>|/esell <enchant>"
 
   eBuy:
     description: "Buys an enchant for an item."
-    aliases: []
+    aliases: [ 'eb' ]
     permission: de.enchant.eBuy
     permission-messaage: "You do not have permission to use this command"
     usage: "/esell <enchant> <levels>"
 
   eValue:
     description: "Gets the value of an enchant."
-    aliases: []
+    aliases: [ 'ev' ]
     permission: de.enchant.eValue
     permission-messaage: "You do not have permission to use this command"
     usage: "/evalue <enchant> <levels>"
 
   eHandValue:
     description: "Gets the value of the enchants on the users held item."
-    aliases: []
+    aliases: [ 'ehv' ]
     permission: de.enchant.eHandValue
     permission-messaage: "You do not have permission to use this command"
     usage: "/ehandvalue"
 
   eInfo:
     description: "Gets the information for an enchant."
-    aliases: []
+    aliases: [ 'ei' ]
     permission: de.enchant.eInfo
     permission-messaage: "You do not have permission to use this command"
     usage: "/einfo <enchant>"
@@ -196,21 +196,21 @@ commands:
 
   editbal:
     description: "Edits the balance of a player."
-    aliases: [changebal]
+    aliases: [ ]
     permission: de.admin.editbal
     permission-message: "You do not have the permission to use this command"
     usage: "/editbal <player name> <amount>|/editbal <amount>"
 
   setbal:
     description: "Sets the balance of a player."
-    aliases: [setcash]
+    aliases: [ 'setcash' ]
     permission: de.admin.setbal
     permission-message: "You do not have the permission to use this command"
     usage: "/setbal <player name> <amount>|/setbal <amount>"
 
   clearbal:
     description: "Clears the balance of a player."
-    aliases: [clearcash]
+    aliases: [ 'clearcash' ]
     permission: de.admin.clearbal
     permission-message: "You do not have the permission to use this command"
     usage: "/clearbal <player name>|/clearbal"
@@ -278,6 +278,23 @@ permissions:
   de.help:
     description: Allows the user to get help for other commands.
     default: true
+
+  # Exp
+  de.exp:
+    description: Allows the user to buy and sell exp.
+    default: true
+    children:
+      de.exp.xpSell: true
+      de.exp.xpBuy: true
+
+  de.exp.xpSell:
+    description: Allows the user to sell exp.
+    default: true
+
+  de.exp.xpBuy:
+    description: Allows the user to buy exp.
+    default: true
+
   # Enchants
   de.enchant:
     description: Allows the user to buy and sell enchantments.
