@@ -43,10 +43,10 @@ public class EntityManager extends MaterialManager {
         MarketableEntity entityData = (MarketableEntity) this.getItem(itemStack);
 
         if (entityData == null) {
-            response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, "item cannot be found.");
+            response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("%s cannot be found.", itemStack.getType().name()));
         } else {
             if (!entityData.getAllowed()) {
-                response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, "item is banned.");
+                response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("%s is banned.", itemStack.getType().name()));
             } else {
                 double value = this.calculatePrice(amount, entityData.getQuantity(), this.sellScale, false);
                 if (value > 0) {
@@ -72,11 +72,11 @@ public class EntityManager extends MaterialManager {
 
         MarketableEntity entityData = (MarketableEntity) this.getItem(itemStack);
         if (entityData == null) {
-            response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, "item cannot be found.");
+            response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("%s cannot be found.", itemStack.getType().name()));
 
         } else {
             if (!entityData.getAllowed()) {
-                response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, "item is banned.");
+                response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("%s is banned.", itemStack.getType().name()));
 
             } else {
                 double value = this.calculatePrice(amount, entityData.getQuantity(), this.buyScale, true);

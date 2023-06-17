@@ -170,7 +170,7 @@ public class EnchantManager extends ItemManager {
 
         // If enchant data is null, return failure.
         if (enchantData == null) {
-            return new Response(EconomyResponse.ResponseType.FAILURE, "enchant is not supported");
+            return new Response(EconomyResponse.ResponseType.FAILURE, String.format("%s is not supported", enchantment.getKey().getKey()));
         }
 
         // If enchant level is greater than maximum, return failure.
@@ -289,15 +289,18 @@ public class EnchantManager extends ItemManager {
 
 
         // Enchant data is null
-        if (enchantData == null) return new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("enchant id %s does not exist", enchantID));
+        if (enchantData == null)
+            return new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("%s does not exist", enchantID));
 
 
         // Check enchant exists in store
-        if (enchantData.getEnchantment() == null) return new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("enchant id %s does not exist in the store", enchantID));
+        if (enchantData.getEnchantment() == null)
+            return new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("%s does not exist in the store", enchantID));
 
 
         // Check enchant is allowed
-        if (!(enchantData.getAllowed())) return new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, "enchant is banned");
+        if (!(enchantData.getAllowed()))
+            return new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("%s is banned", enchantID));
 
 
         // Check enchant is supported on item
@@ -468,7 +471,8 @@ public class EnchantManager extends ItemManager {
 
 
         // Check enchant is allowed
-        if (!enchantData.getAllowed()) return new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, "enchant is banned");
+        if (!enchantData.getAllowed())
+            return new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("enchant %s is banned", enchantID));
 
 
         // Get itemstack enchantments
@@ -565,8 +569,9 @@ public class EnchantManager extends ItemManager {
 
     /**
      * Returns an array of strings of the levels of an enchant on an item.
-     * @param heldItem - The itemstack to check
-     * @param enchantData - The enchant to check for
+     *
+     * @param heldItem  - The itemstack to check
+     * @param enchantID - The enchant to check for
      * @return String[]
      */
     public String[] getUpgradeValueString(@Nonnull ItemStack heldItem, @Nullable String enchantID) {

@@ -102,16 +102,16 @@ public class BlockManager extends MaterialManager {
         ValueResponse response;
 
         if (this.getEnchMan().isEnchanted(itemStack)) {
-            response = new ValueResponse(0.0, ResponseType.FAILURE, "item is enchanted.");
+            response = new ValueResponse(0.0, ResponseType.FAILURE, String.format("%s is enchanted.", itemStack.getType().name()));
 
         } else {
             MarketableBlock materialData = (MarketableBlock) this.getItem(itemStack);
 
             if (materialData == null) {
-                response = new ValueResponse(0.0, ResponseType.FAILURE, "item cannot be found.");
+                response = new ValueResponse(0.0, ResponseType.FAILURE, String.format("%s cannot be found.", itemStack.getType().name()));
             } else {
                 if (!materialData.getAllowed()) {
-                    response = new ValueResponse(0.0, ResponseType.FAILURE, "item is banned.");
+                    response = new ValueResponse(0.0, ResponseType.FAILURE, String.format("%s is banned.", itemStack.getType().name()));
                 } else {
                     double value = this.calculatePrice(amount, materialData.getQuantity(), (this.sellScale * this.getDamageScaling(itemStack)), false);
                     if (value > 0) {
@@ -138,10 +138,10 @@ public class BlockManager extends MaterialManager {
 
         MarketableBlock materialData = (MarketableBlock) this.getItem(itemStack);
         if (materialData == null) {
-            response = new ValueResponse(0.0, ResponseType.FAILURE, "item cannot be found.");
+            response = new ValueResponse(0.0, ResponseType.FAILURE, String.format("%s cannot be found.", itemStack.getType().name()));
         } else {
             if (!materialData.getAllowed()) {
-                response = new ValueResponse(0.0, ResponseType.FAILURE, "item is banned.");
+                response = new ValueResponse(0.0, ResponseType.FAILURE, String.format("%s is banned.", itemStack.getType().name()));
             } else {
                 double value = this.calculatePrice(amount, materialData.getQuantity(), this.buyScale, true);
                 if (value > 0) {

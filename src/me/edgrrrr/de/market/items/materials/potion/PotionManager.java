@@ -5,11 +5,9 @@ import me.edgrrrr.de.market.items.materials.MarketableMaterial;
 import me.edgrrrr.de.market.items.materials.MaterialManager;
 import me.edgrrrr.de.response.ValueResponse;
 import net.milkbowl.vault.economy.EconomyResponse;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Arrays;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class PotionManager extends MaterialManager {
@@ -42,10 +40,10 @@ public class PotionManager extends MaterialManager {
         MarketablePotion potionData = (MarketablePotion) this.getItem(itemStack);
 
         if (potionData == null) {
-            response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, "item cannot be found.");
+            response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("%s cannot be found.", itemStack.getType().name()));
         } else {
             if (!potionData.getAllowed()) {
-                response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, "item is banned.");
+                response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("%s is banned.", itemStack.getType().name()));
             } else {
                 double value = this.calculatePrice(amount, potionData.getQuantity(), this.sellScale, false);
                 if (value > 0) {
@@ -71,11 +69,11 @@ public class PotionManager extends MaterialManager {
 
         MarketablePotion potionData = (MarketablePotion) this.getItem(itemStack);
         if (potionData == null) {
-            response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, "item cannot be found.");
+            response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("%s cannot be found.", itemStack.getType().name()));
 
         } else {
             if (!potionData.getAllowed()) {
-                response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, "item is banned.");
+                response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("%s is banned.", itemStack.getType().name()));
             } else {
                 double value = this.calculatePrice(amount, potionData.getQuantity(), this.buyScale, true);
                 if (value > 0) {
