@@ -202,6 +202,12 @@ SOUL_SPEED:
   ENCHANT_ID: soul_speed
   MAX_LEVEL: 3
   QUANTITY: 9860
+SWIFT_SNEAK:
+  ALLOWED: true
+  CLEAN_NAME: Swift Sneak
+  ENCHANT_ID: swift_sneak
+  MAX_LEVEL: 3
+  QUANTITY: 9860
 SWEEPING:
   ALLOWED: true
   CLEAN_NAME: Sweeping
