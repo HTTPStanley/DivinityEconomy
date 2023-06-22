@@ -404,9 +404,6 @@ public class EnchantManager extends ItemManager {
         // Array list for enchants
         ArrayList<String> itemNames = new ArrayList<>();
 
-        // Get item meta
-        ItemMeta itemMeta = itemStack.getItemMeta();
-
         // Loop through enchants in storage meta
         // Add enchants to array list - if they are compatible with the item or allowUnsafe is true
         for (MarketableToken token : this.itemMap.values()) {

@@ -11,7 +11,7 @@ import org.bukkit.enchantments.Enchantment;
  * A class that represents an enchant within the economy
  */
 public class MarketableEnchant extends MarketableItem {
-    // The enchant
+    // The enchant that this represents
     private final Enchantment enchantment;
 
     /**
@@ -24,13 +24,12 @@ public class MarketableEnchant extends MarketableItem {
      */
     public MarketableEnchant(DEPlugin main, EnchantManager itemManager, String ID, ConfigurationSection config, ConfigurationSection defaultConfig) {
         super(main, itemManager, ID, config, defaultConfig);
-        Enchantment enchantment;
+        Enchantment enchantment = null;
         try {
             enchantment = Enchantment.getByKey(NamespacedKey.fromString(config.getString(MapKeys.ENCHANT_ID.key)));
-        } catch (IllegalArgumentException error) {
+        } catch (IllegalArgumentException e) {
             // Error handled by manager
-            this.error = error.getMessage();
-            enchantment = null;
+            this.error = e.getMessage();
         }
         this.enchantment = enchantment;
     }

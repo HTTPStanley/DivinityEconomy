@@ -58,6 +58,10 @@ sharpness: SHARPNESS
 silktouch: SILK_TOUCH
 smite: SMITE
 soulspeed: SOUL_SPEED
+swift_sneak: SWIFT_SNEAK
+swiftsneak: SWIFT_SNEAK
+sneak: SWIFT_SNEAK
+sneakswift: SWIFT_SNEAK
 sweep: SWEEPING
 sweeping: SWEEPING
 thorn: THORNS
