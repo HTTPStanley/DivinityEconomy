@@ -5,8 +5,10 @@ import me.edgrrrr.de.commands.DivinityCommand;
 import me.edgrrrr.de.config.Setting;
 import me.edgrrrr.de.help.Help;
 import me.edgrrrr.de.utils.Converter;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -32,17 +34,23 @@ public class HelpCommand extends DivinityCommand {
      */
     @Override
     public boolean onPlayerCommand(Player sender, String[] args) {
-        Help help = null;
-        int pageNumber = -1;
+        int pageNumber = 0;
+        String term = "";
 
         switch (args.length) {
             case 0:
-                pageNumber = 0;
                 break;
 
             case 1:
                 pageNumber = Converter.getInt(args[0]);
-                help = this.getMain().getHelpMan().get(args[0]);
+                if (pageNumber == 0) {
+                    term = args[0];
+                }
+                break;
+
+            case 2:
+                term = args[0];
+                pageNumber = Converter.getInt(args[1]);
                 break;
 
             default:
@@ -50,25 +58,69 @@ public class HelpCommand extends DivinityCommand {
                 break;
         }
 
-        Map<Integer, Help[]> helpPages = this.getMain().getHelpMan().getPages(8);
-        if (help == null && !helpPages.containsKey(pageNumber - 1)) {
-            this.getMain().getConsole().usage(sender, "invalid command or page number", this.help.getUsages());
+        // Get help
+        Help help = this.getMain().getHelpMan().get(term);
 
-        } else {
-            int maxLength = 30;
-            String string;
-            if (helpPages.containsKey(pageNumber - 1)) {
-                this.getMain().getConsole().info(sender, "Help page %s/%s", pageNumber, helpPages.size());
-                for (Help helpCom : helpPages.get(pageNumber - 1)) {
-                    this.getMain().getConsole().info(sender, "%s: %s...", helpCom.getCommand(), helpCom.getDescription(20));
-                }
-
-            } else {
-                this.getMain().getConsole().help(sender, help.getCommand(), help.getDescription(), help.getUsages(), help.getAliases());
-            }
+        // If help is not null, show help
+        if (help != null) {
+            this.getMain().getConsole().help(sender, help.getCommand(), help.getDescription(), help.getUsages(), help.getAliases());
+            return true;
         }
 
+        // Else get pages based on search term
+        Map<Integer, List<Help>> helpPages = this.getMain().getHelpMan().getPages(term);
+
+        // If page number is 0, set to 1
+        if (pageNumber == 0) {
+            pageNumber = 1;
+        }
+
+
+        // If map contains number, show page
+        if (helpPages.containsKey(pageNumber - 1)) {
+            this.showPage(sender, pageNumber, helpPages.size(), term, helpPages.get(pageNumber - 1));
+            return true;
+        }
+
+        // if page number is greater than max pages, show last page
+        if ((helpPages.size()) <= pageNumber - 1) {
+            this.showPage(sender, helpPages.size(), helpPages.size(), term, helpPages.get(helpPages.size() - 1));
+            return true;
+        }
+
+        // Else, show first page
+        this.showPage(sender, 1, helpPages.size(), term, helpPages.get(0));
         return true;
+    }
+
+    public void showPage(Player sender, int pageNumber, int maxPages, String term, List<Help> help) {
+        // Define title
+        String title = "%s[== Help page %s/%s %s==]";
+        String pageNumberString = String.format("%s%s%s", ChatColor.AQUA, pageNumber, ChatColor.GREEN);
+        String maxPagesString = String.format("%s%s%s", ChatColor.AQUA, maxPages, ChatColor.GREEN);
+
+        // Show help without search term
+        if (term.isEmpty()) {
+            this.getMain().getConsole().info(sender, title, ChatColor.GREEN, pageNumberString, maxPagesString, ChatColor.GREEN);
+        }
+
+        // Show help with search term
+        else {
+            String termString = String.format("%s'%s'%s", ChatColor.AQUA, term, ChatColor.GREEN);
+            this.getMain().getConsole().info(sender, title, ChatColor.GREEN, pageNumberString, maxPagesString, termString);
+        }
+
+        // Padding
+        this.getMain().getConsole().info(sender, "");
+
+        // Show help
+        if (help.isEmpty()) {
+            this.getMain().getConsole().info(sender, "No help found.");
+            return;
+        }
+        for (Help helpCom : help) {
+            this.getMain().getConsole().info(sender, "%s%s%s: %s%s", ChatColor.AQUA, helpCom.getCommand(), ChatColor.WHITE, ChatColor.GREEN, helpCom.getDescription(64));
+        }
     }
 
     /**
