@@ -88,6 +88,29 @@
     <li><strong>Save</strong> - Save the enchants or items to disk.</li>
 </ul>
 
+<h2>🔖 PlaceholderAPI Support</h2>
+<p>Our plugin fully integrates with PlaceholderAPI, a plugin that allows server administrators to customize information displayed to players using placeholders. Please note that PlaceholderAPI is a separate plugin that must be installed. <a href="https://www.spigotmc.org/resources/placeholderapi.6245/" target="_blank" referrer="noopener noreferrer">Download Here</a>.</p>
+<ul>
+<li><code>%de_material_inflation%</code> - Displays the inflation rate for materials in the market.</li>
+    <li><code>%de_material_total_quantity%</code> - Displays the total quantity of all materials currently in the market.</li>
+    <li><code>%de_material_total__default_quantity%</code> - Displays the default total quantity of all materials in the market.</li>
+    <li><code>%de_enchant_inflation%</code> - Displays the inflation rate for enchantments in the market.</li>
+    <li><code>%de_enchant_total_quantity%</code> - Displays the total quantity of all enchantments currently in the market.</li>
+    <li><code>%de_enchant_total__default_quantity%</code> - Displays the default total quantity of all enchantments in the market.</li>
+    <li><code>%de_format_money_&lt;valueToFormat&gt;%</code> - Returns a formatted money value. This supports variables such as <code>format_money_{placeholderapi_variable}</code>.</li>
+    <li><code>%de_balance_math_&lt;expression&gt;_&lt;value&gt;%</code> - Returns the result of the specified mathematical operation on the player's balance. For example, <code>math_+_1000</code> returns the player's balance plus 1000.</li>
+    <li><code>%de_raw_balance_math_&lt;expression&gt;_&lt;value&gt;%</code> - Returns the raw result of the specified mathematical operation on the player's balance.</li>
+    <li><code>%de_raw_player_balance%</code> - Displays the raw value of the player's balance.</li>
+    <li><code>%de_player_balance%</code> - Displays the player's balance in a formatted manner.</li>
+    <li><code>%de_material_SValue_&lt;materialName&gt;_&lt;amount&gt;%</code> - Returns the formatted sell value of the specified quantity of a material.</li>
+    <li><code>%de_material_BValue_&lt;materialName&gt;_&lt;amount&gt;%</code> - Returns the formatted buy value of the specified quantity of a material.</li>
+    <li><code>%de_raw_material_SValue_&lt;materialName&gt;_&lt;amount&gt;%</code> - Returns the raw sell value of the specified quantity of a material.</li><li><code>%de_raw_material_BValue_&lt;materialName&gt;_&lt;amount&gt;%</code> - Returns the raw buy value of the specified quantity of a material.</li>
+    <li><code>%de_material_stock_&lt;materialName&gt;%</code> - Returns the current stock quantity of a specific material.</li>
+    <li><code>%de_enchant_stock_&lt;enchantName&gt;%</code> - Returns the current stock quantity of a specific enchantment.</li>
+    <li><code>%de_material_stack_&lt;materialName&gt;%</code> - Returns the maximum stack size for a specific material.</li>
+</ul>
+<p>Please ensure that your PlaceholderAPI plugin is up-to-date to guarantee compatibility with our plugin. If you encounter any issues or require additional placeholders, do not hesitate to open an issue on our <a href="https://github.com/HTTPStanley/DivinityEconomy" target="_blank" rel="noopener noreferrer">Github</a>.</p>
+
 <h2>🧾 Permissions</h2>
 <h3>Money</h3>
 <p><code>de.money</code> - Allows the user to use all commands under the money branch of permissions. This permission is granted by default.</p>
