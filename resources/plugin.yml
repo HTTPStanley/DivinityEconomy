@@ -17,7 +17,7 @@ commands:
     aliases: [ 'de' ]
     permission: de.help
     permission-message: "You do not have the permission to use this command"
-    usage: "/ehelp"
+    usage: "/ehelp <command name>|/ehelp <page number>|/ehelp <search term> <page number>"
 
   # Mail commands
 
@@ -172,18 +172,18 @@ commands:
     usage: "/einfo <enchant>"
 
   xpSell:
-    description: "Sells EXP."
+    description: "Sells player experience levels."
     aliases: ['xps', 'expsell', 'leveldown']
     permission: de.exp.xpSell
     permission-messaage: "You do not have permission to use this command"
-    usage: "/xpsell <amount>|/xpsell <amount>"
+    usage: "/xpsell <amount>"
 
   xpBuy:
-    description: "Buys EXP."
+    description: "Buys player experience levels."
     aliases: ['xpb', 'expbuy', 'levelup']
     permission: de.exp.xpBuy
     permission-messaage: "You do not have permission to use this command"
-    usage: "/esell <amount>"
+    usage: "/xpbuy <amount>"
 
 
   # Admin commands
