@@ -67,9 +67,9 @@ public class SmartMemoryManager<O, E> extends ConcurrentHashMap<Object, Object> 
     }
 
 
-
     /**
      * Updates the map with the key provided and trims it.
+     *
      * @param key
      */
     private void setFrontAndTrim(Object key) {
@@ -78,9 +78,18 @@ public class SmartMemoryManager<O, E> extends ConcurrentHashMap<Object, Object> 
     }
 
 
+    /**
+     * This acts as the original map.get
+     */
+    @Nullable
+    protected Object query(Object key) {
+        return super.get(key);
+    }
+
 
     /**
      * OVERRIDE! this function to return the desired memory size.
+     *
      * @return int
      */
     @ForOverride
@@ -100,17 +109,6 @@ public class SmartMemoryManager<O, E> extends ConcurrentHashMap<Object, Object> 
     protected boolean create(File objectFile) {
         return false;
     }
-
-
-
-    /**
-     * This acts as the original map.get
-     */
-    @Nullable
-    protected Object query(Object key) {
-        return super.get(key);
-    }
-
 
 
     /**
