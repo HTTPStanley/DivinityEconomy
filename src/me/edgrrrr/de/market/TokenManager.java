@@ -194,13 +194,16 @@ public abstract class TokenManager extends DivinityModule {
         ArrayList<String> priority2ArrayList = new ArrayList<>();
         ArrayList<String> priority3ArrayList = new ArrayList<>();
 
+        // Counter
+        int counter = 0;
+
         // Loop through items, add any item that
         // - contains <term>
         // - equals <term>
         // - startswith <term>
         // - endswith <term>
         for (int i = 0; i < items.length; i++) {
-            if (itemNames.size() >= this.maxAliasReturns) {
+            if (counter >= this.maxAliasReturns) {
                 break;
             } // Size limitation check
 
@@ -210,24 +213,28 @@ public abstract class TokenManager extends DivinityModule {
             // Matches - priority 0
             if (thisItem.equalsIgnoreCase(term)) {
                 priority0ArrayList.add(thisItemUnstandard);
+                counter += 1;
                 continue;
             }
 
             // Begins with - priority 1
             if (thisItem.startsWith(term)) {
                 priority1ArrayList.add(thisItemUnstandard);
+                counter += 1;
                 continue;
             }
 
             // Contains - priority 2
             if (thisItem.contains(term)) {
                 priority2ArrayList.add(thisItemUnstandard);
+                counter += 1;
                 continue;
             }
 
             // Endswith - priority 3
             if (thisItem.endsWith(term)) {
                 priority3ArrayList.add(thisItemUnstandard);
+                counter += 1;
                 continue;
             }
         }
