@@ -89,7 +89,7 @@
 </ul>
 
 <h2>🔖 PlaceholderAPI Support</h2>
-<p>Our plugin fully integrates with PlaceholderAPI, a plugin that allows server administrators to customize information displayed to players using placeholders. Please note that PlaceholderAPI is a separate plugin that must be installed. <a href="https://www.spigotmc.org/resources/placeholderapi.6245/" target="_blank" referrer="noopener noreferrer">Download Here</a>.</p>
+<p>Our plugin fully integrates with PlaceholderAPI, a plugin that allows server administrators to customize information displayed to players using placeholders. Please note that PlaceholderAPI is a separate plugin that must be installed. <a href="https://www.spigotmc.org/resources/placeholderapi.6245/" target="_blank">Download Here</a>.</p>
 <ul>
 <li><code>%de_material_inflation%</code> - Displays the inflation rate for materials in the market.</li>
     <li><code>%de_material_total_quantity%</code> - Displays the total quantity of all materials currently in the market.</li>
