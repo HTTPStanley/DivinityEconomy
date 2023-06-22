@@ -135,7 +135,7 @@ Market:
     # What scaling should be applied to purchases and sales? ( use any decimal above 0 )
     # Make sure to scale sales less than purchases or you risk creating an infinite cash bug.
     Buy Scale: 0.1
-    Sell Scale: 0.08
+    Sell Scale: 0.095
     # Should the whole market be used to determine the value of items in the form of inflation? ( use "true" / "false" ) | warning, this has not been extensively tested.
     Whole Market Inflation: false
     # Should dynamic pricing be enabled? ( use "true" / "false" )
@@ -153,7 +153,7 @@ Market:
     # What scaling should be applied to purchases and sales? ( use any decimal above 0 )
     # Make sure to scale sales less than purchases or you risk creating an infinite cash bug.
     Buy Scale: 0.1
-    Sell Scale: 0.08
+    Sell Scale: 0.095
     # Should the whole market be used to determine the value of items in the form of inflation? ( use "true" / "false" ) | warning, this has not been extensively tested.
     Whole Market Inflation: false
     # Should dynamic pricing be enabled? ( use "true" / "false" )
@@ -170,7 +170,7 @@ Market:
     Base Quantity: 100000000000
     # What scaling should be applied to purchases and sales? ( use any decimal above 0 )
     # Make sure to scale sales less than purchases or you risk creating an infinite cash bug.
-    Buy Scale: .3
+    Buy Scale: .25
     Sell Scale: .2
     # Should the whole market be used to determine the value of items in the form of inflation? ( use "true" / "false" ) | warning, this has not been extensively tested.
     Whole Market Inflation: false
