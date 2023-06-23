@@ -60,7 +60,7 @@
 # Main Settings
 Main:
   # This is the plugin config version
-  Version: 1.20.0-RC.20
+  Version: 1.20.0-RC2.0
   # Should placeholder api support be enabled? ( use "true" / "false" )
   Enable PAPI: true
 
@@ -119,7 +119,7 @@ Economy:
 
 # Market Settings
 Market:
-  # How often should the internal storage be saved? ( use any number above 0 ) | recommended being above 150
+  # How often should the internal storage be saved? (in seconds) ( use any number above 0 ) | recommended being above 150
   Save Timer: 600
   # What should the minimum and maximum values of individual items be? ( use any decimal above 0 | negative number to disable ) | recommended being left as is.
   Max Item Value: -1
@@ -176,6 +176,38 @@ Market:
     Whole Market Inflation: false
     # Should dynamic pricing be enabled? ( use "true" / "false" )
     Dynamic Pricing: true
+
+# ----- Scaling Description -----
+# Buy Scale Description
+# The buy scale is the scaling applied to the price of an item when it is purchased.
+# The higher the number, the more expensive the item will be. The lower the number, the cheaper the item will be.
+# The buy scale should always be higher than the sell scale, or you risk creating an infinite cash bug.
+
+# Sell Scale Description
+# The sell scale is the scaling applied to the price of an item when it is sold.
+# The higher the number, the more expensive the item will be. The lower the number, the cheaper the item will be.
+# The sell scale should always be lower than the buy scale, or you risk creating an infinite cash bug.
+
+# In Any Case
+# The scaling value is directly applied from the config to the output of the price formula.
+# It is recommended to keep this value between 0 and 1, but it can be any number above 0.
+
+# ----- Dynamic Pricing Description -----
+# Dynamic pricing is based on the 'base quantity' of an item.
+# The base quantity is the amount of an item that is considered to be the 'base' value of the item.
+# This means that if the base quantity is 1000, and there is 1000 of an item in the market, the item will be worth 1.
+# The value of 1 is then multiplied by the scaling value to get the final price of the item.
+# For example 1 * 0.1 = 0.1, so the item would be worth 0.1.
+# The greater the base quantity, the more of an item is required to change the price.
+# The lower the base quantity, the less of an item is required to change the price.
+
+
+# ----- Whole Market Inflation Description -----
+# Whole market inflation is based on the total amount of an item in the market.
+# This means that if the whole market inflation is enabled, then an 'inflation' value is applied to the price of an item.
+# This value is based on the total amount of all items within the market.
+
+
 
 
 # Command Settings
