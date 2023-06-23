@@ -4,14 +4,13 @@ import com.tchristofferson.configupdater.ConfigUpdater;
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.DivinityModule;
 import me.edgrrrr.de.config.Setting;
+import me.edgrrrr.de.utils.Converter;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -353,15 +352,8 @@ public abstract class TokenManager extends DivinityModule {
      * @return
      */
     public double fitPriceToConstraints(double price) {
-        if (price > this.maxItemValue) {
-            price = this.maxItemValue;
-        }
+        return Converter.constrainDouble(price, this.minItemValue, this.maxItemValue);
 
-        if (price < this.minItemValue) {
-            price = this.minItemValue;
-        }
-
-        return price;
     }
 
     /**
@@ -648,59 +640,63 @@ public abstract class TokenManager extends DivinityModule {
     }
 
     /**
-     * Gets the price of a product based on the parameters supplied
+     * Returns the price of a product considering base and current quantities,
+     * scale factor, and inflation.
      *
-     * @param baseQuantity    - The base quantity of items in the market
-     * @param currentQuantity - The current quantity of items in the market
-     * @param scale           - The scaling to apply to the price
-     * @param inflation       - The inflation of the market
-     * @return double
+     * @param baseQuantity    - Base quantity of the product in the market.
+     * @param currentQuantity - Current quantity of the product in the market.
+     * @param scale           - Scaling factor to apply to the price.
+     * @param inflation       - Inflation factor in the market.
+     * @return double - The final price of the product.
      */
     public double getPrice(double baseQuantity, double currentQuantity, double scale, double inflation) {
+        // if currentQuantity is zero, increment it by one to avoid division by zero
         if (currentQuantity == 0) currentQuantity += 1;
 
-        return fitPriceToConstraints(getRawPrice(baseQuantity, currentQuantity).multiply(
-                BigDecimal.valueOf(scale).setScale(8, RoundingMode.HALF_DOWN)
-        ).multiply(
-                BigDecimal.valueOf(inflation).setScale(8, RoundingMode.HALF_DOWN)
-        ).doubleValue());
-    }
+        // get the raw price
+        double rawPrice = getRawPrice(baseQuantity, currentQuantity);
 
-    private BigDecimal getRawPrice(double baseQuantity, double currentQuantity) {
-        return BigDecimal.valueOf(fitPriceToConstraints(BigDecimal.valueOf(
-                getScale(baseQuantity, currentQuantity)
-        ).setScale(8, RoundingMode.HALF_DOWN).multiply(
-                BigDecimal.valueOf(10).setScale(8, RoundingMode.HALF_DOWN)
-        ).add(
-                BigDecimal.valueOf(
-                        getScale(baseQuantity, currentQuantity)
-                ).multiply(
-                        BigDecimal.valueOf(5)
-                ).setScale(8, RoundingMode.HALF_DOWN)
-        ).doubleValue()));
+        // apply scaling and inflation factors, then fit the price to the required constraints
+        return fitPriceToConstraints(rawPrice * scale * inflation);
     }
 
     /**
-     * Gets the level of inflation based on the parameters supplied
-     * Just returns getScale(default, actual)
+     * Calculates the raw price of the product based on base and current quantities.
      *
-     * @param defaultMarketSize - The base quantity of materials in the market
-     * @param actualMarketSize  - The actual current quantity of materials in the market
-     * @return double - The level of inflation
+     * @param baseQuantity    - Base quantity of the product.
+     * @param currentQuantity - Current quantity of the product.
+     * @return double - The raw price of the product.
+     */
+    private double getRawPrice(double baseQuantity, double currentQuantity) {
+        // calculate scale and apply it to the price
+        double scale = getScale(baseQuantity, currentQuantity);
+
+        // calculate raw price and fit it to the required constraints
+        return fitPriceToConstraints((scale * 10) + (scale * 5));
+    }
+
+    /**
+     * Calculates the inflation factor based on default and actual market sizes.
+     * It's essentially a wrapper around getScale function.
+     *
+     * @param defaultMarketSize - Default quantity of materials in the market.
+     * @param actualMarketSize - Actual quantity of materials in the market.
+     * @return double - The inflation factor.
      */
     public double getInflation(double defaultMarketSize, double actualMarketSize) {
         return getScale(defaultMarketSize, actualMarketSize);
     }
 
     /**
-     * Returns the scale of a number compared to it's base value
-     * base / current
+     * Calculates the scale of a number based on its base value.
+     * It's essentially the ratio of base quantity to the current quantity.
      *
-     * @param baseQuantity    - The base quantity of items
-     * @param currentQuantity - The current quantity of items
-     * @return double
+     * @param baseQuantity - Base quantity of the product.
+     * @param currentQuantity - Current quantity of the product.
+     * @return double - The scale factor.
      */
     public double getScale(double baseQuantity, double currentQuantity) {
         return baseQuantity / currentQuantity;
     }
+
 }
