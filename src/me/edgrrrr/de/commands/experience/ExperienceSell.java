@@ -51,7 +51,7 @@ public class ExperienceSell extends DivinityCommandEnchant {
                 return true;
         }
 
-        experience = Converter.constrainInt(experience, 1, 100000);
+        experience = Converter.constrainInt(experience, this.getMain().getExpMan().getMinTradableExp(), this.getMain().getExpMan().getMaxTradableExp());
 
         // Ensure item valuation was successful
         ValueResponse valueResponse = this.getMain().getExpMan().getSellValue(experience, sender);

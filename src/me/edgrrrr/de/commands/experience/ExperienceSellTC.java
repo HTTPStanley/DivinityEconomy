@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static me.edgrrrr.de.utils.Converter.constrainInt;
+
 /**
  * A tab completer for the enchant hand sell command
  */
@@ -34,51 +36,47 @@ public class ExperienceSellTC extends DivinityCommandEnchantTC {
      */
     @Override
     public List<String> onPlayerTabCompleter(Player sender, String[] args) {
-        String[] strings;
-
-        switch (args.length) {
-            default -> strings = new String[0];
+        String[] strings = switch (args.length) {
+            default -> new String[0];
             case 1 -> {
+                // Create value array
                 ArrayList<String> values = new ArrayList<>();
-                long exp = ExpManager.getPlayerExp(sender);
+
+                // Get exp of player
+                int exp = ExpManager.getPlayerExp(sender);
+
+                // Add max args and player experience
                 if (exp > 0) {
                     values.add(String.valueOf(exp));
                     values.add("max");
                 }
 
-                if (exp > 1) {
-                    values.add("1");
+                // Add powers of 10
+                int i = 1;
+                while (i < this.getMain().getExpMan().getMaxTradableExp()) {
+                    values.add(String.valueOf(i));
+                    i *= 10;
                 }
 
-                if (exp > 10) {
-                    values.add("10");
-                }
-
-                if (exp > 100) {
-                    values.add("100");
-                }
-
-                if (exp > 1000) {
-                    values.add("1000");
-                }
-
-                if (exp > 10000) {
-                    values.add("10000");
-                }
-
-                if (exp > 100000) {
-                    values.add("100000");
-                }
-
-                strings = values.toArray(new String[0]);
+                // Return
+                yield values.toArray(new String[0]);
             }
             case 2 -> {
-                long exp = Converter.getLong(args[0]);
-                if (exp > 0 && exp < 100000) {
-                    strings = new String[]{this.getMain().getExpMan().getSellValueString(exp, sender)};
-                } else {
-                    strings = new String[]{"Error: Invalid amount."};
+                // Resolve amount to buy
+                int exp;
+
+                // max argument
+                if (args[0].equalsIgnoreCase("max")) {
+                    exp = ExpManager.getPlayerExp(sender);
                 }
+
+                // default
+                else {
+                    exp = Converter.getInt(args[0]);
+                }
+
+                // constrain and return
+                yield new String[]{this.getMain().getExpMan().getSellValueString(constrainInt(exp, this.getMain().getExpMan().getMinTradableExp(), this.getMain().getExpMan().getMaxTradableExp()), sender)};
             }
         };
 

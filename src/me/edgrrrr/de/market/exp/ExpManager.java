@@ -14,12 +14,14 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ExpManager extends TokenManager {
+    private final int maxTradableExp = 100000;
+    private final int minTradableExp = 1;
 
     /**
      * Constructor You will likely need to call loadMaterials and loadAliases to
      * populate the aliases and items with data from the program
      *
-     * @param main      - The plugin
+     * @param main - The plugin
      */
     public ExpManager(DEPlugin main) {
         super(main, "experience.yml", null, new ConcurrentHashMap<String, Exp>());
@@ -57,6 +59,14 @@ public class ExpManager extends TokenManager {
     public void deinit() {
         this.saveTimer.cancel();
         this.saveItems();
+    }
+
+    public int getMaxTradableExp() {
+        return this.maxTradableExp;
+    }
+
+    public int getMinTradableExp() {
+        return this.minTradableExp;
     }
 
     @Override
@@ -185,7 +195,6 @@ public class ExpManager extends TokenManager {
 
     @Override
     public void loadAliases() {
-        return;
     }
 
     @Override

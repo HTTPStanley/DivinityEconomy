@@ -38,7 +38,11 @@ public class ExperienceBuy extends DivinityCommandEnchant {
                 break;
 
             case 1:
-                experience = Converter.getInt(args[0]);
+                if (args[0].equalsIgnoreCase("max")) {
+                    experience = this.getMain().getExpMan().getMaxTradableExp();
+                } else {
+                    experience = Converter.getInt(args[0]);
+                }
                 break;
 
             default:
@@ -46,7 +50,7 @@ public class ExperienceBuy extends DivinityCommandEnchant {
                 return true;
         }
 
-        experience = Converter.constrainInt(experience, 1, 100000);
+        experience = Converter.constrainInt(experience, this.getMain().getExpMan().getMinTradableExp(), this.getMain().getExpMan().getMaxTradableExp());
 
         // Ensure item valuation was successful
         ValueResponse valueResponse = this.getMain().getExpMan().getBuyValue(experience);
