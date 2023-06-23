@@ -39,7 +39,26 @@ public class HelpManager extends DivinityModule {
     }
 
     public Help get(String command) {
-        return this.helpMap.get(command.toLowerCase());
+        // Clean
+        command = command.toLowerCase().strip();
+
+        // Quick Check
+        Help help = this.helpMap.get(command.toLowerCase());
+        if (help != null) {
+            return help;
+        }
+
+        // Deep Check Aliases
+        for (Help helpObject : this.helpMap.values()) {
+            for (String alias : helpObject.getAliases()) {
+                if (alias.equalsIgnoreCase(command)) {
+                    return helpObject;
+                }
+            }
+        }
+
+        // No match
+        return null;
     }
 
     /**
@@ -86,6 +105,7 @@ public class HelpManager extends DivinityModule {
         ArrayList<Help> priority2ArrayList = new ArrayList<>();
         ArrayList<Help> priority3ArrayList = new ArrayList<>();
         ArrayList<Help> priority4ArrayList = new ArrayList<>();
+        ArrayList<Help> priority5ArrayList = new ArrayList<>();
 
         // Counter
         int counter = 0;
@@ -96,12 +116,14 @@ public class HelpManager extends DivinityModule {
         // - startswith <term>
         // - endswith <term>
         // - description contains <term>
+        // - aliases contains <term>
         for (Help help : this.helpMap.values()) {
             if (counter >= this.maxHelpReturns) {
                 break;
             } // Size limitation check
 
             String helpTitle = help.getCommand().toLowerCase().strip();
+            String[] aliases = help.getAliases();
             String helpDescription = help.getDescription().toLowerCase().strip();
 
             // Matches - priority 0
@@ -137,6 +159,15 @@ public class HelpManager extends DivinityModule {
                 priority4ArrayList.add(help);
                 counter += 1;
             }
+
+            // Aliases - priority 5
+            for (String alias : aliases) {
+                if (alias.equalsIgnoreCase(term) || alias.startsWith(term) || alias.contains(term) || alias.endsWith(term)) {
+                    priority5ArrayList.add(help);
+                    counter += 1;
+                    break;
+                }
+            }
         }
 
         // Add by priority
@@ -145,6 +176,7 @@ public class HelpManager extends DivinityModule {
         helpArray.addAll(priority2ArrayList);
         helpArray.addAll(priority3ArrayList);
         helpArray.addAll(priority4ArrayList);
+        helpArray.addAll(priority5ArrayList);
 
         // Return array
         return helpArray.toArray(new Help[0]);
