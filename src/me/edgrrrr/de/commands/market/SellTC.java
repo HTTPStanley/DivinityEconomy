@@ -79,7 +79,7 @@ public class SellTC extends DivinityCommandMaterialsTC {
                     } else {
                         amount = Converter.getInt(args[1]);
                     }
-                    value = String.format("£%,.2f", marketableMaterial.getManager().getSellValue(marketableMaterial.getMaterialSlotsToCount(sender, amount)).value);
+                    value = this.getMain().getConsole().formatMoney(marketableMaterial.getManager().getSellValue(marketableMaterial.getMaterialSlotsToCount(sender, amount)).value);
                 }
                 strings = new String[]{
                         String.format("Value: %s", value)

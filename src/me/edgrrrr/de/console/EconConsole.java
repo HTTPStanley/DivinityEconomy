@@ -24,6 +24,8 @@ public class EconConsole extends Console {
         this.scale = this.getConfMan().getInt(Setting.CHAT_ECONOMY_DIGITS_INT);
         this.currencyPrefix = this.getConfMan().getString(Setting.CHAT_ECONOMY_PREFIX_STRING);
         this.currencySuffix = this.getConfMan().getString(Setting.CHAT_ECONOMY_SUFFIX_STRING);
+        this.send(LogLevel.INFO, "Currency prefix: %s", this.currencyPrefix);
+        this.send(LogLevel.INFO, "Currency suffix: %s", this.currencySuffix);
     }
 
     public String formatMoney(double value) {

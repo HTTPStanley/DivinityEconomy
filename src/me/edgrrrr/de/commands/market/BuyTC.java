@@ -71,7 +71,7 @@ public class BuyTC extends DivinityCommandMaterialsTC {
                     } else {
                         amount = Converter.getInt(args[1]);
                     }
-                    value = String.format("£%,.2f", marketableMaterial.getManager().calculatePrice(amount, marketableMaterial.getQuantity(), marketableMaterial.getManager().getBuyScale(), true));
+                    value = String.format("%s", this.getMain().getConsole().formatMoney(marketableMaterial.getManager().calculatePrice(amount, marketableMaterial.getQuantity(), marketableMaterial.getManager().getBuyScale(), true)));
                 }
 
                 strings = new String[]{

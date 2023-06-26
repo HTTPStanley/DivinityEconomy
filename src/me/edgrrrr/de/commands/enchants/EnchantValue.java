@@ -77,12 +77,12 @@ public class EnchantValue extends DivinityCommandEnchant {
         if (valueResponse1.isFailure()) {
             this.getMain().getConsole().warn(sender, "Couldn't determine buy value of %d %s because %s", enchantLevels, enchantData.getCleanName(), valueResponse1.errorMessage);
         } else {
-            this.getMain().getConsole().info(sender, "Buy: %d %s costs £%,.2f", enchantLevels, enchantData.getCleanName(), valueResponse1.value);
+            this.getMain().getConsole().info(sender, "Buy: %d %s costs %s", enchantLevels, enchantData.getCleanName(), this.getMain().getConsole().formatMoney(valueResponse1.value));
         }
         if (valueResponse2.isFailure()) {
             this.getMain().getConsole().warn(sender, "Couldn't determine sell value of %d %s because %s", enchantLevels, enchantData.getCleanName(), valueResponse2.errorMessage);
         } else {
-            this.getMain().getConsole().info(sender, "Sell: %d %s costs £%,.2f", enchantLevels, enchantData.getCleanName(), valueResponse2.value);
+            this.getMain().getConsole().info(sender, "Sell: %d %s costs %s", enchantLevels, enchantData.getCleanName(), this.getMain().getConsole().formatMoney(valueResponse2.value));
         }
 
         // Graceful exit :)

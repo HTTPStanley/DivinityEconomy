@@ -224,7 +224,7 @@ public class EconomyManager extends DivinityModule {
      * @param amount  - The amount
      */
     public EconomyResponse addCash(OfflinePlayer oPlayer, double amount) {
-        this.getConsole().debug("ADD REQUEST FOR %s £%,.2f", oPlayer.getName(), amount);
+        this.getConsole().debug("ADD REQUEST FOR %s %s", oPlayer.getName(), this.getMain().getConsole().formatMoney(amount));
         EconomyResponse response = this.economy.depositPlayer(oPlayer, amount);
         this.getConsole().debug("ADD RESULT: %s %s", response.transactionSuccess(), response.errorMessage);
         return response;
@@ -237,7 +237,7 @@ public class EconomyManager extends DivinityModule {
      * @param amount  - The amount
      */
     public EconomyResponse remCash(OfflinePlayer oPlayer, double amount) {
-        this.getConsole().debug("REM REQUEST FOR %s £%,.2f", oPlayer.getName(), amount);
+        this.getConsole().debug("REM REQUEST FOR %s %s", oPlayer.getName(), this.getMain().getConsole().formatMoney(amount));
         EconomyResponse response = this.economy.withdrawPlayer(oPlayer, amount);
         this.getConsole().debug("REM RESULT: %s %s", response.transactionSuccess(), response.errorMessage);
 
@@ -252,7 +252,7 @@ public class EconomyManager extends DivinityModule {
      * @return EconomyResponse - The result of the function
      */
     public EconomyResponse setCash(OfflinePlayer oPlayer, double amount) {
-        this.getConsole().debug("SET REQUEST FOR %s £%,.2f", oPlayer.getName(), amount);
+        this.getConsole().debug("SET REQUEST FOR %s %s", oPlayer.getName(), this.getMain().getConsole().formatMoney(amount));
         double balance = this.getBalance(oPlayer);
         double difference = amount - balance;
         EconomyResponse response;
@@ -292,7 +292,7 @@ public class EconomyManager extends DivinityModule {
         } else {
             // Ensure amount is above or equal to the minimum send amount
             if (amount < this.minTransfer) {
-                response = new EconomyTransferResponse(fromBalance, toBalance, 0.0, EconomyResponse.ResponseType.FAILURE, String.format("cannot send less than £%f", this.minTransfer));
+                response = new EconomyTransferResponse(fromBalance, toBalance, 0.0, EconomyResponse.ResponseType.FAILURE, String.format("cannot send less than %s", this.getMain().getConsole().formatMoney(this.minTransfer)));
             } else {
 
                 // Take money from sender

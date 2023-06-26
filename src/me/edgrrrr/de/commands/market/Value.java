@@ -63,14 +63,14 @@ public class Value extends DivinityCommandMaterials {
         ValueResponse sellResponse = marketableMaterial.getManager().getSellValue(itemStacks);
 
         if (buyResponse.isSuccess()) {
-            this.getMain().getConsole().info(sender, "Buy: %d %s costs £%,.2f", amount, marketableMaterial.getCleanName(), buyResponse.value);
+            this.getMain().getConsole().info(sender, "Buy: %d %s costs %s", amount, marketableMaterial.getCleanName(), this.getMain().getConsole().formatMoney(buyResponse.value));
 
         } else {
             this.getMain().getConsole().info(sender, "Couldn't determine buy price of %d %s because %s", amount, marketableMaterial.getCleanName(), buyResponse.errorMessage);
         }
 
         if (sellResponse.isSuccess()) {
-            this.getMain().getConsole().info(sender, "Sell: %d %s costs £%,.2f", amount, marketableMaterial.getCleanName(), sellResponse.value);
+            this.getMain().getConsole().info(sender, "Sell: %d %s costs %s", amount, marketableMaterial.getCleanName(), this.getMain().getConsole().formatMoney(sellResponse.value));
 
         } else {
             this.getMain().getConsole().info(sender, "Couldn't determine sell price of %d %s because %s", amount, marketableMaterial.getCleanName(), sellResponse.errorMessage);
