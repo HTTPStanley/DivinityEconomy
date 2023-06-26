@@ -5,7 +5,6 @@
 <ul>
     <p><strong>Discord</strong>: <a href="https://discord.com/invite/K7DY6UD" target="_blank" rel="noopener noreferrer">Click To Join</a></p>
     <p><strong>Minecraft Server Java</strong>: DivinityCraft.org:25565</p>
-    <p><strong>Minecraft Server Bedrock</strong>: DivinityCraft.org:25565</p>
     <p><strong>Dynmap</strong>: <a href="http://DivinityCraft.org:25566" target="_blank" rel="noopener noreferrer">Click To View</a></p>
 </ul>
 
