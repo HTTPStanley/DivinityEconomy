@@ -42,10 +42,8 @@ public abstract class DivinityModule {
      * Runs the initialisation of all modules
      */
     public static void runInit() {
-        // Make sure to deinitialise before initialising.
-        if (initialisedModules.size() > 0) DivinityModule.runDeinit();
-
         for (DivinityModule module : DivinityModule.modules) {
+            if (initialisedModules.contains(module)) continue;
             try {
                 module.init();
                 initialisedModules.add(module);
@@ -69,6 +67,20 @@ public abstract class DivinityModule {
                 e.printStackTrace();
             }
         }
+    }
+
+    /**
+     * Returns the main plugin
+     */
+    public static void addModule(DivinityModule module, boolean isInitiated) {
+        // Ensure that the module is not null
+        if (module == null) return;
+
+        // Ensure that the module is not already added
+        if (!DivinityModule.modules.contains(module)) DivinityModule.modules.add(module);
+
+        // Ensure that the module is not already initialised
+        if (isInitiated && !(DivinityModule.initialisedModules.contains(module))) DivinityModule.initialisedModules.add(module);
     }
 
     /**

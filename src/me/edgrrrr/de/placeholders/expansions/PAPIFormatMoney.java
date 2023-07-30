@@ -6,7 +6,7 @@ import org.bukkit.OfflinePlayer;
 
 public class PAPIFormatMoney extends DivinityExpansion {
     public PAPIFormatMoney(DEPlugin main) {
-        super(main, "^format_money_(.*)$");
+        super(main, "^format_money_([a-zA-Z]*)$");
     }
 
     @Override

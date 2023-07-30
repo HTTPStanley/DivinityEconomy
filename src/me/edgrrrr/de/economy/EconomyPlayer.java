@@ -3,20 +3,17 @@ package me.edgrrrr.de.economy;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.List;
+import java.math.MathContext;
 import java.util.UUID;
 
 public class EconomyPlayer {
     private static final BigDecimal MAX_DOUBLE = new BigDecimal(String.valueOf(Double.MAX_VALUE));
-    private static final int DECIMAL_SCALE = Double.MAX_EXPONENT;
-    public static int maxLogs = 500;
+    private static final MathContext RoundingMathContext = MathContext.DECIMAL64;
     private final File file;
     private final FileConfiguration playerConfig;
 
@@ -30,7 +27,7 @@ public class EconomyPlayer {
      * @return double
      */
     public double getBalance() {
-        return this._getBalance().doubleValue();
+        return Double.parseDouble(this._getBalance().toString());
     }
 
     /**
@@ -38,7 +35,7 @@ public class EconomyPlayer {
      * @param balance
      */
     public void setBalance(double balance) {
-        this.set(EconomyFileKeys.BALANCE, BigDecimal.valueOf(balance).toString());
+        this.setBalance(BigDecimal.valueOf(balance));
     }
 
     /**
@@ -46,7 +43,7 @@ public class EconomyPlayer {
      * @param balance
      */
     public void setBalance(BigDecimal balance) {
-        this.set(EconomyFileKeys.BALANCE, this.scale(balance).toString());
+        this.set(EconomyFileKey.BALANCE, this.scale(balance).toString());
     }
 
     /**
@@ -55,7 +52,7 @@ public class EconomyPlayer {
      * @return BigDecimal
      */
     private BigDecimal scale(BigDecimal value) {
-        return value.setScale(EconomyPlayer.DECIMAL_SCALE - 1, RoundingMode.DOWN).setScale(EconomyPlayer.DECIMAL_SCALE, RoundingMode.DOWN);
+        return value.round(EconomyPlayer.RoundingMathContext).stripTrailingZeros();
     }
 
     /**
@@ -64,7 +61,7 @@ public class EconomyPlayer {
      * @return BigDecimal
      */
     private BigDecimal scale(double value) {
-        return this.scale(BigDecimal.valueOf(value));
+        return this.scale(new BigDecimal(String.valueOf(value)));
     }
 
     /**
@@ -73,7 +70,7 @@ public class EconomyPlayer {
      * @return BigDecimal
      */
     private BigDecimal _getBalance() {
-        return this.scale(new BigDecimal(this.gets(EconomyFileKeys.BALANCE, 0)));
+        return this.scale(new BigDecimal(this.gets(EconomyFileKey.BALANCE, 0)));
     }
 
     /**
@@ -139,7 +136,7 @@ public class EconomyPlayer {
      * @return String
      */
     public String getName() {
-        return this.gets(EconomyFileKeys.NAME, "PLAYER-HAS-NO-SET-NAME");
+        return this.gets(EconomyFileKey.NAME, "PLAYER-HAS-NO-SET-NAME");
     }
 
     /**
@@ -148,7 +145,7 @@ public class EconomyPlayer {
      */
     @Nullable
     public String getUUID() {
-        return this.gets(EconomyFileKeys.UUID, null);
+        return this.gets(EconomyFileKey.UUID, null);
     }
 
     /**
@@ -172,20 +169,29 @@ public class EconomyPlayer {
      * Ensures that the given player is up to date.
      * This is also used to validate newly created players which may have 0 keys.
      * @param player
-     * @param s
-     * @return EconomyPlayer2
+     * @return EconomyPlayer
      */
-    public EconomyPlayer update(OfflinePlayer player, String s) {
-        if (player != null) {
-            this.get(EconomyFileKeys.NAME, player.getName());
-            this.get(EconomyFileKeys.UUID, player.getUniqueId().toString());
-        } else if (s != null) {
-            this.get(EconomyFileKeys.NAME, s);
-        }
-
-        this.get(EconomyFileKeys.BALANCE, 0);
-
+    @Nonnull
+    public EconomyPlayer update(@Nonnull OfflinePlayer player) {
+        this.get(EconomyFileKey.NAME, player.getName());
+        this.get(EconomyFileKey.UUID, player.getUniqueId().toString());
+        this.setBalance(new BigDecimal(String.valueOf(this.get(EconomyFileKey.BALANCE, 0D))));
+        this.clean();
+        this.save();
         return this;
+    }
+
+
+    /**
+     * Attempts to remove any invalid keys from the players file
+     */
+    public void clean() {
+        for (String key : this.playerConfig.getKeys(false)) {
+            EconomyFileKey efk = EconomyFileKey.get(key);
+            if (efk == null) {
+                this.playerConfig.set(key, null);
+            }
+        }
     }
 
     /**
@@ -195,7 +201,7 @@ public class EconomyPlayer {
      * @param default_
      * @return String
      */
-    public String gets(EconomyFileKeys key, Object default_) {
+    public String gets(EconomyFileKey key, Object default_) {
         return String.valueOf(this.get(key, default_));
     }
 
@@ -205,7 +211,7 @@ public class EconomyPlayer {
      * @param default_
      * @return
      */
-    public Object get(EconomyFileKeys key, Object default_) {
+    public Object get(EconomyFileKey key, Object default_) {
         Object value = this.playerConfig.get(key.key);
         if (value == null) {
             value = this.set(key, default_);
@@ -219,19 +225,8 @@ public class EconomyPlayer {
      * @param key
      * @param value
      */
-    public Object set(EconomyFileKeys key, Object value) {
+    public Object set(EconomyFileKey key, Object value) {
         this.playerConfig.set(key.key, value);
-
-        // TODO: LOGGING
-        List<String> logs = null;
-        if (maxLogs > 0) {
-            logs = this.playerConfig.getStringList(EconomyFileKeys.LOGS.key);
-            logs.add(0, String.format("[%s] Key %s SET %s", new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime()), key, value));
-            logs.subList(Math.min(maxLogs-1, logs.size()-1), Math.min(logs.size()-1, maxLogs-1)).clear();
-        }
-        this.playerConfig.set(EconomyFileKeys.LOGS.key, logs);
-        // TODO: END LOGGING
-
         this.save();
         return value;
     }

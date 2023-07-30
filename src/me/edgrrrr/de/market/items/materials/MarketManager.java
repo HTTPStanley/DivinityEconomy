@@ -2,9 +2,6 @@ package me.edgrrrr.de.market.items.materials;
 
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.DivinityModule;
-import me.edgrrrr.de.market.items.ItemManager;
-import me.edgrrrr.de.response.MultiValueResponse;
-import me.edgrrrr.de.response.ValueResponse;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.inventory.ItemStack;
 
@@ -42,18 +39,6 @@ public class MarketManager extends DivinityModule {
 
     }
 
-    public String[] getItemIDs() {
-        ArrayList<String> strings = new ArrayList<>();
-        this.managers.forEach(manager -> strings.addAll(Arrays.asList(manager.getItemIDs())));
-        return strings.toArray(new String[0]);
-    }
-
-    public String[] getItemIDs(String startsWith) {
-        ArrayList<String> strings = new ArrayList<>();
-        this.managers.forEach(manager -> strings.addAll(Arrays.asList(manager.getItemIDs(startsWith))));
-        return strings.toArray(new String[0]);
-    }
-
     public MarketableMaterial getItem(ItemStack itemStack) {
         MarketableMaterial material = null;
 
@@ -89,10 +74,10 @@ public class MarketManager extends DivinityModule {
      *
      * @return String[]
      */
-    public String[] getItemNames() {
-        ArrayList<String> itemNames = new ArrayList<>();
-        managers.forEach(man -> itemNames.addAll(Arrays.asList(man.getItemNames())));
-        return itemNames.toArray(new String[0]);
+    public Set<String> getItemNames() {
+        Set<String> itemNames = new HashSet<>();
+        managers.forEach(man -> itemNames.addAll(man.getItemNames()));
+        return itemNames;
     }
 
     /**
@@ -101,10 +86,10 @@ public class MarketManager extends DivinityModule {
      * @param startsWith
      * @return String[]
      */
-    public String[] getItemNames(String startsWith) {
-        ArrayList<String> itemNames = new ArrayList<>();
-        managers.forEach(man -> itemNames.addAll(Arrays.asList(man.getItemNames(startsWith))));
-        return itemNames.toArray(new String[0]);
+    public Set<String> getItemNames(String startsWith) {
+        Set<String> itemNames = new HashSet<>();
+        managers.forEach(man -> itemNames.addAll(man.getItemNames(startsWith)));
+        return itemNames;
     }
 
     /**
@@ -113,10 +98,10 @@ public class MarketManager extends DivinityModule {
      * @param itemIDs
      * @return
      */
-    public String[] getItemNames(String[] itemIDs) {
-        ArrayList<String> itemNames = new ArrayList<>();
-        managers.forEach(man -> itemNames.addAll(Arrays.asList(man.getItemNames(itemIDs))));
-        return itemNames.toArray(new String[0]);
+    public Set<String> getItemNames(Set<String> itemIDs) {
+        Set<String> itemNames = new HashSet<>();
+        managers.forEach(man -> itemNames.addAll(man.getItemNames(itemIDs)));
+        return itemNames;
     }
 
     /**
@@ -126,7 +111,7 @@ public class MarketManager extends DivinityModule {
      * @param startWith
      * @return
      */
-    public String[] getItemNames(String[] itemIds, String startWith) {
+    public Set<String> getItemNames(Set<String> itemIds, String startWith) {
         return this.searchItemNames(this.getItemNames(itemIds), startWith.toLowerCase());
     }
 
@@ -135,20 +120,20 @@ public class MarketManager extends DivinityModule {
      * @param term
      * @return
      */
-    public String[] searchItemNames(String[] items, String term) {
-        ArrayList<String> itemNames = new ArrayList<>();
+    public Set<String> searchItemNames(Set<String> items, String term) {
+        Set<String> itemNames = new HashSet<>();
 
         for (MaterialManager man : this.managers) {
-            itemNames.addAll(Arrays.asList(man.searchItemNames(items, term)));
+            itemNames.addAll(man.searchItemNames(items, term));
         }
 
-        return itemNames.toArray(new String[0]);
+        return itemNames;
     }
 
-    public String[] searchItemNames(String term) {
-        ArrayList<String> strings = new ArrayList<>();
-        this.managers.forEach(manager -> strings.addAll(Arrays.asList(manager.searchItemNames(manager.getItemIDs(), term))));
-        return strings.toArray(new String[0]);
+    public Set<String> searchItemNames(String term) {
+        Set<String> strings = new HashSet<>();
+        this.managers.forEach(manager -> strings.addAll(manager.searchItemNames(manager.getItemIDs(), term)));
+        return strings;
     }
 
     /**
@@ -157,46 +142,40 @@ public class MarketManager extends DivinityModule {
      * @param itemStacks - The itemstacks to bulk sell
      * @return MultiValueResponse
      */
-    public MultiValueResponse getBulkSellValue(ItemStack[] itemStacks) {
-        // Store values
-        Map<String, Double> values = MultiValueResponse.createValues();
-        // Store quantities
-        Map<String, Integer> quantities = MultiValueResponse.createQuantities();
-        // Error
-        String error = "";
-        // Error type
-        EconomyResponse.ResponseType response = EconomyResponse.ResponseType.SUCCESS;
-        Map<ItemStack, Integer> itemCounts = ItemManager.resolveItemStacks(itemStacks);
+    public MaterialValueResponse getSellValue(ItemStack[] itemStacks) {
+        // Create response
+        MaterialValueResponse response = new MaterialValueResponse(EconomyResponse.ResponseType.SUCCESS, null);
 
-        for (ItemStack itemStack : itemCounts.keySet()) {
+        // Loop through itemstacks
+        for (ItemStack itemStack : itemStacks) {
+            // Get the marketable material
             MarketableMaterial marketableMaterial = this.getItem(itemStack);
 
-            if (marketableMaterial != null) {
-                // Get this stack value
-                int itemCount = itemCounts.get(itemStack);
-                ValueResponse valueResponse = marketableMaterial.getManager().getSellValue(itemStack, itemCount);
 
-                // If valuation succeeded
-                if (valueResponse.isSuccess()) {
-                    // get material id
-                    String ID = marketableMaterial.getID();
-
-                    // add value response
-                    values.put(ID, valueResponse.value);
-                    quantities.put(ID, itemCount);
-
-                } else {
-                    response = valueResponse.responseType;
-                    error = valueResponse.errorMessage;
-                    break;
-                }
-            } else {
-                response = EconomyResponse.ResponseType.FAILURE;
-                error = String.format("item does not exist '%s'", itemStack.getType().name());
-                break;
+            // if marketable material is null
+            if (marketableMaterial == null) {
+                return (MaterialValueResponse) response.setFailure(String.format("item does not exist '%s'", itemStack.getType().name()));
             }
+
+            MaterialValueResponse thisResponse = (MaterialValueResponse) marketableMaterial.getManager().getSellValue(itemStack, itemStack.getAmount());
+
+            if (thisResponse.isFailure()) continue;
+
+            // Add to response
+            response.addResponse(thisResponse);
         }
 
-        return new MultiValueResponse(values, quantities, response, error);
+
+        // Return response
+        return response;
+    }
+
+
+    public String getName(ItemStack itemStack) {
+        MarketableMaterial marketableMaterial = this.getItem(itemStack);
+        if (marketableMaterial == null) {
+            return itemStack.getType().name();
+        }
+        return marketableMaterial.getCleanName();
     }
 }

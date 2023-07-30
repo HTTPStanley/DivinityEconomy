@@ -56,12 +56,12 @@ public class ExperienceSell extends DivinityCommandEnchant {
         // Ensure item valuation was successful
         ValueResponse valueResponse = this.getMain().getExpMan().getSellValue(experience, sender);
         if (valueResponse.isFailure()) {
-            this.getMain().getConsole().logFailedSale(sender, experience, "experience", valueResponse.errorMessage);
+            this.getMain().getConsole().logFailedSale(sender, experience, "experience", valueResponse.getErrorMessage());
             return true;
         }
 
         double startingBalance = this.getMain().getEconMan().getBalance(sender);
-        EconomyResponse economyResponse = this.getMain().getEconMan().addCash(sender, valueResponse.value);
+        EconomyResponse economyResponse = this.getMain().getEconMan().addCash(sender, valueResponse.getValue());
 
         if (!economyResponse.transactionSuccess()) {
             this.getMain().getConsole().logFailedSale(sender, experience, "experience", economyResponse.errorMessage);

@@ -5,12 +5,13 @@ import me.edgrrrr.de.commands.DivinityCommandMaterials;
 import me.edgrrrr.de.config.Setting;
 import me.edgrrrr.de.market.items.materials.MarketableMaterial;
 import me.edgrrrr.de.market.items.materials.MaterialManager;
+import me.edgrrrr.de.market.items.materials.MaterialValueResponse;
 import me.edgrrrr.de.player.PlayerManager;
-import me.edgrrrr.de.response.ValueResponse;
 import me.edgrrrr.de.utils.Converter;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
+
+import java.util.Arrays;
 
 /**
  * A command for buying items from the market
@@ -102,29 +103,26 @@ public class Buy extends DivinityCommandMaterials {
         // Get item stacks to buy
         // Get the value of the item stacks
         // Remove the value of the items from the player
-        ItemStack[] itemStacks = materialData.getItemStacks(amountToBuy);
-        ValueResponse priceResponse = manager.getBuyValue(itemStacks);
-        EconomyResponse saleResponse = this.getMain().getEconMan().remCash(sender, priceResponse.value);
-
-        // Handle adding items to player and removing quantity from market
-        if (saleResponse.transactionSuccess() && priceResponse.isSuccess()) {
-            PlayerManager.addPlayerItems(sender, itemStacks);
-            manager.editQuantity(materialData, -amountToBuy);
-
-            // Handles console, message and mail
-            this.getMain().getConsole().logPurchase(sender, amountToBuy, saleResponse.amount, materialData.getCleanName());
-        }
+        MaterialValueResponse priceResponse = manager.getBuyValue(materialData.getItemStacks(amountToBuy));
+        EconomyResponse saleResponse = this.getMain().getEconMan().remCash(sender, priceResponse.getValue());
 
         // If the transaction or valuation failed then the user is returned an error.
-        else {
+        if (!saleResponse.transactionSuccess() || priceResponse.isFailure()) {
             String errorMessage = CommandResponse.UnknownError.message;
             if (!saleResponse.transactionSuccess()) errorMessage = saleResponse.errorMessage;
-            else if (priceResponse.isFailure()) errorMessage = priceResponse.errorMessage;
+            else if (priceResponse.isFailure()) errorMessage = priceResponse.getErrorMessage();
 
             // Handles console, message and mail
-            this.getMain().getConsole().logFailedPurchase(sender, amountToBuy, materialData.getCleanName(), errorMessage);
+            this.getMain().getConsole().logFailedPurchase(sender, priceResponse.getQuantity(), materialData.getCleanName(), errorMessage);
+            return true;
         }
 
+        // Handle adding items to player and removing quantity from market
+        PlayerManager.addPlayerItems(sender, priceResponse.getItemStacksAsArray());
+        manager.editQuantity(materialData, -priceResponse.getQuantity());
+
+        // Handles console, message and mail
+        this.getMain().getConsole().logPurchase(sender, priceResponse.getQuantity(), saleResponse.amount, materialData.getCleanName());
 
         return true;
     }

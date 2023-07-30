@@ -11,12 +11,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Stream;
 
 public abstract class TokenManager extends DivinityModule {
     // Stores the default items.json file location
@@ -28,8 +24,11 @@ public abstract class TokenManager extends DivinityModule {
     // Aliases are lower case
     // DivinityItem id's are upper case
     protected Map<String, String> aliasMap;
-    protected int maxAliasReturns = 50;
-    protected Map<String, String[]> revAliasMap;
+    private static final int MAX_SEARCH_DEPTH_INT = 64;
+    private static final int MIN_SEARCH_DEPTH_INT = 4;
+    private static final long MAX_SEARCH_NANO_LONG = 100000000L; // 100 millis
+    private TokenLRUCache itemNamesCache;
+    protected Map<String, Set<String>> revAliasMap;
     protected Map<String, ? extends MarketableToken> itemMap;
     // Used for calculating inflation/deflation
     protected long totalItems;
@@ -42,6 +41,7 @@ public abstract class TokenManager extends DivinityModule {
     protected double baseQuantity;
     protected boolean dynamicPricing;
     protected boolean wholeMarketInflation;
+    protected boolean ignoreNamedItems;
     protected boolean saveMessagesDisabled;
     // Stores config
     protected FileConfiguration config;
@@ -58,6 +58,7 @@ public abstract class TokenManager extends DivinityModule {
         this.aliasFile = aliasFile;
         this.aliasMap = new ConcurrentHashMap<>();
         this.revAliasMap = new ConcurrentHashMap<>();
+        this.itemNamesCache = new TokenLRUCache(main);
         this.itemMap = itemMap;
     }
 
@@ -117,10 +118,10 @@ public abstract class TokenManager extends DivinityModule {
      *
      * @return String[]
      */
-    public String[] getItemIDs() {
-        ArrayList<String> itemNames = new ArrayList<>(this.itemMap.keySet());
+    public Set<String> getItemIDs() {
+        Set<String> itemNames = new HashSet<>(this.itemMap.keySet());
         itemNames.addAll(this.itemMap.keySet());
-        return itemNames.toArray(new String[0]);
+        return itemNames;
     }
 
     /**
@@ -128,7 +129,7 @@ public abstract class TokenManager extends DivinityModule {
      *
      * @return String[]
      */
-    public String[] getItemIDs(String startsWith) {
+    public Set<String> getItemIDs(String startsWith) {
         return searchItemNames(this.getItemIDs(), startsWith);
     }
 
@@ -137,10 +138,10 @@ public abstract class TokenManager extends DivinityModule {
      *
      * @return String[]
      */
-    public String[] getItemNames() {
-        ArrayList<String> itemNames = new ArrayList<>(this.itemMap.keySet());
+    public Set<String> getItemNames() {
+        Set<String> itemNames = new HashSet<>(this.itemMap.keySet());
         itemNames.addAll(this.aliasMap.keySet());
-        return itemNames.toArray(new String[0]);
+        return itemNames;
     }
 
     /**
@@ -149,7 +150,7 @@ public abstract class TokenManager extends DivinityModule {
      * @param startsWith - The string to start with
      * @return String[]
      */
-    public String[] getItemNames(String startsWith) {
+    public Set<String> getItemNames(String startsWith) {
         return this.searchItemNames(this.getItemNames(), startsWith.toLowerCase());
     }
 
@@ -159,10 +160,14 @@ public abstract class TokenManager extends DivinityModule {
      * @param itemIDs
      * @return
      */
-    public String[] getItemNames(String[] itemIDs) {
-        ArrayList<String> itemNames = new ArrayList<>();
-        Stream.of(itemIDs).filter(e -> this.revAliasMap.containsKey(e.toLowerCase())).forEach(e -> itemNames.addAll(Arrays.asList(this.revAliasMap.get(e.toLowerCase()))));
-        return itemNames.toArray(new String[0]);
+    public Set<String> getItemNames(Set<String> itemIDs) {
+        Set<String> itemNames = new HashSet<>();
+        for (String itemID : itemIDs) {
+            if (this.revAliasMap.containsKey(itemID.toLowerCase())) {
+                itemNames.addAll(this.revAliasMap.get(itemID.toLowerCase()));
+            }
+        }
+        return itemNames;
     }
 
     /**
@@ -172,9 +177,21 @@ public abstract class TokenManager extends DivinityModule {
      * @param startWith
      * @return
      */
-    public String[] getItemNames(String[] itemIds, String startWith) {
+    public Set<String> getItemNames(Set<String> itemIds, String startWith) {
         return this.searchItemNames(this.getItemNames(itemIds), startWith.toLowerCase());
     }
+
+
+    public Set<String> searchItemNames(Set<String> items, String term) {
+        Set<String> itemNames = (Set<String>) this.itemNamesCache.get(term);
+        if (itemNames == null) {
+            itemNames = this.searchItemNamesUncached(items, term);
+            this.itemNamesCache.put(term, itemNames);
+        }
+
+        return itemNames;
+    }
+
 
     /**
      * Filters through the given item names
@@ -183,57 +200,61 @@ public abstract class TokenManager extends DivinityModule {
      * @param term
      * @return
      */
-    public String[] searchItemNames(String[] items, String term) {
+    private Set<String> searchItemNamesUncached(Set<String> items, String term) {
         term = term.toLowerCase().strip(); // Standardise term
-        ArrayList<String> itemNames = new ArrayList<>(); // Create itemNames array
+        Set<String> itemNames = new HashSet<>(); // Create itemNames array
 
         // Priority store
-        ArrayList<String> priority0ArrayList = new ArrayList<>();
-        ArrayList<String> priority1ArrayList = new ArrayList<>();
-        ArrayList<String> priority2ArrayList = new ArrayList<>();
-        ArrayList<String> priority3ArrayList = new ArrayList<>();
+        Set<String> priority0ArrayList = new HashSet<>();
+        Set<String> priority1ArrayList = new HashSet<>();
+        Set<String> priority2ArrayList = new HashSet<>();
+        Set<String> priority3ArrayList = new HashSet<>();
 
         // Counter
-        int counter = 0;
+        long startTime = System.nanoTime();
 
         // Loop through items, add any item that
         // - contains <term>
         // - equals <term>
         // - startswith <term>
         // - endswith <term>
-        for (int i = 0; i < items.length; i++) {
-            if (counter >= this.maxAliasReturns) {
+        for (String item : items) {
+            // Check max search depth
+            int depth = priority0ArrayList.size() + priority1ArrayList.size() + priority2ArrayList.size() + priority3ArrayList.size();
+            if (depth > MAX_SEARCH_DEPTH_INT) {
+                this.getConsole().debug("Max search depth reached, stopping search.");
                 break;
-            } // Size limitation check
+            }
 
-            String thisItemUnstandard = items[i]; // Get non-standardised item
-            String thisItem = thisItemUnstandard.toLowerCase().strip(); // Get & Standardise item
+            // Check max search time
+            if (System.nanoTime() - startTime > MAX_SEARCH_NANO_LONG && depth >= MIN_SEARCH_DEPTH_INT) {
+                this.getConsole().debug("Max search time reached, stopping search.");
+                break;
+            }
+
+            String thisItem = item.toLowerCase().strip(); // Get & Standardise item
 
             // Matches - priority 0
             if (thisItem.equalsIgnoreCase(term)) {
-                priority0ArrayList.add(thisItemUnstandard);
-                counter += 1;
+                priority0ArrayList.add(item);
                 continue;
             }
 
             // Begins with - priority 1
             if (thisItem.startsWith(term)) {
-                priority1ArrayList.add(thisItemUnstandard);
-                counter += 1;
+                priority1ArrayList.add(item);
                 continue;
             }
 
             // Contains - priority 2
             if (thisItem.contains(term)) {
-                priority2ArrayList.add(thisItemUnstandard);
-                counter += 1;
+                priority2ArrayList.add(item);
                 continue;
             }
 
             // Endswith - priority 3
             if (thisItem.endsWith(term)) {
-                priority3ArrayList.add(thisItemUnstandard);
-                counter += 1;
+                priority3ArrayList.add(item);
                 continue;
             }
         }
@@ -244,7 +265,12 @@ public abstract class TokenManager extends DivinityModule {
         itemNames.addAll(priority2ArrayList);
         itemNames.addAll(priority3ArrayList);
 
-        return itemNames.toArray(new String[0]);
+        // Debug
+        this.getConsole().debug("Found %s items matching '%s' in %s milliseconds.", itemNames.size(), term, (System.nanoTime() - startTime) / 1000000);
+
+
+        // Return
+        return itemNames;
     }
 
     /**
@@ -433,8 +459,8 @@ public abstract class TokenManager extends DivinityModule {
         // Store the alias -> ItemID pairs
         Map<String, String> values = new ConcurrentHashMap<>();
         // Store ItemID -> arraylist to migrate to ItemID -> String[] pairs
-        Map<String, ArrayList<String>> revBuildAliasValues = new ConcurrentHashMap<>();
-        Map<String, String[]> revResultAliasValues = new ConcurrentHashMap<>();
+        Map<String, Set<String>> revBuildAliasValues = new ConcurrentHashMap<>();
+        Map<String, Set<String>> revResultAliasValues = new ConcurrentHashMap<>();
         // Loop through keys in config
         for (String key : config.getKeys(false)) {
             // Get string item name
@@ -464,7 +490,7 @@ public abstract class TokenManager extends DivinityModule {
 
             // Store the value under the key (Value = materialID, key = alias)
             if (!revBuildAliasValues.containsKey(value)) {
-                revBuildAliasValues.put(value, new ArrayList<>());
+                revBuildAliasValues.put(value, new HashSet<>());
                 revBuildAliasValues.get(value).add(value);
             }
             revBuildAliasValues.get(value).add(key);
@@ -472,7 +498,7 @@ public abstract class TokenManager extends DivinityModule {
         this.aliasMap = values;
 
         // Migrate all keys-arraylist pairs to key-array pairs
-        revBuildAliasValues.keySet().forEach(key -> revResultAliasValues.put(key, revBuildAliasValues.get(key).toArray(new String[0])));
+        revBuildAliasValues.keySet().forEach(key -> revResultAliasValues.put(key, revBuildAliasValues.get(key)));
         this.revAliasMap = revResultAliasValues;
 
         this.getConsole().info("Loaded %s item aliases from %s", values.size(), this.aliasFile);

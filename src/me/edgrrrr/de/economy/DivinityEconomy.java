@@ -2,16 +2,15 @@ package me.edgrrrr.de.economy;
 
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.config.Setting;
-import me.edgrrrr.de.events.PlayerJoin;
+import me.edgrrrr.de.economy.events.PlayerJoin;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.OfflinePlayer;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.io.File;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class DivinityEconomy implements net.milkbowl.vault.economy.Economy {
     private static final String userdata = "userdata";
@@ -20,8 +19,7 @@ public class DivinityEconomy implements net.milkbowl.vault.economy.Economy {
     private final int fractionalDigits;
     private final String currencyNamePlural;
     private final String currencyNameSingular;
-    private final SmartMemoryPlayerManager economyPlayerMap;
-    private final Map<String, String> userNameMap;
+    private final EconomyPlayerLRUCache economyPlayerMap;
     private final File userFolder;
     private final File bankData;
 
@@ -30,98 +28,51 @@ public class DivinityEconomy implements net.milkbowl.vault.economy.Economy {
         this.fractionalDigits = this.main.getConfMan().getInt(Setting.CHAT_ECONOMY_DIGITS_INT);
         this.currencyNamePlural = this.main.getConfMan().getString(Setting.CHAT_ECONOMY_PLURAL_STRING);
         this.currencyNameSingular = this.main.getConfMan().getString(Setting.CHAT_ECONOMY_SINGULAR_STRING);
-        EconomyPlayer.maxLogs = this.main.getConfMan().getInt(Setting.ECONOMY_MAX_LOGS_INTEGER);
         this.userFolder = this.main.getConfMan().getFolder(DivinityEconomy.userdata);
         this.bankData = this.main.getConfMan().getFolder(DivinityEconomy.bankdata);
-        this.economyPlayerMap = new SmartMemoryPlayerManager(this.main, userFolder);
-        this.userNameMap = new ConcurrentHashMap<>();
-
-         this.main.getServer().getPluginManager().registerEvents(new PlayerJoin(this), this.main);
+        this.economyPlayerMap = new EconomyPlayerLRUCache(this.main, userFolder);
+        this.main.getServer().getPluginManager().registerEvents(new PlayerJoin(this), this.main);
     }
+
+    // QUERY CODE
+
+    /**
+     * Returns an economy player by uuid
+     * @param uuid
+     * @return
+     */
+    public EconomyPlayer get(UUID uuid) {
+        return this.economyPlayerMap.get(uuid);
+    }
+
+
+    /**
+     * Returns an economy player by offline player
+     * @param offlinePlayer
+     * @return
+     */
+    public EconomyPlayer get(@Nonnull OfflinePlayer offlinePlayer) {
+        return this.economyPlayerMap.get(offlinePlayer.getUniqueId()).update(offlinePlayer);
+    }
+
+
+    /**
+     * Attempts to find a player by name
+     * @param name
+     * @return
+     */
+    @Nullable
+    public EconomyPlayer get(String name) {
+        OfflinePlayer player = this.main.getPlayMan().getPlayer(name, true);
+        if (player == null) {
+            return null;
+        }
+
+        return this.get(player.getUniqueId());
+    }
+
 
     // DIVINITY ECONOMY CODE
-
-    /**
-     * Gets a player that does or doesn't exist.
-     * This is the same as using query but query does not create users.
-     * @param s - Player name
-     * @return EconomyPlayer2
-     */
-    @Deprecated
-    public EconomyPlayer get(String s) {
-        // Attempt to find user in user name map (prevents having to run this loop every time)
-        if (this.userNameMap.containsKey(s)) {
-            return this.economyPlayerMap.get(this.userNameMap.get(s));
-        }
-
-        // Attempt to find player by name
-        EconomyPlayer result = null;
-        for (EconomyPlayer player : this.economyPlayerMap.getPlayerValues()) {
-            if (player.getName().equalsIgnoreCase(s)) {
-                result = player.update(null, s);
-                break;
-            }
-        }
-
-        // Else just create a new player.
-        if (result == null) {
-            result = this.economyPlayerMap.get(s);
-        }
-
-        // If the result is finally found, place name into map.
-        if (result != null) {
-            this.userNameMap.put(s, result.getFileID());
-        }
-
-        return result;
-    }
-
-    /**
-     * Gets a player that does or doesn't exist.
-     * This is the same as using query but query does not create users.
-     * @param offlinePlayer
-     * @return EconomyPlayer2
-     */
-    public EconomyPlayer get(OfflinePlayer offlinePlayer) {
-        EconomyPlayer player = this.economyPlayerMap.get(offlinePlayer.getUniqueId());
-        return player.update(offlinePlayer, null);
-    }
-
-    /**
-     * A query simply searches for a player matching the given constraints
-     * @param s - Player name
-     * @return EconomyPlayer2
-     */
-    @Nullable
-    public EconomyPlayer query(String s) {
-        for (EconomyPlayer player : this.economyPlayerMap.getPlayerValues()) {
-            if (player.getName().equalsIgnoreCase(s)) {
-                return player;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * A query simply searches for a player matching the given constraints
-     * @param uuid
-     * @return EconomyPlayer2
-     */
-    @Nullable
-    public EconomyPlayer query(UUID uuid) {
-        return this.economyPlayerMap.query(uuid);
-    }
-
-    /**
-     * A query simply searches for a player matching the given constraints
-     * @param offlinePlayer
-     * @return EconomyPlayer2
-     */
-    @Nullable
-    public EconomyPlayer query(OfflinePlayer offlinePlayer) {
-        return this.query(offlinePlayer.getUniqueId());
-    }
-
     /**
      * Returns an economy response detailing the result of the withdraw request
      * @param p - the player
@@ -233,7 +184,7 @@ public class DivinityEconomy implements net.milkbowl.vault.economy.Economy {
     @Override
     @Deprecated
     public boolean hasAccount(String s) {
-        return this.query(s) != null;
+        return this.get(s) != null;
     }
 
     /**
@@ -243,7 +194,7 @@ public class DivinityEconomy implements net.milkbowl.vault.economy.Economy {
      */
     @Override
     public boolean hasAccount(OfflinePlayer offlinePlayer) {
-        return this.query(offlinePlayer) != null;
+        return this.get(offlinePlayer) != null;
     }
 
     /**

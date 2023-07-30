@@ -2,17 +2,15 @@ package me.edgrrrr.de.market.items.materials;
 
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.market.MapKeys;
+import me.edgrrrr.de.market.items.ItemManager;
 import me.edgrrrr.de.market.items.MarketableItem;
-import me.edgrrrr.de.market.items.enchants.EnchantManager;
 import me.edgrrrr.de.player.PlayerManager;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Map;
 
 public abstract class MarketableMaterial extends MarketableItem {
@@ -22,74 +20,15 @@ public abstract class MarketableMaterial extends MarketableItem {
         super(main, itemManager, ID, config, defaultConfig);
 
         String materialName = config.getString(MapKeys.MATERIAL_ID.key);
-        this.material = getMaterial(materialName);
-    }
-
-    public static Material getMaterial(String materialID) {
         Material material;
         try {
-            material = Material.valueOf(materialID);
+            material = Material.valueOf(materialName);
         } catch (IllegalArgumentException | NullPointerException exception) {
             material = null;
         }
-
-        return material;
+        this.material = material;
     }
 
-    /**
-     * Returns the number of books required to make the level provided
-     * @param itemStacks - The item stacks to check
-     * @return The number of books required to make the level provided
-     */
-    public static ItemStack[] removeEnchantedItems(ItemStack[] itemStacks) {
-        ArrayList<ItemStack> nonEnchanted = new ArrayList<>();
-        Arrays.stream(itemStacks).forEach(stack -> {
-            if (EnchantManager.getEnchantments(stack).isEmpty()) {
-                nonEnchanted.add(stack);
-            } else {
-                if (stack.getItemMeta() instanceof EnchantmentStorageMeta meta) {
-                    if (meta.getStoredEnchants().isEmpty()) {
-                        nonEnchanted.add(stack);
-                    }
-                }
-            }
-        });
-        return nonEnchanted.toArray(new ItemStack[0]);
-    }
-
-    /**
-     * Clones the given array and returns a non-related array
-     *
-     * @param itemStacks - The items to clone
-     */
-    public static ItemStack[] cloneItems(ItemStack[] itemStacks) {
-        ArrayList<ItemStack> clones = new ArrayList<>();
-        Arrays.stream(itemStacks).forEach(stack -> clones.add(MarketableMaterial.clone(stack)));
-        return clones.toArray(new ItemStack[0]);
-    }
-
-    public static ItemStack clone(ItemStack itemStack) {
-        ItemStack newItemStack = new ItemStack(itemStack.getType(), itemStack.getAmount());
-        newItemStack.setItemMeta(itemStack.getItemMeta());
-        newItemStack.addUnsafeEnchantments(EnchantManager.getEnchantments(itemStack));
-        newItemStack.setData(itemStack.getData());
-        return newItemStack;
-    }
-
-    /**
-     * Calculates the total count of all materials in the ItemStacks
-     *
-     * @param iStacks - The array of item stacks
-     * @return int - Total count of materials
-     */
-    public static int getMaterialCount(ItemStack[] iStacks) {
-        int count = 0;
-        for (ItemStack iStack : iStacks) {
-            count += iStack.getAmount();
-        }
-
-        return count;
-    }
 
     @Override
     public MaterialManager getManager() {
@@ -178,7 +117,7 @@ public abstract class MarketableMaterial extends MarketableItem {
      * @return int - Total count of materials
      */
     public int getMaterialCount(Player player) {
-        return MarketableMaterial.getMaterialCount(this.getMaterialSlots(player));
+        return ItemManager.getMaterialCount(this.getMaterialSlots(player));
     }
 
     /**
@@ -193,7 +132,7 @@ public abstract class MarketableMaterial extends MarketableItem {
         //Get total count of materials in those slots
         int emptySlots = PlayerManager.getEmptySlots(player);
         ItemStack[] iStacks = this.getMaterialSlots(player);
-        int materialCount = MarketableMaterial.getMaterialCount(iStacks);
+        int materialCount = ItemManager.getMaterialCount(iStacks);
 
         // Instantiate space
         // Add the total space occupied by the number of slots filled less the actual space filled

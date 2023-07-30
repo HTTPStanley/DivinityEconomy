@@ -47,7 +47,7 @@ public class EditBalTC extends DivinityCommandTC {
             // Args 1
             // get player names that start with args[0]
             case 1:
-                strings = this.getMain().getPlayMan().getOfflinePlayerNames(args[0]);
+                strings = this.getMain().getPlayMan().getPlayerNames(args[0]);
                 break;
 
             // Args 2

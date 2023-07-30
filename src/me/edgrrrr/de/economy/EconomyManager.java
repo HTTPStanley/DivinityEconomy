@@ -4,16 +4,18 @@ import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.DivinityModule;
 import me.edgrrrr.de.config.Setting;
 import me.edgrrrr.de.response.EconomyTransferResponse;
-import me.edgrrrr.de.utils.ArrayUtils;
 import me.edgrrrr.de.utils.Converter;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.*;
+import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -21,8 +23,10 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class EconomyManager extends DivinityModule {
 
-    // Baltop task
-    private Map<Integer, Map.Entry<UUID, Double>[]> orderedBalances = new ConcurrentHashMap<>();
+    // ListBalances task
+    private static final int BALTOP_PAGE_SIZE = 10;
+    private Map<Integer, BaltopPlayer[]> orderedBalances = new ConcurrentHashMap<>();
+    private Map<OfflinePlayer, Integer> baltopPositionCache = new ConcurrentHashMap<>();
     private final Calendar lastOrderTime = Calendar.getInstance();
     private double totalEconomySize = 0;
 
@@ -30,34 +34,7 @@ public class EconomyManager extends DivinityModule {
         @Override
         public void run() {
             {
-                // Get all players, sort & place into pages
-                Map<UUID, Double> players = new ConcurrentHashMap<>();
-                for (String playerName : getMain().getPlayMan().getOfflinePlayerNames()) {
-                    OfflinePlayer player = getMain().getPlayMan().getOfflinePlayer(playerName, true);
-                    players.put(player.getUniqueId(), getBalance(player));
-                }
-                ArrayList<Map.Entry<UUID, Double>> sortedPlayers = new ArrayList<>(players.entrySet());
-                Collections.sort(sortedPlayers, Map.Entry.comparingByValue());
-                Collections.reverse(sortedPlayers);
-                Map<Integer, Map.Entry<UUID, Double>[]> playersByPage = new ConcurrentHashMap<>();
-                for (Map.Entry<Integer, List<Object>> entry : ArrayUtils.paginator(sortedPlayers.toArray(new Map.Entry[0]), 10).entrySet()) {
-                    ArrayList<Map.Entry<UUID, Double>> entries = new ArrayList<>();
-                    entry.getValue().forEach(obj -> entries.add((Map.Entry<UUID, Double>) obj));
-                    playersByPage.put(entry.getKey(), entries.toArray(new Map.Entry[0]));
-                }
-
-                // Sum all player balances
-                double tempTotalSize = 0;
-                for (Map.Entry<UUID, Double>[] entries : playersByPage.values()) {
-                    for (Map.Entry<UUID, Double> entry : entries) {
-                        tempTotalSize += entry.getValue();
-                    }
-                }
-
-                orderedBalances.clear();
-                orderedBalances = playersByPage;
-                totalEconomySize = tempTotalSize;
-                lastOrderTime.setTimeInMillis(System.nanoTime());
+                fetchBaltop();
             }
         }
     };
@@ -65,13 +42,12 @@ public class EconomyManager extends DivinityModule {
     // Settings
     public double minTransfer;
     public double minBalance;
-    private String providerName;
 
     // Stores the Vault economy api
     private Economy economy;
 
     public EconomyManager(DEPlugin main) {
-        super(main);
+        super(main, false);
     }
 
     /**
@@ -81,16 +57,14 @@ public class EconomyManager extends DivinityModule {
     public void init() {
         // settings
         this.minTransfer = this.getConfMan().getDouble(Setting.ECONOMY_MIN_SEND_AMOUNT_DOUBLE);
-        this.providerName = this.getConfMan().getString(Setting.ECONOMY_PROVIDER_STRING);
-
-        // If economy setup fails, plugin shuts down
-        if (!this.setupEconomy()) {
-            this.getMain().shutdown();
-        }
+        this.minBalance = 0d;
+        this.economy = setupEconomy();
+        // If economy is null, disable plugin
 
         // Setup baltop task scheduler
-        int timer = Converter.getTicks(this.getMain().getConfMan().getInt(Setting.ECONOMY_BALTOP_REFRESH_INTEGER));
-        this.baltopTask.runTaskTimerAsynchronously(this.getMain(), 0, timer);
+        int timer = Converter.getTicks(Converter.constrainInt(this.getMain().getConfMan().getInt(Setting.ECONOMY_BALTOP_REFRESH_INTEGER), 60, 3600));
+        this.baltopTask.runTaskTimerAsynchronously(this.getMain(), timer, timer);
+        fetchBaltop();
     }
 
     /**
@@ -100,6 +74,90 @@ public class EconomyManager extends DivinityModule {
     public void deinit() {
         this.baltopTask.cancel();
     }
+
+    /**
+     * Fetches the baltop
+     */
+    public void fetchBaltop() {
+        this.getConsole().debug("Fetching baltop...");
+        // Total economy size
+        double totalSize = 0;
+
+        // Get players
+        ArrayList<BaltopPlayer> players = new ArrayList<>();
+        for (OfflinePlayer offlinePlayer : getMain().getPlayMan().getPlayers()) {
+            // Get balance
+            double balance = getBalance(offlinePlayer);
+
+            // Add player
+            players.add(new BaltopPlayer(offlinePlayer, balance));
+
+            // Add to total size
+            totalSize += balance;
+        }
+
+        // Sort players
+        players.sort((a, b) -> Double.compare(b.getBalance(), a.getBalance()));
+
+        // Sort into pages
+        List<List<BaltopPlayer>> pages = new ArrayList<>();
+        pages.add(new ArrayList<>());
+
+        // Paginate players
+        Map<OfflinePlayer, Integer> positionCache = new ConcurrentHashMap<>();
+        int position = 1;
+        int index = 0;
+        for (BaltopPlayer player : players) {
+            pages.get(pages.size() - 1).add(player);
+
+            // Add to position cache
+            positionCache.put(player.getOfflinePlayer(), position);
+
+            if (index == BALTOP_PAGE_SIZE) {
+                pages.add(new ArrayList<>());
+                index = 0;
+            } else {
+                index++;
+            }
+
+            position++;
+        }
+
+        // Convert to map
+        Map<Integer, BaltopPlayer[]> playersByPage = new ConcurrentHashMap<>();
+        for (int i = 0; i < pages.size(); i++) {
+            playersByPage.put(i, pages.get(i).toArray(new BaltopPlayer[0]));
+        }
+
+        // Set values
+        this.orderedBalances.clear();
+        this.orderedBalances = playersByPage;
+        this.baltopPositionCache.clear();
+        this.baltopPositionCache = positionCache;
+        this.totalEconomySize = totalSize;
+        this.lastOrderTime.setTimeInMillis(System.nanoTime());
+        this.getConsole().debug("Baltop fetched %s players.", players.size());
+    }
+
+
+    /**
+     * Returns the baltop position cache
+     * @return
+     */
+    public Map<OfflinePlayer, Integer> getBaltopPositionCache() {
+        return this.baltopPositionCache;
+    }
+
+
+    /**
+     * Returns the baltop position of a player
+     * @param player
+     * @return
+     */
+    public int getBaltopPosition(OfflinePlayer player) {
+        return this.baltopPositionCache.getOrDefault(player, 0);
+    }
+
 
     /**
      * Returns the last time the baltop was ordered
@@ -126,35 +184,21 @@ public class EconomyManager extends DivinityModule {
      * Value: Double is balance
      * @return
      */
-    public Map<Integer, Map.Entry<UUID, Double>[]> getOrderedBalances() {
+    public Map<Integer, BaltopPlayer[]> getOrderedBalances() {
         return this.orderedBalances;
     }
 
-    public Collection<RegisteredServiceProvider<Economy>> getProviders() {
-        return this.getMain().getServer().getServicesManager().getRegistrations(Economy.class);
-    }
-
-    public RegisteredServiceProvider<Economy> getPrimaryProvider() {
-        for (RegisteredServiceProvider<Economy> provider : this.getProviders()) {
-            if (provider.getPlugin().getName().equals(this.providerName)) {
-                return provider;
-            }
-        }
-        return this.getMain().getServer().getServicesManager().getRegistration(Economy.class);
-    }
-
-    public Collection<RegisteredServiceProvider<Economy>> setProvider(Economy economy) {
+    public void registerProvider(Economy economy) {
         this.getMain().getServer().getServicesManager().register(Economy.class, economy, this.getMain(), ServicePriority.Normal);
-        return this.getProviders();
     }
 
-    public Collection<RegisteredServiceProvider<Economy>> unregisterProvider(Economy economy) {
+    public void unregisterProvider(Economy economy) {
         this.getMain().getServer().getServicesManager().unregister(economy);
-        return this.getProviders();
     }
 
-    public DivinityEconomy createDivEcon() {
-        return new DivinityEconomy(this.getMain());
+    @Nullable
+    public Economy getProvider() {
+        return this.getMain().getServer().getServicesManager().getRegistration(Economy.class).getProvider();
     }
 
 
@@ -162,40 +206,20 @@ public class EconomyManager extends DivinityModule {
      * Sets up the vault economy object
      * Returns if it was successful or not.
      */
-    public boolean setupEconomy() {
-
+    @Nullable
+    public Economy setupEconomy() {
         // Look for vault
         if (this.getMain().getServer().getPluginManager().getPlugin("Vault") == null) {
-            this.getConsole().warn("No plugin 'Vault' detected, this will likely cause issues with plugins not cooperating.");
-            this.economy = this.createDivEcon();
-
-        } else {
-            this.getConsole().info("Vault has been detected.");
-
-
-            // Get the service provider
-            Collection<RegisteredServiceProvider<Economy>> providers = this.getProviders();
-            for (RegisteredServiceProvider<Economy> provider : providers) {
-                this.getConsole().info("Registered Economy Provider: '%s' (selected = %s)", provider.getPlugin().getName(), provider.getPlugin().getName().equalsIgnoreCase(this.providerName));
-                if (provider.getPlugin().getName().equalsIgnoreCase(this.providerName)) {
-                    this.economy = this.getPrimaryProvider().getProvider();
-                }
-            }
-
-            if (this.economy == null){
-                this.economy = this.createDivEcon();
-                if (this.setProvider(this.economy).size() == 0) {
-                    this.getConsole().warn("Could not register economy.");
-                    return false;
-                }
-            }
-
-
-            this.getConsole().info("Economy Provider: %s", this.economy.getName());
+            this.getConsole().warn("No plugin 'Vault' detected, you must have Vault to use this plugin..");
+            return null;
         }
+        this.getConsole().info("Vault detected.");
+
+        // Set up economy
+        this.registerProvider(new DivinityEconomy(this.getMain()));
 
         // return if economy was gotten successfully.
-        return true;
+        return this.getProvider();
     }
 
     /**

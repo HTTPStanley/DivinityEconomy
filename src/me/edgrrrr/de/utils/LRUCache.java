@@ -5,19 +5,16 @@ import me.edgrrrr.de.DEPlugin;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * At face value this is a map for storing loaded objects
  * But what it does is only load a certain maximum number of objects into memory.
- * And when an object whos file is not in memory is loaded, their file is loaded from storage.
+ * And when an object whose file is not in memory is loaded, their file is loaded from storage.
  * These are then updated on the fly and it tries to only keep often loaded objects in memory.
  */
-public class SmartMemoryManager<O, E> extends ConcurrentHashMap<Object, Object> {
+public abstract class LRUCache<O, E> extends ConcurrentHashMap<Object, Object> {
     /**
      * Memory size stores the maximum number of users in memory at once.
      * Userfile is the folder where users files are saved.
@@ -27,19 +24,22 @@ public class SmartMemoryManager<O, E> extends ConcurrentHashMap<Object, Object> 
      */
     protected final DEPlugin main;
     protected final int memorySize;
-    protected final File objectFile;
     protected final List<Object> orderList;
 
 
-    public SmartMemoryManager(DEPlugin main, File objectFile) {
+    public LRUCache(DEPlugin main) {
         this.main = main;
-        int memorySize = this.loadMemorySize();
-        if (memorySize < 1) {
-            memorySize = 1;
-        }
-        this.memorySize = memorySize;
-        this.objectFile = objectFile;
+        this.memorySize = Converter.constrainInt(this.loadMemorySize(), 0, Integer.MAX_VALUE);
         this.orderList = Collections.synchronizedList(new ArrayList<>());
+    }
+
+
+    /**
+     * Returns the main plugin
+     * @return DEPlugin
+     */
+    protected DEPlugin getMain() {
+        return this.main;
     }
 
 
@@ -49,8 +49,10 @@ public class SmartMemoryManager<O, E> extends ConcurrentHashMap<Object, Object> 
      * @param key
      */
     private void setFront(Object key) {
-        this.orderList.remove(key);
-        this.orderList.add(0, key);
+        synchronized (this.orderList) {
+            this.orderList.remove(key);
+            this.orderList.add(0, key);
+        }
     }
 
 
@@ -59,10 +61,14 @@ public class SmartMemoryManager<O, E> extends ConcurrentHashMap<Object, Object> 
      * Trims both the orderlist and map to the size of memorySize
      */
     private void trim() {
-        int i;
-        while((i = this.orderList.size()-1) >= this.memorySize) {
-            this.remove(this.orderList.get(i));
-            this.orderList.remove(i);
+        int i = this.orderList.size();
+        synchronized(this.orderList) {
+            Iterator<Object> iterator = this.orderList.iterator();
+            while (iterator.hasNext() && i > this.memorySize) {
+                this.remove(iterator.next());
+                iterator.remove();
+                i--;
+            }
         }
     }
 
@@ -101,38 +107,12 @@ public class SmartMemoryManager<O, E> extends ConcurrentHashMap<Object, Object> 
 
     /**
      * OVERRIDE!
-     * Attempts to create the object file given and returns if success
-     * @param objectFile
-     * @return boolean
-     */
-    @ForOverride
-    protected boolean create(File objectFile) {
-        return false;
-    }
-
-
-    /**
-     * OVERRIDE!
      * Loads an object from file or creates a new object and places it into memory
      * @param key
      * @return Object
      */
     @ForOverride
     protected Object load(Object key) {
-        return null;
-    }
-
-
-
-    /**
-     * OVERRIDE!
-     * Ingests a given file and returns the Object it belongs to.
-     * !!!This automatically assumes the file exists, do not give it a non-existing file.
-     * @param userFile
-     * @return Object
-     */
-    @ForOverride
-    protected Object ingest(File userFile) {
         return null;
     }
 
@@ -151,11 +131,16 @@ public class SmartMemoryManager<O, E> extends ConcurrentHashMap<Object, Object> 
         Object result = super.get(key);
         if (result == null) {
             result = this.load(key);
+            if (result != null)
+                this.put(key, result); // Could be null
+
+            this.getMain().getConsole().debug("Loaded %s from storage", key);
+        } else {
+            this.getMain().getConsole().debug("Loaded %s from memory", key);
         }
 
         return result;
     }
-
 
 
     /**
@@ -171,5 +156,23 @@ public class SmartMemoryManager<O, E> extends ConcurrentHashMap<Object, Object> 
         Object object = super.put(key, value);
         this.setFrontAndTrim(key);
         return object;
+    }
+
+
+    @Override
+    public void clear() {
+        synchronized (this.orderList) {
+            super.clear();
+            this.orderList.clear();
+        }
+    }
+
+
+    @Override
+    public Object remove(@Nonnull Object key) {
+        synchronized (this.orderList) {
+            this.orderList.remove(key);
+            return super.remove(key);
+        }
     }
 }

@@ -4,8 +4,8 @@ import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.commands.DivinityCommandMaterials;
 import me.edgrrrr.de.config.Setting;
 import me.edgrrrr.de.market.items.materials.MarketableMaterial;
+import me.edgrrrr.de.market.items.materials.MaterialValueResponse;
 import me.edgrrrr.de.player.PlayerManager;
-import me.edgrrrr.de.response.ValueResponse;
 import me.edgrrrr.de.utils.Converter;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.entity.Player;
@@ -89,34 +89,37 @@ public class Sell extends DivinityCommandMaterials {
         // Clone incase need to be refunded
         // Get valuation
         ItemStack[] allStacks = marketableMaterial.getMaterialSlotsToCount(sender, amountToSell);
-        ItemStack[] itemStacks = MarketableMaterial.removeEnchantedItems(allStacks);
-        ItemStack[] itemStacksClone = MarketableMaterial.cloneItems(itemStacks);
+        MaterialValueResponse response = marketableMaterial.getManager().getSellValue(allStacks);
 
         // Check for removed items
-        if (itemStacks.length == 0) {
-            this.getMain().getConsole().logFailedSale(sender, amountToSell, marketableMaterial.getCleanName(), CommandResponse.EnchantedItemsRemoved.message.toLowerCase());
+        if (response.getItemStacks().size() == 0) {
+            this.getMain().getConsole().logFailedSale(sender, response.getQuantity(), marketableMaterial.getCleanName(), CommandResponse.NothingToSellAfterSkipping.message.toLowerCase());
             return true;
         }
 
-        ValueResponse response = marketableMaterial.getManager().getSellValue(itemStacks);
 
-        if (response.isSuccess()) {
-            PlayerManager.removePlayerItems(itemStacks);
+        // If response failed
+        if (response.isFailure()) {
+            this.getMain().getConsole().logFailedSale(sender, response.getQuantity(), marketableMaterial.getCleanName(), response.getErrorMessage());
+            return true;
+        }
 
-            EconomyResponse economyResponse = this.getMain().getEconMan().addCash(sender, response.value);
-            if (!economyResponse.transactionSuccess()) {
-                PlayerManager.addPlayerItems(sender, itemStacksClone);
-                // Handles console, player message and mail
-                this.getMain().getConsole().logFailedSale(sender, amountToSell, marketableMaterial.getCleanName(), economyResponse.errorMessage);
 
-            } else {
-                marketableMaterial.getManager().editQuantity(marketableMaterial, amountToSell);
-                // Handles console, player message and mail
-                this.getMain().getConsole().logSale(sender, amountToSell, response.value, marketableMaterial.getCleanName());
-            }
-        } else {
+        // Remove player items
+        PlayerManager.removePlayerItems(response.getItemStacksAsArray());
+
+
+        // Add cash
+        EconomyResponse economyResponse = this.getMain().getEconMan().addCash(sender, response.getValue());
+        if (!economyResponse.transactionSuccess()) {
+            PlayerManager.addPlayerItems(sender, response.getClonesAsArray());
             // Handles console, player message and mail
-            this.getMain().getConsole().logFailedSale(sender, amountToSell, marketableMaterial.getCleanName(), response.errorMessage);
+            this.getMain().getConsole().logFailedSale(sender, response.getQuantity(), marketableMaterial.getCleanName(), economyResponse.errorMessage);
+
+        } else {
+            marketableMaterial.getManager().editQuantity(marketableMaterial, response.getQuantity());
+            // Handles console, player message and mail
+            this.getMain().getConsole().logSale(sender, response.getQuantity(), response.getValue(), marketableMaterial.getCleanName());
         }
 
         return true;

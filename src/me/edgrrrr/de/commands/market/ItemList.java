@@ -114,7 +114,7 @@ public class ItemList extends DivinityCommand {
         }
 
         // Item names
-        List<String> itemNames = List.of(this.getMain().getMarkMan().searchItemNames(itemName));
+        Set<String> itemNames = this.getMain().getMarkMan().searchItemNames(itemName);
         if (itemName.equals("")) itemName = "*";
 
         // If value
@@ -125,7 +125,7 @@ public class ItemList extends DivinityCommand {
             for (String i : itemNames) {
                 MarketableMaterial material = this.getMain().getMarkMan().getItem(i);
 
-                itemValues.put(material.getCleanName(), material.getManager().getBuyValue(material.getItemStack(1), 1).value);
+                itemValues.put(material.getCleanName(), material.getManager().getBuyValue(material.getItemStack(1), 1).getValue());
             }
 
             // Sort map by entry value

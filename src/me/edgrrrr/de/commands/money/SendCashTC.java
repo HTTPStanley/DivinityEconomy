@@ -37,15 +37,14 @@ public class SendCashTC extends DivinityCommandTC {
             // Args 1
             // get player names that start with args[0]
             case 1:
-                strings = this.getMain().getPlayMan().getOfflinePlayerNames(args[0]);
+                strings = this.getMain().getPlayMan().getPlayerNames(args[0]);
                 break;
 
             // Args 2
             // just return some numbers
             case 2:
-                String balance = String.format("%,.2f", this.getMain().getEconMan().getBalance(sender));
                 strings = new String[]{
-                        "1", "10", "100", "1000", balance
+                        "1", "10", "100", "1000", String.valueOf(this.getMain().getEconMan().getBalance(sender))
                 };
                 break;
 

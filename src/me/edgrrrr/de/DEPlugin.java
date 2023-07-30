@@ -2,7 +2,10 @@ package me.edgrrrr.de;
 
 import me.edgrrrr.de.commands.admin.*;
 import me.edgrrrr.de.commands.enchants.*;
-import me.edgrrrr.de.commands.experience.*;
+import me.edgrrrr.de.commands.experience.ExperienceBuy;
+import me.edgrrrr.de.commands.experience.ExperienceBuyTC;
+import me.edgrrrr.de.commands.experience.ExperienceSell;
+import me.edgrrrr.de.commands.experience.ExperienceSellTC;
 import me.edgrrrr.de.commands.help.HelpCommand;
 import me.edgrrrr.de.commands.help.HelpCommandTC;
 import me.edgrrrr.de.commands.mail.ClearMail;
@@ -11,16 +14,12 @@ import me.edgrrrr.de.commands.mail.ReadMail;
 import me.edgrrrr.de.commands.mail.ReadMailTC;
 import me.edgrrrr.de.commands.market.*;
 import me.edgrrrr.de.commands.misc.Ping;
-import me.edgrrrr.de.commands.money.Balance;
-import me.edgrrrr.de.commands.money.BalanceTC;
-import me.edgrrrr.de.commands.money.SendCash;
-import me.edgrrrr.de.commands.money.SendCashTC;
+import me.edgrrrr.de.commands.money.*;
 import me.edgrrrr.de.config.ConfigManager;
 import me.edgrrrr.de.config.Setting;
 import me.edgrrrr.de.console.EconConsole;
 import me.edgrrrr.de.console.LogLevel;
 import me.edgrrrr.de.economy.EconomyManager;
-import me.edgrrrr.de.events.MailEvent;
 import me.edgrrrr.de.help.HelpManager;
 import me.edgrrrr.de.mail.MailManager;
 import me.edgrrrr.de.market.exp.ExpManager;
@@ -33,7 +32,6 @@ import me.edgrrrr.de.placeholders.ExpansionManager;
 import me.edgrrrr.de.player.PlayerManager;
 import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Locale;
@@ -81,6 +79,7 @@ public class DEPlugin extends JavaPlugin {
         LogLevel.loadValuesFromConfig((YamlConfiguration) this.getConfig());
         this.config = new ConfigManager(this);
         this.console = new EconConsole(this);
+        this.playerManager = new PlayerManager(this);
         this.economyManager = new EconomyManager(this);
         this.marketManager = new MarketManager(this);
         this.blockManager = new BlockManager(this);
@@ -88,24 +87,30 @@ public class DEPlugin extends JavaPlugin {
         this.entityManager = new EntityManager(this);
         this.enchantManager = new EnchantManager(this);
         this.expManager = new ExpManager(this);
-        this.playerManager = new PlayerManager(this);
         this.mailManager = new MailManager(this);
         this.helpManager = new HelpManager(this);
 
-        // Initialisation of all modules
-        DivinityModule.runInit();
+        // Initialise config
+        this.config.init();
+        DivinityModule.addModule(this.config, true);
 
-        // setup events
-        try {
-            // Register events
-            PluginManager pm = this.getServer().getPluginManager();
-            pm.registerEvents(new MailEvent(this), this);
-        } catch (Exception e) {
-            e.printStackTrace();
-            this.console.severe("An error occurred on event creation: %s", e);
+        // Initialise player manager
+        this.playerManager.init();
+        DivinityModule.addModule(this.playerManager, true);
+
+        // Initialise economy
+        this.economyManager.init();
+        // Check that the economy is enabled
+        if (this.economyManager.getVaultEconomy() == null) {
+            this.console.severe("Economy is not enabled. Shutting down.");
             this.shutdown();
             return;
         }
+        this.console.info("Economy is enabled. Provider: %s", this.economyManager.getVaultEconomy());
+        DivinityModule.addModule(this.economyManager, true);
+
+        // Initialisation of all modules
+        DivinityModule.runInit();
 
         // Commands
 
@@ -147,6 +152,8 @@ public class DEPlugin extends JavaPlugin {
         new EnchantInfoTC(this);
         new EnchantValue(this);
         new EnchantValueTC(this);
+        new EnchantSellAll(this);
+        new EnchantSellAllTC(this);
 
         // Help
         new HelpCommand(this);
@@ -187,7 +194,7 @@ public class DEPlugin extends JavaPlugin {
         new BalanceTC(this);
         new SendCash(this);
         new SendCashTC(this);
-        new Baltop(this);
+        new ListBalances(this);
 
         // Placeholder API - handled differently to submodules
         // Automatically initiates - but must be last

@@ -44,7 +44,7 @@ public class ClearBal extends DivinityCommand {
 
             // 1 arg
             case 1:
-                player2 = this.getMain().getPlayMan().getOfflinePlayer(args[0], false);
+                player2 = this.getMain().getPlayMan().getPlayer(args[0], false);
                 break;
 
             // If any other number of arguments are passed.
@@ -85,7 +85,7 @@ public class ClearBal extends DivinityCommand {
         switch (args.length) {
             // 1 arg
             case 1:
-                player = this.getMain().getPlayMan().getOfflinePlayer(args[0], false);
+                player = this.getMain().getPlayMan().getPlayer(args[0], false);
                 break;
 
             // If any other number of arguments are passed.

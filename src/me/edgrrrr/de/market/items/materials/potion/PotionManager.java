@@ -1,9 +1,9 @@
 package me.edgrrrr.de.market.items.materials.potion;
 
 import me.edgrrrr.de.DEPlugin;
+import me.edgrrrr.de.market.items.materials.MaterialValueResponse;
 import me.edgrrrr.de.market.items.materials.MarketableMaterial;
 import me.edgrrrr.de.market.items.materials.MaterialManager;
-import me.edgrrrr.de.response.ValueResponse;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
@@ -34,26 +34,35 @@ public class PotionManager extends MaterialManager {
      * @return MaterialValue - The price of the itemstack if no errors occurred.
      */
     @Override
-    public ValueResponse getSellValue(ItemStack itemStack, int amount) {
-        ValueResponse response;
+    public MaterialValueResponse getSellValue(ItemStack itemStack, int amount) {
+        // Create value response
+        MaterialValueResponse response = new MaterialValueResponse(EconomyResponse.ResponseType.SUCCESS, null);
 
+        // Get the item data
         MarketablePotion potionData = (MarketablePotion) this.getItem(itemStack);
 
-        if (potionData == null) {
-            response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("%s cannot be found.", itemStack.getType().name()));
-        } else {
-            if (!potionData.getAllowed()) {
-                response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("%s is banned.", itemStack.getType().name()));
-            } else {
-                double value = this.calculatePrice(amount, potionData.getQuantity(), this.sellScale, false);
-                if (value > 0) {
-                    response = new ValueResponse(value, EconomyResponse.ResponseType.SUCCESS, "");
-                } else {
-                    response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, "market is saturated.");
-                }
-            }
-        }
 
+        // If the item data is null, return 0
+        if (potionData == null)
+            return (MaterialValueResponse) response.setFailure(String.format("%s cannot be found.", itemStack.getType().name()));
+
+
+        // Get value and add token to response
+        double value = this.calculatePrice(amount, potionData.getQuantity(), this.sellScale, false);
+        response.addToken(potionData, amount, value, new ItemStack[]{itemStack});
+
+
+        // Check item is allowed
+        if (!potionData.getAllowed())
+            return (MaterialValueResponse) response.setFailure(String.format("%s is banned.", potionData.getCleanName()));
+
+
+        // Check if the market is saturated
+        if (value <= 0)
+            return (MaterialValueResponse) response.setFailure(String.format("%s is worthless.", potionData.getCleanName()));
+
+
+        // Return the response
         return response;
     }
 
@@ -64,26 +73,36 @@ public class PotionManager extends MaterialManager {
      * @return MaterialValue
      */
     @Override
-    public ValueResponse getBuyValue(ItemStack itemStack, int amount) {
-        ValueResponse response;
+    public MaterialValueResponse getBuyValue(ItemStack itemStack, int amount) {
+        // Create value response
+        MaterialValueResponse response = new MaterialValueResponse(EconomyResponse.ResponseType.SUCCESS, null);
 
+
+        // Get the item data
         MarketablePotion potionData = (MarketablePotion) this.getItem(itemStack);
-        if (potionData == null) {
-            response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("%s cannot be found.", itemStack.getType().name()));
 
-        } else {
-            if (!potionData.getAllowed()) {
-                response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("%s is banned.", itemStack.getType().name()));
-            } else {
-                double value = this.calculatePrice(amount, potionData.getQuantity(), this.buyScale, true);
-                if (value > 0) {
-                    response = new ValueResponse(value, EconomyResponse.ResponseType.SUCCESS, "");
-                } else {
-                    response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, "market is saturated.");
-                }
-            }
-        }
 
+        // If the item data is null, return 0
+        if (potionData == null)
+            return (MaterialValueResponse) response.setFailure(String.format("%s cannot be found.", itemStack.getType().name()));
+
+
+        // Get value and add token to response
+        double value = this.calculatePrice(amount, potionData.getQuantity(), this.buyScale, true);
+        response.addToken(potionData, amount, value, new ItemStack[]{itemStack});
+
+
+        // Check item is allowed
+        if (!potionData.getAllowed())
+            return (MaterialValueResponse) response.setFailure(String.format("%s is banned.", potionData.getCleanName()));
+
+
+        // Check if the market is saturated
+        if (value <= 0)
+            return (MaterialValueResponse) response.setFailure(String.format("%s is unavailable.", potionData.getCleanName()));
+
+
+        // Return the response
         return response;
     }
 

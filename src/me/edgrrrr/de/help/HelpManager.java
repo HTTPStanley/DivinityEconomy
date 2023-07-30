@@ -2,12 +2,10 @@ package me.edgrrrr.de.help;
 
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.DivinityModule;
+import me.edgrrrr.de.mail.events.MailEvent;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static me.edgrrrr.de.utils.ArrayUtils.paginator;
@@ -28,6 +26,7 @@ public class HelpManager extends DivinityModule {
     @Override
     public void init() {
         this.loadHelp();
+        this.getMain().getServer().getPluginManager().registerEvents(new MailEvent(this.getMain()), this.getMain());
     }
 
     /**
@@ -97,7 +96,7 @@ public class HelpManager extends DivinityModule {
 
         // Standardise term
         term = term.toLowerCase().strip(); // Standardise term
-        ArrayList<Help> helpArray = new ArrayList<>(); // Create help array
+        Set<Help> helpSet = new HashSet<>(); // Create help array
 
         // Priority store
         ArrayList<Help> priority0ArrayList = new ArrayList<>();
@@ -171,15 +170,15 @@ public class HelpManager extends DivinityModule {
         }
 
         // Add by priority
-        helpArray.addAll(priority0ArrayList);
-        helpArray.addAll(priority1ArrayList);
-        helpArray.addAll(priority2ArrayList);
-        helpArray.addAll(priority3ArrayList);
-        helpArray.addAll(priority4ArrayList);
-        helpArray.addAll(priority5ArrayList);
+        helpSet.addAll(priority0ArrayList);
+        helpSet.addAll(priority1ArrayList);
+        helpSet.addAll(priority2ArrayList);
+        helpSet.addAll(priority3ArrayList);
+        helpSet.addAll(priority4ArrayList);
+        helpSet.addAll(priority5ArrayList);
 
         // Return array
-        return helpArray.toArray(new Help[0]);
+        return helpSet.toArray(new Help[0]);
     }
 
     /**

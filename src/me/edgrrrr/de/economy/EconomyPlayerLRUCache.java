@@ -1,29 +1,29 @@
 package me.edgrrrr.de.economy;
 
 import me.edgrrrr.de.DEPlugin;
-import me.edgrrrr.de.config.Setting;
-import me.edgrrrr.de.utils.SmartMemoryManager;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
-import java.util.Collection;
+import java.util.UUID;
 
-public class SmartMemoryPlayerManager extends SmartMemoryManager<Object, EconomyPlayer> {
+public class EconomyPlayerLRUCache extends me.edgrrrr.de.utils.LRUCache<UUID, EconomyPlayer> {
+    protected final File userFile;
 
-    public SmartMemoryPlayerManager(DEPlugin main, File userFile) {
-        super(main, userFile);
+    public EconomyPlayerLRUCache(DEPlugin main, File userFile) {
+        super(main);
+        this.userFile = userFile;
     }
 
 
     /**
-     * Returns the ECONOMY_SSM_INTEGER
+     * Returns the memory size for this manager
      * @return int
      */
     @Override
     protected int loadMemorySize() {
-        return this.main.getConfMan().getInt(Setting.ECONOMY_SSM_INTEGER);
+        return 2048;
     }
 
 
@@ -40,7 +40,7 @@ public class SmartMemoryPlayerManager extends SmartMemoryManager<Object, Economy
      */
     @Override
     protected EconomyPlayer load(Object key) {
-        File file = new File(this.objectFile, EconomyPlayer.getFilename(String.valueOf(key)));
+        File file = new File(this.userFile, EconomyPlayer.getFilename(String.valueOf(key)));
 
         boolean result;
         if (!file.exists()) {
@@ -54,17 +54,13 @@ public class SmartMemoryPlayerManager extends SmartMemoryManager<Object, Economy
             player = this.ingest(file);
         }
 
-        if (player != null) {
-            this.put(String.valueOf(key), player);
-        }
-
         return player;
     }
 
 
 
     /**
-     * Ingests a given file and returns the EconomyPlayer2 it belongs to.
+     * Ingests a given file and returns the EconomyPlayer it belongs to.
      * !!!This automatically assumes the file exists, do not give it a non-existing file.
      * @param userFile
      * @return EconomyPlayer
@@ -112,14 +108,5 @@ public class SmartMemoryPlayerManager extends SmartMemoryManager<Object, Economy
     @Override
     public EconomyPlayer put(@Nonnull Object key, @Nonnull Object value) {
         return (EconomyPlayer) super.put(key, value);
-    }
-
-
-    /**
-     * Overrides the values() function to return a collection of EconomyPlayers
-     * @return EconomyPlayer
-     */
-    public Collection<EconomyPlayer> getPlayerValues() {
-        return (Collection<EconomyPlayer>) (Collection<?>) super.values();
     }
 }

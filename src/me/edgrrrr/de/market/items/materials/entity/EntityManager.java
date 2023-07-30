@@ -1,9 +1,9 @@
 package me.edgrrrr.de.market.items.materials.entity;
 
 import me.edgrrrr.de.DEPlugin;
+import me.edgrrrr.de.market.items.materials.MaterialValueResponse;
 import me.edgrrrr.de.market.items.materials.MarketableMaterial;
 import me.edgrrrr.de.market.items.materials.MaterialManager;
-import me.edgrrrr.de.response.ValueResponse;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
@@ -37,26 +37,36 @@ public class EntityManager extends MaterialManager {
      * @return MaterialValue - The price of the itemstack if no errors occurred.
      */
     @Override
-    public ValueResponse getSellValue(ItemStack itemStack, int amount) {
-        ValueResponse response;
+    public MaterialValueResponse getSellValue(ItemStack itemStack, int amount) {
+        // Create value response
+        MaterialValueResponse response = new MaterialValueResponse(EconomyResponse.ResponseType.SUCCESS, null);
 
+
+        // Get the item data
         MarketableEntity entityData = (MarketableEntity) this.getItem(itemStack);
 
-        if (entityData == null) {
-            response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("%s cannot be found.", itemStack.getType().name()));
-        } else {
-            if (!entityData.getAllowed()) {
-                response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("%s is banned.", itemStack.getType().name()));
-            } else {
-                double value = this.calculatePrice(amount, entityData.getQuantity(), this.sellScale, false);
-                if (value > 0) {
-                    response = new ValueResponse(value, EconomyResponse.ResponseType.SUCCESS, "");
-                } else {
-                    response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, "market is saturated.");
-                }
-            }
-        }
 
+        // If the item data is null, return 0
+        if (entityData == null)
+            return (MaterialValueResponse) response.setFailure(String.format("%s cannot be found.", itemStack.getType().name()));
+
+
+        // Get value and add token to response
+        double value = this.calculatePrice(amount, entityData.getQuantity(), this.sellScale, false);
+        response.addToken(entityData, amount, value, new ItemStack[]{itemStack});
+
+
+        // Check item is allowed
+        if (!entityData.getAllowed())
+            return (MaterialValueResponse) response.setFailure(String.format("%s is banned.", entityData.getCleanName()));
+
+
+        // If value is less than 0, return 0
+        if (value <= 0)
+            return (MaterialValueResponse) response.setFailure(String.format("%s is worthless.", entityData.getCleanName()));
+
+
+        // Return value
         return response;
     }
 
@@ -67,27 +77,35 @@ public class EntityManager extends MaterialManager {
      * @return MaterialValue
      */
     @Override
-    public ValueResponse getBuyValue(ItemStack itemStack, int amount) {
-        ValueResponse response;
+    public MaterialValueResponse getBuyValue(ItemStack itemStack, int amount) {
+        // Create response
+        MaterialValueResponse response = new MaterialValueResponse(EconomyResponse.ResponseType.SUCCESS, null);
 
+        // Get the item data
         MarketableEntity entityData = (MarketableEntity) this.getItem(itemStack);
-        if (entityData == null) {
-            response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("%s cannot be found.", itemStack.getType().name()));
 
-        } else {
-            if (!entityData.getAllowed()) {
-                response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("%s is banned.", itemStack.getType().name()));
 
-            } else {
-                double value = this.calculatePrice(amount, entityData.getQuantity(), this.buyScale, true);
-                if (value > 0) {
-                    response = new ValueResponse(value, EconomyResponse.ResponseType.SUCCESS, "");
-                } else {
-                    response = new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, "market is saturated.");
-                }
-            }
-        }
+        // If the item data is null, return 0
+        if (entityData == null)
+            return (MaterialValueResponse) response.setFailure(String.format("%s cannot be found.", itemStack.getType().name()));
 
+
+        // Get value and add token to response
+        double value = this.calculatePrice(amount, entityData.getQuantity(), this.buyScale, true);
+        response.addToken(entityData, amount, value, new ItemStack[]{itemStack});
+
+
+        // Check if item is banned
+        if (!entityData.getAllowed())
+            return (MaterialValueResponse) response.setFailure(String.format("%s is banned.", entityData.getCleanName()));
+
+
+        // If value is less than 0, return 0
+        if (value <= 0)
+            return (MaterialValueResponse) response.setFailure(String.format("%s is unavailable.", entityData.getCleanName()));
+
+
+        // Return value
         return response;
     }
 

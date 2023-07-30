@@ -42,8 +42,7 @@ public class SellTC extends DivinityCommandMaterialsTC {
             // 1 args
             // return items in user inventory
             case 1 -> {
-                String[] materials = PlayerManager.getInventoryMaterialNames(sender);
-                strings = this.getMain().getMarkMan().getItemNames(materials, args[0]);
+                strings = this.getMain().getMarkMan().getItemNames(PlayerManager.getInventoryMaterialNames(sender), args[0]).toArray(new String[0]);
             }
 
             // 2 args
@@ -79,7 +78,7 @@ public class SellTC extends DivinityCommandMaterialsTC {
                     } else {
                         amount = Converter.getInt(args[1]);
                     }
-                    value = this.getMain().getConsole().formatMoney(marketableMaterial.getManager().getSellValue(marketableMaterial.getMaterialSlotsToCount(sender, amount)).value);
+                    value = this.getMain().getConsole().formatMoney(marketableMaterial.getManager().getSellValue(marketableMaterial.getMaterialSlotsToCount(sender, amount)).getValue());
                 }
                 strings = new String[]{
                         String.format("Value: %s", value)

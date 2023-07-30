@@ -47,7 +47,7 @@ public class EditBal extends DivinityCommand {
 
             case 2:
                 // use case #2
-                receiver = this.getMain().getPlayMan().getOfflinePlayer(args[0], false);
+                receiver = this.getMain().getPlayMan().getPlayer(args[0], false);
                 amount = Converter.getDouble(args[1]);
                 break;
 
@@ -102,7 +102,7 @@ public class EditBal extends DivinityCommand {
         switch (args.length) {
             case 2:
                 // use case #2
-                receiver = this.getMain().getPlayMan().getOfflinePlayer(args[0], false);
+                receiver = this.getMain().getPlayMan().getPlayer(args[0], false);
                 amount = Converter.getDouble(args[1]);
                 break;
 

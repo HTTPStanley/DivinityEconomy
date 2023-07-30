@@ -3,6 +3,7 @@ package me.edgrrrr.de.commands.market;
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.commands.DivinityCommandMaterials;
 import me.edgrrrr.de.config.Setting;
+import me.edgrrrr.de.market.items.ItemManager;
 import me.edgrrrr.de.market.items.materials.MarketableMaterial;
 import me.edgrrrr.de.player.PlayerManager;
 import me.edgrrrr.de.response.ValueResponse;
@@ -80,7 +81,7 @@ public class HandValue extends DivinityCommandMaterials {
             sellStacks = new ItemStack[1];
             sellStacks[0] = heldItem;
         } else if (valueAll) {
-            amount = MarketableMaterial.getMaterialCount(itemStacks);
+            amount = ItemManager.getMaterialCount(itemStacks);
             sellStacks = itemStacks;
             buyStacks = marketableMaterial.getItemStacks(amount);
         } else {
@@ -92,17 +93,17 @@ public class HandValue extends DivinityCommandMaterials {
         ValueResponse sellResponse = marketableMaterial.getManager().getSellValue(sellStacks);
 
         if (buyResponse.isSuccess()) {
-            this.getMain().getConsole().info(sender, "Buy: %d %s costs %s", amount, marketableMaterial.getCleanName(), this.getMain().getConsole().formatMoney(buyResponse.value));
+            this.getMain().getConsole().info(sender, "Buy: %d %s costs %s", amount, marketableMaterial.getCleanName(), this.getMain().getConsole().formatMoney(buyResponse.getValue()));
 
         } else {
-            this.getMain().getConsole().info(sender, "Couldn't determine buy price of %d %s because %s", amount, marketableMaterial.getCleanName(), buyResponse.errorMessage);
+            this.getMain().getConsole().info(sender, "Couldn't determine buy price of %d %s because %s", amount, marketableMaterial.getCleanName(), buyResponse.getErrorMessage());
         }
 
         if (sellResponse.isSuccess()) {
-            this.getMain().getConsole().info(sender, "Sell: %d %s costs %s", amount, marketableMaterial.getCleanName(), this.getMain().getConsole().formatMoney(sellResponse.value));
+            this.getMain().getConsole().info(sender, "Sell: %d %s costs %s", amount, marketableMaterial.getCleanName(), this.getMain().getConsole().formatMoney(sellResponse.getValue()));
 
         } else {
-            this.getMain().getConsole().info(sender, "Couldn't determine sell price of %d %s because %s", amount, marketableMaterial.getCleanName(), sellResponse.errorMessage);
+            this.getMain().getConsole().info(sender, "Couldn't determine sell price of %d %s because %s", amount, marketableMaterial.getCleanName(), sellResponse.getErrorMessage());
         }
         return true;
     }

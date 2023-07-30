@@ -7,7 +7,7 @@ import org.bukkit.OfflinePlayer;
 
 public class PAPIMaterialStack extends DivinityExpansion {
     public PAPIMaterialStack(DEPlugin main) {
-        super(main, "^material_stack_(.*)$");
+        super(main, "^material_stack_([a-zA-Z]*)$");
     }
 
     @Override

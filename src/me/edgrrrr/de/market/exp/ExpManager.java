@@ -115,20 +115,29 @@ public class ExpManager extends TokenManager {
     public String getBuyValueString(long amount) {
         ValueResponse response = this.getBuyValue(amount);
         if (response.isFailure()) {
-            return String.format("Error: %s", response.errorMessage);
+            return String.format("Error: %s", response.getErrorMessage());
         }
 
-        return String.format("Value: %s", this.getConsole().formatMoney(response.value));
+        return String.format("Value: %s", this.getConsole().formatMoney(response.getValue()));
+    }
+
+
+    public ValueResponse getSellValue(long amount, Player player) {
+        // Check that the player has enough experience to sell
+        if (amount > getPlayerExp(player)) {
+            return new ValueResponse(0, EconomyResponse.ResponseType.FAILURE, "not enough experience to sell");
+        }
+
+        return this.getSellValue(amount);
     }
 
 
     /**
      * Returns the sell value of the experience
      * @param amount - The amount of experience to sell
-     * @param player - The player selling the experience
      * @return - The value response
      */
-    public ValueResponse getSellValue(long amount, Player player) {
+    public ValueResponse getSellValue(long amount) {
         // Check that the experience is valid
         if (amount <= 0) {
             return new ValueResponse(0, EconomyResponse.ResponseType.FAILURE, "invalid experience value");
@@ -138,11 +147,6 @@ public class ExpManager extends TokenManager {
         // Check that experience is not banned
         if (!exp.getAllowed()) {
             return new ValueResponse(0, EconomyResponse.ResponseType.FAILURE, "experience is banned");
-        }
-
-        // Check that the player has enough experience to sell
-        if (amount > getPlayerExp(player)) {
-            return new ValueResponse(0, EconomyResponse.ResponseType.FAILURE, "not enough experience to sell");
         }
 
         // Check that the requested amount of experience is available to sell
@@ -158,10 +162,10 @@ public class ExpManager extends TokenManager {
     public String getSellValueString(long amount, Player player) {
         ValueResponse response = this.getSellValue(amount, player);
         if (response.isFailure()) {
-            return String.format("Error: %s", response.errorMessage);
+            return String.format("Error: %s", response.getErrorMessage());
         }
 
-        return String.format("Value: %s", this.getConsole().formatMoney(response.value));
+        return String.format("Value: %s", this.getConsole().formatMoney(response.getValue()));
     }
 
     public int addExperience(Player player, int amount) {

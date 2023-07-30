@@ -47,7 +47,7 @@ public class InfoTC extends DivinityCommandMaterialsTC {
             // 1 args
             // return names of players starting with arg
             case 1:
-                strings = this.getMain().getMarkMan().getItemNames(args[0]);
+                strings = this.getMain().getMarkMan().getItemNames(args[0]).toArray(new String[0]);
                 break;
 
             // else

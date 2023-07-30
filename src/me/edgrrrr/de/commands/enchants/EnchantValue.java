@@ -3,8 +3,8 @@ package me.edgrrrr.de.commands.enchants;
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.commands.DivinityCommandEnchant;
 import me.edgrrrr.de.config.Setting;
+import me.edgrrrr.de.market.items.enchants.EnchantValueResponse;
 import me.edgrrrr.de.market.items.enchants.MarketableEnchant;
-import me.edgrrrr.de.response.ValueResponse;
 import me.edgrrrr.de.utils.Converter;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -71,18 +71,18 @@ public class EnchantValue extends DivinityCommandEnchant {
 
         // Get value
         // Remove enchants, add quantity and add cash
-        ValueResponse valueResponse1 = this.getMain().getEnchMan().getBuyValue(itemStack, enchantName, enchantLevels);
+        EnchantValueResponse evr1 = this.getMain().getEnchMan().getBuyValue(itemStack, enchantName, enchantLevels);
         itemStack.addUnsafeEnchantment(enchantData.getEnchantment(), enchantLevels);
-        ValueResponse valueResponse2 = this.getMain().getEnchMan().getSellValue(itemStack, enchantName, enchantLevels);
-        if (valueResponse1.isFailure()) {
-            this.getMain().getConsole().warn(sender, "Couldn't determine buy value of %d %s because %s", enchantLevels, enchantData.getCleanName(), valueResponse1.errorMessage);
+        EnchantValueResponse evr2 = this.getMain().getEnchMan().getSellValue(itemStack, enchantName, enchantLevels);
+        if (evr1.isFailure()) {
+            this.getMain().getConsole().warn(sender, "Couldn't determine buy value of %d %s because %s", enchantLevels, enchantData.getCleanName(), evr1.getErrorMessage());
         } else {
-            this.getMain().getConsole().info(sender, "Buy: %d %s costs %s", enchantLevels, enchantData.getCleanName(), this.getMain().getConsole().formatMoney(valueResponse1.value));
+            this.getMain().getConsole().info(sender, "Buy: %d %s costs %s", enchantLevels, enchantData.getCleanName(), this.getMain().getConsole().formatMoney(evr1.getValue()));
         }
-        if (valueResponse2.isFailure()) {
-            this.getMain().getConsole().warn(sender, "Couldn't determine sell value of %d %s because %s", enchantLevels, enchantData.getCleanName(), valueResponse2.errorMessage);
+        if (evr1.isFailure()) {
+            this.getMain().getConsole().warn(sender, "Couldn't determine sell value of %d %s because %s", enchantLevels, enchantData.getCleanName(), evr2.getErrorMessage());
         } else {
-            this.getMain().getConsole().info(sender, "Sell: %d %s costs %s", enchantLevels, enchantData.getCleanName(), this.getMain().getConsole().formatMoney(valueResponse2.value));
+            this.getMain().getConsole().info(sender, "Sell: %d %s costs %s", enchantLevels, enchantData.getCleanName(), this.getMain().getConsole().formatMoney(evr2.getValue()));
         }
 
         // Graceful exit :)

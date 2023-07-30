@@ -63,17 +63,17 @@ public class Value extends DivinityCommandMaterials {
         ValueResponse sellResponse = marketableMaterial.getManager().getSellValue(itemStacks);
 
         if (buyResponse.isSuccess()) {
-            this.getMain().getConsole().info(sender, "Buy: %d %s costs %s", amount, marketableMaterial.getCleanName(), this.getMain().getConsole().formatMoney(buyResponse.value));
+            this.getMain().getConsole().info(sender, "Buy: %d %s costs %s", amount, marketableMaterial.getCleanName(), this.getMain().getConsole().formatMoney(buyResponse.getValue()));
 
         } else {
-            this.getMain().getConsole().info(sender, "Couldn't determine buy price of %d %s because %s", amount, marketableMaterial.getCleanName(), buyResponse.errorMessage);
+            this.getMain().getConsole().info(sender, "Couldn't determine buy price of %d %s because %s", amount, marketableMaterial.getCleanName(), buyResponse.getErrorMessage());
         }
 
         if (sellResponse.isSuccess()) {
-            this.getMain().getConsole().info(sender, "Sell: %d %s costs %s", amount, marketableMaterial.getCleanName(), this.getMain().getConsole().formatMoney(sellResponse.value));
+            this.getMain().getConsole().info(sender, "Sell: %d %s costs %s", amount, marketableMaterial.getCleanName(), this.getMain().getConsole().formatMoney(sellResponse.getValue()));
 
         } else {
-            this.getMain().getConsole().info(sender, "Couldn't determine sell price of %d %s because %s", amount, marketableMaterial.getCleanName(), sellResponse.errorMessage);
+            this.getMain().getConsole().info(sender, "Couldn't determine sell price of %d %s because %s", amount, marketableMaterial.getCleanName(), sellResponse.getErrorMessage());
         }
 
         return true;

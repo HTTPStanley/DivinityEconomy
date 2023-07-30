@@ -35,6 +35,8 @@ public class ExpansionManager extends PlaceholderExpansion {
         this.expansions.add(new PAPIEnchantStock(this.main));
         this.expansions.add(new PAPIMaterialStock(this.main));
         this.expansions.add(new PAPIMaterialStack(this.main));
+        this.expansions.add(new PAPIExpBValue(this.main));
+        this.expansions.add(new PAPIExpSValue(this.main));
     }
 
     /**

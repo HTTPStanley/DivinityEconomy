@@ -1,12 +1,12 @@
 name: DivinityEconomy
 prefix: DivinityEconomy
 main: me.edgrrrr.de.DEPlugin
-version: 1.20-RC2.2
+version: 1.20RC3.0
 author: EDGRRRR
 description: Divinity Economy - The dynamic global economy plugin.
 api-version: 1.16
-depend: []
-soft-depend: [PlaceholderAPI, Vault]
+depend: [Vault]
+soft-depend: [PlaceholderAPI]
 load: STARTUP
 
 
@@ -58,12 +58,12 @@ commands:
     permission-message: "You do not have the permission to use this command"
     usage: "/sendcash <player name> <amount>"
 
-  baltop:
+  listbalances:
     description: "Lists users by their balances."
-    aliases: [ 'bt', 'moneytop', 'listbal' ]
-    permission: de.money.baltop
+    aliases: [ 'baltop', 'bt', 'listbal' ]
+    permission: de.money.listbalances
     permission-message: "You do not have the permission to use this command"
-    usage: "/baltop <page number>"
+    usage: "/baltop | /baltop <page number>"
 
   # Market commands
   listitems:
@@ -170,6 +170,13 @@ commands:
     permission: de.enchant.eInfo
     permission-messaage: "You do not have permission to use this command"
     usage: "/einfo <enchant>"
+
+  eSellAll:
+    description: "Sells all enchants in the user's inventory."
+    aliases: []
+    permission: de.enchant.eSellAll
+    permission-messaage: "You do not have permission to use this command"
+    usage: "/esellall"
 
   xpSell:
     description: "Sells player experience levels."
@@ -360,9 +367,9 @@ permissions:
     children:
       de.money.balance: true
       de.money.sendcash: true
-      de.money.baltop: true
+      de.money.listbalances: true
 
-  de.money.baltop:
+  de.money.listbalances:
     description: Allows the user to view a list of user balances
     default: true
 

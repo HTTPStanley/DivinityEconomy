@@ -3,8 +3,10 @@ package me.edgrrrr.de.commands.enchants;
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.commands.DivinityCommandEnchant;
 import me.edgrrrr.de.config.Setting;
+import me.edgrrrr.de.market.MarketableToken;
+import me.edgrrrr.de.market.items.enchants.EnchantValueResponse;
+import me.edgrrrr.de.market.items.enchants.MarketableEnchant;
 import me.edgrrrr.de.player.PlayerManager;
-import me.edgrrrr.de.response.MultiValueResponse;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -48,25 +50,30 @@ public class EnchantHandValue extends DivinityCommandEnchant {
             return true;
         }
 
-        MultiValueResponse multiValueResponse1 = this.getMain().getEnchMan().getBulkBuyValue(heldItem);
-        if (multiValueResponse1.isFailure()) {
-            this.getMain().getConsole().warn(sender, "Couldn't determine buy value of %d Enchants(%s) because %s", multiValueResponse1.getTotalQuantity(), multiValueResponse1, multiValueResponse1.errorMessage);
-        } else {
-            this.getMain().getConsole().info(sender, "Buy: %d enchants costs %s", multiValueResponse1.getTotalQuantity(), this.getMain().getConsole().formatMoney(multiValueResponse1.getTotalValue()));
-            for (String enchant : multiValueResponse1.getItemIds()) {
-                this.getMain().getConsole().info(sender, "  -Buy: %d %s costs %s", multiValueResponse1.quantities.get(enchant), enchant, this.getMain().getConsole().formatMoney(multiValueResponse1.values.get(enchant)));
-            }
+
+        // Get evr1
+        EnchantValueResponse evr1 = this.getMain().getEnchMan().getBuyValue(heldItem, 0);
+        if (evr1.isFailure()) {
+            this.getMain().getConsole().warn(sender, "Couldn't determine buy value of %d enchants( %s ) because %s", evr1.getQuantity(), evr1.listNames(), evr1.getErrorMessage());
         }
 
-        MultiValueResponse multiValueResponse2 = this.getMain().getEnchMan().getBulkSellValue(heldItem);
-        if (multiValueResponse2.isFailure()) {
-            this.getMain().getConsole().warn(sender, "Couldn't determine sell value of %d Enchants(%s) because %s", multiValueResponse2.getTotalQuantity(), multiValueResponse2, multiValueResponse2.errorMessage);
-        } else {
-            this.getMain().getConsole().info(sender, "Sell: %d enchants costs %s", multiValueResponse2.getTotalQuantity(), this.getMain().getConsole().formatMoney(multiValueResponse2.getTotalValue()));
-            for (String enchant : multiValueResponse2.getItemIds()) {
-                this.getMain().getConsole().info(sender, "  -Sell: %d %s costs %s", multiValueResponse2.quantities.get(enchant), enchant, this.getMain().getConsole().formatMoney(multiValueResponse2.values.get(enchant)));
-            }
+        this.getMain().getConsole().info(sender, "Buy: %d enchants costs %s", evr1.getQuantity(), this.getMain().getConsole().formatMoney(evr1.getValue()));
+        for (MarketableToken token1 : evr1.getTokens()) {
+            MarketableEnchant enchant1 = (MarketableEnchant) token1;
+            this.getMain().getConsole().info(sender, "  -Buy: %d %s costs %s", evr1.getQuantity(enchant1), enchant1.getCleanName(), this.getMain().getConsole().formatMoney(evr1.getValue(enchant1)));
         }
+
+        EnchantValueResponse evr2 = this.getMain().getEnchMan().getSellValue(heldItem, 0);
+        if (evr2.isFailure()) {
+            this.getMain().getConsole().warn(sender, "Couldn't determine sell value of %d enchants( %s ) because %s", evr2.getQuantity(), evr2.listNames(), evr2.getErrorMessage());
+        }
+
+        this.getMain().getConsole().info(sender, "Sell: %d enchants costs %s", evr2.getQuantity(), this.getMain().getConsole().formatMoney(evr2.getValue()));
+        for (MarketableToken token2 : evr2.getTokens()) {
+            MarketableEnchant enchant2 = (MarketableEnchant) token2;
+            this.getMain().getConsole().info(sender, "  -Sell: %d %s costs %s", evr2.getQuantity(enchant2), enchant2.getCleanName(), this.getMain().getConsole().formatMoney(evr2.getValue(enchant2)));
+        }
+
         return true;
     }
 

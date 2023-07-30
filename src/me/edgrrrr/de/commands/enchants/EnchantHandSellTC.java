@@ -44,7 +44,7 @@ public class EnchantHandSellTC extends DivinityCommandEnchantTC {
             case 1 -> {
                 ArrayList<String> allStrings = new ArrayList<>();
                 allStrings.add("max");
-                allStrings.addAll(Arrays.asList(this.getMain().getEnchMan().getItemNames(heldItem, args[0])));
+                allStrings.addAll(this.getMain().getEnchMan().getItemNames(heldItem, args[0]));
                 strings = allStrings.toArray(new String[0]);
             }
 
@@ -52,7 +52,7 @@ public class EnchantHandSellTC extends DivinityCommandEnchantTC {
             // return max stack size for the material given
             case 2 -> {
                 if (args[0].equalsIgnoreCase("max")) {
-                    strings = new String[]{this.getMain().getEnchMan().getBulkSellValueString(heldItem)};
+                    strings = new String[]{this.getMain().getEnchMan().getSellValueString(heldItem)};
                 } else {
                     strings = this.getMain().getEnchMan().getDowngradeValueString(heldItem, args[0]);
                 }

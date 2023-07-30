@@ -4,7 +4,6 @@ import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.config.Setting;
 import me.edgrrrr.de.market.MarketableToken;
 import me.edgrrrr.de.market.items.ItemManager;
-import me.edgrrrr.de.response.MultiValueResponse;
 import me.edgrrrr.de.response.Response;
 import me.edgrrrr.de.response.ValueResponse;
 import me.edgrrrr.de.utils.ArrayUtils;
@@ -20,9 +19,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 
@@ -152,6 +151,17 @@ public class EnchantManager extends ItemManager {
         }
     }
 
+
+    /**
+     * Removes all enchants from an item
+     * @param itemStack
+     */
+    public void removeEnchantsFromItem(ItemStack itemStack) {
+        Map<Enchantment, Integer> enchantmentIntegerMap = getEnchantments(itemStack);
+        enchantmentIntegerMap.forEach((enchantment, integer) -> this.removeEnchantLevelsFromItem(itemStack, enchantment, integer));
+    }
+
+
     /**
      * Adds an enchant to an item
      *
@@ -221,45 +231,48 @@ public class EnchantManager extends ItemManager {
     }
 
     /**
-     * Returns the total purchase price of all the enchants on an itemstack
+     * Returns the total purchase price of all the enchants on itemstacks
      *
-     * @param itemStack - The itemstack to check
+     * @param itemStacks - The itemstacks to check
      * @return MultiValueResponse
      */
-    public MultiValueResponse getBulkBuyValue(ItemStack itemStack) {
-        Map<String, Double> values = MultiValueResponse.createValues();
-        Map<String, Integer> quantities = MultiValueResponse.createQuantities();
-        EconomyResponse.ResponseType responseType = EconomyResponse.ResponseType.SUCCESS;
-        String errorMessage = "";
+    public EnchantValueResponse getBuyValue(ItemStack[] itemStacks) {
+        // Create response
+        EnchantValueResponse response = new EnchantValueResponse(EconomyResponse.ResponseType.SUCCESS, null);
 
-        Map<Enchantment, Integer> enchantmentLevels = EnchantManager.getEnchantments(itemStack);
-        for (Enchantment enchantment : enchantmentLevels.keySet()) {
-            int level = enchantmentLevels.get(enchantment);
-            String enchantID = enchantment.getKey().getKey();
-            ValueResponse valueResponse = this.getBuyValue(itemStack, enchantID, level);
-            if (valueResponse.isFailure()) {
-                errorMessage = valueResponse.errorMessage;
-                responseType = valueResponse.responseType;
-                break;
-            } else {
-                values.put(enchantID, valueResponse.value);
-                quantities.put(enchantID, level);
-            }
+
+        // Loop through enchants
+        for (ItemStack itemStack : itemStacks) {
+            // Add response together
+            response.addResponse(this.getBuyValue(itemStack, 0));
         }
 
-        return new MultiValueResponse(values, quantities, responseType, errorMessage);
+        return response;
     }
 
     /**
-     * Use getBulkBuyValue(ItemStack)
-     *
      * @param itemStack - The item stack to get the value of
+     * @param amount - This is ignored
      * @return ValueResponse
      */
-    @Deprecated
     @Override
-    public ValueResponse getBuyValue(ItemStack itemStack, int amount) throws NullPointerException {
-        return null;
+    public EnchantValueResponse getBuyValue(ItemStack itemStack, int amount) {
+        // Create response
+        EnchantValueResponse response = new EnchantValueResponse(EconomyResponse.ResponseType.SUCCESS, null);
+
+        // Get enchantments
+        Map<Enchantment, Integer> enchantments = EnchantManager.getEnchantments(itemStack);
+
+        // Loop through enchantments
+        for (Enchantment enchantment : enchantments.keySet()) {
+            int level = enchantments.get(enchantment);
+            String enchantID = enchantment.getKey().getKey();
+
+            // Get value response and add to response
+            response.addResponse(this.getBuyValue(itemStack, enchantID, level));
+        }
+
+        return response;
     }
 
     /**
@@ -283,89 +296,65 @@ public class EnchantManager extends ItemManager {
      * @param itemStack   - The itemStack to apply to
      * @return EnchantValueResponse - The value of the enchant
      */
-    public ValueResponse getBuyValue(ItemStack itemStack, String enchantID, int levelsToBuy) {
+    public EnchantValueResponse getBuyValue(ItemStack itemStack, String enchantID, int levelsToBuy) {
+        // Create response
+        EnchantValueResponse response = new EnchantValueResponse(EconomyResponse.ResponseType.SUCCESS, null);
+
+
         // Get enchant data
         MarketableEnchant enchantData = (MarketableEnchant) this.getItem(enchantID);
 
 
         // Enchant data is null
         if (enchantData == null)
-            return new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("%s does not exist", enchantID));
+            return (EnchantValueResponse) response.setFailure(String.format("%s does not exist", enchantID));
 
 
-        // Check enchant exists in store
+        // Check exists in store
         if (enchantData.getEnchantment() == null)
-            return new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("%s does not exist in the store", enchantID));
-
-
-        // Check enchant is allowed
-        if (!(enchantData.getAllowed()))
-            return new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("%s is banned", enchantID));
-
-
-        // Check enchant is supported on item
-        if (!(this.supportsEnchant(itemStack, enchantData.getEnchantment()) || this.allowUnsafe)) return new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, "this item does not support that enchant");
+            return (EnchantValueResponse) response.setFailure(String.format("%s does not exist in the store", enchantData.getCleanName()));
 
 
         // Get current and new enchantment level
         Map<Enchantment, Integer> enchantments = EnchantManager.getEnchantments(itemStack);
         int itemStackEnchantmentLevel = enchantments.getOrDefault(enchantData.getEnchantment(), 0);
         int newTotalLevel = itemStackEnchantmentLevel + levelsToBuy;
+        int enchantAmount = MarketableEnchant.levelsToBooks(itemStackEnchantmentLevel, newTotalLevel);
+
+        // Get value
+        double value = this.calculatePrice(enchantAmount, enchantData.getQuantity(), this.buyScale, false);
+        response.addToken(enchantData, enchantAmount, value, itemStack);
+
+
+        // Check enchant is allowed
+        if (!(enchantData.getAllowed()))
+            return (EnchantValueResponse) response.setFailure(String.format("%s is banned", enchantData.getCleanName()));
+
+
+        // Check enchant is supported on item
+        if (!(this.supportsEnchant(itemStack, enchantData.getEnchantment()) || this.allowUnsafe))
+            return (EnchantValueResponse) response.setFailure(String.format("%s is not supported on this item", enchantData.getCleanName()));
 
 
         // Check new level isn't greater than max
-        if (enchantData.getMaxLevel() < newTotalLevel) return new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("level would be above max(%d/%d)", newTotalLevel, enchantData.getMaxLevel()));
-
-
-        // Get levels to books amount (enchant purchase count)
-        int enchantAmount = MarketableEnchant.levelsToBooks(itemStackEnchantmentLevel, newTotalLevel);
+        if (enchantData.getMaxLevel() < newTotalLevel)
+            return (EnchantValueResponse) response.setFailure(String.format("level would be above max(%d/%d) for %s", newTotalLevel, enchantData.getMaxLevel(), enchantData.getCleanName()));
 
 
         // Check store has enough
-        if (enchantAmount > enchantData.getQuantity()) return  new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("not enough stock (%d/%d)", enchantAmount, enchantData.getQuantity()));
-
-
-        // Get enchant price
-        double price = this.calculatePrice(enchantAmount, enchantData.getQuantity(), this.buyScale, false);
+        if (enchantAmount > enchantData.getQuantity())
+            return (EnchantValueResponse) response.setFailure(String.format("not enough stock (%d/%d)", enchantAmount, enchantData.getQuantity()));
 
 
         // Check market isn't saturated
-        if (price <= 0) return new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, "market is saturated.");
+        if (value <= 0)
+            return (EnchantValueResponse) response.setFailure(String.format("%s is unavailable.", enchantData.getCleanName()));
 
 
         // Return success
-        return  new ValueResponse(price, EconomyResponse.ResponseType.SUCCESS, "");
+        return response;
     }
 
-    /**
-     * Returns the sell value of all enchants on an itemstack
-     *
-     * @param itemStack - The itemstack to check
-     * @return MultiEnchantValueResponse - The value of each enchant
-     */
-    public MultiValueResponse getBulkSellValue(ItemStack itemStack) {
-        Map<String, Double> values = MultiValueResponse.createValues();
-        Map<String, Integer> quantities = MultiValueResponse.createQuantities();
-        EconomyResponse.ResponseType responseType = EconomyResponse.ResponseType.SUCCESS;
-        String errorMessage = "";
-
-        Map<Enchantment, Integer> itemStackEnchants = EnchantManager.getEnchantments(itemStack);
-        for (Enchantment enchantment : itemStackEnchants.keySet()) {
-            int level = itemStackEnchants.get(enchantment);
-            String enchantID = enchantment.getKey().getKey();
-            ValueResponse valueResponse = this.getSellValue(itemStack, enchantID, level);
-            if (valueResponse.isFailure()) {
-                errorMessage = valueResponse.errorMessage;
-                responseType = valueResponse.responseType;
-                break;
-            } else {
-                values.put(enchantID, valueResponse.value);
-                quantities.put(enchantID, level);
-            }
-        }
-
-        return new MultiValueResponse(values, quantities, responseType, errorMessage);
-    }
 
     /**
      * Use getBulkSellValue(ItemStack)
@@ -373,10 +362,55 @@ public class EnchantManager extends ItemManager {
      * @param itemStacks
      * @return
      */
-    @Deprecated
     @Override
-    public MultiValueResponse getBulkSellValue(ItemStack[] itemStacks) throws NullPointerException {
-        return null;
+    public EnchantValueResponse getSellValue(ItemStack[] itemStacks) {
+        // Create response
+        EnchantValueResponse response = new EnchantValueResponse(EconomyResponse.ResponseType.SUCCESS, null);
+
+
+        // Loop through enchants
+        for (ItemStack itemStack : itemStacks) {
+            // Get response
+            EnchantValueResponse thisResponse = this.getSellValue(itemStack, 0);
+
+            // Check failure
+            if (thisResponse.isFailure()) continue;
+
+            // Add response together
+            response.addResponse(thisResponse);
+        }
+
+        return response;
+    }
+
+
+    /**
+     * Use getSellValue(ItemStack, int)
+     *
+     * @param itemStack
+     * @param amount
+     * @return
+     */
+    @Override
+    public EnchantValueResponse getSellValue(ItemStack itemStack, int amount) {
+        // Create response
+        EnchantValueResponse response = new EnchantValueResponse(EconomyResponse.ResponseType.SUCCESS, null);
+
+        // Get enchantments
+        Map<Enchantment, Integer> enchantments = EnchantManager.getEnchantments(itemStack);
+
+        // Loop through enchants
+        for (Enchantment enchantment : enchantments.keySet()) {
+            // Get value response and add to response
+            EnchantValueResponse thisResponse = this.getSellValue(itemStack, enchantment.getKey().getKey(), enchantments.get(enchantment));
+
+            if (thisResponse.isFailure()) continue;
+
+            // Add response together
+            response.addResponse(thisResponse);
+        }
+
+        return response;
     }
 
     /**
@@ -386,9 +420,9 @@ public class EnchantManager extends ItemManager {
      * @return
      */
     @Override
-    public String[] getItemNames(ItemStack itemStack) {
+    public Set<String> getItemNames(ItemStack itemStack) {
         // Array list for enchants
-        ArrayList<String> itemNames = new ArrayList<>();
+        Set<String> itemNames = new HashSet<>();
 
         // Loop through enchants in storage meta
         // Add enchants to array list
@@ -397,12 +431,12 @@ public class EnchantManager extends ItemManager {
             itemNames.add(enchantment.getKey().getKey());
         }
 
-        return itemNames.toArray(new String[0]);
+        return itemNames;
     }
 
-    public String[] getCompatibleEnchants(ItemStack itemStack) {
+    public Set<String> getCompatibleEnchants(ItemStack itemStack) {
         // Array list for enchants
-        ArrayList<String> itemNames = new ArrayList<>();
+        Set<String> itemNames = new HashSet<>();
 
         // Loop through enchants in storage meta
         // Add enchants to array list - if they are compatible with the item or allowUnsafe is true
@@ -410,14 +444,14 @@ public class EnchantManager extends ItemManager {
             MarketableEnchant enchant = (MarketableEnchant) token;
 
             if (this.supportsEnchant(itemStack, enchant.getEnchantment())) {
-                itemNames.addAll(Arrays.asList(this.revAliasMap.get((enchant.getID().toLowerCase()))));
+                itemNames.addAll(this.revAliasMap.get((enchant.getID().toLowerCase())));
             }
         }
-        return itemNames.toArray(new String[0]);
+        return itemNames;
     }
 
     public String[] getCompatibleEnchants(ItemStack itemStack, String startsWith) {
-        return this.searchItemNames(this.getCompatibleEnchants(itemStack), startsWith);
+        return this.searchItemNames(this.getCompatibleEnchants(itemStack), startsWith).toArray(new String[0]);
     }
 
     /**
@@ -428,21 +462,10 @@ public class EnchantManager extends ItemManager {
      * @return
      */
     @Override
-    public String[] getItemNames(ItemStack itemStack, String startswith) {
+    public Set<String> getItemNames(ItemStack itemStack, String startswith) {
         return this.searchItemNames(this.getItemNames(itemStack), startswith);
     }
 
-    /**
-     * Use getSellValue(ItemStack, String, int)
-     *
-     * @param itemStack - The itemStack to get the value of
-     * @return
-     */
-    @Deprecated
-    @Override
-    public ValueResponse getSellValue(ItemStack itemStack, int amount) throws NullPointerException {
-        return null;
-    }
 
     /**
      * Returns the value of an enchant on an item.
@@ -452,51 +475,62 @@ public class EnchantManager extends ItemManager {
      * @param levelsToSell - The level to value
      * @return ValueResponse
      */
-    public ValueResponse getSellValue(ItemStack itemStack, String enchantID, int levelsToSell) {
+    public EnchantValueResponse getSellValue(ItemStack itemStack, String enchantID, int levelsToSell) {
+        // Create response
+        EnchantValueResponse response = new EnchantValueResponse(EconomyResponse.ResponseType.SUCCESS, null);
+
+
+        // Get enchant data
         MarketableEnchant enchantData = (MarketableEnchant) this.getItem(enchantID);
 
         // No enchant data
-        if (enchantData == null) return new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("unknown enchant id %s", enchantID));
+        if (enchantData == null)
+            return (EnchantValueResponse) response.setFailure(String.format("unknown enchant id %s", enchantID));
 
 
         // Get enchantment
         Enchantment enchantment = enchantData.getEnchantment();
+        String itemCleanName = this.getMarkMan().getName(itemStack);
 
 
         // No enchantment
-        if (enchantment == null) return new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("unknown enchant id %s", enchantID));
+        if (enchantment == null)
+            return (EnchantValueResponse) response.setFailure(String.format("%s does not exist in the store", enchantData.getCleanName()));
 
 
         // Check enchant is allowed
         if (!enchantData.getAllowed())
-            return new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("enchant %s is banned", enchantID));
+            return (EnchantValueResponse) response.setFailure(String.format("%s is not allowed", enchantData.getCleanName()));
 
 
         // Get itemstack enchantments
         Map<Enchantment, Integer> itemStackEnchants = EnchantManager.getEnchantments(itemStack);
 
-
         // Check stored enchants contain given enchant
-        if (!itemStackEnchants.containsKey(enchantment)) return new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("item does not have enchant %s", enchantID));
+        if (!itemStackEnchants.containsKey(enchantment))
+            return (EnchantValueResponse) response.setFailure(String.format("%s does not have enchant %s", itemCleanName, enchantData.getCleanName()));
 
 
         // Get enchantment stack level
         int itemStackEnchantLevel = itemStackEnchants.get(enchantment);
-
+        int bookLevel = MarketableEnchant.levelsToBooks(itemStackEnchantLevel - levelsToSell, itemStackEnchantLevel);
 
         // Check enough levels to sell
-        if (itemStackEnchantLevel < levelsToSell) return new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, String.format("item enchant does not have enough levels(%d/%d)", itemStackEnchantLevel, levelsToSell));
+        if (itemStackEnchantLevel < levelsToSell)
+            return (EnchantValueResponse) response.setFailure(String.format("%s does not have enough levels(%d/%d)", itemCleanName, itemStackEnchantLevel, levelsToSell));
 
 
         // Get value
-        double value = this.calculatePrice(MarketableEnchant.levelsToBooks(itemStackEnchantLevel, itemStackEnchantLevel - levelsToSell), enchantData.getQuantity(), this.sellScale, false);
+        double value = this.calculatePrice(bookLevel, enchantData.getQuantity(), this.sellScale, false);
+        response.addToken(enchantData, levelsToSell, value, itemStack);
 
 
         // Value equal or less than 0, return saturation
-        if (value <= 0) return new ValueResponse(0.0, EconomyResponse.ResponseType.FAILURE, "market is saturated.");
+        if (value <= 0)
+            return (EnchantValueResponse) response.setFailure(String.format("%s is worthless", enchantData.getCleanName()));
 
 
-        return new ValueResponse(value, EconomyResponse.ResponseType.SUCCESS, "");
+        return response;
     }
 
 
@@ -527,10 +561,10 @@ public class EnchantManager extends ItemManager {
     public String getBuyValueString(@Nonnull ItemStack heldItem, @Nonnull String enchantID, int levels) {
         ValueResponse value = this.getBuyValue(heldItem, enchantID, levels);
         if (value.isFailure()) {
-            return String.format("Error: %s", value.errorMessage);
+            return String.format("Error: %s", value.getErrorMessage());
         }
 
-        return String.format("Value: %s", this.getConsole().formatMoney(value.value));
+        return String.format("Value: %s", this.getConsole().formatMoney(value.getValue()));
     }
 
     /**
@@ -543,10 +577,10 @@ public class EnchantManager extends ItemManager {
     public String getSellValueString(@Nonnull ItemStack heldItem, @Nonnull String enchantID, int levels) {
         ValueResponse value = this.getSellValue(heldItem, enchantID, levels);
         if (value.isFailure()) {
-            return String.format("Error: %s", value.errorMessage);
+            return String.format("Error: %s", value.getErrorMessage());
         }
 
-        return String.format("Value: %s", this.getConsole().formatMoney(value.value));
+        return String.format("Value: %s", this.getConsole().formatMoney(value.getValue()));
     }
 
     /**
@@ -554,13 +588,13 @@ public class EnchantManager extends ItemManager {
      * @param heldItem - The itemstack to check
      * @return String
      */
-    public String getBulkSellValueString(@Nonnull ItemStack heldItem) {
-        MultiValueResponse mvr = this.getBulkSellValue(heldItem);
-        if (mvr.isFailure()) {
-            return String.format("Error: %s", mvr.errorMessage);
+    public String getSellValueString(@Nonnull ItemStack heldItem) {
+        EnchantValueResponse evr = this.getSellValue(new ItemStack[]{heldItem});
+        if (evr.isFailure()) {
+            return String.format("Error: %s", evr.getErrorMessage());
         }
 
-        return String.format("Value: %s", this.getConsole().formatMoney(mvr.getTotalValue()));
+        return String.format("Value: %s", this.getConsole().formatMoney(evr.getValue()));
     }
 
 

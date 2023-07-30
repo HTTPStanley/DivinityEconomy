@@ -3,6 +3,7 @@ package me.edgrrrr.de.console;
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.config.Setting;
 import me.edgrrrr.de.mail.MailList;
+import me.edgrrrr.de.utils.Converter;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
@@ -21,7 +22,7 @@ public class EconConsole extends Console {
 
     @Override
     public void init() {
-        this.scale = this.getConfMan().getInt(Setting.CHAT_ECONOMY_DIGITS_INT);
+        this.scale = Converter.constrainInt(this.getConfMan().getInt(Setting.CHAT_ECONOMY_DIGITS_INT), 0, 8);
         this.currencyPrefix = this.getConfMan().getString(Setting.CHAT_ECONOMY_PREFIX_STRING);
         this.currencySuffix = this.getConfMan().getString(Setting.CHAT_ECONOMY_SUFFIX_STRING);
         this.send(LogLevel.INFO, "Currency prefix: %s", this.currencyPrefix);
@@ -29,7 +30,7 @@ public class EconConsole extends Console {
     }
 
     public String formatMoney(double value) {
-        return String.format("%s%,." + this.scale + "f%s", this.currencyPrefix, value, this.currencySuffix);
+        return String.format("%s%,." + this.scale +"f%s", this.currencyPrefix, Math.floor(value * Math.pow(10, this.scale)) / Math.pow(10, this.scale), this.currencySuffix);
     }
 
     public String getFormattedBalance(OfflinePlayer player) {

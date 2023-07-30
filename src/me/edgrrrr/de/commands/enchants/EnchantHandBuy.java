@@ -3,10 +3,10 @@ package me.edgrrrr.de.commands.enchants;
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.commands.DivinityCommandEnchant;
 import me.edgrrrr.de.config.Setting;
+import me.edgrrrr.de.market.items.enchants.EnchantValueResponse;
 import me.edgrrrr.de.market.items.enchants.MarketableEnchant;
 import me.edgrrrr.de.player.PlayerManager;
 import me.edgrrrr.de.response.Response;
-import me.edgrrrr.de.response.ValueResponse;
 import me.edgrrrr.de.utils.Converter;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.entity.Player;
@@ -64,9 +64,9 @@ public class EnchantHandBuy extends DivinityCommandEnchant {
         }
 
         // Ensure item valuation was successful
-        ValueResponse valueResponse = this.getMain().getEnchMan().getBuyValue(heldItem, enchantName, enchantLevels);
-        if (valueResponse.isFailure()) {
-            this.getMain().getConsole().logFailedPurchase(sender, enchantLevels, enchantName, valueResponse.errorMessage);
+        EnchantValueResponse evr = this.getMain().getEnchMan().getBuyValue(heldItem, enchantName, enchantLevels);
+        if (evr.isFailure()) {
+            this.getMain().getConsole().logFailedPurchase(sender, enchantLevels, enchantName, evr.getErrorMessage());
             return true;
         }
 
@@ -78,22 +78,32 @@ public class EnchantHandBuy extends DivinityCommandEnchant {
         }
 
 
+        // Ensure user has enough money
         double startingBalance = this.getMain().getEconMan().getBalance(sender);
-        EconomyResponse economyResponse = this.getMain().getEconMan().remCash(sender, valueResponse.value);
+        EconomyResponse economyResponse = this.getMain().getEconMan().remCash(sender, evr.getValue());
 
         if (!economyResponse.transactionSuccess()) {
             this.getMain().getConsole().logFailedPurchase(sender, enchantLevels, enchantData.getCleanName(), economyResponse.errorMessage);
             this.getMain().getEconMan().setCash(sender, startingBalance);
-        } else {
-            Response response = this.getMain().getEnchMan().addEnchantToItem(heldItem, enchantData.getEnchantment(), enchantLevels);
-            if (response.isFailure()) {
-                this.getMain().getConsole().logFailedPurchase(sender, enchantLevels, enchantData.getCleanName(), response.errorMessage);
-                this.getMain().getEconMan().setCash(sender, startingBalance);
-            } else {
-                this.getMain().getConsole().logPurchase(sender, enchantLevels, valueResponse.value, enchantData.getCleanName());
-                this.getMain().getEnchMan().editLevelQuantity(enchantData, -enchantLevels);
-            }
+            return true;
         }
+
+        // Was a success
+
+
+        // Add enchant to item
+        Response response = this.getMain().getEnchMan().addEnchantToItem(heldItem, enchantData.getEnchantment(), enchantLevels);
+
+        // Handle failure
+        if (response.isFailure()) {
+            this.getMain().getConsole().logFailedPurchase(sender, enchantLevels, enchantData.getCleanName(), response.getErrorMessage());
+            this.getMain().getEconMan().setCash(sender, startingBalance);
+            return true;
+        }
+
+        // Success
+        this.getMain().getConsole().logPurchase(sender, enchantLevels, evr.getValue(), enchantData.getCleanName());
+        this.getMain().getEnchMan().editLevelQuantity(enchantData, -enchantLevels);
         return true;
     }
 

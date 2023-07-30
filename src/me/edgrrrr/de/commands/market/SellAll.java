@@ -3,9 +3,10 @@ package me.edgrrrr.de.commands.market;
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.commands.DivinityCommandMaterials;
 import me.edgrrrr.de.config.Setting;
+import me.edgrrrr.de.market.MarketableToken;
 import me.edgrrrr.de.market.items.materials.MarketableMaterial;
+import me.edgrrrr.de.market.items.materials.MaterialValueResponse;
 import me.edgrrrr.de.player.PlayerManager;
-import me.edgrrrr.de.response.MultiValueResponse;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -85,38 +86,49 @@ public class SellAll extends DivinityCommandMaterials {
         // Clone incase need to be refunded
         // Get valuation
         ItemStack[] allStacks = itemStackList.toArray(new ItemStack[0]);
-        ItemStack[] itemStacks = MarketableMaterial.removeEnchantedItems(allStacks);
-        ItemStack[] itemStacksClone = MarketableMaterial.cloneItems(itemStacks);
 
-        // Check for removed items
-        if (itemStacks.length == 0) {
-            this.getMain().getConsole().logFailedSale(sender, 0, "items", CommandResponse.EnchantedItemsRemoved.message.toLowerCase());
+        if (allStacks.length == 0) {
+            this.getMain().getConsole().send(sender, CommandResponse.NothingToSell.defaultLogLevel, CommandResponse.NothingToSell.message);
             return true;
         }
 
-        MultiValueResponse response = this.getMain().getMarkMan().getBulkSellValue(itemStacks);
 
-        if (response.isSuccess()) {
-            PlayerManager.removePlayerItems(itemStacks);
+        MaterialValueResponse response = this.getMain().getMarkMan().getSellValue(allStacks);
 
-            EconomyResponse economyResponse = this.getMain().getEconMan().addCash(sender, response.getTotalValue());
-            if (!economyResponse.transactionSuccess()) {
-                PlayerManager.addPlayerItems(sender, itemStacksClone);
-                // Handles console, player message and mail
-                this.getMain().getConsole().logFailedSale(sender, response.getTotalQuantity(), "items", economyResponse.errorMessage);
-            } else {
-                for (String string: response.quantities.keySet()) {
-                    MarketableMaterial material = this.getMain().getMarkMan().getItem(string);
-                    material.getManager().editQuantity(material, response.quantities.get(material.getID()));
-                }
 
-                // Handles console, player message and mail
-                this.getMain().getConsole().logSale(sender, response.getTotalQuantity(), response.getTotalValue(), "items");
-            }
-        } else {
-            // Handles console, player message and mail
-            this.getMain().getConsole().logFailedSale(sender, response.getTotalQuantity(), "items", response.errorMessage);
+        if (response.getTokenIds().size() == 0) {
+            this.getMain().getConsole().send(sender, CommandResponse.NothingToSellAfterSkipping.defaultLogLevel, CommandResponse.NothingToSellAfterSkipping.message);
+            return true;
         }
+
+        // If the response was unsuccessful, return
+        if (!response.isSuccess()) {
+            // Handles console, player message and mail
+            this.getMain().getConsole().logFailedSale(sender, response.getQuantity(), "items", response.getErrorMessage());
+            return true;
+        }
+
+        // Remove items from player and add cash
+        PlayerManager.removePlayerItems(response.getItemStacksAsArray());
+        EconomyResponse economyResponse = this.getMain().getEconMan().addCash(sender, response.getValue());
+
+        // If the economy response was unsuccessful, return items to player and return
+        if (!economyResponse.transactionSuccess()) {
+            PlayerManager.addPlayerItems(sender, response.getClonesAsArray());
+            // Handles console, player message and mail
+            this.getMain().getConsole().logFailedSale(sender, response.getQuantity(), "items", economyResponse.errorMessage);
+            return true;
+        }
+
+
+        // Loop through all materials and edit their quantity
+        for (MarketableToken token : response.getQuantities().keySet()) {
+            MarketableMaterial material = (MarketableMaterial) token;
+            material.getManager().editQuantity(material, response.getQuantity(material));
+        }
+
+        // Handles console, player message and mail
+        this.getMain().getConsole().logSale(sender, response.getQuantity(), response.getValue(), "items");
 
         return true;
     }

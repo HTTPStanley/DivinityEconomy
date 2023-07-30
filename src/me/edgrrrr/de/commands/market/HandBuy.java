@@ -4,8 +4,8 @@ import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.commands.DivinityCommandMaterials;
 import me.edgrrrr.de.config.Setting;
 import me.edgrrrr.de.market.items.materials.MarketableMaterial;
+import me.edgrrrr.de.market.items.materials.MaterialValueResponse;
 import me.edgrrrr.de.player.PlayerManager;
-import me.edgrrrr.de.response.ValueResponse;
 import me.edgrrrr.de.utils.Converter;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.entity.Player;
@@ -83,19 +83,16 @@ public class HandBuy extends DivinityCommandMaterials {
         // Get item stacks to buy
         // Get value of item stacks
         // Remove value from user
-        ItemStack[] itemStacks = marketableMaterial.getItemStacks(amountToBuy);
-        ValueResponse priceResponse = marketableMaterial.getManager().getBuyValue(itemStacks);
-        EconomyResponse saleResponse = this.getMain().getEconMan().remCash(sender, priceResponse.value);
+        MaterialValueResponse priceResponse = marketableMaterial.getManager().getBuyValue(marketableMaterial.getItemStacks(amountToBuy));
+        EconomyResponse saleResponse = this.getMain().getEconMan().remCash(sender, priceResponse.getValue());
 
         // If user can afford & valuation was success
         if (saleResponse.transactionSuccess() && priceResponse.isSuccess()) {
-            PlayerManager.addPlayerItems(sender, itemStacks);
-            marketableMaterial.getManager().editQuantity(marketableMaterial, -amountToBuy);
+            PlayerManager.addPlayerItems(sender, priceResponse.getItemStacksAsArray());
+            marketableMaterial.getManager().editQuantity(marketableMaterial, -priceResponse.getQuantity());
 
             // Handles console, message and mail
-            this.getMain().getConsole().logPurchase(sender, amountToBuy, saleResponse.amount, marketableMaterial.getCleanName());
-
-
+            this.getMain().getConsole().logPurchase(sender, priceResponse.getQuantity(), saleResponse.amount, marketableMaterial.getCleanName());
         }
 
         // Else return error message
@@ -104,11 +101,11 @@ public class HandBuy extends DivinityCommandMaterials {
             if (!saleResponse.transactionSuccess()) {
                 errorMessage = saleResponse.errorMessage;
             } else if (priceResponse.isFailure()) {
-                errorMessage = priceResponse.errorMessage;
+                errorMessage = priceResponse.getErrorMessage();
             }
 
             // Handles console, message and mail
-            this.getMain().getConsole().logFailedPurchase(sender, amountToBuy, marketableMaterial.getCleanName(), errorMessage);
+            this.getMain().getConsole().logFailedPurchase(sender, priceResponse.getQuantity(), marketableMaterial.getCleanName(), errorMessage);
         }
         return true;
     }

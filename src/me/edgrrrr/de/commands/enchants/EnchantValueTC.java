@@ -39,7 +39,7 @@ public class EnchantValueTC extends DivinityCommandEnchantTC {
             // 1 args
             // return names of players starting with arg
             case 1:
-                strings = this.getMain().getEnchMan().getItemNames(args[0]);
+                strings = this.getMain().getEnchMan().getItemNames(args[0]).toArray(new String[0]);
                 break;
 
             // 2 args
@@ -56,7 +56,7 @@ public class EnchantValueTC extends DivinityCommandEnchantTC {
 
             // else
             default:
-                strings = this.getMain().getEnchMan().getItemNames();
+                strings = this.getMain().getEnchMan().getItemNames().toArray(new String[0]);
                 break;
         }
 

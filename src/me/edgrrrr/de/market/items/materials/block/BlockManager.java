@@ -2,9 +2,10 @@ package me.edgrrrr.de.market.items.materials.block;
 
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.config.Setting;
+import me.edgrrrr.de.market.items.ItemManager;
 import me.edgrrrr.de.market.items.materials.MarketableMaterial;
 import me.edgrrrr.de.market.items.materials.MaterialManager;
-import me.edgrrrr.de.response.ValueResponse;
+import me.edgrrrr.de.market.items.materials.MaterialValueResponse;
 import net.milkbowl.vault.economy.EconomyResponse.ResponseType;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
@@ -29,6 +30,7 @@ public class BlockManager extends MaterialManager {
     public BlockManager(DEPlugin main) {
         super(main, materialsFile, aliasesFile, new ConcurrentHashMap<String, MarketableBlock>());
     }
+
 
     /**
      * Returns the scaling of price for an item, based on its durability and damage.
@@ -59,6 +61,12 @@ public class BlockManager extends MaterialManager {
         return damageValue;
     }
 
+
+    /**
+     * Returns the MarketableBlock for the given alias
+     * @param alias
+     * @return
+     */
     public MarketableBlock getMaterial(String alias) {
         return (MarketableBlock) this.getItem(alias);
     }
@@ -98,31 +106,57 @@ public class BlockManager extends MaterialManager {
      * @return MaterialValue - The price of the itemstack if no errors occurred.
      */
     @Override
-    public ValueResponse getSellValue(ItemStack itemStack, int amount) {
-        ValueResponse response;
+    public MaterialValueResponse getSellValue(ItemStack itemStack, int amount) {
+        // Create the value response
+        MaterialValueResponse response = new MaterialValueResponse(ResponseType.SUCCESS, null);
 
-        if (this.getEnchMan().isEnchanted(itemStack)) {
-            response = new ValueResponse(0.0, ResponseType.FAILURE, String.format("%s is enchanted.", itemStack.getType().name()));
 
-        } else {
-            MarketableBlock materialData = (MarketableBlock) this.getItem(itemStack);
+        // Check if item is enchanted and return failure if so
+        if (ItemManager.removeEnchantedItems(new ItemStack[]{itemStack}).length == 0)
+            return (MaterialValueResponse) response.setFailure(String.format("%s is enchanted.", getMarkMan().getName(itemStack)));
 
-            if (materialData == null) {
-                response = new ValueResponse(0.0, ResponseType.FAILURE, String.format("%s cannot be found.", itemStack.getType().name()));
-            } else {
-                if (!materialData.getAllowed()) {
-                    response = new ValueResponse(0.0, ResponseType.FAILURE, String.format("%s is banned.", itemStack.getType().name()));
-                } else {
-                    double value = this.calculatePrice(amount, materialData.getQuantity(), (this.sellScale * this.getDamageScaling(itemStack)), false);
-                    if (value > 0) {
-                        response = new ValueResponse(value, ResponseType.SUCCESS, "");
-                    } else {
-                        response = new ValueResponse(0.0, ResponseType.FAILURE, "market is saturated.");
-                    }
-                }
-            }
-        }
 
+
+        // Check if the item has a name and return failure if sot
+        if ((ItemManager.itemIsNamed(itemStack) || ItemManager.itemHasLore(itemStack)) && this.ignoreNamedItems)
+            return (MaterialValueResponse) response.setFailure(String.format("%s is named or has lore.", getMarkMan().getName(itemStack)));
+
+
+        // Get the material data
+        MarketableBlock materialData = (MarketableBlock) this.getItem(itemStack);
+
+
+        // If material data is null, return failure
+        if (materialData == null)
+            return (MaterialValueResponse) response.setFailure(String.format("%s cannot be found.", itemStack.getType().name()));
+
+
+        // Get value and add to response
+        double value = this.calculatePrice(amount, materialData.getQuantity(), (this.sellScale * this.getDamageScaling(itemStack)), false);
+        response.addToken(materialData, amount, value, new ItemStack[]{itemStack});
+
+
+        // Check if item is banned
+        if (!materialData.getAllowed())
+            return (MaterialValueResponse) response.setFailure(String.format("%s is banned.", materialData.getCleanName()));
+
+
+        // If value is equal to 0 or less, return failure
+        if (value <= 0)
+            return (MaterialValueResponse) response.setFailure(String.format("%s is worthless.", materialData.getCleanName()));
+
+
+        // Check if item is enchanted and return failure if so
+        if (this.getEnchMan().isEnchanted(itemStack))
+            return (MaterialValueResponse) response.setFailure(String.format("%s is enchanted.", materialData.getCleanName()));
+
+
+        // Check if the item has a name and return failure if so
+        if ((ItemManager.itemIsNamed(itemStack) || ItemManager.itemHasLore(itemStack)) && this.ignoreNamedItems)
+            return (MaterialValueResponse) response.setFailure(String.format("%s is named or has lore.", materialData.getCleanName()));
+
+
+        // Return
         return response;
     }
 
@@ -133,25 +167,36 @@ public class BlockManager extends MaterialManager {
      * @return MaterialValue
      */
     @Override
-    public ValueResponse getBuyValue(ItemStack itemStack, int amount) {
-        ValueResponse response;
+    public MaterialValueResponse getBuyValue(ItemStack itemStack, int amount) {
+        // Create value response
+        MaterialValueResponse response = new MaterialValueResponse(ResponseType.SUCCESS, null);
 
+
+        // Get the material data
         MarketableBlock materialData = (MarketableBlock) this.getItem(itemStack);
-        if (materialData == null) {
-            response = new ValueResponse(0.0, ResponseType.FAILURE, String.format("%s cannot be found.", itemStack.getType().name()));
-        } else {
-            if (!materialData.getAllowed()) {
-                response = new ValueResponse(0.0, ResponseType.FAILURE, String.format("%s is banned.", itemStack.getType().name()));
-            } else {
-                double value = this.calculatePrice(amount, materialData.getQuantity(), this.buyScale, true);
-                if (value > 0) {
-                    response = new ValueResponse(value, ResponseType.SUCCESS, "");
-                } else {
-                    response = new ValueResponse(0.0, ResponseType.FAILURE, "market is saturated.");
-                }
-            }
-        }
 
+
+        // If material data is null, return failure
+        if (materialData == null)
+            return (MaterialValueResponse) response.setFailure(String.format("%s cannot be found.", itemStack.getType().name()));
+
+
+        // Get value
+        double value = this.calculatePrice(amount, materialData.getQuantity(), (this.buyScale * this.getDamageScaling(itemStack)), false);
+        response.addToken(materialData, amount, value, new ItemStack[]{itemStack});
+
+
+        // If material is banned, return failure
+        if (!materialData.getAllowed())
+            return (MaterialValueResponse) response.setFailure(String.format("%s is banned.", materialData.getCleanName()));
+
+
+        // If material is worthless, return failure
+        if (value <= 0)
+            return (MaterialValueResponse) response.setFailure(String.format("%s is unavailable.", materialData.getCleanName()));
+
+
+        // Return
         return response;
     }
 

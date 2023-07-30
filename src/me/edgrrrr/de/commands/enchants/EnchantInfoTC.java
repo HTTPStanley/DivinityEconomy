@@ -36,7 +36,7 @@ public class EnchantInfoTC extends DivinityCommandEnchantTC {
             // 1 args
             // return names of players starting with arg
             case 1:
-                strings = this.getMain().getEnchMan().getItemNames(args[0]);
+                strings = this.getMain().getEnchMan().getItemNames(args[0]).toArray(new String[0]);
                 break;
 
             // else

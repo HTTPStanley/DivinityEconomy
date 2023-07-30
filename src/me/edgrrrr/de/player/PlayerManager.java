@@ -2,17 +2,34 @@ package me.edgrrrr.de.player;
 
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.DivinityModule;
+import me.edgrrrr.de.utils.Converter;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 
+import javax.annotation.Nullable;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * A class for managing players
  */
 public class PlayerManager extends DivinityModule {
+    private static final int MAX_SEARCH_DEPTH_INT = 64;
+    private static final int MIN_SEARCH_DEPTH_INT = 4;
+    private static final long MAX_SEARCH_NANO_LONG = 100000000L; // 100 millis
+    private static final int PLAYER_TASK_INTERVAL = Converter.getTicks(60);
+    private final Set<OfflinePlayer> players;
+    private final PlayerLRUCache playerCache;
+    private final Map<OfflinePlayer, String> playerNames;
+    private final BukkitRunnable playerTask = new BukkitRunnable() {
+        @Override
+        public void run() {
+            fetchOfflinePlayers();
+        }
+    };
 
     /**
      * Constructor
@@ -21,7 +38,217 @@ public class PlayerManager extends DivinityModule {
      */
     public PlayerManager(DEPlugin main) {
         super(main);
+        this.players = Collections.synchronizedSet(new HashSet<>());
+        this.playerNames = new ConcurrentHashMap<>();
+        this.playerCache = new PlayerLRUCache(this.getMain());
     }
+
+
+    /**
+     * Initialisation of the object
+     */
+    @Override
+    public void init() {
+        this.playerTask.runTaskTimerAsynchronously(this.getMain(), PLAYER_TASK_INTERVAL, PLAYER_TASK_INTERVAL);
+        fetchOfflinePlayers();
+    }
+
+
+    /**
+     * Updates the internal offline player cache
+     */
+    protected void fetchOfflinePlayers() {
+        this.getConsole().debug("Fetching players...");
+
+        // Get offline players from server
+        // Add players to store
+        Set<OfflinePlayer> players = new HashSet<>(Arrays.asList(this.getMain().getServer().getOfflinePlayers()));
+
+        // Check if cache should be invalidated
+        if (players.size() != this.players.size()) {
+            this.playerCache.clear();
+            this.getConsole().debug("Players changed, invalidated player cache.");
+        }
+
+        // Update players
+        synchronized (this.players) {
+            this.players.clear();
+            this.players.addAll(players);
+        }
+
+        // Update player names
+        synchronized (this.playerNames) {
+            this.playerNames.clear();
+            for (OfflinePlayer player : players) {
+                String playerName = player.getName();
+                if (playerName == null) continue;
+                this.playerNames.put(player, playerName);
+            }
+        }
+
+        // Done
+        this.getConsole().debug("Fetched %s players", this.players.size());
+    }
+
+    /**
+     * Shutdown of the object
+     */
+    @Override
+    public void deinit() {
+        this.playerTask.cancel();
+    }
+
+
+   /**
+    * Returns all offline players
+    * @return
+    */
+    public Set<OfflinePlayer> getPlayers() {
+        return new HashSet<>(this.players);
+    }
+
+
+    /**
+     * Returns an offline player
+     * Scans local offline players
+     *
+     * @param name       - name to scan for.
+     * @return OfflinePlayer - the player corresponding to the name.
+     */
+    @Nullable
+    public OfflinePlayer getPlayer(String name, boolean exact) {
+        // If the call is exact, return the player
+        if (exact) {
+            return this.getMain().getServer().getOfflinePlayer(name);
+        }
+
+        // Get players
+        Set<OfflinePlayer> players = this.getPlayers(name);
+
+        // Return the first player
+        for (OfflinePlayer player : players) {
+            return player;
+        }
+
+        // No player found
+        return null;
+    }
+
+
+    /**
+     * Gets all offline players whose name matched the given term
+     *
+     * @param term
+     */
+    public Set<OfflinePlayer> getPlayers(String term) {
+        // Get players from cache
+        Set<OfflinePlayer> players = this.playerCache.getPlayers(term);
+
+        // If players are not cached, search for them
+        if (players == null) {
+            players = this.searchPlayers(term);
+            this.playerCache.put(term, players);
+        }
+
+        return players;
+    }
+
+
+    /**
+     * Gets all offline players whose name matched the given term
+     * @param term
+     * @return
+     */
+    protected Set<OfflinePlayer> searchPlayers(String term) {
+        term = term.toLowerCase().strip(); // Standardise term
+        HashSet<OfflinePlayer> players = new HashSet<>(); // Create itemNames array
+
+        // Priority store
+        HashSet<OfflinePlayer> priority0ArrayList = new HashSet<>();
+        HashSet<OfflinePlayer> priority1ArrayList = new HashSet<>();
+        HashSet<OfflinePlayer> priority2ArrayList = new HashSet<>();
+        HashSet<OfflinePlayer> priority3ArrayList = new HashSet<>();
+
+        // Start time
+        long startTime = System.nanoTime();
+
+        // Loop through items, add any item that
+        // - contains <term>
+        // - equals <term>
+        // - startswith <term>
+        // - endswith <term>
+        synchronized (this.players) {
+            for (OfflinePlayer offlinePlayer : this.players) {
+                // Check max search depth
+                int depth = priority0ArrayList.size() + priority1ArrayList.size() + priority2ArrayList.size() + priority3ArrayList.size();
+                if (depth > MAX_SEARCH_DEPTH_INT) {
+                    this.getConsole().debug("Max search depth reached, stopping search.");
+                    break;
+                }
+
+                // Check max search time
+                if (System.nanoTime() - startTime > MAX_SEARCH_NANO_LONG && depth >= MIN_SEARCH_DEPTH_INT) {
+                    this.getConsole().debug("Max search time reached, stopping search.");
+                    break;
+                }
+
+                // Get player name
+                String playerName = this.playerNames.getOrDefault(offlinePlayer, null);
+                if (playerName == null) continue;
+                playerName = playerName.toLowerCase().strip();
+
+                // Matches - priority 0
+                if (playerName.equalsIgnoreCase(term)) {
+                    priority0ArrayList.add(offlinePlayer);
+                    continue;
+                }
+
+                // Begins with - priority 1
+                if (playerName.startsWith(term)) {
+                    priority1ArrayList.add(offlinePlayer);
+                    continue;
+                }
+
+                // Contains - priority 2
+                if (playerName.contains(term)) {
+                    priority2ArrayList.add(offlinePlayer);
+                    continue;
+                }
+
+                // Endswith - priority 3
+                if (playerName.endsWith(term)) {
+                    priority3ArrayList.add(offlinePlayer);
+                    continue;
+                }
+            }
+        }
+
+        // Add by priority
+        players.addAll(priority0ArrayList);
+        players.addAll(priority1ArrayList);
+        players.addAll(priority2ArrayList);
+        players.addAll(priority3ArrayList);
+
+        // Done
+        this.getConsole().debug("Found %s players matching '%s' in %s milliseconds.", players.size(), term, (System.nanoTime() - startTime) / 1000000);
+
+        // Return
+        return players;
+    }
+
+
+    /**
+     * Gets all names of offline players whose name matched the given term
+     */
+    public String[] getPlayerNames(String term) {
+        Set<OfflinePlayer> players = this.getPlayers(term);
+        Set<String> playerNames = new HashSet<>();
+        for (OfflinePlayer player : players) {
+            playerNames.add(player.getName());
+        }
+        return playerNames.toArray(new String[0]);
+    }
+
 
     /**
      * Adds the itemstacks in itemStacks to player
@@ -129,11 +356,11 @@ public class PlayerManager extends DivinityModule {
     /**
      * Returns a string of the names of materials in the players inventory.
      */
-    public static String[] getInventoryMaterialNames(Player player) {
+    public static Set<String> getInventoryMaterialNames(Player player) {
         ItemStack[] materials = getInventoryMaterials(player);
         Set<String> uniqueMaterialIDs = new HashSet<>();
         for (ItemStack material : materials) uniqueMaterialIDs.add(material.getType().name());
-        return uniqueMaterialIDs.toArray(new String[0]);
+        return uniqueMaterialIDs;
     }
 
     public static ItemStack[] getInventoryMaterials(Player player) {
@@ -148,141 +375,4 @@ public class PlayerManager extends DivinityModule {
         return materialList.toArray(new ItemStack[0]);
     }
 
-    /**
-     * Initialisation of the object
-     */
-    @Override
-    public void init() {
-
-    }
-
-    /**
-     * Shutdown of the object
-     */
-    @Override
-    public void deinit() {
-
-    }
-
-    /**
-     * If the player is online or offline
-     * Equal to player.getPlayer() == null
-     *
-     * @param player - The player to check
-     * @return boolean
-     */
-    public boolean playerIsOnline(OfflinePlayer player) {
-        return (player.getPlayer() == null);
-    }
-
-    /**
-     * The player, if they are online
-     *
-     * @param player - The player
-     * @return Player
-     */
-    public Player getPlayer(OfflinePlayer player) {
-        return player.getPlayer();
-    }
-
-    /**
-     * Returns an offline player
-     * Scans local offline players
-     * If allow fetch is enabled, then will find fetch player from the web.
-     *
-     * @param name       - name to scan for.
-     * @param allowFetch - Uses deprecated "bukkit.getOfflinePlayer".
-     * @return OfflinePlayer - the player corresponding to the name.
-     */
-    public OfflinePlayer getOfflinePlayer(String name, boolean allowFetch) {
-        OfflinePlayer player = null;
-        OfflinePlayer[] oPlayers = this.getMain().getServer().getOfflinePlayers();
-        for (OfflinePlayer oPlayer : oPlayers) {
-            String oPlayerName = oPlayer.getName();
-            if (oPlayerName != null) {
-                if (oPlayerName.toLowerCase().trim().equals(name.trim().toLowerCase())) {
-                    player = oPlayer;
-                    break;
-                }
-            }
-        }
-
-        if (allowFetch && (player == null)) {
-            player = this.getMain().getServer().getOfflinePlayer(name);
-        }
-
-        return player;
-    }
-
-    /**
-     * Gets an offline player by their UUID
-     * Scans only local players unless allowFetch is enabled, which will allow it to scan the web
-     *
-     * @param uuid       - The uuid the find
-     * @param allowFetch - Whether to scan the web or not
-     * @return OfflinePlayer - can be null.
-     */
-    public OfflinePlayer getOfflinePlayer(UUID uuid, boolean allowFetch) {
-        OfflinePlayer player = null;
-        OfflinePlayer[] offlinePlayers = this.getMain().getServer().getOfflinePlayers();
-        for (OfflinePlayer oPlayer : offlinePlayers) {
-            if (oPlayer.getUniqueId().equals(uuid)) {
-                player = oPlayer;
-                break;
-            }
-        }
-
-        if (allowFetch && (player == null)) {
-            player = this.getMain().getServer().getOfflinePlayer(uuid);
-        }
-
-        return player;
-    }
-
-    /**
-     * Gets all offline players who's name starts with startswith
-     *
-     * @param startsWith
-     */
-    public OfflinePlayer[] getOfflinePlayers(String startsWith) {
-        OfflinePlayer[] offlinePlayers = this.getMain().getServer().getOfflinePlayers();
-        ArrayList<OfflinePlayer> players = new ArrayList<>();
-        for (OfflinePlayer offlinePlayer : offlinePlayers) {
-            if (offlinePlayer.getName() == null) continue;
-            if (offlinePlayer.getName().toLowerCase().startsWith(startsWith.toLowerCase(Locale.ROOT))) {
-                players.add(offlinePlayer);
-            }
-        }
-
-        return players.toArray(new OfflinePlayer[0]);
-    }
-
-    /**
-     * Gets all names of offline players
-     */
-    public String[] getOfflinePlayerNames() {
-        OfflinePlayer[] offlinePlayers = this.getMain().getServer().getOfflinePlayers();
-        ArrayList<String> playerNames = new ArrayList<>();
-        for (OfflinePlayer offlinePlayer : offlinePlayers) {
-            String name = offlinePlayer.getName();
-            if (name == null) continue;
-
-            playerNames.add(name);
-        }
-
-        return playerNames.toArray(new String[0]);
-    }
-
-    /**
-     * Gets all names of offline players who's name starts with startswith
-     */
-    public String[] getOfflinePlayerNames(String startsWith) {
-        OfflinePlayer[] offlinePlayers = this.getOfflinePlayers(startsWith);
-        ArrayList<String> playerNames = new ArrayList<>();
-        for (OfflinePlayer player : offlinePlayers) {
-            playerNames.add(player.getName());
-        }
-
-        return playerNames.toArray(new String[0]);
-    }
 }

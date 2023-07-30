@@ -8,7 +8,7 @@ import org.bukkit.OfflinePlayer;
 
 public class PAPIMaterialSValue extends DivinityExpansion {
     public PAPIMaterialSValue(DEPlugin main) {
-        super(main, "^material_svalue_(.*)_([0-9]*)$");
+        super(main, "^material_svalue_([a-zA-Z]*)_([0-9]*)$");
     }
 
     @Override
@@ -17,7 +17,7 @@ public class PAPIMaterialSValue extends DivinityExpansion {
         int amount = Converter.getInt(value.replaceFirst(this.value, "$2"));
         MarketableMaterial marketableMaterial = this.getMain().getMarkMan().getItem(material);
         if (marketableMaterial != null)
-            return this.getMain().getConsole().formatMoney(marketableMaterial.getManager().getSellValue(marketableMaterial.getItemStacks(amount)).value);
+            return this.getMain().getConsole().formatMoney(marketableMaterial.getManager().getSellValue(marketableMaterial.getItemStacks(amount)).getValue());
         else return String.format("Unknown material '%s'", material);
     }
 }

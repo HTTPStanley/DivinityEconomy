@@ -54,7 +54,7 @@ public class ESetStockTC extends DivinityCommandTC {
                 break;
         }
 
-        return Arrays.asList(this.getMain().getEnchMan().getItemNames(arg));
+        return Arrays.asList(this.getMain().getEnchMan().getItemNames(arg).toArray(new String[0]));
     }
 }
 

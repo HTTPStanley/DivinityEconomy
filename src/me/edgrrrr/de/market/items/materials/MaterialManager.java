@@ -4,14 +4,13 @@ import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.config.Setting;
 import me.edgrrrr.de.market.MarketableToken;
 import me.edgrrrr.de.market.items.ItemManager;
-import me.edgrrrr.de.response.MultiValueResponse;
-import me.edgrrrr.de.response.ValueResponse;
 import me.edgrrrr.de.utils.Converter;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Map;
+import java.util.Set;
 
 public abstract class MaterialManager extends ItemManager {
 
@@ -37,6 +36,7 @@ public abstract class MaterialManager extends ItemManager {
         this.dynamicPricing = this.getConfMan().getBoolean(Setting.MARKET_MATERIALS_DYN_PRICING_BOOLEAN);
         this.wholeMarketInflation = this.getConfMan().getBoolean(Setting.MARKET_MATERIALS_WHOLE_MARKET_INF_BOOLEAN);
         this.maxItemValue = this.getConfMan().getDouble(Setting.MARKET_MAX_ITEM_VALUE_DOUBLE);
+        this.ignoreNamedItems = this.getConfMan().getBoolean(Setting.MARKET_MATERIALS_IGNORE_NAMED_ITEMS_BOOLEAN);
         if (this.maxItemValue < 0) {
             this.maxItemValue = Double.MAX_VALUE;
         }
@@ -71,7 +71,7 @@ public abstract class MaterialManager extends ItemManager {
      * @return
      */
     @Override
-    public String[] getItemNames(ItemStack itemStack) {
+    public Set<String> getItemNames(ItemStack itemStack) {
         return this.getItemNames(this.getItem(itemStack).getID());
     }
 
@@ -83,7 +83,7 @@ public abstract class MaterialManager extends ItemManager {
      * @return
      */
     @Override
-    public String[] getItemNames(ItemStack itemStack, String startswith) {
+    public Set<String> getItemNames(ItemStack itemStack, String startswith) {
         return this.searchItemNames(this.getItemNames(itemStack), startswith);
     }
 
@@ -114,45 +114,52 @@ public abstract class MaterialManager extends ItemManager {
         return null;
     }
 
-    /**
-     * Returns a sell MultiValueResponse of all the itemstacks given.
-     *
-     * @param itemStacks - The itemstacks to bulk sell
-     * @return MultiValueResponse
-     */
+
     @Override
-    public MultiValueResponse getBulkSellValue(ItemStack[] itemStacks) {
-        // Store values
-        Map<String, Double> values = MultiValueResponse.createValues();
-        // Store quantities
-        Map<String, Integer> quantities = MultiValueResponse.createQuantities();
-        // Error
-        String error = "";
-        // Error type
-        EconomyResponse.ResponseType response = EconomyResponse.ResponseType.SUCCESS;
-        Map<ItemStack, Integer> itemCounts = ItemManager.resolveItemStacks(itemStacks);
-
-        for (ItemStack itemStack : itemCounts.keySet()) {
-            // Get this stack value
-            ValueResponse valueResponse = this.getSellValue(itemStack, itemCounts.get(itemStack));
-
-            // If valuation succeeded
-            if (valueResponse.isSuccess()) {
-                // get material id
-                MarketableToken itemData = this.getItem(itemStack);
-                String ID = itemData.getID();
-
-                // add value response
-                values.put(ID, valueResponse.value);
-                quantities.put(ID, itemStack.getAmount());
-
-            } else {
-                response = valueResponse.responseType;
-                error = valueResponse.errorMessage;
-                break;
-            }
+    public MaterialValueResponse getSellValue(ItemStack[] itemStacks) {
+        // If no items, return 0
+        if (itemStacks.length == 0) {
+            return new MaterialValueResponse(EconomyResponse.ResponseType.FAILURE, "No items to sell.");
         }
 
-        return new MultiValueResponse(values, quantities, response, error);
+
+        // Create a variable to hold the total value
+        MaterialValueResponse response = new MaterialValueResponse(EconomyResponse.ResponseType.SUCCESS, null);
+
+        // Loop through items and add up the sell value of each item
+        for (ItemStack itemStack : itemStacks) {
+            // Get the sell value of the item
+            MaterialValueResponse thisResponse = (MaterialValueResponse) this.getSellValue(itemStack, itemStack.getAmount());
+            if (thisResponse.isFailure()) continue;
+            response.addResponse(thisResponse);
+        }
+
+
+        // Return the value
+        return response;
+    }
+
+
+    @Override
+    public MaterialValueResponse getBuyValue(ItemStack[] itemStacks) {
+        // If no items, return 0
+        if (itemStacks.length == 0) {
+            return new MaterialValueResponse(EconomyResponse.ResponseType.FAILURE, "No items to buy.");
+        }
+
+        // Create response
+        MaterialValueResponse response = new MaterialValueResponse(EconomyResponse.ResponseType.SUCCESS, null);
+
+        for (ItemStack itemStack : itemStacks) {
+            MaterialValueResponse thisResponse = (MaterialValueResponse) this.getBuyValue(itemStack, itemStack.getAmount());
+
+            if (thisResponse.isFailure()) continue;
+
+            // Get the buy value of the item and Add the value to the total
+            response.addResponse(thisResponse);
+        }
+
+        // Return the value
+        return response;
     }
 }
