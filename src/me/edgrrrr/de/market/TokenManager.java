@@ -11,7 +11,10 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class TokenManager extends DivinityModule {
@@ -183,7 +186,7 @@ public abstract class TokenManager extends DivinityModule {
 
 
     public Set<String> searchItemNames(Set<String> items, String term) {
-        Set<String> itemNames = (Set<String>) this.itemNamesCache.get(term);
+        Set<String> itemNames = this.itemNamesCache.get(term);
         if (itemNames == null) {
             itemNames = this.searchItemNamesUncached(items, term);
             this.itemNamesCache.put(term, itemNames);

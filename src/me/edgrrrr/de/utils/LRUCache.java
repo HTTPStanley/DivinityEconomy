@@ -5,8 +5,8 @@ import me.edgrrrr.de.DEPlugin;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.LinkedBlockingDeque;
 
 /**
  * At face value this is a map for storing loaded objects
@@ -14,7 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * And when an object whose file is not in memory is loaded, their file is loaded from storage.
  * These are then updated on the fly and it tries to only keep often loaded objects in memory.
  */
-public abstract class LRUCache<O, E> extends ConcurrentHashMap<Object, Object> {
+public abstract class LRUCache<K, V> extends ConcurrentHashMap<K, V> {
     /**
      * Memory size stores the maximum number of users in memory at once.
      * Userfile is the folder where users files are saved.
@@ -24,13 +24,23 @@ public abstract class LRUCache<O, E> extends ConcurrentHashMap<Object, Object> {
      */
     protected final DEPlugin main;
     protected final int memorySize;
-    protected final List<Object> orderList;
+    protected final LinkedBlockingDeque<K> orderList;
+    private final static double DEBLOAT_FACTOR = 0.75;
 
 
     public LRUCache(DEPlugin main) {
         this.main = main;
-        this.memorySize = Converter.constrainInt(this.loadMemorySize(), 0, Integer.MAX_VALUE);
-        this.orderList = Collections.synchronizedList(new ArrayList<>());
+
+        // Load sensible memory size
+        int memorySize = this.loadMemorySize();
+        if (memorySize <= 0) {
+            this.memorySize = 0;
+        } else {
+            this.memorySize = Converter.constrainInt(memorySize, 64, Integer.MAX_VALUE);
+        }
+
+        // Load sensible order list
+        this.orderList = new LinkedBlockingDeque<>(this.loadMemorySize());
     }
 
 
@@ -48,48 +58,34 @@ public abstract class LRUCache<O, E> extends ConcurrentHashMap<Object, Object> {
      * Sets the front of the order list with the key provided.
      * @param key
      */
-    private void setFront(Object key) {
+    private void setFront(K key) {
         synchronized (this.orderList) {
-            this.orderList.remove(key);
-            this.orderList.add(0, key);
+            // Remove last element if the list is too big
+            if (this.orderList.size() >= this.memorySize) {
+                this.trim();
+            }
+
+            // Remove any duplicates
+            this.orderList.addFirst(key);
         }
     }
 
 
-
     /**
-     * Trims both the orderlist and map to the size of memorySize
+     * Trims the memory.
      */
     private void trim() {
-        int i = this.orderList.size();
-        synchronized(this.orderList) {
-            Iterator<Object> iterator = this.orderList.iterator();
-            while (iterator.hasNext() && i > this.memorySize) {
-                this.remove(iterator.next());
-                iterator.remove();
-                i--;
+        synchronized (this.orderList) {
+            int debloatAmount = this.getDebloatSize();
+            this.getMain().getConsole().debug("Debloating %s objects", debloatAmount);
+            while (debloatAmount > 0) {
+                Object obj = this.orderList.removeLast();
+                if (!this.orderList.contains(obj)) {
+                    super.remove(obj);
+                    debloatAmount--;
+                }
             }
         }
-    }
-
-
-    /**
-     * Updates the map with the key provided and trims it.
-     *
-     * @param key
-     */
-    private void setFrontAndTrim(Object key) {
-        this.setFront(key);
-        this.trim();
-    }
-
-
-    /**
-     * This acts as the original map.get
-     */
-    @Nullable
-    protected Object query(Object key) {
-        return super.get(key);
     }
 
 
@@ -103,16 +99,31 @@ public abstract class LRUCache<O, E> extends ConcurrentHashMap<Object, Object> {
         return 0;
     }
 
+    /**
+     * Returns the debloat size
+     * @return int
+     */
+    protected int getDebloatSize() {
+        if (this.memorySize <= 0)
+            return 0;
+
+        return (int) Math.ceil(this.memorySize * DEBLOAT_FACTOR);
+    }
+
+
+    protected boolean query(K key) {
+        return this.containsKey(key);
+    }
 
 
     /**
      * OVERRIDE!
-     * Loads an object from file or creates a new object and places it into memory
+     * Loads an object from file or creates a new object
      * @param key
      * @return Object
      */
     @ForOverride
-    protected Object load(Object key) {
+    protected V load(K key) {
         return null;
     }
 
@@ -127,14 +138,15 @@ public abstract class LRUCache<O, E> extends ConcurrentHashMap<Object, Object> {
     @ForOverride
     @Override
     @Nullable
-    public Object get(Object key) {
-        Object result = super.get(key);
+    public V get(Object k) {
+        K key = (K) k;
+        V result = (V) super.get(key);
         if (result == null) {
             result = this.load(key);
-            if (result != null)
+            if (result != null) {
                 this.put(key, result); // Could be null
-
-            this.getMain().getConsole().debug("Loaded %s from storage", key);
+                this.getMain().getConsole().debug("Loaded %s from storage", key);
+            }
         } else {
             this.getMain().getConsole().debug("Loaded %s from memory", key);
         }
@@ -146,15 +158,22 @@ public abstract class LRUCache<O, E> extends ConcurrentHashMap<Object, Object> {
     /**
      * OVERRIDE!
      * Puts the given object into memory.
-     * @param key
-     * @param value
+     * @param k
+     * @param v
      * @return
      */
     @ForOverride
     @Override
-    public Object put(@Nonnull Object key, @Nonnull Object value) {
-        Object object = super.put(key, value);
-        this.setFrontAndTrim(key);
+    public V put(@Nonnull Object k, @Nonnull Object v) {
+        K key = (K) k;
+        V value = (V) v;
+        // If memory size is 0, then we don't need to worry about memory.
+        if (this.memorySize == 0)
+            return load(key);
+
+        // Get the object from memory
+        V object = (V) super.put(key, value);
+        this.setFront(key);
         return object;
     }
 
@@ -169,10 +188,11 @@ public abstract class LRUCache<O, E> extends ConcurrentHashMap<Object, Object> {
 
 
     @Override
-    public Object remove(@Nonnull Object key) {
+    public V remove(@Nonnull Object k) {
+        K key = (K) k;
         synchronized (this.orderList) {
             this.orderList.remove(key);
-            return super.remove(key);
+            return (V) super.remove(key);
         }
     }
 }

@@ -2,6 +2,7 @@ package me.edgrrrr.de.player;
 
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.DivinityModule;
+import me.edgrrrr.de.economy.NameStore;
 import me.edgrrrr.de.utils.Converter;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -9,6 +10,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -22,8 +24,9 @@ public class PlayerManager extends DivinityModule {
     private static final long MAX_SEARCH_NANO_LONG = 100000000L; // 100 millis
     private static final int PLAYER_TASK_INTERVAL = Converter.getTicks(60);
     private final Set<OfflinePlayer> players;
+    private final Map<UUID, OfflinePlayer> playerUUIDs;
     private final PlayerLRUCache playerCache;
-    private final Map<OfflinePlayer, String> playerNames;
+    private final Map<OfflinePlayer, NameStore> playerNames;
     private final BukkitRunnable playerTask = new BukkitRunnable() {
         @Override
         public void run() {
@@ -40,6 +43,7 @@ public class PlayerManager extends DivinityModule {
         super(main);
         this.players = Collections.synchronizedSet(new HashSet<>());
         this.playerNames = new ConcurrentHashMap<>();
+        this.playerUUIDs = new ConcurrentHashMap<>();
         this.playerCache = new PlayerLRUCache(this.getMain());
     }
 
@@ -80,9 +84,15 @@ public class PlayerManager extends DivinityModule {
         synchronized (this.playerNames) {
             this.playerNames.clear();
             for (OfflinePlayer player : players) {
-                String playerName = player.getName();
-                if (playerName == null) continue;
-                this.playerNames.put(player, playerName);
+                this.playerNames.put(player, new NameStore(player));
+            }
+        }
+
+        // Update player UUIDs
+        synchronized (this.playerUUIDs) {
+            this.playerUUIDs.clear();
+            for (OfflinePlayer player : players) {
+                this.playerUUIDs.put(player.getUniqueId(), player);
             }
         }
 
@@ -101,10 +111,29 @@ public class PlayerManager extends DivinityModule {
 
    /**
     * Returns all offline players
+    * Note: this is a copy of the players set, so it is safe to modify
     * @return
     */
     public Set<OfflinePlayer> getPlayers() {
         return new HashSet<>(this.players);
+    }
+
+
+    /**
+     * Returns the player name
+     * @param player
+     * @return
+     */
+    @Nonnull
+    public NameStore getPlayerName(OfflinePlayer player) {
+        synchronized (this.playerNames) {
+            NameStore nameStore = this.playerNames.get(player);
+            if (nameStore == null) {
+                nameStore = new NameStore(player);
+                this.playerNames.put(player, nameStore);
+            }
+            return nameStore;
+        }
     }
 
 
@@ -135,6 +164,25 @@ public class PlayerManager extends DivinityModule {
     }
 
 
+    public OfflinePlayer getPlayer(UUID uuid) {
+        // Get player from cache
+        OfflinePlayer player = this.playerUUIDs.getOrDefault(uuid, null);
+
+        // If player is not cached, search for them
+        if (player == null) {
+            player = this.getMain().getServer().getOfflinePlayer(uuid);
+        }
+
+        // Update cache
+        synchronized (this.playerUUIDs) {
+            this.playerUUIDs.put(uuid, player);
+        }
+
+        // Return player
+        return player;
+    }
+
+
     /**
      * Gets all offline players whose name matched the given term
      *
@@ -142,7 +190,7 @@ public class PlayerManager extends DivinityModule {
      */
     public Set<OfflinePlayer> getPlayers(String term) {
         // Get players from cache
-        Set<OfflinePlayer> players = this.playerCache.getPlayers(term);
+        Set<OfflinePlayer> players = this.playerCache.get(term);
 
         // If players are not cached, search for them
         if (players == null) {
@@ -193,9 +241,9 @@ public class PlayerManager extends DivinityModule {
                 }
 
                 // Get player name
-                String playerName = this.playerNames.getOrDefault(offlinePlayer, null);
-                if (playerName == null) continue;
-                playerName = playerName.toLowerCase().strip();
+                NameStore nameStore = this.getPlayerName(offlinePlayer);
+                if (nameStore == null) continue;
+                String playerName = nameStore.name().toLowerCase().strip();
 
                 // Matches - priority 0
                 if (playerName.equalsIgnoreCase(term)) {

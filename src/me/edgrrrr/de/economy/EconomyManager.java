@@ -59,7 +59,11 @@ public class EconomyManager extends DivinityModule {
         this.minTransfer = this.getConfMan().getDouble(Setting.ECONOMY_MIN_SEND_AMOUNT_DOUBLE);
         this.minBalance = 0d;
         this.economy = setupEconomy();
-        // If economy is null, disable plugin
+
+        // Register economy service
+        if (this.economy instanceof DivinityEconomy divinityEconomy) {
+            divinityEconomy.startTasks();
+        }
 
         // Setup baltop task scheduler
         int timer = Converter.getTicks(Converter.constrainInt(this.getMain().getConfMan().getInt(Setting.ECONOMY_BALTOP_REFRESH_INTEGER), 60, 3600));
@@ -73,6 +77,11 @@ public class EconomyManager extends DivinityModule {
     @Override
     public void deinit() {
         this.baltopTask.cancel();
+
+        // Register economy service
+        if (this.economy instanceof DivinityEconomy divinityEconomy) {
+            divinityEconomy.stopTasks();
+        }
     }
 
     /**
@@ -90,7 +99,7 @@ public class EconomyManager extends DivinityModule {
             double balance = getBalance(offlinePlayer);
 
             // Add player
-            players.add(new BaltopPlayer(offlinePlayer, balance));
+            players.add(new BaltopPlayer(offlinePlayer, balance, getMain().getPlayMan().getPlayerName(offlinePlayer)));
 
             // Add to total size
             totalSize += balance;
@@ -192,10 +201,6 @@ public class EconomyManager extends DivinityModule {
         this.getMain().getServer().getServicesManager().register(Economy.class, economy, this.getMain(), ServicePriority.Normal);
     }
 
-    public void unregisterProvider(Economy economy) {
-        this.getMain().getServer().getServicesManager().unregister(economy);
-    }
-
     @Nullable
     public Economy getProvider() {
         return this.getMain().getServer().getServicesManager().getRegistration(Economy.class).getProvider();
@@ -210,7 +215,7 @@ public class EconomyManager extends DivinityModule {
     public Economy setupEconomy() {
         // Look for vault
         if (this.getMain().getServer().getPluginManager().getPlugin("Vault") == null) {
-            this.getConsole().warn("No plugin 'Vault' detected, you must have Vault to use this plugin..");
+            this.getConsole().warn("No plugin 'Vault' detected, you must have Vault to use this plugin...");
             return null;
         }
         this.getConsole().info("Vault detected.");

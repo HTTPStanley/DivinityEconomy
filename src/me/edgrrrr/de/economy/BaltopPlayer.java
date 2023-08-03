@@ -1,15 +1,16 @@
 package me.edgrrrr.de.economy;
 
 import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
 
 public class BaltopPlayer {
     private final OfflinePlayer offlinePlayer;
     private final double balance;
+    private final NameStore nameStore;
 
-    BaltopPlayer (OfflinePlayer offlinePlayer, double balance) {
+    BaltopPlayer (OfflinePlayer offlinePlayer, double balance, NameStore nameStore) {
         this.offlinePlayer = offlinePlayer;
         this.balance = balance;
+        this.nameStore = nameStore;
     }
 
     public double getBalance() {
@@ -21,10 +22,6 @@ public class BaltopPlayer {
     }
 
     public String getName() {
-        Player player = this.getOfflinePlayer().getPlayer();
-        if (player != null) {
-            return player.getDisplayName();
-        }
-        return this.getOfflinePlayer().getName();
+        return this.nameStore.name();
     }
 }
