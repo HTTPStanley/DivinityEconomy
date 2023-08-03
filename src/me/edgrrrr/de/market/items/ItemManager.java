@@ -221,6 +221,26 @@ public abstract class ItemManager extends TokenManager {
     }
 
 
+    public static List<ItemStack> removeIdentity(List<ItemStack> itemStacks) {
+        List<ItemStack> nonIdentified = new ArrayList<>();
+        itemStacks.forEach(itemStack -> {
+            if (!itemIsUnidentified(itemStack)) {
+                nonIdentified.add(itemStack);
+            }
+        });
+        return nonIdentified;
+    }
+
+
+    public static ItemStack removeIdentity(ItemStack itemStack) {
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        PersistentDataContainer container = itemMeta.getPersistentDataContainer();
+        container.remove(NamespacedKey.minecraft("de-uuid"));
+        itemStack.setItemMeta(itemMeta);
+        return itemStack;
+    }
+
+
     /**
      * Returns the names and aliases for the itemstack given
      *

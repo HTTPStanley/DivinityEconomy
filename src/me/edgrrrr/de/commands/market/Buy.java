@@ -11,8 +11,6 @@ import me.edgrrrr.de.utils.Converter;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.entity.Player;
 
-import java.util.Arrays;
-
 /**
  * A command for buying items from the market
  */

@@ -13,10 +13,10 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class MaterialValueResponse extends TokenValueResponse {
-    private Map<MarketableMaterial, ArrayList<ItemStack>> itemStackMap = new ConcurrentHashMap<>();
-    private ArrayList<ItemStack> itemStacks = new ArrayList<>();
-    private ArrayList<String> itemStackIDs = new ArrayList<>();
-    private ArrayList<ItemStack> clones = new ArrayList<>();
+    private final Map<MarketableMaterial, ArrayList<ItemStack>> itemStackMap = new ConcurrentHashMap<>();
+    private final ArrayList<ItemStack> itemStacks = new ArrayList<>();
+    private final ArrayList<String> itemStackIDs = new ArrayList<>();
+    private final ArrayList<ItemStack> clones = new ArrayList<>();
 
 
     public MaterialValueResponse() {
@@ -65,19 +65,10 @@ public class MaterialValueResponse extends TokenValueResponse {
 
 
     /**
-     * Returns the itemstack map
-     * @return
-     */
-    public Map<MarketableMaterial, ArrayList<ItemStack>> getItemStackMap() {
-        return itemStackMap;
-    }
-
-
-    /**
      * Returns the itemstacks for all tokens
      */
     public List<ItemStack> getItemStacks() {
-        return itemStacks;
+        return ItemManager.removeIdentity(new ArrayList<>(itemStacks));
     }
 
 
@@ -86,7 +77,7 @@ public class MaterialValueResponse extends TokenValueResponse {
      * @return
      */
     public ItemStack[] getItemStacksAsArray() {
-        return itemStacks.toArray(new ItemStack[0]);
+        return getItemStacks().toArray(new ItemStack[0]);
     }
 
 
@@ -94,7 +85,7 @@ public class MaterialValueResponse extends TokenValueResponse {
      * Returns clones of the itemstacks for all tokens
      */
     public List<ItemStack> getClones() {
-        return this.clones;
+        return ItemManager.removeIdentity(new ArrayList<>(clones));
     }
 
 
@@ -103,7 +94,7 @@ public class MaterialValueResponse extends TokenValueResponse {
      * @return
      */
     public ItemStack[] getClonesAsArray() {
-        return this.clones.toArray(new ItemStack[0]);
+        return this.getClones().toArray(new ItemStack[0]);
     }
 
 
@@ -114,7 +105,7 @@ public class MaterialValueResponse extends TokenValueResponse {
      */
     @Nonnull
     public List<ItemStack> getItemStacks(@Nonnull MarketableToken token) {
-        return itemStackMap.getOrDefault(token, new ArrayList<>());
+        return ItemManager.removeIdentity(new ArrayList<>(itemStackMap.getOrDefault(token, new ArrayList<>())));
     }
 
 
