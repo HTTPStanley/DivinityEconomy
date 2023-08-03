@@ -194,4 +194,4 @@
 
 <hr>
 
-<a href="https://github.com/HTTPStanley/DivinityEconomy" target="_blank" rel="noopener noreferrer">View On Github</a>
+<a href="https://modrinth.com/plugin/divinity-economy" target="_blank">View On Modrinth</a>
