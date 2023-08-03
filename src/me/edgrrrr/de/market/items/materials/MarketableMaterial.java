@@ -75,21 +75,7 @@ public abstract class MarketableMaterial extends MarketableItem {
      * @return
      */
     public ItemStack[] getItemStacks(int amount) {
-        ArrayList<ItemStack> itemStacks = new ArrayList<>();
-        for (int i = 0; i < amount; ) {
-            ItemStack newStack = this.getItemStack(0);
-            int amountLeft = amount - i;
-            if (amountLeft > this.getMaterial().getMaxStackSize()) {
-                newStack.setAmount(this.getMaterial().getMaxStackSize());
-                i += this.getMaterial().getMaxStackSize();
-            } else {
-                newStack.setAmount(amountLeft);
-                i += amountLeft;
-            }
-            itemStacks.add(newStack);
-        }
-
-        return itemStacks.toArray(new ItemStack[0]);
+        return new ItemStack[]{this.getItemStack(amount)};
     }
 
     /**

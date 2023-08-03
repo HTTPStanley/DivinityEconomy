@@ -234,12 +234,6 @@ public class PlayerManager extends DivinityModule {
                     break;
                 }
 
-                // Check max search time
-                if (System.nanoTime() - startTime > MAX_SEARCH_NANO_LONG && depth >= MIN_SEARCH_DEPTH_INT) {
-                    this.getConsole().debug("Max search time reached, stopping search.");
-                    break;
-                }
-
                 // Get player name
                 NameStore nameStore = this.getPlayerName(offlinePlayer);
                 if (nameStore == null) continue;

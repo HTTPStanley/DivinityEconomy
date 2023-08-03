@@ -229,12 +229,6 @@ public abstract class TokenManager extends DivinityModule {
                 break;
             }
 
-            // Check max search time
-            if (System.nanoTime() - startTime > MAX_SEARCH_NANO_LONG && depth >= MIN_SEARCH_DEPTH_INT) {
-                this.getConsole().debug("Max search time reached, stopping search.");
-                break;
-            }
-
             String thisItem = item.toLowerCase().strip(); // Get & Standardise item
 
             // Matches - priority 0
