@@ -89,6 +89,9 @@
     <li><strong>Save</strong> - Save the enchants or items to disk.</li>
 </ul>
 
+<h2>💾 Vault Dependency 💾</h2>
+<p>DivinityEconomy is reliant on the renowned plugin Vault. Vault is a necessity for DivinityEconomy's functionality, enabling seamless integration amongst various economy plugins 🔁<br><a href="https://www.spigotmc.org/resources/vault.34315/" target="_blank" rel="noopener noreferrer">Acquire Vault Here 📥</a></p>
+
 <h2>🔖 PlaceholderAPI Support</h2>
 <p>Our plugin fully integrates with PlaceholderAPI, a plugin that allows server administrators to customize information displayed to players using placeholders. Please note that PlaceholderAPI is a separate plugin that must be installed. <a href="https://www.spigotmc.org/resources/placeholderapi.6245/" target="_blank">Download Here</a>.</p>
 <ul>
