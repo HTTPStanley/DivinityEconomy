@@ -6,6 +6,7 @@
     <p><strong>Discord</strong>: <a href="https://discord.com/invite/K7DY6UD" target="_blank" rel="noopener noreferrer">Click To Join</a></p>
     <p><strong>Minecraft Server Java</strong>: DivinityCraft.org:25565</p>
     <p><strong>Dynmap</strong>: <a href="http://DivinityCraft.org:25566" target="_blank" rel="noopener noreferrer">Click To View</a></p>
+    <p><strong>Website</strong> <a href="http://www.DivinityCraft.org" target="_blank" rel="noopener noreferrer">Click To View</a></p>
 </ul>
 
 <h2>🔑 Key Features</h2>
@@ -35,7 +36,7 @@
 <ul>
     <li><strong>Balance</strong> - See your own or others balances.</li>
     <li><strong>Pay</strong> - Send money to others.</li>
-    <li><strong>Baltop</strong> - View a list of players by player balance.</li>
+    <li><strong>ListBalances</strong> - View a list of players by player balance.</li>
 </ul>
 
 <h4>💰 Item Market</h4>
@@ -58,6 +59,7 @@
     <li><strong>Enchant Hand Value</strong> - Get the purchase and sale value of the enchants on the item that you are currently holding.</li>
     <li><strong>Enchant Value</strong> - Get the purchase and sale value of an enchant at the desired level.</li>
     <li><strong>Enchant Info</strong> - Get the market information for an enchant.</li>
+    <li><strong>Enchant Sell All</strong> - A comphrensive and advanced command that allows the user to sell a list of whitelisted/blacklisted enchants from their inventory, in one command.</li>
 </ul>
 
 <h4>💫 Experience Market</h4>
@@ -107,14 +109,16 @@
     <li><code>%de_material_stock_&lt;materialName&gt;%</code> - Returns the current stock quantity of a specific material.</li>
     <li><code>%de_enchant_stock_&lt;enchantName&gt;%</code> - Returns the current stock quantity of a specific enchantment.</li>
     <li><code>%de_material_stack_&lt;materialName&gt;%</code> - Returns the maximum stack size for a specific material.</li>
+    <li><code>%de_exp_BValue_&lt;amount&gt;%</code> - Returns the formatted buy value of the specified quantity of experience.</li>
+    <li><code>%de_exp_SValue_&lt;amount&gt;%</code> - Returns the formatted sell value of the specified quantity of experience.</li>
 </ul>
 <p>Please ensure that your PlaceholderAPI plugin is up-to-date to guarantee compatibility with our plugin. If you encounter any issues or require additional placeholders, do not hesitate to open an issue on our <a href="https://github.com/HTTPStanley/DivinityEconomy" target="_blank" rel="noopener noreferrer">Github</a>.</p>
 
 <h2>🧾 Permissions</h2>
 <h3>Money</h3>
 <p><code>de.money</code> - Allows the user to use all commands under the money branch of permissions. This permission is granted by default.</p>
-<ul
-    ><li><code>de.money.baltop</code> - Allows the user to view a list of user balances. This permission is granted by default.</li>
+<ul>
+    <li><code>de.money.listbalances</code> - Allows the user to view a list of user balances. This permission is granted by default.</li>
     <li><code>de.money.balance</code> - Allows the user to view their balance. This permission is granted by default.</li>
     <li><code>de.money.sendcash</code> - Allows the user to send cash to others. This permission is granted by default.</li>
 </ul>
@@ -144,6 +148,7 @@
     <li><code>de.enchant.eHandValue</code> - Allows the user to value enchantments on their held item. This permission is granted by default.</li>
     <li><code>de.enchant.eValue</code> - Allows the user to value enchantments. This permission is granted by default.</li>
     <li><code>de.enchant.eInfo</code> - Allows the user to get information about enchantments. This permission is granted by default.</li>
+    <li><code>de.enchant.eSellAll</code> - Allows the user to sell all enchantments in their inventory. This permission is granted by default.</li>
 </ul>
 <br>
 
