@@ -4,7 +4,7 @@ main: me.edgrrrr.de.DEPlugin
 version: 1.20RC3.0
 author: EDGRRRR
 description: Divinity Economy - The dynamic global economy plugin.
-api-version: 1.16
+api-version: 1.17
 depend: [Vault]
 soft-depend: [PlaceholderAPI]
 load: STARTUP
