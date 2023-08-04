@@ -26,9 +26,9 @@ public class NameStore {
         return displayName != null ? displayName : name != null ? name : this.no_name_value;
     }
 
-    @Nullable
+    @Nonnull
     public String getName() {
-        return name;
+        return name != null ? name : this.no_name_value;
     }
 
     @Nonnull

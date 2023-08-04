@@ -237,28 +237,29 @@ public class PlayerManager extends DivinityModule {
                 // Get player name
                 NameStore nameStore = this.getPlayerName(offlinePlayer);
                 if (nameStore == null) continue;
-                String playerName = nameStore.name().toLowerCase().strip();
+                String playerName = nameStore.getName().toLowerCase().strip();
+                String playerDisplayName = nameStore.name().toLowerCase().strip();
 
                 // Matches - priority 0
-                if (playerName.equalsIgnoreCase(term)) {
+                if (playerName.equalsIgnoreCase(term) || playerDisplayName.equalsIgnoreCase(term)) {
                     priority0ArrayList.add(offlinePlayer);
                     continue;
                 }
 
                 // Begins with - priority 1
-                if (playerName.startsWith(term)) {
+                if (playerName.startsWith(term) || playerDisplayName.startsWith(term)) {
                     priority1ArrayList.add(offlinePlayer);
                     continue;
                 }
 
                 // Contains - priority 2
-                if (playerName.contains(term)) {
+                if (playerName.contains(term) || playerDisplayName.contains(term)) {
                     priority2ArrayList.add(offlinePlayer);
                     continue;
                 }
 
                 // Endswith - priority 3
-                if (playerName.endsWith(term)) {
+                if (playerName.endsWith(term) || playerDisplayName.endsWith(term)) {
                     priority3ArrayList.add(offlinePlayer);
                     continue;
                 }
