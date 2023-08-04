@@ -52,6 +52,8 @@
 # %de_material_stock_<materialName>              | Returns the amount of the material in stock
 # %de_enchant_stock_<enchantName>                | Returns the amount of the enchant in stock
 # %de_material_stack_<materialName>              | Returns the max stack size for the material given
+# %de_exp_SValue_<amount>                        | Returns a DE formatted sell value of experience
+# %de_exp_BValue_<amount>                        | Returns a DE formatted buy value of experience
 
 # CONFIG
 # ANY VALUE CAN BE RESET BY DELETING IT
