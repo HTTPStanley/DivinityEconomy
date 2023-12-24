@@ -5925,7 +5925,6 @@ poisonstrongtippedarrow: STRONG_POISON_TIPPED_ARROW
 poisontarr: POISON_TIPPED_ARROW
 poisontarrow: POISON_TIPPED_ARROW
 poisontippedarrow: POISON_TIPPED_ARROW
-potion: POTION
 potionofacid: POISON_POTION
 potionofacid2: LONG_POISON_POTION
 potionofacidex: LONG_POISON_POTION
@@ -6266,8 +6265,10 @@ potionofturtlemasterlevelii: STRONG_TURTLE_MASTER_POTION
 potionofturtlemasterlong: LONG_TURTLE_MASTER_POTION
 potionofturtlemasterstrong: STRONG_TURTLE_MASTER_POTION
 potionofturtlestrong: STRONG_TURTLE_MASTER_POTION
-potionofuncraftable: EMPTY_POTION
 potionofwater: WATER_POTION
+bottleofwater: WATER_POTION
+waterbottle: WATER_POTION
+bottledwater: WATER_POTION
 potionofwaterbreath: WATER_BREATHING_POTION
 potionofwaterbreath2: LONG_WATER_BREATHING_POTION
 potionofwaterbreathex: LONG_WATER_BREATHING_POTION
@@ -6644,7 +6645,6 @@ potofturtlemasterlevelii: STRONG_TURTLE_MASTER_POTION
 potofturtlemasterlong: LONG_TURTLE_MASTER_POTION
 potofturtlemasterstrong: STRONG_TURTLE_MASTER_POTION
 potofturtlestrong: STRONG_TURTLE_MASTER_POTION
-potofuncraftable: EMPTY_POTION
 potofwater: WATER_POTION
 potofwaterbreath: WATER_BREATHING_POTION
 potofwaterbreath2: LONG_WATER_BREATHING_POTION
@@ -10379,8 +10379,6 @@ turtlestrongtippedarrow: STRONG_TURTLE_MASTER_TIPPED_ARROW
 turtletarr: TURTLE_MASTER_TIPPED_ARROW
 turtletarrow: TURTLE_MASTER_TIPPED_ARROW
 turtletippedarrow: TURTLE_MASTER_TIPPED_ARROW
-uncraftablepot: EMPTY_POTION
-uncraftablepotion: EMPTY_POTION
 wateraoepoiont: WATER_LINGERING_POTION
 wateraoepot: WATER_LINGERING_POTION
 waterareapot: WATER_LINGERING_POTION

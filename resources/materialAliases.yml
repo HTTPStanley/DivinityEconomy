@@ -8381,7 +8381,7 @@ dragon_breath: DRAGON_BREATH
 dragon_egg: DRAGON_EGG
 dragon_head: DRAGON_HEAD
 dragonbreath: DRAGON_BREATH
-dragonegg: DRAGON_EGG
+dragonegg: ENDER_DRAGON_SPAWN_EGG
 dragonhead: DRAGON_HEAD
 dragonsegg: ENDER_DRAGON_SPAWN_EGG
 dragonspawn: ENDER_DRAGON_SPAWN_EGG
@@ -10445,7 +10445,6 @@ grasclay: GRAY_TERRACOTTA
 grasglass: GRAY_STAINED_GLASS
 grasglasspane: GRAY_STAINED_GLASS_PANE
 grashulkerbox: GRAY_SHULKER_BOX
-grass: GRASS
 grass_block: GRASS_BLOCK
 grass_path: DIRT_PATH
 grassblock: GRASS_BLOCK
@@ -18131,6 +18130,8 @@ shorseegg: SKELETON_HORSE_SPAWN_EGG
 shorsesegg: SKELETON_HORSE_SPAWN_EGG
 shorsespawn: SKELETON_HORSE_SPAWN_EGG
 shorsespawnegg: SKELETON_HORSE_SPAWN_EGG
+short_grass: SHORT_GRASS
+shortgrass: SHORT_GRASS
 shroomlamp: SHROOMLIGHT
 shroomlight: SHROOMLIGHT
 shsign: SPRUCE_HANGING_SIGN
@@ -24624,7 +24625,7 @@ wither_skeletonspawnegg: WITHER_SKELETON_SPAWN_EGG
 wither_spawn_egg: WITHER_SPAWN_EGG
 witheregg: WITHER_SPAWN_EGG
 witherrose: WITHER_ROSE
-withersegg: WITHER_SKELETON_SPAWN_EGG
+withersegg: WITHER_SPAWN_EGG
 withershead: WITHER_SKELETON_SKULL
 withersheadmask: WITHER_SKELETON_SKULL
 witherskegg: WITHER_SKELETON_SPAWN_EGG
