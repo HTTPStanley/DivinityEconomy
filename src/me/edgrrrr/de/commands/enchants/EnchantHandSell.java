@@ -74,6 +74,12 @@ public class EnchantHandSell extends DivinityCommandEnchant {
             return true;
         }
 
+        // Ensure held item is only one
+        if (heldItem.getAmount() > 1) {
+            this.getMain().getConsole().warn(sender, CommandResponse.EnchantsInvalidItemAmount.message);
+            return true;
+        }
+
         // Ensure item is enchanted
         if (!this.getMain().getEnchMan().isEnchanted(heldItem)) {
             this.getMain().getConsole().usage(sender, CommandResponse.InvalidItemHeld.message, this.help.getUsages());

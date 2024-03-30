@@ -180,6 +180,7 @@ public abstract class DivinityCommand implements CommandExecutor {
         InvalidInventorySpace("Missing inventory space %d/%d.", LogLevel.WARNING),
         InvalidStockAmount("Missing stock %d/%d.", LogLevel.WARNING),
         InvalidInventoryStock("Missing inventory stock %d/%d", LogLevel.WARNING),
+        EnchantsInvalidItemAmount("Invalid item amount, you must have only one of the item in your hand.", LogLevel.WARNING),
         UnknownError("Unknown error.", LogLevel.WARNING);
         public final String message;
         public final LogLevel defaultLogLevel;

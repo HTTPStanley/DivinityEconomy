@@ -63,6 +63,12 @@ public class EnchantHandBuy extends DivinityCommandEnchant {
             return true;
         }
 
+        // Ensure held item is only one
+        if (heldItem.getAmount() > 1) {
+            this.getMain().getConsole().warn(sender, CommandResponse.EnchantsInvalidItemAmount.message);
+            return true;
+        }
+
         // Ensure item valuation was successful
         EnchantValueResponse evr = this.getMain().getEnchMan().getBuyValue(heldItem, enchantName, enchantLevels);
         if (evr.isFailure()) {
