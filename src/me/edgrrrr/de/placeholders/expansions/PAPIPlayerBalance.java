@@ -11,6 +11,6 @@ public class PAPIPlayerBalance extends DivinityExpansion {
 
     @Override
     public String getResult(OfflinePlayer player, String value) {
-        return this.getMain().getConsole().getFormattedBalance(player);
+        return getMain().getConsole().getFormattedBalance(player);
     }
 }
