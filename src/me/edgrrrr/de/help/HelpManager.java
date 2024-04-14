@@ -2,6 +2,7 @@ package me.edgrrrr.de.help;
 
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.DivinityModule;
+import me.edgrrrr.de.lang.LangEntry;
 import me.edgrrrr.de.mail.events.MailEvent;
 
 import javax.annotation.Nullable;
@@ -26,7 +27,7 @@ public class HelpManager extends DivinityModule {
     @Override
     public void init() {
         this.loadHelp();
-        this.getMain().getServer().getPluginManager().registerEvents(new MailEvent(this.getMain()), this.getMain());
+        getMain().getServer().getPluginManager().registerEvents(new MailEvent(getMain()), getMain());
     }
 
     /**
@@ -230,20 +231,20 @@ public class HelpManager extends DivinityModule {
      * Loads the help from the plugin.yml
      */
     public void loadHelp() {
-        Map<String, Map<String, Object>> commands = this.getMain().getDescription().getCommands();
+        Map<String, Map<String, Object>> commands = getMain().getDescription().getCommands();
         for (String command : commands.keySet()) {
             try {
                 Map<String, Object> commandSection = commands.get(command);
                 if (commandSection == null) {
-                    this.getConsole().severe("%s is null", command);
+                    this.getConsole().severe(LangEntry.HELP_NullEntry.get(getMain()), command);
                 } else {
                     String commandName = command.toLowerCase();
                     this.helpMap.put(commandName, Help.fromConfig(commandName, commandSection));
                 }
             } catch (Exception e) {
-                this.getConsole().severe("%s raised %s", command, e.getMessage());
+                this.getConsole().severe(LangEntry.HELP_EntryError.get(getMain()), command, e.getMessage());
             }
         }
-        this.getConsole().info("Loaded %d help objects", this.helpMap.size());
+        this.getConsole().info(LangEntry.HELP_HelpLoaded.get(getMain()), this.helpMap.size());
     }
 }
