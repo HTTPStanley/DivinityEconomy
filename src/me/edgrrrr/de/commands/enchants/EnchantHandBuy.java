@@ -3,6 +3,7 @@ package me.edgrrrr.de.commands.enchants;
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.commands.DivinityCommandEnchant;
 import me.edgrrrr.de.config.Setting;
+import me.edgrrrr.de.lang.LangEntry;
 import me.edgrrrr.de.market.items.enchants.EnchantValueResponse;
 import me.edgrrrr.de.market.items.enchants.MarketableEnchant;
 import me.edgrrrr.de.player.PlayerManager;
@@ -45,52 +46,52 @@ public class EnchantHandBuy extends DivinityCommandEnchant {
                 enchantLevels = Converter.getInt(args[1]);
             }
             default -> {
-                this.getMain().getConsole().usage(sender, CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
+                getMain().getConsole().usage(sender, LangEntry.GENERIC_InvalidNumberOfArguments.get(getMain()), this.help.getUsages());
                 return true;
             }
         }
 
         // Ensure amount is more than one
         if (enchantLevels < 1) {
-            this.getMain().getConsole().warn(sender, CommandResponse.InvalidAmountGiven.message);
+            getMain().getConsole().warn(sender, LangEntry.GENERIC_InvalidAmountGiven.get(getMain()));
             return true;
         }
 
         // Ensure user is holding an item
         ItemStack heldItem = PlayerManager.getHeldItem(sender);
         if (heldItem == null) {
-            this.getMain().getConsole().warn(sender, CommandResponse.InvalidItemHeld.message);
+            getMain().getConsole().warn(sender, LangEntry.MARKET_InvalidItemHeld.get(getMain()));
             return true;
         }
 
         // Ensure held item is only one
         if (heldItem.getAmount() > 1) {
-            this.getMain().getConsole().warn(sender, CommandResponse.EnchantsInvalidItemAmount.message);
+            getMain().getConsole().warn(sender, LangEntry.MARKET_EnchantsInvalidItemAmount.get(getMain()));
             return true;
         }
 
         // Ensure item valuation was successful
-        EnchantValueResponse evr = this.getMain().getEnchMan().getBuyValue(heldItem, enchantName, enchantLevels);
+        EnchantValueResponse evr = getMain().getEnchMan().getBuyValue(heldItem, enchantName, enchantLevels);
         if (evr.isFailure()) {
-            this.getMain().getConsole().logFailedPurchase(sender, enchantLevels, enchantName, evr.getErrorMessage());
+            getMain().getConsole().logFailedPurchase(sender, enchantLevels, enchantName, evr.getErrorMessage());
             return true;
         }
 
         // Ensure given enchant exists
-        MarketableEnchant enchantData = this.getMain().getEnchMan().getEnchant(enchantName);
+        MarketableEnchant enchantData = getMain().getEnchMan().getEnchant(enchantName);
         if (enchantData == null) {
-            this.getMain().getConsole().logFailedPurchase(sender, enchantLevels, enchantName, String.format(CommandResponse.InvalidEnchantName.message, enchantName));
+            getMain().getConsole().logFailedPurchase(sender, enchantLevels, enchantName, String.format(LangEntry.MARKET_InvalidEnchantName.get(getMain()), enchantName));
             return true;
         }
 
 
         // Ensure user has enough money
-        double startingBalance = this.getMain().getEconMan().getBalance(sender);
-        EconomyResponse economyResponse = this.getMain().getEconMan().remCash(sender, evr.getValue());
+        double startingBalance = getMain().getEconMan().getBalance(sender);
+        EconomyResponse economyResponse = getMain().getEconMan().remCash(sender, evr.getValue());
 
         if (!economyResponse.transactionSuccess()) {
-            this.getMain().getConsole().logFailedPurchase(sender, enchantLevels, enchantData.getCleanName(), economyResponse.errorMessage);
-            this.getMain().getEconMan().setCash(sender, startingBalance);
+            getMain().getConsole().logFailedPurchase(sender, enchantLevels, enchantData.getName(), economyResponse.errorMessage);
+            getMain().getEconMan().setCash(sender, startingBalance);
             return true;
         }
 
@@ -98,18 +99,18 @@ public class EnchantHandBuy extends DivinityCommandEnchant {
 
 
         // Add enchant to item
-        Response response = this.getMain().getEnchMan().addEnchantToItem(heldItem, enchantData.getEnchantment(), enchantLevels);
+        Response response = getMain().getEnchMan().addEnchantToItem(heldItem, enchantData.getEnchantment(), enchantLevels);
 
         // Handle failure
         if (response.isFailure()) {
-            this.getMain().getConsole().logFailedPurchase(sender, enchantLevels, enchantData.getCleanName(), response.getErrorMessage());
-            this.getMain().getEconMan().setCash(sender, startingBalance);
+            getMain().getConsole().logFailedPurchase(sender, enchantLevels, enchantData.getName(), response.getErrorMessage());
+            getMain().getEconMan().setCash(sender, startingBalance);
             return true;
         }
 
         // Success
-        this.getMain().getConsole().logPurchase(sender, enchantLevels, evr.getValue(), enchantData.getCleanName());
-        this.getMain().getEnchMan().editLevelQuantity(enchantData, -enchantLevels);
+        getMain().getConsole().logPurchase(sender, enchantLevels, evr.getValue(), enchantData.getName());
+        getMain().getEnchMan().editLevelQuantity(enchantData, -enchantLevels);
         return true;
     }
 
