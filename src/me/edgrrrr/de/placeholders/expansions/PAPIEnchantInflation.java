@@ -11,6 +11,6 @@ public class PAPIEnchantInflation extends DivinityExpansion {
 
     @Override
     public String getResult(OfflinePlayer player, String value) {
-        return String.format("%,.2f", this.getMain().getEnchMan().getInflation());
+        return String.format("%,.2f", getMain().getEnchMan().getInflation());
     }
 }
