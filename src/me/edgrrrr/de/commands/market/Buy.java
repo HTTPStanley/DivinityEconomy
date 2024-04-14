@@ -3,6 +3,7 @@ package me.edgrrrr.de.commands.market;
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.commands.DivinityCommandMaterials;
 import me.edgrrrr.de.config.Setting;
+import me.edgrrrr.de.lang.LangEntry;
 import me.edgrrrr.de.market.items.materials.MarketableMaterial;
 import me.edgrrrr.de.market.items.materials.MaterialManager;
 import me.edgrrrr.de.market.items.materials.MaterialValueResponse;
@@ -47,10 +48,10 @@ public class Buy extends DivinityCommandMaterials {
                 materialName = args[0];
 
                 // Check if the player wants to buy the max amount
-                if (args[1].equalsIgnoreCase("max")) {
+                if (LangEntry.W_max.is(getMain(), args[1])) {
 
                     // Get the marketable material
-                    MarketableMaterial marketableMaterial = this.getMain().getMarkMan().getItem(materialName);
+                    MarketableMaterial marketableMaterial = getMain().getMarkMan().getItem(materialName);
                     // Ensure the material exists
                     if (marketableMaterial != null) {
                         amountToBuy = marketableMaterial.getAvailableSpace(sender);
@@ -67,20 +68,20 @@ public class Buy extends DivinityCommandMaterials {
                 break;
 
             default:
-                this.getMain().getConsole().usage(sender, CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
+                getMain().getConsole().usage(sender, LangEntry.GENERIC_InvalidNumberOfArguments.get(getMain()), this.help.getUsages());
                 return true;
         }
 
         // Ensure amount is greater than 0
         if (amountToBuy < 1) {
-            this.getMain().getConsole().send(sender, CommandResponse.InvalidAmountGiven.defaultLogLevel, CommandResponse.InvalidAmountGiven.message);
+            getMain().getConsole().send(sender, LangEntry.GENERIC_InvalidAmountGiven.logLevel, LangEntry.GENERIC_InvalidAmountGiven.get(getMain()));
             return true;
         }
 
         // Ensure Material given exists.
-        MarketableMaterial materialData = this.getMain().getMarkMan().getItem(materialName);
+        MarketableMaterial materialData = getMain().getMarkMan().getItem(materialName);
         if (materialData == null) {
-            this.getMain().getConsole().send(sender, CommandResponse.InvalidItemName.defaultLogLevel, CommandResponse.InvalidItemName.message, materialName);
+            getMain().getConsole().send(sender, LangEntry.MARKET_InvalidItemName.logLevel, LangEntry.MARKET_InvalidItemName.get(getMain()), materialName);
             return true;
         }
         MaterialManager manager = materialData.getManager();
@@ -88,13 +89,13 @@ public class Buy extends DivinityCommandMaterials {
         // Ensure player has the available inventory space
         int availableSpace = materialData.getAvailableSpace(sender);
         if (amountToBuy > availableSpace) {
-            this.getMain().getConsole().logFailedPurchase(sender, amountToBuy, materialData.getCleanName(), String.format(CommandResponse.InvalidInventorySpace.message, availableSpace, amountToBuy));
+            getMain().getConsole().logFailedPurchase(sender, amountToBuy, materialData.getName(), String.format(LangEntry.MARKET_InvalidInventorySpace.get(getMain()), availableSpace, amountToBuy));
             return true;
         }
 
         // Ensure market has enough stock
         if (!materialData.has(amountToBuy)) {
-            this.getMain().getConsole().logFailedPurchase(sender, amountToBuy, materialData.getCleanName(), String.format(CommandResponse.InvalidStockAmount.message, materialData.getQuantity(), amountToBuy));
+            getMain().getConsole().logFailedPurchase(sender, amountToBuy, materialData.getName(), String.format(LangEntry.MARKET_InvalidStockAmount.get(getMain()), materialData.getQuantity(), amountToBuy));
             return true;
         }
 
@@ -102,16 +103,16 @@ public class Buy extends DivinityCommandMaterials {
         // Get the value of the item stacks
         // Remove the value of the items from the player
         MaterialValueResponse priceResponse = manager.getBuyValue(materialData.getItemStacks(amountToBuy));
-        EconomyResponse saleResponse = this.getMain().getEconMan().remCash(sender, priceResponse.getValue());
+        EconomyResponse saleResponse = getMain().getEconMan().remCash(sender, priceResponse.getValue());
 
         // If the transaction or valuation failed then the user is returned an error.
         if (!saleResponse.transactionSuccess() || priceResponse.isFailure()) {
-            String errorMessage = CommandResponse.UnknownError.message;
+            String errorMessage = LangEntry.GENERIC_UnknownError.get(getMain());
             if (!saleResponse.transactionSuccess()) errorMessage = saleResponse.errorMessage;
             else if (priceResponse.isFailure()) errorMessage = priceResponse.getErrorMessage();
 
             // Handles console, message and mail
-            this.getMain().getConsole().logFailedPurchase(sender, priceResponse.getQuantity(), materialData.getCleanName(), errorMessage);
+            getMain().getConsole().logFailedPurchase(sender, priceResponse.getQuantity(), materialData.getName(), errorMessage);
             return true;
         }
 
@@ -120,7 +121,7 @@ public class Buy extends DivinityCommandMaterials {
         manager.editQuantity(materialData, -priceResponse.getQuantity());
 
         // Handles console, message and mail
-        this.getMain().getConsole().logPurchase(sender, priceResponse.getQuantity(), saleResponse.amount, materialData.getCleanName());
+        getMain().getConsole().logPurchase(sender, priceResponse.getQuantity(), saleResponse.amount, materialData.getName());
 
         return true;
     }
