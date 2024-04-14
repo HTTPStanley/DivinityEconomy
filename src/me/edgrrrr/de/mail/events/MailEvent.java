@@ -1,6 +1,7 @@
 package me.edgrrrr.de.mail.events;
 
 import me.edgrrrr.de.DEPlugin;
+import me.edgrrrr.de.lang.LangEntry;
 import me.edgrrrr.de.mail.MailList;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -11,20 +12,20 @@ import org.bukkit.event.player.PlayerJoinEvent;
  * A mail event for telling players if they have pending mail or not
  */
 public class MailEvent implements Listener {
-    private final DEPlugin app;
+    private final DEPlugin main;
 
     public MailEvent(DEPlugin app) {
-        this.app = app;
+        this.main = app;
     }
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        MailList mailList = this.app.getMailMan().getMailList(player.getUniqueId().toString());
+        MailList mailList = this.main.getMailMan().getMailList(player.getUniqueId().toString());
         if (mailList.hasMail()) {
-            this.app.getConsole().info(player, "You have %s economy notifications. View them with /readmail", mailList.getAllMail().size());
+            this.main.getConsole().info(player, LangEntry.MAIL_MailNotification.get(this.main), mailList.getAllMail().size());
         } else {
-            this.app.getConsole().info(player, "You have no economy notifications. ");
+            this.main.getConsole().info(player, LangEntry.MAIL_NoMailNotification.get(this.main));
         }
     }
 }
