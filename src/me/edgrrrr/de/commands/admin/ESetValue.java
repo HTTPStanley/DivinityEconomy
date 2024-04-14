@@ -3,6 +3,7 @@ package me.edgrrrr.de.commands.admin;
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.commands.DivinityCommand;
 import me.edgrrrr.de.config.Setting;
+import me.edgrrrr.de.lang.LangEntry;
 import me.edgrrrr.de.market.items.enchants.MarketableEnchant;
 import me.edgrrrr.de.utils.Converter;
 import org.bukkit.entity.Player;
@@ -34,30 +35,30 @@ public class ESetValue extends DivinityCommand {
         double value;
         switch (args.length) {
             case 2:
-                enchantData = this.getMain().getEnchMan().getEnchant(args[0]);
+                enchantData = getMain().getEnchMan().getEnchant(args[0]);
                 value = Converter.getDouble(args[1]);
                 break;
 
             default:
-                this.getMain().getConsole().usage(sender, CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
+                getMain().getConsole().usage(sender, LangEntry.GENERIC_InvalidNumberOfArguments.get(getMain()), this.help.getUsages());
                 return true;
         }
 
         // Ensure material exists
         if (enchantData == null) {
-            this.getMain().getConsole().send(sender, CommandResponse.InvalidEnchantName.defaultLogLevel, CommandResponse.InvalidItemName.message, args[0]);
+            getMain().getConsole().send(sender, LangEntry.MARKET_InvalidEnchantName.logLevel, LangEntry.MARKET_InvalidItemName.get(getMain()), args[0]);
             return true;
         }
 
         if (value < 0) {
-            this.getMain().getConsole().send(sender, CommandResponse.InvalidAmountGiven.defaultLogLevel, CommandResponse.InvalidAmountGiven.message, value, 0);
+            getMain().getConsole().send(sender, LangEntry.GENERIC_InvalidAmountGiven.logLevel, LangEntry.GENERIC_InvalidAmountGiven.get(getMain()), value, 0);
             return true;
         }
 
         int previousStock = enchantData.getQuantity();
-        double previousValue = this.getMain().getEnchMan().getBuyPrice(enchantData.getQuantity());
-        this.getMain().getEnchMan().setPrice(enchantData, value);
-        this.getMain().getConsole().send(sender, CommandResponse.StockValueChanged.defaultLogLevel, CommandResponse.StockValueChanged.message, this.getMain().getConsole().formatMoney(previousValue), previousStock, this.getMain().getConsole().formatMoney(value), enchantData.getQuantity());
+        double previousValue = getMain().getEnchMan().getBuyPrice(enchantData.getQuantity());
+        getMain().getEnchMan().setPrice(enchantData, value);
+        getMain().getConsole().send(sender, LangEntry.STOCK_ValueChanged.logLevel, LangEntry.STOCK_ValueChanged.get(getMain()), getMain().getConsole().formatMoney(previousValue), previousStock, getMain().getConsole().formatMoney(value), enchantData.getQuantity());
 
         return true;
     }
