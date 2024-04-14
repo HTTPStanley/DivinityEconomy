@@ -2,6 +2,7 @@ package me.edgrrrr.de.market.items.enchants;
 
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.config.Setting;
+import me.edgrrrr.de.lang.LangEntry;
 import me.edgrrrr.de.market.MarketableToken;
 import me.edgrrrr.de.market.items.ItemManager;
 import me.edgrrrr.de.response.Response;
@@ -67,7 +68,7 @@ public class EnchantManager extends ItemManager {
                 saveItems();
             }
         };
-        this.saveTimer.runTaskTimerAsynchronously(this.getMain(), timer, timer);
+        this.saveTimer.runTaskTimerAsynchronously(getMain(), timer, timer);
         this.loadItems();
         this.loadAliases();
     }
@@ -180,12 +181,12 @@ public class EnchantManager extends ItemManager {
 
         // If enchant data is null, return failure.
         if (enchantData == null) {
-            return new Response(EconomyResponse.ResponseType.FAILURE, String.format("%s is not supported", enchantment.getKey().getKey()));
+            return new Response(EconomyResponse.ResponseType.FAILURE, LangEntry.MARKET_ItemIsNotSupported.get(getMain(), enchantment.getKey().getKey()));
         }
 
         // If enchant level is greater than maximum, return failure.
         if (enchantData.getMaxLevel() < newLevel) {
-            return new Response(EconomyResponse.ResponseType.FAILURE, String.format("level is greater than max (%d/%d)", newLevel, enchantData.getMaxLevel()));
+            return new Response(EconomyResponse.ResponseType.FAILURE, LangEntry.MARKET_LevelIsGreaterThanMax.get(getMain(), newLevel, enchantData.getMaxLevel()));
         }
 
         // Check if item is a book
@@ -285,7 +286,7 @@ public class EnchantManager extends ItemManager {
      */
     @Override
     public MarketableToken loadItem(String ID, ConfigurationSection data, ConfigurationSection defaultData) {
-        return new MarketableEnchant(this.getMain(), this, ID, data, defaultData);
+        return new MarketableEnchant(getMain(), this, ID, data, defaultData);
     }
 
     /**
@@ -307,12 +308,12 @@ public class EnchantManager extends ItemManager {
 
         // Enchant data is null
         if (enchantData == null)
-            return (EnchantValueResponse) response.setFailure(String.format("%s does not exist", enchantID));
+            return (EnchantValueResponse) response.setFailure(LangEntry.MARKET_ItemDoesNotExist.get(getMain(), enchantID));
 
 
         // Check exists in store
         if (enchantData.getEnchantment() == null)
-            return (EnchantValueResponse) response.setFailure(String.format("%s does not exist in the store", enchantData.getCleanName()));
+            return (EnchantValueResponse) response.setFailure(LangEntry.MARKET_ItemDoesNotExistInTheStore.get(getMain(), enchantID));
 
 
         // Get current and new enchantment level
@@ -328,27 +329,27 @@ public class EnchantManager extends ItemManager {
 
         // Check enchant is allowed
         if (!(enchantData.getAllowed()))
-            return (EnchantValueResponse) response.setFailure(String.format("%s is banned", enchantData.getCleanName()));
+            return (EnchantValueResponse) response.setFailure(LangEntry.MARKET_ItemIsBanned.get(getMain(), enchantData.getName()));
 
 
         // Check enchant is supported on item
         if (!(this.supportsEnchant(itemStack, enchantData.getEnchantment()) || this.allowUnsafe))
-            return (EnchantValueResponse) response.setFailure(String.format("%s is not supported on this item", enchantData.getCleanName()));
+            return (EnchantValueResponse) response.setFailure(LangEntry.MARKET_ItemIsNotSupportedOnThisItem.get(getMain(), enchantData.getName()));
 
 
         // Check new level isn't greater than max
         if (enchantData.getMaxLevel() < newTotalLevel)
-            return (EnchantValueResponse) response.setFailure(String.format("level would be above max(%d/%d) for %s", newTotalLevel, enchantData.getMaxLevel(), enchantData.getCleanName()));
+            return (EnchantValueResponse) response.setFailure(LangEntry.MARKET_LevelWouldBeGreaterThanMax.get(getMain(), newTotalLevel, enchantData.getMaxLevel()));
 
 
         // Check store has enough
         if (enchantAmount > enchantData.getQuantity())
-            return (EnchantValueResponse) response.setFailure(String.format("not enough stock (%d/%d)", enchantAmount, enchantData.getQuantity()));
+            return (EnchantValueResponse) response.setFailure(LangEntry.MARKET_InvalidStockAmount.get(getMain(), enchantData.getName(), enchantData.getQuantity(), enchantAmount));
 
 
         // Check market isn't saturated
         if (value <= 0)
-            return (EnchantValueResponse) response.setFailure(String.format("%s is unavailable.", enchantData.getCleanName()));
+            return (EnchantValueResponse) response.setFailure(LangEntry.MARKET_ItemIsWorthless.get(getMain(), enchantData.getName()));
 
 
         // Return success
@@ -485,7 +486,7 @@ public class EnchantManager extends ItemManager {
 
         // No enchant data
         if (enchantData == null)
-            return (EnchantValueResponse) response.setFailure(String.format("unknown enchant id %s", enchantID));
+            return (EnchantValueResponse) response.setFailure(LangEntry.MARKET_ItemDoesNotExist.get(getMain(), enchantID));
 
 
         // Get enchantment
@@ -495,12 +496,12 @@ public class EnchantManager extends ItemManager {
 
         // No enchantment
         if (enchantment == null)
-            return (EnchantValueResponse) response.setFailure(String.format("%s does not exist in the store", enchantData.getCleanName()));
+            return (EnchantValueResponse) response.setFailure(LangEntry.MARKET_ItemDoesNotExistInTheStore.get(getMain(), enchantID));
 
 
         // Check enchant is allowed
         if (!enchantData.getAllowed())
-            return (EnchantValueResponse) response.setFailure(String.format("%s is not allowed", enchantData.getCleanName()));
+            return (EnchantValueResponse) response.setFailure(LangEntry.MARKET_ItemIsBanned.get(getMain(), enchantData.getName()));
 
 
         // Get itemstack enchantments
@@ -508,16 +509,17 @@ public class EnchantManager extends ItemManager {
 
         // Check stored enchants contain given enchant
         if (!itemStackEnchants.containsKey(enchantment))
-            return (EnchantValueResponse) response.setFailure(String.format("%s does not have enchant %s", itemCleanName, enchantData.getCleanName()));
+            return (EnchantValueResponse) response.setFailure(LangEntry.MARKET_ItemIsNotEnchanted.get(getMain(), itemCleanName, enchantData.getName()));
 
 
         // Get enchantment stack level
         int itemStackEnchantLevel = itemStackEnchants.get(enchantment);
         int bookLevel = MarketableEnchant.levelsToBooks(itemStackEnchantLevel - levelsToSell, itemStackEnchantLevel);
 
+
         // Check enough levels to sell
         if (itemStackEnchantLevel < levelsToSell)
-            return (EnchantValueResponse) response.setFailure(String.format("%s does not have enough levels(%d/%d)", itemCleanName, itemStackEnchantLevel, levelsToSell));
+            return (EnchantValueResponse) response.setFailure(LangEntry.MARKET_ItemNotEnoughLevels.get(getMain(), itemCleanName, itemStackEnchantLevel, levelsToSell));
 
 
         // Get value
@@ -527,7 +529,7 @@ public class EnchantManager extends ItemManager {
 
         // Value equal or less than 0, return saturation
         if (value <= 0)
-            return (EnchantValueResponse) response.setFailure(String.format("%s is worthless", enchantData.getCleanName()));
+            return (EnchantValueResponse) response.setFailure(LangEntry.MARKET_ItemIsWorthless.get(getMain(), enchantData.getName()));
 
 
         return response;
