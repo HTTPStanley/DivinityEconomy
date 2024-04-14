@@ -2,6 +2,7 @@ package me.edgrrrr.de.market.exp;
 
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.config.Setting;
+import me.edgrrrr.de.lang.LangEntry;
 import me.edgrrrr.de.market.MarketableToken;
 import me.edgrrrr.de.market.TokenManager;
 import me.edgrrrr.de.response.ValueResponse;
@@ -50,7 +51,7 @@ public class ExpManager extends TokenManager {
                 saveItems();
             }
         };
-        this.saveTimer.runTaskTimerAsynchronously(this.getMain(), timer, timer);
+        this.saveTimer.runTaskTimerAsynchronously(getMain(), timer, timer);
         this.loadItems();
         this.loadAliases();
     }
@@ -83,27 +84,27 @@ public class ExpManager extends TokenManager {
     public ValueResponse getBuyValue(long amount) {
         // Check that the experience is valid
         if (amount <= 0) {
-            return new ValueResponse(0, EconomyResponse.ResponseType.FAILURE, "invalid experience value");
+            return new ValueResponse(0, EconomyResponse.ResponseType.FAILURE, LangEntry.EXPERIENCE_InvalidAmount.get(getMain()));
         }
 
         Exp exp = this.getExperience();
         // Check that experience is not banned
         if (!exp.getAllowed()) {
-            return new ValueResponse(0, EconomyResponse.ResponseType.FAILURE, "experience is banned");
+            return new ValueResponse(0, EconomyResponse.ResponseType.FAILURE, LangEntry.EXPERIENCE_IsBanned.get(getMain()));
         }
 
         // Check that the requested amount of experience is available to buy
         if (amount > exp.getQuantity()) {
-            return new ValueResponse(0, EconomyResponse.ResponseType.FAILURE, "not enough experience to buy");
+            return new ValueResponse(0, EconomyResponse.ResponseType.FAILURE, LangEntry.EXPERIENCE_NotEnoughExperienceToBuy.get(getMain()));
         }
 
         // Calculate the value of the experience
         double price = this.calculatePrice(amount, exp.getQuantity(), this.buyScale, true);
         if (price < 0) {
-            return new ValueResponse(0, EconomyResponse.ResponseType.FAILURE, "market is saturated");
+            return new ValueResponse(0, EconomyResponse.ResponseType.FAILURE, LangEntry.EXPERIENCE_IsWorthless.get(getMain()));
         }
 
-        return new ValueResponse(price, EconomyResponse.ResponseType.SUCCESS, "success");
+        return new ValueResponse(price, EconomyResponse.ResponseType.SUCCESS, "");
     }
 
 
@@ -125,7 +126,7 @@ public class ExpManager extends TokenManager {
     public ValueResponse getSellValue(long amount, Player player) {
         // Check that the player has enough experience to sell
         if (amount > getPlayerExp(player)) {
-            return new ValueResponse(0, EconomyResponse.ResponseType.FAILURE, "not enough experience to sell");
+            return new ValueResponse(0, EconomyResponse.ResponseType.FAILURE, LangEntry.EXPERIENCE_NotEnoughExperienceToSell.get(getMain()));
         }
 
         return this.getSellValue(amount);
@@ -140,22 +141,22 @@ public class ExpManager extends TokenManager {
     public ValueResponse getSellValue(long amount) {
         // Check that the experience is valid
         if (amount <= 0) {
-            return new ValueResponse(0, EconomyResponse.ResponseType.FAILURE, "invalid experience value");
+            return new ValueResponse(0, EconomyResponse.ResponseType.FAILURE, LangEntry.EXPERIENCE_InvalidAmount.get(getMain()));
         }
 
         Exp exp = this.getExperience();
         // Check that experience is not banned
         if (!exp.getAllowed()) {
-            return new ValueResponse(0, EconomyResponse.ResponseType.FAILURE, "experience is banned");
+            return new ValueResponse(0, EconomyResponse.ResponseType.FAILURE, LangEntry.EXPERIENCE_IsBanned.get(getMain()));
         }
 
         // Check that the requested amount of experience is available to sell
         double price = this.calculatePrice(amount, exp.getQuantity(), this.sellScale, false);
         if (price < 0) {
-            return new ValueResponse(0, EconomyResponse.ResponseType.FAILURE, "market is saturated");
+            return new ValueResponse(0, EconomyResponse.ResponseType.FAILURE, LangEntry.EXPERIENCE_IsWorthless.get(getMain()));
         }
 
-        return new ValueResponse(price, EconomyResponse.ResponseType.SUCCESS, "success");
+        return new ValueResponse(price, EconomyResponse.ResponseType.SUCCESS, "");
     }
 
 
@@ -203,7 +204,7 @@ public class ExpManager extends TokenManager {
 
     @Override
     public MarketableToken loadItem(String ID, ConfigurationSection data, ConfigurationSection defaultData) {
-        return new Exp(this.getMain(), this, ID, data, defaultData);
+        return new Exp(getMain(), this, ID, data, defaultData);
     }
 
     // Calculate amount of EXP needed to level up
