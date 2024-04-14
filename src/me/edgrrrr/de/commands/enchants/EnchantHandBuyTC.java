@@ -38,12 +38,12 @@ public class EnchantHandBuyTC extends DivinityCommandEnchantTC {
         String[] strings;
         ItemStack heldItem = PlayerManager.getHeldItem(sender, new ItemStack(Material.AIR, 0));
         switch (args.length) {
-            case 1 -> strings = this.getMain().getEnchMan().getCompatibleEnchants(heldItem, args[0]);
+            case 1 -> strings = getMain().getEnchMan().getCompatibleEnchants(heldItem, args[0]);
             case 2 -> {
-                strings = this.getMain().getEnchMan().getUpgradeValueString(heldItem, args[0]);
+                strings = getMain().getEnchMan().getUpgradeValueString(heldItem, args[0]);
             }
             case 3 -> {
-                strings = new String[]{this.getMain().getEnchMan().getBuyValueString(heldItem, args[0], Converter.getInt(args[1]))};
+                strings = new String[]{getMain().getEnchMan().getBuyValueString(heldItem, args[0], Converter.getInt(args[1]))};
             }
             default -> strings = new String[0];
         }
