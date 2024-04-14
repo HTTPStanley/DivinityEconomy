@@ -3,6 +3,7 @@ package me.edgrrrr.de.commands.mail;
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.commands.DivinityCommand;
 import me.edgrrrr.de.config.Setting;
+import me.edgrrrr.de.lang.LangEntry;
 import me.edgrrrr.de.mail.Mail;
 import me.edgrrrr.de.mail.MailList;
 import me.edgrrrr.de.utils.Converter;
@@ -45,32 +46,32 @@ public class ReadMail extends DivinityCommand {
                 break;
 
             default:
-                this.getMain().getConsole().usage(sender, CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
+                getMain().getConsole().usage(sender, LangEntry.GENERIC_InvalidNumberOfArguments.get(getMain()), this.help.getUsages());
                 return true;
         }
         if (page < 0) {
-            this.getMain().getConsole().usage(sender, "Invalid page.", this.help.getUsages());
+            getMain().getConsole().usage(sender, LangEntry.MAIL_InvalidPage.get(getMain()), this.help.getUsages());
 
         } else {
 
-            MailList mailList = this.getMain().getMailMan().getMailList(sender.getUniqueId().toString());
+            MailList mailList = getMain().getMailMan().getMailList(sender.getUniqueId().toString());
 
             if (mailList.getAllMail().isEmpty()) {
-                this.getMain().getConsole().warn(sender, "You have no mail.");
+                getMain().getConsole().warn(sender, LangEntry.MAIL_YouHaveNoMail.get(getMain()));
             } else {
                 Map<Integer, Mail[]> mailPages = mailList.getPages(pageSize);
 
                 if ((page + 1) > mailPages.size()) {
-                    this.getMain().getConsole().warn(sender, "Invalid page. Choose a number up to %s", mailPages.size());
+                    getMain().getConsole().warn(sender, LangEntry.MAIL_InvalidPageChoose.get(getMain()), mailPages.size());
                 } else {
                     Mail[] mailPage = mailPages.get(page);
-                    this.getMain().getConsole().info(sender, "Mail List (%s / %s)", (page + 1), mailPages.size());
+                    getMain().getConsole().info(sender, LangEntry.MAIL_List.get(getMain()), (page + 1), mailPages.size());
                     int idx = 1;
                     for (Mail mail : mailPage) {
                         if (mail == null) {
                             break;
                         }
-                        this.getMain().getConsole().info(sender, "%s: %s", idx, mail.getMessage());
+                        getMain().getConsole().info(sender, "%s: %s", idx, mail.getMessage());
                         mail.setRead(true);
                         idx += 1;
                     }
