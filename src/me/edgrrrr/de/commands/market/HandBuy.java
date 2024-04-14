@@ -3,6 +3,7 @@ package me.edgrrrr.de.commands.market;
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.commands.DivinityCommandMaterials;
 import me.edgrrrr.de.config.Setting;
+import me.edgrrrr.de.lang.LangEntry;
 import me.edgrrrr.de.market.items.materials.MarketableMaterial;
 import me.edgrrrr.de.market.items.materials.MaterialValueResponse;
 import me.edgrrrr.de.player.PlayerManager;
@@ -46,13 +47,13 @@ public class HandBuy extends DivinityCommandMaterials {
                 break;
 
             default:
-                this.getMain().getConsole().usage(sender, CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
+                getMain().getConsole().usage(sender, LangEntry.GENERIC_InvalidNumberOfArguments.get(getMain()), this.help.getUsages());
                 return true;
         }
 
         // Ensure amount given is greater than 0
         if (amountToBuy < 1) {
-            this.getMain().getConsole().send(sender, CommandResponse.InvalidAmountGiven.defaultLogLevel, CommandResponse.InvalidAmountGiven.message);
+            getMain().getConsole().send(sender, LangEntry.GENERIC_InvalidAmountGiven.logLevel, LangEntry.GENERIC_InvalidAmountGiven.get(getMain()));
             return true;
         }
 
@@ -61,22 +62,22 @@ public class HandBuy extends DivinityCommandMaterials {
 
         // Ensure user is holding an item
         if (heldItem == null) {
-            this.getMain().getConsole().send(sender, CommandResponse.InvalidAmountGiven.defaultLogLevel, CommandResponse.InvalidItemHeld.message);
+            getMain().getConsole().send(sender, LangEntry.GENERIC_InvalidAmountGiven.logLevel, LangEntry.MARKET_InvalidItemHeld.get(getMain()));
             return true;
         }
 
-        MarketableMaterial marketableMaterial = this.getMain().getMarkMan().getItem(heldItem);
+        MarketableMaterial marketableMaterial = getMain().getMarkMan().getItem(heldItem);
         int availableSpace = marketableMaterial.getAvailableSpace(sender);
 
         // Ensure user has inventory space
         if (amountToBuy > availableSpace) {
-            this.getMain().getConsole().logFailedPurchase(sender, amountToBuy, marketableMaterial.getCleanName(), String.format(CommandResponse.InvalidInventorySpace.message, availableSpace, amountToBuy));
+            getMain().getConsole().logFailedPurchase(sender, amountToBuy, marketableMaterial.getName(), String.format(LangEntry.MARKET_InvalidInventorySpace.get(getMain()), availableSpace, amountToBuy));
             return true;
         }
 
         // Ensure market has enough
         if (!marketableMaterial.has(amountToBuy)) {
-            this.getMain().getConsole().logFailedPurchase(sender, amountToBuy, marketableMaterial.getCleanName(), String.format(CommandResponse.InvalidStockAmount.message, marketableMaterial.getQuantity(), amountToBuy));
+            getMain().getConsole().logFailedPurchase(sender, amountToBuy, marketableMaterial.getName(), String.format(LangEntry.MARKET_InvalidStockAmount.get(getMain()), marketableMaterial.getQuantity(), amountToBuy));
             return true;
         }
 
@@ -84,7 +85,7 @@ public class HandBuy extends DivinityCommandMaterials {
         // Get value of item stacks
         // Remove value from user
         MaterialValueResponse priceResponse = marketableMaterial.getManager().getBuyValue(marketableMaterial.getItemStacks(amountToBuy));
-        EconomyResponse saleResponse = this.getMain().getEconMan().remCash(sender, priceResponse.getValue());
+        EconomyResponse saleResponse = getMain().getEconMan().remCash(sender, priceResponse.getValue());
 
         // If user can afford & valuation was success
         if (saleResponse.transactionSuccess() && priceResponse.isSuccess()) {
@@ -92,12 +93,12 @@ public class HandBuy extends DivinityCommandMaterials {
             marketableMaterial.getManager().editQuantity(marketableMaterial, -priceResponse.getQuantity());
 
             // Handles console, message and mail
-            this.getMain().getConsole().logPurchase(sender, priceResponse.getQuantity(), saleResponse.amount, marketableMaterial.getCleanName());
+            getMain().getConsole().logPurchase(sender, priceResponse.getQuantity(), saleResponse.amount, marketableMaterial.getName());
         }
 
         // Else return error message
         else {
-            String errorMessage = CommandResponse.UnknownError.message;
+            String errorMessage = LangEntry.GENERIC_UnknownError.get(getMain());
             if (!saleResponse.transactionSuccess()) {
                 errorMessage = saleResponse.errorMessage;
             } else if (priceResponse.isFailure()) {
@@ -105,7 +106,7 @@ public class HandBuy extends DivinityCommandMaterials {
             }
 
             // Handles console, message and mail
-            this.getMain().getConsole().logFailedPurchase(sender, priceResponse.getQuantity(), marketableMaterial.getCleanName(), errorMessage);
+            getMain().getConsole().logFailedPurchase(sender, priceResponse.getQuantity(), marketableMaterial.getName(), errorMessage);
         }
         return true;
     }
