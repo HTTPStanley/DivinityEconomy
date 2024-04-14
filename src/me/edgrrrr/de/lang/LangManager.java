@@ -11,10 +11,11 @@ import java.util.Collections;
 
 enum ProvidedLangFiles {
     en_GB("en_GB.yml"), // English - UK
-    en_US("en_US.yml"), // English - US
     fr_FR("fr_FR.yml"), // French - France
-    fi_FI("fi_FI.yml"), // Finnish - Finland
-
+    de_DE("de_DE.yml"), // German - Germany
+    es_ES("es_ES.yml"), // Spanish - Spain
+    it_IT("it_IT.yml"), // Italian - Italy
+    ru_RU("ru_RU.yml"), // Russian - Russia
 
     ; // End of enum
 
