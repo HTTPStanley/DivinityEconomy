@@ -4,6 +4,7 @@ import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.commands.DivinityCommand;
 import me.edgrrrr.de.config.Setting;
 import me.edgrrrr.de.console.LogLevel;
+import me.edgrrrr.de.lang.LangEntry;
 import me.edgrrrr.de.market.items.materials.MarketableMaterial;
 import me.edgrrrr.de.utils.ArrayUtils;
 import me.edgrrrr.de.utils.Converter;
@@ -92,7 +93,7 @@ public class ItemList extends DivinityCommand {
                     stock = true;
                     alpha = false;
                 } else {
-                    this.getMain().getConsole().usage(sender, CommandResponse.InvalidArguments.message, this.help.getUsages());
+                    getMain().getConsole().usage(sender, LangEntry.GENERIC_InvalidArguments.get(getMain()), this.help.getUsages());
                     return true;
                 }
 
@@ -109,12 +110,12 @@ public class ItemList extends DivinityCommand {
                 break;
 
             default:
-                this.getMain().getConsole().usage(sender, CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
+                getMain().getConsole().usage(sender, LangEntry.GENERIC_InvalidNumberOfArguments.get(getMain()), this.help.getUsages());
                 return true;
         }
 
         // Item names
-        Set<String> itemNames = this.getMain().getMarkMan().searchItemNames(itemName);
+        Set<String> itemNames = getMain().getMarkMan().searchItemNames(itemName);
         if (itemName.equals("")) itemName = "*";
 
         // If value
@@ -123,9 +124,9 @@ public class ItemList extends DivinityCommand {
             // Place all name-value pairs into map
             Map<String, Double> itemValues = new ConcurrentHashMap<>();
             for (String i : itemNames) {
-                MarketableMaterial material = this.getMain().getMarkMan().getItem(i);
+                MarketableMaterial material = getMain().getMarkMan().getItem(i);
 
-                itemValues.put(material.getCleanName(), material.getManager().getBuyValue(material.getItemStack(1), 1).getValue());
+                itemValues.put(material.getName(), material.getManager().getBuyValue(material.getItemStack(1), 1).getValue());
             }
 
             // Sort map by entry value
@@ -136,7 +137,7 @@ public class ItemList extends DivinityCommand {
             Map<Integer, List<Object>> itemPages = ArrayUtils.paginator(sortedArray.toArray(new Map.Entry[0]), 10);
             // Ensure page number fits within item pages
             if (pageNumber > itemPages.size() - 1 || pageNumber < 0) {
-                this.getMain().getConsole().send(sender, CommandResponse.InvalidAmountGiven.defaultLogLevel, CommandResponse.InvalidAmountGiven.message);
+                getMain().getConsole().send(sender, LangEntry.GENERIC_InvalidAmountGiven.logLevel, LangEntry.GENERIC_InvalidAmountGiven.get(getMain()));
                 return true;
             }
 
@@ -144,18 +145,18 @@ public class ItemList extends DivinityCommand {
             List<Map.Entry<String, Double>> page = new ArrayList<>();
             itemPages.get(pageNumber).forEach(obj -> page.add((Map.Entry<String, Double>) obj));
 
-            this.getMain().getConsole().info(sender, "===ItemList: '%s' (%s/%s)===", itemName, pageNumber + 1, itemPages.keySet().size());
-            this.getMain().getConsole().warn(sender, "Ascending Order: %s", ascending);
-            this.getMain().getConsole().warn(sender, "Order By: Price");
-            page.forEach(entry -> this.getMain().getConsole().send(sender, LogLevel.INFO, " -%s: %s", entry.getKey(), this.getMain().getConsole().formatMoney(entry.getValue())));
+            getMain().getConsole().info(sender, LangEntry.ITEMLIST_Header.get(getMain()), itemName, pageNumber + 1, itemPages.keySet().size());
+            getMain().getConsole().warn(sender, LangEntry.ITEMLIST_AscendingOrder.get(getMain()), ascending);
+            getMain().getConsole().warn(sender, LangEntry.ITEMLIST_OrderBy.get(getMain()), LangEntry.W_price.get(getMain()));
+            page.forEach(entry -> getMain().getConsole().send(sender, LogLevel.INFO, " -%s: %s", entry.getKey(), getMain().getConsole().formatMoney(entry.getValue())));
         } else if (stock) {
 
             // Place all name-stock pairs into map
             Map<String, Integer> itemValues = new ConcurrentHashMap<>();
             for (String i : itemNames) {
-                MarketableMaterial material = this.getMain().getMarkMan().getItem(i);
+                MarketableMaterial material = getMain().getMarkMan().getItem(i);
 
-                itemValues.put(material.getCleanName(), material.getQuantity());
+                itemValues.put(material.getName(), material.getQuantity());
             }
 
             // Sort map by entry value
@@ -166,24 +167,24 @@ public class ItemList extends DivinityCommand {
             Map<Integer, List<Object>> itemPages = ArrayUtils.paginator(sortedArray.toArray(new Map.Entry[0]), 10);
             // Ensure page number fits within item pages
             if (pageNumber > itemPages.size() - 1 || pageNumber < 0) {
-                this.getMain().getConsole().send(sender, CommandResponse.InvalidAmountGiven.defaultLogLevel, CommandResponse.InvalidAmountGiven.message);
+                getMain().getConsole().send(sender, LangEntry.GENERIC_InvalidAmountGiven.logLevel, LangEntry.GENERIC_InvalidAmountGiven.get(getMain()));
                 return true;
             }
 
             List<Map.Entry<String, Integer>> page = new ArrayList<>();
             itemPages.get(pageNumber).forEach(obj -> page.add((Map.Entry<String, Integer>) obj));
-            this.getMain().getConsole().info(sender, "===ItemList: '%s' (%s/%s)===", itemName, pageNumber + 1, itemPages.keySet().size());
-            this.getMain().getConsole().warn(sender, "Ascending Order: %s", ascending);
-            this.getMain().getConsole().warn(sender, "Order By: Stock");
-            page.forEach(entry -> this.getMain().getConsole().send(sender, LogLevel.INFO, " -%s: %s", entry.getKey(), entry.getValue()));
-        } else {
+            getMain().getConsole().info(sender, LangEntry.ITEMLIST_Header.get(getMain()), itemName, pageNumber + 1, itemPages.keySet().size());
+            getMain().getConsole().warn(sender, LangEntry.ITEMLIST_AscendingOrder.get(getMain()), ascending);
+            getMain().getConsole().warn(sender, LangEntry.ITEMLIST_OrderBy.get(getMain()), LangEntry.W_stock.get(getMain()));
+            page.forEach(entry -> getMain().getConsole().send(sender, LogLevel.INFO, " -%s: %s", entry.getKey(), entry.getValue()));
+        } else if (alpha) {
 
             // Place all name-name pairs into map
             Map<String, String> itemValues = new ConcurrentHashMap<>();
             for (String i : itemNames) {
-                MarketableMaterial material = this.getMain().getMarkMan().getItem(i);
+                MarketableMaterial material = getMain().getMarkMan().getItem(i);
 
-                itemValues.put(material.getCleanName(), i);
+                itemValues.put(material.getName(), i);
             }
 
             // Sort map by entry value
@@ -194,16 +195,16 @@ public class ItemList extends DivinityCommand {
             Map<Integer, List<Object>> itemPages = ArrayUtils.paginator(sortedArray.toArray(new Map.Entry[0]), 10);
             // Ensure page number fits within item pages
             if (pageNumber > itemPages.size() - 1 || pageNumber < 0) {
-                this.getMain().getConsole().send(sender, CommandResponse.InvalidAmountGiven.defaultLogLevel, CommandResponse.InvalidAmountGiven.message);
+                getMain().getConsole().send(sender, LangEntry.GENERIC_InvalidAmountGiven.logLevel, LangEntry.GENERIC_InvalidAmountGiven.get(getMain()));
                 return true;
             }
 
             List<Map.Entry<String, String>> page = new ArrayList<>();
             itemPages.get(pageNumber).forEach(obj -> page.add((Map.Entry<String, String>) obj));
-            this.getMain().getConsole().info(sender, "===ItemList: '%s' (%s/%s)===", itemName, pageNumber + 1, itemPages.keySet().size());
-            this.getMain().getConsole().warn(sender, "Ascending Order: %s", !ascending);
-            this.getMain().getConsole().warn(sender, "Order By: Alphabet");
-            page.forEach(entry -> this.getMain().getConsole().send(sender, LogLevel.INFO, " -%s", entry.getKey()));
+            getMain().getConsole().info(sender, LangEntry.ITEMLIST_Header.get(getMain()), itemName, pageNumber + 1, itemPages.keySet().size());
+            getMain().getConsole().warn(sender, LangEntry.ITEMLIST_AscendingOrder.get(getMain()), ascending);
+            getMain().getConsole().warn(sender, LangEntry.ITEMLIST_OrderBy.get(getMain()), LangEntry.W_alphabet.get(getMain()));
+            page.forEach(entry -> getMain().getConsole().send(sender, LogLevel.INFO, " -%s", entry.getKey()));
         }
 
         return true;
