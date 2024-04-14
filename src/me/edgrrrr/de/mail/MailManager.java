@@ -2,6 +2,7 @@ package me.edgrrrr.de.mail;
 
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.DivinityModule;
+import me.edgrrrr.de.lang.LangEntry;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 
@@ -78,7 +79,7 @@ public class MailManager extends DivinityModule {
             mailCount += mailList.getMailIDs().size();
         }
 
-        this.getConsole().info("Loaded %s mail for %s users", mailCount, userCount);
+        this.getConsole().info(LangEntry.MAIL_MailLoaded.get(getMain()), mailCount, userCount);
     }
 
     /**
@@ -144,6 +145,6 @@ public class MailManager extends DivinityModule {
         }
 
         this.saveMailFile();
-        this.getConsole().info("Saved %s mail for %s users", mailCount, userCount);
+        this.getConsole().info(LangEntry.MAIL_MailSaved.get(getMain()), mailCount, userCount);
     }
 }
