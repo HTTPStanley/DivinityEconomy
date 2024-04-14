@@ -2,6 +2,7 @@ package me.edgrrrr.de.economy;
 
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.economy.players.EconomyPlayer;
+import me.edgrrrr.de.lang.LangEntry;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import javax.annotation.Nonnull;
@@ -60,17 +61,17 @@ public abstract class EconomyObject {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            this.config = this.getMain().getConfMan().readFile(this.file);
+            this.config = getMain().getConfMan().readFile(this.file);
         }
 
         // If the file exists
         else if (fileExists) {
-            this.config = this.getMain().getConfMan().readFile(this.file);
+            this.config = getMain().getConfMan().readFile(this.file);
         }
 
         // If the backup file exists and the file doesn't exist
         else {
-            this.config = this.getMain().getConfMan().readFile(this.backupFile);
+            this.config = getMain().getConfMan().readFile(this.backupFile);
         }
 
         // Save the config (Also syncs backup)
@@ -325,16 +326,16 @@ public abstract class EconomyObject {
         try {
             return new BigDecimal(value);
         } catch (NumberFormatException e) {
-            this.getMain().getConsole().warn("File %s has an incorrectly formatted balance.", this.file.getName());
+            getMain().getConsole().warn(LangEntry.ECONOMY_IncorrectlyFormattedBalance.get(getMain()), this.file.getName());
         }
 
         // Try to parse the value as a double
         try {
             BigDecimal decimal = BigDecimal.valueOf(Double.parseDouble(value));
-            this.getMain().getConsole().info("Value recovered successfully for %s.", this.file.getName());
+            getMain().getConsole().info(LangEntry.ECONOMY_RecoveredFile.get(getMain()), this.file.getName());
             return decimal;
         } catch (NumberFormatException e) {
-            this.getMain().getConsole().warn("Could not recover %s, resetting to 0.", this.file.getName());
+            getMain().getConsole().warn(LangEntry.ECONOMY_FailedToRecoverFile.get(getMain()), this.file.getName());
         }
 
 
