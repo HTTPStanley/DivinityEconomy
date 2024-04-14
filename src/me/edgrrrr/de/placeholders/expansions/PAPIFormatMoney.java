@@ -11,6 +11,6 @@ public class PAPIFormatMoney extends DivinityExpansion {
 
     @Override
     public String getResult(OfflinePlayer player, String value) {
-        return this.getMain().getConsole().formatMoney(Double.parseDouble(value.replaceFirst(this.value, "$1")));
+        return getMain().getConsole().formatMoney(Double.parseDouble(value.replaceFirst(this.value, "$1")));
     }
 }
