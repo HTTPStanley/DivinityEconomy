@@ -1,6 +1,7 @@
 package me.edgrrrr.de.market.items.materials.entity;
 
 import me.edgrrrr.de.DEPlugin;
+import me.edgrrrr.de.lang.LangEntry;
 import me.edgrrrr.de.market.items.materials.MaterialValueResponse;
 import me.edgrrrr.de.market.items.materials.MarketableMaterial;
 import me.edgrrrr.de.market.items.materials.MaterialManager;
@@ -48,7 +49,7 @@ public class EntityManager extends MaterialManager {
 
         // If the item data is null, return 0
         if (entityData == null)
-            return (MaterialValueResponse) response.setFailure(String.format("%s cannot be found.", itemStack.getType().name()));
+            return (MaterialValueResponse) response.setFailure(LangEntry.MARKET_ItemCannotBeFound.get(getMain(), itemStack.getType().name()));
 
 
         // Get value and add token to response
@@ -58,12 +59,12 @@ public class EntityManager extends MaterialManager {
 
         // Check item is allowed
         if (!entityData.getAllowed())
-            return (MaterialValueResponse) response.setFailure(String.format("%s is banned.", entityData.getCleanName()));
+            return (MaterialValueResponse) response.setFailure(LangEntry.MARKET_ItemIsBanned.get(getMain(), entityData.getName()));
 
 
         // If value is less than 0, return 0
         if (value <= 0)
-            return (MaterialValueResponse) response.setFailure(String.format("%s is worthless.", entityData.getCleanName()));
+            return (MaterialValueResponse) response.setFailure(LangEntry.MARKET_ItemIsWorthless.get(getMain(), entityData.getName()));
 
 
         // Return value
@@ -87,7 +88,7 @@ public class EntityManager extends MaterialManager {
 
         // If the item data is null, return 0
         if (entityData == null)
-            return (MaterialValueResponse) response.setFailure(String.format("%s cannot be found.", itemStack.getType().name()));
+            return (MaterialValueResponse) response.setFailure(LangEntry.MARKET_ItemCannotBeFound.get(getMain(), itemStack.getType().name()));
 
 
         // Get value and add token to response
@@ -97,12 +98,12 @@ public class EntityManager extends MaterialManager {
 
         // Check if item is banned
         if (!entityData.getAllowed())
-            return (MaterialValueResponse) response.setFailure(String.format("%s is banned.", entityData.getCleanName()));
+            return (MaterialValueResponse) response.setFailure(LangEntry.MARKET_ItemIsBanned.get(getMain(), entityData.getName()));
 
 
         // If value is less than 0, return 0
         if (value <= 0)
-            return (MaterialValueResponse) response.setFailure(String.format("%s is unavailable.", entityData.getCleanName()));
+            return (MaterialValueResponse) response.setFailure(LangEntry.MARKET_ItemIsWorthless.get(getMain(), entityData.getName()));
 
 
         // Return value
@@ -118,6 +119,6 @@ public class EntityManager extends MaterialManager {
      */
     @Override
     public MarketableMaterial loadItem(String ID, ConfigurationSection data, ConfigurationSection defaultData) {
-        return new MarketableEntity(this.getMain(), this, ID, data, defaultData);
+        return new MarketableEntity(getMain(), this, ID, data, defaultData);
     }
 }
