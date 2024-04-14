@@ -176,6 +176,6 @@ public class MarketManager extends DivinityModule {
         if (marketableMaterial == null) {
             return itemStack.getType().name();
         }
-        return marketableMaterial.getCleanName();
+        return marketableMaterial.getName();
     }
 }
