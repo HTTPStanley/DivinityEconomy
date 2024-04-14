@@ -2,6 +2,7 @@ package me.edgrrrr.de.economy.banks;
 
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.utils.LRUCache;
+import me.edgrrrr.de.lang.LangEntry;
 
 import java.io.File;
 import java.io.IOException;
@@ -58,7 +59,7 @@ public class EconomyBankLRUCache extends LRUCache<String, EconomyBank> {
      * @return EconomyBank
      */
     protected EconomyBank ingest(File bankFile) {
-        return new EconomyBank(this.getMain(), bankFile);
+        return new EconomyBank(getMain(), bankFile);
     }
 
 
@@ -73,7 +74,7 @@ public class EconomyBankLRUCache extends LRUCache<String, EconomyBank> {
         try {
             result = bankFile.createNewFile();
         } catch (IOException e) {
-            this.main.getConsole().warn("Failed to create bank file (%s) because %s", bankFile.getAbsolutePath(), e.getMessage());
+            this.main.getConsole().warn(LangEntry.ECONOMY_FailedToCreateBankFile.get(getMain()), bankFile.getAbsolutePath(), e.getMessage());
         }
         return result;
     }
