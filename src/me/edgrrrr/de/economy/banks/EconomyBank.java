@@ -49,7 +49,7 @@ public class EconomyBank extends EconomyObject {
      */
     @Nullable
     public String getOwnerName() {
-        return this.getMain().getPlayMan().getPlayerName((this.getMain().getPlayMan().getPlayer(this.getUUID()))).getName();
+        return getMain().getPlayMan().getPlayerName((getMain().getPlayMan().getPlayer(this.getUUID()))).getName();
     }
 
 
