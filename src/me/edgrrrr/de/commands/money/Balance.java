@@ -3,6 +3,7 @@ package me.edgrrrr.de.commands.money;
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.commands.DivinityCommand;
 import me.edgrrrr.de.config.Setting;
+import me.edgrrrr.de.lang.LangEntry;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
@@ -36,7 +37,7 @@ public class Balance extends DivinityCommand {
 
         switch (args.length) {
             case 1:
-                receiverPlayer = this.getMain().getPlayMan().getPlayer(args[0], false);
+                receiverPlayer = getMain().getPlayMan().getPlayer(args[0], false);
                 break;
 
             default:
@@ -46,11 +47,11 @@ public class Balance extends DivinityCommand {
         }
 
         if (receiverPlayer == null) {
-            this.getMain().getConsole().usage(sender, CommandResponse.InvalidPlayerName.message, this.help.getUsages());
+            getMain().getConsole().usage(sender, LangEntry.GENERIC_InvalidPlayerName.get(getMain()), this.help.getUsages());
             return true;
         }
 
-        this.getMain().getConsole().send(sender, CommandResponse.BalanceResponseOther.defaultLogLevel, CommandResponse.BalanceResponseOther.message, receiverPlayer.getName(), this.getMain().getConsole().getFormattedBalance(receiverPlayer));
+        getMain().getConsole().send(sender, LangEntry.BALANCE_ResponseOther.logLevel, LangEntry.BALANCE_ResponseOther.get(getMain()), receiverPlayer.getName(), getMain().getConsole().getFormattedBalance(receiverPlayer));
         return true;
     }
 
@@ -65,20 +66,20 @@ public class Balance extends DivinityCommand {
         OfflinePlayer player;
         switch (args.length) {
             case 1:
-                player = this.getMain().getPlayMan().getPlayer(args[0], false);
+                player = getMain().getPlayMan().getPlayer(args[0], false);
                 break;
 
             default:
-                this.getMain().getConsole().usage(CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
+                getMain().getConsole().usage(LangEntry.GENERIC_InvalidNumberOfArguments.get(getMain()), this.help.getUsages());
                 return true;
         }
 
         if (player == null) {
-            this.getMain().getConsole().send(CommandResponse.InvalidPlayerName.defaultLogLevel, CommandResponse.InvalidPlayerName.message);
+            getMain().getConsole().send(LangEntry.GENERIC_InvalidPlayerName.logLevel, LangEntry.GENERIC_InvalidPlayerName.get(getMain()));
             return true;
         }
 
-        this.getMain().getConsole().send(CommandResponse.BalanceResponseOther.defaultLogLevel, CommandResponse.BalanceResponseOther.message, player.getName(), this.getMain().getConsole().getFormattedBalance(player));
+        getMain().getConsole().send(LangEntry.BALANCE_ResponseOther.logLevel, LangEntry.BALANCE_ResponseOther.get(getMain()), player.getName(), getMain().getConsole().getFormattedBalance(player));
         return true;
     }
 }
