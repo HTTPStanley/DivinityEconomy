@@ -3,6 +3,7 @@ package me.edgrrrr.de.commands.market;
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.commands.DivinityCommandTC;
 import me.edgrrrr.de.config.Setting;
+import me.edgrrrr.de.lang.LangEntry;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -32,7 +33,7 @@ public class ItemListTC extends DivinityCommandTC {
 
         switch (args.length) {
             case 1:
-                strings.add("name");
+                LangEntry.W_name.addLang(getMain(), strings);
                 break;
 
             case 2:
@@ -45,7 +46,7 @@ public class ItemListTC extends DivinityCommandTC {
                 break;
 
             case 3:
-                strings.add("page-number");
+                LangEntry.W_pagenumber.addLang(getMain(), strings);
                 break;
 
             default:
