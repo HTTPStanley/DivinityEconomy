@@ -3,6 +3,7 @@ package me.edgrrrr.de.commands.enchants;
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.commands.DivinityCommandEnchant;
 import me.edgrrrr.de.config.Setting;
+import me.edgrrrr.de.lang.LangEntry;
 import me.edgrrrr.de.market.items.enchants.MarketableEnchant;
 import org.bukkit.entity.Player;
 
@@ -36,18 +37,18 @@ public class EnchantInfo extends DivinityCommandEnchant {
                 break;
 
             default:
-                this.getMain().getConsole().usage(sender, CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
+                getMain().getConsole().usage(sender, LangEntry.GENERIC_InvalidNumberOfArguments.get(getMain()), this.help.getUsages());
                 return true;
         }
 
-        MarketableEnchant enchantData = this.getMain().getEnchMan().getEnchant(enchantName);
+        MarketableEnchant enchantData = getMain().getEnchMan().getEnchant(enchantName);
         if (enchantData == null) {
-            this.getMain().getConsole().usage(sender, String.format("Unknown Item: %s", enchantName), this.help.getUsages());
+            getMain().getConsole().usage(sender, LangEntry.MARKET_UnknownEnchant.get(getMain(), enchantName), this.help.getUsages());
         } else {
-            this.getMain().getConsole().info(sender, "==[Information for %s]==", enchantData.getCleanName());
-            this.getMain().getConsole().info(sender, "ID: %s", enchantData.getID());
-            this.getMain().getConsole().info(sender, "Current Quantity: %s", enchantData.getQuantity());
-            this.getMain().getConsole().info(sender, "Is Banned: %s", !(enchantData.getAllowed()));
+            getMain().getConsole().info(sender, LangEntry.INFO_InformationFor.get(getMain()), enchantData.getName());
+            getMain().getConsole().info(sender, LangEntry.INFO_ID.get(getMain()), enchantData.getID());
+            getMain().getConsole().info(sender, LangEntry.INFO_CQ.get(getMain()), enchantData.getQuantity());
+            getMain().getConsole().info(sender, LangEntry.INFO_IsBanned.get(getMain()), !(enchantData.getAllowed()));
         }
 
         return true;
