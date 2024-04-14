@@ -2,6 +2,7 @@ package me.edgrrrr.de.market.items.materials.block;
 
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.config.Setting;
+import me.edgrrrr.de.lang.LangEntry;
 import me.edgrrrr.de.market.items.ItemManager;
 import me.edgrrrr.de.market.items.materials.MarketableMaterial;
 import me.edgrrrr.de.market.items.materials.MaterialManager;
@@ -113,13 +114,13 @@ public class BlockManager extends MaterialManager {
 
         // Check if item is enchanted and return failure if so
         if (ItemManager.removeEnchantedItems(new ItemStack[]{itemStack}).length == 0)
-            return (MaterialValueResponse) response.setFailure(String.format("%s is enchanted.", getMarkMan().getName(itemStack)));
+            return (MaterialValueResponse) response.setFailure(LangEntry.MARKET_ItemIsEnchanted.get(getMain(), getMarkMan().getName(itemStack)));
 
 
 
         // Check if the item has a name and return failure if sot
         if ((ItemManager.itemIsNamed(itemStack) || ItemManager.itemHasLore(itemStack)) && this.ignoreNamedItems)
-            return (MaterialValueResponse) response.setFailure(String.format("%s is named or has lore.", getMarkMan().getName(itemStack)));
+            return (MaterialValueResponse) response.setFailure(LangEntry.MARKET_ItemIsNamedOrLored.get(getMain(), getMarkMan().getName(itemStack)));
 
 
         // Get the material data
@@ -128,7 +129,7 @@ public class BlockManager extends MaterialManager {
 
         // If material data is null, return failure
         if (materialData == null)
-            return (MaterialValueResponse) response.setFailure(String.format("%s cannot be found.", itemStack.getType().name()));
+            return (MaterialValueResponse) response.setFailure(LangEntry.MARKET_ItemCannotBeFound.get(getMain(), itemStack.getType().name()));
 
 
         // Get value and add to response
@@ -138,22 +139,22 @@ public class BlockManager extends MaterialManager {
 
         // Check if item is banned
         if (!materialData.getAllowed())
-            return (MaterialValueResponse) response.setFailure(String.format("%s is banned.", materialData.getCleanName()));
+            return (MaterialValueResponse) response.setFailure(LangEntry.MARKET_ItemIsBanned.get(getMain(), materialData.getName()));
 
 
         // If value is equal to 0 or less, return failure
         if (value <= 0)
-            return (MaterialValueResponse) response.setFailure(String.format("%s is worthless.", materialData.getCleanName()));
+            return (MaterialValueResponse) response.setFailure(LangEntry.MARKET_ItemIsWorthless.get(getMain(), materialData.getName()));
 
 
         // Check if item is enchanted and return failure if so
         if (this.getEnchMan().isEnchanted(itemStack))
-            return (MaterialValueResponse) response.setFailure(String.format("%s is enchanted.", materialData.getCleanName()));
+            return (MaterialValueResponse) response.setFailure(LangEntry.MARKET_ItemIsEnchanted.get(getMain(), materialData.getName()));
 
 
         // Check if the item has a name and return failure if so
         if ((ItemManager.itemIsNamed(itemStack) || ItemManager.itemHasLore(itemStack)) && this.ignoreNamedItems)
-            return (MaterialValueResponse) response.setFailure(String.format("%s is named or has lore.", materialData.getCleanName()));
+            return (MaterialValueResponse) response.setFailure(LangEntry.MARKET_ItemIsNamedOrLored.get(getMain(), materialData.getName()));
 
 
         // Return
@@ -178,7 +179,7 @@ public class BlockManager extends MaterialManager {
 
         // If material data is null, return failure
         if (materialData == null)
-            return (MaterialValueResponse) response.setFailure(String.format("%s cannot be found.", itemStack.getType().name()));
+            return (MaterialValueResponse) response.setFailure(LangEntry.MARKET_ItemCannotBeFound.get(getMain(), itemStack.getType().name()));
 
 
         // Get value
@@ -188,12 +189,12 @@ public class BlockManager extends MaterialManager {
 
         // If material is banned, return failure
         if (!materialData.getAllowed())
-            return (MaterialValueResponse) response.setFailure(String.format("%s is banned.", materialData.getCleanName()));
+            return (MaterialValueResponse) response.setFailure(LangEntry.MARKET_ItemIsBanned.get(getMain(), materialData.getName()));
 
 
         // If material is worthless, return failure
         if (value <= 0)
-            return (MaterialValueResponse) response.setFailure(String.format("%s is unavailable.", materialData.getCleanName()));
+            return (MaterialValueResponse) response.setFailure(LangEntry.MARKET_ItemIsWorthless.get(getMain(), materialData.getName()));
 
 
         // Return
@@ -202,6 +203,6 @@ public class BlockManager extends MaterialManager {
 
     @Override
     public MarketableMaterial loadItem(String ID, ConfigurationSection data, ConfigurationSection defaultData) {
-        return new MarketableBlock(this.getMain(), this, ID, data, defaultData);
+        return new MarketableBlock(getMain(), this, ID, data, defaultData);
     }
 }
