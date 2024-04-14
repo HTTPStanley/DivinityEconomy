@@ -3,6 +3,7 @@ package me.edgrrrr.de.commands.mail;
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.commands.DivinityCommand;
 import me.edgrrrr.de.config.Setting;
+import me.edgrrrr.de.lang.LangEntry;
 import me.edgrrrr.de.mail.Mail;
 import me.edgrrrr.de.mail.MailList;
 import org.bukkit.entity.Player;
@@ -35,35 +36,28 @@ public class ClearMail extends DivinityCommand {
     public boolean onPlayerCommand(Player sender, String[] args) {
         boolean clearRead = false;
         boolean clearUnread = false;
+
         switch (args.length) {
             case 1:
                 String arg = args[0].toLowerCase();
-                switch (arg) {
-                    case "all":
-                        clearRead = true;
-                        clearUnread = true;
-                        break;
-
-                    case "read":
-                        clearRead = true;
-                        break;
-
-                    case "unread":
-                        clearUnread = true;
-                        break;
-
-                    default:
-                        this.getMain().getConsole().usage(sender, CommandResponse.InvalidArguments.message, this.help.getUsages());
-                        return true;
+                if (LangEntry.W_all.is(getMain(), arg)) {
+                    clearRead = true;
+                    clearUnread = true;
+                } else if (LangEntry.W_read.is(getMain(), arg)) {
+                    clearRead = true;
+                } else if (LangEntry.W_unread.is(getMain(), arg)) {
+                    clearUnread = true;
+                } else {
+                    getMain().getConsole().usage(sender, LangEntry.GENERIC_InvalidArguments.get(getMain()), this.help.getUsages());
+                    return true;
                 }
                 break;
-
             default:
-                this.getMain().getConsole().usage(sender, CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
+                getMain().getConsole().usage(sender, LangEntry.GENERIC_InvalidNumberOfArguments.get(getMain()), this.help.getUsages());
                 return true;
         }
 
-        MailList mailList = this.getMain().getMailMan().getMailList(sender.getUniqueId().toString());
+        MailList mailList = getMain().getMailMan().getMailList(sender.getUniqueId().toString());
         Map<String, Mail> allMail = mailList.getAllMail();
         ArrayList<String> readMail = mailList.getReadMail();
         ArrayList<String> unreadMail = mailList.getUnreadMail();
@@ -72,7 +66,7 @@ public class ClearMail extends DivinityCommand {
         int unreadMailCleared = 0;
 
         if (allMail.isEmpty()) {
-            this.getMain().getConsole().warn(sender, "You have no mail to clear.");
+            getMain().getConsole().warn(sender, LangEntry.MAIL_NothingToClear.get(getMain()));
         } else {
             if (clearRead) {
                 mailToClear.addAll(readMail);
@@ -86,7 +80,7 @@ public class ClearMail extends DivinityCommand {
             for (String mailID : mailToClear) {
                 mailList.removeMail(mailID);
             }
-            this.getMain().getConsole().info(sender, "Removed %d mail. (%d unread & %d read)", mailToClear.size(), unreadMailCleared, readMailCleared);
+            getMain().getConsole().info(sender, LangEntry.MAIL_Removed.get(getMain()), mailToClear.size(), unreadMailCleared, readMailCleared);
 
         }
         return true;
