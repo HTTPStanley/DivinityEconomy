@@ -3,6 +3,7 @@ package me.edgrrrr.de.commands.market;
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.commands.DivinityCommandMaterials;
 import me.edgrrrr.de.config.Setting;
+import me.edgrrrr.de.lang.LangEntry;
 import me.edgrrrr.de.market.items.materials.MarketableMaterial;
 import me.edgrrrr.de.response.ValueResponse;
 import me.edgrrrr.de.utils.Converter;
@@ -45,14 +46,14 @@ public class Value extends DivinityCommandMaterials {
                 break;
 
             default:
-                this.getMain().getConsole().usage(sender, CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
+                getMain().getConsole().usage(sender, LangEntry.GENERIC_InvalidNumberOfArguments.get(getMain()), this.help.getUsages());
                 return true;
         }
 
         // Ensure given material exists
-        MarketableMaterial marketableMaterial = this.getMain().getMarkMan().getItem(materialName);
+        MarketableMaterial marketableMaterial = getMain().getMarkMan().getItem(materialName);
         if (marketableMaterial == null) {
-            this.getMain().getConsole().send(sender, CommandResponse.InvalidItemName.defaultLogLevel, CommandResponse.InvalidItemName.message, materialName);
+            getMain().getConsole().send(sender, LangEntry.MARKET_InvalidItemName.logLevel, LangEntry.MARKET_InvalidItemName.get(getMain()), materialName);
             return true;
         }
 
@@ -63,17 +64,17 @@ public class Value extends DivinityCommandMaterials {
         ValueResponse sellResponse = marketableMaterial.getManager().getSellValue(itemStacks);
 
         if (buyResponse.isSuccess()) {
-            this.getMain().getConsole().info(sender, "Buy: %d %s costs %s", amount, marketableMaterial.getCleanName(), this.getMain().getConsole().formatMoney(buyResponse.getValue()));
+            getMain().getConsole().info(sender, LangEntry.VALUE_BuyResponse.get(getMain()), amount, marketableMaterial.getName(), getMain().getConsole().formatMoney(buyResponse.getValue()));
 
         } else {
-            this.getMain().getConsole().info(sender, "Couldn't determine buy price of %d %s because %s", amount, marketableMaterial.getCleanName(), buyResponse.getErrorMessage());
+            getMain().getConsole().info(sender, LangEntry.VALUE_BuyFailedResponse.get(getMain()), amount, marketableMaterial.getName(), buyResponse.getErrorMessage());
         }
 
         if (sellResponse.isSuccess()) {
-            this.getMain().getConsole().info(sender, "Sell: %d %s costs %s", amount, marketableMaterial.getCleanName(), this.getMain().getConsole().formatMoney(sellResponse.getValue()));
+            getMain().getConsole().info(sender, LangEntry.VALUE_SellResponse.get(getMain()), amount, marketableMaterial.getName(), getMain().getConsole().formatMoney(sellResponse.getValue()));
 
         } else {
-            this.getMain().getConsole().info(sender, "Couldn't determine sell price of %d %s because %s", amount, marketableMaterial.getCleanName(), sellResponse.getErrorMessage());
+            getMain().getConsole().info(sender, LangEntry.VALUE_SellFailedResponse.get(getMain()), amount, marketableMaterial.getName(), sellResponse.getErrorMessage());
         }
 
         return true;
