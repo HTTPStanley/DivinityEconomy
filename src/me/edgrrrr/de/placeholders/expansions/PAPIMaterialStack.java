@@ -13,7 +13,7 @@ public class PAPIMaterialStack extends DivinityExpansion {
     @Override
     public String getResult(OfflinePlayer player, String value) {
         String material = value.replaceFirst(this.value, "$1");
-        MarketableMaterial marketableMaterial = this.getMain().getMarkMan().getItem(material);
+        MarketableMaterial marketableMaterial = getMain().getMarkMan().getItem(material);
         if (marketableMaterial != null) return String.format("%d", marketableMaterial.getMaterial().getMaxStackSize());
         else return String.format("Unknown material '%s'", material);
     }
