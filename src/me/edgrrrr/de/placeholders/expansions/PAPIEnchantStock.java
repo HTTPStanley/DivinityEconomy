@@ -13,7 +13,7 @@ public class PAPIEnchantStock extends DivinityExpansion {
     @Override
     public String getResult(OfflinePlayer player, String value) {
         String enchant = value.replaceFirst(this.value, "$1");
-        MarketableEnchant enchantData = this.getMain().getEnchMan().getEnchant(enchant);
+        MarketableEnchant enchantData = getMain().getEnchMan().getEnchant(enchant);
         if (enchantData != null) return String.format("%d", enchantData.getQuantity());
         else return String.format("Unknown enchant '%s'", enchant);
     }
