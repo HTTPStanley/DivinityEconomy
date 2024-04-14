@@ -12,6 +12,6 @@ public class PAPIBalanceMath extends DivinityExpansion {
 
     @Override
     public String getResult(OfflinePlayer player, String value) {
-        return this.getMain().getConsole().formatMoney(new Expression(value.replaceFirst(this.value, String.format("%f$1$2", this.getMain().getEconMan().getBalance(player)))).calculate());
+        return getMain().getConsole().formatMoney(new Expression(value.replaceFirst(this.value, String.format("%f$1$2", getMain().getEconMan().getBalance(player)))).calculate());
     }
 }
