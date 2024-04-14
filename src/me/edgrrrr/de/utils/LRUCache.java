@@ -77,7 +77,7 @@ public abstract class LRUCache<K, V> extends ConcurrentHashMap<K, V> {
     private void trim() {
         synchronized (this.orderList) {
             int debloatAmount = this.getDebloatSize();
-            this.getMain().getConsole().debug("Debloating %s objects", debloatAmount);
+            getMain().getConsole().debug("Debloating %s objects", debloatAmount);
             while (debloatAmount > 0) {
                 Object obj = this.orderList.removeLast();
                 if (!this.orderList.contains(obj)) {
@@ -145,10 +145,10 @@ public abstract class LRUCache<K, V> extends ConcurrentHashMap<K, V> {
             result = this.load(key);
             if (result != null) {
                 this.put(key, result); // Could be null
-                this.getMain().getConsole().debug("Loaded %s from storage", key);
+                getMain().getConsole().debug("Loaded %s from storage", key);
             }
         } else {
-            this.getMain().getConsole().debug("Loaded %s from memory", key);
+            getMain().getConsole().debug("Loaded %s from memory", key);
         }
 
         return result;
