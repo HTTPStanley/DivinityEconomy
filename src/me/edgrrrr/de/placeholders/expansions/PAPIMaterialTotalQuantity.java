@@ -11,6 +11,6 @@ public class PAPIMaterialTotalQuantity extends DivinityExpansion {
 
     @Override
     public String getResult(OfflinePlayer player, String value) {
-        return String.format("%d", this.getMain().getMatMan().getTotalItems());
+        return String.format("%d", getMain().getMatMan().getTotalItems());
     }
 }
