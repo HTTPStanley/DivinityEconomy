@@ -3,6 +3,7 @@ package me.edgrrrr.de.commands.experience;
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.commands.DivinityCommandEnchant;
 import me.edgrrrr.de.config.Setting;
+import me.edgrrrr.de.lang.LangEntry;
 import me.edgrrrr.de.market.exp.ExpManager;
 import me.edgrrrr.de.response.ValueResponse;
 import me.edgrrrr.de.utils.Converter;
@@ -39,7 +40,7 @@ public class ExperienceSell extends DivinityCommandEnchant {
                 break;
 
             case 1:
-                if (args[0].equalsIgnoreCase("max")) {
+                if (LangEntry.W_max.is(getMain(), args[0])) {
                     experience = ExpManager.getPlayerExp(sender);
                 } else {
                     experience = Converter.getInt(args[0]);
@@ -47,28 +48,28 @@ public class ExperienceSell extends DivinityCommandEnchant {
                 break;
 
             default:
-                this.getMain().getConsole().usage(sender, CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
+                getMain().getConsole().usage(sender, LangEntry.GENERIC_InvalidNumberOfArguments.get(getMain()), this.help.getUsages());
                 return true;
         }
 
-        experience = Converter.constrainInt(experience, this.getMain().getExpMan().getMinTradableExp(), this.getMain().getExpMan().getMaxTradableExp());
+        experience = Converter.constrainInt(experience, getMain().getExpMan().getMinTradableExp(), getMain().getExpMan().getMaxTradableExp());
 
         // Ensure item valuation was successful
-        ValueResponse valueResponse = this.getMain().getExpMan().getSellValue(experience, sender);
+        ValueResponse valueResponse = getMain().getExpMan().getSellValue(experience, sender);
         if (valueResponse.isFailure()) {
-            this.getMain().getConsole().logFailedSale(sender, experience, "experience", valueResponse.getErrorMessage());
+            getMain().getConsole().logFailedSale(sender, experience, LangEntry.W_experience.get(getMain()), valueResponse.getErrorMessage());
             return true;
         }
 
-        double startingBalance = this.getMain().getEconMan().getBalance(sender);
-        EconomyResponse economyResponse = this.getMain().getEconMan().addCash(sender, valueResponse.getValue());
+        double startingBalance = getMain().getEconMan().getBalance(sender);
+        EconomyResponse economyResponse = getMain().getEconMan().addCash(sender, valueResponse.getValue());
 
         if (!economyResponse.transactionSuccess()) {
-            this.getMain().getConsole().logFailedSale(sender, experience, "experience", economyResponse.errorMessage);
-            this.getMain().getEconMan().setCash(sender, startingBalance);
+            getMain().getConsole().logFailedSale(sender, experience, LangEntry.W_experience.get(getMain()), economyResponse.errorMessage);
+            getMain().getEconMan().setCash(sender, startingBalance);
         } else {
-            this.getMain().getExpMan().remExperience(sender, experience);
-            this.getMain().getConsole().logSale(sender, experience, economyResponse.amount, "experience");
+            getMain().getExpMan().remExperience(sender, experience);
+            getMain().getConsole().logSale(sender, experience, economyResponse.amount, LangEntry.W_experience.get(getMain()));
         }
         return true;
     }
