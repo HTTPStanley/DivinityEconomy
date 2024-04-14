@@ -3,6 +3,7 @@ package me.edgrrrr.de.commands.market;
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.commands.DivinityCommandMaterials;
 import me.edgrrrr.de.config.Setting;
+import me.edgrrrr.de.lang.LangEntry;
 import me.edgrrrr.de.market.items.materials.MarketableMaterial;
 import me.edgrrrr.de.player.PlayerManager;
 import org.bukkit.Material;
@@ -37,19 +38,19 @@ public class HandInfo extends DivinityCommandMaterials {
                 break;
 
             default:
-                this.getMain().getConsole().usage(sender, CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
+                getMain().getConsole().usage(sender, LangEntry.GENERIC_InvalidNumberOfArguments.get(getMain()), this.help.getUsages());
                 return true;
         }
 
         ItemStack heldItem = PlayerManager.getHeldItem(sender, new ItemStack(Material.AIR, 0));
         Material material = heldItem.getType();
-        MarketableMaterial marketableMaterial = this.getMain().getMarkMan().getItem(material.name());
+        MarketableMaterial marketableMaterial = getMain().getMarkMan().getItem(material.name());
 
-        this.getMain().getConsole().info(sender, "==[Information for " + marketableMaterial.getCleanName() + "]==");
-        this.getMain().getConsole().info(sender, "TYPE: " + marketableMaterial.getManager().getType());
-        this.getMain().getConsole().info(sender, "ID: " + marketableMaterial.getID());
-        this.getMain().getConsole().info(sender, "Current Quantity: " + marketableMaterial.getQuantity());
-        this.getMain().getConsole().info(sender, "Is Banned: " + !(marketableMaterial.getAllowed()));
+        getMain().getConsole().info(sender, LangEntry.INFO_InformationFor.get(getMain()), marketableMaterial.getName());
+        getMain().getConsole().info(sender, LangEntry.INFO_TYPE.get(getMain()), marketableMaterial.getManager().getType());
+        getMain().getConsole().info(sender, LangEntry.INFO_ID.get(getMain()), marketableMaterial.getID());
+        getMain().getConsole().info(sender, LangEntry.INFO_CQ.get(getMain()), marketableMaterial.getQuantity());
+        getMain().getConsole().info(sender, LangEntry.INFO_IsBanned.get(getMain()), !(marketableMaterial.getAllowed()));
         return true;
     }
 
