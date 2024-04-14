@@ -15,9 +15,9 @@ public class PAPIMaterialSValue extends DivinityExpansion {
     public String getResult(OfflinePlayer player, String value) {
         String material = value.replaceFirst(this.value, "$1");
         int amount = Converter.getInt(value.replaceFirst(this.value, "$2"));
-        MarketableMaterial marketableMaterial = this.getMain().getMarkMan().getItem(material);
+        MarketableMaterial marketableMaterial = getMain().getMarkMan().getItem(material);
         if (marketableMaterial != null)
-            return this.getMain().getConsole().formatMoney(marketableMaterial.getManager().getSellValue(marketableMaterial.getItemStacks(amount)).getValue());
+            return getMain().getConsole().formatMoney(marketableMaterial.getManager().getSellValue(marketableMaterial.getItemStacks(amount)).getValue());
         else return String.format("Unknown material '%s'", material);
     }
 }
