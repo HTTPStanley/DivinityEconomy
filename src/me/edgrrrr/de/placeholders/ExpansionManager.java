@@ -58,7 +58,7 @@ public class ExpansionManager extends PlaceholderExpansion {
      */
     @Override
     public String getAuthor() {
-        return this.getMain().getDescription().getAuthors().get(0);
+        return getMain().getDescription().getAuthors().get(0);
     }
 
     /**
@@ -83,7 +83,7 @@ public class ExpansionManager extends PlaceholderExpansion {
      */
     @Override
     public String getVersion() {
-        return this.getMain().getDescription().getVersion();
+        return getMain().getDescription().getVersion();
     }
 
     /**
