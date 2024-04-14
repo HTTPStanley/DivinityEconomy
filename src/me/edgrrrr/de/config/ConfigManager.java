@@ -17,12 +17,13 @@ import java.util.List;
  * Console class for sending uniform messages to players and the console.
  */
 public class ConfigManager extends DivinityModule {
+    private static final String configFile = "config.yml";
 
     public ConfigManager(DEPlugin main) {
         super(main);
 
         // Saves the .Jar config to the folder, if it doesn't exist.
-        this.getMain().saveDefaultConfig();
+        getMain().saveDefaultConfig();
     }
 
     /**
@@ -31,17 +32,17 @@ public class ConfigManager extends DivinityModule {
     @Override
     public void init() {
         // Get the config and plugin versions
-        String configVersion = this.getMain().getConfig().getString(Setting.MAIN_VERSION_STRING.path);
-        String pluginVersion = this.getMain().getConfig().getDefaults().getString(Setting.MAIN_VERSION_STRING.path);
+        String configVersion = getMain().getConfig().getString(Setting.MAIN_VERSION_STRING.path);
+        String pluginVersion = getMain().getConfig().getDefaults().getString(Setting.MAIN_VERSION_STRING.path);
 
         this.getConsole().info("Detected config versions local/plugin | %s/%s", configVersion, pluginVersion);
 
         try {
-            ConfigUpdater.update(this.getMain(), "config.yml", this.getFile("config.yml"), Collections.emptyList());
+            ConfigUpdater.update(getMain(), configFile, this.getFile(configFile), Collections.emptyList());
         } catch (IOException e) {
             e.printStackTrace();
         }
-        this.getMain().reloadConfig();
+        getMain().reloadConfig();
     }
 
     /**
@@ -56,56 +57,56 @@ public class ConfigManager extends DivinityModule {
      * Returns a generic object from the config
      */
     public Object get(Setting setting) {
-        return this.getMain().getConfig().get(setting.path, this.getMain().getConfig().getDefaults().get(setting.path));
+        return getMain().getConfig().get(setting.path, getMain().getConfig().getDefaults().get(setting.path));
     }
 
     /**
      * Returns an integer from the config
      */
     public Integer getInt(Setting setting) {
-        return this.getMain().getConfig().getInt(setting.path, this.getMain().getConfig().getDefaults().getInt(setting.path));
+        return getMain().getConfig().getInt(setting.path, getMain().getConfig().getDefaults().getInt(setting.path));
     }
 
     /**
      * Returns a boolean from the config
      */
     public Boolean getBoolean(Setting setting) {
-        return this.getMain().getConfig().getBoolean(setting.path, this.getMain().getConfig().getDefaults().getBoolean(setting.path));
+        return getMain().getConfig().getBoolean(setting.path, getMain().getConfig().getDefaults().getBoolean(setting.path));
     }
 
     /**
      * Returns a double from the config
      */
     public Double getDouble(Setting setting) {
-        return this.getMain().getConfig().getDouble(setting.path, this.getMain().getConfig().getDefaults().getDouble(setting.path));
+        return getMain().getConfig().getDouble(setting.path, getMain().getConfig().getDefaults().getDouble(setting.path));
     }
 
     /**
      * Returns a string from the config
      */
     public String getString(Setting setting) {
-        return this.getMain().getConfig().getString(setting.path, this.getMain().getConfig().getDefaults().getString(setting.path));
+        return getMain().getConfig().getString(setting.path, getMain().getConfig().getDefaults().getString(setting.path));
     }
 
     /**
      * Returns a string list from the config
      */
     public List<String> getStringList(Setting setting) {
-        return this.getMain().getConfig().getStringList(setting.path);
+        return getMain().getConfig().getStringList(setting.path);
     }
 
     /**
      * Sets a setting path to the given value
      */
     public void set(Setting setting, Object value) {
-        this.getMain().getConfig().set(setting.path, value);
+        getMain().getConfig().set(setting.path, value);
     }
 
     /**
      * Returns a file from the root folder
      */
     public File getFile(String file) {
-        return new File(this.getMain().getDataFolder(), file);
+        return new File(getMain().getDataFolder(), file);
     }
 
     /**
@@ -116,7 +117,7 @@ public class ConfigManager extends DivinityModule {
     }
 
     public File getFolder(String folder) {
-        File newFolder = new File(this.getMain().getDataFolder(), folder);
+        File newFolder = new File(getMain().getDataFolder(), folder);
         if (!newFolder.exists()) {
             if (newFolder.mkdir()) return newFolder;
             else return null;
@@ -141,7 +142,7 @@ public class ConfigManager extends DivinityModule {
      * @return FileConfiguration - The file config
      */
     public FileConfiguration readResource(String file) {
-        return YamlConfiguration.loadConfiguration(new InputStreamReader(this.getMain().getResource(file)));
+        return YamlConfiguration.loadConfiguration(new InputStreamReader(getMain().getResource(file)));
     }
 
     /**
@@ -184,7 +185,7 @@ public class ConfigManager extends DivinityModule {
             config.options().copyDefaults(true);
 
             try {
-                config.save(new File(this.getMain().getDataFolder(), file));
+                config.save(new File(getMain().getDataFolder(), file));
             } catch (Exception e) {
                 this.getConsole().severe("Couldn't save config with new values: %s", file);
             }
@@ -201,7 +202,7 @@ public class ConfigManager extends DivinityModule {
      */
     public void saveFile(FileConfiguration file, String fileName) {
         try {
-            file.save(new File(this.getMain().getDataFolder(), fileName));
+            file.save(new File(getMain().getDataFolder(), fileName));
         } catch (Exception e) {
             this.getConsole().severe("Couldn't handle %s: %s", fileName, e.getMessage());
         }
