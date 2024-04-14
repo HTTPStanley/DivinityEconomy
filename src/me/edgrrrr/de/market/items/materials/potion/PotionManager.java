@@ -1,6 +1,7 @@
 package me.edgrrrr.de.market.items.materials.potion;
 
 import me.edgrrrr.de.DEPlugin;
+import me.edgrrrr.de.lang.LangEntry;
 import me.edgrrrr.de.market.items.materials.MaterialValueResponse;
 import me.edgrrrr.de.market.items.materials.MarketableMaterial;
 import me.edgrrrr.de.market.items.materials.MaterialManager;
@@ -44,7 +45,7 @@ public class PotionManager extends MaterialManager {
 
         // If the item data is null, return 0
         if (potionData == null)
-            return (MaterialValueResponse) response.setFailure(String.format("%s cannot be found.", itemStack.getType().name()));
+            return (MaterialValueResponse) response.setFailure(LangEntry.MARKET_ItemCannotBeFound.get(getMain(), itemStack.getType().name()));
 
 
         // Get value and add token to response
@@ -54,12 +55,12 @@ public class PotionManager extends MaterialManager {
 
         // Check item is allowed
         if (!potionData.getAllowed())
-            return (MaterialValueResponse) response.setFailure(String.format("%s is banned.", potionData.getCleanName()));
+            return (MaterialValueResponse) response.setFailure(LangEntry.MARKET_ItemIsBanned.get(getMain(), potionData.getName()));
 
 
         // Check if the market is saturated
         if (value <= 0)
-            return (MaterialValueResponse) response.setFailure(String.format("%s is worthless.", potionData.getCleanName()));
+            return (MaterialValueResponse) response.setFailure(LangEntry.MARKET_ItemIsWorthless.get(getMain(), potionData.getName()));
 
 
         // Return the response
@@ -84,7 +85,7 @@ public class PotionManager extends MaterialManager {
 
         // If the item data is null, return 0
         if (potionData == null)
-            return (MaterialValueResponse) response.setFailure(String.format("%s cannot be found.", itemStack.getType().name()));
+            return (MaterialValueResponse) response.setFailure(LangEntry.MARKET_ItemCannotBeFound.get(getMain(), itemStack.getType().name()));
 
 
         // Get value and add token to response
@@ -94,12 +95,12 @@ public class PotionManager extends MaterialManager {
 
         // Check item is allowed
         if (!potionData.getAllowed())
-            return (MaterialValueResponse) response.setFailure(String.format("%s is banned.", potionData.getCleanName()));
+            return (MaterialValueResponse) response.setFailure(LangEntry.MARKET_ItemIsBanned.get(getMain(), potionData.getName()));
 
 
         // Check if the market is saturated
         if (value <= 0)
-            return (MaterialValueResponse) response.setFailure(String.format("%s is unavailable.", potionData.getCleanName()));
+            return (MaterialValueResponse) response.setFailure(LangEntry.MARKET_ItemIsWorthless.get(getMain(), potionData.getName()));
 
 
         // Return the response
@@ -115,6 +116,6 @@ public class PotionManager extends MaterialManager {
      */
     @Override
     public MarketableMaterial loadItem(String ID, ConfigurationSection data, ConfigurationSection defaultData) {
-        return new MarketablePotion(this.getMain(), this, ID, data, defaultData);
+        return new MarketablePotion(getMain(), this, ID, data, defaultData);
     }
 }
