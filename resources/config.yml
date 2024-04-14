@@ -11,8 +11,8 @@
 #   - Vault Source: https://github.com/milkbowl/Vault
 #   - mxParser Source: https://github.com/mariuszgromada/MathParser.org-mXparser
 #
-# Officially supported versions: 1.20.0
-# API version: 1.16
+# Officially supported versions: 1.20.*
+# API version: 1.17
 #
 # Colours for the chat config can be found here: https://jd.bukkit.org/org/bukkit/ChatColor.html
 # &0 - Black
@@ -54,6 +54,17 @@
 # %de_material_stack_<materialName>              | Returns the max stack size for the material given
 # %de_exp_SValue_<amount>                        | Returns a DE formatted sell value of experience
 # %de_exp_BValue_<amount>                        | Returns a DE formatted buy value of experience
+#
+#
+# Locale files can be found in the DivinityEconomy/locale. We provide the following:
+# - en_GB.yml
+# - fr_FR.yml
+# - de_DE.yml
+# - es_ES.yml
+# - it_IT.yml
+# - ru_RU.yml
+#
+# You can add your own locale files by creating a new file in the locale folder and adding the language to the config.yml. Any missing locale will use default en_GB.yml.
 
 # CONFIG
 # ANY VALUE CAN BE RESET BY DELETING IT
@@ -62,9 +73,14 @@
 # Main Settings
 Main:
   # This is the plugin config version
-  Version: 1.20-RC3.2.1
+  Version: 3.3.0
   # Should placeholder api support be enabled? ( use "true" / "false" )
   Enable PAPI: true
+  # What language file should be used? ( use any string ) | default = en_GB.yml
+  Language File: "en_GB.yml"
+  # Should the plugin include item name translations? ( use "true" / "false" ) | default = false
+  Translate Item Names: false
+
 
 # Chat Settings
 Chat:
