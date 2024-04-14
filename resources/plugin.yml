@@ -1,7 +1,7 @@
 name: DivinityEconomy
 prefix: DivinityEconomy
 main: me.edgrrrr.de.DEPlugin
-version: 1.20RC3.2.1
+version: 3.3.0
 author: EDGRRRR
 description: Divinity Economy - The dynamic global economy plugin.
 api-version: 1.17
@@ -195,11 +195,19 @@ commands:
 
   # Admin commands
   reload:
-    description: "Reloads the plugin."
+    description: "Reloads the respective market file."
     aliases: []
     permission: de.admin.reload
     permission-message: "You do not have the permission to use this command"
-    usage: "/reload"
+    usage: "/reload <materials|enchants|potions|entities|experience|config>"
+
+  save:
+    description: "Saves the respective market file."
+    aliases: []
+    permission: de.admin.save
+    permission-message: "You do not have the permission to use this command"
+    usage: "/save <materials|enchants|potions|entities|experience|config>"
+
 
   editbal:
     description: "Edits the balance of a player."
@@ -221,34 +229,6 @@ commands:
     permission: de.admin.clearbal
     permission-message: "You do not have the permission to use this command"
     usage: "/clearbal <player name>|/clearbal"
-
-  reloadMaterials:
-    description: "Reloads the materials file."
-    aliases: []
-    permission: de.admin.reloadMaterials
-    permission-message: "You do not have the permission to use this command"
-    usage: "/reloadmaterials"
-
-  reloadEnchants:
-    description: "Reloads the enchants file."
-    aliases: []
-    permission: de.admin.reloadEnchants
-    permission-message: "You do not have the permission to use this command"
-    usage: "/reloadenchants"
-
-  saveMaterials:
-    description: "Saves the materials to file."
-    aliases: []
-    permission: de.admin.saveMaterials
-    permission-message: "You do not have the permission to use this command"
-    usage: "/savematerials"
-
-  saveEnchants:
-    description: "Saves the enchants to file."
-    aliases: []
-    permission: de.admin.saveEnchants
-    permission-message: "You do not have the permission to use this command"
-    usage: "/saveenchants"
 
   setValue:
     description: "Sets the value of an item"
