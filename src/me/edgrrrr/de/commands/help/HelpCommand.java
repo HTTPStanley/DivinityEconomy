@@ -4,6 +4,7 @@ import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.commands.DivinityCommand;
 import me.edgrrrr.de.config.Setting;
 import me.edgrrrr.de.help.Help;
+import me.edgrrrr.de.lang.LangEntry;
 import me.edgrrrr.de.utils.Converter;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -54,21 +55,21 @@ public class HelpCommand extends DivinityCommand {
                 break;
 
             default:
-                this.getMain().getConsole().usage(sender, CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
+                getMain().getConsole().usage(sender, LangEntry.GENERIC_InvalidNumberOfArguments.get(getMain()), this.help.getUsages());
                 break;
         }
 
         // Get help
-        Help help = this.getMain().getHelpMan().get(term);
+        Help help = getMain().getHelpMan().get(term);
 
         // If help is not null, show help
         if (help != null) {
-            this.getMain().getConsole().help(sender, help.getCommand(), help.getDescription(), help.getUsages(), help.getAliases());
+            getMain().getConsole().help(sender, help.getCommand(), help.getDescription(), help.getUsages(), help.getAliases());
             return true;
         }
 
         // Else get pages based on search term
-        Map<Integer, List<Help>> helpPages = this.getMain().getHelpMan().getPages(term);
+        Map<Integer, List<Help>> helpPages = getMain().getHelpMan().getPages(term);
 
         // If page number is 0, set to 1
         if (pageNumber == 0) {
@@ -95,31 +96,31 @@ public class HelpCommand extends DivinityCommand {
 
     public void showPage(Player sender, int pageNumber, int maxPages, String term, List<Help> help) {
         // Define title
-        String title = "%s[== Help page %s/%s %s==]";
+        String title = LangEntry.HELP_Header.get(getMain());
         String pageNumberString = String.format("%s%s%s", ChatColor.AQUA, pageNumber, ChatColor.GREEN);
         String maxPagesString = String.format("%s%s%s", ChatColor.AQUA, maxPages, ChatColor.GREEN);
 
         // Show help without search term
         if (term.isEmpty()) {
-            this.getMain().getConsole().info(sender, title, ChatColor.GREEN, pageNumberString, maxPagesString, ChatColor.GREEN);
+            getMain().getConsole().info(sender, title, ChatColor.GREEN, pageNumberString, maxPagesString, ChatColor.GREEN);
         }
 
         // Show help with search term
         else {
             String termString = String.format("%s'%s'%s", ChatColor.AQUA, term, ChatColor.GREEN);
-            this.getMain().getConsole().info(sender, title, ChatColor.GREEN, pageNumberString, maxPagesString, termString);
+            getMain().getConsole().info(sender, title, ChatColor.GREEN, pageNumberString, maxPagesString, termString);
         }
 
         // Padding
-        this.getMain().getConsole().info(sender, "");
+        getMain().getConsole().info(sender, "");
 
         // Show help
         if (help.isEmpty()) {
-            this.getMain().getConsole().info(sender, "No help found.");
+            getMain().getConsole().info(sender, LangEntry.HELP_NoneFound.get(getMain()));
             return;
         }
         for (Help helpCom : help) {
-            this.getMain().getConsole().info(sender, "%s%s%s: %s%s", ChatColor.AQUA, helpCom.getCommand(), ChatColor.WHITE, ChatColor.GREEN, helpCom.getDescription(64));
+            getMain().getConsole().info(sender, "%s%s%s: %s%s", ChatColor.AQUA, helpCom.getCommand(), ChatColor.WHITE, ChatColor.GREEN, helpCom.getDescription(64));
         }
     }
 
