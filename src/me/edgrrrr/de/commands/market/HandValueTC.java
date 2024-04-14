@@ -3,6 +3,7 @@ package me.edgrrrr.de.commands.market;
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.commands.DivinityCommandMaterialsTC;
 import me.edgrrrr.de.config.Setting;
+import me.edgrrrr.de.lang.LangEntry;
 import me.edgrrrr.de.market.items.materials.MarketableMaterial;
 import me.edgrrrr.de.player.PlayerManager;
 import org.bukkit.entity.Player;
@@ -37,9 +38,9 @@ public class HandValueTC extends DivinityCommandMaterialsTC {
         String[] strings = new String[0];
         ItemStack heldItem = PlayerManager.getHeldItem(sender);
         if (heldItem == null) {
-            strings = new String[]{"You are not holding any item."};
+            strings = new String[]{LangEntry.MARKET_YouAreNotHoldingAnItem.get(getMain())};
         } else {
-            MarketableMaterial marketableMaterial = this.getMain().getMarkMan().getItem(heldItem);
+            MarketableMaterial marketableMaterial = getMain().getMarkMan().getItem(heldItem);
             // 1 args
             // return max stack size for the material given
             if (args.length == 1) {
