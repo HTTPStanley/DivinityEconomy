@@ -1,0 +1,249 @@
+# Italiano - Italia
+# Versione: 1.0
+
+# Risposte generiche ai comandi
+GENERIC_PluginEnabled: "Plugin attivato"
+GENERIC_PluginDisabled: "Plugin disattivato"
+GENERIC_EconomyNotEnabled: "Economia non attivata. Spegnimento in corso."
+GENERIC_EconomyEnabled: "Economia attivata. Fornitore: %s" # %s = fornitore
+GENERIC_PAPIEnabled: "PlaceholderAPI trovato e attivato, registrati %s segnaposto." # %s = quantità
+GENERIC_PAPINotEnabled: "PlaceholderAPI trovato ma non attivato, disabilitazione espansioni."
+GENERIC_PAPINotFound: "PlaceholderAPI non trovato, disabilitazione espansioni."
+GENERIC_ConsoleCommandIsDisabled: "Questo comando è disabilitato."
+GENERIC_ConsoleSupportNotAdded: "Questo comando non supporta l'uso da console."
+GENERIC_PlayerCommandIsDisabled: "Questo comando è disabilitato."
+GENERIC_ErrorOnCommand: "Si è verificato un errore nell'esecuzione del comando (%s): %s" # %s = comando, %s = errore
+GENERIC_InvalidNumberOfArguments: "Numero di argomenti non valido."
+GENERIC_InvalidArguments: "Argomenti non validi."
+GENERIC_InvalidPlayerName: "Nome giocatore non valido."
+GENERIC_InvalidAmountGiven: "Quantità fornita non valida."
+GENERIC_UnknownError: "Si è verificato un errore sconosciuto."
+GENERIC_IncorrectCommandUsage: "Uso del comando non corretto: %s" # %s = uso corretto
+GENERIC_CommandUsage: "Uso del comando: %s" # %s = uso corretto
+GENERIC_HelpFor: "Aiuto per %s" # %s = comando
+GENERIC_Description: "Descrizione: %s" # %s = descrizione
+GENERIC_Usages: "Usi: %s" # %s = usi
+GENERIC_Aliases: "Alias: %s" # %s = alias
+GENERIC_FileSaved: "%s salvato." # %s = nome file
+
+# Descrizione
+DESCRIBE_Header: "===Descrivi==="
+DESCRIBE_Settings: "Impostazioni:"
+DESCRIBE_Markets: "Mercati:"
+DESCRIBE_Materials: "   - Materiali: %s" # %s = conteggio materiali
+DESCRIBE_MaterialMarketSize: "   - Dimensione Mercato Materiali: %s / %s" # %s = dimensione mercato materiali / dimensione predefinita mercato materiali
+DESCRIBE_MaterialMarketInflation: "   - Inflazione Mercato Materiali: %s" # %s = inflazione mercato materiali
+DESCRIBE_Enchants: "   - Incantesimi: %s" # %s = conteggio incantesimi
+DESCRIBE_EnchantMarketSize: "   - Dimensione Mercato Incantesimi: %s / %s" # %s = dimensione mercato incantesimi / dimensione predefinita mercato incantesimi
+DESCRIBE_EnchantMarketInflation: "   - Inflazione Mercato Incantesimi: %s" # %s = inflazione mercato incantesimi
+DESCRIBE_Experience: "   - Esperienza: %s" # %s = conteggio esperienza
+DESCRIBE_ExperienceMarketSize: "   - Dimensione Mercato Esperienza: %s / %s" # %s = dimensione mercato esperienza / dimensione predefinita mercato esperienza
+DESCRIBE_ExperienceMarketInflation: "   - Inflazione Mercato Esperienza: %s" # %s = inflazione mercato esperienza
+DESCRIBE_Entities: "   - Entità: %s" # %s = conteggio entità
+DESCRIBE_EntitiesMarketSize: "   - Dimensione Mercato Entità: %s / %s" # %s = dimensione mercato entità / dimensione predefinita mercato entità
+DESCRIBE_EntitiesMarketInflation: "   - Inflazione Mercato Entità: %s" # %s = inflazione mercato entità
+DESCRIBE_Potions: "   - Pozioni: %s" # %s = conteggio pozioni
+DESCRIBE_PotionsMarketSize: "   - Dimensione Mercato Pozioni: %s / %s" # %s = dimensione mercato pozioni / dimensione predefinita mercato pozioni
+DESCRIBE_PotionsMarketInflation: "   - Inflazione Mercato Pozioni: %s" # %s = inflazione mercato pozioni
+
+# Baltop
+BALTOP_NothingToDisplay: "Niente da mostrare."
+BALTOP_LastOrderedAt: "Ultimo ordinamento: %s"
+BALTOP_ServerTotal: "Totale Server: %s"
+BALTOP_YourPositionIs: "La tua posizione è"
+
+# Ricarica
+RELOAD_Response: "Questo comando attualmente non fa nulla. Grazie per averlo provato."
+RELOAD_Enchants: "Incantesimi ricaricati."
+RELOAD_Materials: "Materiali ricaricati."
+RELOAD_Experience: "Esperienza ricaricata."
+RELOAD_Config: "Configurazione ricaricata."
+RELOAD_Potions: "Pozioni ricaricate."
+RELOAD_Entities: "Entità ricaricate."
+RELOAD_TypeRequired: "Devi specificare un tipo da ricaricare."
+
+
+# Save
+SAVE_Config: "Configurazione salvata."
+SAVE_Enchants: "Incantesimi salvati."
+SAVE_Materials: "Materiali salvati."
+SAVE_Experience: "Esperienza salvata."
+SAVE_Potions: "Pozioni salvate."
+SAVE_Entities: "Entità salvate."
+
+# Ping
+PING_PingResponse: "Pong!"
+
+# Saldo
+BALANCE_Response: "Il tuo saldo è %s." # %s = saldo
+BALANCE_ResponseOther: "Il saldo di %s è %s." # %s = nome giocatore, %s = saldo
+BALANCE_ChangedLog: "Il saldo di %s è cambiato da %s a %s perché %s" # %s = nome giocatore, %s = vecchio saldo, %s = nuovo saldo, %s = motivo
+BALANCE_ChangeFailedLog: "Impossibile modificare il saldo di %s perché %s" # %s = nome giocatore, %s = motivo
+BALANCE_ChangedSourcePlayer: "Hai cambiato il saldo di %s da %s a %s" # %s = nome giocatore, %s = vecchio saldo, %s = nuovo saldo
+BALANCE_ChangedTargetPlayer: "Il tuo saldo è cambiato da %s a %s perché %s" # %s = vecchio saldo, %s = nuovo saldo, %s = motivo
+BALANCE_ClearedByPlayer: "%s ha azzerato il tuo saldo."
+BALANCE_ClearedByConsole: "CONSOLE ha azzerato il tuo saldo."
+BALANCE_ChangedByPlayer: "%s ha cambiato il tuo saldo."
+BALANCE_ChangedByConsole: "CONSOLE ha cambiato il tuo saldo."
+BALANCE_SetByPlayer: "%s ha impostato il tuo saldo."
+BALANCE_SetByConsole: "CONSOLE ha impostato il tuo saldo."
+
+# Acquisto
+PURCHASE_Log: "%s ha acquistato %s %s per %s" # %s = nome giocatore, %s = quantità, %s = nome oggetto, %s = costo
+PURCHASE_FailedLog: "%s non ha potuto acquistare %s %s perché %s" # %s = nome giocatore, %s = quantità, %s = nome oggetto, %s = motivo
+PURCHASE_Response: "Acquistato %s %s per %s" # %s = quantità, %s = nome oggetto, %s = costo
+PURCHASE_FailedResponse: "Non è stato possibile acquistare %s %s perché %s" # %s = quantità, %s = nome oggetto, %s = motivo
+PURCHASE_ValueEnchantFailure: "Impossibile determinare il valore di acquisto di %s incantesimi (%s) perché %s" # %s = quantità, %s = nomi incantesimi, %s = motivo
+PURCHASE_ValueEnchantSummary: "Acquista: il costo degli incantesimi %s è %s" # %s = quantità, %s = costo
+PURCHASE_ValueEnchant: "  -Acquista: %s %s costa %s" # %s = quantità, %s = nome incantesimo, %s = costo
+
+# Vendita
+SALE_Log: "%s ha venduto %s %s per %s" # %s = nome giocatore, %s = quantità, %s = nome oggetto, %s = costo
+SALE_FailedLog: "%s non ha potuto vendere %s %s perché %s" # %s = nome giocatore, %s = quantità, %s = nome oggetto, %s = motivo
+SALE_Response: "Venduto %s %s per %s" # %s = quantità, %s = nome oggetto, %s = costo
+SALE_FailedResponse: "Non è stato possibile vendere %s %s perché %s" # %s = quantità, %s = nome oggetto, %s = motivo
+SALE_ValueEnchantFailure: "Impossibile determinare il valore di vendita di %s incantesimi (%s) perché %s" # %s = quantità, %s = nomi incantesimi, %s = motivo
+SALE_ValueEnchantSummary: "Vendi: il costo degli incantesimi %s è %s" # %s = quantità, %s = costo
+SALE_ValueEnchant: "  -Vendi: %s %s costa %s" # %s = quantità, %s = nome incantesimo, %s = costo
+
+# Valore
+VALUE_BuyResponse: "Acquista: %s %s costa %s" # %s = quantità, %s = nome oggetto, %s = costo
+VALUE_SellResponse: "Vendi: %s %s costa %s" # %s = quantità, %s = nome oggetto, %s = costo
+VALUE_BuyFailedResponse: "Non è stato possibile determinare il valore di acquisto di %s %s perché %s" # %s = quantità, %s = nome oggetto, %s = motivo
+VALUE_SellFailedResponse: "Non è stato possibile determinare il valore di vendita di %s %s perché %s" # %s = quantità, %s = nome oggetto, %s = motivo
+VALUE_Response: "Valore: %s" # %s = valore
+
+# Trasferimento
+TRANSFER_Log: "%s ha trasferito %s a %s" # %s = nome giocatore, %s = quantità, %s = nome giocatore destinatario
+TRANSFER_FailedLog: "%s non ha potuto trasferire %s a %s perché %s" # %s = nome giocatore, %s = quantità, %s = nome giocatore destinatario, %s = motivo
+TRANSFER_SourceResponse: "Inviato %s a %s" # %s = quantità, %s = nome giocatore destinatario
+TRANSFER_TargetResponse: "Ricevuto %s da %s" # %s = quantità, %s = nome giocatore
+TRANSFER_FailedResponse: "Non è stato possibile inviare %s a %s perché %s" # %s = quantità, %s = nome giocatore destinatario, %s = motivo
+
+# Economia
+ECONOMY_NegativeAmounts: "Non puoi trasferire importi negativi."
+ECONOMY_Overdraft: "Non puoi trasferire più di quanto possiedi."
+ECONOMY_OverLimit: "Il tuo saldo potrebbe essere troppo grande per essere trasferito."
+ECONOMY_BankNotExist: "La banca non esiste."
+ECONOMY_PlayerNotExist: "Il giocatore non esiste."
+ECONOMY_BankAlreadyExists: "La banca esiste già."
+ECONOMY_CreatedBank: "Creata la banca %s" # %s = nome banca
+ECONOMY_DeletedBank: "Eliminata la banca %s" # %s = nome banca
+ECONOMY_BankBalance: "La banca %s ha un saldo di %s" # %s = nome banca, %s = saldo
+ECONOMY_BankHas: "La banca %s ha %s" # %s = nome banca, %s = saldo
+ECONOMY_BankWithdraw: "Prelevati %s dalla banca %s" # %s = importo, %s = nome banca
+ECONOMY_BankDeposit: "Depositati %s nella banca %s" # %s = importo, %s = nome banca
+ECONOMY_IsOwner: "%s è il proprietario della banca %s" # %s = nome giocatore, %s = nome banca
+ECONOMY_IsMember: "%s è un membro della banca %s" # %s = nome giocatore, %s = nome banca
+ECONOMY_IncorrectlyFormattedBalance: "Il file %s ha un saldo formattato in modo errato." # %s = nome file
+ECONOMY_RecoveredFile: "Valore recuperato con successo per %s." # %s = nome file
+ECONOMY_FailedToRecoverFile: "Impossibile recuperare il valore per %s. Resettato a 0." # %s = nome file
+ECONOMY_FailedToCreateBankFile: "Creazione del file della banca (%s) fallita perché %s" # %s = nome banca, %s = motivo
+ECONOMY_CreatingPlayerFile: "Creazione del file giocatore per %s (%s)" # %s = nome giocatore, %s = nome file
+ECONOMY_Prefix: "Prefisso valuta: %s"
+ECONOMY_Suffix: "Suffisso valuta: %s"
+
+# Aiuto
+HELP_Header: "%s[== Pagina di aiuto %s/%s %s==]" # %s = colore, %s = pagina corrente, %s = pagine totali, %s = colore
+HELP_NoneFound: "Nessun aiuto trovato."
+HELP_Command: "<comando>"
+HELP_Term: "<termine>"
+HELP_Page: "<numero_pagina>"
+HELP_NullEntry: "%s è nullo" # %s = voce
+HELP_EntryError: "%s ha sollevato %s" # %s = voce, %s = errore
+HELP_HelpLoaded: "Caricate %s voci di aiuto" # %s = quantità
+
+# Posta
+MAIL_NothingToClear: "Non c'è posta da cancellare."
+MAIL_Removed: "Rimossa %s posta. (%s non lette & %s lette)" # %s = quantità, %s = non lette, %s = lette
+MAIL_InvalidPage: "Numero di pagina non valido."
+MAIL_YouHaveNoMail: "Non hai posta."
+MAIL_InvalidPageChoose: "Numero di pagina non valido. Scegli una pagina tra 1 e %s." # %s = pagina massima
+MAIL_List: "==[Lista posta %s/%s]==" # %s = pagina corrente, %s = pagine totali
+MAIL_MailLoaded: "Caricata %s posta per %s utenti" # %s = quantità, %s = quantità utenti
+MAIL_MailSaved: "Salvata %s posta per %s utenti" # %s = quantità, %s = quantità utenti
+MAIL_MailNotification: "Hai %s notifiche economiche. Visualizzale con /readmail" # %s = quantità
+MAIL_NoMailNotification: "Non hai notifiche economiche."
+
+# Azioni
+STOCK_CountChanged: "Livello scorte cambiato da %s(%s) a %s(%s)." # %s = vecchio stock, %s = vecchio nome stock, %s = nuovo stock, %s = nuovo nome stock
+STOCK_ValueChanged: "Valore scorte cambiato da %s(%s) a %s(%s)." # %s = vecchio valore, %s = vecchio nome valore, %s = nuovo valore, %s = nuovo nome valore
+
+# Mercato
+MARKET_UnknownMaterial: "Materiale sconosciuto"
+MARKET_UnknownItem: "Oggetto sconosciuto %s" # %s = nome oggetto
+MARKET_UnknownEnchant: "Incantesimo sconosciuto %s" # %s = nome incantesimo
+MARKET_InvalidItemName: "Nome oggetto non valido."
+MARKET_InvalidMaterialName: "Nome materiale non valido."
+MARKET_InvalidEnchantName: "Nome incantesimo non valido."
+MARKET_InvalidItemHeld: "Devi tenere in mano un oggetto."
+MARKET_InvalidInventorySpace: "Non hai abbastanza spazio nell'inventario (%s/%s)." # %s = spazio corrente, %s = spazio richiesto
+MARKET_InvalidStockAmount: "Il mercato non ha abbastanza scorte (%s/%s)." # %s = scorte correnti, %s = scorte richieste
+MARKET_InvalidInventoryStock: "Non hai abbastanza scorte (%s/%s)." # %s = scorte correnti, %s = scorte richieste
+MARKET_EnchantsInvalidItemAmount: "Oggetto tenuto non valido. Devi tenere esattamente 1 oggetto."
+MARKET_NothingToSellAfterSkipping: "Dopo aver saltato oggetti (per varie ragioni), non c'è più nulla da vendere."
+MARKET_NothingToSell: "Non c'è nulla da vendere."
+MARKET_EnchantList: "incantesimi( %s )" # %s = nomi incantesimi
+MARKET_MaterialMarketIsDisabled: "Il mercato dei materiali è disabilitato."
+MARKET_EnchantMarketIsDisabled: "Il mercato degli incantesimi è disabilitato."
+MARKET_YouAreNotHoldingAnItem: "Non stai tenendo in mano un oggetto."
+MARKET_NoItemsToSell: "Non ci sono oggetti da vendere."
+MARKET_NoItemsToBuy: "Non ci sono oggetti da comprare."
+MARKET_ItemCannotBeFound: "%s non può essere trovato." # %s = nome oggetto
+MARKET_ItemIsBanned: "%s è vietato." # %s = nome oggetto
+MARKET_ItemIsWorthless: "%s è senza valore." # %s = nome oggetto
+MARKET_ItemIsEnchanted: "%s è incantato." # %s = nome oggetto
+MARKET_ItemIsNamedOrLored: "%s ha un nome o una lore." # %s = nome oggetto
+MARKET_ItemIsNotSupported: "%s non è supportato." # %s = nome oggetto
+MARKET_ItemIsNotSupportedOnThisItem: "%s non è supportato su questo oggetto." # %s = nome oggetto
+MARKET_LevelIsGreaterThanMax: "Il livello è maggiore del massimo (%s/%s)." # %s = livello, %s = livello massimo
+MARKET_LevelWouldBeGreaterThanMax: "Il livello sarebbe maggiore del massimo (%s/%s)." # %s = livello, %s = livello massimo
+MARKET_ItemDoesNotExist: "%s non esiste." # %s = nome oggetto
+MARKET_ItemDoesNotExistInTheStore: "%s non esiste nel negozio." # %s = nome oggetto
+MARKET_ItemIsNotEnchanted: "%s non è incantato." # %s = nome oggetto
+MARKET_ItemNotEnoughLevels: "%s non ha abbastanza livelli (%s/%s)." # %s = nome oggetto, %s = livelli attuali, %s = livelli richiesti
+MARKET_ItemAliasesLoaded: "Caricati %s alias oggetti da %s" # %s = quantità, %s = nome file
+MARKET_ItemsLoaded: "Caricati %s oggetti (quantità corrente/predefinita: %s / %s) da %s" # %s = quantità, %s = quantità corrente, %s = quantità predefinita, %s = nome file
+
+# Esperienza
+EXPERIENCE_InvalidAmount: "Quantità non valida."
+EXPERIENCE_IsBanned: "L'esperienza è vietata."
+EXPERIENCE_NotEnoughExperienceToBuy: "Non hai abbastanza esperienza per comprare."
+EXPERIENCE_NotEnoughExperienceToSell: "Non hai abbastanza esperienza per vendere."
+EXPERIENCE_IsWorthless: "L'esperienza non ha valore."
+
+# Informazioni
+INFO_InformationFor: "==[Informazioni per %s]==" # %s = nome oggetto
+INFO_TypeInformation: "TIPO: %s" # %s = id oggetto
+INFO_IDInformation: "ID: %s" # %s = id oggetto
+INFO_CurrentQuantityInformation: "Quantità attuale: %s" # %s = quantità attuale
+INFO_IsBannedInformation: "È vietato: %s" # %s = è vietato
+
+# Lista oggetti
+ITEMLIST_Header: "==[Lista oggetti '%s' %s/%s]==" # %s = nome oggetto, %s = pagina corrente, %s = pagine totali
+ITEMLIST_AscendingOrder: "Ordine ascendente: %s"
+ITEMLIST_OrderBy: "Ordina per: %s"
+
+# Vendita totale
+SELLALL_Whitelist: "Lista bianca: materiale1,materiale2,materiale3"
+SELLALL_Blacklist: "Lista nera: materiale1,materiale2,materiale3"
+SELLALL_Empty: "Vuoto: tutto"
+
+# Parole
+W_max: "massimo"
+W_all: "tutto"
+W_read: "letto"
+W_unread: "non letto"
+W_unknown: "sconosciuto"
+W_name: "nome"
+W_pagenumber: "numero pagina"
+W_items: "oggetti"
+W_enchants: "incantesimi"
+W_experience: "esperienza"
+W_price: "prezzo"
+W_stock: "scorta"
+W_alphabet: "alfabeto"
+W_config: "configurazione"
+W_materials: "materiali"
+W_potions: "pozioni"
+W_entities: "entità"
