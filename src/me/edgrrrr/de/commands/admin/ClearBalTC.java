@@ -36,7 +36,7 @@ public class ClearBalTC extends DivinityCommandTC {
             // 1 args
             // return names of players starting with arg
             case 1:
-                playerNames = this.getMain().getPlayMan().getPlayerNames(args[0]);
+                playerNames = getMain().getPlayMan().getPlayerNames(args[0]);
                 break;
 
             default:
