@@ -3,6 +3,7 @@ package me.edgrrrr.de.commands.experience;
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.commands.DivinityCommandEnchantTC;
 import me.edgrrrr.de.config.Setting;
+import me.edgrrrr.de.lang.LangEntry;
 import me.edgrrrr.de.market.exp.ExpManager;
 import me.edgrrrr.de.utils.Converter;
 import org.bukkit.entity.Player;
@@ -48,12 +49,12 @@ public class ExperienceSellTC extends DivinityCommandEnchantTC {
                 // Add max args and player experience
                 if (exp > 0) {
                     values.add(String.valueOf(exp));
-                    values.add("max");
+                    LangEntry.W_max.addLang(getMain(), values);
                 }
 
                 // Add powers of 10
                 int i = 1;
-                while (i < this.getMain().getExpMan().getMaxTradableExp()) {
+                while (i < getMain().getExpMan().getMaxTradableExp()) {
                     values.add(String.valueOf(i));
                     i *= 10;
                 }
@@ -66,7 +67,7 @@ public class ExperienceSellTC extends DivinityCommandEnchantTC {
                 int exp;
 
                 // max argument
-                if (args[0].equalsIgnoreCase("max")) {
+                if (LangEntry.W_max.is(getMain(), args[0])) {
                     exp = ExpManager.getPlayerExp(sender);
                 }
 
@@ -76,7 +77,7 @@ public class ExperienceSellTC extends DivinityCommandEnchantTC {
                 }
 
                 // constrain and return
-                yield new String[]{this.getMain().getExpMan().getSellValueString(constrainInt(exp, this.getMain().getExpMan().getMinTradableExp(), this.getMain().getExpMan().getMaxTradableExp()), sender)};
+                yield new String[]{getMain().getExpMan().getSellValueString(constrainInt(exp, getMain().getExpMan().getMinTradableExp(), getMain().getExpMan().getMaxTradableExp()), sender)};
             }
         };
 
