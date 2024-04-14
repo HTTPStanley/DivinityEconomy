@@ -11,6 +11,6 @@ public class PAPIEnchantTotalDefaultQuantity extends DivinityExpansion {
 
     @Override
     public String getResult(OfflinePlayer player, String value) {
-        return String.format("%d", this.getMain().getEnchMan().getDefaultTotalItems());
+        return String.format("%d", getMain().getEnchMan().getDefaultTotalItems());
     }
 }
