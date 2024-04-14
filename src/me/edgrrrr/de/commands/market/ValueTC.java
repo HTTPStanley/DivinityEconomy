@@ -38,13 +38,13 @@ public class ValueTC extends DivinityCommandMaterialsTC {
             // 1 args
             // return names of players starting with arg
             case 1:
-                strings = this.getMain().getMarkMan().getItemNames(args[0]).toArray(new String[0]);
+                strings = getMain().getMarkMan().getItemNames(args[0]).toArray(new String[0]);
                 break;
 
             // 2 args
             // return max stack size for the material given
             case 2:
-                marketableMaterial = this.getMain().getMarkMan().getItem(args[0]);
+                marketableMaterial = getMain().getMarkMan().getItem(args[0]);
                 int stackSize = 64;
                 if (marketableMaterial != null) {
                     stackSize = marketableMaterial.getMaterial().getMaxStackSize();
