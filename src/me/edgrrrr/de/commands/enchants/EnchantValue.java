@@ -3,6 +3,7 @@ package me.edgrrrr.de.commands.enchants;
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.commands.DivinityCommandEnchant;
 import me.edgrrrr.de.config.Setting;
+import me.edgrrrr.de.lang.LangEntry;
 import me.edgrrrr.de.market.items.enchants.EnchantValueResponse;
 import me.edgrrrr.de.market.items.enchants.MarketableEnchant;
 import me.edgrrrr.de.utils.Converter;
@@ -55,15 +56,15 @@ public class EnchantValue extends DivinityCommandEnchant {
 
             // If wrong number of arguments
             default:
-                this.getMain().getConsole().usage(sender, CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
+                getMain().getConsole().usage(sender, LangEntry.GENERIC_InvalidNumberOfArguments.get(getMain()), this.help.getUsages());
                 return true;
         }
 
         // If only handling one enchant
         // Ensure enchant exists
-        MarketableEnchant enchantData = this.getMain().getEnchMan().getEnchant(enchantName);
+        MarketableEnchant enchantData = getMain().getEnchMan().getEnchant(enchantName);
         if (enchantData == null) {
-            this.getMain().getConsole().usage(sender, String.format(CommandResponse.InvalidEnchantName.message, enchantName), this.help.getUsages());
+            getMain().getConsole().usage(sender, String.format(LangEntry.MARKET_InvalidEnchantName.get(getMain()), enchantName), this.help.getUsages());
             return true;
         }
 
@@ -71,18 +72,18 @@ public class EnchantValue extends DivinityCommandEnchant {
 
         // Get value
         // Remove enchants, add quantity and add cash
-        EnchantValueResponse evr1 = this.getMain().getEnchMan().getBuyValue(itemStack, enchantName, enchantLevels);
+        EnchantValueResponse evr1 = getMain().getEnchMan().getBuyValue(itemStack, enchantName, enchantLevels);
         itemStack.addUnsafeEnchantment(enchantData.getEnchantment(), enchantLevels);
-        EnchantValueResponse evr2 = this.getMain().getEnchMan().getSellValue(itemStack, enchantName, enchantLevels);
+        EnchantValueResponse evr2 = getMain().getEnchMan().getSellValue(itemStack, enchantName, enchantLevels);
         if (evr1.isFailure()) {
-            this.getMain().getConsole().warn(sender, "Couldn't determine buy value of %d %s because %s", enchantLevels, enchantData.getCleanName(), evr1.getErrorMessage());
+            getMain().getConsole().warn(sender, LangEntry.VALUE_BuyFailedResponse.get(getMain()), enchantLevels, enchantData.getName(), evr1.getErrorMessage());
         } else {
-            this.getMain().getConsole().info(sender, "Buy: %d %s costs %s", enchantLevels, enchantData.getCleanName(), this.getMain().getConsole().formatMoney(evr1.getValue()));
+            getMain().getConsole().info(sender, LangEntry.VALUE_BuyResponse.get(getMain()), enchantLevels, enchantData.getName(), getMain().getConsole().formatMoney(evr1.getValue()));
         }
         if (evr1.isFailure()) {
-            this.getMain().getConsole().warn(sender, "Couldn't determine sell value of %d %s because %s", enchantLevels, enchantData.getCleanName(), evr2.getErrorMessage());
+            getMain().getConsole().warn(sender, LangEntry.VALUE_SellFailedResponse.get(getMain()), enchantLevels, enchantData.getName(), evr2.getErrorMessage());
         } else {
-            this.getMain().getConsole().info(sender, "Sell: %d %s costs %s", enchantLevels, enchantData.getCleanName(), this.getMain().getConsole().formatMoney(evr2.getValue()));
+            getMain().getConsole().info(sender, LangEntry.VALUE_SellResponse.get(getMain()), enchantLevels, enchantData.getName(), getMain().getConsole().formatMoney(evr2.getValue()));
         }
 
         // Graceful exit :)
