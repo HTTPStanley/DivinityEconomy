@@ -3,6 +3,7 @@ package me.edgrrrr.de.commands.experience;
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.commands.DivinityCommandEnchantTC;
 import me.edgrrrr.de.config.Setting;
+import me.edgrrrr.de.lang.LangEntry;
 import me.edgrrrr.de.utils.Converter;
 import org.bukkit.entity.Player;
 
@@ -41,11 +42,11 @@ public class ExperienceBuyTC extends DivinityCommandEnchantTC {
                 ArrayList<String> values = new ArrayList<>();
 
                 // Add max args
-                values.add("max");
+                LangEntry.W_max.addLang(getMain(), values);
 
                 // Add powers of 10
                 int i = 1;
-                while (i < this.getMain().getExpMan().getMaxTradableExp()) {
+                while (i < getMain().getExpMan().getMaxTradableExp()) {
                     values.add(String.valueOf(i));
                     i *= 10;
                 }
@@ -57,7 +58,7 @@ public class ExperienceBuyTC extends DivinityCommandEnchantTC {
                 // Resolve amount to buy
                 int amount;
                 // Max argument
-                if (args[0].equalsIgnoreCase("max")) {
+                if (LangEntry.W_max.is(getMain(), args[0])) {
                     amount = 100000;
                 }
 
@@ -67,7 +68,7 @@ public class ExperienceBuyTC extends DivinityCommandEnchantTC {
                 }
 
                 // Constrain and return
-                yield new String[]{this.getMain().getExpMan().getBuyValueString(constrainInt(amount, this.getMain().getExpMan().getMinTradableExp(), this.getMain().getExpMan().getMaxTradableExp()))};
+                yield new String[]{getMain().getExpMan().getBuyValueString(constrainInt(amount, getMain().getExpMan().getMinTradableExp(), getMain().getExpMan().getMaxTradableExp()))};
 
             }
             default -> new String[0];
