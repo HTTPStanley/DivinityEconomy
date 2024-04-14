@@ -7,6 +7,7 @@ import me.edgrrrr.de.economy.banks.EconomyBankLRUCache;
 import me.edgrrrr.de.economy.events.PlayerJoin;
 import me.edgrrrr.de.economy.players.EconomyPlayer;
 import me.edgrrrr.de.economy.players.EconomyPlayerLRUCache;
+import me.edgrrrr.de.lang.LangEntry;
 import me.edgrrrr.de.utils.Converter;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.OfflinePlayer;
@@ -47,7 +48,7 @@ public class DivinityEconomy implements net.milkbowl.vault.economy.Economy{
         this.economyPlayerMap = new EconomyPlayerLRUCache(this.main, userFolder);
         this.economyBankMap = new EconomyBankLRUCache(this.main, bankData);
         this.banks = Collections.synchronizedSet(new HashSet<>());
-        this.main.getServer().getPluginManager().registerEvents(new PlayerJoin(this), this.main);
+        this.main.getServer().getPluginManager().registerEvents(new PlayerJoin(this.main, this), this.main);
     }
 
     // QUERY CODE
@@ -114,11 +115,11 @@ public class DivinityEconomy implements net.milkbowl.vault.economy.Economy{
      */
     public EconomyResponse withdrawPlayer(EconomyPlayer p, double v) {
         if (v < 0) {
-            return new EconomyResponse(v, p.getBalanceAsDouble(), EconomyResponse.ResponseType.FAILURE, "negative amounts are not allowed");
+            return new EconomyResponse(v, p.getBalanceAsDouble(), EconomyResponse.ResponseType.FAILURE, LangEntry.ECONOMY_NegativeAmounts.get(main));
         }
 
         if (!p.has(v)) {
-            return new EconomyResponse(v, p.getBalanceAsDouble(), EconomyResponse.ResponseType.FAILURE, "withdrawal would lead to overdraft");
+            return new EconomyResponse(v, p.getBalanceAsDouble(), EconomyResponse.ResponseType.FAILURE, LangEntry.ECONOMY_Overdraft.get(main));
         }
 
         double balance = p.withdraw(v);
@@ -133,10 +134,10 @@ public class DivinityEconomy implements net.milkbowl.vault.economy.Economy{
      */
     public EconomyResponse depositPlayer(EconomyPlayer p, double v) {
         if (v < 0)
-            return new EconomyResponse(v, p.getBalanceAsDouble(), EconomyResponse.ResponseType.FAILURE, "negative amounts are not allowed");
+            return new EconomyResponse(v, p.getBalanceAsDouble(), EconomyResponse.ResponseType.FAILURE, LangEntry.ECONOMY_NegativeAmounts.get(main));
 
         if (!p.canHave(v))
-            return new EconomyResponse(v, p.getBalanceAsDouble(), EconomyResponse.ResponseType.FAILURE, "balance may be too large");
+            return new EconomyResponse(v, p.getBalanceAsDouble(), EconomyResponse.ResponseType.FAILURE, LangEntry.ECONOMY_OverLimit.get(main));
 
         double balance = p.deposit(v);
         return new EconomyResponse(v, balance, EconomyResponse.ResponseType.SUCCESS, "");
@@ -495,7 +496,7 @@ public class DivinityEconomy implements net.milkbowl.vault.economy.Economy{
 
         // Check if player exists
         if (player == null) {
-            return new EconomyResponse(0, 0, EconomyResponse.ResponseType.FAILURE, "player does not exist");
+            return new EconomyResponse(0, 0, EconomyResponse.ResponseType.FAILURE, LangEntry.ECONOMY_PlayerNotExist.get(main));
         }
 
         return this.createBank(bankName, player);
@@ -508,7 +509,7 @@ public class DivinityEconomy implements net.milkbowl.vault.economy.Economy{
 
         // Check if bank exists
         if (this.economyBankMap.query(bankName)) {
-            return new EconomyResponse(0, 0, EconomyResponse.ResponseType.FAILURE, "bank already exists");
+            return new EconomyResponse(0, 0, EconomyResponse.ResponseType.FAILURE, LangEntry.ECONOMY_BankAlreadyExists.get(main));
         }
 
         // Create bank (Get should automatically create the bank)
@@ -519,7 +520,7 @@ public class DivinityEconomy implements net.milkbowl.vault.economy.Economy{
         bank.setBalance(0.0);
         bank.clean();
         bank.save();
-        return new EconomyResponse(0, bank.getBalanceAsDouble(), EconomyResponse.ResponseType.SUCCESS, String.format("Successfully created %s.", bank.getName()));
+        return new EconomyResponse(0, bank.getBalanceAsDouble(), EconomyResponse.ResponseType.SUCCESS, LangEntry.ECONOMY_CreatedBank.get(main, bank.getName()));
     }
 
     @Override
@@ -529,7 +530,7 @@ public class DivinityEconomy implements net.milkbowl.vault.economy.Economy{
 
         // Check if bank exists
         if (!this.economyBankMap.query(bankName)) {
-            return new EconomyResponse(0, 0, EconomyResponse.ResponseType.FAILURE, "bank does not exist");
+            return new EconomyResponse(0, 0, EconomyResponse.ResponseType.FAILURE, LangEntry.ECONOMY_BankNotExist.get(main));
         }
         
         if (!this.economyBankMap.containsKey(bankName)) {
@@ -538,7 +539,7 @@ public class DivinityEconomy implements net.milkbowl.vault.economy.Economy{
         // Delete bank
         EconomyBank bank = this.economyBankMap.remove(bankName);
         bank.delete();
-        return new EconomyResponse(0, 0, EconomyResponse.ResponseType.SUCCESS, String.format("Successfully deleted %s.", bankName));
+        return new EconomyResponse(0, 0, EconomyResponse.ResponseType.SUCCESS, LangEntry.ECONOMY_DeletedBank.get(main, bank.getName()));
     }
 
     @Override
@@ -548,14 +549,14 @@ public class DivinityEconomy implements net.milkbowl.vault.economy.Economy{
 
         // Check if bank exists
         if (!this.economyBankMap.query(bankName)) {
-            return new EconomyResponse(0, 0, EconomyResponse.ResponseType.FAILURE, "bank does not exist");
+            return new EconomyResponse(0, 0, EconomyResponse.ResponseType.FAILURE, LangEntry.ECONOMY_BankNotExist.get(main));
         }
 
         // Get bank
         EconomyBank bank = this.economyBankMap.get(bankName);
 
         // Return balance
-        return new EconomyResponse(0, bank.getBalanceAsDouble(), EconomyResponse.ResponseType.SUCCESS, String.format("Successfully retrieved %s's balance.", bank.getName()));
+        return new EconomyResponse(0, bank.getBalanceAsDouble(), EconomyResponse.ResponseType.SUCCESS, LangEntry.ECONOMY_BankBalance.get(main, bank.getName(), bank.getBalanceAsDouble()));
     }
 
     @Override
@@ -565,7 +566,7 @@ public class DivinityEconomy implements net.milkbowl.vault.economy.Economy{
 
         // Check if bank exists
         if (!this.economyBankMap.query(bankName)) {
-            return new EconomyResponse(0, 0, EconomyResponse.ResponseType.FAILURE, "bank does not exist");
+            return new EconomyResponse(0, 0, EconomyResponse.ResponseType.FAILURE, LangEntry.ECONOMY_BankNotExist.get(main));
         }
 
         // Get bank
@@ -573,7 +574,7 @@ public class DivinityEconomy implements net.milkbowl.vault.economy.Economy{
 
         // Return balance
         boolean has = bank.has(v);
-        return new EconomyResponse(0, bank.getBalanceAsDouble(), has ? EconomyResponse.ResponseType.SUCCESS : EconomyResponse.ResponseType.FAILURE, String.format("Successfully checked if %s has %s.", bank.getName(), v));
+        return new EconomyResponse(0, bank.getBalanceAsDouble(), has ? EconomyResponse.ResponseType.SUCCESS : EconomyResponse.ResponseType.FAILURE, LangEntry.ECONOMY_BankHas.get(main, bank.getName(), v));
     }
 
     @Override
@@ -583,7 +584,7 @@ public class DivinityEconomy implements net.milkbowl.vault.economy.Economy{
 
         // Check if bank exists
         if (!this.economyBankMap.query(bankName)) {
-            return new EconomyResponse(0, 0, EconomyResponse.ResponseType.FAILURE, "bank does not exist");
+            return new EconomyResponse(0, 0, EconomyResponse.ResponseType.FAILURE, LangEntry.ECONOMY_BankNotExist.get(main));
         }
 
         // Get bank
@@ -591,7 +592,7 @@ public class DivinityEconomy implements net.milkbowl.vault.economy.Economy{
 
         // Return balance
         double balance = bank.withdraw(v);
-        return new EconomyResponse(0, balance, EconomyResponse.ResponseType.SUCCESS, String.format("Successfully withdrew %s from %s.", v, bank.getName()));
+        return new EconomyResponse(0, balance, EconomyResponse.ResponseType.SUCCESS, LangEntry.ECONOMY_BankWithdraw.get(main, v, bank.getName()));
     }
 
     @Override
@@ -601,7 +602,7 @@ public class DivinityEconomy implements net.milkbowl.vault.economy.Economy{
 
         // Check if bank exists
         if (!this.economyBankMap.query(bankName)) {
-            return new EconomyResponse(0, 0, EconomyResponse.ResponseType.FAILURE, "bank does not exist");
+            return new EconomyResponse(0, 0, EconomyResponse.ResponseType.FAILURE, LangEntry.ECONOMY_BankNotExist.get(main));
         }
 
         // Get bank
@@ -609,7 +610,7 @@ public class DivinityEconomy implements net.milkbowl.vault.economy.Economy{
 
         // Return balance
         double balance = bank.deposit(v);
-        return new EconomyResponse(0, balance, EconomyResponse.ResponseType.SUCCESS, String.format("Successfully deposited %s into %s.", v, bank.getName()));
+        return new EconomyResponse(0, balance, EconomyResponse.ResponseType.SUCCESS, LangEntry.ECONOMY_BankDeposit.get(main, v, bank.getName()));
 
     }
 
@@ -625,7 +626,7 @@ public class DivinityEconomy implements net.milkbowl.vault.economy.Economy{
 
         // Check if bank exists
         if (!this.economyBankMap.query(bankName)) {
-            return new EconomyResponse(0, 0, EconomyResponse.ResponseType.FAILURE, "bank does not exist");
+            return new EconomyResponse(0, 0, EconomyResponse.ResponseType.FAILURE, LangEntry.ECONOMY_BankNotExist.get(main));
         }
 
         // Get bank
@@ -633,7 +634,7 @@ public class DivinityEconomy implements net.milkbowl.vault.economy.Economy{
 
         // Check if player is owner
         boolean isOwner = bank.isOwner(playerName);
-        return new EconomyResponse(0, bank.getBalanceAsDouble(), isOwner ? EconomyResponse.ResponseType.SUCCESS : EconomyResponse.ResponseType.FAILURE, String.format("Successfully checked if %s is owner of %s.", playerName, bank.getName()));
+        return new EconomyResponse(0, bank.getBalanceAsDouble(), isOwner ? EconomyResponse.ResponseType.SUCCESS : EconomyResponse.ResponseType.FAILURE, LangEntry.ECONOMY_IsOwner.get(main, playerName, bank.getName()));
     }
 
     @Override
@@ -643,7 +644,7 @@ public class DivinityEconomy implements net.milkbowl.vault.economy.Economy{
 
         // Check if bank exists
         if (!this.economyBankMap.query(bankName)) {
-            return new EconomyResponse(0, 0, EconomyResponse.ResponseType.FAILURE, "bank does not exist");
+            return new EconomyResponse(0, 0, EconomyResponse.ResponseType.FAILURE, LangEntry.ECONOMY_BankNotExist.get(main));
         }
 
         // Get bank
@@ -651,7 +652,7 @@ public class DivinityEconomy implements net.milkbowl.vault.economy.Economy{
 
         // Check if player is owner
         boolean isOwner = bank.isOwner(offlinePlayer.getUniqueId());
-        return new EconomyResponse(0, bank.getBalanceAsDouble(), isOwner ? EconomyResponse.ResponseType.SUCCESS : EconomyResponse.ResponseType.FAILURE, String.format("Successfully checked if %s is owner of %s.", offlinePlayer.getName(), bank.getName()));
+        return new EconomyResponse(0, bank.getBalanceAsDouble(), isOwner ? EconomyResponse.ResponseType.SUCCESS : EconomyResponse.ResponseType.FAILURE, LangEntry.ECONOMY_IsOwner.get(main, offlinePlayer.getName(), bank.getName()));
     }
 
     /**
@@ -667,7 +668,7 @@ public class DivinityEconomy implements net.milkbowl.vault.economy.Economy{
 
         // Check if bank exists
         if (!this.economyBankMap.query(bankName)) {
-            return new EconomyResponse(0, 0, EconomyResponse.ResponseType.FAILURE, "bank does not exist");
+            return new EconomyResponse(0, 0, EconomyResponse.ResponseType.FAILURE, LangEntry.ECONOMY_BankNotExist.get(main));
         }
 
         // Get player
@@ -675,7 +676,7 @@ public class DivinityEconomy implements net.milkbowl.vault.economy.Economy{
 
         // Check if player is member
         if (player == null) {
-            return new EconomyResponse(0, 0, EconomyResponse.ResponseType.FAILURE, "player does not exist");
+            return new EconomyResponse(0, 0, EconomyResponse.ResponseType.FAILURE, LangEntry.ECONOMY_PlayerNotExist.get(main));
         }
 
         // Check if player is member
@@ -696,14 +697,14 @@ public class DivinityEconomy implements net.milkbowl.vault.economy.Economy{
         // Check if player is member
         UUID uuid = player.getUUID();
         if (uuid == null) {
-            return new EconomyResponse(0, 0, EconomyResponse.ResponseType.FAILURE, "player does not exist");
+            return new EconomyResponse(0, 0, EconomyResponse.ResponseType.FAILURE, LangEntry.ECONOMY_PlayerNotExist.get(main));
         }
 
         // Check if player is member
         boolean isMember = bank.isMember(uuid);
 
         // Return response
-        return new EconomyResponse(0, bank.getBalanceAsDouble(), isMember ? EconomyResponse.ResponseType.SUCCESS : EconomyResponse.ResponseType.FAILURE, String.format("Successfully checked if %s is member of %s.", player.getName(), bank.getName()));
+        return new EconomyResponse(0, bank.getBalanceAsDouble(), isMember ? EconomyResponse.ResponseType.SUCCESS : EconomyResponse.ResponseType.FAILURE, LangEntry.ECONOMY_IsMember.get(main, offlinePlayer.getName(), bank.getName()));
 
     }
 
