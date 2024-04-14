@@ -13,11 +13,11 @@ public class PAPIExpBValue extends DivinityExpansion {
 
     @Override
     public String getResult(OfflinePlayer player, String value) {
-        long amount = Converter.constrainLong(Converter.getLong(value.replaceFirst(this.value, "$1")), this.getMain().getExpMan().getMinTradableExp(), this.getMain().getExpMan().getMaxTradableExp());
-        ValueResponse vr = this.getMain().getExpMan().getBuyValue(amount);
+        long amount = Converter.constrainLong(Converter.getLong(value.replaceFirst(this.value, "$1")), getMain().getExpMan().getMinTradableExp(), getMain().getExpMan().getMaxTradableExp());
+        ValueResponse vr = getMain().getExpMan().getBuyValue(amount);
         if (vr.isFailure()) {
             return vr.getErrorMessage();
         }
-        return this.getMain().getConsole().formatMoney(vr.getValue());
+        return getMain().getConsole().formatMoney(vr.getValue());
     }
 }
