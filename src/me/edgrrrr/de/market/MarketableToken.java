@@ -11,6 +11,7 @@ public abstract class MarketableToken extends DivinityModule {
     protected final ConfigurationSection defaultItemConfig;
     protected final TokenManager tokenManager;
     protected final String ID;
+    protected final String name;
     protected String error = "No Error";
 
     public MarketableToken(DEPlugin main, TokenManager tokenManager, String ID, ConfigurationSection config, ConfigurationSection defaultConfig) {
@@ -20,6 +21,7 @@ public abstract class MarketableToken extends DivinityModule {
         this.defaultItemConfig = defaultConfig;
         this.tokenManager = tokenManager;
         this.ID = ID;
+        this.name = getMain().getLang().getItemName(this.ID, this.ID);
     }
 
     @Override
@@ -86,8 +88,8 @@ public abstract class MarketableToken extends DivinityModule {
      *
      * @return String - Returns the clean name for this item
      */
-    public String getCleanName() {
-        return this.itemConfig.getString(MapKeys.CLEAN_NAME.key);
+    public String getName() {
+        return this.name;
     }
 
     /**
