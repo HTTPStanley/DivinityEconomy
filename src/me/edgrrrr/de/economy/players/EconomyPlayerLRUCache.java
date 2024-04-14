@@ -58,6 +58,6 @@ public class EconomyPlayerLRUCache extends LRUCache<OfflinePlayer, EconomyPlayer
      * @return EconomyPlayer
      */
     protected EconomyPlayer ingest(File userFolder, OfflinePlayer player) {
-        return new EconomyPlayer(this.getMain(), userFolder, player);
+        return new EconomyPlayer(getMain(), userFolder, player);
     }
 }
