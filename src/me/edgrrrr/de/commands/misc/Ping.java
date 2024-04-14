@@ -3,6 +3,7 @@ package me.edgrrrr.de.commands.misc;
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.commands.DivinityCommand;
 import me.edgrrrr.de.config.Setting;
+import me.edgrrrr.de.lang.LangEntry;
 import org.bukkit.entity.Player;
 
 /**
@@ -27,7 +28,7 @@ public class Ping extends DivinityCommand {
      */
     @Override
     public boolean onPlayerCommand(Player sender, String[] args) {
-        this.getMain().getConsole().send(sender, CommandResponse.PingResponse.defaultLogLevel, CommandResponse.PingResponse.message);
+        getMain().getConsole().send(sender, LangEntry.PING_PingResponse.logLevel, LangEntry.PING_PingResponse.get(getMain()));
         return true;
     }
 
@@ -39,7 +40,7 @@ public class Ping extends DivinityCommand {
      */
     @Override
     public boolean onConsoleCommand(String[] args) {
-        this.getMain().getConsole().send(CommandResponse.PingResponse.defaultLogLevel, CommandResponse.PingResponse.message);
+        getMain().getConsole().send(LangEntry.PING_PingResponse.logLevel, LangEntry.PING_PingResponse.get(getMain()));
         return true;
     }
 }
