@@ -3,6 +3,7 @@ package me.edgrrrr.de.commands.market;
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.commands.DivinityCommandMaterials;
 import me.edgrrrr.de.config.Setting;
+import me.edgrrrr.de.lang.LangEntry;
 import me.edgrrrr.de.market.items.materials.MarketableMaterial;
 import me.edgrrrr.de.market.items.materials.MaterialValueResponse;
 import me.edgrrrr.de.player.PlayerManager;
@@ -48,7 +49,7 @@ public class Sell extends DivinityCommandMaterials {
             case 2:
                 materialName = args[0];
                 String arg = args[1];
-                if (arg.equalsIgnoreCase("max")) {
+                if (LangEntry.W_max.is(getMain(), arg)) {
                     sellAll = true;
                 } else {
                     amountToSell = Converter.getInt(args[1]);
@@ -56,21 +57,21 @@ public class Sell extends DivinityCommandMaterials {
                 break;
 
             default:
-                this.getMain().getConsole().usage(sender, CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
+                getMain().getConsole().usage(sender, LangEntry.GENERIC_InvalidNumberOfArguments.get(getMain()), this.help.getUsages());
                 return true;
         }
 
         // Check amount is greater than  0
         if (amountToSell < 1) {
-            this.getMain().getConsole().send(sender, CommandResponse.InvalidAmountGiven.defaultLogLevel, CommandResponse.InvalidAmountGiven.message);
+            getMain().getConsole().send(sender, LangEntry.GENERIC_InvalidAmountGiven.logLevel, LangEntry.GENERIC_InvalidAmountGiven.get(getMain()));
             return true;
         }
 
 
         // Check material given exists
-        MarketableMaterial marketableMaterial = this.getMain().getMarkMan().getItem(materialName);
+        MarketableMaterial marketableMaterial = getMain().getMarkMan().getItem(materialName);
         if (marketableMaterial == null) {
-            this.getMain().getConsole().send(sender, CommandResponse.InvalidItemName.defaultLogLevel, CommandResponse.InvalidItemName.message, materialName);
+            getMain().getConsole().send(sender, LangEntry.MARKET_InvalidItemName.logLevel, LangEntry.MARKET_InvalidItemName.get(getMain()), materialName);
             return true;
         }
 
@@ -80,7 +81,7 @@ public class Sell extends DivinityCommandMaterials {
             amountToSell = materialCount;
         }
         if (materialCount < amountToSell) {
-            this.getMain().getConsole().logFailedSale(sender, amountToSell, marketableMaterial.getCleanName(), String.format(CommandResponse.InvalidInventoryStock.message, materialCount, amountToSell));
+            getMain().getConsole().logFailedSale(sender, amountToSell, marketableMaterial.getName(), String.format(LangEntry.MARKET_InvalidInventoryStock.get(getMain()), materialCount, amountToSell));
             return true;
         }
 
@@ -93,14 +94,14 @@ public class Sell extends DivinityCommandMaterials {
 
         // Check for removed items
         if (response.getItemStacks().size() == 0) {
-            this.getMain().getConsole().logFailedSale(sender, response.getQuantity(), marketableMaterial.getCleanName(), CommandResponse.NothingToSellAfterSkipping.message.toLowerCase());
+            getMain().getConsole().logFailedSale(sender, response.getQuantity(), marketableMaterial.getName(), LangEntry.MARKET_NothingToSellAfterSkipping.get(getMain()).toLowerCase());
             return true;
         }
 
 
         // If response failed
         if (response.isFailure()) {
-            this.getMain().getConsole().logFailedSale(sender, response.getQuantity(), marketableMaterial.getCleanName(), response.getErrorMessage());
+            getMain().getConsole().logFailedSale(sender, response.getQuantity(), marketableMaterial.getName(), response.getErrorMessage());
             return true;
         }
 
@@ -110,16 +111,16 @@ public class Sell extends DivinityCommandMaterials {
 
 
         // Add cash
-        EconomyResponse economyResponse = this.getMain().getEconMan().addCash(sender, response.getValue());
+        EconomyResponse economyResponse = getMain().getEconMan().addCash(sender, response.getValue());
         if (!economyResponse.transactionSuccess()) {
             PlayerManager.addPlayerItems(sender, response.getClonesAsArray());
             // Handles console, player message and mail
-            this.getMain().getConsole().logFailedSale(sender, response.getQuantity(), marketableMaterial.getCleanName(), economyResponse.errorMessage);
+            getMain().getConsole().logFailedSale(sender, response.getQuantity(), marketableMaterial.getName(), economyResponse.errorMessage);
 
         } else {
             marketableMaterial.getManager().editQuantity(marketableMaterial, response.getQuantity());
             // Handles console, player message and mail
-            this.getMain().getConsole().logSale(sender, response.getQuantity(), response.getValue(), marketableMaterial.getCleanName());
+            getMain().getConsole().logSale(sender, response.getQuantity(), response.getValue(), marketableMaterial.getName());
         }
 
         return true;
