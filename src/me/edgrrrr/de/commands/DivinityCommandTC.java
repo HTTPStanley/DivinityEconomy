@@ -1,8 +1,8 @@
 package me.edgrrrr.de.commands;
 
 import me.edgrrrr.de.DEPlugin;
-import me.edgrrrr.de.commands.DivinityCommand.CommandResponse;
 import me.edgrrrr.de.config.Setting;
+import me.edgrrrr.de.lang.LangEntry;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
@@ -36,13 +36,13 @@ public abstract class DivinityCommandTC implements TabCompleter {
         this.isEnabled = this.main.getConfig().getBoolean(commandSetting.path);
 
         PluginCommand command;
-        if ((command = this.getMain().getCommand(registeredCommandName)) == null) {
-            this.getMain().getConsole().warn("Command TabCompleter '%s' is incorrectly setup", registeredCommandName);
+        if ((command = getMain().getCommand(registeredCommandName)) == null) {
+            getMain().getConsole().warn("Command TabCompleter '%s' is incorrectly setup", registeredCommandName);
         } else {
             if (this.isEnabled)
                 command.setTabCompleter(this);
-            if (!this.getMain().getConfMan().getBoolean(Setting.IGNORE_COMMAND_REGISTRY_BOOLEAN))
-                this.getMain().getConsole().info("CommandTC %s registered", registeredCommandName);
+            if (!getMain().getConfMan().getBoolean(Setting.IGNORE_COMMAND_REGISTRY_BOOLEAN))
+                getMain().getConsole().info("CommandTC %s registered", registeredCommandName);
         }
     }
 
@@ -68,7 +68,7 @@ public abstract class DivinityCommandTC implements TabCompleter {
                 return this._onConsoleTabComplete(args);
             }
         } catch (Exception e) {
-            this.main.getConsole().send(CommandResponse.ErrorOnCommand.defaultLogLevel, CommandResponse.ErrorOnCommand.message, this.getClass().getName(), e.getMessage());
+            this.main.getConsole().send(LangEntry.GENERIC_ErrorOnCommand.logLevel, LangEntry.GENERIC_ErrorOnCommand.get(getMain()), this.getClass().getName(), e.getMessage());
             e.printStackTrace();
             return null;
         }
