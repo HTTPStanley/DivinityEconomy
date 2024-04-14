@@ -3,9 +3,10 @@ package me.edgrrrr.de.commands.enchants;
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.commands.DivinityCommandEnchantTC;
 import me.edgrrrr.de.config.Setting;
-import me.edgrrrr.de.market.items.materials.block.MarketableBlock;
+import me.edgrrrr.de.lang.LangEntry;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -33,16 +34,15 @@ public class EnchantSellAllTC extends DivinityCommandEnchantTC {
     @Override
     public List<String> onPlayerTabCompleter(Player sender, String[] args) {
         String[] strings;
-        MarketableBlock materialData;
         switch (args.length) {
             // 1 args
             // return items in user inventory
             case 1:
-                strings = new String[]{
-                        "Whitelist: material1,material2,material3",
-                        "Blacklist: !material1,material2,material3",
-                        "Empty: everything"
-                };
+                ArrayList<String> list = new ArrayList<>();
+                LangEntry.SELLALL_Whitelist.addLang(getMain(), list);
+                LangEntry.SELLALL_Blacklist.addLang(getMain(), list);
+                LangEntry.SELLALL_Empty.addLang(getMain(), list);
+                strings = list.toArray(new String[0]);
                 break;
 
             default:
