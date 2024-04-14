@@ -2,6 +2,7 @@ package me.edgrrrr.de.market.items.materials;
 
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.config.Setting;
+import me.edgrrrr.de.lang.LangEntry;
 import me.edgrrrr.de.market.MarketableToken;
 import me.edgrrrr.de.market.items.ItemManager;
 import me.edgrrrr.de.utils.Converter;
@@ -51,7 +52,7 @@ public abstract class MaterialManager extends ItemManager {
                 saveItems();
             }
         };
-        this.saveTimer.runTaskTimerAsynchronously(this.getMain(), timer, timer);
+        this.saveTimer.runTaskTimerAsynchronously(getMain(), timer, timer);
         this.loadItems();
         this.loadAliases();
         this.getMarkMan().addManager(this);
@@ -119,7 +120,7 @@ public abstract class MaterialManager extends ItemManager {
     public MaterialValueResponse getSellValue(ItemStack[] itemStacks) {
         // If no items, return 0
         if (itemStacks.length == 0) {
-            return new MaterialValueResponse(EconomyResponse.ResponseType.FAILURE, "No items to sell.");
+            return new MaterialValueResponse(EconomyResponse.ResponseType.FAILURE, LangEntry.MARKET_NoItemsToSell.get(getMain()));
         }
 
 
@@ -144,7 +145,7 @@ public abstract class MaterialManager extends ItemManager {
     public MaterialValueResponse getBuyValue(ItemStack[] itemStacks) {
         // If no items, return 0
         if (itemStacks.length == 0) {
-            return new MaterialValueResponse(EconomyResponse.ResponseType.FAILURE, "No items to buy.");
+            return new MaterialValueResponse(EconomyResponse.ResponseType.FAILURE, LangEntry.MARKET_NoItemsToBuy.get(getMain()));
         }
 
         // Create response
