@@ -1,9 +1,9 @@
 package me.edgrrrr.de.commands.market;
 
 import me.edgrrrr.de.DEPlugin;
-import me.edgrrrr.de.commands.DivinityCommand;
 import me.edgrrrr.de.commands.DivinityCommandMaterialsTC;
 import me.edgrrrr.de.config.Setting;
+import me.edgrrrr.de.lang.LangEntry;
 import me.edgrrrr.de.market.items.materials.MarketableMaterial;
 import me.edgrrrr.de.player.PlayerManager;
 import me.edgrrrr.de.utils.Converter;
@@ -41,9 +41,9 @@ public class HandSellTC extends DivinityCommandMaterialsTC {
         String[] strings = new String[0];
         ItemStack heldItem = PlayerManager.getHeldItem(sender);
         if (heldItem == null) {
-            strings = new String[]{DivinityCommand.CommandResponse.InvalidItemHeld.message};
+            strings = new String[]{LangEntry.MARKET_InvalidItemHeld.get(getMain())};
         } else {
-            MarketableMaterial marketableMaterial = this.getMain().getMarkMan().getItem(heldItem);
+            MarketableMaterial marketableMaterial = getMain().getMarkMan().getItem(heldItem);
             switch (args.length) {
                 // 1 args
                 // return max stack size for the material given
@@ -54,7 +54,7 @@ public class HandSellTC extends DivinityCommandMaterialsTC {
                     int stackSize = material.getMaxStackSize();
                     int inventoryCount = marketableMaterial.getMaterialCount(sender);
 
-                    allStrings.add("max");
+                    LangEntry.W_max.addLang(getMain(), allStrings);
                     allStrings.add(String.valueOf(heldAmount));
                     if (stackSize < inventoryCount) {
                         allStrings.add(String.valueOf(stackSize));
@@ -68,7 +68,7 @@ public class HandSellTC extends DivinityCommandMaterialsTC {
                 // If uses clicks space after number, returns the value of the amount of item given
                 case 2:
                     strings = new String[]{
-                            String.format("Value: %s", this.getMain().getConsole().formatMoney(marketableMaterial.getManager().calculatePrice(Converter.getInt(args[0]), marketableMaterial.getQuantity(), marketableMaterial.getManager().getSellScale(), false)))
+                            LangEntry.VALUE_Response.get(getMain(), getMain().getConsole().formatMoney(marketableMaterial.getManager().calculatePrice(Converter.getInt(args[0]), marketableMaterial.getQuantity(), marketableMaterial.getManager().getSellScale(), false))),
                     };
                     break;
             }
