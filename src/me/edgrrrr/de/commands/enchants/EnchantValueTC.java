@@ -39,13 +39,13 @@ public class EnchantValueTC extends DivinityCommandEnchantTC {
             // 1 args
             // return names of players starting with arg
             case 1:
-                strings = this.getMain().getEnchMan().getItemNames(args[0]).toArray(new String[0]);
+                strings = getMain().getEnchMan().getItemNames(args[0]).toArray(new String[0]);
                 break;
 
             // 2 args
             // return max stack size for the material given
             case 2:
-                enchantData = this.getMain().getEnchMan().getEnchant(args[0]);
+                enchantData = getMain().getEnchMan().getEnchant(args[0]);
                 int maxLevel = 1;
                 if (enchantData != null) {
                     maxLevel = enchantData.getMaxLevel();
@@ -56,7 +56,7 @@ public class EnchantValueTC extends DivinityCommandEnchantTC {
 
             // else
             default:
-                strings = this.getMain().getEnchMan().getItemNames().toArray(new String[0]);
+                strings = getMain().getEnchMan().getItemNames().toArray(new String[0]);
                 break;
         }
 
