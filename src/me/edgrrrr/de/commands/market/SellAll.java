@@ -3,6 +3,7 @@ package me.edgrrrr.de.commands.market;
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.commands.DivinityCommandMaterials;
 import me.edgrrrr.de.config.Setting;
+import me.edgrrrr.de.lang.LangEntry;
 import me.edgrrrr.de.market.MarketableToken;
 import me.edgrrrr.de.market.items.materials.MarketableMaterial;
 import me.edgrrrr.de.market.items.materials.MaterialValueResponse;
@@ -55,9 +56,9 @@ public class SellAll extends DivinityCommandMaterials {
                     arg = arg.replaceFirst("!", "");
                 }
                 for (String materialName : arg.split(",")) {
-                    MarketableMaterial marketableMaterial = this.getMain().getMarkMan().getItem(materialName);
+                    MarketableMaterial marketableMaterial = getMain().getMarkMan().getItem(materialName);
                     if (marketableMaterial == null) {
-                        this.getMain().getConsole().send(sender, CommandResponse.InvalidItemName.defaultLogLevel, CommandResponse.InvalidItemName.message, materialName);
+                        getMain().getConsole().send(sender, LangEntry.MARKET_InvalidItemName.logLevel, LangEntry.MARKET_InvalidItemName.get(getMain()), materialName);
                         return true;
                     } else {
                         marketableMaterials.add(marketableMaterial);
@@ -66,7 +67,7 @@ public class SellAll extends DivinityCommandMaterials {
                 break;
 
             default:
-                this.getMain().getConsole().usage(sender, CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
+                getMain().getConsole().usage(sender, LangEntry.GENERIC_InvalidNumberOfArguments.get(getMain()), this.help.getUsages());
                 return true;
         }
 
@@ -75,7 +76,7 @@ public class SellAll extends DivinityCommandMaterials {
         ItemStack[] playerInventory = PlayerManager.getInventoryMaterials(sender);
         ArrayList<ItemStack> itemStackList = new ArrayList<>();
         for (ItemStack itemStack : playerInventory) {
-            MarketableMaterial marketableMaterial = this.getMain().getMarkMan().getItem(itemStack);
+            MarketableMaterial marketableMaterial = getMain().getMarkMan().getItem(itemStack);
             if ((blocking && !marketableMaterials.contains(marketableMaterial)) || (!blocking && marketableMaterials.contains(marketableMaterial)) || (!blocking && marketableMaterials.size() == 0)) {
                 itemStackList.add(itemStack);
             }
@@ -88,35 +89,35 @@ public class SellAll extends DivinityCommandMaterials {
         ItemStack[] allStacks = itemStackList.toArray(new ItemStack[0]);
 
         if (allStacks.length == 0) {
-            this.getMain().getConsole().send(sender, CommandResponse.NothingToSell.defaultLogLevel, CommandResponse.NothingToSell.message);
+            getMain().getConsole().send(sender, LangEntry.MARKET_NothingToSell.logLevel, LangEntry.MARKET_NothingToSell.get(getMain()));
             return true;
         }
 
 
-        MaterialValueResponse response = this.getMain().getMarkMan().getSellValue(allStacks);
+        MaterialValueResponse response = getMain().getMarkMan().getSellValue(allStacks);
 
 
         if (response.getTokenIds().size() == 0) {
-            this.getMain().getConsole().send(sender, CommandResponse.NothingToSellAfterSkipping.defaultLogLevel, CommandResponse.NothingToSellAfterSkipping.message);
+            getMain().getConsole().send(sender, LangEntry.MARKET_NothingToSellAfterSkipping.logLevel, LangEntry.MARKET_NothingToSellAfterSkipping.get(getMain()));
             return true;
         }
 
         // If the response was unsuccessful, return
         if (!response.isSuccess()) {
             // Handles console, player message and mail
-            this.getMain().getConsole().logFailedSale(sender, response.getQuantity(), "items", response.getErrorMessage());
+            getMain().getConsole().logFailedSale(sender, response.getQuantity(), LangEntry.W_items.get(getMain()), response.getErrorMessage());
             return true;
         }
 
         // Remove items from player and add cash
         PlayerManager.removePlayerItems(response.getItemStacksAsArray());
-        EconomyResponse economyResponse = this.getMain().getEconMan().addCash(sender, response.getValue());
+        EconomyResponse economyResponse = getMain().getEconMan().addCash(sender, response.getValue());
 
         // If the economy response was unsuccessful, return items to player and return
         if (!economyResponse.transactionSuccess()) {
             PlayerManager.addPlayerItems(sender, response.getClonesAsArray());
             // Handles console, player message and mail
-            this.getMain().getConsole().logFailedSale(sender, response.getQuantity(), "items", economyResponse.errorMessage);
+            getMain().getConsole().logFailedSale(sender, response.getQuantity(), LangEntry.W_items.get(getMain()), economyResponse.errorMessage);
             return true;
         }
 
@@ -128,7 +129,7 @@ public class SellAll extends DivinityCommandMaterials {
         }
 
         // Handles console, player message and mail
-        this.getMain().getConsole().logSale(sender, response.getQuantity(), response.getValue(), "items");
+        getMain().getConsole().logSale(sender, response.getQuantity(), response.getValue(), LangEntry.W_items.get(getMain()));
 
         return true;
     }
