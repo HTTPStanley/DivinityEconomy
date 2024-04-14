@@ -38,7 +38,7 @@ public class EconomyPlayer extends EconomyObject {
      * @return
      */
     public String getName() {
-        return (String) this.get(FileKey.NAME, this.getMain().getPlayMan().getPlayerName(this.player).name());
+        return (String) this.get(FileKey.NAME, getMain().getPlayMan().getPlayerName(this.player).name());
     }
 
 
