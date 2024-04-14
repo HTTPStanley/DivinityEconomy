@@ -4,6 +4,7 @@ import com.tchristofferson.configupdater.ConfigUpdater;
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.DivinityModule;
 import me.edgrrrr.de.config.Setting;
+import me.edgrrrr.de.lang.LangEntry;
 import me.edgrrrr.de.utils.Converter;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -28,8 +29,7 @@ public abstract class TokenManager extends DivinityModule {
     // DivinityItem id's are upper case
     protected Map<String, String> aliasMap;
     private static final int MAX_SEARCH_DEPTH_INT = 64;
-    private static final int MIN_SEARCH_DEPTH_INT = 4;
-    private static final long MAX_SEARCH_NANO_LONG = 100000000L; // 100 millis
+    private static final long MAX_SEARCH_NANO_LONG = 50000000L; // 50ms
     private TokenLRUCache itemNamesCache;
     protected Map<String, Set<String>> revAliasMap;
     protected Map<String, ? extends MarketableToken> itemMap;
@@ -226,6 +226,13 @@ public abstract class TokenManager extends DivinityModule {
             int depth = priority0ArrayList.size() + priority1ArrayList.size() + priority2ArrayList.size() + priority3ArrayList.size();
             if (depth > MAX_SEARCH_DEPTH_INT) {
                 this.getConsole().debug("Max search depth reached, stopping search.");
+                break;
+            }
+
+
+            // Check max search time
+            if (System.nanoTime() - startTime > MAX_SEARCH_NANO_LONG) {
+                this.getConsole().debug("Max search time reached, stopping search.");
                 break;
             }
 
@@ -445,7 +452,7 @@ public abstract class TokenManager extends DivinityModule {
             }
 
             // Run Update
-            ConfigUpdater.update(this.getMain(), this.aliasFile, aliasFile, Collections.emptyList());
+            ConfigUpdater.update(getMain(), this.aliasFile, aliasFile, Collections.emptyList());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -498,7 +505,7 @@ public abstract class TokenManager extends DivinityModule {
         revBuildAliasValues.keySet().forEach(key -> revResultAliasValues.put(key, revBuildAliasValues.get(key)));
         this.revAliasMap = revResultAliasValues;
 
-        this.getConsole().info("Loaded %s item aliases from %s", values.size(), this.aliasFile);
+        this.getConsole().info(LangEntry.MARKET_ItemAliasesLoaded.get(getMain()), values.size(), this.aliasFile);
     }
 
     /**
@@ -514,7 +521,7 @@ public abstract class TokenManager extends DivinityModule {
             }
 
             // Run Update
-            ConfigUpdater.update(this.getMain(), this.itemFile, this.getConfMan().getFile(this.itemFile), Collections.emptyList());
+            ConfigUpdater.update(getMain(), this.itemFile, this.getConfMan().getFile(this.itemFile), Collections.emptyList());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -557,7 +564,7 @@ public abstract class TokenManager extends DivinityModule {
         }
         // Copy values into items
         this.itemMap = values;
-        this.getConsole().info("Loaded %s items (current/default quantities: %s / %s) from %s", values.size(), this.totalItems, this.defaultTotalItems, this.itemFile);
+        this.getConsole().info(LangEntry.MARKET_ItemsLoaded.get(getMain()), values.size(), this.totalItems, this.defaultTotalItems, this.itemFile);
     }
 
     /**
@@ -599,7 +606,7 @@ public abstract class TokenManager extends DivinityModule {
         // save
         this.saveFile();
         if (!this.saveMessagesDisabled) {
-            this.getConsole().info("%s saved.", this.itemFile);
+            this.getConsole().info(LangEntry.GENERIC_FileSaved.get(getMain()), this.itemFile);
         }
     }
 
