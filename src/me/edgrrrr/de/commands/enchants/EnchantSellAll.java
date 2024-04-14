@@ -3,6 +3,7 @@ package me.edgrrrr.de.commands.enchants;
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.commands.DivinityCommandEnchant;
 import me.edgrrrr.de.config.Setting;
+import me.edgrrrr.de.lang.LangEntry;
 import me.edgrrrr.de.market.MarketableToken;
 import me.edgrrrr.de.market.items.enchants.EnchantValueResponse;
 import me.edgrrrr.de.market.items.enchants.MarketableEnchant;
@@ -56,9 +57,9 @@ public class EnchantSellAll extends DivinityCommandEnchant {
                     arg = arg.replaceFirst("!", "");
                 }
                 for (String materialName : arg.split(",")) {
-                    MarketableMaterial marketableMaterial = this.getMain().getMarkMan().getItem(materialName);
+                    MarketableMaterial marketableMaterial = getMain().getMarkMan().getItem(materialName);
                     if (marketableMaterial == null) {
-                        this.getMain().getConsole().send(sender, CommandResponse.InvalidItemName.defaultLogLevel, CommandResponse.InvalidItemName.message, materialName);
+                        getMain().getConsole().send(sender, LangEntry.MARKET_InvalidItemName.logLevel, LangEntry.MARKET_InvalidItemName.get(getMain()), materialName);
                         return true;
                     } else {
                         marketableMaterials.add(marketableMaterial);
@@ -67,7 +68,7 @@ public class EnchantSellAll extends DivinityCommandEnchant {
                 break;
 
             default:
-                this.getMain().getConsole().usage(sender, CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
+                getMain().getConsole().usage(sender, LangEntry.GENERIC_InvalidNumberOfArguments.get(getMain()), this.help.getUsages());
                 return true;
         }
 
@@ -76,7 +77,7 @@ public class EnchantSellAll extends DivinityCommandEnchant {
         ItemStack[] playerInventory = PlayerManager.getInventoryMaterials(sender);
         ArrayList<ItemStack> itemStackList = new ArrayList<>();
         for (ItemStack itemStack : playerInventory) {
-            MarketableMaterial marketableMaterial = this.getMain().getMarkMan().getItem(itemStack);
+            MarketableMaterial marketableMaterial = getMain().getMarkMan().getItem(itemStack);
             if ((blocking && !marketableMaterials.contains(marketableMaterial)) || (!blocking && marketableMaterials.contains(marketableMaterial)) || (!blocking && marketableMaterials.size() == 0)) {
                 itemStackList.add(itemStack);
             }
@@ -90,27 +91,27 @@ public class EnchantSellAll extends DivinityCommandEnchant {
 
 
         if (allStacks.length == 0) {
-            this.getMain().getConsole().send(sender, CommandResponse.NothingToSell.defaultLogLevel, CommandResponse.NothingToSell.message);
+            getMain().getConsole().send(sender, LangEntry.MARKET_NothingToSell.logLevel, LangEntry.MARKET_NothingToSell.get(getMain()));
             return true;
         }
 
-        EnchantValueResponse response = this.getMain().getEnchMan().getSellValue(allStacks);
+        EnchantValueResponse response = getMain().getEnchMan().getSellValue(allStacks);
 
         if (response.getTokenIds().size() == 0) {
-            this.getMain().getConsole().send(sender, CommandResponse.NothingToSellAfterSkipping.defaultLogLevel, CommandResponse.NothingToSellAfterSkipping.message);
+            getMain().getConsole().send(sender, LangEntry.MARKET_NothingToSellAfterSkipping.logLevel, LangEntry.MARKET_NothingToSellAfterSkipping.get(getMain()));
             return true;
         }
 
         // If the response was unsuccessful, return
         if (response.isFailure()) {
             // Handles console, player message and mail
-            this.getMain().getConsole().logFailedSale(sender, response.getQuantity(), String.format("enchants( %s )", response.listNames()), response.getErrorMessage());
+            getMain().getConsole().logFailedSale(sender, response.getQuantity(), LangEntry.MARKET_EnchantList.get(getMain(), response.listNames()), response.getErrorMessage());
             return true;
         }
 
         // If success
         for (ItemStack itemStack : response.getItemStacks()) {
-            this.getMain().getEnchMan().removeEnchantsFromItem(itemStack);
+            getMain().getEnchMan().removeEnchantsFromItem(itemStack);
         }
 
         // Loop through all tokens and edit their quantity
@@ -121,19 +122,19 @@ public class EnchantSellAll extends DivinityCommandEnchant {
 
 
         // Add cash to player
-        EconomyResponse economyResponse = this.getMain().getEconMan().addCash(sender, response.getValue());
+        EconomyResponse economyResponse = getMain().getEconMan().addCash(sender, response.getValue());
 
         // If the economy response was unsuccessful, return items to player and return
         if (!economyResponse.transactionSuccess()) {
             PlayerManager.removePlayerItems(response.getItemStacksAsArray());
             PlayerManager.addPlayerItems(sender, response.getClonesAsArray());
             // Handles console, player message and mail
-            this.getMain().getConsole().logFailedSale(sender, response.getQuantity(), String.format("enchants( %s )", response.listNames()), economyResponse.errorMessage);
+            getMain().getConsole().logFailedSale(sender, response.getQuantity(), LangEntry.MARKET_EnchantList.get(getMain(), response.listNames()), economyResponse.errorMessage);
             return true;
         }
 
         // Handles console, player message and mail
-        this.getMain().getConsole().logSale(sender, response.getQuantity(), response.getValue(), String.format("enchants( %s )", response.listNames()));
+        getMain().getConsole().logSale(sender, response.getQuantity(), response.getValue(), LangEntry.MARKET_EnchantList.get(getMain(), response.listNames()));
 
         return true;
     }
