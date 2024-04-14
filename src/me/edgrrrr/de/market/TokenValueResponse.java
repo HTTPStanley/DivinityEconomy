@@ -207,7 +207,7 @@ public class TokenValueResponse extends ValueResponse {
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
         for (MarketableToken token : this.getTokens()) {
-            names.add(token.getCleanName());
+            names.add(token.getName());
         }
 
         return names;
