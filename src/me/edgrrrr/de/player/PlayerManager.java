@@ -20,8 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class PlayerManager extends DivinityModule {
     private static final int MAX_SEARCH_DEPTH_INT = 64;
-    private static final int MIN_SEARCH_DEPTH_INT = 4;
-    private static final long MAX_SEARCH_NANO_LONG = 100000000L; // 100 millis
+    private static final long MAX_SEARCH_NANO_LONG = 50000000L; // 50ms
     private static final int PLAYER_TASK_INTERVAL = Converter.getTicks(60);
     private final Set<OfflinePlayer> players;
     private final Map<UUID, OfflinePlayer> playerUUIDs;
@@ -44,7 +43,7 @@ public class PlayerManager extends DivinityModule {
         this.players = Collections.synchronizedSet(new HashSet<>());
         this.playerNames = new ConcurrentHashMap<>();
         this.playerUUIDs = new ConcurrentHashMap<>();
-        this.playerCache = new PlayerLRUCache(this.getMain());
+        this.playerCache = new PlayerLRUCache(getMain());
     }
 
 
@@ -53,7 +52,7 @@ public class PlayerManager extends DivinityModule {
      */
     @Override
     public void init() {
-        this.playerTask.runTaskTimerAsynchronously(this.getMain(), PLAYER_TASK_INTERVAL, PLAYER_TASK_INTERVAL);
+        this.playerTask.runTaskTimerAsynchronously(getMain(), PLAYER_TASK_INTERVAL, PLAYER_TASK_INTERVAL);
         fetchOfflinePlayers();
     }
 
@@ -66,7 +65,7 @@ public class PlayerManager extends DivinityModule {
 
         // Get offline players from server
         // Add players to store
-        Set<OfflinePlayer> players = new HashSet<>(Arrays.asList(this.getMain().getServer().getOfflinePlayers()));
+        Set<OfflinePlayer> players = new HashSet<>(Arrays.asList(getMain().getServer().getOfflinePlayers()));
 
         // Check if cache should be invalidated
         if (players.size() != this.players.size()) {
@@ -148,7 +147,7 @@ public class PlayerManager extends DivinityModule {
     public OfflinePlayer getPlayer(String name, boolean exact) {
         // If the call is exact, return the player
         if (exact) {
-            return this.getMain().getServer().getOfflinePlayer(name);
+            return getMain().getServer().getOfflinePlayer(name);
         }
 
         // Get players
@@ -170,7 +169,7 @@ public class PlayerManager extends DivinityModule {
 
         // If player is not cached, search for them
         if (player == null) {
-            player = this.getMain().getServer().getOfflinePlayer(uuid);
+            player = getMain().getServer().getOfflinePlayer(uuid);
         }
 
         // Update cache
@@ -233,6 +232,13 @@ public class PlayerManager extends DivinityModule {
                     this.getConsole().debug("Max search depth reached, stopping search.");
                     break;
                 }
+
+                // Check max search time
+                if (System.nanoTime() - startTime > MAX_SEARCH_NANO_LONG) {
+                    this.getConsole().debug("Max search time reached, stopping search.");
+                    break;
+                }
+
 
                 // Get player name
                 NameStore nameStore = this.getPlayerName(offlinePlayer);
