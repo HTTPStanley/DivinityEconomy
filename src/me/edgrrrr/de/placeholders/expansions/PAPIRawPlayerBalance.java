@@ -11,6 +11,6 @@ public class PAPIRawPlayerBalance extends DivinityExpansion {
 
     @Override
     public String getResult(OfflinePlayer player, String value) {
-        return String.format("%,.2f", this.getMain().getEconMan().getBalance(player));
+        return String.format("%,.2f", getMain().getEconMan().getBalance(player));
     }
 }
