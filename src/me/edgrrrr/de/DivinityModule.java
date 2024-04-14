@@ -4,6 +4,7 @@ import me.edgrrrr.de.config.ConfigManager;
 import me.edgrrrr.de.console.EconConsole;
 import me.edgrrrr.de.economy.EconomyManager;
 import me.edgrrrr.de.help.HelpManager;
+import me.edgrrrr.de.lang.LangManager;
 import me.edgrrrr.de.mail.MailManager;
 import me.edgrrrr.de.market.exp.ExpManager;
 import me.edgrrrr.de.market.items.enchants.EnchantManager;
@@ -97,42 +98,42 @@ public abstract class DivinityModule {
      * Returns the help manager
      */
     public HelpManager getHelpMan() {
-        return this.getMain().getHelpMan();
+        return getMain().getHelpMan();
     }
 
     /**
      * Returns the material manager
      */
     public EnchantManager getEnchMan() {
-        return this.getMain().getEnchMan();
+        return getMain().getEnchMan();
     }
 
     /**
      * Returns the material manager
      */
     public BlockManager getMatMan() {
-        return this.getMain().getMatMan();
+        return getMain().getMatMan();
     }
 
     /**
      * Returns the potion manager
      */
     public PotionManager getPotMan() {
-        return this.getMain().getPotMan();
+        return getMain().getPotMan();
     }
 
     /**
      * Returns the entity manager
      */
     public EntityManager getEntMan() {
-        return this.getMain().getEntMan();
+        return getMain().getEntMan();
     }
 
     /**
      * Returns the experience manager
      */
     public ExpManager getExpMan() {
-        return this.getMain().getExpMan();
+        return getMain().getExpMan();
     }
 
 
@@ -140,42 +141,49 @@ public abstract class DivinityModule {
      * Returns the market manager
      */
     public MarketManager getMarkMan() {
-        return this.getMain().getMarkMan();
+        return getMain().getMarkMan();
     }
 
     /**
      * Returns the config manager
      */
     public ConfigManager getConfMan() {
-        return this.getMain().getConfMan();
+        return getMain().getConfMan();
     }
 
     /**
      * Returns the economy manager
      */
     public EconomyManager getEconMan() {
-        return this.getMain().getEconMan();
+        return getMain().getEconMan();
     }
 
     /**
      * Returns the mail manager
      */
     public MailManager getMailMan() {
-        return this.getMain().getMailMan();
+        return getMain().getMailMan();
     }
 
     /**
      * Returns the player manager
      */
     public PlayerManager getPlayMan() {
-        return this.getMain().getPlayMan();
+        return getMain().getPlayMan();
+    }
+
+    /**
+     * Returns the lang manager
+     */
+    public LangManager getLang() {
+        return getMain().getLang();
     }
 
     /**
      * Returns the console manager
      */
     public EconConsole getConsole() {
-        return this.getMain().getConsole();
+        return getMain().getConsole();
     }
 
     /**
