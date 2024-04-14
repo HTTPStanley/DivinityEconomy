@@ -3,8 +3,10 @@ package me.edgrrrr.de.commands.mail;
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.commands.DivinityCommandTC;
 import me.edgrrrr.de.config.Setting;
+import me.edgrrrr.de.lang.LangEntry;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -36,9 +38,14 @@ public class ClearMailTC extends DivinityCommandTC {
             // 1 arg
             // return list of page numbers
             case 1:
-                strings = new String[]{
-                        "read", "unread", "all"
-                };
+                ArrayList<String> list = new ArrayList<>();
+
+                LangEntry.W_all.addLang(getMain(), list);
+                LangEntry.W_read.addLang(getMain(), list);
+                LangEntry.W_unread.addLang(getMain(), list);
+
+                strings = list.toArray(new String[0]);
+
                 break;
 
             // else
