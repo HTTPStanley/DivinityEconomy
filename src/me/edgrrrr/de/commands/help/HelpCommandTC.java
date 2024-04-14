@@ -3,8 +3,10 @@ package me.edgrrrr.de.commands.help;
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.commands.DivinityCommandTC;
 import me.edgrrrr.de.config.Setting;
+import me.edgrrrr.de.lang.LangEntry;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -29,14 +31,19 @@ public class HelpCommandTC extends DivinityCommandTC {
     @Override
     public List<String> onPlayerTabCompleter(Player sender, String[] args) {
         String[] strings;
+        ArrayList<String> list = new ArrayList<>();
 
         switch (args.length) {
             case 1:
-                strings = new String[]{"<command>", "<search_term>", "<page_number>"};
+                LangEntry.HELP_Command.addLang(getMain(), list);
+                LangEntry.HELP_Term.addLang(getMain(), list);
+                LangEntry.HELP_Page.addLang(getMain(), list);
+                strings = list.toArray(new String[0]);
                 break;
 
             case 2:
-                strings = new String[]{"<page_number>"};
+                LangEntry.HELP_Page.addLang(getMain(), list);
+                strings = list.toArray(new String[0]);
                 break;
 
             default:
