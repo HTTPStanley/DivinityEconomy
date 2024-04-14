@@ -21,6 +21,8 @@ import me.edgrrrr.de.console.EconConsole;
 import me.edgrrrr.de.console.LogLevel;
 import me.edgrrrr.de.economy.EconomyManager;
 import me.edgrrrr.de.help.HelpManager;
+import me.edgrrrr.de.lang.LangEntry;
+import me.edgrrrr.de.lang.LangManager;
 import me.edgrrrr.de.mail.MailManager;
 import me.edgrrrr.de.market.exp.ExpManager;
 import me.edgrrrr.de.market.items.enchants.EnchantManager;
@@ -45,6 +47,8 @@ public class DEPlugin extends JavaPlugin {
     private ConfigManager config;
     // The console
     private EconConsole console;
+    // The language manager
+    private LangManager lang;
     // The economy
     private EconomyManager economyManager;
     // The mail manager
@@ -79,6 +83,7 @@ public class DEPlugin extends JavaPlugin {
         LogLevel.loadValuesFromConfig((YamlConfiguration) this.getConfig());
         this.config = new ConfigManager(this);
         this.console = new EconConsole(this);
+        this.lang = new LangManager(this);
         this.playerManager = new PlayerManager(this);
         this.economyManager = new EconomyManager(this);
         this.marketManager = new MarketManager(this);
@@ -94,6 +99,10 @@ public class DEPlugin extends JavaPlugin {
         this.config.init();
         DivinityModule.addModule(this.config, true);
 
+        // Initialise language
+        this.lang.init();
+        DivinityModule.addModule(this.lang, true);
+
         // Initialise player manager
         this.playerManager.init();
         DivinityModule.addModule(this.playerManager, true);
@@ -102,11 +111,11 @@ public class DEPlugin extends JavaPlugin {
         this.economyManager.init();
         // Check that the economy is enabled
         if (this.economyManager.getVaultEconomy() == null) {
-            this.console.severe("Economy is not enabled. Shutting down.");
+            this.console.severe(LangEntry.GENERIC_EconomyNotEnabled.get(this));
             this.shutdown();
             return;
         }
-        this.console.info("Economy is enabled. Provider: %s", this.economyManager.getVaultEconomy());
+        this.console.info(LangEntry.GENERIC_EconomyEnabled.get(this), this.economyManager.getVaultEconomy());
         DivinityModule.addModule(this.economyManager, true);
 
         // Initialisation of all modules
@@ -123,10 +132,10 @@ public class DEPlugin extends JavaPlugin {
         new ESetStockTC(this);
         new ESetValue(this);
         new ESetValueTC(this);
-        new ReloadEnchants(this);
-        new ReloadMaterials(this);
-        new SaveEnchants(this);
-        new SaveMaterials(this);
+        new Reload(this);
+        new ReloadTC(this);
+        new Save(this);
+        new SaveTC(this);
         new SetBal(this);
         new SetBalTC(this);
         new SetStock(this);
@@ -204,17 +213,17 @@ public class DEPlugin extends JavaPlugin {
             if (this.getConfMan().getBoolean(Setting.MAIN_ENABLE_PAPI_BOOLEAN)) {
                 this.expansionManager = new ExpansionManager(this);
                 this.expansionManager.register();
-                this.getConsole().info("PlaceholderAPI was found and is enabled, %s placeholders have been registered.", this.expansionManager.getExpansionCount());
+                this.getConsole().info(LangEntry.GENERIC_PAPIEnabled.get(this), this.expansionManager.getExpansionCount());
             } else {
-                this.getConsole().warn("PlaceholderAPI was found but is not enabled, disabling expansions.");
+                this.getConsole().warn(LangEntry.GENERIC_PAPINotEnabled.get(this));
             }
         } else {
-            this.getConsole().warn("PlaceholderAPI was not found, disabling expansions.");
+            this.getConsole().warn(LangEntry.GENERIC_PAPINotFound.get(this));
         }
 
         // Done :)
         this.describe();
-        this.console.info("Plugin Enabled");
+        this.console.info(LangEntry.GENERIC_PluginEnabled.get(this));
     }
 
     /**
@@ -223,7 +232,7 @@ public class DEPlugin extends JavaPlugin {
     @Override
     public void onDisable() {
         DivinityModule.runDeinit();
-        this.console.warn("Plugin Disabled");
+        this.console.warn(LangEntry.GENERIC_PluginEnabled.get(this));
     }
 
     /**
@@ -238,20 +247,29 @@ public class DEPlugin extends JavaPlugin {
      * Such as settings, the materials market variables, the enchant market variables.
      */
     public void describe() {
-        this.console.debug("===Describe===");
-        this.console.debug("Settings:");
+        this.console.debug(LangEntry.DESCRIBE_Header.get(this));
+        this.console.debug(LangEntry.DESCRIBE_Settings.get(this));
         for (Setting setting : Setting.values()) {
             Object value = this.getConfMan().get(setting);
             if (!(value instanceof MemorySection)) this.getConsole().debug("   - %s: '%s'", setting.path, value);
         }
         this.console.debug("");
-        this.console.debug("Markets:");
-        this.console.debug("   - Materials: %s", this.blockManager.getItemCount());
-        this.console.debug("      - Material Market Size: %s / %s", this.blockManager.getTotalItems(), this.blockManager.getDefaultTotalItems());
-        this.console.debug("      - Material Market Inflation: %s%%", this.blockManager.getInflation());
-        this.console.debug("   - Enchants: %s", this.enchantManager.getEnchantCount());
-        this.console.debug("      - Enchant Market Size: %s / %s", this.enchantManager.getTotalItems(), this.enchantManager.getDefaultTotalItems());
-        this.console.debug("      - Enchant Market Inflation: %s%%", this.enchantManager.getInflation());
+        this.console.debug(LangEntry.DESCRIBE_Markets.get(this));
+        this.console.debug(LangEntry.DESCRIBE_Materials.get(this, this.blockManager.getItemCount()));
+        this.console.debug(LangEntry.DESCRIBE_MaterialMarketSize.get(this, this.blockManager.getTotalItems(), this.blockManager.getDefaultTotalItems()));
+        this.console.debug(LangEntry.DESCRIBE_MaterialMarketInflation.get(this, this.blockManager.getInflation()));
+        this.console.debug(LangEntry.DESCRIBE_Enchants.get(this, this.enchantManager.getEnchantCount()));
+        this.console.debug(LangEntry.DESCRIBE_EnchantMarketSize.get(this, this.enchantManager.getTotalItems(), this.enchantManager.getDefaultTotalItems()));
+        this.console.debug(LangEntry.DESCRIBE_EnchantMarketInflation.get(this, this.enchantManager.getInflation()));
+        this.console.debug(LangEntry.DESCRIBE_Experience.get(this, this.expManager.getItemCount()));
+        this.console.debug(LangEntry.DESCRIBE_ExperienceMarketSize.get(this, this.expManager.getTotalItems(), this.expManager.getDefaultTotalItems()));
+        this.console.debug(LangEntry.DESCRIBE_ExperienceMarketInflation.get(this, this.expManager.getInflation()));
+        this.console.debug(LangEntry.DESCRIBE_PotionsMarketInflation.get(this, this.potionManager.getItemCount()));
+        this.console.debug(LangEntry.DESCRIBE_PotionsMarketInflation.get(this, this.potionManager.getTotalItems(), this.potionManager.getDefaultTotalItems()));
+        this.console.debug(LangEntry.DESCRIBE_PotionsMarketInflation.get(this, this.potionManager.getInflation()));
+        this.console.debug(LangEntry.DESCRIBE_EntitiesMarketInflation.get(this, this.entityManager.getItemCount()));
+        this.console.debug(LangEntry.DESCRIBE_EntitiesMarketInflation.get(this, this.entityManager.getTotalItems(), this.entityManager.getDefaultTotalItems()));
+        this.console.debug(LangEntry.DESCRIBE_EntitiesMarketInflation.get(this, this.entityManager.getInflation()));
         this.console.debug("");
     }
 
@@ -267,6 +285,13 @@ public class DEPlugin extends JavaPlugin {
      */
     public EconConsole getConsole() {
         return this.console;
+    }
+
+    /**
+     * Returns the language manager
+     */
+    public LangManager getLang() {
+        return this.lang;
     }
 
     /**
