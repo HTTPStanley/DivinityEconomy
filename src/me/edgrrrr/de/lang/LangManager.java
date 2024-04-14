@@ -39,7 +39,10 @@ public class LangManager extends DivinityModule {
     private static final String[] providedLangFiles = new String[]{
         ProvidedLangFiles.en_GB.getPath(),
         ProvidedLangFiles.fr_FR.getPath(),
-        ProvidedLangFiles.fi_FI.getPath(),
+        ProvidedLangFiles.de_DE.getPath(),
+        ProvidedLangFiles.es_ES.getPath(),
+        ProvidedLangFiles.it_IT.getPath(),
+        ProvidedLangFiles.ru_RU.getPath(),
     };
     private static File defaultLangFile;
     private static FileConfiguration defaultConfig;
