@@ -3,6 +3,7 @@ package me.edgrrrr.de.commands.admin;
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.commands.DivinityCommand;
 import me.edgrrrr.de.config.Setting;
+import me.edgrrrr.de.lang.LangEntry;
 import me.edgrrrr.de.utils.Converter;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.OfflinePlayer;
@@ -47,32 +48,32 @@ public class SetBal extends DivinityCommand {
             case 2:
                 // use case #2
                 amount = Converter.getDouble(args[1]);
-                receiver = this.getMain().getPlayMan().getPlayer(args[0], false);
+                receiver = getMain().getPlayMan().getPlayer(args[0], false);
                 break;
 
             default:
                 // Incorrect number of args
-                this.getMain().getConsole().usage(sender, CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
+                getMain().getConsole().usage(sender, LangEntry.GENERIC_InvalidNumberOfArguments.get(getMain()), this.help.getUsages());
                 return true;
         }
 
         // Ensure to player exists
         if (receiver == null) {
-            this.getMain().getConsole().send(sender, CommandResponse.InvalidPlayerName.defaultLogLevel, CommandResponse.InvalidPlayerName.message);
+            getMain().getConsole().send(sender, LangEntry.GENERIC_InvalidPlayerName.logLevel, LangEntry.GENERIC_InvalidPlayerName.get(getMain()));
             return true;
         }
 
-        double startingBalance = this.getMain().getEconMan().getBalance(receiver);
-        EconomyResponse response = this.getMain().getEconMan().setCash(receiver, amount);
+        double startingBalance = getMain().getEconMan().getBalance(receiver);
+        EconomyResponse response = getMain().getEconMan().setCash(receiver, amount);
 
         // Response messages
         if (response.transactionSuccess()) {
             // Handles console, player and mail
-            this.getMain().getConsole().logBalance(sender, receiver, startingBalance, response.balance, String.format("%s set your balance", sender.getName()));
+            getMain().getConsole().logBalance(sender, receiver, startingBalance, response.balance, LangEntry.BALANCE_SetByPlayer.get(getMain(), sender.getName()));
 
         } else {
             // Handles console, player and mail
-            this.getMain().getConsole().logFailedBalance(sender, receiver, response.errorMessage);
+            getMain().getConsole().logFailedBalance(sender, receiver, response.errorMessage);
         }
         return true;
     }
@@ -95,32 +96,32 @@ public class SetBal extends DivinityCommand {
             case 2:
                 // use case #2
                 amount = Converter.getDouble(args[1]);
-                receiver = this.getMain().getPlayMan().getPlayer(args[0], false);
+                receiver = getMain().getPlayMan().getPlayer(args[0], false);
                 break;
 
             default:
                 // Incorrect number of args
-                this.getMain().getConsole().usage(CommandResponse.InvalidNumberOfArguments.message, this.help.getUsages());
+                getMain().getConsole().usage(LangEntry.GENERIC_InvalidNumberOfArguments.get(getMain()), this.help.getUsages());
                 return true;
         }
 
         // Ensure to player exists
         if (receiver == null) {
-            this.getMain().getConsole().send(CommandResponse.InvalidPlayerName.defaultLogLevel, CommandResponse.InvalidPlayerName.message);
+            getMain().getConsole().send(LangEntry.GENERIC_InvalidPlayerName.logLevel, LangEntry.GENERIC_InvalidPlayerName.get(getMain()));
             return true;
         }
 
-        double startingBalance = this.getMain().getEconMan().getBalance(receiver);
-        EconomyResponse response = this.getMain().getEconMan().setCash(receiver, amount);
+        double startingBalance = getMain().getEconMan().getBalance(receiver);
+        EconomyResponse response = getMain().getEconMan().setCash(receiver, amount);
 
         // Response messages
         if (response.transactionSuccess()) {
             // Handles console, player and mail
-            this.getMain().getConsole().logBalance(null, receiver, startingBalance, response.balance, "CONSOLE set your balance");
+            getMain().getConsole().logBalance(null, receiver, startingBalance, response.balance, LangEntry.BALANCE_SetByConsole.get(getMain()));
 
         } else {
             // Handles console, player and mail
-            this.getMain().getConsole().logFailedBalance(null, receiver, response.errorMessage);
+            getMain().getConsole().logFailedBalance(null, receiver, response.errorMessage);
         }
         return true;
     }
