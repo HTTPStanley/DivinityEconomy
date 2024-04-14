@@ -3,6 +3,7 @@ package me.edgrrrr.de.console;
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.DivinityModule;
 import me.edgrrrr.de.config.Setting;
+import me.edgrrrr.de.lang.LangEntry;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -148,16 +149,16 @@ public class Console extends DivinityModule {
      * Sends a usage command to a player
      */
     public void usage(Player player, String errorMessage, String[] usages) {
-        this.warn(player, String.format("Incorrect command usage: %s", errorMessage));
-        this.warn(player, String.format("Command usage: %s", Arrays.toString(usages)));
+        this.warn(player, String.format(LangEntry.GENERIC_IncorrectCommandUsage.get(getMain()), errorMessage));
+        this.warn(player, String.format(LangEntry.GENERIC_CommandUsage.get(getMain()), Arrays.toString(usages)));
     }
 
     /**
      * Sends a usage command to the console
      */
     public void usage(String errorMessage, String[] usages) {
-        this.warn(String.format("Incorrect command usage: %s", errorMessage));
-        this.warn(String.format("Command usage: %s", Arrays.toString(usages)));
+        this.warn(String.format(LangEntry.GENERIC_IncorrectCommandUsage.get(getMain()), errorMessage));
+        this.warn(String.format(LangEntry.GENERIC_CommandUsage.get(getMain()), Arrays.toString(usages)));
     }
 
     /**
@@ -170,10 +171,10 @@ public class Console extends DivinityModule {
      * @param aliases
      */
     public void help(Player player, String command, String description, String[] usages, String[] aliases) {
-        this.info(player, String.format("Help for %s", command));
-        this.info(player, String.format("Description: %s", description));
-        this.info(player, String.format("Usages: %s", Arrays.toString(usages)));
-        this.info(player, String.format("Aliases: %s", Arrays.toString(aliases)));
+        this.info(player, LangEntry.GENERIC_HelpFor.get(getMain(), command));
+        this.info(player, LangEntry.GENERIC_Description.get(getMain(), description));
+        this.info(player, LangEntry.GENERIC_Usages.get(getMain(), Arrays.toString(usages)));
+        this.info(player, LangEntry.GENERIC_Aliases.get(getMain(), Arrays.toString(aliases)));
     }
 
     /**
