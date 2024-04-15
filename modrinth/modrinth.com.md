@@ -178,11 +178,8 @@
 <h3>Admin Commands</h3>
 <p><code>de.admin</code> - Allows the user to use all commands under the admin branch of permissions. This permission is granted by default to operators.</p>
 <ul>
-    <li><code>de.admin.reload</code> - Allows the user to reload the plugin. This permission is granted by default to operators.</li>
-    <li><code>de.admin.saveEnchants</code> - Allows the user to save enchants from the file. This permission is granted by default to operators.</li>
-    <li><code>de.admin.saveMaterials</code> - Allows the user to save materials from the file. This permission is granted by default to operators.</li>
-    <li><code>de.admin.reloadEnchants</code> - Allows the user to reload enchants from the file. This permission is granted by default to operators.</li>
-    <li><code>de.admin.reloadMaterials</code> - Allows the user to reload materials from the file. This permission is granted by default to operators.</li>
+    <li><code>de.admin.reload</code> - Allows the user to reload aspects of the plugin. This permission is granted by default to operators.</li>
+    <li><code>de.admin.save</code> - Allows the user to save aspects of the plugin. This permission is granted by default to operators.</li>
     <li><code>de.admin.editbal</code> - Allows the user to give and take money to themselves and others. This permission is granted by default to operators.</li>
     <li><code>de.admin.setbal</code> - Allows the user to set the balance of themselves or others. This permission is granted by default to operators.</li>
     <li><code>de.admin.clearbal</code> - Allows the user to clean the balance of themselves or others. This permission is granted by default to operators.</li>

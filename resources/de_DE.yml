@@ -62,6 +62,14 @@ RELOAD_Potions: "Tränke neu geladen."
 RELOAD_Entities: "Entitäten neu geladen."
 RELOAD_TypeRequired: "Sie müssen einen Typ angeben, um neu zu laden."
 
+# Save
+SAVE_Config: "Konfiguration gespeichert."
+SAVE_Enchants: "Verzauberungen gespeichert."
+SAVE_Materials: "Materialien gespeichert."
+SAVE_Experience: "Erfahrung gespeichert."
+SAVE_Potions: "Tränke gespeichert."
+SAVE_Entities: "Entitäten gespeichert."
+
 # Ping
 PING_PingResponse: "Pong!"
 

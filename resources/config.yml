@@ -233,15 +233,12 @@ Commands:
     Clear Bal: true
     Edit Bal: true
     Set Bal: true
-    Reload Materials: true
-    Reload Enchants: true
+    Reload: true
+    Save: true
     Set Stock: true
     Set Value: true
     E Set Stock: true
     E Set Value: true
-    Save Materials: true
-    Save Enchants: true
-    Reload: true
 
   Economy:
     Balance: true

@@ -26,7 +26,7 @@ public class Reload extends DivinityCommand {
      */
     @Override
     public boolean onPlayerCommand(Player sender, String[] args) {
-        if (args.length == 0) {
+        if (args.length == 1) {
             // Get the first argument
             String arg = args[0].toLowerCase();
 
