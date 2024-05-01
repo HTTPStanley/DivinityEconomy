@@ -236,10 +236,10 @@ public enum LangEntry {
 
     // Info
     INFO_InformationFor(),
-    INFO_TYPE(),
-    INFO_ID(),
-    INFO_CQ(),
-    INFO_IsBanned(),
+    INFO_TypeInformation(),
+    INFO_IDInformation(),
+    INFO_CurrentQuantityInformation(),
+    INFO_IsBannedInformation(),
 
 
 

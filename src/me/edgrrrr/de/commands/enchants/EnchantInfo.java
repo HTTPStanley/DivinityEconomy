@@ -46,9 +46,9 @@ public class EnchantInfo extends DivinityCommandEnchant {
             getMain().getConsole().usage(sender, LangEntry.MARKET_UnknownEnchant.get(getMain(), enchantName), this.help.getUsages());
         } else {
             getMain().getConsole().info(sender, LangEntry.INFO_InformationFor.get(getMain()), enchantData.getName());
-            getMain().getConsole().info(sender, LangEntry.INFO_ID.get(getMain()), enchantData.getID());
-            getMain().getConsole().info(sender, LangEntry.INFO_CQ.get(getMain()), enchantData.getQuantity());
-            getMain().getConsole().info(sender, LangEntry.INFO_IsBanned.get(getMain()), !(enchantData.getAllowed()));
+            getMain().getConsole().info(sender, LangEntry.INFO_IDInformation.get(getMain()), enchantData.getID());
+            getMain().getConsole().info(sender, LangEntry.INFO_CurrentQuantityInformation.get(getMain()), enchantData.getQuantity());
+            getMain().getConsole().info(sender, LangEntry.INFO_IsBannedInformation.get(getMain()), !(enchantData.getAllowed()));
         }
 
         return true;

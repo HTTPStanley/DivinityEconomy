@@ -47,10 +47,10 @@ public class HandInfo extends DivinityCommandMaterials {
         MarketableMaterial marketableMaterial = getMain().getMarkMan().getItem(material.name());
 
         getMain().getConsole().info(sender, LangEntry.INFO_InformationFor.get(getMain()), marketableMaterial.getName());
-        getMain().getConsole().info(sender, LangEntry.INFO_TYPE.get(getMain()), marketableMaterial.getManager().getType());
-        getMain().getConsole().info(sender, LangEntry.INFO_ID.get(getMain()), marketableMaterial.getID());
-        getMain().getConsole().info(sender, LangEntry.INFO_CQ.get(getMain()), marketableMaterial.getQuantity());
-        getMain().getConsole().info(sender, LangEntry.INFO_IsBanned.get(getMain()), !(marketableMaterial.getAllowed()));
+        getMain().getConsole().info(sender, LangEntry.INFO_TypeInformation.get(getMain()), marketableMaterial.getManager().getType());
+        getMain().getConsole().info(sender, LangEntry.INFO_IDInformation.get(getMain()), marketableMaterial.getID());
+        getMain().getConsole().info(sender, LangEntry.INFO_CurrentQuantityInformation.get(getMain()), marketableMaterial.getQuantity());
+        getMain().getConsole().info(sender, LangEntry.INFO_IsBannedInformation.get(getMain()), !(marketableMaterial.getAllowed()));
         return true;
     }
 
