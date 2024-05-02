@@ -8,11 +8,16 @@ import me.edgrrrr.de.market.items.materials.MarketableMaterial;
 import me.edgrrrr.de.market.items.materials.MaterialManager;
 import me.edgrrrr.de.market.items.materials.MaterialValueResponse;
 import net.milkbowl.vault.economy.EconomyResponse.ResponseType;
+import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 
+import java.util.Arrays;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 public class BlockManager extends MaterialManager {
     // Stores the default items.json file location
@@ -80,6 +85,18 @@ public class BlockManager extends MaterialManager {
         super.init();
         this.itemDmgScaling = this.getConfMan().getBoolean(Setting.MARKET_MATERIALS_ITEM_DMG_SCALING_BOOLEAN);
     }
+
+
+    @Override
+    public Set<String> getLocalKeys() {
+        return Arrays.stream(Material.values())
+                .map(Material::getKey)
+                .map(NamespacedKey::getKey)
+                .map(Object::toString)
+                .map(String::toUpperCase)
+                .collect(Collectors.toSet());
+    }
+
 
     @Override
     public String getType() {

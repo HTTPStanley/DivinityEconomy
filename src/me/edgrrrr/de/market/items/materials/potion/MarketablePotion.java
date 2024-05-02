@@ -7,7 +7,8 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
-import org.bukkit.potion.PotionData;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 
 public class MarketablePotion extends MarketableMaterial {
@@ -42,8 +43,18 @@ public class MarketablePotion extends MarketableMaterial {
      *
      * @return
      */
-    public PotionType getEffect() {
+    public PotionType getType() {
         return this.potionType;
+    }
+
+
+    /**
+     * Returns the potion effect type
+     *
+     * @return
+     */
+    public PotionEffectType getEffectType() {
+        return this.potionType.getEffectType();
     }
 
     /**
@@ -64,11 +75,23 @@ public class MarketablePotion extends MarketableMaterial {
         return this.itemConfig.getBoolean(MapKeys.UPGRADED.key);
     }
 
+
+    /**
+     * Returns the potion effect
+     *
+     * @return
+     */
+    public org.bukkit.potion.PotionEffect createPotionEffect() {
+        return new PotionEffect(this.getEffectType(), 1, 1, this.getExtended(), this.getUpgraded());
+    }
+
+
     @Override
     public ItemStack getItemStack(int amount) {
         ItemStack itemStack = new ItemStack(this.material, amount);
         PotionMeta potionMeta = (PotionMeta) itemStack.getItemMeta();
-        potionMeta.setBasePotionData(new PotionData(this.getEffect(), this.getExtended(), this.getUpgraded()));
+        potionMeta.setBasePotionType(this.potionType);
+        potionMeta.addCustomEffect(this.createPotionEffect(), true);
         itemStack.setItemMeta(potionMeta);
         return itemStack;
     }
@@ -85,7 +108,7 @@ public class MarketablePotion extends MarketableMaterial {
             MarketablePotion potion = (MarketablePotion) material;
             return ((potion.getExtended() == this.getExtended()) &&
                     (potion.getUpgraded() == this.getUpgraded()) &&
-                    (potion.getEffect().equals(this.getEffect())) &&
+                    (potion.getType().equals(this.getType())) &&
                     (potion.getMaterial().equals(this.getMaterial())));
         } else {
             return false;
@@ -103,9 +126,9 @@ public class MarketablePotion extends MarketableMaterial {
         ItemMeta itemMeta = itemStack.getItemMeta();
         if (itemMeta instanceof PotionMeta) {
             PotionMeta potionMeta = (PotionMeta) itemMeta;
-            return ((potionMeta.getBasePotionData().isExtended() == this.getExtended()) &&
-                    (potionMeta.getBasePotionData().isUpgraded() == this.getUpgraded()) &&
-                    (potionMeta.getBasePotionData().getType().equals(this.getEffect())) &&
+            return (
+                    (potionMeta.getBasePotionType() == this.potionType) &&
+                    (potionMeta.hasCustomEffect(this.createPotionEffect().getType())) &&
                     (itemStack.getType().equals(this.getMaterial())));
         } else {
             return false;

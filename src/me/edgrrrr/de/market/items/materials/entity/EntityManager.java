@@ -2,14 +2,19 @@ package me.edgrrrr.de.market.items.materials.entity;
 
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.lang.LangEntry;
-import me.edgrrrr.de.market.items.materials.MaterialValueResponse;
 import me.edgrrrr.de.market.items.materials.MarketableMaterial;
 import me.edgrrrr.de.market.items.materials.MaterialManager;
+import me.edgrrrr.de.market.items.materials.MaterialValueResponse;
 import net.milkbowl.vault.economy.EconomyResponse;
+import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Arrays;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 public class EntityManager extends MaterialManager {
     // Stores the default items.json file location
@@ -29,6 +34,17 @@ public class EntityManager extends MaterialManager {
     @Override
     public String getType() {
         return "ENTITY";
+    }
+
+
+    @Override
+    public Set<String> getLocalKeys() {
+        return Arrays.stream(EntityType.values())
+                .map(EntityType::getKey)
+                .map(NamespacedKey::getKey)
+                .map(Object::toString)
+                .map(String::toUpperCase)
+                .collect(Collectors.toSet());
     }
 
     /**

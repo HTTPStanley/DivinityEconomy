@@ -10,6 +10,7 @@ import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -55,6 +56,7 @@ public abstract class MaterialManager extends ItemManager {
         this.saveTimer.runTaskTimerAsynchronously(getMain(), timer, timer);
         this.loadItems();
         this.loadAliases();
+        // this.checkLoadedItems(); - This is for internal debugging only. Hi! :)
         this.getMarkMan().addManager(this);
     }
 
@@ -162,5 +164,28 @@ public abstract class MaterialManager extends ItemManager {
 
         // Return the value
         return response;
+    }
+
+
+    /**
+     * Runs various checks on the loaded items
+     */
+    public void checkLoadedItems() {
+        // Loop through local keys and check if they are missing from the config
+        for (String key : this.getLocalKeys()) {
+            if (!this.config.contains(key)) {
+                this.getConsole().warn("Item '%s' is missing from the config, consider adding this item to the market.", key);
+            }
+        }
+    }
+
+
+    /**
+     * Returns the local keys for this version of the market
+     *
+     * @return Set<String>
+     */
+    public Set<String> getLocalKeys() {
+        return new HashSet<>();
     }
 }
