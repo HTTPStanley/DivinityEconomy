@@ -567,6 +567,7 @@ public abstract class TokenManager extends DivinityModule {
         this.getConsole().info(LangEntry.MARKET_ItemsLoaded.get(getMain()), values.size(), this.totalItems, this.defaultTotalItems, this.itemFile);
     }
 
+
     /**
      * Returns the item given as base class DivinityItem is abstract and cannot be instantiated
      *
