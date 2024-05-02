@@ -62,8 +62,9 @@ swift_sneak: SWIFT_SNEAK
 swiftsneak: SWIFT_SNEAK
 sneak: SWIFT_SNEAK
 sneakswift: SWIFT_SNEAK
-sweep: SWEEPING
-sweeping: SWEEPING
+sweep: SWEEPING_EDGE
+sweeping: SWEEPING_EDGE
+sweeping_edge: SWEEPING_EDGE
 thorn: THORNS
 thorns: THORNS
 unbre: UNBREAKING
