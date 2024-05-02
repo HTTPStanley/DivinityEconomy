@@ -17743,7 +17743,13 @@ sculksensor: SCULK_SENSOR
 sculkshriek: SCULK_SHRIEKER
 sculkshrieker: SCULK_SHRIEKER
 sculkvein: SCULK_VEIN
-scute: SCUTE
+scute: TURTLE_SCUTE
+turtle_scute: TURTLE_SCUTE
+turtlescute: TURTLE_SCUTE
+t_scute: TURTLE_SCUTE
+armadillo_scute: ARMADILLO_SCUTE
+armadilloscute: ARMADILLO_SCUTE
+a_scute: ARMADILLO_SCUTE
 scvein: SCULK_VEIN
 sdoor: SPRUCE_DOOR
 sdoort: SPRUCE_TRAPDOOR
