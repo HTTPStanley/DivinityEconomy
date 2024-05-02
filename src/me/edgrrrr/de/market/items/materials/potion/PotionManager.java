@@ -2,14 +2,19 @@ package me.edgrrrr.de.market.items.materials.potion;
 
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.lang.LangEntry;
-import me.edgrrrr.de.market.items.materials.MaterialValueResponse;
 import me.edgrrrr.de.market.items.materials.MarketableMaterial;
 import me.edgrrrr.de.market.items.materials.MaterialManager;
+import me.edgrrrr.de.market.items.materials.MaterialValueResponse;
 import net.milkbowl.vault.economy.EconomyResponse;
+import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffectType;
 
+import java.util.Arrays;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 public class PotionManager extends MaterialManager {
     /**
@@ -25,6 +30,17 @@ public class PotionManager extends MaterialManager {
     @Override
     public String getType() {
         return "POTION";
+    }
+
+
+    @Override
+    public Set<String> getLocalKeys() {
+        return Arrays.stream(PotionEffectType.values())
+                .map(PotionEffectType::getKey)
+                .map(NamespacedKey::getKey)
+                .map(Object::toString)
+                .map(String::toUpperCase)
+                .collect(Collectors.toSet());
     }
 
 
