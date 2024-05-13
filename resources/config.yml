@@ -73,7 +73,7 @@
 # Main Settings
 Main:
   # This is the plugin config version
-  Version: 3.4.0
+  Version: 3.4.1
   # Should placeholder api support be enabled? ( use "true" / "false" )
   Enable PAPI: true
   # What language file should be used? ( use any string ) | default = en_GB.yml
