@@ -30,6 +30,7 @@ import me.edgrrrr.de.market.items.materials.MarketManager;
 import me.edgrrrr.de.market.items.materials.block.BlockManager;
 import me.edgrrrr.de.market.items.materials.entity.EntityManager;
 import me.edgrrrr.de.market.items.materials.potion.PotionManager;
+import me.edgrrrr.de.placeholders.ExpansionManager;
 import me.edgrrrr.de.player.PlayerManager;
 import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -68,6 +69,8 @@ public class DEPlugin extends JavaPlugin {
     private EnchantManager enchantManager;
     // Experience manager
     private ExpManager expManager;
+    // The placeholder api expansion manager
+    private ExpansionManager expansionManager;
 
 
     /**
@@ -201,6 +204,21 @@ public class DEPlugin extends JavaPlugin {
         new SendCash(this);
         new SendCashTC(this);
         new ListBalances(this);
+
+        // Placeholder API - handled differently to submodules
+        // Automatically initiates - but must be last
+        // If placeholder api found, register
+        if (this.getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            if (this.getConfMan().getBoolean(Setting.MAIN_ENABLE_PAPI_BOOLEAN)) {
+                this.expansionManager = new ExpansionManager(this);
+                this.expansionManager.register();
+                this.getConsole().info(LangEntry.GENERIC_PAPIEnabled.get(this), this.expansionManager.getExpansionCount());
+            } else {
+                this.getConsole().warn(LangEntry.GENERIC_PAPINotEnabled.get(this));
+            }
+        } else {
+            this.getConsole().warn(LangEntry.GENERIC_PAPINotFound.get(this));
+        }
 
         // Done :)
         this.describe();
@@ -370,5 +388,12 @@ public class DEPlugin extends JavaPlugin {
      */
     public HelpManager getHelpMan() {
         return this.helpManager;
+    }
+
+    /**
+     * Returns the expansion manager
+     */
+    public ExpansionManager getExpansionManager() {
+        return this.expansionManager;
     }
 }
