@@ -30,6 +30,18 @@
     <li>QoL and Admin commands to setup features without touching config files.</li>
 </ul>
 
+<h2>📚 Localisation</h2>
+<p>DivinityEconomy supports localisation for multiple languages, this includes multiple options to enable language support for both commands and items, materials, enchantments and potions. You can also add your own language files, or tweak existing ones. If you would like to contribute to the localisation of DivinityEconomy, please visit our <a href="https://discord.com/invite/K7DY6UD" target="_blank" rel="noopener noreferrer">Discord</a>.</p>
+<strong>Languages Currently Supported:</strong>
+<ul>
+    <li>English.</li>
+    <li>French.</li>
+    <li>Spanish.</li>
+    <li>German.</li>
+    <li>Italian.</li>
+    <li>Russian.</li>
+</ul>
+
 <h2>⌨ Commands</h2>
 
 <h4>💰 Money</h4>
