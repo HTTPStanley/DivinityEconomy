@@ -24,6 +24,7 @@ public class HandSell extends DivinityCommandMaterials {
      */
     public HandSell(DEPlugin app) {
         super(app, "handsell", false, Setting.COMMAND_HAND_SELL_ITEM_ENABLE_BOOLEAN);
+        this.checkItemMarketEnabled = true;
     }
 
     /**

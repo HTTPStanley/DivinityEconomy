@@ -25,6 +25,7 @@ GENERIC_Description: "Descrizione: %s" # %s = descrizione
 GENERIC_Usages: "Usi: %s" # %s = usi
 GENERIC_Aliases: "Alias: %s" # %s = alias
 GENERIC_FileSaved: "%s salvato." # %s = nome file
+GENERIC_LocaleError: "Si è verificato un errore durante l'impostazione della localizzazione su '%s'. Vedi i dettagli qui sotto."
 
 # Descrizione
 DESCRIBE_Header: "===Descrivi==="
@@ -169,6 +170,18 @@ MAIL_NoMailNotification: "Non hai notifiche economiche."
 STOCK_CountChanged: "Livello scorte cambiato da %s(%s) a %s(%s)." # %s = vecchio stock, %s = vecchio nome stock, %s = nuovo stock, %s = nuovo nome stock
 STOCK_ValueChanged: "Valore scorte cambiato da %s(%s) a %s(%s)." # %s = vecchio valore, %s = vecchio nome valore, %s = nuovo valore, %s = nuovo nome valore
 
+
+# Worlds
+WORLDS_BothEnabled: "Mercato ed economia sono attivati."
+WORLDS_BothDisabled: "Mercato ed economia sono disattivati."
+WORLDS_MarketEnabled: "Mercato è attivato, economia è disattivata."
+WORLDS_EconomyEnabled: "Mercato è disattivato, economia è attivata."
+WORLDS_EconomyDisabledInThisWorld: "Economia disabilitata in questo mondo."
+WORLDS_MarketDisabledInThisWorld: "Mercato disabilitato in questo mondo."
+WORLDS_ItemMarketDisabledInThisWorld: "Mercato oggetti disabilitato in questo mondo."
+WORLDS_EnchantMarketDisabledInThisWorld: "Mercato incantesimi disabilitato in questo mondo."
+WORLDS_ExperienceMarketDisabledInThisWorld: "Mercato esperienza disabilitato in questo mondo."
+
 # Mercato
 MARKET_UnknownMaterial: "Materiale sconosciuto"
 MARKET_UnknownItem: "Oggetto sconosciuto %s" # %s = nome oggetto
@@ -186,6 +199,7 @@ MARKET_NothingToSell: "Non c'è nulla da vendere."
 MARKET_EnchantList: "incantesimi( %s )" # %s = nomi incantesimi
 MARKET_MaterialMarketIsDisabled: "Il mercato dei materiali è disabilitato."
 MARKET_EnchantMarketIsDisabled: "Il mercato degli incantesimi è disabilitato."
+MARKET_ExperienceMarketIsDisabled: "Il mercato dell'esperienza è disabilitato."
 MARKET_YouAreNotHoldingAnItem: "Non stai tenendo in mano un oggetto."
 MARKET_NoItemsToSell: "Non ci sono oggetti da vendere."
 MARKET_NoItemsToBuy: "Non ci sono oggetti da comprare."

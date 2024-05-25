@@ -25,6 +25,7 @@ GENERIC_Description: "Описание: %s"
 GENERIC_Usages: "Примеры использования: %s"
 GENERIC_Aliases: "Алиасы: %s"
 GENERIC_FileSaved: "Файл %s сохранен."
+GENERIC_LocaleError: "Произошла ошибка при установке локали на '%s'. Подробности см. ниже"
 
 # Описание
 DESCRIBE_Header: "===Описание==="
@@ -168,6 +169,19 @@ MAIL_NoMailNotification: "У вас нет уведомлений об экон�
 STOCK_CountChanged: "Уровень запасов изменен с %s(%s) на %s(%s)."
 STOCK_ValueChanged: "Стоимость запасов изменена с %s(%s) на %s(%s)."
 
+
+# Worlds
+WORLDS_BothEnabled: "Мир и Экономика включены."
+WORLDS_BothDisabled: "Мир и Экономика отключены."
+WORLDS_MarketEnabled: "Мир отключен, но Экономика включена."
+WORLDS_EconomyEnabled: "Мир включен, но Экономика отключена."
+WORLDS_EconomyDisabledInThisWorld: "Экономика отключена в этом мире."
+WORLDS_MarketDisabledInThisWorld: "Рынок отключен в этом мире."
+WORLDS_ItemMarketDisabledInThisWorld: "Рынок предметов отключен в этом мире."
+WORLDS_EnchantMarketDisabledInThisWorld: "Рынок зачарований отключен в этом мире."
+WORLDS_ExperienceMarketDisabledInThisWorld: "Рынок опыта отключен в этом мире."
+
+
 # Market
 MARKET_UnknownMaterial: "Неизвестный материал"
 MARKET_UnknownItem: "Неизвестный предмет %s"
@@ -185,6 +199,7 @@ MARKET_NothingToSell: "Нечего продавать."
 MARKET_EnchantList: "зачарования( %s )"
 MARKET_MaterialMarketIsDisabled: "Рынок материалов отключен."
 MARKET_EnchantMarketIsDisabled: "Рынок зачарований отключен."
+MARKET_ExperienceMarketIsDisabled: "Рынок опыта отключен."
 MARKET_YouAreNotHoldingAnItem: "Вы не держите предмет."
 MARKET_NoItemsToSell: "Нет предметов для продажи."
 MARKET_NoItemsToBuy: "Нет предметов для покупки."

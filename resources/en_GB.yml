@@ -25,6 +25,7 @@ GENERIC_Description: "Description: %s" # %s = description
 GENERIC_Usages: "Usages: %s" # %s = usages
 GENERIC_Aliases: "Aliases: %s" # %s = aliases
 GENERIC_FileSaved: "%s saved." # %s = file name
+GENERIC_LocaleError: "An error occurred while setting the locale to '%s'. See details below¬" # %s = locale
 
 
 # Describe
@@ -183,6 +184,18 @@ STOCK_CountChanged: "Stock level changed from %s(%s) to %s(%s)." # %s = old stoc
 STOCK_ValueChanged: "Stock value changed from %s(%s) to %s(%s)." # %s = old stock, %s = old stock name, %s = new stock, %s = new stock name
 
 
+# Worlds
+WORLDS_BothEnabled: "The Market and Economy are enabled."
+WORLDS_BothDisabled: "The Market and Economy are disabled."
+WORLDS_MarketEnabled: "The Market is enabled, but the Economy is disabled."
+WORLDS_EconomyEnabled: "The Economy is enabled, but the Market is disabled."
+WORLDS_EconomyDisabledInThisWorld: "The Economy is disabled in this world."
+WORLDS_MarketDisabledInThisWorld: "The Market is disabled in this world."
+WORLDS_ItemMarketDisabledInThisWorld: "The Item Market is disabled in this world."
+WORLDS_EnchantMarketDisabledInThisWorld: "The Enchant Market is disabled in this world."
+WORLDS_ExperienceMarketDisabledInThisWorld: "The Experience Market is disabled in this world."
+
+
 # Market
 MARKET_UnknownMaterial: "Unknown material"
 MARKET_UnknownItem: "Unknown item %s" # %s = item name
@@ -200,6 +213,7 @@ MARKET_NothingToSell: "There is nothing to sell."
 MARKET_EnchantList: "enchants( %s )" # %s = enchant names
 MARKET_MaterialMarketIsDisabled: "The Material Market is disabled."
 MARKET_EnchantMarketIsDisabled: "The Enchant Market is disabled."
+MARKET_ExperienceMarketIsDisabled: "The Experience Market is disabled."
 MARKET_YouAreNotHoldingAnItem: "You are not holding an item."
 MARKET_NoItemsToSell: "There are no items to sell."
 MARKET_NoItemsToBuy: "There are no items to buy."

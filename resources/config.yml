@@ -57,12 +57,26 @@
 #
 #
 # Locale files can be found in the DivinityEconomy/locale. We provide the following:
-# - en_GB.yml
-# - fr_FR.yml
-# - de_DE.yml
-# - es_ES.yml
-# - it_IT.yml
-# - ru_RU.yml
+# - en_GB.yml | English (UK)
+# - fr_FR.yml | French
+# - de_DE.yml | German
+# - es_ES.yml | Spanish
+# - it_IT.yml | Italian
+# - ru_RU.yml | Russian
+# - pt_PT.yml | Portuguese
+# - nl_NL.yml | Dutch
+# - pl_PL.yml | Polish
+# - da_DK.yml | Danish
+#
+# - In progress:
+# - tr_TR.yml | Turkish
+# - sv_SE.yml | Swedish
+# - zh_CN.yml | Chinese
+# - ja_JP.yml | Japanese
+# - ko_KR.yml | Korean
+# - ar_SA.yml | Arabic
+# - he_IL.yml | Hebrew
+# - hi_IN.yml | Hindi
 #
 # You can add your own locale files by creating a new file in the locale folder and adding the language to the config.yml. Any missing locale will use default en_GB.yml.
 
@@ -73,13 +87,17 @@
 # Main Settings
 Main:
   # This is the plugin config version
-  Version: 3.4.2
+  Version: 3.4.3
   # Should placeholder api support be enabled? ( use "true" / "false" )
   Enable PAPI: true
   # What language file should be used? ( use any string ) | default = en_GB.yml
   Language File: "en_GB.yml"
+  # System Locale ( use any string ) | default = "en_GB"
+  System Locale: "en_GB"
   # Should the plugin include item name translations? ( use "true" / "false" ) | default = false
   Translate Item Names: false
+  # Enable bStats ( use "true" / "false" ) | default = true
+  Enable bStats: true
 
 
 # Chat Settings
@@ -121,6 +139,35 @@ Message Ignore:
   Ignore Command Registry: true
   # Should save messages be ignored? SPAM ( use "true" / "false" )
   Ignore Save Messages: true
+
+
+# World Settings
+Worlds:
+  # Enable world notifications ( use "true" / "false" )
+  Enable Notifications: true
+  Market:
+    # Should the market be enabled in all worlds? ( use "true" / "false" )
+    Enable All Worlds: true
+    # What world should the market be enabled in?
+    Enabled Worlds:
+      - "world"
+      - "world_nether"
+      - "world_the_end"
+    # Apply to item market ( use "true" / "false" )
+    Apply To Items: true
+    # Apply to enchant market ( use "true" / "false" )
+    Apply To Enchants: true
+    # Apply to experience market ( use "true" / "false" )
+    Apply To Experience: true
+
+  Economy:
+    # Should the economy be enabled in all worlds? ( use "true" / "false" )
+    Enable All Worlds: true
+    # What world should the economy be enabled in?
+    Enabled Worlds:
+      - "world"
+      - "world_nether"
+      - "world_the_end"
 
 # Economy Settings
 Economy:

@@ -1,0 +1,282 @@
+# Dansk
+# Version: 1.0
+
+# Generiske Kommando Svar
+GENERIC_PluginEnabled: "Plugin Aktiveret"
+GENERIC_PluginDisabled: "Plugin Deaktiveret"
+GENERIC_EconomyNotEnabled: "Økonomi er ikke aktiveret. Lukker ned."
+GENERIC_EconomyEnabled: "Økonomi er aktiveret. Leverandør: %s" # %s = leverandør
+GENERIC_PAPIEnabled: "PlaceholderAPI blev fundet og er aktiveret, %s pladsholdere er registreret." # %s = antal
+GENERIC_PAPINotEnabled: "PlaceholderAPI blev fundet men er ikke aktiveret, deaktiverer udvidelser."
+GENERIC_PAPINotFound: "PlaceholderAPI blev ikke fundet, deaktiverer udvidelser."
+GENERIC_ConsoleCommandIsDisabled: "Denne kommando er deaktiveret."
+GENERIC_ConsoleSupportNotAdded: "Denne kommando understøtter ikke konsol."
+GENERIC_PlayerCommandIsDisabled: "Denne kommando er deaktiveret."
+GENERIC_ErrorOnCommand: "Der opstod en fejl under udførelse af kommandoen (%s): %s" # %s = kommando, %s = fejl
+GENERIC_InvalidNumberOfArguments: "Ugyldigt antal argumenter."
+GENERIC_InvalidArguments: "Ugyldige argumenter."
+GENERIC_InvalidPlayerName: "Ugyldigt spillernavn."
+GENERIC_InvalidAmountGiven: "Ugyldigt beløb angivet."
+GENERIC_UnknownError: "Der opstod en ukendt fejl."
+GENERIC_IncorrectCommandUsage: "Forkert brug af kommando: %s" # %s = korrekt brug
+GENERIC_CommandUsage: "Kommando brug: %s" # %s = korrekt brug
+GENERIC_HelpFor: "Hjælp til %s" # %s = kommando
+GENERIC_Description: "Beskrivelse: %s" # %s = beskrivelse
+GENERIC_Usages: "Anvendelser: %s" # %s = anvendelser
+GENERIC_Aliases: "Aliasser: %s" # %s = aliasser
+GENERIC_FileSaved: "%s gemt." # %s = filnavn
+GENERIC_LocaleError: "Der opstod en fejl ved indstilling af sprog til '%s'. Se detaljer nedenfor¬" # %s = sprog
+
+
+# Beskriv
+DESCRIBE_Header: "===Beskriv==="
+DESCRIBE_Settings: "Indstillinger:"
+DESCRIBE_Markets: "Markeder:"
+DESCRIBE_Materials: "   - Materialer: %s" # %s = antal materialer
+DESCRIBE_MaterialMarketSize: "   - Materialemarkedets Størrelse: %s / %s" # %s = materialemarkedets størrelse / standard størrelse
+DESCRIBE_MaterialMarketInflation: "   - Materialemarkedets Inflation: %s" # %s = materialemarkedets inflation
+DESCRIBE_Enchants: "   - Fortryllelser: %s" # %s = antal fortryllelser
+DESCRIBE_EnchantMarketSize: "   - Fortryllelsesmarkedets Størrelse: %s / %s" # %s = fortryllelsesmarkedets størrelse / standard størrelse
+DESCRIBE_EnchantMarketInflation: "   - Fortryllelsesmarkedets Inflation: %s" # %s = fortryllelsesmarkedets inflation
+DESCRIBE_Experience: "   - Erfaring: %s" # %s = antal erfaring
+DESCRIBE_ExperienceMarketSize: "   - Erfaringsmarkedets Størrelse: %s / %s" # %s = erfaringsmarkedets størrelse / standard størrelse
+DESCRIBE_ExperienceMarketInflation: "   - Erfaringsmarkedets Inflation: %s" # %s = erfaringsmarkedets inflation
+DESCRIBE_Entities: "   - Enheder: %s" # %s = antal enheder
+DESCRIBE_EntitiesMarketSize: "   - Enhedsmarkedets Størrelse: %s / %s" # %s = enhedsmarkedets størrelse / standard størrelse
+DESCRIBE_EntitiesMarketInflation: "   - Enhedsmarkedets Inflation: %s" # %s = enhedsmarkedets inflation
+DESCRIBE_Potions: "   - Drikke: %s" # %s = antal drikke
+DESCRIBE_PotionsMarketSize: "   - Drikkemarkedets Størrelse: %s / %s" # %s = drikkemarkedets størrelse / standard størrelse
+DESCRIBE_PotionsMarketInflation: "   - Drikkemarkedets Inflation: %s" # %s = drikkemarkedets inflation
+
+
+# Baltop
+BALTOP_NothingToDisplay: "Intet at vise."
+BALTOP_LastOrderedAt: "Sidst Bestilt Kl.: %s"
+BALTOP_ServerTotal: "Server Total: %s"
+BALTOP_YourPositionIs: "Din Position Er"
+
+
+# Genindlæs
+RELOAD_Response: "Denne kommando gør ikke noget i øjeblikket. Tak for at prøve."
+RELOAD_Enchants: "Fortryllelser genindlæst."
+RELOAD_Materials: "Materialer genindlæst."
+RELOAD_Experience: "Erfaring genindlæst."
+RELOAD_Config: "Konfiguration genindlæst."
+RELOAD_Potions: "Drikke genindlæst."
+RELOAD_Entities: "Enheder genindlæst."
+RELOAD_TypeRequired: "Du skal angive en type at genindlæse."
+
+
+# Gem
+SAVE_Config: "Konfiguration gemt."
+SAVE_Enchants: "Fortryllelser gemt."
+SAVE_Materials: "Materialer gemt."
+SAVE_Experience: "Erfaring gemt."
+SAVE_Potions: "Drikke gemt."
+SAVE_Entities: "Enheder gemt."
+
+
+# Ping
+PING_PingResponse: "Pong!"
+
+
+# Saldo
+BALANCE_Response: "Din saldo er %s." # %s = saldo
+BALANCE_ResponseOther: "%s's saldo er %s." # %s = spillernavn, %s = saldo
+BALANCE_ChangedLog: "%s's saldo ændret fra %s til %s på grund af %s" # %s = spillernavn, %s = gammel saldo, %s = ny saldo, %s = grund
+BALANCE_ChangeFailedLog: "Kunne ikke ændre %s's saldo på grund af %s" # %s = spillernavn, %s = grund
+BALANCE_ChangedSourcePlayer: "Du ændrede %s's saldo fra %s til %s" # %s = spillernavn, %s = gammel saldo, %s = ny saldo
+BALANCE_ChangedTargetPlayer: "Din saldo blev ændret fra %s til %s på grund af %s" # %s = gammel saldo, %s = ny saldo, %s = grund
+BALANCE_ClearedByPlayer: "%s ryddede din saldo."
+BALANCE_ClearedByConsole: "KONSOL ryddede din saldo."
+BALANCE_ChangedByPlayer: "%s ændrede din saldo."
+BALANCE_ChangedByConsole: "KONSOL ændrede din saldo."
+BALANCE_SetByPlayer: "%s satte din saldo."
+BALANCE_SetByConsole: "KONSOL satte din saldo."
+
+
+# Køb
+PURCHASE_Log: "%s købte %s %s for %s" # %s = spillernavn, %s = mængde, %s = vare navn, %s = pris
+PURCHASE_FailedLog: "%s kunne ikke købe %s %s på grund af %s" # %s = spillernavn, %s = mængde, %s = vare navn, %s = grund
+PURCHASE_Response: "Købt %s %s for %s" # %s = mængde, %s = vare navn, %s = pris
+PURCHASE_FailedResponse: "Kunne ikke købe %s %s på grund af %s" # %s = mængde, %s = vare navn, %s = grund
+PURCHASE_ValueEnchantFailure: "Kunne ikke bestemme købspris for %s fortryllelser( %s ) på grund af %s" # %s = mængde, %s = fortryllelser navne, %s = grund
+PURCHASE_ValueEnchantSummary: "Køb: %s fortryllelser koster %s" # %s = mængde, %s = pris
+PURCHASE_ValueEnchant: "  -Køb: %s %s koster %s" # %s = mængde, %s = fortryllelse navn, %s = pris
+
+
+# Salg
+SALE_Log: "%s solgte %s %s for %s" # %s = spillernavn, %s = mængde, %s = vare navn, %s = pris
+SALE_FailedLog: "%s kunne ikke sælge %s %s på grund af %s" # %s = spillernavn, %s = mængde, %s = vare navn, %s = grund
+SALE_Response: "Solgt %s %s for %s" # %s = mængde, %s = vare navn, %s = pris
+SALE_FailedResponse: "Kunne ikke sælge %s %s på grund af %s" # %s = mængde, %s = vare navn, %s = grund
+SALE_ValueEnchantFailure: "Kunne ikke bestemme salgspris for %s fortryllelser( %s ) på grund af %s" # %s = mængde, %s = fortryllelser navne, %s = grund
+SALE_ValueEnchantSummary: "Salg: %s fortryllelser koster %s" # %s = mængde, %s = pris
+SALE_ValueEnchant: "  -Salg: %s %s koster %s" # %s = mængde, %s = fortryllelse navn, %s = pris
+
+
+# Værdi
+VALUE_BuyResponse: "Køb: %s %s koster %s" # %s = mængde, %s = vare navn, %s = pris
+VALUE_SellResponse: "Salg: %s %s koster %s" # %s = mængde, %s = vare navn, %s = pris
+VALUE_BuyFailedResponse: "Kunne ikke bestemme købspris for %s %s på grund af %s" # %s = mængde, %s = vare navn, %s = grund
+VALUE_SellFailedResponse: "Kunne ikke bestemme salgspris for %s %s på grund af %s" # %s = mængde, %s = vare navn, %s = grund
+VALUE_Response: "Værdi: %s" # %s = værdi
+
+
+# Overførsel
+TRANSFER_Log: "%s overførte %s til %s" # %s = spillernavn, %s = mængde, %s = mål spillernavn
+TRANSFER_FailedLog: "%s kunne ikke overføre %s til %s på grund af %s" # %s = spillernavn, %s = mængde, %s = mål spillernavn, %s = grund
+TRANSFER_SourceResponse: "Sendt %s til %s" # %s = mængde, %s = mål spillernavn
+TRANSFER_TargetResponse: "Modtaget %s fra %s" # %s = mængde, %s = spillernavn
+TRANSFER_FailedResponse: "Kunne ikke sende %s til %s på grund af %s" # %s = mængde, %s = mål spillernavn, %s = grund
+
+
+# Økonomi
+ECONOMY_NegativeAmounts: "Du kan ikke overføre negative beløb."
+ECONOMY_Overdraft: "Du kan ikke overføre mere, end du har."
+ECONOMY_OverLimit: "Din saldo kan være for stor til at overføre."
+ECONOMY_BankNotExist: "Banken eksisterer ikke."
+ECONOMY_PlayerNotExist: "Spilleren eksisterer ikke."
+ECONOMY_BankAlreadyExists: "Banken eksisterer allerede."
+ECONOMY_CreatedBank: "Oprettet bank %s" # %s = bank navn
+ECONOMY_DeletedBank: "Slettet bank %s" # %s = bank navn
+ECONOMY_BankBalance: "Bank %s har en saldo på %s" # %s = bank navn, %s = saldo
+ECONOMY_BankHas: "Bank %s har %s" # %s = bank navn, %s = saldo
+ECONOMY_BankWithdraw: "Hævet %s fra bank %s" # %s = mængde, %s = bank navn
+ECONOMY_BankDeposit: "Indsat %s i bank %s" # %s = mængde, %s = bank navn
+ECONOMY_IsOwner: "%s er ejer af bank %s" # %s = spillernavn, %s = bank navn
+ECONOMY_IsMember: "%s er medlem af bank %s" # %s = spillernavn, %s = bank navn
+ECONOMY_IncorrectlyFormattedBalance: "Fil %s har en forkert formatteret saldo." # %s = filnavn
+ECONOMY_RecoveredFile: "Værdi gendannet med succes for %s." # %s = filnavn
+ECONOMY_FailedToRecoverFile: "Kunne ikke gendanne værdi for %s. Nulstil til 0." # %s = filnavn
+ECONOMY_FailedToCreateBankFile: "Kunne ikke oprette bankfil (%s) på grund af %s" # %s = bank navn, %s = grund
+ECONOMY_CreatingPlayerFile: "Opretter spillerfil for %s (%s)" # %s = spillernavn, %s = filnavn
+ECONOMY_Prefix: "Valuta præfiks: %s"
+ECONOMY_Suffix: "Valuta suffiks: %s"
+
+
+# Hjælp
+HELP_Header: "%s[== Hjælpe side %s/%s %s==]" # %s = farve, %s = nuværende side, %s = samlede sider, %s = farve
+HELP_NoneFound: "Ingen hjælp fundet."
+HELP_Command: "<kommando>"
+HELP_Term: "<term>"
+HELP_Page: "<side_nummer>"
+HELP_NullEntry: "%s er null" # %s = indgang
+HELP_EntryError: "%s udløste %s" # %s = indgang, %s = fejl
+HELP_HelpLoaded: "Indlæst %s hjælpeindgange" # %s = mængde
+
+
+# Mail
+MAIL_NothingToClear: "Der er ingen mail at rydde."
+MAIL_Removed: "Fjernet %s mail. (%s ulæst & %s læst)" # %s = mængde, %s = ulæst, %s = læst
+MAIL_InvalidPage: "Ugyldigt sidenummer."
+MAIL_YouHaveNoMail: "Du har ingen mail."
+MAIL_InvalidPageChoose: "Ugyldigt sidenummer. Vælg en side mellem 1 og %s." # %s = maks side
+MAIL_List: "==[Mailliste %s/%s]==" # %s = nuværende side, %s = samlede sider
+MAIL_MailLoaded: "Indlæst %s mail for %s brugere" # %s = mængde, %s = antal brugere
+MAIL_MailSaved: "Gemt %s mail for %s brugere" # %s = mængde, %s = antal brugere
+MAIL_MailNotification: "Du har %s økonomiske meddelelser. Se dem med /readmail" # %s = mængde
+MAIL_NoMailNotification: "Du har ingen økonomiske meddelelser."
+
+
+# Lager
+STOCK_CountChanged: "Lagerstatus ændret fra %s(%s) til %s(%s)." # %s = gammel lager, %s = gammel lager navn, %s = ny lager, %s = ny lager navn
+STOCK_ValueChanged: "Lager værdi ændret fra %s(%s) til %s(%s)." # %s = gammel værdi, %s = gammel værdi navn, %s = ny værdi, %s = ny værdi navn
+
+
+# Worlds
+WORLDS_BothEnabled: "Marked og økonomi er aktiveret."
+WORLDS_BothDisabled: "Marked og økonomi er deaktiveret."
+WORLDS_MarketEnabled: "Markedet er aktiveret, økonomi er deaktiveret."
+WORLDS_EconomyEnabled: "Økonomi er aktiveret, markedet er deaktiveret."
+WORLDS_EconomyDisabledInThisWorld: "Økonomi er deaktiveret i denne verden."
+WORLDS_MarketDisabledInThisWorld: "Markedet er deaktiveret i denne verden."
+WORLDS_ItemMarketDisabledInThisWorld: "Varemarkedet er deaktiveret i denne verden."
+WORLDS_EnchantMarketDisabledInThisWorld: "Fortryllelsesmarkedet er deaktiveret i denne verden."
+WORLDS_ExperienceMarketDisabledInThisWorld: "Erfaringsmarkedet er deaktiveret i denne verden."
+
+
+# Marked
+MARKET_UnknownMaterial: "Ukendt materiale"
+MARKET_UnknownItem: "Ukendt vare %s" # %s = vare navn
+MARKET_UnknownEnchant: "Ukendt fortryllelse %s" # %s = fortryllelse navn
+MARKET_InvalidItemName: "Ugyldigt varenavn."
+MARKET_InvalidMaterialName: "Ugyldigt materialenavn."
+MARKET_InvalidEnchantName: "Ugyldigt fortryllelse navn."
+MARKET_InvalidItemHeld: "Du skal holde en vare."
+MARKET_InvalidInventorySpace: "Du har ikke nok lagerplads (%s/%s)." # %s = nuværende plads, %s = krævet plads
+MARKET_InvalidStockAmount: "Markedet har ikke nok lager (%s/%s)." # %s = nuværende lager, %s = krævet lager
+MARKET_InvalidInventoryStock: "Du har ikke nok lager (%s/%s)." # %s = nuværende lager, %s = krævet lager
+MARKET_EnchantsInvalidItemAmount: "Ugyldig vare holdt. Du skal kun holde præcis 1 vare."
+MARKET_NothingToSellAfterSkipping: "Efter at have sprunget varer over (af forskellige årsager), er der intet tilbage at sælge."
+MARKET_NothingToSell: "Der er intet at sælge."
+MARKET_EnchantList: "fortryllelser( %s )" # %s = fortryllelse navne
+MARKET_MaterialMarketIsDisabled: "Materialemarkedet er deaktiveret."
+MARKET_EnchantMarketIsDisabled: "Fortryllelsesmarkedet er deaktiveret."
+MARKET_ExperienceMarketIsDisabled: "Erfaringsmarkedet er deaktiveret."
+MARKET_YouAreNotHoldingAnItem: "Du holder ikke en vare."
+MARKET_NoItemsToSell: "Der er ingen varer at sælge."
+MARKET_NoItemsToBuy: "Der er ingen varer at købe."
+MARKET_ItemCannotBeFound: "%s kan ikke findes." # %s = varenavn
+MARKET_ItemIsBanned: "%s er forbudt." # %s = varenavn
+MARKET_ItemIsWorthless: "%s er værdiløs." # %s = varenavn
+MARKET_ItemIsEnchanted: "%s er fortryllet." # %s = varenavn
+MARKET_ItemIsNamedOrLored: "%s har et navn eller lore." # %s = varenavn
+MARKET_ItemIsNotSupported: "%s understøttes ikke." # %s = varenavn
+MARKET_ItemIsNotSupportedOnThisItem: "%s understøttes ikke på denne vare." # %s = varenavn
+MARKET_LevelIsGreaterThanMax: "Niveauet er større end maksimalt (%s/%s)." # %s = niveau, %s = maksimum niveau
+MARKET_LevelWouldBeGreaterThanMax: "Niveauet ville være større end maksimalt (%s/%s)." # %s = niveau, %s = maksimum niveau
+MARKET_ItemDoesNotExist: "%s eksisterer ikke." # %s = varenavn
+MARKET_ItemDoesNotExistInTheStore: "%s eksisterer ikke i butikken." # %s = varenavn
+MARKET_ItemIsNotEnchanted: "%s er ikke fortryllet." # %s = varenavn
+MARKET_ItemNotEnoughLevels: "%s har ikke nok niveauer (%s/%s)." # %s = varenavn, %s = nuværende niveauer, %s = krævede niveauer
+MARKET_ItemAliasesLoaded: "Indlæst %s vare aliasser fra %s" # %s = mængde, %s = filnavn
+MARKET_ItemsLoaded: "Indlæst %s varer (nuværende / standard mængder: %s / %s) fra %s" # %s = mængde, %s = nuværende mængde, %s = standard mængde, %s = filnavn
+
+
+# Erfaring
+EXPERIENCE_InvalidAmount: "Ugyldigt beløb."
+EXPERIENCE_IsBanned: "Erfaring er forbudt."
+EXPERIENCE_NotEnoughExperienceToBuy: "Ikke nok erfaring til at købe."
+EXPERIENCE_NotEnoughExperienceToSell: "Ikke nok erfaring til at sælge."
+EXPERIENCE_IsWorthless: "Erfaring er værdiløs."
+
+
+# Info
+INFO_InformationFor: "==[Information for %s]==" # %s = varenavn
+INFO_TypeInformation: "TYPE: %s" # %s = vare id
+INFO_IDInformation: "ID: %s" # %s = vare id
+INFO_CurrentQuantityInformation: "Nuværende Mængde: %s" # %s = nuværende mængde
+INFO_IsBannedInformation: "Er Forbudt: %s" # %s = er forbudt
+
+
+# Vareliste
+ITEMLIST_Header: "==[Vareliste '%s' %s/%s]==" # %s = varenavn, %s = nuværende side, %s = samlede sider
+ITEMLIST_AscendingOrder: "Stigende Rækkefølge: %s"
+ITEMLIST_OrderBy: "Sorter Efter: %s"
+
+
+# SælgAlt
+SELLALL_Whitelist: "Hvidliste: materiale1,materiale2,materiale3"
+SELLALL_Blacklist: "Sortliste: materiale1,materiale2,materiale3"
+SELLALL_Empty: "Tom: Alt"
+
+
+# Ord
+W_max: "max"
+W_all: "alle"
+W_read: "læst"
+W_unread: "ulæst"
+W_unknown: "ukendt"
+W_name: "navn"
+W_pagenumber: "sidenummer"
+W_items: "varer"
+W_enchants: "fortryllelser"
+W_experience: "erfaring"
+W_price: "pris"
+W_stock: "lager"
+W_alphabet: "alfabet"
+W_config: "konfiguration"
+W_materials: "materialer"
+W_potions: "drikke"
+W_entities: "enheder"

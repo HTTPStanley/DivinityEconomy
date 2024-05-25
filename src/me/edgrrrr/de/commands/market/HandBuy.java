@@ -24,6 +24,7 @@ public class HandBuy extends DivinityCommandMaterials {
      */
     public HandBuy(DEPlugin app) {
         super(app, "handbuy", false, Setting.COMMAND_HAND_BUY_ITEM_ENABLE_BOOLEAN);
+        this.checkItemMarketEnabled = true;
     }
 
     /**

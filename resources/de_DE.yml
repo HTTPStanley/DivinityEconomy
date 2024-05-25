@@ -25,6 +25,8 @@ GENERIC_Description: "Beschreibung: %s" # %s = Beschreibung
 GENERIC_Usages: "Verwendungen: %s" # %s = Verwendungen
 GENERIC_Aliases: "Aliase: %s" # %s = Aliase
 GENERIC_FileSaved: "%s gespeichert." # %s = Dateiname
+GENERIC_LocaleError: "Ein Fehler ist aufgetreten, während die Sprache auf '%s' gesetzt wurde. Details siehe unten¬" # %s = Sprache
+
 
 # Beschreiben
 DESCRIBE_Header: "===Beschreiben==="
@@ -168,6 +170,18 @@ MAIL_NoMailNotification: "Sie haben keine Wirtschaftsmitteilungen."
 STOCK_CountChanged: "Lagerbestand geändert von %s(%s) zu %s(%s)." # %s = alter Lagerbestand, %s = alter Lagername, %s = neuer Lagerbestand, %s = neuer Lagername
 STOCK_ValueChanged: "Lagerwert geändert von %s(%s) zu %s(%s)." # %s = alter Lagerwert, %s = alter Lagername, %s = neuer Lagerwert, %s = neuer Lagername
 
+
+# Worlds
+WORLDS_BothEnabled: "Der Markt und die Wirtschaft sind aktiviert."
+WORLDS_BothDisabled: "Der Markt und die Wirtschaft sind deaktiviert."
+WORLDS_MarketEnabled: "Der Markt ist aktiviert, aber die Wirtschaft ist deaktiviert."
+WORLDS_EconomyEnabled: "Die Wirtschaft ist aktiviert, aber der Markt ist deaktiviert."
+WORLDS_EconomyDisabledInThisWorld: "Die Wirtschaft ist in dieser Welt deaktiviert."
+WORLDS_MarketDisabledInThisWorld: "Der Markt ist in dieser Welt deaktiviert."
+WORLDS_ItemMarketDisabledInThisWorld: "Der Artikelmarkt ist in dieser Welt deaktiviert."
+WORLDS_EnchantMarketDisabledInThisWorld: "Der Verzauberungsmarkt ist in dieser Welt deaktiviert."
+WORLDS_ExperienceMarketDisabledInThisWorld: "Der Erfahrungsmarkt ist in dieser Welt deaktiviert."
+
 # Markt
 MARKET_UnknownMaterial: "Unbekanntes Material"
 MARKET_UnknownItem: "Unbekannter Artikel %s" # %s = Artikelname
@@ -185,6 +199,7 @@ MARKET_NothingToSell: "Es gibt nichts zu verkaufen."
 MARKET_EnchantList: "Verzauberungen( %s )" # %s = Verzauberungsnamen
 MARKET_MaterialMarketIsDisabled: "Der Materialmarkt ist deaktiviert."
 MARKET_EnchantMarketIsDisabled: "Der Verzauberungsmarkt ist deaktiviert."
+MARKET_ExperienceMarketIsDisabled: "Der Erfahrungsmarkt ist deaktiviert."
 MARKET_YouAreNotHoldingAnItem: "Sie halten keinen Artikel."
 MARKET_NoItemsToSell: "Es gibt keine Artikel zu verkaufen."
 MARKET_NoItemsToBuy: "Es gibt keine Artikel zu kaufen."

@@ -24,6 +24,7 @@ public class Sell extends DivinityCommandMaterials {
      */
     public Sell(DEPlugin app) {
         super(app, "sell", false, Setting.COMMAND_SELL_ITEM_ENABLE_BOOLEAN);
+        this.checkItemMarketEnabled = true;
     }
 
     /**

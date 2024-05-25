@@ -25,6 +25,7 @@ GENERIC_Description: "Descripción: %s" # %s = descripción
 GENERIC_Usages: "Usos: %s" # %s = usos
 GENERIC_Aliases: "Alias: %s" # %s = alias
 GENERIC_FileSaved: "%s guardado." # %s = nombre de archivo
+GENERIC_LocaleError: "Ocurrió un error al establecer la configuración regional en '%s'. Ver detalles a continuación"
 
 
 # Describir
@@ -183,6 +184,18 @@ STOCK_CountChanged: "Nivel de inventario cambió de %s(%s) a %s(%s)." # %s = inv
 STOCK_ValueChanged: "Valor de inventario cambió de %s(%s) a %s(%s)." # %s = valor antiguo, %s = nombre del valor antiguo, %s = valor nuevo, %s = nombre del valor nuevo
 
 
+# Worlds
+WORLDS_BothEnabled: "Mercado y economía están activados."
+WORLDS_BothDisabled: "Mercado y economía están desactivados."
+WORLDS_MarketEnabled: "Mercado está activado, economía está desactivada."
+WORLDS_EconomyEnabled: "Mercado está desactivado, economía está activada."
+WORLDS_EconomyDisabledInThisWorld: "Economía está desactivada en este mundo."
+WORLDS_MarketDisabledInThisWorld: "Mercado está desactivado en este mundo."
+WORLDS_ItemMarketDisabledInThisWorld: "Mercado de artículos está desactivado en este mundo."
+WORLDS_EnchantMarketDisabledInThisWorld: "Mercado de encantamientos está desactivado en este mundo."
+WORLDS_ExperienceMarketDisabledInThisWorld: "Mercado de experiencia está desactivado en este mundo."
+
+
 # Mercado
 MARKET_UnknownMaterial: "Material desconocido"
 MARKET_UnknownItem: "Artículo desconocido %s" # %s = nombre del artículo
@@ -200,6 +213,7 @@ MARKET_NothingToSell: "No hay nada que vender."
 MARKET_EnchantList: "encantamientos( %s )" # %s = nombres de encantamientos
 MARKET_MaterialMarketIsDisabled: "El Mercado de Materiales está desactivado."
 MARKET_EnchantMarketIsDisabled: "El Mercado de Encantamientos está desactivado."
+MARKET_ExperienceMarketIsDisabled: "El Mercado de Experiencia está desactivado."
 MARKET_YouAreNotHoldingAnItem: "No estás sosteniendo un artículo."
 MARKET_NoItemsToSell: "No hay artículos para vender."
 MARKET_NoItemsToBuy: "No hay artículos para comprar."

@@ -13,6 +13,7 @@ import me.edgrrrr.de.market.items.materials.block.BlockManager;
 import me.edgrrrr.de.market.items.materials.entity.EntityManager;
 import me.edgrrrr.de.market.items.materials.potion.PotionManager;
 import me.edgrrrr.de.player.PlayerManager;
+import me.edgrrrr.de.world.WorldManager;
 
 import java.util.ArrayDeque;
 import java.util.Queue;
@@ -134,6 +135,14 @@ public abstract class DivinityModule {
      */
     public ExpManager getExpMan() {
         return getMain().getExpMan();
+    }
+
+
+    /**
+     * Returns the world manager
+     */
+    public WorldManager getWorldMan() {
+        return getMain().getWorldMan();
     }
 
 

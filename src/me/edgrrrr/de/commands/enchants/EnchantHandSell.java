@@ -25,6 +25,7 @@ public class EnchantHandSell extends DivinityCommandEnchant {
      */
     public EnchantHandSell(DEPlugin app) {
         super(app, "esell", false, Setting.COMMAND_E_SELL_ENABLE_BOOLEAN);
+        this.checkEnchantMarketEnabled = true;
     }
 
     /**

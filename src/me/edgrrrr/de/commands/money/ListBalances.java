@@ -20,6 +20,7 @@ public class ListBalances extends DivinityCommand {
      */
     public ListBalances(DEPlugin main) {
         super(main, "listbalances", true, Setting.COMMAND_LIST_BALANCES_ENABLE_BOOLEAN);
+        this.checkEconomyEnabled = true;
     }
 
     /**

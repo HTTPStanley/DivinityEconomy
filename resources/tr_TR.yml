@@ -1,0 +1,283 @@
+# Türkçe
+# Versiyon: 1.0
+
+# Genel Komut Yanıtları
+GENERIC_PluginEnabled: "Eklenti Etkinleştirildi"
+GENERIC_PluginDisabled: "Eklenti Devre Dışı Bırakıldı"
+GENERIC_EconomyNotEnabled: "Ekonomi etkin değil. Kapatılıyor."
+GENERIC_EconomyEnabled: "Ekonomi etkinleştirildi. Sağlayıcı: %s" # %s = sağlayıcı
+GENERIC_PAPIEnabled: "PlaceholderAPI bulundu ve etkinleştirildi, %s yer tutucu kaydedildi." # %s = miktar
+GENERIC_PAPINotEnabled: "PlaceholderAPI bulundu ama etkinleştirilmedi, genişlemeler devre dışı bırakılıyor."
+GENERIC_PAPINotFound: "PlaceholderAPI bulunamadı, genişlemeler devre dışı bırakılıyor."
+GENERIC_ConsoleCommandIsDisabled: "Bu komut devre dışı bırakıldı."
+GENERIC_ConsoleSupportNotAdded: "Bu komut konsol desteğini desteklemiyor."
+GENERIC_PlayerCommandIsDisabled: "Bu komut devre dışı bırakıldı."
+GENERIC_ErrorOnCommand: "Komut (%s) yürütülürken bir hata oluştu: %s" # %s = komut, %s = hata
+GENERIC_InvalidNumberOfArguments: "Geçersiz argüman sayısı."
+GENERIC_InvalidArguments: "Geçersiz argümanlar."
+GENERIC_InvalidPlayerName: "Geçersiz oyuncu adı."
+GENERIC_InvalidAmountGiven: "Geçersiz miktar verildi."
+GENERIC_UnknownError: "Bilinmeyen bir hata oluştu."
+GENERIC_IncorrectCommandUsage: "Yanlış komut kullanımı: %s" # %s = doğru kullanım
+GENERIC_CommandUsage: "Komut kullanımı: %s" # %s = doğru kullanım
+GENERIC_HelpFor: "%s için yardım" # %s = komut
+GENERIC_Description: "Açıklama: %s" # %s = açıklama
+GENERIC_Usages: "Kullanımlar: %s" # %s = kullanımlar
+GENERIC_Aliases: "Takma Adlar: %s" # %s = takma adlar
+GENERIC_FileSaved: "%s kaydedildi." # %s = dosya adı
+GENERIC_LocaleError: "Yerel ayar '%s' olarak ayarlanırken bir hata oluştu. Aşağıdaki detaylara bakın¬" # %s = yerel ayar
+
+
+# Açıklama
+DESCRIBE_Header: "===Açıklama==="
+DESCRIBE_Settings: "Ayarlar:"
+DESCRIBE_Markets: "Pazarlar:"
+DESCRIBE_Materials: "   - Malzemeler: %s" # %s = malzeme sayısı
+DESCRIBE_MaterialMarketSize: "   - Malzeme Pazar Büyüklüğü: %s / %s" # %s = malzeme pazar büyüklüğü / malzeme pazar varsayılan büyüklüğü
+DESCRIBE_MaterialMarketInflation: "   - Malzeme Pazar Enflasyonu: %s" # %s = malzeme pazar enflasyonu
+DESCRIBE_Enchants: "   - Büyüler: %s" # %s = büyü sayısı
+DESCRIBE_EnchantMarketSize: "   - Büyü Pazar Büyüklüğü: %s / %s" # %s = büyü pazar büyüklüğü / büyü pazar varsayılan büyüklüğü
+DESCRIBE_EnchantMarketInflation: "   - Büyü Pazar Enflasyonu: %s" # %s = büyü pazar enflasyonu
+DESCRIBE_Experience: "   - Deneyim: %s" # %s = deneyim sayısı
+DESCRIBE_ExperienceMarketSize: "   - Deneyim Pazar Büyüklüğü: %s / %s" # %s = deneyim pazar büyüklüğü / deneyim pazar varsayılan büyüklüğü
+DESCRIBE_ExperienceMarketInflation: "   - Deneyim Pazar Enflasyonu: %s" # %s = deneyim pazar enflasyonu
+DESCRIBE_Entities: "   - Varlıklar: %s" # %s = varlık sayısı
+DESCRIBE_EntitiesMarketSize: "   - Varlık Pazar Büyüklüğü: %s / %s" # %s = varlık pazar büyüklüğü / varlık pazar varsayılan büyüklüğü
+DESCRIBE_EntitiesMarketInflation: "   - Varlık Pazar Enflasyonu: %s" # %s = varlık pazar enflasyonu
+DESCRIBE_Potions: "   - İksirler: %s" # %s = iksir sayısı
+DESCRIBE_PotionsMarketSize: "   - İksir Pazar Büyüklüğü: %s / %s" # %s = iksir pazar büyüklüğü / iksir pazar varsayılan büyüklüğü
+DESCRIBE_PotionsMarketInflation: "   - İksir Pazar Enflasyonu: %s" # %s = iksir pazar enflasyonu
+
+
+# Baltop
+BALTOP_NothingToDisplay: "Gösterilecek bir şey yok."
+BALTOP_LastOrderedAt: "Son Sipariş Tarihi: %s"
+BALTOP_ServerTotal: "Sunucu Toplamı: %s"
+BALTOP_YourPositionIs: "Sıralamanız"
+
+
+# Yeniden Yükle
+RELOAD_Response: "Bu komut şu anda hiçbir şey yapmıyor. Yine de denediğiniz için teşekkürler."
+RELOAD_Enchants: "Büyüler yeniden yüklendi."
+RELOAD_Materials: "Malzemeler yeniden yüklendi."
+RELOAD_Experience: "Deneyim yeniden yüklendi."
+RELOAD_Config: "Yapılandırma yeniden yüklendi."
+RELOAD_Potions: "İksirler yeniden yüklendi."
+RELOAD_Entities: "Varlıklar yeniden yüklendi."
+RELOAD_TypeRequired: "Yeniden yüklemek için bir tür belirtmelisiniz."
+
+
+# Kaydet
+SAVE_Config: "Yapılandırma kaydedildi."
+SAVE_Enchants: "Büyüler kaydedildi."
+SAVE_Materials: "Malzemeler kaydedildi."
+SAVE_Experience: "Deneyim kaydedildi."
+SAVE_Potions: "İksirler kaydedildi."
+SAVE_Entities: "Varlıklar kaydedildi."
+
+
+# Ping
+PING_PingResponse: "Pong!"
+
+
+# Bakiye
+BALANCE_Response: "Bakiyeniz %s." # %s = bakiye
+BALANCE_ResponseOther: "%s'in bakiyesi %s." # %s = oyuncu adı, %s = bakiye
+BALANCE_ChangedLog: "%s'in bakiyesi %s'den %s'ye değişti. Sebep: %s" # %s = oyuncu adı, %s = eski bakiye, %s = yeni bakiye, %s = sebep
+BALANCE_ChangeFailedLog: "%s'in bakiyesi %s nedeniyle değiştirilemedi" # %s = oyuncu adı, %s = sebep
+BALANCE_ChangedSourcePlayer: "%s'in bakiyesini %s'den %s'ye değiştirdiniz" # %s = oyuncu adı, %s = eski bakiye, %s = yeni bakiye
+BALANCE_ChangedTargetPlayer: "Bakiyeniz %s'den %s'ye değişti. Sebep: %s" # %s = eski bakiye, %s = yeni bakiye, %s = sebep
+BALANCE_ClearedByPlayer: "%s bakiyenizi temizledi."
+BALANCE_ClearedByConsole: "KONSOL bakiyenizi temizledi."
+BALANCE_ChangedByPlayer: "%s bakiyenizi değiştirdi."
+BALANCE_ChangedByConsole: "KONSOL bakiyenizi değiştirdi."
+BALANCE_SetByPlayer: "%s bakiyenizi ayarladı."
+BALANCE_SetByConsole: "KONSOL bakiyenizi ayarladı."
+
+
+# Satın Alma
+PURCHASE_Log: "%s, %s %s'yi %s karşılığında satın aldı" # %s = oyuncu adı, %s = miktar, %s = öğe adı, %s = maliyet
+PURCHASE_FailedLog: "%s, %s %s'yi %s nedeniyle satın alamadı" # %s = oyuncu adı, %s = miktar, %s = öğe adı, %s = sebep
+PURCHASE_Response: "%s %s'yi %s karşılığında satın aldınız" # %s = miktar, %s = öğe adı, %s = maliyet
+PURCHASE_FailedResponse: "%s %s'yi %s nedeniyle satın alamadınız" # %s = miktar, %s = öğe adı, %s = sebep
+PURCHASE_ValueEnchantFailure: "%s büyü( %s )'nin satın alma değerini %s nedeniyle belirleyemedim" # %s = miktar, %s = büyü adları, %s = sebep
+PURCHASE_ValueEnchantSummary: "Satın alma: %s büyülerin maliyeti %s" # %s = miktar, %s = maliyet
+PURCHASE_ValueEnchant: "  -Satın alma: %s %s'nin maliyeti %s" # %s = miktar, %s = büyü adı, %s = maliyet
+
+
+# Satış
+SALE_Log: "%s, %s %s'yi %s karşılığında sattı" # %s = oyuncu adı, %s = miktar, %s = öğe adı, %s = maliyet
+SALE_FailedLog: "%s, %s %s'yi %s nedeniyle satamadı" # %s = oyuncu adı, %s = miktar, %s = öğe adı, %s = sebep
+SALE_Response: "%s %s'yi %s karşılığında sattınız" # %s = miktar, %s = öğe adı, %s = maliyet
+SALE_FailedResponse: "%s %s'yi %s nedeniyle satamadınız" # %s = miktar, %s = öğe adı, %s = sebep
+SALE_ValueEnchantFailure: "%s büyü( %s )'nin satış değerini %s nedeniyle belirleyemedim" # %s = miktar, %s = büyü adları, %s = sebep
+SALE_ValueEnchantSummary: "Satış: %s büyülerin maliyeti %s" # %s = miktar, %s = maliyet
+SALE_ValueEnchant: "  -Satış: %s %s'nin maliyeti %s" # %s = miktar, %s = büyü adı, %s = maliyet
+
+
+# Değer
+VALUE_BuyResponse: "Satın alma: %s %s'nin maliyeti %s" # %s = miktar, %s = öğe adı, %s = maliyet
+VALUE_SellResponse: "Satış: %s %s'nin maliyeti %s" # %s = miktar, %s = öğe adı, %s = maliyet
+VALUE_BuyFailedResponse: "%s %s'nin satın alma değerini %s nedeniyle belirleyemedim" # %s = miktar, %s = öğe adı, %s = sebep
+VALUE_SellFailedResponse: "%s %s'nin satış değerini %s nedeniyle belirleyemedim" # %s = miktar, %s = öğe adı, %s = sebep
+VALUE_Response: "Değer: %s" # %s = değer
+
+
+# Transfer
+TRANSFER_Log: "%s, %s'yi %s'ye transfer etti" # %s = oyuncu adı, %s = miktar, %s = hedef oyuncu adı
+TRANSFER_FailedLog: "%s, %s'yi %s'ye %s nedeniyle transfer edemedi" # %s = oyuncu adı, %s = miktar, %s = hedef oyuncu adı, %s = sebep
+TRANSFER_SourceResponse: "%s'yi %s'ye gönderdiniz" # %s = miktar, %s = hedef oyuncu adı
+TRANSFER_TargetResponse: "%s'den %s aldınız" # %s = miktar, %s = oyuncu adı
+TRANSFER_FailedResponse: "%s'yi %s'ye %s nedeniyle gönderemediniz" # %s = miktar, %s = hedef oyuncu adı, %s = sebep
+
+
+# Ekonomi
+ECONOMY_NegativeAmounts: "Negatif miktarları transfer edemezsiniz."
+ECONOMY_Overdraft: "Sahip olduğunuzdan daha fazlasını transfer edemezsiniz."
+ECONOMY_OverLimit: "Bakiyeniz transfer için çok büyük olabilir."
+ECONOMY_BankNotExist: "Banka mevcut değil."
+ECONOMY_PlayerNotExist: "Oyuncu mevcut değil."
+ECONOMY_BankAlreadyExists: "Banka zaten mevcut."
+ECONOMY_CreatedBank: "Banka %s oluşturuldu" # %s = banka adı
+ECONOMY_DeletedBank: "Banka %s silindi" # %s = banka adı
+ECONOMY_BankBalance: "Banka %s'nin bakiyesi %s" # %s = banka adı, %s = bakiye
+ECONOMY_BankHas: "Banka %s'de %s var" # %s = banka adı, %s = bakiye
+ECONOMY_BankWithdraw: "Banka %s'den %s çekildi" # %s = miktar, %s = banka adı
+ECONOMY_BankDeposit: "Banka %s'ye %s yatırıldı" # %s = miktar, %s = banka adı
+ECONOMY_IsOwner: "%s, banka %s'nin sahibidir" # %s = oyuncu adı, %s = banka adı
+ECONOMY_IsMember: "%s, banka %s'nin üyesidir" # %s = oyuncu adı, %s = banka adı
+ECONOMY_IncorrectlyFormattedBalance: "Dosya %s'nin bakiyesi yanlış formatlanmış." # %s = dosya adı
+ECONOMY_RecoveredFile: "%s için değer başarıyla geri yüklendi." # %s = dosya adı
+ECONOMY_FailedToRecoverFile: "%s için değeri geri yükleyemedim. Sıfıra sıfırlandı." # %s = dosya adı
+ECONOMY_FailedToCreateBankFile: "%s nedeniyle banka dosyası (%s) oluşturulamadı" # %s = banka adı, %s = sebep
+ECONOMY_CreatingPlayerFile: "%s (%s) için oyuncu dosyası oluşturuluyor" # %s = oyuncu adı, %s = dosya adı
+ECONOMY_Prefix: "Para birimi öneki: %s"
+ECONOMY_Suffix: "Para birimi son eki: %s"
+
+
+# Yardım
+HELP_Header: "%s[== Yardım sayfası %s/%s %s==]" # %s = renk, %s = mevcut sayfa, %s = toplam sayfa, %s = renk
+HELP_NoneFound: "Hiçbir yardım bulunamadı."
+HELP_Command: "<komut>"
+HELP_Term: "<terim>"
+HELP_Page: "<sayfa_numarası>"
+HELP_NullEntry: "%s null" # %s = giriş
+HELP_EntryError: "%s, %s üretti" # %s = giriş, %s = hata
+HELP_HelpLoaded: "%s yardım girdisi yüklendi" # %s = miktar
+
+
+# Posta
+MAIL_NothingToClear: "Temizlenecek posta yok."
+MAIL_Removed: "%s posta kaldırıldı. (%s okunmamış & %s okunmuş)" # %s = miktar, %s = okunmamış, %s = okunmuş
+MAIL_InvalidPage: "Geçersiz sayfa numarası."
+MAIL_YouHaveNoMail: "Hiç postanız yok."
+MAIL_InvalidPageChoose: "Geçersiz sayfa numarası. 1 ile %s arasında bir sayfa seçin." # %s = maksimum sayfa
+MAIL_List: "==[Posta Listesi %s/%s]==" # %s = mevcut sayfa, %s = toplam sayfa
+MAIL_MailLoaded: "%s kullanıcı için %s posta yüklendi" # %s = miktar, %s = kullanıcı sayısı
+MAIL_MailSaved: "%s kullanıcı için %s posta kaydedildi" # %s = miktar, %s = kullanıcı sayısı
+MAIL_MailNotification: "%s ekonomi bildiriminiz var. Onları /readmail ile görüntüleyin" # %s = miktar
+MAIL_NoMailNotification: "Hiç ekonomi bildiriminiz yok."
+
+
+# Stok
+STOCK_CountChanged: "Stok seviyesi %s(%s) iken %s(%s) olarak değişti." # %s = eski stok, %s = eski stok adı, %s = yeni stok, %s = yeni stok adı
+STOCK_ValueChanged: "Stok değeri %s(%s) iken %s(%s) olarak değişti." # %s = eski değer, %s = eski değer adı, %s = yeni değer, %s = yeni değer adı
+
+
+# Worlds
+WORLDS_BothEnabled: "Pazar ve Ekonomi her ikisi de etkin."
+WORLDS_BothDisabled: "Pazar ve Ekonomi devre dışı."
+WORLDS_MarketEnabled: "Pazar etkin, ancak Ekonomi devre dışı."
+WORLDS_EconomyEnabled: "Ekonomi etkin, ancak Pazar devre dışı."
+WORLDS_EconomyDisabledInThisWorld: "Bu dünyada Ekonomi devre dışı."
+WORLDS_MarketDisabledInThisWorld: "Bu dünyada Pazar devre dışı."
+WORLDS_ItemMarketDisabledInThisWorld: "Bu dünyada Öğe Pazarı devre dışı."
+WORLDS_EnchantMarketDisabledInThisWorld: "Bu dünyada Büyü Pazarı devre dışı."
+WORLDS_ExperienceMarketDisabledInThisWorld: "Bu dünyada Deneyim Pazarı devre dışı."
+
+
+
+# Pazar
+MARKET_UnknownMaterial: "Bilinmeyen malzeme"
+MARKET_UnknownItem: "Bilinmeyen öğe %s" # %s = öğe adı
+MARKET_UnknownEnchant: "Bilinmeyen büyü %s" # %s = büyü adı
+MARKET_InvalidItemName: "Geçersiz öğe adı."
+MARKET_InvalidMaterialName: "Geçersiz malzeme adı."
+MARKET_InvalidEnchantName: "Geçersiz büyü adı."
+MARKET_InvalidItemHeld: "Bir öğe tutmalısınız."
+MARKET_InvalidInventorySpace: "Yeterli envanter alanınız yok (%s/%s)。" # %s = mevcut alan, %s = gereken alan
+MARKET_InvalidStockAmount: "Pazarda yeterli stok yok (%s/%s)。" # %s = mevcut stok, %s = gereken stok
+MARKET_InvalidInventoryStock: "Yeterli stok yok (%s/%s)。" # %s = mevcut stok, %s = gereken stok
+MARKET_EnchantsInvalidItemAmount: "Geçersiz tutulan öğe. Tam olarak 1 öğe tutmalısınız。"
+MARKET_NothingToSellAfterSkipping: "Öğeleri atladıktan sonra (çeşitli nedenlerle), satılacak hiçbir şey kalmadı。"
+MARKET_NothingToSell: "Satılacak hiçbir şey yok。"
+MARKET_EnchantList: "büyüler( %s )" # %s = büyü adları
+MARKET_MaterialMarketIsDisabled: "Malzeme Pazarı devre dışı bırakıldı。"
+MARKET_EnchantMarketIsDisabled: "Büyü Pazarı devre dışı bırakıldı。"
+MARKET_ExperienceMarketIsDisabled: "Deneyim Pazarı devre dışı bırakıldı。"
+MARKET_YouAreNotHoldingAnItem: "Bir öğe tutmuyorsunuz。"
+MARKET_NoItemsToSell: "Satılacak hiçbir öğe yok。"
+MARKET_NoItemsToBuy: "Satın alınacak hiçbir öğe yok。"
+MARKET_ItemCannotBeFound: "%s bulunamıyor。" # %s = öğe adı
+MARKET_ItemIsBanned: "%s yasaklandı。" # %s = öğe adı
+MARKET_ItemIsWorthless: "%s değersiz。" # %s = öğe adı
+MARKET_ItemIsEnchanted: "%s büyülenmiş。" # %s = öğe adı
+MARKET_ItemIsNamedOrLored: "%s adlandırılmış veya açıklamalı。" # %s = öğe adı
+MARKET_ItemIsNotSupported: "%s desteklenmiyor。" # %s = öğe adı
+MARKET_ItemIsNotSupportedOnThisItem: "%s bu öğede desteklenmiyor。" # %s = öğe adı
+MARKET_LevelIsGreaterThanMax: "Seviye maksimumdan (%s/%s) büyük。" # %s = seviye, %s = maksimum seviye
+MARKET_LevelWouldBeGreaterThanMax: "Seviye maksimumdan (%s/%s) büyük olacaktır。" # %s = seviye, %s = maksimum seviye
+MARKET_ItemDoesNotExist: "%s mevcut değil。" # %s = öğe adı
+MARKET_ItemDoesNotExistInTheStore: "%s mağazada mevcut değil。" # %s = öğe adı
+MARKET_ItemIsNotEnchanted: "%s büyülenmemiş。" # %s = öğe adı
+MARKET_ItemNotEnoughLevels: "%s yeterli seviyeye sahip değil (%s/%s)。" # %s = öğe adı, %s = mevcut seviyeler, %s = gereken seviyeler
+MARKET_ItemAliasesLoaded: "%s öğe takma adı %s'den yüklendi" # %s = miktar, %s = dosya adı
+MARKET_ItemsLoaded: "%s öğe (%s / %s miktarlarında) %s'den yüklendi" # %s = miktar, %s = mevcut miktar, %s = varsayılan miktar, %s = dosya adı
+
+
+# Deneyim
+EXPERIENCE_InvalidAmount: "Geçersiz miktar。"
+EXPERIENCE_IsBanned: "Deneyim yasaklandı。"
+EXPERIENCE_NotEnoughExperienceToBuy: "Satın almak için yeterli deneyim yok。"
+EXPERIENCE_NotEnoughExperienceToSell: "Satmak için yeterli deneyim yok。"
+EXPERIENCE_IsWorthless: "Deneyim değersiz。"
+
+
+# Bilgi
+INFO_InformationFor: "==[Bilgi %s için]==" # %s = öğe adı
+INFO_TypeInformation: "TÜR：%s" # %s = öğe id
+INFO_IDInformation: "ID：%s" # %s = öğe id
+INFO_CurrentQuantityInformation: "Mevcut Miktar：%s" # %s = mevcut miktar
+INFO_IsBannedInformation: "Yasaklandı：%s" # %s = yasaklandı
+
+
+# Öğe Listesi
+ITEMLIST_Header: "==[Öğe Listesi '%s' %s/%s]==" # %s = öğe adı, %s = mevcut sayfa, %s = toplam sayfa
+ITEMLIST_AscendingOrder: "Artan Düzen：%s"
+ITEMLIST_OrderBy: "Sıralama Ölçütü：%s"
+
+
+# Hepsini Sat
+SELLALL_Whitelist: "Beyaz Liste：material1,material2,material3"
+SELLALL_Blacklist: "Kara Liste：material1,material2,material3"
+SELLALL_Empty: "Boş：Her şey"
+
+
+# Kelimeler
+W_max: "maksimum"
+W_all: "hepsi"
+W_read: "okundu"
+W_unread: "okunmadı"
+W_unknown: "bilinmeyen"
+W_name: "ad"
+W_pagenumber: "sayfa numarası"
+W_items: "öğeler"
+W_enchants: "büyüler"
+W_experience: "deneyim"
+W_price: "fiyat"
+W_stock: "stok"
+W_alphabet: "alfabe"
+W_config: "yapılandırma"
+W_materials: "malzemeler"
+W_potions: "iksirler"
+W_entities: "varlıklar"

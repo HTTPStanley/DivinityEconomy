@@ -17,6 +17,10 @@ public abstract class DivinityCommand implements CommandExecutor {
     protected final Help help;
     protected final boolean isEnabled;
     protected final boolean hasConsoleSupport;
+    protected boolean checkEconomyEnabled = false;
+    protected boolean checkEnchantMarketEnabled = false;
+    protected boolean checkItemMarketEnabled = false;
+    protected boolean checkExperienceMarketEnabled = false;
     // Link to app
     // The help object for this command
     // Whether the command is enabled or not
@@ -85,9 +89,23 @@ public abstract class DivinityCommand implements CommandExecutor {
         if (!this.isEnabled) {
             getMain().getConsole().send(sender, LangEntry.GENERIC_PlayerCommandIsDisabled.logLevel, LangEntry.GENERIC_PlayerCommandIsDisabled.get(getMain()));
             return true;
-        } else {
-            return this.onPlayerCommand(sender, args);
+        } else if (this.checkEconomyEnabled && !this.checkEconomyEnabledInWorld(sender)) {
+            getMain().getConsole().send(sender, LangEntry.WORLDS_EconomyDisabledInThisWorld.logLevel, LangEntry.WORLDS_EconomyDisabledInThisWorld.get(getMain()));
+            return true;
+        } else if ((this.checkItemMarketEnabled || this.checkEnchantMarketEnabled || this.checkExperienceMarketEnabled) && !this.checkMarketEnabledInWorld(sender)) {
+            getMain().getConsole().send(sender, LangEntry.WORLDS_MarketDisabledInThisWorld.logLevel, LangEntry.WORLDS_MarketDisabledInThisWorld.get(getMain()));
+            return true;
+        }  else if (this.checkItemMarketEnabled && !this.checkItemMarketEnabledInWorld(sender)) {
+            getMain().getConsole().send(sender, LangEntry.WORLDS_ItemMarketDisabledInThisWorld.logLevel, LangEntry.WORLDS_ItemMarketDisabledInThisWorld.get(getMain()));
+            return true;
+        } else if (this.checkEnchantMarketEnabled && !this.checkEnchantMarketEnabledInWorld(sender)) {
+            getMain().getConsole().send(sender, LangEntry.WORLDS_EnchantMarketDisabledInThisWorld.logLevel, LangEntry.WORLDS_EnchantMarketDisabledInThisWorld.get(getMain()));
+            return true;
+        } else if (this.checkExperienceMarketEnabled && !this.checkExperienceMarketEnabledInWorld(sender)) {
+            getMain().getConsole().send(sender, LangEntry.WORLDS_ExperienceMarketDisabledInThisWorld.logLevel, LangEntry.WORLDS_ExperienceMarketDisabledInThisWorld.get(getMain()));
         }
+
+        return this.onPlayerCommand(sender, args);
     }
 
     /**
@@ -114,9 +132,9 @@ public abstract class DivinityCommand implements CommandExecutor {
         } else if (!this.hasConsoleSupport) {
             getMain().getConsole().send(LangEntry.GENERIC_ConsoleSupportNotAdded.logLevel, LangEntry.GENERIC_ConsoleSupportNotAdded.get(getMain()));
             return true;
-        } else {
-            return this.onConsoleCommand(args);
         }
+
+        return this.onConsoleCommand(args);
     }
 
     /**
@@ -127,6 +145,57 @@ public abstract class DivinityCommand implements CommandExecutor {
      * @return
      */
     public abstract boolean onConsoleCommand(String[] args);
+
+
+    /**
+     * Check if the economy is enabled in the world
+     * @param player
+     * @return
+     */
+    public boolean checkEconomyEnabledInWorld(Player player) {
+        return getMain().getWorldMan().isEconomyEnabled(player.getWorld());
+    }
+
+
+    /**
+     * Check if the market is enabled in the world
+     * @param player
+     * @return
+     */
+    public boolean checkMarketEnabledInWorld(Player player) {
+        return getMain().getWorldMan().isMarketEnabled(player.getWorld());
+    }
+
+
+    /**
+     * Check if the enchant market is enabled in the world
+     * @param player
+     * @return
+     */
+    public boolean checkEnchantMarketEnabledInWorld(Player player) {
+        return getMain().getWorldMan().isEnchantMarketEnabled(player.getWorld());
+    }
+
+
+    /**
+     * Check if the item market is enabled in the world
+     * @param player
+     * @return
+     */
+    public boolean checkItemMarketEnabledInWorld(Player player) {
+        return getMain().getWorldMan().isItemMarketEnabled(player.getWorld());
+    }
+
+
+    /**
+     * Check if the experience market is enabled in the world
+     * @param player
+     * @return
+     */
+    public boolean checkExperienceMarketEnabledInWorld(Player player) {
+        return getMain().getWorldMan().isExperienceMarketEnabled(player.getWorld());
+    }
+
 
     /**
      * Returns the main module

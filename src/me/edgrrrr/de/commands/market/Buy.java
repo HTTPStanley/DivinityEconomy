@@ -23,6 +23,7 @@ public class Buy extends DivinityCommandMaterials {
      */
     public Buy(DEPlugin app) {
         super(app, "buy", false, Setting.COMMAND_BUY_ITEM_ENABLE_BOOLEAN);
+        this.checkItemMarketEnabled = true;
     }
 
     /**

@@ -32,6 +32,7 @@ import me.edgrrrr.de.market.items.materials.entity.EntityManager;
 import me.edgrrrr.de.market.items.materials.potion.PotionManager;
 import me.edgrrrr.de.placeholders.ExpansionManager;
 import me.edgrrrr.de.player.PlayerManager;
+import me.edgrrrr.de.world.WorldManager;
 import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -43,12 +44,18 @@ import java.util.Locale;
  * Hooks everything together
  */
 public class DEPlugin extends JavaPlugin {
+    // bStats ID
+    private final int bStatsID = 22013; // ID for bStats
+    private final String defaultLocaleString = "en_GB";
+
     // The config
     private ConfigManager config;
     // The console
     private EconConsole console;
     // The language manager
     private LangManager lang;
+    // The world manager
+    private WorldManager worldManager;
     // The economy
     private EconomyManager economyManager;
     // The mail manager
@@ -78,12 +85,15 @@ public class DEPlugin extends JavaPlugin {
      */
     @Override
     public void onEnable() {
-        Locale.setDefault(new Locale("en", "GB"));
+        // Set the default locale
+        Locale.setDefault(Locale.of(defaultLocaleString));
+
         // Instantiates all modules
         LogLevel.loadValuesFromConfig((YamlConfiguration) this.getConfig());
         this.config = new ConfigManager(this);
         this.console = new EconConsole(this);
         this.lang = new LangManager(this);
+        this.worldManager = new WorldManager(this);
         this.playerManager = new PlayerManager(this);
         this.economyManager = new EconomyManager(this);
         this.marketManager = new MarketManager(this);
@@ -100,8 +110,21 @@ public class DEPlugin extends JavaPlugin {
         DivinityModule.addModule(this.config, true);
 
         // Initialise language
+        try {
+            Locale configLocale = Locale.of(this.getConfMan().getString(Setting.MAIN_SYSTEM_LOCALE_STRING));
+            Locale.setDefault(configLocale);
+        } catch (Exception e) {
+            this.console.warn(LangEntry.GENERIC_LocaleError.get(this), this.getConfMan().getString(Setting.MAIN_SYSTEM_LOCALE_STRING));
+            e.printStackTrace();
+        }
+
+        // Initialise language
         this.lang.init();
         DivinityModule.addModule(this.lang, true);
+
+        // Initialise world manager
+        this.worldManager.init();
+        DivinityModule.addModule(this.worldManager, true);
 
         // Initialise player manager
         this.playerManager.init();
@@ -220,6 +243,11 @@ public class DEPlugin extends JavaPlugin {
             this.getConsole().warn(LangEntry.GENERIC_PAPINotFound.get(this));
         }
 
+        // Enable bStats
+        if (this.getConfMan().getBoolean(Setting.MAIN_ENABLE_BSTATS_BOOLEAN)) {
+            new Metrics(this, bStatsID);
+        }
+
         // Done :)
         this.describe();
         this.console.info(LangEntry.GENERIC_PluginEnabled.get(this));
@@ -291,6 +319,13 @@ public class DEPlugin extends JavaPlugin {
      */
     public LangManager getLang() {
         return this.lang;
+    }
+
+    /**
+     * Returns the world manager
+     */
+    public WorldManager getWorldMan() {
+        return this.worldManager;
     }
 
     /**

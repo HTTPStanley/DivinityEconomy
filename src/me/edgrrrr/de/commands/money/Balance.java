@@ -19,6 +19,7 @@ public class Balance extends DivinityCommand {
      */
     public Balance(DEPlugin app) {
         super(app, "balance", true, Setting.COMMAND_BALANCE_ENABLE_BOOLEAN);
+        this.checkEconomyEnabled = true;
     }
 
     /**

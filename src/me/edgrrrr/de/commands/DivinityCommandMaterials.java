@@ -26,12 +26,9 @@ public abstract class DivinityCommandMaterials extends DivinityCommand {
         if (!this.marketIsEnabled) {
             getMain().getConsole().send(sender, LangEntry.MARKET_MaterialMarketIsDisabled.logLevel, LangEntry.MARKET_MaterialMarketIsDisabled.get(getMain()));
             return true;
-        } else if (!this.isEnabled) {
-            getMain().getConsole().send(sender, LangEntry.GENERIC_PlayerCommandIsDisabled.logLevel, LangEntry.GENERIC_PlayerCommandIsDisabled.get(getMain()));
-            return true;
-        } else {
-            return this.onPlayerCommand(sender, args);
         }
+
+        return super._onPlayerCommand(sender, args);
     }
 
     @Override
@@ -39,14 +36,8 @@ public abstract class DivinityCommandMaterials extends DivinityCommand {
         if (!this.marketIsEnabled) {
             getMain().getConsole().send(LangEntry.MARKET_MaterialMarketIsDisabled.logLevel, LangEntry.MARKET_MaterialMarketIsDisabled.get(getMain()));
             return true;
-        } else if (!this.isEnabled) {
-            getMain().getConsole().send(LangEntry.GENERIC_ConsoleCommandIsDisabled.logLevel, LangEntry.GENERIC_ConsoleCommandIsDisabled.get(getMain()));
-            return true;
-        } else if (!this.hasConsoleSupport) {
-            getMain().getConsole().send(LangEntry.GENERIC_ConsoleSupportNotAdded.logLevel, LangEntry.GENERIC_ConsoleSupportNotAdded.get(getMain()));
-            return true;
-        } else {
-            return this.onConsoleCommand(args);
         }
+
+        return super._onConsoleCommand(args);
     }
 }

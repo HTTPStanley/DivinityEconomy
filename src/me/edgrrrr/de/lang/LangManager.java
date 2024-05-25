@@ -16,6 +16,10 @@ enum ProvidedLangFiles {
     es_ES("es_ES.yml"), // Spanish - Spain
     it_IT("it_IT.yml"), // Italian - Italy
     ru_RU("ru_RU.yml"), // Russian - Russia
+    pl_PL("pl_PL.yml"), // Polish - Poland
+    pt_PT("pt_PT.yml"), // Portuguese - Portugal
+    da_DK("da_DK.yml"), // Danish - Denmark
+    nl_NL("nl_NL.yml"), // Dutch - Netherlands
 
     ; // End of enum
 

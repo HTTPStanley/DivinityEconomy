@@ -1,7 +1,7 @@
 package me.edgrrrr.de.commands.experience;
 
 import me.edgrrrr.de.DEPlugin;
-import me.edgrrrr.de.commands.DivinityCommandEnchant;
+import me.edgrrrr.de.commands.DivinityCommandExperience;
 import me.edgrrrr.de.config.Setting;
 import me.edgrrrr.de.lang.LangEntry;
 import me.edgrrrr.de.response.ValueResponse;
@@ -12,7 +12,7 @@ import org.bukkit.entity.Player;
 /**
  * A command for buying enchants for the item held in a users hand
  */
-public class ExperienceBuy extends DivinityCommandEnchant {
+public class ExperienceBuy extends DivinityCommandExperience {
 
     /**
      * Constructor
@@ -21,6 +21,7 @@ public class ExperienceBuy extends DivinityCommandEnchant {
      */
     public ExperienceBuy(DEPlugin app) {
         super(app, "xpbuy", false, Setting.COMMAND_EXP_BUY_ENABLE_BOOLEAN);
+        this.checkExperienceMarketEnabled = true;
     }
 
     /**

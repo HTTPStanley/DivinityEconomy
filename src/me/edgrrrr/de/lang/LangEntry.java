@@ -30,6 +30,7 @@ public enum LangEntry {
     GENERIC_Usages(),
     GENERIC_Aliases(),
     GENERIC_FileSaved(),
+    GENERIC_LocaleError(),
 
 
     // Describe
@@ -188,6 +189,18 @@ public enum LangEntry {
     STOCK_ValueChanged(),
 
 
+    // Worlds
+    WORLDS_BothEnabled(),
+    WORLDS_BothDisabled(),
+    WORLDS_MarketEnabled(),
+    WORLDS_EconomyEnabled(),
+    WORLDS_EconomyDisabledInThisWorld(),
+    WORLDS_MarketDisabledInThisWorld(),
+    WORLDS_ItemMarketDisabledInThisWorld(),
+    WORLDS_EnchantMarketDisabledInThisWorld(),
+    WORLDS_ExperienceMarketDisabledInThisWorld(),
+
+
     // Market
     MARKET_UnknownMaterial(LogLevel.WARNING),
     MARKET_UnknownItem(LogLevel.WARNING),
@@ -205,6 +218,7 @@ public enum LangEntry {
     MARKET_EnchantList(),
     MARKET_MaterialMarketIsDisabled(LogLevel.WARNING),
     MARKET_EnchantMarketIsDisabled(LogLevel.WARNING),
+    MARKET_ExperienceMarketIsDisabled(LogLevel.WARNING),
     MARKET_YouAreNotHoldingAnItem(),
     MARKET_NoItemsToSell(),
     MARKET_NoItemsToBuy(),

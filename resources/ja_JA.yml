@@ -1,0 +1,282 @@
+# 日本語
+# バージョン: 1.0
+
+# 一般コマンド応答
+GENERIC_PluginEnabled: "プラグインが有効になりました"
+GENERIC_PluginDisabled: "プラグインが無効になりました"
+GENERIC_EconomyNotEnabled: "経済は有効ではありません。シャットダウンします。"
+GENERIC_EconomyEnabled: "経済が有効になっています。提供者：%s" # %s = 提供者
+GENERIC_PAPIEnabled: "PlaceholderAPI が見つかり、有効になりました。%s プレースホルダーが登録されました。" # %s = 数量
+GENERIC_PAPINotEnabled: "PlaceholderAPI が見つかりましたが、有効ではありません。拡張機能を無効にします。"
+GENERIC_PAPINotFound: "PlaceholderAPI が見つかりません。拡張機能を無効にします。"
+GENERIC_ConsoleCommandIsDisabled: "このコマンドは無効です。"
+GENERIC_ConsoleSupportNotAdded: "このコマンドはコンソールをサポートしていません。"
+GENERIC_PlayerCommandIsDisabled: "このコマンドは無効です。"
+GENERIC_ErrorOnCommand: "コマンド (%s) の実行中にエラーが発生しました：%s" # %s = コマンド, %s = エラー
+GENERIC_InvalidNumberOfArguments: "引数の数が無効です。"
+GENERIC_InvalidArguments: "引数が無効です。"
+GENERIC_InvalidPlayerName: "プレイヤー名が無効です。"
+GENERIC_InvalidAmountGiven: "無効な金額が指定されました。"
+GENERIC_UnknownError: "不明なエラーが発生しました。"
+GENERIC_IncorrectCommandUsage: "コマンドの使用方法が正しくありません：%s" # %s = 正しい使用方法
+GENERIC_CommandUsage: "コマンドの使用方法：%s" # %s = 正しい使用方法
+GENERIC_HelpFor: "%s のヘルプ" # %s = コマンド
+GENERIC_Description: "説明：%s" # %s = 説明
+GENERIC_Usages: "使用方法：%s" # %s = 使用方法
+GENERIC_Aliases: "別名：%s" # %s = 別名
+GENERIC_FileSaved: "%s が保存されました。" # %s = ファイル名
+GENERIC_LocaleError: "'%s' のロケール設定中にエラーが発生しました。詳細は以下をご覧ください¬" # %s = ロケール
+
+
+# 説明
+DESCRIBE_Header: "===説明==="
+DESCRIBE_Settings: "設定："
+DESCRIBE_Markets: "市場："
+DESCRIBE_Materials: "   - 材料：%s" # %s = 材料の数
+DESCRIBE_MaterialMarketSize: "   - 材料市場の規模：%s / %s" # %s = 材料市場の規模 / デフォルトの規模
+DESCRIBE_MaterialMarketInflation: "   - 材料市場のインフレーション：%s" # %s = インフレーション
+DESCRIBE_Enchants: "   - エンチャント：%s" # %s = エンチャントの数
+DESCRIBE_EnchantMarketSize: "   - エンチャント市場の規模：%s / %s" # %s = エンチャント市場の規模 / デフォルトの規模
+DESCRIBE_EnchantMarketInflation: "   - エンチャント市場のインフレーション：%s" # %s = インフレーション
+DESCRIBE_Experience: "   - 経験値：%s" # %s = 経験値の数
+DESCRIBE_ExperienceMarketSize: "   - 経験値市場の規模：%s / %s" # %s = 経験値市場の規模 / デフォルトの規模
+DESCRIBE_ExperienceMarketInflation: "   - 経験値市場のインフレーション：%s" # %s = インフレーション
+DESCRIBE_Entities: "   - エンティティ：%s" # %s = エンティティの数
+DESCRIBE_EntitiesMarketSize: "   - エンティティ市場の規模：%s / %s" # %s = エンティティ市場の規模 / デフォルトの規模
+DESCRIBE_EntitiesMarketInflation: "   - エンティティ市場のインフレーション：%s" # %s = インフレーション
+DESCRIBE_Potions: "   - ポーション：%s" # %s = ポーションの数
+DESCRIBE_PotionsMarketSize: "   - ポーション市場の規模：%s / %s" # %s = ポーション市場の規模 / デフォルトの規模
+DESCRIBE_PotionsMarketInflation: "   - ポーション市場のインフレーション：%s" # %s = インフレーション
+
+
+# Baltop
+BALTOP_NothingToDisplay: "表示するものがありません。"
+BALTOP_LastOrderedAt: "最後に注文された日時：%s"
+BALTOP_ServerTotal: "サーバー合計：%s"
+BALTOP_YourPositionIs: "あなたの位置は"
+
+
+# リロード
+RELOAD_Response: "このコマンドは現在何も行いません。試してくれてありがとう。"
+RELOAD_Enchants: "エンチャントがリロードされました。"
+RELOAD_Materials: "材料がリロードされました。"
+RELOAD_Experience: "経験値がリロードされました。"
+RELOAD_Config: "設定がリロードされました。"
+RELOAD_Potions: "ポーションがリロードされました。"
+RELOAD_Entities: "エンティティがリロードされました。"
+RELOAD_TypeRequired: "リロードするタイプを指定する必要があります。"
+
+
+# 保存
+SAVE_Config: "設定が保存されました。"
+SAVE_Enchants: "エンチャントが保存されました。"
+SAVE_Materials: "材料が保存されました。"
+SAVE_Experience: "経験値が保存されました。"
+SAVE_Potions: "ポーションが保存されました。"
+SAVE_Entities: "エンティティが保存されました。"
+
+
+# Ping
+PING_PingResponse: "ポン!"
+
+
+# 残高
+BALANCE_Response: "あなたの残高は %s です。" # %s = 残高
+BALANCE_ResponseOther: "%s の残高は %s です。" # %s = プレイヤー名, %s = 残高
+BALANCE_ChangedLog: "%s の残高が %s から %s に変更されました。理由：%s" # %s = プレイヤー名, %s = 旧残高, %s = 新残高, %s = 理由
+BALANCE_ChangeFailedLog: "%s の残高を変更できませんでした。理由：%s" # %s = プレイヤー名, %s = 理由
+BALANCE_ChangedSourcePlayer: "あなたは %s の残高を %s から %s に変更しました。" # %s = プレイヤー名, %s = 旧残高, %s = 新残高
+BALANCE_ChangedTargetPlayer: "あなたの残高が %s から %s に変更されました。理由：%s" # %s = 旧残高, %s = 新残高, %s = 理由
+BALANCE_ClearedByPlayer: "%s があなたの残高をクリアしました。"
+BALANCE_ClearedByConsole: "コンソールがあなたの残高をクリアしました。"
+BALANCE_ChangedByPlayer: "%s があなたの残高を変更しました。"
+BALANCE_ChangedByConsole: "コンソールがあなたの残高を変更しました。"
+BALANCE_SetByPlayer: "%s があなたの残高を設定しました。"
+BALANCE_SetByConsole: "コンソールがあなたの残高を設定しました。"
+
+
+# 購入
+PURCHASE_Log: "%s が %s %s を %s で購入しました。" # %s = プレイヤー名, %s = 数量, %s = アイテム名, %s = コスト
+PURCHASE_FailedLog: "%s は %s %s を %s のため購入できませんでした。" # %s = プレイヤー名, %s = 数量, %s = アイテム名, %s = 理由
+PURCHASE_Response: "%s %s を %s で購入しました。" # %s = 数量, %s = アイテム名, %s = コスト
+PURCHASE_FailedResponse: "%s %s を %s のため購入できませんでした。" # %s = 数量, %s = アイテム名, %s = 理由
+PURCHASE_ValueEnchantFailure: "%s のエンチャント( %s )の購入価値を特定できませんでした。理由：%s" # %s = 数量, %s = エンチャント名, %s = 理由
+PURCHASE_ValueEnchantSummary: "購入：%s のエンチャントの価格は %s です。" # %s = 数量, %s = コスト
+PURCHASE_ValueEnchant: "  -購入：%s %s の価格は %s です。" # %s = 数量, %s = エンチャント名, %s = コスト
+
+
+# 販売
+SALE_Log: "%s が %s %s を %s で販売しました。" # %s = プレイヤー名, %s = 数量, %s = アイテム名, %s = コスト
+SALE_FailedLog: "%s は %s %s を %s のため販売できませんでした。" # %s = プレイヤー名, %s = 数量, %s = アイテム名, %s = 理由
+SALE_Response: "%s %s を %s で販売しました。" # %s = 数量, %s = アイテム名, %s = コスト
+SALE_FailedResponse: "%s %s を %s のため販売できませんでした。" # %s = 数量, %s = アイテム名, %s = 理由
+SALE_ValueEnchantFailure: "%s のエンチャント( %s )の販売価値を特定できませんでした。理由：%s" # %s = 数量, %s = エンチャント名, %s = 理由
+SALE_ValueEnchantSummary: "販売：%s のエンチャントの価格は %s です。" # %s = 数量, %s = コスト
+SALE_ValueEnchant: "  -販売：%s %s の価格は %s です。" # %s = 数量, %s = エンチャント名, %s = コスト
+
+
+# 価値
+VALUE_BuyResponse: "購入：%s %s の価格は %s です。" # %s = 数量, %s = アイテム名, %s = コスト
+VALUE_SellResponse: "販売：%s %s の価格は %s です。" # %s = 数量, %s = アイテム名, %s = コスト
+VALUE_BuyFailedResponse: "%s %s の購入価値を特定できませんでした。理由：%s" # %s = 数量, %s = アイテム名, %s = 理由
+VALUE_SellFailedResponse: "%s %s の販売価値を特定できませんでした。理由：%s" # %s = 数量, %s = アイテム名, %s = 理由
+VALUE_Response: "価値：%s" # %s = 価値
+
+
+# 転送
+TRANSFER_Log: "%s が %s を %s に転送しました。" # %s = プレイヤー名, %s = 数量, %s = 目標プレイヤー名
+TRANSFER_FailedLog: "%s は %s を %s に転送できませんでした。理由：%s" # %s = プレイヤー名, %s = 数量, %s = 目標プレイヤー名, %s = 理由
+TRANSFER_SourceResponse: "%s を %s に送信しました。" # %s = 数量, %s = 目標プレイヤー名
+TRANSFER_TargetResponse: "%s から %s を受け取りました。" # %s = 数量, %s = プレイヤー名
+TRANSFER_FailedResponse: "%s を %s に送信できませんでした。理由：%s" # %s = 数量, %s = 目標プレイヤー名, %s = 理由
+
+
+# 経済
+ECONOMY_NegativeAmounts: "負の金額を転送することはできません。"
+ECONOMY_Overdraft: "持っている金額以上を転送することはできません。"
+ECONOMY_OverLimit: "あなたの残高は転送するには多すぎるかもしれません。"
+ECONOMY_BankNotExist: "銀行が存在しません。"
+ECONOMY_PlayerNotExist: "プレイヤーが存在しません。"
+ECONOMY_BankAlreadyExists: "銀行はすでに存在します。"
+ECONOMY_CreatedBank: "銀行 %s が作成されました。" # %s = 銀行名
+ECONOMY_DeletedBank: "銀行 %s が削除されました。" # %s = 銀行名
+ECONOMY_BankBalance: "銀行 %s の残高は %s です。" # %s = 銀行名, %s = 残高
+ECONOMY_BankHas: "銀行 %s には %s があります。" # %s = 銀行名, %s = 残高
+ECONOMY_BankWithdraw: "銀行 %s から %s を引き出しました。" # %s = 数量, %s = 銀行名
+ECONOMY_BankDeposit: "銀行 %s に %s を預けました。" # %s = 数量, %s = 銀行名
+ECONOMY_IsOwner: "%s は銀行 %s の所有者です。" # %s = プレイヤー名, %s = 銀行名
+ECONOMY_IsMember: "%s は銀行 %s のメンバーです。" # %s = プレイヤー名, %s = 銀行名
+ECONOMY_IncorrectlyFormattedBalance: "ファイル %s の残高が正しくフォーマットされていません。" # %s = ファイル名
+ECONOMY_RecoveredFile: "%s の価値が正常に復旧されました。" # %s = ファイル名
+ECONOMY_FailedToRecoverFile: "%s の価値を復旧できませんでした。0 にリセットされました。" # %s = ファイル名
+ECONOMY_FailedToCreateBankFile: "%s のために銀行ファイル (%s) を作成できませんでした。" # %s = 銀行名, %s = 理由
+ECONOMY_CreatingPlayerFile: "%s (%s) のプレイヤーファイルを作成中" # %s = プレイヤー名, %s = ファイル名
+ECONOMY_Prefix: "通貨プレフィックス：%s"
+ECONOMY_Suffix: "通貨サフィックス：%s"
+
+
+# ヘルプ
+HELP_Header: "%s[== ヘルプページ %s/%s %s==]" # %s = 色, %s = 現在のページ, %s = 合計ページ, %s = 色
+HELP_NoneFound: "ヘルプが見つかりませんでした。"
+HELP_Command: "<コマンド>"
+HELP_Term: "<用語>"
+HELP_Page: "<ページ番号>"
+HELP_NullEntry: "%s は null です。" # %s = エントリ
+HELP_EntryError: "%s が %s を引き起こしました。" # %s = エントリ, %s = エラー
+HELP_HelpLoaded: "%s ヘルプエントリがロードされました。" # %s = 数量
+
+
+# メール
+MAIL_NothingToClear: "クリアするメールがありません。"
+MAIL_Removed: "%s メールが削除されました。(%s 未読 & %s 読了)" # %s = 数量, %s = 未読, %s = 読了
+MAIL_InvalidPage: "無効なページ番号。"
+MAIL_YouHaveNoMail: "あなたにはメールがありません。"
+MAIL_InvalidPageChoose: "無効なページ番号。1 から %s までのページを選択してください。" # %s = 最大ページ数
+MAIL_List: "==[メールリスト %s/%s]==" # %s = 現在のページ, %s = 合計ページ
+MAIL_MailLoaded: "%s ユーザーのために %s メールがロードされました。" # %s = 数量, %s = ユーザー数
+MAIL_MailSaved: "%s ユーザーのために %s メールが保存されました。" # %s = 数量, %s = ユーザー数
+MAIL_MailNotification: "あなたには %s 経済通知があります。/readmail を使って確認してください。" # %s = 数量
+MAIL_NoMailNotification: "あなたには経済通知がありません。"
+
+
+# 在庫
+STOCK_CountChanged: "在庫レベルが %s(%s) から %s(%s) に変更されました。" # %s = 旧在庫, %s = 旧在庫名, %s = 新在庫, %s = 新在庫名
+STOCK_ValueChanged: "在庫価値が %s(%s) から %s(%s) に変更されました。" # %s = 旧価値, %s = 旧価値名, %s = 新価値, %s = 新価値名
+
+
+# Worlds
+WORLDS_BothEnabled: "マーケットと経済が有効になっています。"
+WORLDS_BothDisabled: "マーケットと経済が無効になっています。"
+WORLDS_MarketEnabled: "マーケットが有効になっています。"
+WORLDS_EconomyEnabled: "経済が有効になっています。"
+WORLDS_EconomyDisabledInThisWorld: "このワールドでは経済が無効になっています。"
+WORLDS_MarketDisabledInThisWorld: "このワールドではマーケットが無効になっています。"
+WORLDS_ItemMarketDisabledInThisWorld: "このワールドではアイテム市場が無効になっています。"
+WORLDS_EnchantMarketDisabledInThisWorld: "このワールドではエンチャント市場が無効になっています。"
+WORLDS_ExperienceMarketDisabledInThisWorld: "このワールドでは経験値市場が無効になっています。"
+
+
+# 市場
+MARKET_UnknownMaterial: "未知の材料"
+MARKET_UnknownItem: "未知のアイテム %s" # %s = アイテム名
+MARKET_UnknownEnchant: "未知のエンチャント %s" # %s = エンチャント名
+MARKET_InvalidItemName: "無効なアイテム名。"
+MARKET_InvalidMaterialName: "無効な材料名。"
+MARKET_InvalidEnchantName: "無効なエンチャント名。"
+MARKET_InvalidItemHeld: "アイテムを持っている必要があります。"
+MARKET_InvalidInventorySpace: "在庫スペースが足りません (%s/%s)。" # %s = 現在のスペース, %s = 必要なスペース
+MARKET_InvalidStockAmount: "市場に十分な在庫がありません (%s/%s)。" # %s = 現在の在庫, %s = 必要な在庫
+MARKET_InvalidInventoryStock: "在庫が足りません (%s/%s)。" # %s = 現在の在庫, %s = 必要な在庫
+MARKET_EnchantsInvalidItemAmount: "無効なアイテムが持たれています。正確に 1 アイテムを持つ必要があります。"
+MARKET_NothingToSellAfterSkipping: "アイテムをスキップした後（さまざまな理由で）、売るものが何もありません。"
+MARKET_NothingToSell: "売るものがありません。"
+MARKET_EnchantList: "エンチャント( %s )" # %s = エンチャント名
+MARKET_MaterialMarketIsDisabled: "材料市場は無効です。"
+MARKET_EnchantMarketIsDisabled: "エンチャント市場は無効です。"
+MARKET_ExperienceMarketIsDisabled: "経験値市場は無効です。"
+MARKET_YouAreNotHoldingAnItem: "アイテムを持っていません。"
+MARKET_NoItemsToSell: "売るアイテムがありません。"
+MARKET_NoItemsToBuy: "買うアイテムがありません。"
+MARKET_ItemCannotBeFound: "%s が見つかりません。" # %s = アイテム名
+MARKET_ItemIsBanned: "%s は禁止されています。" # %s = アイテム名
+MARKET_ItemIsWorthless: "%s は価値がありません。" # %s = アイテム名
+MARKET_ItemIsEnchanted: "%s はエンチャントされています。" # %s = アイテム名
+MARKET_ItemIsNamedOrLored: "%s は名前または説明が付けられています。" # %s = アイテム名
+MARKET_ItemIsNotSupported: "%s はサポートされていません。" # %s = アイテム名
+MARKET_ItemIsNotSupportedOnThisItem: "%s はこのアイテムでサポートされていません。" # %s = アイテム名
+MARKET_LevelIsGreaterThanMax: "レベルが最大値 (%s/%s) を超えています。" # %s = レベル, %s = 最大レベル
+MARKET_LevelWouldBeGreaterThanMax: "レベルが最大値 (%s/%s) を超えることになります。" # %s = レベル, %s = 最大レベル
+MARKET_ItemDoesNotExist: "%s は存在しません。" # %s = アイテム名
+MARKET_ItemDoesNotExistInTheStore: "%s はストアに存在しません。" # %s = アイテム名
+MARKET_ItemIsNotEnchanted: "%s はエンチャントされていません。" # %s = アイテム名
+MARKET_ItemNotEnoughLevels: "%s のレベルが足りません (%s/%s)。" # %s = アイテム名, %s = 現在のレベル, %s = 必要なレベル
+MARKET_ItemAliasesLoaded: "%s から %s のアイテムエイリアスをロードしました。" # %s = 数量, %s = ファイル名
+MARKET_ItemsLoaded: "%s から %s のアイテム（現在/デフォルトの数量：%s / %s）をロードしました。" # %s = 数量, %s = 現在の数量, %s = デフォルトの数量, %s = ファイル名
+
+
+# 経験値
+EXPERIENCE_InvalidAmount: "無効な数量。"
+EXPERIENCE_IsBanned: "経験値は禁止されています。"
+EXPERIENCE_NotEnoughExperienceToBuy: "購入するのに十分な経験値がありません。"
+EXPERIENCE_NotEnoughExperienceToSell: "販売するのに十分な経験値がありません。"
+EXPERIENCE_IsWorthless: "経験値は価値がありません。"
+
+
+# 情報
+INFO_InformationFor: "==[情報 %s]==" # %s = アイテム名
+INFO_TypeInformation: "タイプ：%s" # %s = アイテム ID
+INFO_IDInformation: "ID：%s" # %s = アイテム ID
+INFO_CurrentQuantityInformation: "現在の数量：%s" # %s = 現在の数量
+INFO_IsBannedInformation: "禁止されています：%s" # %s = 禁止されています
+
+
+# アイテムリスト
+ITEMLIST_Header: "==[アイテムリスト '%s' %s/%s]==" # %s = アイテム名, %s = 現在のページ, %s = 合計ページ
+ITEMLIST_AscendingOrder: "昇順：%s"
+ITEMLIST_OrderBy: "並び替え：%s"
+
+
+# 全て売却
+SELLALL_Whitelist: "ホワイトリスト：material1,material2,material3"
+SELLALL_Blacklist: "ブラックリスト：material1,material2,material3"
+SELLALL_Empty: "空：全て"
+
+
+# 単語
+W_max: "最大"
+W_all: "全て"
+W_read: "読んだ"
+W_unread: "未読"
+W_unknown: "不明"
+W_name: "名前"
+W_pagenumber: "ページ番号"
+W_items: "アイテム"
+W_enchants: "エンチャント"
+W_experience: "経験値"
+W_price: "価格"
+W_stock: "在庫"
+W_alphabet: "アルファベット"
+W_config: "設定"
+W_materials: "材料"
+W_potions: "ポーション"
+W_entities: "エンティティ"

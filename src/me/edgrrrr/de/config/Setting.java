@@ -16,6 +16,7 @@ public enum Setting {
     SECTION_MESSAGES("Message Ignore"),
     SECTION_COMMANDS("Commands"),
     SECTION_MARKET("Market"),
+    SECTION_WORLDS("Worlds"),
 
     SECTION_COMMANDS_ADMIN(SECTION_COMMANDS.path + ".Admin"),
     SECTION_COMMANDS_MAIL(SECTION_COMMANDS.path + ".Mail"),
@@ -35,6 +36,8 @@ public enum Setting {
     MAIN_ENABLE_PAPI_BOOLEAN(SECTION_MAIN.path + ".Enable PAPI"),
     MAIN_LANG_FILE_STRING(SECTION_MAIN.path + ".Language File"),
     MAIN_TRANSLATE_ITEMS_BOOLEAN(SECTION_MAIN.path + ".Translate Item Names"),
+    MAIN_ENABLE_BSTATS_BOOLEAN(SECTION_MAIN.path + ".Enable bStats"),
+    MAIN_SYSTEM_LOCALE_STRING(SECTION_MAIN.path + ".System Locale"),
 
     //Chat Settings
     CHAT_DEBUG_OUTPUT_BOOLEAN(SECTION_CHAT.path + ".Chat Debug"),
@@ -56,7 +59,22 @@ public enum Setting {
     IGNORE_COMMAND_REGISTRY_BOOLEAN(SECTION_MESSAGES.path + ".Ignore Command Registry"),
     IGNORE_SAVE_MESSAGE_BOOLEAN(SECTION_MESSAGES.path + ".Ignore Save Messages"),
 
-    //Economy Settings
+    // World Market settings
+    WORLDS_ENABLE_NOTIFICATION_BOOLEAN(SECTION_WORLDS.path + ".Enable Notifications"),
+    WORLDS_MARKET_SECTION(SECTION_WORLDS.path + ".Market"),
+    WORLDS_MARKET_ENABLED_WORLDS_STRINGLIST(WORLDS_MARKET_SECTION.path + ".Enabled Worlds"),
+    WORLDS_MARKET_ENABLE_ALL_WORLDS_BOOLEAN(WORLDS_MARKET_SECTION.path + ".Enable All Worlds"),
+    WORLDS_MARKET_APPLY_ITEMS_BOOLEAN(WORLDS_MARKET_SECTION.path + ".Apply To Items"),
+    WORLDS_MARKET_APPLY_ENCHANTS_BOOLEAN(WORLDS_MARKET_SECTION.path + ".Apply To Enchants"),
+    WORLDS_MARKET_APPLY_EXP_BOOLEAN(WORLDS_MARKET_SECTION.path + ".Apply To EXP"),
+    WORLDS_MARKET_ENABLE_MESSAGE_BOOLEAN(WORLDS_MARKET_SECTION.path + ".Enable Message"),
+
+    WORLDS_ECONOMY_SECTION(SECTION_WORLDS.path + ".Economy"),
+    WORLDS_ECONOMY_ENABLED_WORLDS_STRINGLIST(WORLDS_ECONOMY_SECTION.path + ".Enabled Worlds"),
+    WORLDS_ECONOMY_ENABLE_ALL_WORLDS_BOOLEAN(WORLDS_ECONOMY_SECTION.path + ".Enable All Worlds"),
+    WORLDS_ECONOMY_ENABLE_MESSAGE_BOOLEAN(WORLDS_ECONOMY_SECTION.path + ".Enable Message"),
+
+    // World Economy Settings
     ECONOMY_MIN_SEND_AMOUNT_DOUBLE(SECTION_ECONOMY.path + ".Min Send Amount"),
     ECONOMY_BALTOP_REFRESH_INTEGER(SECTION_ECONOMY.path + ".ListBalances Refresh Timer"),
 

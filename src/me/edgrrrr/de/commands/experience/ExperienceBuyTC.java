@@ -1,7 +1,7 @@
 package me.edgrrrr.de.commands.experience;
 
 import me.edgrrrr.de.DEPlugin;
-import me.edgrrrr.de.commands.DivinityCommandEnchantTC;
+import me.edgrrrr.de.commands.DivinityCommandExperienceTC;
 import me.edgrrrr.de.config.Setting;
 import me.edgrrrr.de.lang.LangEntry;
 import me.edgrrrr.de.utils.Converter;
@@ -16,7 +16,7 @@ import static me.edgrrrr.de.utils.Converter.constrainInt;
 /**
  * A tab completer for the enchant hand buy command
  */
-public class ExperienceBuyTC extends DivinityCommandEnchantTC {
+public class ExperienceBuyTC extends DivinityCommandExperienceTC {
 
     /**
      * Constructor

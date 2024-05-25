@@ -21,6 +21,7 @@ public class SendCash extends DivinityCommand {
      */
     public SendCash(DEPlugin app) {
         super(app, "sendcash", false, Setting.COMMAND_SEND_CASH_ENABLE_BOOLEAN);
+        this.checkEconomyEnabled = true;
     }
 
     /**

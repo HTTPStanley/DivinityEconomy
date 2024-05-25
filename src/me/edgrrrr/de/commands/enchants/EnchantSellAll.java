@@ -29,6 +29,7 @@ public class EnchantSellAll extends DivinityCommandEnchant {
      */
     public EnchantSellAll(DEPlugin app) {
         super(app, "esellall", false, Setting.COMMAND_E_SELL_ALL_ENABLE_BOOLEAN);
+        this.checkEnchantMarketEnabled = true;
     }
 
     /**

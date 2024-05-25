@@ -1,0 +1,282 @@
+# Svenska
+# Version: 1.0
+
+# Generella kommandosvar
+GENERIC_PluginEnabled: "Plugin aktiverad"
+GENERIC_PluginDisabled: "Plugin inaktiverad"
+GENERIC_EconomyNotEnabled: "Ekonomi är inte aktiverad. Stänger av."
+GENERIC_EconomyEnabled: "Ekonomi är aktiverad. Leverantör: %s" # %s = leverantör
+GENERIC_PAPIEnabled: "PlaceholderAPI hittades och är aktiverad, %s platshållare har registrerats." # %s = antal
+GENERIC_PAPINotEnabled: "PlaceholderAPI hittades men är inte aktiverad, avaktiverar expansioner."
+GENERIC_PAPINotFound: "PlaceholderAPI hittades inte, avaktiverar expansioner."
+GENERIC_ConsoleCommandIsDisabled: "Detta kommando är inaktiverat."
+GENERIC_ConsoleSupportNotAdded: "Detta kommando stödjer inte konsol."
+GENERIC_PlayerCommandIsDisabled: "Detta kommando är inaktiverat."
+GENERIC_ErrorOnCommand: "Ett fel uppstod när kommandot (%s) kördes: %s" # %s = kommando, %s = fel
+GENERIC_InvalidNumberOfArguments: "Ogiltigt antal argument."
+GENERIC_InvalidArguments: "Ogiltiga argument."
+GENERIC_InvalidPlayerName: "Ogiltigt spelarnamn."
+GENERIC_InvalidAmountGiven: "Ogiltig mängd angiven."
+GENERIC_UnknownError: "Ett okänt fel uppstod."
+GENERIC_IncorrectCommandUsage: "Felaktig kommandotillämpning: %s" # %s = korrekt användning
+GENERIC_CommandUsage: "Kommandotillämpning: %s" # %s = korrekt användning
+GENERIC_HelpFor: "Hjälp för %s" # %s = kommando
+GENERIC_Description: "Beskrivning: %s" # %s = beskrivning
+GENERIC_Usages: "Användningar: %s" # %s = användningar
+GENERIC_Aliases: "Alias: %s" # %s = alias
+GENERIC_FileSaved: "%s sparad." # %s = filnamn
+GENERIC_LocaleError: "Ett fel uppstod när språk sattes till '%s'. Se detaljer nedan¬" # %s = språk
+
+
+# Beskriv
+DESCRIBE_Header: "===Beskriv==="
+DESCRIBE_Settings: "Inställningar:"
+DESCRIBE_Markets: "Marknader:"
+DESCRIBE_Materials: "   - Material: %s" # %s = materialantal
+DESCRIBE_MaterialMarketSize: "   - Materialmarknadens storlek: %s / %s" # %s = materialmarknadens storlek / materialmarknadens standardstorlek
+DESCRIBE_MaterialMarketInflation: "   - Materialmarknadens inflation: %s" # %s = materialmarknadens inflation
+DESCRIBE_Enchants: "   - Förbannelser: %s" # %s = antal förbannelser
+DESCRIBE_EnchantMarketSize: "   - Förbannelsmarknadens storlek: %s / %s" # %s = förbannelsmarknadens storlek / standardstorlek
+DESCRIBE_EnchantMarketInflation: "   - Förbannelsmarknadens inflation: %s" # %s = förbannelsmarknadens inflation
+DESCRIBE_Experience: "   - Erfarenhet: %s" # %s = erfarenhetsantal
+DESCRIBE_ExperienceMarketSize: "   - Erfarenhetsmarknadens storlek: %s / %s" # %s = erfarenhetsmarknadens storlek / standardstorlek
+DESCRIBE_ExperienceMarketInflation: "   - Erfarenhetsmarknadens inflation: %s" # %s = erfarenhetsmarknadens inflation
+DESCRIBE_Entities: "   - Enheter: %s" # %s = antal enheter
+DESCRIBE_EntitiesMarketSize: "   - Enhetsmarknadens storlek: %s / %s" # %s = enhetsmarknadens storlek / standardstorlek
+DESCRIBE_EntitiesMarketInflation: "   - Enhetsmarknadens inflation: %s" # %s = enhetsmarknadens inflation
+DESCRIBE_Potions: "   - Drycker: %s" # %s = antal drycker
+DESCRIBE_PotionsMarketSize: "   - Dryckesmarknadens storlek: %s / %s" # %s = dryckesmarknadens storlek / standardstorlek
+DESCRIBE_PotionsMarketInflation: "   - Dryckesmarknadens inflation: %s" # %s = dryckesmarknadens inflation
+
+
+# Baltop
+BALTOP_NothingToDisplay: "Inget att visa."
+BALTOP_LastOrderedAt: "Senast sorterad vid: %s"
+BALTOP_ServerTotal: "Serverns total: %s"
+BALTOP_YourPositionIs: "Din position är"
+
+
+# Ladda om
+RELOAD_Response: "Detta kommando gör för närvarande ingenting. Tack för att du försökte."
+RELOAD_Enchants: "Förbannelser omladdade."
+RELOAD_Materials: "Material omladdade."
+RELOAD_Experience: "Erfarenhet omladdad."
+RELOAD_Config: "Konfiguration omladdad."
+RELOAD_Potions: "Drycker omladdade."
+RELOAD_Entities: "Enheter omladdade."
+RELOAD_TypeRequired: "Du måste ange en typ att ladda om."
+
+
+# Spara
+SAVE_Config: "Konfiguration sparad."
+SAVE_Enchants: "Förbannelser sparade."
+SAVE_Materials: "Material sparade."
+SAVE_Experience: "Erfarenhet sparad."
+SAVE_Potions: "Drycker sparade."
+SAVE_Entities: "Enheter sparade."
+
+
+# Ping
+PING_PingResponse: "Pong!"
+
+
+# Balans
+BALANCE_Response: "Din balans är %s." # %s = balans
+BALANCE_ResponseOther: "%s's balans är %s." # %s = spelarens namn, %s = balans
+BALANCE_ChangedLog: "%s's balans ändrades från %s till %s på grund av %s" # %s = spelarens namn, %s = gammal balans, %s = ny balans, %s = anledning
+BALANCE_ChangeFailedLog: "Kunde inte ändra %s's balans på grund av %s" # %s = spelarens namn, %s = anledning
+BALANCE_ChangedSourcePlayer: "Du ändrade %s's balans från %s till %s" # %s = spelarens namn, %s = gammal balans, %s = ny balans
+BALANCE_ChangedTargetPlayer: "Din balans ändrades från %s till %s på grund av %s" # %s = gammal balans, %s = ny balans, %s = anledning
+BALANCE_ClearedByPlayer: "%s rensade din balans."
+BALANCE_ClearedByConsole: "KONSOLEN rensade din balans."
+BALANCE_ChangedByPlayer: "%s ändrade din balans."
+BALANCE_ChangedByConsole: "KONSOLEN ändrade din balans."
+BALANCE_SetByPlayer: "%s satte din balans."
+BALANCE_SetByConsole: "KONSOLEN satte din balans."
+
+
+# Köp
+PURCHASE_Log: "%s köpte %s %s för %s" # %s = spelarens namn, %s = mängd, %s = artikelns namn, %s = kostnad
+PURCHASE_FailedLog: "%s kunde inte köpa %s %s på grund av %s" # %s = spelarens namn, %s = mängd, %s = artikelns namn, %s = anledning
+PURCHASE_Response: "Köpte %s %s för %s" # %s = mängd, %s = artikelns namn, %s = kostnad
+PURCHASE_FailedResponse: "Kunde inte köpa %s %s på grund av %s" # %s = mängd, %s = artikelns namn, %s = anledning
+PURCHASE_ValueEnchantFailure: "Kunde inte bestämma köpvärdet av %s förtrollningar( %s ) på grund av %s" # %s = mängd, %s = förtrollningsnamn, %s = anledning
+PURCHASE_ValueEnchantSummary: "Köp: %s förtrollningar kostar %s" # %s = mängd, %s = kostnad
+PURCHASE_ValueEnchant: "  -Köp: %s %s kostar %s" # %s = mängd, %s = förtrollningsnamn, %s = kostnad
+
+
+# Försäljning
+SALE_Log: "%s sålde %s %s för %s" # %s = spelarens namn, %s = mängd, %s = artikelns namn, %s = kostnad
+SALE_FailedLog: "%s kunde inte sälja %s %s på grund av %s" # %s = spelarens namn, %s = mängd, %s = artikelns namn, %s = anledning
+SALE_Response: "Sålde %s %s för %s" # %s = mängd, %s = artikelns namn, %s = kostnad
+SALE_FailedResponse: "Kunde inte sälja %s %s på grund av %s" # %s = mängd, %s = artikelns namn, %s = anledning
+SALE_ValueEnchantFailure: "Kunde inte bestämma försäljningsvärdet av %s förtrollningar( %s ) på grund av %s" # %s = mängd, %s = förtrollningsnamn, %s = anledning
+SALE_ValueEnchantSummary: "Försäljning: %s förtrollningar kostar %s" # %s = mängd, %s = kostnad
+SALE_ValueEnchant: "  -Försäljning: %s %s kostar %s" # %s = mängd, %s = förtrollningsnamn, %s = kostnad
+
+
+# Värde
+VALUE_BuyResponse: "Köp: %s %s kostar %s" # %s = mängd, %s = artikelns namn, %s = kostnad
+VALUE_SellResponse: "Försäljning: %s %s kostar %s" # %s = mängd, %s = artikelns namn, %s = kostnad
+VALUE_BuyFailedResponse: "Kunde inte bestämma köpvärdet av %s %s på grund av %s" # %s = mängd, %s = artikelns namn, %s = anledning
+VALUE_SellFailedResponse: "Kunde inte bestämma försäljningsvärdet av %s %s på grund av %s" # %s = mängd, %s = artikelns namn, %s = anledning
+VALUE_Response: "Värde: %s" # %s = värde
+
+
+# Överföring
+TRANSFER_Log: "%s överförde %s till %s" # %s = spelarens namn, %s = mängd, %s = mottagarens namn
+TRANSFER_FailedLog: "%s kunde inte överföra %s till %s på grund av %s" # %s = spelarens namn, %s = mängd, %s = mottagarens namn, %s = anledning
+TRANSFER_SourceResponse: "Skickade %s till %s" # %s = mängd, %s = mottagarens namn
+TRANSFER_TargetResponse: "Mottog %s från %s" # %s = mängd, %s = spelarens namn
+TRANSFER_FailedResponse: "Kunde inte skicka %s till %s på grund av %s" # %s = mängd, %s = mottagarens namn, %s = anledning
+
+
+# Ekonomi
+ECONOMY_NegativeAmounts: "Du kan inte överföra negativa belopp."
+ECONOMY_Overdraft: "Du kan inte överföra mer än du har."
+ECONOMY_OverLimit: "Din balans kan vara för stor för att överföra."
+ECONOMY_BankNotExist: "Banken finns inte."
+ECONOMY_PlayerNotExist: "Spelaren finns inte."
+ECONOMY_BankAlreadyExists: "Banken finns redan."
+ECONOMY_CreatedBank: "Skapade banken %s" # %s = banknamn
+ECONOMY_DeletedBank: "Raderade banken %s" # %s = banknamn
+ECONOMY_BankBalance: "Banken %s har en balans på %s" # %s = banknamn, %s = balans
+ECONOMY_BankHas: "Banken %s har %s" # %s = banknamn, %s = balans
+ECONOMY_BankWithdraw: "Tog ut %s från banken %s" # %s = mängd, %s = banknamn
+ECONOMY_BankDeposit: "Insatte %s i banken %s" # %s = mängd, %s = banknamn
+ECONOMY_IsOwner: "%s är ägare av banken %s" # %s = spelarens namn, %s = banknamn
+ECONOMY_IsMember: "%s är medlem i banken %s" # %s = spelarens namn, %s = banknamn
+ECONOMY_IncorrectlyFormattedBalance: "Filen %s har en felaktigt formaterad balans." # %s = filnamn
+ECONOMY_RecoveredFile: "Värde återställdes framgångsrikt för %s." # %s = filnamn
+ECONOMY_FailedToRecoverFile: "Misslyckades med att återställa värde för %s. Återställd till 0." # %s = filnamn
+ECONOMY_FailedToCreateBankFile: "Misslyckades med att skapa bankfil (%s) på grund av %s" # %s = banknamn, %s = anledning
+ECONOMY_CreatingPlayerFile: "Skapar spelarfil för %s (%s)" # %s = spelarens namn, %s = filnamn
+ECONOMY_Prefix: "Valutaprefix: %s"
+ECONOMY_Suffix: "Valutasuffix: %s"
+
+
+# Hjälp
+HELP_Header: "%s[== Hjälpsida %s/%s %s==]" # %s = färg, %s = nuvarande sida, %s = totala sidor, %s = färg
+HELP_NoneFound: "Ingen hjälp hittades."
+HELP_Command: "<kommando>"
+HELP_Term: "<term>"
+HELP_Page: "<sidnummer>"
+HELP_NullEntry: "%s är null" # %s = post
+HELP_EntryError: "%s orsakade %s" # %s = post, %s = fel
+HELP_HelpLoaded: "%s hjälpposter laddade" # %s = mängd
+
+
+# Post
+MAIL_NothingToClear: "Inget att rensa."
+MAIL_Removed: "Tog bort %s post. (%s oläst & %s läst)" # %s = mängd, %s = oläst, %s = läst
+MAIL_InvalidPage: "Ogiltigt sidnummer."
+MAIL_YouHaveNoMail: "Du har ingen post."
+MAIL_InvalidPageChoose: "Ogiltigt sidnummer. Välj en sida mellan 1 och %s." # %s = max sida
+MAIL_List: "==[Postlista %s/%s]==" # %s = nuvarande sida, %s = totala sidor
+MAIL_MailLoaded: "Laddade %s post för %s användare" # %s = mängd, %s = användarantal
+MAIL_MailSaved: "Sparade %s post för %s användare" # %s = mängd, %s = användarantal
+MAIL_MailNotification: "Du har %s ekonomiaviseringar. Visa dem med /readmail" # %s = mängd
+MAIL_NoMailNotification: "Du har inga ekonomiaviseringar."
+
+
+# Lager
+STOCK_CountChanged: "Lagerantal ändrades från %s(%s) till %s(%s)." # %s = gammalt lager, %s = gammalt lagernamn, %s = nytt lager, %s = nytt lagernamn
+STOCK_ValueChanged: "Lagervärde ändrades från %s(%s) till %s(%s)." # %s = gammalt värde, %s = gammalt värdenamn, %s = nytt värde, %s = nytt värdenamn
+
+
+# Världar
+WORLDS_BothEnabled: "Marknaden och Ekonomin är aktiverade."
+WORLDS_BothDisabled: "Marknaden och Ekonomin är inaktiverade."
+WORLDS_MarketEnabled: "Marknaden är aktiverad, men Ekonomin är inaktiverad."
+WORLDS_EconomyEnabled: "Ekonomin är aktiverad, men Marknaden är inaktiverad."
+WORLDS_EconomyDisabledInThisWorld: "Ekonomin är inaktiverad i denna värld."
+WORLDS_MarketDisabledInThisWorld: "Marknaden är inaktiverad i denna värld."
+WORLDS_ItemMarketDisabledInThisWorld: "Föremålsmarknaden är inaktiverad i denna värld."
+WORLDS_EnchantMarketDisabledInThisWorld: "Förtrollningsmarknaden är inaktiverad i denna värld."
+WORLDS_ExperienceMarketDisabledInThisWorld: "Erfarenhetsmarknaden är inaktiverad i denna värld."
+
+
+# Marknad
+MARKET_UnknownMaterial: "Okänt material"
+MARKET_UnknownItem: "Okänt föremål %s" # %s = föremålsnamn
+MARKET_UnknownEnchant: "Okänd förtrollning %s" # %s = förtrollningsnamn
+MARKET_InvalidItemName: "Ogiltigt föremålsnamn."
+MARKET_InvalidMaterialName: "Ogiltigt materialnamn."
+MARKET_InvalidEnchantName: "Ogiltigt förtrollningsnamn."
+MARKET_InvalidItemHeld: "Du måste hålla i ett föremål."
+MARKET_InvalidInventorySpace: "Du har inte tillräckligt med utrymme i inventariet (%s/%s)." # %s = nuvarande utrymme, %s = nödvändigt utrymme
+MARKET_InvalidStockAmount: "Marknaden har inte tillräckligt med lager (%s/%s)." # %s = nuvarande lager, %s = nödvändigt lager
+MARKET_InvalidInventoryStock: "Du har inte tillräckligt med lager (%s/%s)." # %s = nuvarande lager, %s = nödvändigt lager
+MARKET_EnchantsInvalidItemAmount: "Ogiltigt hållet föremål. Du måste endast hålla exakt 1 föremål."
+MARKET_ExperienceMarketIsDisabled: "Erfarenhetsmarknaden är inaktiverad."
+MARKET_NothingToSellAfterSkipping: "Efter att ha hoppat över föremål (av olika skäl), finns det inget kvar att sälja."
+MARKET_NothingToSell: "Det finns inget att sälja."
+MARKET_EnchantList: "förtrollningar( %s )" # %s = förtrollningsnamn
+MARKET_MaterialMarketIsDisabled: "Materialmarknaden är inaktiverad."
+MARKET_EnchantMarketIsDisabled: "Förtrollningsmarknaden är inaktiverad."
+MARKET_YouAreNotHoldingAnItem: "Du håller inte i ett föremål."
+MARKET_NoItemsToSell: "Det finns inga föremål att sälja."
+MARKET_NoItemsToBuy: "Det finns inga föremål att köpa."
+MARKET_ItemCannotBeFound: "%s kan inte hittas." # %s = föremålsnamn
+MARKET_ItemIsBanned: "%s är förbjudet." # %s = föremålsnamn
+MARKET_ItemIsWorthless: "%s är värdelöst." # %s = föremålsnamn
+MARKET_ItemIsEnchanted: "%s är förtrollat." # %s = föremålsnamn
+MARKET_ItemIsNamedOrLored: "%s är namngivet eller har lore." # %s = föremålsnamn
+MARKET_ItemIsNotSupported: "%s stöds inte." # %s = föremålsnamn
+MARKET_ItemIsNotSupportedOnThisItem: "%s stöds inte på detta föremål." # %s = föremålsnamn
+MARKET_LevelIsGreaterThanMax: "Nivån är större än max (%s/%s)." # %s = nivå, %s = maxnivå
+MARKET_LevelWouldBeGreaterThanMax: "Nivån skulle vara större än max (%s/%s)." # %s = nivå, %s = maxnivå
+MARKET_ItemDoesNotExist: "%s existerar inte." # %s = föremålsnamn
+MARKET_ItemDoesNotExistInTheStore: "%s existerar inte i butiken." # %s = föremålsnamn
+MARKET_ItemIsNotEnchanted: "%s är inte förtrollat." # %s = föremålsnamn
+MARKET_ItemNotEnoughLevels: "%s har inte tillräckligt med nivåer (%s/%s)." # %s = föremålsnamn, %s = nuvarande nivåer, %s = nödvändiga nivåer
+MARKET_ItemAliasesLoaded: "Laddade %s artikelalias från %s" # %s = mängd, %s = filnamn
+MARKET_ItemsLoaded: "Laddade %s artiklar (nuvarande/standard kvantiteter: %s / %s) från %s" # %s = mängd, %s = nuvarande kvantitet, %s = standardkvantitet, %s = filnamn
+
+
+# Erfarenhet
+EXPERIENCE_InvalidAmount: "Ogiltig mängd."
+EXPERIENCE_IsBanned: "Erfarenhet är förbjuden."
+EXPERIENCE_NotEnoughExperienceToBuy: "Inte tillräckligt med erfarenhet för att köpa."
+EXPERIENCE_NotEnoughExperienceToSell: "Inte tillräckligt med erfarenhet för att sälja."
+EXPERIENCE_IsWorthless: "Erfarenhet är värdelös."
+
+
+# Information
+INFO_InformationFor: "==[Information för %s]==" # %s = föremålsnamn
+INFO_TypeInformation: "TYP: %s" # %s = föremåls-ID
+INFO_IDInformation: "ID: %s" # %s = föremåls-ID
+INFO_CurrentQuantityInformation: "Nuvarande mängd: %s" # %s = nuvarande mängd
+INFO_IsBannedInformation: "Förbjudet: %s" # %s = förbjudet
+
+
+# Artikel Lista
+ITEMLIST_Header: "==[Artikel Lista '%s' %s/%s]==" # %s = föremålsnamn, %s = nuvarande sida, %s = totala sidor
+ITEMLIST_AscendingOrder: "Stigande ordning: %s"
+ITEMLIST_OrderBy: "Sortera efter: %s"
+
+
+# Sälj Allt
+SELLALL_Whitelist: "Vitlista: material1,material2,material3"
+SELLALL_Blacklist: "Svartlista: material1,material2,material3"
+SELLALL_Empty: "Tom: Allt"
+
+
+# Ord
+W_max: "max"
+W_all: "alla"
+W_read: "läst"
+W_unread: "oläst"
+W_unknown: "okänd"
+W_name: "namn"
+W_pagenumber: "sidanummer"
+W_items: "artiklar"
+W_enchants: "förtrollningar"
+W_experience: "erfarenhet"
+W_price: "pris"
+W_stock: "lager"
+W_alphabet: "alfabet"
+W_config: "konfig"
+W_materials: "material"
+W_potions: "drycker"
+W_entities: "enheter"

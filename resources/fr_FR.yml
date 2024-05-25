@@ -25,6 +25,7 @@ GENERIC_Description: "Description : %s" # %s = description
 GENERIC_Usages: "Utilisations : %s" # %s = utilisations
 GENERIC_Aliases: "Alias : %s" # %s = alias
 GENERIC_FileSaved: "%s enregistré." # %s = nom de fichier
+GENERIC_LocaleError: "Une erreur s'est produite lors du réglage de la locale sur '%s'. Voir les détails ci-dessous"
 
 
 # Décrire
@@ -183,6 +184,18 @@ STOCK_CountChanged: "Niveau de stock modifié de %s(%s) à %s(%s)." # %s = ancie
 STOCK_ValueChanged: "Valeur du stock modifiée de %s(%s) à %s(%s)." # %s = ancien stock, %s = ancien nom de stock, %s = nouveau stock, %s = nouveau nom de stock
 
 
+# Worlds
+WORLDS_BothEnabled: "Marché et économie sont activés."
+WORLDS_BothDisabled: "Marché et économie sont désactivés."
+WORLDS_MarketEnabled: "Marché est activé, économie est désactivée."
+WORLDS_EconomyEnabled: "Marché est désactivé, économie est activée."
+WORLDS_EconomyDisabledInThisWorld: "Économie désactivée dans ce monde."
+WORLDS_MarketDisabledInThisWorld: "Marché désactivé dans ce monde."
+WORLDS_ItemMarketDisabledInThisWorld: "Marché des objets désactivé dans ce monde."
+WORLDS_EnchantMarketDisabledInThisWorld: "Marché des enchantements désactivé dans ce monde."
+WORLDS_ExperienceMarketDisabledInThisWorld: "Marché de l'expérience désactivé dans ce monde."
+
+
 # Marché
 MARKET_UnknownMaterial: "Matériau inconnu"
 MARKET_UnknownItem: "Objet inconnu %s" # %s = nom de l'objet
@@ -200,6 +213,7 @@ MARKET_NothingToSell: "Il n'y a rien à vendre."
 MARKET_EnchantList: "enchantements( %s )" # %s = noms des enchantements
 MARKET_MaterialMarketIsDisabled: "Le marché des matériaux est désactivé."
 MARKET_EnchantMarketIsDisabled: "Le marché des enchantements est désactivé."
+MARKET_ExperienceMarketIsDisabled: "Le marché de l'expérience est désactivé."
 MARKET_YouAreNotHoldingAnItem: "Vous ne tenez pas d'objet."
 MARKET_NoItemsToSell: "Il n'y a aucun objet à vendre."
 MARKET_NoItemsToBuy: "Il n'y a aucun objet à acheter."

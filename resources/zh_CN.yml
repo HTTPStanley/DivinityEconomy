@@ -1,0 +1,282 @@
+# 简体中文
+# 版本: 1.0
+
+# 通用命令响应
+GENERIC_PluginEnabled: "插件已启用"
+GENERIC_PluginDisabled: "插件已禁用"
+GENERIC_EconomyNotEnabled: "经济未启用。正在关闭。"
+GENERIC_EconomyEnabled: "经济已启用。提供者: %s" # %s = 提供者
+GENERIC_PAPIEnabled: "已找到 PlaceholderAPI 并已启用，已注册 %s 个占位符。" # %s = 数量
+GENERIC_PAPINotEnabled: "已找到 PlaceholderAPI 但未启用，正在禁用扩展。"
+GENERIC_PAPINotFound: "未找到 PlaceholderAPI，正在禁用扩展。"
+GENERIC_ConsoleCommandIsDisabled: "此命令已禁用。"
+GENERIC_ConsoleSupportNotAdded: "此命令不支持控制台。"
+GENERIC_PlayerCommandIsDisabled: "此命令已禁用。"
+GENERIC_ErrorOnCommand: "执行命令 (%s) 时发生错误：%s" # %s = 命令, %s = 错误
+GENERIC_InvalidNumberOfArguments: "参数数量无效。"
+GENERIC_InvalidArguments: "参数无效。"
+GENERIC_InvalidPlayerName: "玩家名无效。"
+GENERIC_InvalidAmountGiven: "给定的数量无效。"
+GENERIC_UnknownError: "发生未知错误。"
+GENERIC_IncorrectCommandUsage: "命令使用不正确：%s" # %s = 正确用法
+GENERIC_CommandUsage: "命令用法：%s" # %s = 正确用法
+GENERIC_HelpFor: "%s 的帮助" # %s = 命令
+GENERIC_Description: "描述：%s" # %s = 描述
+GENERIC_Usages: "用法：%s" # %s = 用法
+GENERIC_Aliases: "别名：%s" # %s = 别名
+GENERIC_FileSaved: "%s 已保存。" # %s = 文件名
+GENERIC_LocaleError: "设置语言为 '%s' 时发生错误。详情如下¬" # %s = 语言
+
+
+# 描述
+DESCRIBE_Header: "===描述==="
+DESCRIBE_Settings: "设置："
+DESCRIBE_Markets: "市场："
+DESCRIBE_Materials: "   - 材料：%s" # %s = 材料数量
+DESCRIBE_MaterialMarketSize: "   - 材料市场规模：%s / %s" # %s = 材料市场规模 / 默认规模
+DESCRIBE_MaterialMarketInflation: "   - 材料市场通货膨胀：%s" # %s = 通货膨胀
+DESCRIBE_Enchants: "   - 附魔：%s" # %s = 附魔数量
+DESCRIBE_EnchantMarketSize: "   - 附魔市场规模：%s / %s" # %s = 附魔市场规模 / 默认规模
+DESCRIBE_EnchantMarketInflation: "   - 附魔市场通货膨胀：%s" # %s = 通货膨胀
+DESCRIBE_Experience: "   - 经验：%s" # %s = 经验数量
+DESCRIBE_ExperienceMarketSize: "   - 经验市场规模：%s / %s" # %s = 经验市场规模 / 默认规模
+DESCRIBE_ExperienceMarketInflation: "   - 经验市场通货膨胀：%s" # %s = 通货膨胀
+DESCRIBE_Entities: "   - 实体：%s" # %s = 实体数量
+DESCRIBE_EntitiesMarketSize: "   - 实体市场规模：%s / %s" # %s = 实体市场规模 / 默认规模
+DESCRIBE_EntitiesMarketInflation: "   - 实体市场通货膨胀：%s" # %s = 通货膨胀
+DESCRIBE_Potions: "   - 药水：%s" # %s = 药水数量
+DESCRIBE_PotionsMarketSize: "   - 药水市场规模：%s / %s" # %s = 药水市场规模 / 默认规模
+DESCRIBE_PotionsMarketInflation: "   - 药水市场通货膨胀：%s" # %s = 通货膨胀
+
+
+# Baltop
+BALTOP_NothingToDisplay: "没有内容显示。"
+BALTOP_LastOrderedAt: "最后排序时间：%s"
+BALTOP_ServerTotal: "服务器总计：%s"
+BALTOP_YourPositionIs: "您的位置是"
+
+
+# 重新加载
+RELOAD_Response: "此命令当前无效。但还是感谢您的尝试。"
+RELOAD_Enchants: "附魔已重新加载。"
+RELOAD_Materials: "材料已重新加载。"
+RELOAD_Experience: "经验已重新加载。"
+RELOAD_Config: "配置已重新加载。"
+RELOAD_Potions: "药水已重新加载。"
+RELOAD_Entities: "实体已重新加载。"
+RELOAD_TypeRequired: "您必须指定要重新加载的类型。"
+
+
+# 保存
+SAVE_Config: "配置已保存。"
+SAVE_Enchants: "附魔已保存。"
+SAVE_Materials: "材料已保存。"
+SAVE_Experience: "经验已保存。"
+SAVE_Potions: "药水已保存。"
+SAVE_Entities: "实体已保存。"
+
+
+# Ping
+PING_PingResponse: "Pong!"
+
+
+# 余额
+BALANCE_Response: "您的余额是 %s。" # %s = 余额
+BALANCE_ResponseOther: "%s 的余额是 %s。" # %s = 玩家名, %s = 余额
+BALANCE_ChangedLog: "%s 的余额从 %s 变为 %s 因为 %s" # %s = 玩家名, %s = 旧余额, %s = 新余额, %s = 原因
+BALANCE_ChangeFailedLog: "由于 %s 无法更改 %s 的余额" # %s = 玩家名, %s = 原因
+BALANCE_ChangedSourcePlayer: "您已将 %s 的余额从 %s 更改为 %s" # %s = 玩家名, %s = 旧余额, %s = 新余额
+BALANCE_ChangedTargetPlayer: "您的余额从 %s 变为 %s 因为 %s" # %s = 旧余额, %s = 新余额, %s = 原因
+BALANCE_ClearedByPlayer: "%s 清空了您的余额。"
+BALANCE_ClearedByConsole: "控制台清空了您的余额。"
+BALANCE_ChangedByPlayer: "%s 更改了您的余额。"
+BALANCE_ChangedByConsole: "控制台更改了您的余额。"
+BALANCE_SetByPlayer: "%s 设置了您的余额。"
+BALANCE_SetByConsole: "控制台设置了您的余额。"
+
+
+# 购买
+PURCHASE_Log: "%s 购买了 %s %s 花费 %s" # %s = 玩家名, %s = 数量, %s = 物品名, %s = 成本
+PURCHASE_FailedLog: "%s 无法购买 %s %s 因为 %s" # %s = 玩家名, %s = 数量, %s = 物品名, %s = 原因
+PURCHASE_Response: "已购买 %s %s 花费 %s" # %s = 数量, %s = 物品名, %s = 成本
+PURCHASE_FailedResponse: "无法购买 %s %s 因为 %s" # %s = 数量, %s = 物品名, %s = 原因
+PURCHASE_ValueEnchantFailure: "无法确定 %s 个附魔( %s )的购买价值 因为 %s" # %s = 数量, %s = 附魔名, %s = 原因
+PURCHASE_ValueEnchantSummary: "购买：%s 个附魔的价格是 %s" # %s = 数量, %s = 成本
+PURCHASE_ValueEnchant: "  -购买：%s %s 的价格是 %s" # %s = 数量, %s = 附魔名, %s = 成本
+
+
+# 销售
+SALE_Log: "%s 卖出 %s %s 得到 %s" # %s = 玩家名, %s = 数量, %s = 物品名, %s = 成本
+SALE_FailedLog: "%s 无法卖出 %s %s 因为 %s" # %s = 玩家名, %s = 数量, %s = 物品名, %s = 原因
+SALE_Response: "卖出 %s %s 得到 %s" # %s = 数量, %s = 物品名, %s = 成本
+SALE_FailedResponse: "无法卖出 %s %s 因为 %s" # %s = 数量, %s = 物品名, %s = 原因
+SALE_ValueEnchantFailure: "无法确定 %s 个附魔( %s )的销售价值 因为 %s" # %s = 数量, %s = 附魔名, %s = 原因
+SALE_ValueEnchantSummary: "销售：%s 个附魔的价格是 %s" # %s = 数量, %s = 成本
+SALE_ValueEnchant: "  -销售：%s %s 的价格是 %s" # %s = 数量, %s = 附魔名, %s = 成本
+
+
+# 价值
+VALUE_BuyResponse: "购买：%s %s 的价格是 %s" # %s = 数量, %s = 物品名, %s = 成本
+VALUE_SellResponse: "销售：%s %s 的价格是 %s" # %s = 数量, %s = 物品名, %s = 成本
+VALUE_BuyFailedResponse: "无法确定 %s %s 的购买价值 因为 %s" # %s = 数量, %s = 物品名, %s = 原因
+VALUE_SellFailedResponse: "无法确定 %s %s 的销售价值 因为 %s" # %s = 数量, %s = 物品名, %s = 原因
+VALUE_Response: "价值：%s" # %s = 价值
+
+
+# 转账
+TRANSFER_Log: "%s 转账 %s 给 %s" # %s = 玩家名, %s = 数量, %s = 目标玩家名
+TRANSFER_FailedLog: "%s 无法转账 %s 给 %s 因为 %s" # %s = 玩家名, %s = 数量, %s = 目标玩家名, %s = 原因
+TRANSFER_SourceResponse: "发送 %s 给 %s" # %s = 数量, %s = 目标玩家名
+TRANSFER_TargetResponse: "收到 %s 来自 %s" # %s = 数量, %s = 玩家名
+TRANSFER_FailedResponse: "无法发送 %s 给 %s 因为 %s" # %s = 数量, %s = 目标玩家名, %s = 原因
+
+
+# 经济
+ECONOMY_NegativeAmounts: "你不能转账负数金额。"
+ECONOMY_Overdraft: "你不能转账超过你拥有的金额。"
+ECONOMY_OverLimit: "你的余额可能太大而无法转账。"
+ECONOMY_BankNotExist: "银行不存在。"
+ECONOMY_PlayerNotExist: "玩家不存在。"
+ECONOMY_BankAlreadyExists: "银行已存在。"
+ECONOMY_CreatedBank: "已创建银行 %s" # %s = 银行名
+ECONOMY_DeletedBank: "已删除银行 %s" # %s = 银行名
+ECONOMY_BankBalance: "银行 %s 的余额是 %s" # %s = 银行名, %s = 余额
+ECONOMY_BankHas: "银行 %s 拥有 %s" # %s = 银行名, %s = 余额
+ECONOMY_BankWithdraw: "从银行 %s 提款 %s" # %s = 数量, %s = 银行名
+ECONOMY_BankDeposit: "存款 %s 到银行 %s" # %s = 数量, %s = 银行名
+ECONOMY_IsOwner: "%s 是银行 %s 的所有者" # %s = 玩家名, %s = 银行名
+ECONOMY_IsMember: "%s 是银行 %s 的成员" # %s = 玩家名, %s = 银行名
+ECONOMY_IncorrectlyFormattedBalance: "文件 %s 的余额格式不正确。" # %s = 文件名
+ECONOMY_RecoveredFile: "成功恢复了 %s 的价值。" # %s = 文件名
+ECONOMY_FailedToRecoverFile: "无法恢复 %s 的价值。重置为 0。" # %s = 文件名
+ECONOMY_FailedToCreateBankFile: "因 %s 无法创建银行文件 (%s)" # %s = 银行名, %s = 原因
+ECONOMY_CreatingPlayerFile: "正在为 %s (%s) 创建玩家文件" # %s = 玩家名, %s = 文件名
+ECONOMY_Prefix: "货币前缀：%s"
+ECONOMY_Suffix: "货币后缀：%s"
+
+
+# 帮助
+HELP_Header: "%s[== 帮助页 %s/%s %s==]" # %s = 颜色, %s = 当前页, %s = 总页数, %s = 颜色
+HELP_NoneFound: "未找到帮助。"
+HELP_Command: "<命令>"
+HELP_Term: "<术语>"
+HELP_Page: "<页码>"
+HELP_NullEntry: "%s 是空的" # %s = 条目
+HELP_EntryError: "%s 引发了 %s" # %s = 条目, %s = 错误
+HELP_HelpLoaded: "已加载 %s 个帮助条目" # %s = 数量
+
+
+# 邮件
+MAIL_NothingToClear: "没有邮件需要清除。"
+MAIL_Removed: "已删除 %s 封邮件。(%s 未读 & %s 已读)" # %s = 数量, %s = 未读, %s = 已读
+MAIL_InvalidPage: "无效的页码。"
+MAIL_YouHaveNoMail: "你没有邮件。"
+MAIL_InvalidPageChoose: "无效的页码。请选择 1 到 %s 之间的页码。" # %s = 最大页数
+MAIL_List: "==[邮件列表 %s/%s]==" # %s = 当前页, %s = 总页数
+MAIL_MailLoaded: "已为 %s 个用户加载 %s 封邮件" # %s = 数量, %s = 用户数量
+MAIL_MailSaved: "已为 %s 个用户保存 %s 封邮件" # %s = 数量, %s = 用户数量
+MAIL_MailNotification: "你有 %s 条经济通知。使用 /readmail 查看" # %s = 数量
+MAIL_NoMailNotification: "你没有经济通知。"
+
+
+# 库存
+STOCK_CountChanged: "库存数量从 %s(%s) 变为 %s(%s)。" # %s = 旧库存, %s = 旧库存名, %s = 新库存, %s = 新库存名
+STOCK_ValueChanged: "库存价值从 %s(%s) 变为 %s(%s)。" # %s = 旧价值, %s = 旧价值名, %s = 新价值, %s = 新价值名
+
+
+# 世界
+WORLDS_BothEnabled: "市场和经济都已启用。"
+WORLDS_BothDisabled: "市场和经济都已禁用。"
+WORLDS_MarketEnabled: "市场已启用，但经济已禁用。"
+WORLDS_EconomyEnabled: "经济已启用，但市场已禁用。"
+WORLDS_EconomyDisabledInThisWorld: "经济在此世界中已禁用。"
+WORLDS_MarketDisabledInThisWorld: "市场在此世界中已禁用。"
+WORLDS_ItemMarketDisabledInThisWorld: "物品市场在此世界中已禁用。"
+WORLDS_EnchantMarketDisabledInThisWorld: "附魔市场在此世界中已禁用。"
+WORLDS_ExperienceMarketDisabledInThisWorld: "经验市场在此世界中已禁用。"
+
+
+# 市场
+MARKET_UnknownMaterial: "未知材料"
+MARKET_UnknownItem: "未知物品 %s" # %s = 物品名
+MARKET_UnknownEnchant: "未知附魔 %s" # %s = 附魔名
+MARKET_InvalidItemName: "无效的物品名。"
+MARKET_InvalidMaterialName: "无效的材料名。"
+MARKET_InvalidEnchantName: "无效的附魔名。"
+MARKET_InvalidItemHeld: "你必须持有一个物品。"
+MARKET_InvalidInventorySpace: "你没有足够的库存空间 (%s/%s)。" # %s = 当前空间, %s = 需要空间
+MARKET_InvalidStockAmount: "市场没有足够的库存 (%s/%s)。" # %s = 当前库存, %s = 需要库存
+MARKET_InvalidInventoryStock: "你没有足够的库存 (%s/%s)。" # %s = 当前库存, %s = 需要库存
+MARKET_EnchantsInvalidItemAmount: "无效的持有物品。你必须只持有 1 个物品。"
+MARKET_ExperienceMarketIsDisabled: "经验市场已禁用。"
+MARKET_NothingToSellAfterSkipping: "跳过物品后（由于各种原因），没有剩余的物品可卖。"
+MARKET_NothingToSell: "没有物品可卖。"
+MARKET_EnchantList: "附魔( %s )" # %s = 附魔名
+MARKET_MaterialMarketIsDisabled: "材料市场已禁用。"
+MARKET_EnchantMarketIsDisabled: "附魔市场已禁用。"
+MARKET_YouAreNotHoldingAnItem: "你没有持有一个物品。"
+MARKET_NoItemsToSell: "没有物品可卖。"
+MARKET_NoItemsToBuy: "没有物品可买。"
+MARKET_ItemCannotBeFound: "%s 找不到。" # %s = 物品名
+MARKET_ItemIsBanned: "%s 被禁止。" # %s = 物品名
+MARKET_ItemIsWorthless: "%s 毫无价值。" # %s = 物品名
+MARKET_ItemIsEnchanted: "%s 已附魔。" # %s = 物品名
+MARKET_ItemIsNamedOrLored: "%s 已命名或有描述。" # %s = 物品名
+MARKET_ItemIsNotSupported: "%s 不受支持。" # %s = 物品名
+MARKET_ItemIsNotSupportedOnThisItem: "%s 在此物品上不受支持。" # %s = 物品名
+MARKET_LevelIsGreaterThanMax: "等级大于最大值 (%s/%s)。" # %s = 等级, %s = 最大等级
+MARKET_LevelWouldBeGreaterThanMax: "等级将大于最大值 (%s/%s)。" # %s = 等级, %s = 最大等级
+MARKET_ItemDoesNotExist: "%s 不存在。" # %s = 物品名
+MARKET_ItemDoesNotExistInTheStore: "%s 在商店中不存在。" # %s = 物品名
+MARKET_ItemIsNotEnchanted: "%s 没有附魔。" # %s = 物品名
+MARKET_ItemNotEnoughLevels: "%s 等级不足 (%s/%s)。" # %s = 物品名, %s = 当前等级, %s = 需要等级
+MARKET_ItemAliasesLoaded: "从 %s 加载了 %s 个物品别名" # %s = 数量, %s = 文件名
+MARKET_ItemsLoaded: "从 %s 加载了 %s 个物品（当前/默认数量：%s / %s）" # %s = 数量, %s = 当前数量, %s = 默认数量, %s = 文件名
+
+
+# 经验
+EXPERIENCE_InvalidAmount: "数量无效。"
+EXPERIENCE_IsBanned: "经验被禁止。"
+EXPERIENCE_NotEnoughExperienceToBuy: "购买所需的经验不足。"
+EXPERIENCE_NotEnoughExperienceToSell: "出售所需的经验不足。"
+EXPERIENCE_IsWorthless: "经验毫无价值。"
+
+
+# 信息
+INFO_InformationFor: "==[信息 %s]==" # %s = 物品名
+INFO_TypeInformation: "类型：%s" # %s = 物品 ID
+INFO_IDInformation: "ID：%s" # %s = 物品 ID
+INFO_CurrentQuantityInformation: "当前数量：%s" # %s = 当前数量
+INFO_IsBannedInformation: "被禁止：%s" # %s = 被禁止
+
+
+# 物品列表
+ITEMLIST_Header: "==[物品列表 '%s' %s/%s]==" # %s = 物品名, %s = 当前页, %s = 总页数
+ITEMLIST_AscendingOrder: "升序排列：%s"
+ITEMLIST_OrderBy: "排序依据：%s"
+
+
+# 全部出售
+SELLALL_Whitelist: "白名单：material1,material2,material3"
+SELLALL_Blacklist: "黑名单：material1,material2,material3"
+SELLALL_Empty: "空：所有"
+
+
+# 词
+W_max: "最大"
+W_all: "全部"
+W_read: "已读"
+W_unread: "未读"
+W_unknown: "未知"
+W_name: "名字"
+W_pagenumber: "页码"
+W_items: "物品"
+W_enchants: "附魔"
+W_experience: "经验"
+W_price: "价格"
+W_stock: "库存"
+W_alphabet: "字母表"
+W_config: "配置"
+W_materials: "材料"
+W_potions: "药水"
+W_entities: "实体"
