@@ -38,17 +38,27 @@ public class WorldNotification implements Listener {
 
 
     public void handleEvent(Player player, World world) {
-        boolean marketEnabled = this.worldManager.isMarketEnabled(world);
-        boolean economyEnabled = this.worldManager.isEconomyEnabled(world);
+        try {
+            // Check if they have notifications enabled
+            if (!this.main.getEconMan().getPlayer(player).getNotification()) {
+                return;
+            }
 
-        if (marketEnabled && economyEnabled) {
-            this.main.getConsole().info(player, LangEntry.WORLDS_BothEnabled.get(main));
-        } else if (marketEnabled) {
-            this.main.getConsole().info(player, LangEntry.WORLDS_MarketEnabled.get(main));
-        } else if (economyEnabled) {
-            this.main.getConsole().info(player, LangEntry.WORLDS_EconomyEnabled.get(main));
-        } else {
-            this.main.getConsole().info(player, LangEntry.WORLDS_BothDisabled.get(main));
+            // Check if the world has the market and economy enabled
+            boolean marketEnabled = this.worldManager.isMarketEnabled(world);
+            boolean economyEnabled = this.worldManager.isEconomyEnabled(world);
+
+            // Conditional message
+            if (marketEnabled && economyEnabled) {
+                this.main.getConsole().info(player, LangEntry.WORLDS_BothEnabled.get(main));
+            } else if (marketEnabled) {
+                this.main.getConsole().info(player, LangEntry.WORLDS_MarketEnabled.get(main));
+            } else if (economyEnabled) {
+                this.main.getConsole().info(player, LangEntry.WORLDS_EconomyEnabled.get(main));
+            } else {
+                this.main.getConsole().info(player, LangEntry.WORLDS_BothDisabled.get(main));
+            }
+        } catch (Exception ignored) {
         }
     }
 }

@@ -9,7 +9,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import java.io.File;
 import java.util.Collections;
 
-enum ProvidedLangFiles {
+enum ProvidedLangFile {
     en_GB("en_GB.yml"), // English - UK
     fr_FR("fr_FR.yml"), // French - France
     de_DE("de_DE.yml"), // German - Germany
@@ -20,17 +20,29 @@ enum ProvidedLangFiles {
     pt_PT("pt_PT.yml"), // Portuguese - Portugal
     da_DK("da_DK.yml"), // Danish - Denmark
     nl_NL("nl_NL.yml"), // Dutch - Netherlands
+    sv_SE("sv_SE.yml"), // Swedish - Sweden
+    tr_TR("tr_TR.yml"), // Turkish - Turkey
+    zh_CN("zh_CN.yml"), // Chinese - China
+    ja_JP("ja_JP.yml"), // Japanese - Japan
 
     ; // End of enum
 
     private final String path;
 
-    ProvidedLangFiles(String path) {
+    ProvidedLangFile(String path) {
         this.path = path;
     }
 
     public String getPath() {
         return path;
+    }
+
+    public String getResourcePath() {
+        return path;
+    }
+
+    public String getFilePath() {
+        return "locale/" + path;
     }
 }
 
@@ -39,15 +51,7 @@ enum ProvidedLangFiles {
  */
 public class LangManager extends DivinityModule {
     private static final File langFolder = new File("locale");
-    private static final String defaultLangStr = ProvidedLangFiles.en_GB.getPath();
-    private static final String[] providedLangFiles = new String[]{
-        ProvidedLangFiles.en_GB.getPath(),
-        ProvidedLangFiles.fr_FR.getPath(),
-        ProvidedLangFiles.de_DE.getPath(),
-        ProvidedLangFiles.es_ES.getPath(),
-        ProvidedLangFiles.it_IT.getPath(),
-        ProvidedLangFiles.ru_RU.getPath(),
-    };
+    private static final String defaultLangStr = ProvidedLangFile.en_GB.getPath();
     private static File defaultLangFile;
     private static FileConfiguration defaultConfig;
     private static File langFile;
@@ -72,21 +76,22 @@ public class LangManager extends DivinityModule {
         this.getConfMan().getFolder(langFolder.getPath());
 
         // Loop through lang files in plugin
-        for (String langFileStr : providedLangFiles) {
+        for (ProvidedLangFile providedLangFile : ProvidedLangFile.values()) {
             try {
                 // Get the file
-                File thisLangFile = this.getConfMan().getFile(new File(langFolder, langFileStr).getPath());
+                File thisLangFile = this.getConfMan().getFile(providedLangFile.getFilePath());
                 if (!thisLangFile.exists()) {
                     thisLangFile.createNewFile();
                 }
 
                 // Run Update
-                ConfigUpdater.update(getMain(), langFileStr, thisLangFile, Collections.emptyList());
+                ConfigUpdater.update(getMain(), providedLangFile.getResourcePath(), thisLangFile, Collections.emptyList());
             }
             catch (Exception e) {
-                this.getConsole().severe("Couldn't update lang file: %s.", langFileStr);
+                this.getConsole().severe("Couldn't update lang file: %s.", providedLangFile.getPath());
             }
         }
+
 
         // Loop through files and register them to the plugin
         for (File thisLangFile : this.getConfMan().getFolderFiles(langFolder.getPath())) {
@@ -97,9 +102,11 @@ public class LangManager extends DivinityModule {
             }
         }
 
+
         // Load default lang
         defaultLangFile = this.getConfMan().getFile(new File(langFolder, defaultLangStr).getPath());
         defaultConfig = this.getConfMan().readFile(defaultLangFile);
+
 
         // Check if lang file was loaded
         if (langFile == null || langConfig == null) {
@@ -108,10 +115,12 @@ public class LangManager extends DivinityModule {
             langConfig = defaultConfig;
         }
 
+
         // Check if default lang was loaded
         if (defaultConfig == null || !defaultLangFile.exists()) {
             this.getConsole().severe("Couldn't load default lang file: %s.", defaultLangStr);
         }
+
 
         this.getConsole().info("Loaded lang file: %s.", langFile.getName());
     }

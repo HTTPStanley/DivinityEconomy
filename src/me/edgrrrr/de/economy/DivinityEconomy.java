@@ -18,7 +18,7 @@ import javax.annotation.Nullable;
 import java.io.File;
 import java.util.*;
 
-public class DivinityEconomy implements net.milkbowl.vault.economy.Economy{
+public class DivinityEconomy implements net.milkbowl.vault.economy.Economy {
     private static final String userdata = "userdata";
     private static final String bankdata = "bankdata";
     private static final int LIST_TASK_INTERVAL = Converter.getTicks(60);
@@ -56,6 +56,7 @@ public class DivinityEconomy implements net.milkbowl.vault.economy.Economy{
         this.bankListTask.runTaskTimerAsynchronously(this.main, 0L, LIST_TASK_INTERVAL);
         fetchBanks();
     }
+
 
     public void stopTasks() {
         this.bankListTask.cancel();

@@ -13,6 +13,8 @@ public enum FileKey {
     BALANCE("balance"),
     NAME("name"),
     UUID("uuid"),
+    ENABLE_NOTIFICATIONS("enable_notifications"),
+    // END
 
     // Keys -- Bank
     MEMBERS("members"),

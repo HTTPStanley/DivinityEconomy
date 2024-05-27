@@ -19,6 +19,7 @@ public class EconomyPlayer extends EconomyObject {
         this.get(FileKey.NAME, player.getName());
         this.get(FileKey.UUID, player.getUniqueId().toString());
         this.get(FileKey.BALANCE, this.getBalance().toString());
+        this.get(FileKey.ENABLE_NOTIFICATIONS, true);
         this.clean();
         this.save();
     }
@@ -39,6 +40,24 @@ public class EconomyPlayer extends EconomyObject {
      */
     public String getName() {
         return (String) this.get(FileKey.NAME, getMain().getPlayMan().getPlayerName(this.player).name());
+    }
+
+
+    /**
+     * Return's the player's notification status
+     * @return
+     */
+    public boolean getNotification() {
+        return getBoolean(FileKey.ENABLE_NOTIFICATIONS, true);
+    }
+
+
+    /**
+     * Returns the player's balance
+     * @return
+     */
+    public void setNotification(boolean enable) {
+        this.set(FileKey.ENABLE_NOTIFICATIONS, enable);
     }
 
 

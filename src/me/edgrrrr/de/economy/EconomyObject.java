@@ -387,6 +387,17 @@ public abstract class EconomyObject {
      * @param default_
      * @return
      */
+    protected boolean getBoolean(@Nonnull FileKey key, boolean default_) {
+        return (boolean) this.get(key, default_);
+    }
+
+
+    /**
+     * Returns the requested key, if the key does not exist then it is overwritten with the given default_ value
+     * @param key
+     * @param default_
+     * @return
+     */
     @Nullable
     protected Object get(@Nonnull FileKey key, @Nullable Object default_) {
         // Get the value

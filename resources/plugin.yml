@@ -43,6 +43,13 @@ commands:
     permission-message: "You do not have the permission to use this command"
     usage: "/ping"
 
+  economyNotifications:
+    description: "Toggles economy notifications."
+    aliases: []
+    permission: de.misc.economynotifications
+    permission-message: "You do not have the permission to use this command"
+    usage: "/economynotifications | /economynotifications <true|false> | /economynotifications <player name> <true|false>"
+
   # Money commands
   balance:
     description: "Gets the balance of a player."
@@ -349,10 +356,15 @@ permissions:
     default: false
     children:
       de.misc.ping: true
+      de.misc.economynotifications: true
 
   de.misc.ping:
     description: Allows the user to use the ping command.
     default: true
+
+
+  de.misc.economynotifications:
+    description: Allows the user to toggle economy notifications.
 
   # Money branch of permissions
   de.money:

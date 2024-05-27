@@ -85,6 +85,11 @@ public enum LangEntry {
     PING_PingResponse(),
 
 
+    // MISC
+    MISC_EnableNotifications(),
+    MISC_EnableNotificationsFor(),
+
+
     // Balance
     BALANCE_Response(),
     BALANCE_ResponseOther(),

@@ -13,6 +13,8 @@ import me.edgrrrr.de.commands.mail.ClearMailTC;
 import me.edgrrrr.de.commands.mail.ReadMail;
 import me.edgrrrr.de.commands.mail.ReadMailTC;
 import me.edgrrrr.de.commands.market.*;
+import me.edgrrrr.de.commands.misc.EconomyNotifications;
+import me.edgrrrr.de.commands.misc.EconomyNotificationsTC;
 import me.edgrrrr.de.commands.misc.Ping;
 import me.edgrrrr.de.commands.money.*;
 import me.edgrrrr.de.config.ConfigManager;
@@ -224,6 +226,8 @@ public class DEPlugin extends JavaPlugin {
 
         // Misc
         new Ping(this);
+        new EconomyNotifications(this);
+        new EconomyNotificationsTC(this);
 
         // Money
         new Balance(this);
@@ -254,7 +258,7 @@ public class DEPlugin extends JavaPlugin {
 
         // Done :)
         this.describe();
-        this.console.info(LangEntry.GENERIC_PluginEnabled.get(this));
+        this.console.severe(LangEntry.GENERIC_PluginEnabled.get(this));
     }
 
     /**
@@ -263,7 +267,7 @@ public class DEPlugin extends JavaPlugin {
     @Override
     public void onDisable() {
         DivinityModule.runDeinit();
-        this.console.warn(LangEntry.GENERIC_PluginEnabled.get(this));
+        this.console.severe(LangEntry.GENERIC_PluginDisabled.get(this));
     }
 
     /**

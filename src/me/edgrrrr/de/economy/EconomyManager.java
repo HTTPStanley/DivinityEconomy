@@ -3,6 +3,7 @@ package me.edgrrrr.de.economy;
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.DivinityModule;
 import me.edgrrrr.de.config.Setting;
+import me.edgrrrr.de.economy.players.EconomyPlayer;
 import me.edgrrrr.de.response.EconomyTransferResponse;
 import me.edgrrrr.de.utils.Converter;
 import net.milkbowl.vault.economy.Economy;
@@ -44,6 +45,7 @@ public class EconomyManager extends DivinityModule {
     public double minBalance;
 
     // Stores the Vault economy api
+    private DivinityEconomy divinityEconomy;
     private Economy economy;
 
     public EconomyManager(DEPlugin main) {
@@ -58,12 +60,11 @@ public class EconomyManager extends DivinityModule {
         // settings
         this.minTransfer = this.getConfMan().getDouble(Setting.ECONOMY_MIN_SEND_AMOUNT_DOUBLE);
         this.minBalance = 0d;
-        this.economy = setupEconomy();
+        this.divinityEconomy = new DivinityEconomy(getMain());
+        this.economy = setupEconomy(divinityEconomy);
 
         // Register economy service
-        if (this.economy instanceof DivinityEconomy divinityEconomy) {
-            divinityEconomy.startTasks();
-        }
+        divinityEconomy.startTasks();
 
         // Setup baltop task scheduler
         int timer = Converter.getTicks(Converter.constrainInt(getMain().getConfMan().getInt(Setting.ECONOMY_BALTOP_REFRESH_INTEGER), 60, 3600));
@@ -79,9 +80,7 @@ public class EconomyManager extends DivinityModule {
         this.baltopTask.cancel();
 
         // Register economy service
-        if (this.economy instanceof DivinityEconomy divinityEconomy) {
-            divinityEconomy.stopTasks();
-        }
+        divinityEconomy.stopTasks();
     }
 
     /**
@@ -150,6 +149,16 @@ public class EconomyManager extends DivinityModule {
 
 
     /**
+     * Returns the economy player object
+     * @param player
+     * @return
+     */
+    public EconomyPlayer getPlayer(OfflinePlayer player) {
+        return this.divinityEconomy.get(player);
+    }
+
+
+    /**
      * Returns the baltop position cache
      * @return
      */
@@ -176,6 +185,7 @@ public class EconomyManager extends DivinityModule {
         return this.lastOrderTime;
     }
 
+
     /**
      * Returns the total sum of cash in the economy
      * @return
@@ -183,6 +193,7 @@ public class EconomyManager extends DivinityModule {
     public double getTotalEconomySize() {
         return this.totalEconomySize;
     }
+
 
     /**
      * Returns a map containing pages of 10 players.
@@ -197,10 +208,22 @@ public class EconomyManager extends DivinityModule {
         return this.orderedBalances;
     }
 
+
+    /**
+     * Registers the economy provider
+     *
+     * @param economy - The economy provider
+     */
     public void registerProvider(Economy economy) {
         getMain().getServer().getServicesManager().register(Economy.class, economy, getMain(), ServicePriority.Normal);
     }
 
+
+    /**
+     * Returns the economy provider
+     *
+     * @return Economy
+     */
     @Nullable
     public Economy getProvider() {
         return getMain().getServer().getServicesManager().getRegistration(Economy.class).getProvider();
@@ -212,7 +235,7 @@ public class EconomyManager extends DivinityModule {
      * Returns if it was successful or not.
      */
     @Nullable
-    public Economy setupEconomy() {
+    public Economy setupEconomy(DivinityEconomy divinityEconomy) {
         // Look for vault
         if (getMain().getServer().getPluginManager().getPlugin("Vault") == null) {
             this.getConsole().warn("No plugin 'Vault' detected, you must have Vault to use this plugin...");
@@ -221,7 +244,7 @@ public class EconomyManager extends DivinityModule {
         this.getConsole().info("Vault detected.");
 
         // Set up economy
-        this.registerProvider(new DivinityEconomy(getMain()));
+        this.registerProvider(divinityEconomy);
 
         // return if economy was gotten successfully.
         return this.getProvider();
@@ -236,6 +259,7 @@ public class EconomyManager extends DivinityModule {
         return this.economy;
     }
 
+
     /**
      * Gets the players balance
      *
@@ -245,6 +269,7 @@ public class EconomyManager extends DivinityModule {
     public double getBalance(OfflinePlayer player) {
         return this.economy.getBalance(player);
     }
+
 
     /**
      * Adds <amount> to <player>
@@ -259,6 +284,7 @@ public class EconomyManager extends DivinityModule {
         return response;
     }
 
+
     /**
      * Removes <amount> from <player>
      *
@@ -272,6 +298,7 @@ public class EconomyManager extends DivinityModule {
 
         return response;
     }
+
 
     /**
      * Sets the balance of a player to the amount provided
@@ -297,6 +324,7 @@ public class EconomyManager extends DivinityModule {
 
         return response;
     }
+
 
     /**
      * Removes amount <amount> from <from>
