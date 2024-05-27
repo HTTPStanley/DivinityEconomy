@@ -10,7 +10,7 @@ import java.io.File;
 import java.util.Set;
 
 public class EconomyPlayer extends EconomyObject {
-    private static final Set<FileKey> keys = Set.of(FileKey.NAME, FileKey.UUID, FileKey.BALANCE);
+    private static final Set<FileKey> keys = Set.of(FileKey.NAME, FileKey.UUID, FileKey.BALANCE, FileKey.ENABLE_NOTIFICATIONS);
     private final OfflinePlayer player;
 
     public EconomyPlayer(DEPlugin main, File file, OfflinePlayer player) {
@@ -57,7 +57,7 @@ public class EconomyPlayer extends EconomyObject {
      * @return
      */
     public void setNotification(boolean enable) {
-        this.set(FileKey.ENABLE_NOTIFICATIONS, enable);
+        this.setAndSave(FileKey.ENABLE_NOTIFICATIONS, enable);
     }
 
 

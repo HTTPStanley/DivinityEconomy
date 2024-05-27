@@ -6,6 +6,7 @@ import me.edgrrrr.de.config.Setting;
 import me.edgrrrr.de.world.events.WorldNotification;
 import org.bukkit.World;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -61,6 +62,52 @@ public class WorldManager extends DivinityModule {
 
 
     /**
+     * Get the enabled worlds for the market
+     * @return
+     */
+    public List<World> getMarketEnabledWorlds() {
+        List<World> worlds = new ArrayList<>();
+        for (World world : getMain().getServer().getWorlds()) {
+            if (this.isMarketEnabled(world)) {
+                worlds.add(world);
+            }
+        }
+        return worlds;
+    }
+
+
+    /**
+     * Get the enabled worlds for the economy
+     * @return
+     */
+    public List<World> getEconomyEnabledWorlds() {
+        List<World> worlds = new ArrayList<>();
+        for (World world : getMain().getServer().getWorlds()) {
+            if (this.isEconomyEnabled(world)) {
+                worlds.add(world);
+            }
+        }
+        return worlds;
+    }
+
+
+    /**
+     * Check if the economy is enabled in the given world
+     * @param worldName
+     * @return
+     */
+    public boolean isEconomyEnabled(String worldName) {
+        for (World world : getMain().getServer().getWorlds()) {
+            if (world.getName().equalsIgnoreCase(worldName)) {
+                return this.isEconomyEnabled(world);
+            }
+        }
+
+        return false;
+    }
+
+
+    /**
      * Check if the economy is enabled in the given world
      * @param world
      * @return
@@ -78,6 +125,22 @@ public class WorldManager extends DivinityModule {
 
         // Return the value
         return this.economyEnabledWorlds.get(world.getName());
+    }
+
+
+    /**
+     * Check if the market is enabled in the given world
+     * @param worldName
+     * @return
+     */
+    public boolean isMarketEnabled(String worldName) {
+        for (World world : getMain().getServer().getWorlds()) {
+            if (world.getName().equalsIgnoreCase(worldName)) {
+                return this.isMarketEnabled(world);
+            }
+        }
+
+        return false;
     }
 
 
