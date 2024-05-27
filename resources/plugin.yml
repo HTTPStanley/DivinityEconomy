@@ -353,7 +353,7 @@ permissions:
   # Misc
   de.misc:
     description: Allows the user to use miscellaneous commands.
-    default: false
+    default: true
     children:
       de.misc.ping: true
       de.misc.economynotifications: true
@@ -362,9 +362,9 @@ permissions:
     description: Allows the user to use the ping command.
     default: true
 
-
   de.misc.economynotifications:
     description: Allows the user to toggle economy notifications.
+    default: true
 
   # Money branch of permissions
   de.money:
