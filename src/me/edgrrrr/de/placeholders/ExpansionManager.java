@@ -37,10 +37,14 @@ public class ExpansionManager extends PlaceholderExpansion {
         this.expansions.add(new PAPIMaterialStack(this.main));
         this.expansions.add(new PAPIExpBValue(this.main));
         this.expansions.add(new PAPIExpSValue(this.main));
+        this.expansions.add(new PAPIEconomyEnabled(this.main));
         this.expansions.add(new PAPIEconomyEnabledWorld(this.main));
-        this.expansions.add(new PAPIEconomyEnabledWorlds(this.main));
+        this.expansions.add(new PAPIEconomyEnabledWorlds(this.main));;
+        this.expansions.add(new PAPIEconomyDisabledWorlds(this.main));
+        this.expansions.add(new PAPIMarketEnabled(this.main));
         this.expansions.add(new PAPIMarketEnabledWorld(this.main));
         this.expansions.add(new PAPIMarketEnabledWorlds(this.main));
+        this.expansions.add(new PAPIMarketDisabledWorlds(this.main));
     }
 
     /**

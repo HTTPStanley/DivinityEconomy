@@ -54,6 +54,14 @@
 # %de_material_stack_<materialName>%              | Returns the max stack size for the material given
 # %de_exp_SValue_<amount>%                        | Returns a DE formatted sell value of experience
 # %de_exp_BValue_<amount>%                        | Returns a DE formatted buy value of experience
+# %de_market_enabled_worlds%                      | Returns a list of enabled worlds for the market
+# %de_economy_enabled_worlds%                     | Returns a list of enabled worlds for the economy
+# %de_market_disabled_worlds%                     | Returns a list of disabled worlds for the market
+# %de_economy_disabled_worlds%                    | Returns a list of disabled worlds for the economy
+# %de_market_enabled_world_{worldName}            | Returns true if the market is enabled in the given world
+# %de_economy_enabled_world_{worldName}           | Returns true if the economy is enabled in the given world
+# %de_market_enabled%                             | Returns true if the market is enabled in the current world
+# %de_economy_enabled%                            | Returns true if the economy is enabled in the current world
 #
 #
 # Locale files can be found in the DivinityEconomy/locale. We provide the following:

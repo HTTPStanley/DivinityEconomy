@@ -77,6 +77,21 @@ public class WorldManager extends DivinityModule {
 
 
     /**
+     * Get the disabled worlds for the market
+     * @return
+     */
+    public List<World> getMarketDisabledWorlds() {
+        List<World> worlds = new ArrayList<>();
+        for (World world : getMain().getServer().getWorlds()) {
+            if (!this.isMarketEnabled(world)) {
+                worlds.add(world);
+            }
+        }
+        return worlds;
+    }
+
+
+    /**
      * Get the enabled worlds for the economy
      * @return
      */
@@ -84,6 +99,21 @@ public class WorldManager extends DivinityModule {
         List<World> worlds = new ArrayList<>();
         for (World world : getMain().getServer().getWorlds()) {
             if (this.isEconomyEnabled(world)) {
+                worlds.add(world);
+            }
+        }
+        return worlds;
+    }
+
+
+    /**
+     * Get the disabled worlds for the economy
+     * @return
+     */
+    public List<World> getEconomyDisabledWorlds() {
+        List<World> worlds = new ArrayList<>();
+        for (World world : getMain().getServer().getWorlds()) {
+            if (!this.isEconomyEnabled(world)) {
                 worlds.add(world);
             }
         }
