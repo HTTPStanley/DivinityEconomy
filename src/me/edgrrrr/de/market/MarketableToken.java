@@ -139,6 +139,19 @@ public abstract class MarketableToken extends DivinityModule {
         return this.itemConfig.getBoolean(MapKeys.ALLOWED.key);
     }
 
+
+    /**
+     * Sets the allowed state of the item
+     * True means the item is allowed
+     * False means the item is banned
+     *
+     * @param allowed - The new state of the item
+     */
+    public void setAllowed(boolean allowed) {
+        this.setData(MapKeys.ALLOWED.key, allowed);
+    }
+
+
     /**
      * Returns if the item has enough stock to remove amount
      *

@@ -70,6 +70,12 @@ public class HandBuy extends DivinityCommandMaterials {
         MarketableMaterial marketableMaterial = getMain().getMarkMan().getItem(heldItem);
         int availableSpace = marketableMaterial.getAvailableSpace(sender);
 
+        // Ensure the material is allowed to be bought
+        if (!marketableMaterial.getAllowed()) {
+            getMain().getConsole().send(sender, LangEntry.MARKET_ItemIsBanned.logLevel, LangEntry.MARKET_ItemIsBanned.get(getMain()), marketableMaterial.getName());
+            return true;
+        }
+
         // Ensure user has inventory space
         if (amountToBuy > availableSpace) {
             getMain().getConsole().logFailedPurchase(sender, amountToBuy, marketableMaterial.getName(), String.format(LangEntry.MARKET_InvalidInventorySpace.get(getMain()), availableSpace, amountToBuy));

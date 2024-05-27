@@ -80,30 +80,36 @@ public class Buy extends DivinityCommandMaterials {
         }
 
         // Ensure Material given exists.
-        MarketableMaterial materialData = getMain().getMarkMan().getItem(materialName);
-        if (materialData == null) {
+        MarketableMaterial marketableMaterial = getMain().getMarkMan().getItem(materialName);
+        if (marketableMaterial == null) {
             getMain().getConsole().send(sender, LangEntry.MARKET_InvalidItemName.logLevel, LangEntry.MARKET_InvalidItemName.get(getMain()), materialName);
             return true;
         }
-        MaterialManager manager = materialData.getManager();
+        MaterialManager manager = marketableMaterial.getManager();
+
+        // Ensure the material is allowed to be bought
+        if (!marketableMaterial.getAllowed()) {
+            getMain().getConsole().send(sender, LangEntry.MARKET_ItemIsBanned.logLevel, LangEntry.MARKET_ItemIsBanned.get(getMain()), marketableMaterial.getName());
+            return true;
+        }
 
         // Ensure player has the available inventory space
-        int availableSpace = materialData.getAvailableSpace(sender);
+        int availableSpace = marketableMaterial.getAvailableSpace(sender);
         if (amountToBuy > availableSpace) {
-            getMain().getConsole().logFailedPurchase(sender, amountToBuy, materialData.getName(), String.format(LangEntry.MARKET_InvalidInventorySpace.get(getMain()), availableSpace, amountToBuy));
+            getMain().getConsole().logFailedPurchase(sender, amountToBuy, marketableMaterial.getName(), String.format(LangEntry.MARKET_InvalidInventorySpace.get(getMain()), availableSpace, amountToBuy));
             return true;
         }
 
         // Ensure market has enough stock
-        if (!materialData.has(amountToBuy)) {
-            getMain().getConsole().logFailedPurchase(sender, amountToBuy, materialData.getName(), String.format(LangEntry.MARKET_InvalidStockAmount.get(getMain()), materialData.getQuantity(), amountToBuy));
+        if (!marketableMaterial.has(amountToBuy)) {
+            getMain().getConsole().logFailedPurchase(sender, amountToBuy, marketableMaterial.getName(), String.format(LangEntry.MARKET_InvalidStockAmount.get(getMain()), marketableMaterial.getQuantity(), amountToBuy));
             return true;
         }
 
         // Get item stacks to buy
         // Get the value of the item stacks
         // Remove the value of the items from the player
-        MaterialValueResponse priceResponse = manager.getBuyValue(materialData.getItemStacks(amountToBuy));
+        MaterialValueResponse priceResponse = manager.getBuyValue(marketableMaterial.getItemStacks(amountToBuy));
         EconomyResponse saleResponse = getMain().getEconMan().remCash(sender, priceResponse.getValue());
 
         // If the transaction or valuation failed then the user is returned an error.
@@ -113,16 +119,16 @@ public class Buy extends DivinityCommandMaterials {
             else if (priceResponse.isFailure()) errorMessage = priceResponse.getErrorMessage();
 
             // Handles console, message and mail
-            getMain().getConsole().logFailedPurchase(sender, priceResponse.getQuantity(), materialData.getName(), errorMessage);
+            getMain().getConsole().logFailedPurchase(sender, priceResponse.getQuantity(), marketableMaterial.getName(), errorMessage);
             return true;
         }
 
         // Handle adding items to player and removing quantity from market
         PlayerManager.addPlayerItems(sender, priceResponse.getItemStacksAsArray());
-        manager.editQuantity(materialData, -priceResponse.getQuantity());
+        manager.editQuantity(marketableMaterial, -priceResponse.getQuantity());
 
         // Handles console, message and mail
-        getMain().getConsole().logPurchase(sender, priceResponse.getQuantity(), saleResponse.amount, materialData.getName());
+        getMain().getConsole().logPurchase(sender, priceResponse.getQuantity(), saleResponse.amount, marketableMaterial.getName());
 
         return true;
     }

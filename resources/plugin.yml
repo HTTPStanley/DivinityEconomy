@@ -258,6 +258,20 @@ commands:
     permission-message: "You do not have permission to use this command"
     usage: "/esetstock <enchant name> <stock>"
 
+  banItem:
+    description: "Sets the ban status of a material."
+    aliases: [ ]
+    permission: de.admin.banItem
+    permission-message: "You do not have permission to use this command"
+    usage: "/banitem <material name> <true|false>"
+
+  banEnchant:
+    description: "Sets the ban status of an enchant."
+    aliases: [ ]
+    permission: de.admin.banEnchant
+    permission-message: "You do not have permission to use this command"
+    usage: "/banenchant <enchant name> <true|false>"
+
 
 
 permissions:
@@ -439,6 +453,16 @@ permissions:
       de.admin.saveEnchants: true
       de.admin.saveMaterials: true
       de.admin.reload: true
+      de.admin.banEnchant: true
+      de.admin.banItem: true
+
+  de.admin.banItem:
+    description: Allows the user to ban items
+    default: op
+
+  de.admin.banEnchant:
+    description: Allows the user to ban enchants
+    default: op
 
   de.admin.reload:
     description: Allows the user to reload the plugin

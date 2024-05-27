@@ -346,6 +346,27 @@ public abstract class TokenManager extends DivinityModule {
         this.editQuantity(itemData, quantity - itemData.getQuantity());
     }
 
+
+    /**
+     * Returns the allowed state of the item
+     * @param itemData
+     * @return
+     */
+    public boolean getAllowed(MarketableToken itemData) {
+        return itemData.getAllowed();
+    }
+
+
+    /**
+     * Sets the allowed state of the item
+     * @param allowed
+     * @return
+     */
+    public boolean setAllowed(MarketableToken itemData, boolean allowed) {
+        itemData.setAllowed(allowed);
+        return this.getAllowed(itemData);
+    }
+
     /**
      * Calculates the price of a item * amount
      * This is not the same as price * amount -- Factors in price change and inflation change during purchase

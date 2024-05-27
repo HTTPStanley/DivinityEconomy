@@ -166,6 +166,8 @@ public class DEPlugin extends JavaPlugin {
         new SetValue(this);
         new SetValueTC(this);
         new Reload(this);
+        new BanItem(this);
+        new BanItemTC(this);
 
         // Experience
         new ExperienceBuy(this);

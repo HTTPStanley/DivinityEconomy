@@ -187,6 +187,7 @@ public enum LangEntry {
     // Stock Changed
     STOCK_CountChanged(),
     STOCK_ValueChanged(),
+    STOCK_BannedStatusChanged(),
 
 
     // Worlds
