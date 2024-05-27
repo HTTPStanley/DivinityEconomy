@@ -72,7 +72,7 @@ public class HandBuy extends DivinityCommandMaterials {
 
         // Ensure the material is allowed to be bought and sold
         if (!marketableMaterial.getAllowed()) {
-            getMain().getConsole().logFailedPurchase(sender, amountToBuy, marketableMaterial.getName(), LangEntry.MARKET_ItemIsBanned.get(getMain()));
+            getMain().getConsole().logFailedPurchase(sender, amountToBuy, marketableMaterial.getName(), LangEntry.MARKET_ItemIsBanned.get(getMain(), marketableMaterial.getName()));
             return true;
         }
 
