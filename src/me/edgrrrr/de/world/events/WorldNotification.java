@@ -14,10 +14,12 @@ public class WorldNotification implements Listener {
     private final DEPlugin main;
     private final WorldManager worldManager;
 
+
     public WorldNotification(DEPlugin main, WorldManager worldManager) {
         this.main = main;
         this.worldManager = worldManager;
     }
+
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
@@ -45,6 +47,8 @@ public class WorldNotification implements Listener {
             this.main.getConsole().info(player, LangEntry.WORLDS_MarketEnabled.get(main));
         } else if (economyEnabled) {
             this.main.getConsole().info(player, LangEntry.WORLDS_EconomyEnabled.get(main));
+        } else {
+            this.main.getConsole().info(player, LangEntry.WORLDS_BothDisabled.get(main));
         }
     }
 }

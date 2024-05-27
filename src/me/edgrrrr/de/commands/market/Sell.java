@@ -84,7 +84,7 @@ public class Sell extends DivinityCommandMaterials {
 
         // Ensure the material is allowed to be bought and sold
         if (!marketableMaterial.getAllowed()) {
-            getMain().getConsole().logFailedPurchase(sender, amountToSell, marketableMaterial.getName(), LangEntry.MARKET_ItemIsBanned.get(getMain(), marketableMaterial.getName()));
+            getMain().getConsole().logFailedSale(sender, amountToSell, marketableMaterial.getName(), LangEntry.MARKET_ItemIsBanned.get(getMain(), marketableMaterial.getName()));
             return true;
         }
 
