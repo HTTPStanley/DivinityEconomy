@@ -79,6 +79,10 @@ SAVE_Entities: "Varlıklar kaydedildi."
 # Ping
 PING_PingResponse: "Pong!"
 
+# Misc
+MISC_EnableNotifications: "Bildirim durumunuz %s olarak değiştirildi" # %s = durum
+MISC_EnableNotificationsFor: "Bildirim durumu %s için %s olarak değiştirildi" # %s = ad, durum
+
 
 # Bakiye
 BALANCE_Response: "Bakiyeniz %s." # %s = bakiye

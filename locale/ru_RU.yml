@@ -74,6 +74,10 @@ SAVE_Entities: "Сущности сохранены."
 # Ping
 PING_PingResponse: "Понг!"
 
+# Misc
+MISC_EnableNotifications: "Ваш статус уведомлений изменен на %s" # %s = статус
+MISC_EnableNotificationsFor: "Вы изменили статус уведомлений для %s на %s" # %s = имя, статус
+
 # Balance
 BALANCE_Response: "Ваш баланс: %s."
 BALANCE_ResponseOther: "Баланс %s: %s."

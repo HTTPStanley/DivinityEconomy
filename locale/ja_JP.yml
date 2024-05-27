@@ -79,6 +79,11 @@ SAVE_Entities: "エンティティが保存されました。"
 # Ping
 PING_PingResponse: "ポン!"
 
+# Misc
+MISC_EnableNotifications: "通知ステータスが%sに変更されました" # %s = ステータス
+MISC_EnableNotificationsFor: "通知ステータスを%sから%sに切り替えました" # %s = 名前, ステータス
+
+
 
 # 残高
 BALANCE_Response: "あなたの残高は %s です。" # %s = 残高

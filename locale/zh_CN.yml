@@ -79,6 +79,10 @@ SAVE_Entities: "实体已保存。"
 # Ping
 PING_PingResponse: "Pong!"
 
+# Misc
+MISC_EnableNotifications: "您的通知状态已更改为 %s" # %s = 状态
+MISC_EnableNotificationsFor: "您已将 %s 的通知状态切换为 %s" # %s = 名称, 状态
+
 
 # 余额
 BALANCE_Response: "您的余额是 %s。" # %s = 余额

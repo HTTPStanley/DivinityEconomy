@@ -79,6 +79,10 @@ SAVE_Entities: "Entidades guardadas."
 # Ping
 PING_PingResponse: "Pong!"
 
+# Misc
+MISC_EnableNotifications: "O seu status de notificação foi alterado para %s" # %s = status
+MISC_EnableNotificationsFor: "Você alterou o status de notificação de %s para %s" # %s = nome, status
+
 
 # Balance
 BALANCE_Response: "O seu saldo é %s." # %s = saldo

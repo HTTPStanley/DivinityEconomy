@@ -75,6 +75,11 @@ SAVE_Entities: "Entitäten gespeichert."
 # Ping
 PING_PingResponse: "Pong!"
 
+# Misc
+MISC_EnableNotifications: "Ihr Benachrichtigungsstatus wurde in %s geändert" # %s = Status
+MISC_EnableNotificationsFor: "Sie haben den Benachrichtigungsstatus für %s auf %s umgeschaltet" # %s = Name, Status
+
+
 # Balance
 BALANCE_Response: "Ihr Kontostand beträgt %s." # %s = Kontostand
 BALANCE_ResponseOther: "Der Kontostand von %s beträgt %s." # %s = Spielername, %s = Kontostand

@@ -80,6 +80,11 @@ SAVE_Entities: "Entities saved."
 PING_PingResponse: "Pong!"
 
 
+# Misc
+MISC_EnableNotifications: "Your notification status has been changed to %s" # %s = status
+MISC_EnableNotificationsFor: "You have toggled the notifications status for %s to %s" # %s = player name, %s = status
+
+
 # Balance
 BALANCE_Response: "Your balance is %s." # %s = balance
 BALANCE_ResponseOther: "%s's balance is %s." # %s = player name, %s = balance

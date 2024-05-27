@@ -79,6 +79,11 @@ SAVE_Entities: "Byty zapisane."
 # Ping
 PING_PingResponse: "Pong!"
 
+# Misc
+MISC_EnableNotifications: "Twój status powiadomień został zmieniony na %s" # %s = status
+MISC_EnableNotificationsFor: "Przełączyłeś status powiadomień dla %s na %s" # %s = nazwa, status
+
+
 
 # Saldo
 BALANCE_Response: "Twoje saldo wynosi %s." # %s = saldo

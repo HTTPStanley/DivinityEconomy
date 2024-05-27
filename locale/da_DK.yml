@@ -79,6 +79,10 @@ SAVE_Entities: "Enheder gemt."
 # Ping
 PING_PingResponse: "Pong!"
 
+# Misc
+MISC_EnableNotifications: "Din notifikationsstatus er ændret til %s" # %s = status
+MISC_EnableNotificationsFor: "Du har ændret notifikationsstatus for %s til %s" # %s = navn, status
+
 
 # Saldo
 BALANCE_Response: "Din saldo er %s." # %s = saldo

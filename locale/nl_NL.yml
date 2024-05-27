@@ -79,6 +79,10 @@ SAVE_Entities: "Entiteiten opgeslagen."
 # Ping
 PING_PingResponse: "Pong!"
 
+# Misc
+MISC_EnableNotifications: "Uw meldingsstatus is gewijzigd naar %s" # %s = status
+MISC_EnableNotificationsFor: "U hebt de meldingsstatus voor %s gewijzigd in %s" # %s = naam, status
+
 
 # Saldo
 BALANCE_Response: "Uw saldo is %s." # %s = saldo
