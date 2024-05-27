@@ -141,12 +141,14 @@
     <li><code>%de_material_stack_&lt;materialName&gt;%</code> - Returns the maximum stack size for a specific material.</li>
     <li><code>%de_exp_BValue_&lt;amount&gt;%</code> - Returns the formatted buy value of the specified quantity of experience.</li>
     <li><code>%de_exp_SValue_&lt;amount&gt;%</code> - Returns the formatted sell value of the specified quantity of experience.</li>
-    <li><code>%de_market_enabled_worlds%</code> - Lists the worlds where the market is enabled.</li>
-    <li><code>%de_market_disabled_worlds%</code> - Lists the worlds where the market is disabled.</li>
-    <li><code>%de_market_disabled_{world}%</code> - Indicates if the market is disabled in the current world.</li>
-    <li><code>%de_economy_enabled_worlds%</code> - Lists the worlds where the economy is enabled.</li>
-    <li><code>%de_economy_disabled_worlds%</code> - Lists the worlds where the economy is disabled.</li>
-    <li><code>%de_economy_disabled_{world}%</code> - Indicates if the economy is disabled in the current world.</li>
+    <li><code>%de_market_enabled_worlds%</code> - Returns a list of enabled worlds for the market</li>
+    <li><code>%de_economy_enabled_worlds%</code> - Returns a list of enabled worlds for the economy</li>
+    <li><code>%de_market_disabled_worlds%</code> - Returns a list of disabled worlds for the market</li>
+    <li><code>%de_economy_disabled_worlds%</code> - Returns a list of disabled worlds for the economy</li>
+    <li><code>%de_market_enabled_world_{worldName}%</code> - Returns true if the market is enabled in the given world</li>
+    <li><code>%de_economy_enabled_world_{worldName}%</code> - Returns true if the economy is enabled in the given world</li>
+    <li><code>%de_market_enabled%</code> - Returns true if the market is enabled in the current world</li>
+    <li><code>%de_economy_enabled%</code> - Returns true if the economy is enabled in the current world</li>
 </ul>
 <p>Please ensure that your PlaceholderAPI plugin is up-to-date to guarantee compatibility with our plugin. If you encounter any issues or require additional placeholders, do not hesitate to open an issue on our <a href="https://github.com/HTTPStanley/DivinityEconomy" target="_blank" rel="noopener noreferrer">Github</a>.</p>
 
