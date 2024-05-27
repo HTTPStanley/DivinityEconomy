@@ -76,17 +76,19 @@ public class Sell extends DivinityCommandMaterials {
             return true;
         }
 
-        // Ensure the material is allowed to be bought
-        if (!marketableMaterial.getAllowed()) {
-            getMain().getConsole().send(sender, LangEntry.MARKET_ItemIsBanned.logLevel, LangEntry.MARKET_ItemIsBanned.get(getMain()), marketableMaterial.getName());
-            return true;
-        }
-
         // Ensure player has enough of the material to sell.
         int materialCount = marketableMaterial.getMaterialCount(sender);
         if (sellAll) {
             amountToSell = materialCount;
         }
+
+        // Ensure the material is allowed to be bought and sold
+        if (!marketableMaterial.getAllowed()) {
+            getMain().getConsole().logFailedPurchase(sender, amountToSell, marketableMaterial.getName(), LangEntry.MARKET_ItemIsBanned.get(getMain()));
+            return true;
+        }
+
+        // Ensure player inventory has enough
         if (materialCount < amountToSell) {
             getMain().getConsole().logFailedSale(sender, amountToSell, marketableMaterial.getName(), String.format(LangEntry.MARKET_InvalidInventoryStock.get(getMain()), materialCount, amountToSell));
             return true;

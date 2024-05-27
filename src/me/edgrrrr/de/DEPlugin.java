@@ -168,6 +168,8 @@ public class DEPlugin extends JavaPlugin {
         new Reload(this);
         new BanItem(this);
         new BanItemTC(this);
+        new BanEnchant(this);
+        new BanEnchantTC(this);
 
         // Experience
         new ExperienceBuy(this);

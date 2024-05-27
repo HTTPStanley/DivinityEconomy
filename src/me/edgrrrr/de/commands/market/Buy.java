@@ -87,9 +87,9 @@ public class Buy extends DivinityCommandMaterials {
         }
         MaterialManager manager = marketableMaterial.getManager();
 
-        // Ensure the material is allowed to be bought
+        // Ensure the material is allowed to be bought and sold
         if (!marketableMaterial.getAllowed()) {
-            getMain().getConsole().send(sender, LangEntry.MARKET_ItemIsBanned.logLevel, LangEntry.MARKET_ItemIsBanned.get(getMain()), marketableMaterial.getName());
+            getMain().getConsole().logFailedPurchase(sender, amountToBuy, marketableMaterial.getName(), LangEntry.MARKET_ItemIsBanned.get(getMain()));
             return true;
         }
 
