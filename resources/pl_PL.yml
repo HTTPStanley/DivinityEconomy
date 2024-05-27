@@ -182,6 +182,7 @@ MAIL_NoMailNotification: "Nie masz żadnych powiadomień ekonomicznych."
 # Stan
 STOCK_CountChanged: "Stan zapasów zmieniony z %s(%s) na %s(%s)." # %s = stary stan, %s = stara nazwa stanu, %s = nowy stan, %s = nowa nazwa stanu
 STOCK_ValueChanged: "Wartość zapasów zmieniona z %s(%s) na %s(%s)." # %s = stara wartość, %s = stara nazwa wartości, %s = nowa wartość, %s = nowa nazwa wartości
+STOCK_BannedStatusChanged: "Status zablokowania zmienił się z %s na %s." # %s = stary status, %s = nowy status
 
 
 # Worlds

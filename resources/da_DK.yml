@@ -182,6 +182,7 @@ MAIL_NoMailNotification: "Du har ingen økonomiske meddelelser."
 # Lager
 STOCK_CountChanged: "Lagerstatus ændret fra %s(%s) til %s(%s)." # %s = gammel lager, %s = gammel lager navn, %s = ny lager, %s = ny lager navn
 STOCK_ValueChanged: "Lager værdi ændret fra %s(%s) til %s(%s)." # %s = gammel værdi, %s = gammel værdi navn, %s = ny værdi, %s = ny værdi navn
+STOCK_BannedStatusChanged: "Bannestatus ændret fra %s til %s." # %s = gammel status, %s = ny status
 
 
 # Worlds

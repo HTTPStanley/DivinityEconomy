@@ -182,6 +182,7 @@ MAIL_NoMailNotification: "Não tem notificações de economia."
 # Stock
 STOCK_CountChanged: "Nível de stock mudou de %s(%s) para %s(%s)." # %s = stock antigo, %s = nome do stock antigo, %s = stock novo, %s = nome do stock novo
 STOCK_ValueChanged: "Valor do stock mudou de %s(%s) para %s(%s)." # %s = valor antigo, %s = nome do valor antigo, %s = valor novo, %s = nome do valor novo
+STOCK_BannedStatusChanged: "O status de banimento mudou de %s para %s." # %s = status antigo, %s = novo status
 
 
 # Worlds

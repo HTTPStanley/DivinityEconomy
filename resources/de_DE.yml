@@ -169,6 +169,8 @@ MAIL_NoMailNotification: "Sie haben keine Wirtschaftsmitteilungen."
 # Lager
 STOCK_CountChanged: "Lagerbestand geändert von %s(%s) zu %s(%s)." # %s = alter Lagerbestand, %s = alter Lagername, %s = neuer Lagerbestand, %s = neuer Lagername
 STOCK_ValueChanged: "Lagerwert geändert von %s(%s) zu %s(%s)." # %s = alter Lagerwert, %s = alter Lagername, %s = neuer Lagerwert, %s = neuer Lagername
+STOCK_BannedStatusChanged: "Der Bannstatus hat sich von %s zu %s geändert." # %s = alter Status, %s = neuer Status
+
 
 
 # Worlds

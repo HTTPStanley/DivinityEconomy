@@ -182,6 +182,7 @@ MAIL_NoMailNotification: "U heeft geen economie meldingen."
 # Voorraad
 STOCK_CountChanged: "Voorraadniveau gewijzigd van %s(%s) naar %s(%s)." # %s = oude voorraad, %s = oude voorraad naam, %s = nieuwe voorraad, %s = nieuwe voorraad naam
 STOCK_ValueChanged: "Voorraadwaarde gewijzigd van %s(%s) naar %s(%s)." # %s = oude waarde, %s = oude waarde naam, %s = nieuwe waarde, %s = nieuwe waarde naam
+STOCK_BannedStatusChanged: "De banstatus is gewijzigd van %s naar %s." # %s = oude status, %s = nieuwe status
 
 
 # Worlds
