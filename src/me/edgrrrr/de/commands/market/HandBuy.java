@@ -68,6 +68,13 @@ public class HandBuy extends DivinityCommandMaterials {
         }
 
         MarketableMaterial marketableMaterial = getMain().getMarkMan().getItem(heldItem);
+
+        // Ensure marketable material is not null
+        if (marketableMaterial == null) {
+            getMain().getConsole().send(sender, LangEntry.MARKET_InvalidItemHeld.logLevel, LangEntry.MARKET_InvalidItemHeld.get(getMain()));
+            return true;
+        }
+        
         int availableSpace = marketableMaterial.getAvailableSpace(sender);
 
         // Ensure the material is allowed to be bought and sold

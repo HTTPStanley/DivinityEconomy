@@ -74,6 +74,13 @@ public class HandSell extends DivinityCommandMaterials {
         }
 
         MarketableMaterial marketableMaterial = getMain().getMarkMan().getItem(heldItem);
+
+        // Ensure marketable material is not null
+        if (marketableMaterial == null) {
+            getMain().getConsole().send(sender, LangEntry.MARKET_InvalidItemHeld.logLevel, LangEntry.MARKET_InvalidItemHeld.get(getMain()));
+            return true;
+        }
+
         int materialCount = marketableMaterial.getMaterialCount(sender);
 
         if (sellAll) {
