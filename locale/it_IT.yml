@@ -267,6 +267,7 @@ W_config: "configurazione"
 W_materials: "materiali"
 W_potions: "pozioni"
 W_entities: "entità"
+W_empty: "vuoto"
 
 
 # Items

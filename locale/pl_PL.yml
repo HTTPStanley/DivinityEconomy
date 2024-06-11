@@ -286,6 +286,7 @@ W_config: "konfiguracja"
 W_materials: "materiały"
 W_potions: "mikstury"
 W_entities: "byty"
+W_empty: "pusty"
 
 
 

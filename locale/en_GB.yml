@@ -286,6 +286,7 @@ W_config: "config"
 W_materials: "materials"
 W_potions: "potions"
 W_entities: "entities"
+W_empty: "empty"
 
 # Items
 ACACIA_BOAT: "Acacia Boat"

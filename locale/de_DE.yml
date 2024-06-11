@@ -268,6 +268,7 @@ W_config: "Konfiguration"
 W_materials: "Materialien"
 W_potions: "Tränke"
 W_entities: "Entitäten"
+W_empty: "leer"
 
 # Items
 ACACIA_BOAT: "Netheritbarren"

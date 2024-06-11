@@ -285,6 +285,7 @@ W_config: "配置"
 W_materials: "材料"
 W_potions: "药水"
 W_entities: "实体"
+W_empty: "空的"
 
 
 # Items

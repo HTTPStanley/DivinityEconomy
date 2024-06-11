@@ -286,6 +286,7 @@ W_config: "設定"
 W_materials: "材料"
 W_potions: "ポーション"
 W_entities: "エンティティ"
+W_empty: "空の"
 
 
 # Items

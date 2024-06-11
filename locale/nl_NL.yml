@@ -285,6 +285,7 @@ W_config: "configuratie"
 W_materials: "materialen"
 W_potions: "drankjes"
 W_entities: "entiteiten"
+W_empty: "leeg"
 
 
 # Items

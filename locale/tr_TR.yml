@@ -286,6 +286,7 @@ W_config: "yapılandırma"
 W_materials: "malzemeler"
 W_potions: "iksirler"
 W_entities: "varlıklar"
+W_empty: "boş"
 
 
 # Items
