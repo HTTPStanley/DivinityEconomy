@@ -293,6 +293,7 @@ public enum LangEntry {
     W_materials(),
     W_potions(),
     W_entities(),
+    W_empty(),
 
 
     ;
