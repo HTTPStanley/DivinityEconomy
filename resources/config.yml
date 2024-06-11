@@ -53,7 +53,10 @@
 # %de_enchant_stock_<enchantName>%                | Returns the amount of the enchant in stock
 # %de_material_stack_<materialName>%              | Returns the max stack size for the material given
 # %de_exp_SValue_<amount>%                        | Returns a DE formatted sell value of experience
-# %de_exp_BValue_<amount>%                        | Returns a DE formatted buy value of experience
+# %de_exp_BValue_<amount>%                        | Returns a DE formatted buy value of experience#
+# %de_hand_value_total%                           | Returns the total value of the item in the player's hand
+# %de_hand_value_material%                        | Returns the material value of the item in the player's hand
+# %de_hand_value_enchant%                         | Returns the enchant value of the item in the player's hand
 # %de_market_enabled_worlds%                      | Returns a list of enabled worlds for the market
 # %de_economy_enabled_worlds%                     | Returns a list of enabled worlds for the economy
 # %de_market_disabled_worlds%                     | Returns a list of disabled worlds for the market
@@ -95,7 +98,7 @@
 # Main Settings
 Main:
   # This is the plugin config version
-  Version: 3.4.3
+  Version: 3.4.4
   # Should placeholder api support be enabled? ( use "true" / "false" )
   Enable PAPI: true
   # What language file should be used? ( use any string ) | default = en_GB.yml
