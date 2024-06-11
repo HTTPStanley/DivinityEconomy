@@ -79,9 +79,21 @@ public class EnchantManager extends ItemManager {
         this.saveItems();
     }
 
+    /**
+     * Returns the enchantment from the alias
+     */
     public MarketableEnchant getEnchant(String alias) {
         return (MarketableEnchant) this.getItem(alias);
     }
+
+
+    /**
+     * Returns the enchantment from the enchantment
+     */
+    public MarketableEnchant getEnchant(Enchantment enchantment) {
+        return (MarketableEnchant) this.getItem(enchantment.getKey().getKey());
+    }
+
 
     /**
      * Returns if the enchantment given is supported by the itemstack given.
