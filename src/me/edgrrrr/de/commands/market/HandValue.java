@@ -4,7 +4,10 @@ import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.commands.DivinityCommandMaterials;
 import me.edgrrrr.de.config.Setting;
 import me.edgrrrr.de.lang.LangEntry;
+import me.edgrrrr.de.market.MarketableToken;
 import me.edgrrrr.de.market.items.ItemManager;
+import me.edgrrrr.de.market.items.enchants.EnchantValueResponse;
+import me.edgrrrr.de.market.items.enchants.MarketableEnchant;
 import me.edgrrrr.de.market.items.materials.MarketableMaterial;
 import me.edgrrrr.de.player.PlayerManager;
 import me.edgrrrr.de.response.ValueResponse;
@@ -96,12 +99,30 @@ public class HandValue extends DivinityCommandMaterials {
         if (buyResponse.isSuccess()) {
             getMain().getConsole().info(sender, LangEntry.VALUE_BuyResponse.get(getMain()), amount, marketableMaterial.getName(), getMain().getConsole().formatMoney(buyResponse.getValue()));
 
+            EnchantValueResponse evr = getMain().getEnchMan().getBuyValue(heldItem, 0);
+            if (evr.isSuccess()) {
+                getMain().getConsole().info(sender, LangEntry.PURCHASE_ValueEnchantSummary.get(getMain()), evr.getQuantity(), getMain().getConsole().formatMoney(evr.getValue()));
+                for (MarketableToken token1 : evr.getTokens()) {
+                    MarketableEnchant enchant1 = (MarketableEnchant) token1;
+                    getMain().getConsole().info(sender, LangEntry.PURCHASE_ValueEnchant.get(getMain()), evr.getQuantity(enchant1), enchant1.getName(), getMain().getConsole().formatMoney(evr.getValue(enchant1)));
+                }
+            }
+
         } else {
             getMain().getConsole().info(sender, LangEntry.VALUE_BuyFailedResponse.get(getMain()), amount, marketableMaterial.getName(), buyResponse.getErrorMessage());
         }
 
         if (sellResponse.isSuccess()) {
             getMain().getConsole().info(sender, LangEntry.VALUE_SellResponse.get(getMain()), amount, marketableMaterial.getName(), getMain().getConsole().formatMoney(sellResponse.getValue()));
+
+            EnchantValueResponse evr = getMain().getEnchMan().getSellValue(heldItem, 0);
+            if (evr.isSuccess()) {
+                getMain().getConsole().info(sender, LangEntry.SALE_ValueEnchantSummary.get(getMain()), evr.getQuantity(), getMain().getConsole().formatMoney(evr.getValue()));
+                for (MarketableToken token2 : evr.getTokens()) {
+                    MarketableEnchant enchant2 = (MarketableEnchant) token2;
+                    getMain().getConsole().info(sender, LangEntry.SALE_ValueEnchant.get(getMain()), evr.getQuantity(enchant2), enchant2.getName(), getMain().getConsole().formatMoney(evr.getValue(enchant2)));
+                }
+            }
 
         } else {
             getMain().getConsole().info(sender, LangEntry.VALUE_SellFailedResponse.get(getMain()), amount, marketableMaterial.getName(), sellResponse.getErrorMessage());
