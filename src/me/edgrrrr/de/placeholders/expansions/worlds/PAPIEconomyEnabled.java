@@ -1,13 +1,13 @@
-package me.edgrrrr.de.placeholders.expansions;
+package me.edgrrrr.de.placeholders.expansions.worlds;
 
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.placeholders.DivinityExpansion;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
-public class PAPIMarketEnabled extends DivinityExpansion {
-    public PAPIMarketEnabled(DEPlugin main) {
-        super(main, "^market_enabled$");
+public class PAPIEconomyEnabled extends DivinityExpansion {
+    public PAPIEconomyEnabled(DEPlugin main) {
+        super(main, "^economy_enabled$");
     }
 
     @Override
@@ -16,6 +16,6 @@ public class PAPIMarketEnabled extends DivinityExpansion {
         if (onlinePlayer == null) {
             return "uknown";
         }
-        return getMain().getWorldMan().isMarketEnabled(onlinePlayer.getWorld()) ? "Enabled" : "Disabled";
+        return getMain().getWorldMan().isEconomyEnabled(onlinePlayer.getWorld()) ? "Enabled" : "Disabled";
     }
 }

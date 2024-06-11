@@ -1,4 +1,4 @@
-package me.edgrrrr.de.placeholders.expansions;
+package me.edgrrrr.de.placeholders.expansions.worlds;
 
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.placeholders.DivinityExpansion;

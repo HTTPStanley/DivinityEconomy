@@ -1,6 +1,7 @@
-package me.edgrrrr.de.placeholders.expansions;
+package me.edgrrrr.de.placeholders.expansions.market;
 
 import me.edgrrrr.de.DEPlugin;
+import me.edgrrrr.de.lang.LangEntry;
 import me.edgrrrr.de.market.items.enchants.MarketableEnchant;
 import me.edgrrrr.de.placeholders.DivinityExpansion;
 import org.bukkit.OfflinePlayer;
@@ -15,6 +16,6 @@ public class PAPIEnchantStock extends DivinityExpansion {
         String enchant = value.replaceFirst(this.value, "$1");
         MarketableEnchant enchantData = getMain().getEnchMan().getEnchant(enchant);
         if (enchantData != null) return String.format("%d", enchantData.getQuantity());
-        else return String.format("Unknown enchant '%s'", enchant);
+        else return LangEntry.W_empty.get(getMain());
     }
 }
