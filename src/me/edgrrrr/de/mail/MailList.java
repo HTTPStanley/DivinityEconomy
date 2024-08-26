@@ -30,6 +30,9 @@ public class MailList {
 
         for (String mailID : this.configurationSection.getKeys(false)) {
             ConfigurationSection mailSection = this.configurationSection.getConfigurationSection(mailID);
+            if (mailSection == null) {
+                continue;
+            }
             Mail mail = new Mail(this, mailSection);
             this.addMail(mail);
         }
