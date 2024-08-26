@@ -22,9 +22,6 @@ public class MigrationManager extends DivinityModule  {
         boolean migrationStarted = false;
 
         for (Migration migration : this.migrations) {
-            // Log the migration check
-            this.getConsole().migrate("Checking migration for version: %s (current version: %s)", migration.getVersion(), currentVersion);
-
             // Start migration if we reach the current version
             if (!migrationStarted && VersionComparator.isVersionLowerOrEqual(currentVersion, migration.getVersion())) {
                 migrationStarted = true;
@@ -37,13 +34,6 @@ public class MigrationManager extends DivinityModule  {
                 currentVersion = migration.getNextVersion();
                 this.getConsole().migrate("Migration for version %s complete", migration.getVersion());
             }
-        }
-
-        // Final log for when all migrations are done
-        if (!migrationStarted) {
-            this.getConsole().migrate("No migration needed. Current version is up to date: %s", currentVersion);
-        } else {
-            this.getConsole().migrate("All necessary migrations have been completed.");
         }
     }
 
