@@ -21,8 +21,8 @@ import java.util.stream.Collectors;
 
 public class BlockManager extends MaterialManager {
     // Stores the default items.json file location
-    private static final String materialsFile = "materials.yml";
-    private static final String aliasesFile = "materialAliases.yml";
+    public static final String materialsFile = "materials.yml";
+    public static final String aliasesFile = "materialAliases.yml";
 
     // Other settings
     private boolean itemDmgScaling = false;
