@@ -7,8 +7,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 
 public class MarketablePotion extends MarketableMaterial {
@@ -48,53 +46,24 @@ public class MarketablePotion extends MarketableMaterial {
     }
 
 
-    /**
-     * Returns the potion effect type
-     *
-     * @return
-     */
-    public PotionEffectType getEffectType() {
-        return this.potionType.getEffectType();
-    }
-
-    /**
-     * Returns the extended status of the potion
-     *
-     * @return
-     */
-    public boolean getExtended() {
-        return this.itemConfig.getBoolean(MapKeys.EXTENDED.key);
-    }
-
-    /**
-     * Returns the upgraded status of the potion
-     *
-     * @return
-     */
-    public boolean getUpgraded() {
-        return this.itemConfig.getBoolean(MapKeys.UPGRADED.key);
-    }
-
-
-    /**
-     * Returns the potion effect
-     *
-     * @return
-     */
-    public org.bukkit.potion.PotionEffect createPotionEffect() {
-        return new PotionEffect(this.getEffectType(), 1, 1, this.getExtended(), this.getUpgraded());
-    }
-
-
     @Override
     public ItemStack getItemStack(int amount) {
+        // Create the ItemStack with the given material and amount
         ItemStack itemStack = new ItemStack(this.material, amount);
+
+        // Get potion meta
         PotionMeta potionMeta = (PotionMeta) itemStack.getItemMeta();
+
+        // Add potion data
         potionMeta.setBasePotionType(this.potionType);
-        potionMeta.addCustomEffect(this.createPotionEffect(), true);
+
+        // Add data to item stack
         itemStack.setItemMeta(potionMeta);
+
+        // Return the item stack
         return itemStack;
     }
+
 
     /**
      * Returns if the given material is equal to this
@@ -104,34 +73,49 @@ public class MarketablePotion extends MarketableMaterial {
      */
     @Override
     public boolean equals(MarketableMaterial material) {
-        if (material instanceof MarketablePotion) {
-            MarketablePotion potion = (MarketablePotion) material;
-            return ((potion.getExtended() == this.getExtended()) &&
-                    (potion.getUpgraded() == this.getUpgraded()) &&
-                    (potion.getType().equals(this.getType())) &&
-                    (potion.getMaterial().equals(this.getMaterial())));
-        } else {
+        // Check if the object is the same reference
+        if (this == material) {
+            return true;
+        }
+
+        // Ensure the object is of type MarketablePotion
+        if (!(material instanceof MarketablePotion)) {
             return false;
         }
+
+        // Cast the object to MarketablePotion
+        MarketablePotion potion = (MarketablePotion) material;
+
+        // Check for nulls and compare all properties
+        return this.material.equals(potion.material) &&
+                this.potionType.equals(potion.potionType);
     }
+
 
     /**
      * Returns if the given material is equal to this
-     *
      * @param itemStack
      * @return
      */
     @Override
     public boolean equals(ItemStack itemStack) {
-        ItemMeta itemMeta = itemStack.getItemMeta();
-        if (itemMeta instanceof PotionMeta) {
-            PotionMeta potionMeta = (PotionMeta) itemMeta;
-            return (
-                    (potionMeta.getBasePotionType() == this.potionType) &&
-                    (potionMeta.hasCustomEffect(this.createPotionEffect().getType())) &&
-                    (itemStack.getType().equals(this.getMaterial())));
-        } else {
+        // Null check for itemStack
+        if (itemStack == null || itemStack.getItemMeta() == null) {
             return false;
         }
+
+        // Get item meta
+        ItemMeta itemMeta = itemStack.getItemMeta();
+
+        // If not a PotionMeta, return false
+        if (!(itemMeta instanceof PotionMeta)) {
+            return false;
+        }
+
+        // Cast to PotionMeta
+        PotionMeta potionMeta = (PotionMeta) itemMeta;
+
+        // Check if the potion type is the same
+        return itemStack.getType().equals(this.material) && potionMeta.getBasePotionType().equals(((PotionMeta) this.getItemStack(1).getItemMeta()).getBasePotionType());
     }
 }
