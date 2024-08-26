@@ -19,7 +19,7 @@ import me.edgrrrr.de.commands.misc.Ping;
 import me.edgrrrr.de.commands.money.*;
 import me.edgrrrr.de.config.ConfigManager;
 import me.edgrrrr.de.config.Setting;
-import me.edgrrrr.de.console.EconConsole;
+import me.edgrrrr.de.console.Console;
 import me.edgrrrr.de.console.LogLevel;
 import me.edgrrrr.de.economy.EconomyManager;
 import me.edgrrrr.de.help.HelpManager;
@@ -32,6 +32,7 @@ import me.edgrrrr.de.market.items.materials.MarketManager;
 import me.edgrrrr.de.market.items.materials.block.BlockManager;
 import me.edgrrrr.de.market.items.materials.entity.EntityManager;
 import me.edgrrrr.de.market.items.materials.potion.PotionManager;
+import me.edgrrrr.de.migrators.MigrationManager;
 import me.edgrrrr.de.placeholders.ExpansionManager;
 import me.edgrrrr.de.player.PlayerManager;
 import me.edgrrrr.de.world.WorldManager;
@@ -53,7 +54,7 @@ public class DEPlugin extends JavaPlugin {
     // The config
     private ConfigManager config;
     // The console
-    private EconConsole console;
+    private Console console;
     // The language manager
     private LangManager lang;
     // The world manager
@@ -80,6 +81,8 @@ public class DEPlugin extends JavaPlugin {
     private ExpManager expManager;
     // The placeholder api expansion manager
     private ExpansionManager expansionManager;
+    // The migration manager
+    private MigrationManager migrationManager;
 
 
     /**
@@ -93,8 +96,9 @@ public class DEPlugin extends JavaPlugin {
         // Instantiates all modules
         LogLevel.loadValuesFromConfig((YamlConfiguration) this.getConfig());
         this.config = new ConfigManager(this);
-        this.console = new EconConsole(this);
+        this.console = new Console(this);
         this.lang = new LangManager(this);
+        this.migrationManager = new MigrationManager(this);
         this.worldManager = new WorldManager(this);
         this.playerManager = new PlayerManager(this);
         this.economyManager = new EconomyManager(this);
@@ -123,6 +127,10 @@ public class DEPlugin extends JavaPlugin {
         // Initialise language
         this.lang.init();
         DivinityModule.addModule(this.lang, true);
+
+        // Run migrations
+        this.migrationManager.init();
+        DivinityModule.addModule(this.migrationManager, true);
 
         // Initialise world manager
         this.worldManager.init();
@@ -283,6 +291,8 @@ public class DEPlugin extends JavaPlugin {
      */
     public void describe() {
         this.console.debug(LangEntry.DESCRIBE_Header.get(this));
+        this.console.debug(LangEntry.ECONOMY_Prefix.get(this), this.console.getCurrencyPrefix());
+        this.console.debug(LangEntry.ECONOMY_Suffix.get(this), this.console.getCurrencySuffix());
         this.console.debug(LangEntry.DESCRIBE_Settings.get(this));
         for (Setting setting : Setting.values()) {
             Object value = this.getConfMan().get(setting);
@@ -318,7 +328,7 @@ public class DEPlugin extends JavaPlugin {
     /**
      * Returns the console
      */
-    public EconConsole getConsole() {
+    public Console getConsole() {
         return this.console;
     }
 
