@@ -9,11 +9,11 @@ import org.bukkit.potion.PotionType;
 import java.io.File;
 
 /**
- * This class is a migration for version 3.4.3 to 3.4.4
+ * This class is a migration for version 3.4.3 to 3.5.0
  */
 public class Migrate343 extends Migration {
     public Migrate343(DEPlugin main) {
-        super(main, "3.4.3", "3.4.4");
+        super(main, "3.4.3", "3.5.0");
     }
 
     @Override
@@ -60,23 +60,6 @@ public class Migrate343 extends Migration {
                 this.getMain().getConsole().migrate("Removed potion %s due to invalid potion type", key);
             }
         }
-
-//        // Check all potions exist in the file
-//        for (PotionType potionType : PotionType.values()) {
-//            for (String materialID: new String[]{
-//                    "POTION", "SPLASH_POTION", "LINGERING_POTION", "TIPPED_ARROW"
-//            }) {
-//                String key = potionType.name() + "_" + materialID;
-//                if (potionConfig.getKeys(false).stream().noneMatch(k -> k.equals(key))) {
-//                    this.getMain().getConsole().migrate("Adding potion %s to the potion file", potionType.name());
-//
-//                    potionConfig.set(key + ".ALLOWED", false);
-//                    potionConfig.set(key + ".MATERIAL_ID", materialID);
-//                    potionConfig.set(key + ".POTION_TYPE", potionType.name());
-//                    potionConfig.set(key + ".QUANTITY", 0);
-//                }
-//            }
-//        }
 
         // Save
         this.getMain().getConfMan().saveFile(potionConfig, PotionManager.PotionFile);
