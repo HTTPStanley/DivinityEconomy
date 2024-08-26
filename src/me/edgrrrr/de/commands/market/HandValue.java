@@ -9,8 +9,8 @@ import me.edgrrrr.de.market.items.ItemManager;
 import me.edgrrrr.de.market.items.enchants.EnchantValueResponse;
 import me.edgrrrr.de.market.items.enchants.MarketableEnchant;
 import me.edgrrrr.de.market.items.materials.MarketableMaterial;
+import me.edgrrrr.de.market.items.materials.MaterialValueResponse;
 import me.edgrrrr.de.player.PlayerManager;
-import me.edgrrrr.de.response.ValueResponse;
 import me.edgrrrr.de.utils.Converter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -100,17 +100,20 @@ public class HandValue extends DivinityCommandMaterials {
             buyStacks = sellStacks;
         }
 
-        ValueResponse buyResponse = marketableMaterial.getManager().getBuyValue(buyStacks);
-        ValueResponse sellResponse = marketableMaterial.getManager().getSellValue(sellStacks);
+        MaterialValueResponse buyResponse = marketableMaterial.getManager().getBuyValue(buyStacks);
+        MaterialValueResponse sellResponse = marketableMaterial.getManager().getSellValue(sellStacks);
+        buyResponse.cleanup();
+        sellResponse.cleanup();
 
         if (buyResponse.isSuccess()) {
             getMain().getConsole().info(sender, LangEntry.VALUE_BuyResponse.get(getMain()), amount, marketableMaterial.getName(), getMain().getConsole().formatMoney(buyResponse.getValue()));
 
             EnchantValueResponse evr = getMain().getEnchMan().getBuyValue(heldItem, 0);
-            if (evr.isSuccess()) {
+            if (evr.isSuccess() && evr.getQuantity() > 0) {
                 getMain().getConsole().info(sender, LangEntry.PURCHASE_ValueEnchantSummary.get(getMain()), evr.getQuantity(), getMain().getConsole().formatMoney(evr.getValue()));
                 for (MarketableToken token1 : evr.getTokens()) {
                     MarketableEnchant enchant1 = (MarketableEnchant) token1;
+                    if (enchant1.getQuantity() == 0) continue;
                     getMain().getConsole().info(sender, LangEntry.PURCHASE_ValueEnchant.get(getMain()), evr.getQuantity(enchant1), enchant1.getName(), getMain().getConsole().formatMoney(evr.getValue(enchant1)));
                 }
             }
@@ -123,10 +126,11 @@ public class HandValue extends DivinityCommandMaterials {
             getMain().getConsole().info(sender, LangEntry.VALUE_SellResponse.get(getMain()), amount, marketableMaterial.getName(), getMain().getConsole().formatMoney(sellResponse.getValue()));
 
             EnchantValueResponse evr = getMain().getEnchMan().getSellValue(heldItem, 0);
-            if (evr.isSuccess()) {
+            if (evr.isSuccess() && evr.getQuantity() > 0) {
                 getMain().getConsole().info(sender, LangEntry.SALE_ValueEnchantSummary.get(getMain()), evr.getQuantity(), getMain().getConsole().formatMoney(evr.getValue()));
                 for (MarketableToken token2 : evr.getTokens()) {
                     MarketableEnchant enchant2 = (MarketableEnchant) token2;
+                    if (enchant2.getQuantity() == 0) continue;
                     getMain().getConsole().info(sender, LangEntry.SALE_ValueEnchant.get(getMain()), evr.getQuantity(enchant2), enchant2.getName(), getMain().getConsole().formatMoney(evr.getValue(enchant2)));
                 }
             }
