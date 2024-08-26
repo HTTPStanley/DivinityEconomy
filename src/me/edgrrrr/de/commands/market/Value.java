@@ -5,7 +5,7 @@ import me.edgrrrr.de.commands.DivinityCommandMaterials;
 import me.edgrrrr.de.config.Setting;
 import me.edgrrrr.de.lang.LangEntry;
 import me.edgrrrr.de.market.items.materials.MarketableMaterial;
-import me.edgrrrr.de.response.ValueResponse;
+import me.edgrrrr.de.market.items.materials.MaterialValueResponse;
 import me.edgrrrr.de.utils.Converter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -60,8 +60,10 @@ public class Value extends DivinityCommandMaterials {
         // Create items
         // Get buy & sell value
         ItemStack[] itemStacks = marketableMaterial.getItemStacks(amount);
-        ValueResponse buyResponse = marketableMaterial.getManager().getBuyValue(itemStacks);
-        ValueResponse sellResponse = marketableMaterial.getManager().getSellValue(itemStacks);
+        MaterialValueResponse buyResponse = marketableMaterial.getManager().getBuyValue(itemStacks);
+        MaterialValueResponse sellResponse = marketableMaterial.getManager().getSellValue(itemStacks);
+        buyResponse.cleanup();
+        sellResponse.cleanup();
 
         if (buyResponse.isSuccess()) {
             getMain().getConsole().info(sender, LangEntry.VALUE_BuyResponse.get(getMain()), amount, marketableMaterial.getName(), getMain().getConsole().formatMoney(buyResponse.getValue()));
