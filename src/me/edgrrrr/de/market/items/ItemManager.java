@@ -6,13 +6,10 @@ import me.edgrrrr.de.market.TokenValueResponse;
 import me.edgrrrr.de.market.items.enchants.EnchantManager;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.BlockStateMeta;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
-import org.bukkit.potion.PotionEffect;
 
 import javax.annotation.Nonnull;
 import java.util.*;
@@ -104,59 +101,11 @@ public abstract class ItemManager extends TokenManager {
         // Create a new item stack
         ItemStack newItemStack = new ItemStack(itemStack.getType(), itemStack.getAmount());
 
-        // Get item meta
-        ItemMeta itemMeta = itemStack.getItemMeta();
+        // Set item meta
+        newItemStack.setItemMeta(itemStack.getItemMeta());
 
-        // If item meta is enchantment storage meta
-        if (itemMeta instanceof EnchantmentStorageMeta enchantmentStorageMeta) {
-            // Create a new enchantment storage meta
-            EnchantmentStorageMeta newEnchantmentStorageMeta = (EnchantmentStorageMeta) newItemStack.getItemMeta();
-
-            // Add all enchantments
-            for (Map.Entry<org.bukkit.enchantments.Enchantment, Integer> entry : enchantmentStorageMeta.getStoredEnchants().entrySet()) {
-                newEnchantmentStorageMeta.addStoredEnchant(entry.getKey(), entry.getValue(), true);
-            }
-
-            // Set item meta
-            newItemStack.setItemMeta(newEnchantmentStorageMeta);
-        }
-
-        // If item meta is potion meta
-        else if (itemMeta instanceof PotionMeta potionMeta) {
-            // Create a new potion meta
-            PotionMeta newPotionMeta = (PotionMeta) newItemStack.getItemMeta();
-
-            // Add all custom effects
-            for (PotionEffect effect : potionMeta.getCustomEffects()) {
-                newPotionMeta.addCustomEffect(effect, true);
-            }
-
-            // Set item meta
-            newItemStack.setItemMeta(newPotionMeta);
-        }
-
-
-        // If item meta is entity meta
-        else if (itemMeta instanceof BlockStateMeta) {
-            // Create a new block state meta
-            BlockStateMeta newBlockStateMeta = (BlockStateMeta) newItemStack.getItemMeta();
-
-            // Set block state
-            newBlockStateMeta.setBlockState(((BlockStateMeta) itemMeta).getBlockState());
-
-            // Set item meta
-            newItemStack.setItemMeta(newBlockStateMeta);
-        }
-
-        // If item meta is item meta
-        else {
-            // Set item meta
-            newItemStack.setItemMeta(itemMeta);
-        }
-
-
+        // Add enchantments
         newItemStack.addUnsafeEnchantments(EnchantManager.getEnchantments(itemStack));
-        newItemStack.setData(itemStack.getData());
         return newItemStack;
     }
 
