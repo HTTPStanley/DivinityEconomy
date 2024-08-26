@@ -17,6 +17,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 public class PotionManager extends MaterialManager {
+    public static final String PotionFile = "potions.yml";
+    public static final String PotionAliasFile = "potionAliases.yml";
+
     /**
      * Constructor You will likely need to call loadMaterials and loadAliases to
      * populate the aliases and items with data from the program
@@ -24,7 +27,7 @@ public class PotionManager extends MaterialManager {
      * @param main - The plugin
      */
     public PotionManager(DEPlugin main) {
-        super(main, "potions.yml", "potionAliases.yml", new ConcurrentHashMap<String, MarketablePotion>());
+        super(main, PotionFile, PotionAliasFile, new ConcurrentHashMap<>());
     }
 
     @Override
