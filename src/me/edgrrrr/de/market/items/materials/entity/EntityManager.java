@@ -18,8 +18,8 @@ import java.util.stream.Collectors;
 
 public class EntityManager extends MaterialManager {
     // Stores the default items.json file location
-    private static final String entitiesFile = "entities.yml";
-    private static final String aliasesFile = "entityAliases.yml";
+    public static final String entitiesFile = "entities.yml";
+    public static final String aliasesFile = "entityAliases.yml";
 
     /**
      * Constructor You will likely need to call loadMaterials and loadAliases to
