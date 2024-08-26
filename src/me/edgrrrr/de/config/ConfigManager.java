@@ -17,7 +17,8 @@ import java.util.List;
  * Console class for sending uniform messages to players and the console.
  */
 public class ConfigManager extends DivinityModule {
-    private static final String configFile = "config.yml";
+    public static final String configFile = "config.yml";
+    private String loadedVersion;
 
     public ConfigManager(DEPlugin main) {
         super(main);
@@ -32,10 +33,15 @@ public class ConfigManager extends DivinityModule {
     @Override
     public void init() {
         // Get the config and plugin versions
-        String configVersion = getMain().getConfig().getString(Setting.MAIN_VERSION_STRING.path);
-        String pluginVersion = getMain().getConfig().getDefaults().getString(Setting.MAIN_VERSION_STRING.path);
+        FileConfiguration config = getMain().getConfig();
+        loadedVersion = config.getString(Setting.MAIN_VERSION_STRING.path);
+        String pluginVersion = config.getDefaults().getString(Setting.MAIN_VERSION_STRING.path);
 
-        this.getConsole().info("Detected config versions local/plugin | %s/%s", configVersion, pluginVersion);
+        this.getConsole().info("Detected config versions local/plugin | %s/%s", loadedVersion, pluginVersion);
+
+        // Set last loaded version
+        config.set(Setting.MAIN_VERSION_STRING.path, pluginVersion);
+        this.saveFile(config, configFile);
 
         try {
             ConfigUpdater.update(getMain(), configFile, this.getFile(configFile), Collections.emptyList());
@@ -184,11 +190,8 @@ public class ConfigManager extends DivinityModule {
             config.setDefaults(defConfig);
             config.options().copyDefaults(true);
 
-            try {
-                config.save(new File(getMain().getDataFolder(), file));
-            } catch (Exception e) {
-                this.getConsole().severe("Couldn't save config with new values: %s", file);
-            }
+            // Save the file
+            this.saveFile(config, file);
         }
 
         return config;
@@ -204,7 +207,15 @@ public class ConfigManager extends DivinityModule {
         try {
             file.save(new File(getMain().getDataFolder(), fileName));
         } catch (Exception e) {
-            this.getConsole().severe("Couldn't handle %s: %s", fileName, e.getMessage());
+            this.getConsole().severe("Failed to save file %s", fileName);
         }
+    }
+
+
+    /**
+     * Returns the last loaded version
+     */
+    public String getLoadedVersion() {
+        return this.loadedVersion;
     }
 }
