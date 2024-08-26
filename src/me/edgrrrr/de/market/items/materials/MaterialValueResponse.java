@@ -177,4 +177,14 @@ public class MaterialValueResponse extends TokenValueResponse {
 
         return this;
     }
+
+
+    /**
+     * Cleans up the itemstacks
+     */
+    public void cleanup() {
+        for (ItemStack itemStack : itemStacks) {
+            ItemManager.removeIdentity(itemStack);
+        }
+    }
 }
