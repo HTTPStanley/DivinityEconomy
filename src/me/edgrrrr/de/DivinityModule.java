@@ -1,7 +1,7 @@
 package me.edgrrrr.de;
 
 import me.edgrrrr.de.config.ConfigManager;
-import me.edgrrrr.de.console.EconConsole;
+import me.edgrrrr.de.console.Console;
 import me.edgrrrr.de.economy.EconomyManager;
 import me.edgrrrr.de.help.HelpManager;
 import me.edgrrrr.de.lang.LangManager;
@@ -191,7 +191,7 @@ public abstract class DivinityModule {
     /**
      * Returns the console manager
      */
-    public EconConsole getConsole() {
+    public Console getConsole() {
         return getMain().getConsole();
     }
 
