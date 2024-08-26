@@ -31,6 +31,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * Used for managing prices and quantity of enchants
  */
 public class EnchantManager extends ItemManager {
+    public static final String enchantFile = "enchants.yml";
+    public static final String aliasFile = "enchantAliases.yml";
     private boolean allowUnsafe;
 
     /**
@@ -41,7 +43,7 @@ public class EnchantManager extends ItemManager {
      * @param main The main class
      */
     public EnchantManager(DEPlugin main) {
-        super(main, "enchants.yml", "enchantAliases.yml", new ConcurrentHashMap<String, MarketableEnchant>());
+        super(main, enchantFile, aliasFile, new ConcurrentHashMap<>());
     }
 
     @Override
