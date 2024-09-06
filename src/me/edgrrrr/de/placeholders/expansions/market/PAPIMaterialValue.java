@@ -9,7 +9,7 @@ import org.bukkit.OfflinePlayer;
 
 public class PAPIMaterialValue extends DivinityExpansion {
     public PAPIMaterialValue(DEPlugin main) {
-        super(main, "^(raw_|)material_(s|b)value_([a-zA-Z]*)_([0-9]*)$");
+        super(main, "^(raw_|)material_(s|b)value_([a-zA-Z_]*)_([0-9]*)$");
     }
 
     public String getResult(OfflinePlayer player, String value) {

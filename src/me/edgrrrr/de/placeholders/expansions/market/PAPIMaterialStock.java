@@ -8,7 +8,7 @@ import org.bukkit.OfflinePlayer;
 
 public class PAPIMaterialStock extends DivinityExpansion {
     public PAPIMaterialStock(DEPlugin main) {
-        super(main, "^material_stock_([a-zA-Z]*)$");
+        super(main, "^material_stock_([a-zA-Z_]*)$");
     }
 
     @Override

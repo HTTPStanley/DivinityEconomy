@@ -8,7 +8,7 @@ import org.bukkit.OfflinePlayer;
 
 public class PAPIEnchantStock extends DivinityExpansion {
     public PAPIEnchantStock(DEPlugin main) {
-        super(main, "^enchant_stock_([a-zA-Z]*)$");
+        super(main, "^enchant_stock_([a-zA-Z_]*)$");
     }
 
     @Override
