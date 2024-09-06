@@ -1,5 +1,6 @@
 package me.edgrrrr.de.commands.market;
 
+import me.edgrrrr.de.Constants;
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.commands.DivinityCommandMaterials;
 import me.edgrrrr.de.config.Setting;
@@ -52,12 +53,11 @@ public class HandBuy extends DivinityCommandMaterials {
                 return true;
         }
 
-        // Ensure amount given is greater than 0
-        if (amountToBuy < 1) {
+        // Ensure amount is within constraints
+        if (amountToBuy > Constants.MAX_VALUE_AMOUNT || amountToBuy < Constants.MIN_VALUE_AMOUNT) {
             getMain().getConsole().send(sender, LangEntry.GENERIC_InvalidAmountGiven.logLevel, LangEntry.GENERIC_InvalidAmountGiven.get(getMain()));
             return true;
         }
-
 
         ItemStack heldItem = PlayerManager.getHeldItem(sender);
 

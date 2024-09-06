@@ -1,5 +1,6 @@
 package me.edgrrrr.de.commands.enchants;
 
+import me.edgrrrr.de.Constants;
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.commands.DivinityCommandEnchant;
 import me.edgrrrr.de.config.Setting;
@@ -58,6 +59,12 @@ public class EnchantValue extends DivinityCommandEnchant {
             default:
                 getMain().getConsole().usage(sender, LangEntry.GENERIC_InvalidNumberOfArguments.get(getMain()), this.help.getUsages());
                 return true;
+        }
+
+        // Ensure amount is within constraints
+        if (enchantLevels > Constants.MAX_VALUE_AMOUNT || enchantLevels < Constants.MIN_VALUE_AMOUNT) {
+            getMain().getConsole().send(sender, LangEntry.GENERIC_InvalidAmountGiven.logLevel, LangEntry.GENERIC_InvalidAmountGiven.get(getMain()));
+            return true;
         }
 
         // If only handling one enchant

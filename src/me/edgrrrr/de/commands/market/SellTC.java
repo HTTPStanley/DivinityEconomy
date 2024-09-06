@@ -1,5 +1,6 @@
 package me.edgrrrr.de.commands.market;
 
+import me.edgrrrr.de.Constants;
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.commands.DivinityCommandMaterialsTC;
 import me.edgrrrr.de.config.Setting;
@@ -79,6 +80,8 @@ public class SellTC extends DivinityCommandMaterialsTC {
                     } else {
                         amount = Converter.getInt(args[1]);
                     }
+                    amount = Converter.constrainInt(amount, Constants.MIN_VALUE_AMOUNT, Constants.MAX_VALUE_AMOUNT);
+                    args[1] = String.valueOf(amount);
                     value = getMain().getConsole().formatMoney(marketableMaterial.getManager().getSellValue(marketableMaterial.getMaterialSlotsToCount(sender, amount)).getValue());
                 }
                 strings = new String[]{

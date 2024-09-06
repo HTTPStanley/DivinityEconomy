@@ -1,5 +1,6 @@
 package me.edgrrrr.de.commands.market;
 
+import me.edgrrrr.de.Constants;
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.commands.DivinityCommandMaterials;
 import me.edgrrrr.de.config.Setting;
@@ -62,8 +63,8 @@ public class Sell extends DivinityCommandMaterials {
                 return true;
         }
 
-        // Check amount is greater than  0
-        if (amountToSell < 1) {
+        // Ensure amount is within constraints
+        if (amountToSell > Constants.MAX_VALUE_AMOUNT || amountToSell < Constants.MIN_VALUE_AMOUNT) {
             getMain().getConsole().send(sender, LangEntry.GENERIC_InvalidAmountGiven.logLevel, LangEntry.GENERIC_InvalidAmountGiven.get(getMain()));
             return true;
         }

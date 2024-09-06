@@ -1,6 +1,7 @@
 package me.edgrrrr.de.market;
 
 import com.tchristofferson.configupdater.ConfigUpdater;
+import me.edgrrrr.de.Constants;
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.DivinityModule;
 import me.edgrrrr.de.config.Setting;
@@ -682,7 +683,7 @@ public abstract class TokenManager extends DivinityModule {
         // remove 1 stock to simulate decrease
         // if purchase = false
         // add 1 stock to simulate increase
-        for (int i = 0; i < amount; i++) {
+        for (int i = 0; i < Converter.constrainInt((int) amount, Constants.MIN_VALUE_AMOUNT, Constants.MAX_VALUE_AMOUNT); i++) {
             if (marketInflation) {
                 inflation = getInflation(defaultMarketSize, marketSize);
             }
@@ -714,7 +715,7 @@ public abstract class TokenManager extends DivinityModule {
      */
     public double getPrice(double baseQuantity, double currentQuantity, double scale, double inflation) {
         // if currentQuantity is zero, increment it by one to avoid division by zero
-        if (currentQuantity == 0) currentQuantity += 1;
+        currentQuantity = Math.max(currentQuantity, 1);
 
         // get the raw price
         double rawPrice = getRawPrice(baseQuantity, currentQuantity);
@@ -735,7 +736,7 @@ public abstract class TokenManager extends DivinityModule {
         double scale = getScale(baseQuantity, currentQuantity);
 
         // calculate raw price and fit it to the required constraints
-        return fitPriceToConstraints((scale * 10) + (scale * 5));
+        return fitPriceToConstraints(scale * 15);
     }
 
     /**
@@ -753,8 +754,9 @@ public abstract class TokenManager extends DivinityModule {
     /**
      * Calculates the scale of a number based on its base value.
      * It's essentially the ratio of base quantity to the current quantity.
+     * Uses caching to store previously calculated values.
      *
-     * @param baseQuantity - Base quantity of the product.
+     * @param baseQuantity    - Base quantity of the product.
      * @param currentQuantity - Current quantity of the product.
      * @return double - The scale factor.
      */

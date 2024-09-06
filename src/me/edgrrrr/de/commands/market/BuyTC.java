@@ -1,5 +1,6 @@
 package me.edgrrrr.de.commands.market;
 
+import me.edgrrrr.de.Constants;
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.commands.DivinityCommandMaterialsTC;
 import me.edgrrrr.de.config.Setting;
@@ -66,12 +67,14 @@ public class BuyTC extends DivinityCommandMaterialsTC {
                 marketableMaterial = getMain().getMarkMan().getItem(args[0]);
                 String value = LangEntry.W_unknown.get(getMain());
                 if (marketableMaterial != null) {
-                    int amount = 1;
+                    int amount;
                     if (LangEntry.W_max.is(getMain(), args[1])) {
                         amount = marketableMaterial.getAvailableSpace(sender);
                     } else {
                         amount = Converter.getInt(args[1]);
                     }
+                    amount = Converter.constrainInt(amount, Constants.MIN_VALUE_AMOUNT, Constants.MAX_VALUE_AMOUNT);
+                    args[1] = String.valueOf(amount);
                     value = String.format("%s", getMain().getConsole().formatMoney(marketableMaterial.getManager().calculatePrice(amount, marketableMaterial.getQuantity(), marketableMaterial.getManager().getBuyScale(), true)));
                 }
 
