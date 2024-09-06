@@ -416,8 +416,19 @@ public abstract class TokenManager extends DivinityModule {
      * @return int - The level of stock required for this price.
      */
     public int calculateStock(double price, double scale, double inflation) {
-        return (int) ((this.baseQuantity / price) * scale * inflation);
+        // Reverse fitPriceToConstraints and inflation/scaling factors to get the raw price
+        double rawPrice = price / (scale * inflation);
+
+        // Since the raw price is calculated as (scale * 10) + (scale * 5)
+        // We need to isolate the scale, which is baseQuantity / currentQuantity
+        double finalScale = rawPrice / 15;
+
+        // Now, use the scale to find the current quantity
+        double newQuantity = this.baseQuantity / finalScale;
+
+        return (int) newQuantity;
     }
+
 
     /**
      * Gets the market-wide level of inflation
