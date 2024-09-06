@@ -98,7 +98,7 @@
 # Main Settings
 Main:
   # This is the plugin config version
-  Version: 3.5.0
+  Version: 3.5.1
   # Should placeholder api support be enabled? ( use "true" / "false" )
   Enable PAPI: true
   # What language file should be used? ( use any string ) | default = en_GB.yml
@@ -275,14 +275,21 @@ Market:
 # The greater the base quantity, the more of an item is required to change the price.
 # The lower the base quantity, the less of an item is required to change the price.
 
+# ---- Item Damage Scaling Description -----
+# Item damage scaling is based on the damage of an item.
+# This means that if item damage scaling is enabled, then the damage of an item is taken into account when calculating the price of an item.
+# For example, if a sword has 10% durability, then the price of the sword will be 10% of the original price.
 
 # ----- Whole Market Inflation Description -----
 # Whole market inflation is based on the total amount of an item in the market.
 # This means that if the whole market inflation is enabled, then an 'inflation' value is applied to the price of an item.
 # This value is based on the total amount of all items within the market.
 
-
-
+# ----- Changing Prices -----
+# Prices are changed by the amount of an item in the market.
+# To change the value of an item, you can use the /setvalue command to change the value of an item.
+# This will approximately change the quantity of an item in the market to be as close as possible to the value you set. It will likely not be exact.
+# Alternatively, you can use the /setstock command to change the quantity of an item in the market.
 
 # Command Settings
 # What commands should be enabled? ( use "true" to enable | "false" to disable)
