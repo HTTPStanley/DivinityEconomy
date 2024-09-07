@@ -26,6 +26,7 @@ GENERIC_Usages: "Usos: %s" # %s = usos
 GENERIC_Aliases: "Alias: %s" # %s = alias
 GENERIC_FileSaved: "%s guardado." # %s = nombre de archivo
 GENERIC_LocaleError: "Ocurrió un error al establecer la configuración regional en '%s'. Ver detalles a continuación"
+GENERIC_PlayerNoPermission: "No tienes permiso para hacer eso."
 
 
 # Describir

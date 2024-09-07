@@ -26,6 +26,7 @@ GENERIC_Usages: "Verwendungen: %s" # %s = Verwendungen
 GENERIC_Aliases: "Aliase: %s" # %s = Aliase
 GENERIC_FileSaved: "%s gespeichert." # %s = Dateiname
 GENERIC_LocaleError: "Ein Fehler ist aufgetreten, während die Sprache auf '%s' gesetzt wurde. Details siehe unten¬" # %s = Sprache
+GENERIC_PlayerNoPermission: "Sie haben keine Berechtigung, diesen Befehl auszuführen."
 
 
 # Beschreiben

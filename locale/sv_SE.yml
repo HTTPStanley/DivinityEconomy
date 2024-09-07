@@ -26,6 +26,7 @@ GENERIC_Usages: "Användningar: %s" # %s = användningar
 GENERIC_Aliases: "Alias: %s" # %s = alias
 GENERIC_FileSaved: "%s sparad." # %s = filnamn
 GENERIC_LocaleError: "Ett fel uppstod när språk sattes till '%s'. Se detaljer nedan¬" # %s = språk
+GENERIC_PlayerNoPermission: "Du har inte tillräckliga behörigheter för att använda detta kommando."
 
 
 # Beskriv

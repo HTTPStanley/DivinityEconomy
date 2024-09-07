@@ -26,6 +26,7 @@ GENERIC_Usages: "Utilisations : %s" # %s = utilisations
 GENERIC_Aliases: "Alias : %s" # %s = alias
 GENERIC_FileSaved: "%s enregistré." # %s = nom de fichier
 GENERIC_LocaleError: "Une erreur s'est produite lors du réglage de la locale sur '%s'. Voir les détails ci-dessous"
+GENERIC_PlayerNoPermission: "Vous n'avez pas la permission d'exécuter cette commande."
 
 
 # Décrire

@@ -26,6 +26,7 @@ GENERIC_Usages: "Anvendelser: %s" # %s = anvendelser
 GENERIC_Aliases: "Aliasser: %s" # %s = aliasser
 GENERIC_FileSaved: "%s gemt." # %s = filnavn
 GENERIC_LocaleError: "Der opstod en fejl ved indstilling af sprog til '%s'. Se detaljer nedenfor¬" # %s = sprog
+GENERIC_PlayerNoPermission: "Du har ikke tilladelse til at udføre denne kommando."
 
 
 # Beskriv

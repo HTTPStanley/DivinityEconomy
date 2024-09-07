@@ -26,6 +26,7 @@ GENERIC_Usages: "Usi: %s" # %s = usi
 GENERIC_Aliases: "Alias: %s" # %s = alias
 GENERIC_FileSaved: "%s salvato." # %s = nome file
 GENERIC_LocaleError: "Si è verificato un errore durante l'impostazione della localizzazione su '%s'. Vedi i dettagli qui sotto."
+GENERIC_PlayerNoPermission: "Non hai il permesso di eseguire questo comando."
 
 # Descrizione
 DESCRIBE_Header: "===Descrivi==="

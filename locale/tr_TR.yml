@@ -26,6 +26,7 @@ GENERIC_Usages: "Kullanımlar: %s" # %s = kullanımlar
 GENERIC_Aliases: "Takma Adlar: %s" # %s = takma adlar
 GENERIC_FileSaved: "%s kaydedildi." # %s = dosya adı
 GENERIC_LocaleError: "Yerel ayar '%s' olarak ayarlanırken bir hata oluştu. Aşağıdaki detaylara bakın¬" # %s = yerel ayar
+GENERIC_PlayerNoPermission: "Bu komutu kullanma izniniz yok."
 
 
 # Açıklama

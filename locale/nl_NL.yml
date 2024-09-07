@@ -26,6 +26,7 @@ GENERIC_Usages: "Gebruik: %s" # %s = gebruik
 GENERIC_Aliases: "Aliassen: %s" # %s = aliassen
 GENERIC_FileSaved: "%s opgeslagen." # %s = bestandsnaam
 GENERIC_LocaleError: "Er is een fout opgetreden bij het instellen van de taal naar '%s'. Zie details hieronder¬" # %s = taal
+GENERIC_PlayerNoPermission: "U hebt geen toestemming om dit te doen."
 
 
 # Beschrijf

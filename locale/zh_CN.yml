@@ -26,6 +26,7 @@ GENERIC_Usages: "用法：%s" # %s = 用法
 GENERIC_Aliases: "别名：%s" # %s = 别名
 GENERIC_FileSaved: "%s 已保存。" # %s = 文件名
 GENERIC_LocaleError: "设置语言为 '%s' 时发生错误。详情如下¬" # %s = 语言
+GENERIC_PlayerNoPermission: "你没有权限执行此命令。"
 
 
 # 描述

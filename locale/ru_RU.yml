@@ -26,6 +26,7 @@ GENERIC_Usages: "Примеры использования: %s"
 GENERIC_Aliases: "Алиасы: %s"
 GENERIC_FileSaved: "Файл %s сохранен."
 GENERIC_LocaleError: "Произошла ошибка при установке локали на '%s'. Подробности см. ниже"
+GENERIC_PlayerNoPermission: "У вас нет разрешения на использование этой команды."
 
 # Описание
 DESCRIBE_Header: "===Описание==="

@@ -26,6 +26,7 @@ GENERIC_Usages: "使用方法：%s" # %s = 使用方法
 GENERIC_Aliases: "別名：%s" # %s = 別名
 GENERIC_FileSaved: "%s が保存されました。" # %s = ファイル名
 GENERIC_LocaleError: "'%s' のロケール設定中にエラーが発生しました。詳細は以下をご覧ください¬" # %s = ロケール
+GENERIC_PlayerNoPermission: "権限がありません。"
 
 
 # 説明

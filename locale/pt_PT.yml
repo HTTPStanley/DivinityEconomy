@@ -26,6 +26,7 @@ GENERIC_Usages: "Usos: %s" # %s = usos
 GENERIC_Aliases: "Aliases: %s" # %s = aliases
 GENERIC_FileSaved: "%s guardado." # %s = nome do ficheiro
 GENERIC_LocaleError: "Ocorreu um erro ao definir o idioma para '%s'. Veja os detalhes abaixo¬" # %s = idioma
+GENERIC_PlayerNoPermission: "Não tem permissão para executar este comando."
 
 
 # Descrever
