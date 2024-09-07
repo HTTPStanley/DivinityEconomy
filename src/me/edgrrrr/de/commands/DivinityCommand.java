@@ -21,11 +21,32 @@ public abstract class DivinityCommand implements CommandExecutor {
     protected boolean checkEnchantMarketEnabled = false;
     protected boolean checkItemMarketEnabled = false;
     protected boolean checkExperienceMarketEnabled = false;
-    // Link to app
-    // The help object for this command
-    // Whether the command is enabled or not
-    // Whether the command supports console input
+    protected boolean checkPermissions = true;
+    private final PluginCommand command;
     private final DEPlugin main;
+
+    /**
+     * Constructor
+     *
+     * @param main
+     * @param registeredCommandName
+     * @param hasConsoleSupport
+     * @param isEnabled
+     */
+    public DivinityCommand(DEPlugin main, String registeredCommandName, boolean hasConsoleSupport, boolean isEnabled) {
+        this.main = main;
+        this.help = getMain().getHelpMan().get(registeredCommandName);
+        this.hasConsoleSupport = hasConsoleSupport;
+        this.isEnabled = isEnabled;
+
+        if ((command = getMain().getCommand(registeredCommandName)) == null) {
+            getMain().getConsole().warn("Command Executor '%s' is incorrectly setup", registeredCommandName);
+        } else {
+            command.setExecutor(this);
+            if (!getMain().getConfMan().getBoolean(Setting.IGNORE_COMMAND_REGISTRY_BOOLEAN))
+                getMain().getConsole().info("Command %s registered", registeredCommandName);
+        }
+    }
 
     /**
      * Constructor
@@ -36,19 +57,7 @@ public abstract class DivinityCommand implements CommandExecutor {
      * @param commandSetting
      */
     public DivinityCommand(DEPlugin main, String registeredCommandName, boolean hasConsoleSupport, Setting commandSetting) {
-        this.main = main;
-        this.help = getMain().getHelpMan().get(registeredCommandName);
-        this.hasConsoleSupport = hasConsoleSupport;
-        this.isEnabled = getMain().getConfig().getBoolean(commandSetting.path);
-
-        PluginCommand command;
-        if ((command = getMain().getCommand(registeredCommandName)) == null) {
-            getMain().getConsole().warn("Command Executor '%s' is incorrectly setup", registeredCommandName);
-        } else {
-            command.setExecutor(this);
-            if (!getMain().getConfMan().getBoolean(Setting.IGNORE_COMMAND_REGISTRY_BOOLEAN))
-                getMain().getConsole().info("Command %s registered", registeredCommandName);
-        }
+        this(main, registeredCommandName, hasConsoleSupport, main.getConfMan().getBoolean(commandSetting));
     }
 
     /**
@@ -87,9 +96,13 @@ public abstract class DivinityCommand implements CommandExecutor {
      */
     public boolean _onPlayerCommand(Player sender, String[] args) {
         if (!this.isEnabled) {
-            getMain().getConsole().send(sender, LangEntry.GENERIC_PlayerCommandIsDisabled.logLevel, LangEntry.GENERIC_PlayerCommandIsDisabled.get(getMain()));
+            returnCommandDisabled(sender);
             return true;
-        } else if (this.checkEconomyEnabled && !this.checkEconomyEnabledInWorld(sender)) {
+        } else if (checkPermissions && !command.testPermission(sender)) {
+            returnPlayerNoPermission(sender);
+            return true;
+        }
+        else if (this.checkEconomyEnabled && !this.checkEconomyEnabledInWorld(sender)) {
             getMain().getConsole().send(sender, LangEntry.WORLDS_EconomyDisabledInThisWorld.logLevel, LangEntry.WORLDS_EconomyDisabledInThisWorld.get(getMain()));
             return true;
         } else if ((this.checkItemMarketEnabled || this.checkEnchantMarketEnabled || this.checkExperienceMarketEnabled) && !this.checkMarketEnabledInWorld(sender)) {
@@ -107,6 +120,26 @@ public abstract class DivinityCommand implements CommandExecutor {
 
         return this.onPlayerCommand(sender, args);
     }
+
+    /**
+     * Returns the command is disabled message
+     *
+     * @param sender
+     */
+    public void returnCommandDisabled(Player sender) {
+        getMain().getConsole().send(sender, LangEntry.GENERIC_PlayerCommandIsDisabled.logLevel, LangEntry.GENERIC_PlayerCommandIsDisabled.get(getMain()));
+    }
+
+
+    /**
+     * Returns the player has no permission message
+     *
+     * @param sender
+     */
+    public void returnPlayerNoPermission(Player sender) {
+        getMain().getConsole().send(sender, LangEntry.GENERIC_PlayerNoPermission.logLevel, LangEntry.GENERIC_PlayerNoPermission.get(getMain()));
+    }
+
 
     /**
      * ###To be overridden by the actual command
@@ -127,7 +160,7 @@ public abstract class DivinityCommand implements CommandExecutor {
      */
     public boolean _onConsoleCommand(String[] args) {
         if (!this.isEnabled) {
-            getMain().getConsole().send(LangEntry.GENERIC_ConsoleCommandIsDisabled.logLevel, LangEntry.GENERIC_ConsoleCommandIsDisabled.get(getMain()));
+            returnCommandDisabled(null);
             return true;
         } else if (!this.hasConsoleSupport) {
             getMain().getConsole().send(LangEntry.GENERIC_ConsoleSupportNotAdded.logLevel, LangEntry.GENERIC_ConsoleSupportNotAdded.get(getMain()));
