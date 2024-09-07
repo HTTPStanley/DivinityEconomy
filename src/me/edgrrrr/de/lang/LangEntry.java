@@ -12,8 +12,8 @@ public enum LangEntry {
     GENERIC_EconomyNotEnabled(LogLevel.SEVERE),
     GENERIC_EconomyEnabled(),
     GENERIC_PAPIEnabled(),
-    GENERIC_PAPINotEnabled(),
-    GENERIC_PAPINotFound(),
+    GENERIC_PAPINotEnabled(LogLevel.WARNING),
+    GENERIC_PAPINotFound(LogLevel.WARNING),
     GENERIC_ConsoleCommandIsDisabled(LogLevel.WARNING),
     GENERIC_ConsoleSupportNotAdded(LogLevel.WARNING),
     GENERIC_PlayerCommandIsDisabled(LogLevel.WARNING),
@@ -23,14 +23,15 @@ public enum LangEntry {
     GENERIC_InvalidPlayerName(LogLevel.WARNING),
     GENERIC_InvalidAmountGiven(LogLevel.WARNING),
     GENERIC_UnknownError(LogLevel.WARNING),
-    GENERIC_IncorrectCommandUsage(),
+    GENERIC_IncorrectCommandUsage(LogLevel.WARNING),
     GENERIC_CommandUsage(),
     GENERIC_HelpFor(),
     GENERIC_Description(),
     GENERIC_Usages(),
     GENERIC_Aliases(),
     GENERIC_FileSaved(),
-    GENERIC_LocaleError(),
+    GENERIC_LocaleError(LogLevel.WARNING),
+    GENERIC_PlayerNoPermission(LogLevel.WARNING),
 
 
     // Describe
