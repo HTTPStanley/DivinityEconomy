@@ -225,8 +225,11 @@ public class Console extends DivinityModule {
     public void help(Player player, String command, String description, String[] usages, String[] aliases) {
         this.info(player, LangEntry.GENERIC_HelpFor.get(getMain(), command));
         this.info(player, LangEntry.GENERIC_Description.get(getMain(), description));
-        this.info(player, LangEntry.GENERIC_Usages.get(getMain(), Arrays.toString(usages)));
-        this.info(player, LangEntry.GENERIC_Aliases.get(getMain(), Arrays.toString(aliases)));
+        this.info(player, LangEntry.GENERIC_Usages.get(getMain(), ""));
+        for (String usage : usages) {
+            this.info(player, "  -" + usage);
+        }
+        this.info(player, LangEntry.GENERIC_Aliases.get(getMain(), String.join(", ", aliases)));
     }
 
 
