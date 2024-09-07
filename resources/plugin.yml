@@ -1,7 +1,7 @@
 name: DivinityEconomy
 prefix: DivinityEconomy
 main: me.edgrrrr.de.DEPlugin
-version: 3.5.1
+version: 3.5.2
 author: EDGRRRR
 description: Divinity Economy - The dynamic global economy plugin.
 api-version: 1.20
@@ -17,7 +17,7 @@ commands:
     aliases: [ 'de' ]
     permission: de.help
     permission-message: "You do not have the permission to use this command"
-    usage: "/ehelp <command name>|/ehelp <page number>|/ehelp <search term> <page number>"
+    usage: "/ehelp <command name>, /ehelp <page number>, /ehelp <search term> <page number>"
 
   # Mail commands
 
@@ -26,14 +26,14 @@ commands:
     aliases: [ 'mailread' ]
     permission: de.mail.readMail
     permission-message: "You do not have the permission to use this command"
-    usage: "/readmail|/readmail <page number>"
+    usage: "/readmail, /readmail <page number>"
 
   clearMail:
     description: "Deletes your economy mail."
     aliases: [ 'mailclear' ]
     permission: de.mail.clearMail
     permission-message: "You do not have the permission to use this command"
-    usage: "/clearmail all|/clearmail unread|/clearmail read"
+    usage: "/clearmail all, /clearmail unread, /clearmail read"
 
   # Misc commands
   ping:
@@ -48,7 +48,7 @@ commands:
     aliases: []
     permission: de.misc.economynotifications
     permission-message: "You do not have the permission to use this command"
-    usage: "/economynotifications | /economynotifications <true|false> | /economynotifications <player name> <true|false>"
+    usage: "/economynotifications, /economynotifications <true|false>, /economynotifications <player name> <true|false>"
 
   # Money commands
   balance:
@@ -56,7 +56,7 @@ commands:
     aliases: [ 'bal', 'cash', 'money' ]
     permission: de.money.balance
     permission-message: "You do not have the permission to use this command"
-    usage: "/balance|/balance <player name>"
+    usage: "/balance, /balance <player name>"
 
   sendcash:
     description: "Sends cash to another player."
@@ -70,7 +70,7 @@ commands:
     aliases: [ 'baltop', 'bt', 'listbal' ]
     permission: de.money.listbalances
     permission-message: "You do not have the permission to use this command"
-    usage: "/baltop | /baltop <page number>"
+    usage: "/baltop, /baltop <page number>"
 
   # Market commands
   listitems:
@@ -99,7 +99,7 @@ commands:
     aliases: []
     permission: de.market.sellall
     permission-message: "You do not have permission to use this command"
-    usage: "/sellall !<items,to,not,sell> | /sellall <items,to,sell>"
+    usage: "/sellall !<items,to,not,sell>, /sellall <items,to,sell>"
 
   handBuy:
     description: "Buys the material the user is holding from the market."
@@ -148,14 +148,14 @@ commands:
     aliases: [ 'es' ]
     permission: de.enchant.eSell
     permission-messaage: "You do not have permission to use this command"
-    usage: "/esell <enchant> <levels>|/esell <enchant>"
+    usage: "/esell <enchant> <levels>, /esell <enchant>"
 
   eBuy:
     description: "Buys an enchant for an item."
     aliases: [ 'eb' ]
     permission: de.enchant.eBuy
     permission-messaage: "You do not have permission to use this command"
-    usage: "/esell <enchant> <levels>"
+    usage: "/ebuy <enchant> <levels>"
 
   eValue:
     description: "Gets the value of an enchant."
@@ -206,14 +206,14 @@ commands:
     aliases: []
     permission: de.admin.reload
     permission-message: "You do not have the permission to use this command"
-    usage: "/reload <materials|enchants|potions|entities|experience|config>"
+    usage: "/reload materials, /reload enchants, /reload potions, /reload entities, /reload experience, /reload config"
 
   save:
     description: "Saves the respective market file."
     aliases: []
     permission: de.admin.save
     permission-message: "You do not have the permission to use this command"
-    usage: "/save <materials|enchants|potions|entities|experience|config>"
+    usage: "/save materials, /save enchants, /save potions, /save entities, /save experience, /save config"
 
 
   editbal:
@@ -221,21 +221,21 @@ commands:
     aliases: [ ]
     permission: de.admin.editbal
     permission-message: "You do not have the permission to use this command"
-    usage: "/editbal <player name> <amount>|/editbal <amount>"
+    usage: "/editbal <player name> <amount>, /editbal <amount>"
 
   setbal:
     description: "Sets the balance of a player."
     aliases: [ 'setcash' ]
     permission: de.admin.setbal
     permission-message: "You do not have the permission to use this command"
-    usage: "/setbal <player name> <amount>|/setbal <amount>"
+    usage: "/setbal <player name> <amount>, /setbal <amount>"
 
   clearbal:
     description: "Clears the balance of a player."
     aliases: [ 'clearcash' ]
     permission: de.admin.clearbal
     permission-message: "You do not have the permission to use this command"
-    usage: "/clearbal <player name>|/clearbal"
+    usage: "/clearbal <player name>, /clearbal"
 
   setValue:
     description: "Sets the value of an item"
@@ -372,6 +372,7 @@ permissions:
     default: true
     children:
       de.money.balance: true
+      de.money.balanceOther: true
       de.money.sendcash: true
       de.money.listbalances: true
 
@@ -382,6 +383,9 @@ permissions:
   de.money.balance:
     description: Allows the user to view their balance.
     default: true
+
+  de.money.balanceOther:
+    description: Allows the user to view the balance of others.
 
   de.money.sendcash:
     description: Allows the user to send cash to others.
