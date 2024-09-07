@@ -30,6 +30,7 @@ public class EconomyManager extends DivinityModule {
     private Map<OfflinePlayer, Integer> baltopPositionCache = new ConcurrentHashMap<>();
     private final Calendar lastOrderTime = Calendar.getInstance();
     private double totalEconomySize = 0;
+    private int totalEconomyPlayers = 0;
 
     private final BukkitRunnable baltopTask = new BukkitRunnable() {
         @Override
@@ -143,6 +144,7 @@ public class EconomyManager extends DivinityModule {
         this.baltopPositionCache.clear();
         this.baltopPositionCache = positionCache;
         this.totalEconomySize = totalSize;
+        this.totalEconomyPlayers = players.size();
         this.lastOrderTime.setTimeInMillis(System.nanoTime());
         this.getConsole().debug("Baltop fetched %s players.", players.size());
     }
@@ -192,6 +194,15 @@ public class EconomyManager extends DivinityModule {
      */
     public double getTotalEconomySize() {
         return this.totalEconomySize;
+    }
+
+
+    /**
+     * Returns the total number of players in the economy
+     * @return
+     */
+    public int getTotalEconomyPlayers() {
+        return this.totalEconomyPlayers;
     }
 
 
