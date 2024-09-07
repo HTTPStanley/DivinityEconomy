@@ -13,6 +13,7 @@ import java.util.Calendar;
 import java.util.Map;
 
 public class ListBalances extends DivinityCommand {
+
     /**
      * Constructor
      *
@@ -37,6 +38,8 @@ public class ListBalances extends DivinityCommand {
         int pageNumber = (args.length >= 1) ? Converter.getInt(args[0]) : 1;
 
         Map<Integer, BaltopPlayer[]> orderedBalances = getMain().getEconMan().getOrderedBalances();
+        int totalBalances = getMain().getEconMan().getTotalEconomyPlayers();
+        int formatSize = String.valueOf(totalBalances).length();
         int totalPages = orderedBalances.size();
         int outputNumber = Converter.constrainInt(pageNumber, 1, totalPages);
         double totalAmount = getMain().getEconMan().getTotalEconomySize();
@@ -53,10 +56,21 @@ public class ListBalances extends DivinityCommand {
         getMain().getConsole().warn(sender, LangEntry.BALTOP_LastOrderedAt.get(getMain(), String.format("%s%s/%s/%s %02d:%02d%s%s", ChatColor.BLUE, calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONTH), calendar.get(Calendar.YEAR), calendar.get(Calendar.HOUR), calendar.get(Calendar.MINUTE), ChatColor.GREEN, am_pm)));
         getMain().getConsole().warn(sender, LangEntry.BALTOP_ServerTotal.get(getMain(), String.format("%s%s", ChatColor.RED, getMain().getConsole().formatMoney(totalAmount))));
         for (BaltopPlayer player : orderedBalances.get(outputNumber - 1)) {
-            getMain().getConsole().info(sender, "%s(%-3s) %s%s%s %s%s", ChatColor.DARK_GRAY, getMain().getEconMan().getBaltopPosition(player.getOfflinePlayer()), ChatColor.WHITE, player.getName(), ChatColor.GREEN, ChatColor.GOLD, getMain().getConsole().formatMoney(player.getBalance()));
+            getMain().getConsole().info(sender, "%s(%-" + formatSize + "s) %s%s%s %s%s",
+                    ChatColor.DARK_GRAY,
+                    getMain().getEconMan().getBaltopPosition(player.getOfflinePlayer()),
+                    ChatColor.WHITE, player.getName(),
+                    ChatColor.GREEN,
+                    ChatColor.GOLD,
+                    getMain().getConsole().formatMoney(player.getBalance()));
         }
         getMain().getConsole().info(sender, "");
-        getMain().getConsole().info(sender, "%s%s %s", ChatColor.GRAY, LangEntry.BALTOP_YourPositionIs.get(getMain()), getMain().getEconMan().getBaltopPosition(sender));
+
+        if (sender != null) {
+            getMain().getConsole().info(sender, "%s%s %s", ChatColor.GRAY, LangEntry.BALTOP_YourPositionIs.get(getMain()), getMain().getEconMan().getBaltopPosition(sender));
+        } else {
+            getMain().getConsole().info(sender, "Console, you have summoned /baltop... but alas, you are no mere mortal. You are the Console! Keeper of infinite wealth, master of the economy, ruler of all zeros and ones. Your position? Beyond numbers. Your fortune? Unlimited. Even God is jealous of your wealth. But remember, with infinite money comes infinite responsibility. Spend wisely, oh mighty one! \uD83C\uDF1F\n");
+        }
 
         return true;
     }
