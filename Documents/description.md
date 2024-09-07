@@ -163,6 +163,7 @@
 <ul>
     <li><code>de.money.listbalances</code> - Allows the user to view a list of user balances. This permission is granted by default.</li>
     <li><code>de.money.balance</code> - Allows the user to view their balance. This permission is granted by default.</li>
+    <li><code>de.money.balanceOther</code> - Allows the user to view the balance of others. This permission is granted by default.</li>
     <li><code>de.money.sendcash</code> - Allows the user to send cash to others. This permission is granted by default.</li>
 </ul>
 <br>
