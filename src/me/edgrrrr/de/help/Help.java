@@ -1,7 +1,7 @@
 package me.edgrrrr.de.help;
 
+import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
 
 public class Help {
     private final String command;
@@ -20,9 +20,12 @@ public class Help {
 
     public static Help fromConfig(String command, Map<String, Object> commandSection) {
         String description = (String) commandSection.get("description");
-        String[] aliases = Stream.of(commandSection.get("aliases")).map(Object::toString).toArray(String[]::new);
         String permissionNode = (String) commandSection.get("permission");
-        String[] usages = ((String) commandSection.get("usage")).split("\\|");
+        String[] aliases = ((List<?>) commandSection.get("aliases"))
+                .stream()
+                .map(Object::toString)
+                .toArray(String[]::new);
+        String[] usages = ((String) commandSection.get("usage")).split(", ");
         return new Help(command, description, aliases, permissionNode, usages);
     }
 
