@@ -98,7 +98,7 @@
 # Main Settings
 Main:
   # This is the plugin config version
-  Version: 3.5.1
+  Version: 3.5.2
   # Should placeholder api support be enabled? ( use "true" / "false" )
   Enable PAPI: true
   # What language file should be used? ( use any string ) | default = en_GB.yml
@@ -309,6 +309,7 @@ Commands:
 
   Economy:
     Balance: true
+    Balance Other: true
     Send Cash: true
     ListBalances: true
 
