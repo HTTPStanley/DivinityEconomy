@@ -251,13 +251,100 @@ public class EconomyManager extends DivinityModule {
     }
 
 
-    public String getRichestPerson() {
+    /**
+     * Returns the richest player
+     * @return
+     */
+    public BaltopPlayer getRichestPlayer() {
         if (this.orderedBalances.isEmpty()) {
-            return "";
+            return null;
         }
-        return this.orderedBalances.get(0)[0].getName();
+        return this.orderedBalances.get(0)[0];
     }
 
+
+    /**
+     * Returns the top percentile of players
+     * @return
+     */
+    public BaltopPlayer[] getTopPercentile(int percentile) {
+        if (this.orderedBalances.isEmpty()) {
+            return new BaltopPlayer[0];
+        }
+
+        int topPercentile = (int) (this.totalEconomyPlayers * (percentile / 100.0));
+        ArrayList<BaltopPlayer> topPlayers = new ArrayList<>();
+        int index = 0;
+        for (BaltopPlayer[] players : this.orderedBalances.values()) {
+            for (BaltopPlayer player : players) {
+                topPlayers.add(player);
+                index++;
+                if (index >= topPercentile) {
+                    break;
+                }
+            }
+            if (index >= topPercentile) {
+                break;
+            }
+        }
+
+        return topPlayers.toArray(new BaltopPlayer[0]);
+    }
+
+
+    /**
+     * Returns the bottom percentile of players
+     * @return
+     */
+    public BaltopPlayer[] getBottomPercentile(int percentile) {
+        if (this.orderedBalances.isEmpty()) {
+            return new BaltopPlayer[0];
+        }
+
+        int bottomPercentile = (int) (this.totalEconomyPlayers * (percentile / 100.0));
+        ArrayList<BaltopPlayer> bottomPlayers = new ArrayList<>();
+        int index = 0;
+        for (BaltopPlayer[] players : this.orderedBalances.values()) {
+            for (BaltopPlayer player : players) {
+                bottomPlayers.add(player);
+                index++;
+                if (index >= bottomPercentile) {
+                    break;
+                }
+            }
+            if (index >= bottomPercentile) {
+                break;
+            }
+        }
+
+        return bottomPlayers.toArray(new BaltopPlayer[0]);
+    }
+
+
+    /**
+     * Returns the total balance of the bottom percentile
+     * @return
+     */
+    public double getTopPercentileBalance(int percentile) {
+        double total = 0;
+        for (BaltopPlayer player : getTopPercentile(percentile)) {
+            total += player.getBalance();
+        }
+        return total;
+    }
+
+
+    /**
+     * Returns the total balance of the bottom percentile
+     * @return
+     */
+    public double getBottomPercentileBalance(int percentile) {
+        double total = 0;
+        for (BaltopPlayer player : getBottomPercentile(percentile)) {
+            total += player.getBalance();
+        }
+        return total;
+    }
 
 
     /**
