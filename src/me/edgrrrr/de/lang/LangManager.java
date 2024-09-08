@@ -8,31 +8,37 @@ import org.bukkit.configuration.file.FileConfiguration;
 import java.io.File;
 
 enum ProvidedLangFile {
-    en_GB("en_GB.yml"), // English - UK
-    fr_FR("fr_FR.yml"), // French - France
-    de_DE("de_DE.yml"), // German - Germany
-    es_ES("es_ES.yml"), // Spanish - Spain
-    it_IT("it_IT.yml"), // Italian - Italy
-    ru_RU("ru_RU.yml"), // Russian - Russia
-    pl_PL("pl_PL.yml"), // Polish - Poland
-    pt_PT("pt_PT.yml"), // Portuguese - Portugal
-    da_DK("da_DK.yml"), // Danish - Denmark
-    nl_NL("nl_NL.yml"), // Dutch - Netherlands
-    sv_SE("sv_SE.yml"), // Swedish - Sweden
-    tr_TR("tr_TR.yml"), // Turkish - Turkey
-    zh_CN("zh_CN.yml"), // Chinese - China
-    ja_JP("ja_JP.yml"), // Japanese - Japan
+    en_GB("en_GB.yml", "English"), // English - UK
+    fr_FR("fr_FR.yml", "French"), // French - France
+    de_DE("de_DE.yml", "German"), // German - Germany
+    es_ES("es_ES.yml", "Spanish"), // Spanish - Spain
+    it_IT("it_IT.yml", "Italian"), // Italian - Italy
+    ru_RU("ru_RU.yml", "Russian"), // Russian - Russia
+    pl_PL("pl_PL.yml", "Polish"), // Polish - Poland
+    pt_PT("pt_PT.yml", "Portuguese"), // Portuguese - Portugal
+    da_DK("da_DK.yml", "Danish"), // Danish - Denmark
+    nl_NL("nl_NL.yml", "Dutch"), // Dutch - Netherlands
+    sv_SE("sv_SE.yml", "Swedish"), // Swedish - Sweden
+    tr_TR("tr_TR.yml", "Turkish"), // Turkish - Turkey
+    zh_CN("zh_CN.yml", "Chinese (Simplified)"), // Chinese - China
+    ja_JP("ja_JP.yml", "Japanese"), // Japanese - Japan
 
     ; // End of enum
 
     private final String path;
+    private final String name;
 
-    ProvidedLangFile(String path) {
+    ProvidedLangFile(String path, String name) {
         this.path = path;
+        this.name = name;
     }
 
     public String getPath() {
         return path;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public String getResourcePath() {
@@ -59,6 +65,16 @@ public class LangManager extends DivinityModule {
 
     public LangManager(DEPlugin main) {
         super(main);
+    }
+
+    public String getSelectedLangStats() {
+        for (ProvidedLangFile providedLangFile : ProvidedLangFile.values()) {
+            if (langFile.getName().equals(providedLangFile.getPath())) {
+                return providedLangFile.getName();
+            }
+        }
+
+        return String.format("Custom '%s'", langFile.getName());
     }
 
     /**
