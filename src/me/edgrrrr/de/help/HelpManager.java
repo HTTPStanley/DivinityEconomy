@@ -3,7 +3,6 @@ package me.edgrrrr.de.help;
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.DivinityModule;
 import me.edgrrrr.de.lang.LangEntry;
-import me.edgrrrr.de.mail.events.MailEvent;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -27,7 +26,6 @@ public class HelpManager extends DivinityModule {
     @Override
     public void init() {
         this.loadHelp();
-        getMain().getServer().getPluginManager().registerEvents(new MailEvent(getMain()), getMain());
     }
 
     /**
