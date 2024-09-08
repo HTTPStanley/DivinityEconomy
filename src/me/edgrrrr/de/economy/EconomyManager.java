@@ -31,7 +31,6 @@ public class EconomyManager extends DivinityModule {
     private final Calendar lastOrderTime = Calendar.getInstance();
     private double totalEconomySize = 0;
     private int totalEconomyPlayers = 0;
-    private int serverEconomyEqualityScore = 0;
 
     private final BukkitRunnable baltopTask = new BukkitRunnable() {
         @Override
@@ -223,12 +222,8 @@ public class EconomyManager extends DivinityModule {
      * @return
      */
     public int getEconomyEquality() {
-        if (serverEconomyEqualityScore != 0) {
-            return serverEconomyEqualityScore;
-        }
-
         if (this.totalEconomyPlayers == 0) {
-            return serverEconomyEqualityScore; // No players, no economy equality.
+            return 0; // No players, no economy equality.
         }
 
         double average = getEconomySizePerCapita(); // Get the average balance.
@@ -252,8 +247,7 @@ public class EconomyManager extends DivinityModule {
         double score = 100 - (meanDeviation / maxDeviation) * 100; // Convert deviation to score out of 100.
 
         // Ensure the score is between 0 and 100.
-        serverEconomyEqualityScore = Math.max(0, Math.min(100, (int) score));
-        return serverEconomyEqualityScore;
+        return Math.max(0, Math.min(100, (int) score));
     }
 
 
