@@ -322,7 +322,7 @@ public class Console extends DivinityModule {
         // Handles online & offline messages for sender
         Player onlinePlayer1 = player1.getPlayer();
         MailList player1MailList = this.getMailMan().getMailList(player1.getUniqueId().toString());
-        String player1Message = getLang().get(LangEntry.TRANSFER_SourceResponse, stringAmount, player2.getName());
+        String player1Message = getLang().get(LangEntry.TRANSFER_SourceResponse, stringAmount, player2.getName(), getFormattedBalance(player1));
         if (onlinePlayer1 != null) {
             this.info(onlinePlayer1, player1Message);
         } else {
@@ -332,7 +332,7 @@ public class Console extends DivinityModule {
         // Handle online & offline messages for receiver
         Player onlinePlayer2 = player2.getPlayer();
         MailList player2MailList = this.getMailMan().getMailList(player2.getUniqueId().toString());
-        String player2Message = getLang().get(LangEntry.TRANSFER_TargetResponse, stringAmount, player1.getName());
+        String player2Message = getLang().get(LangEntry.TRANSFER_TargetResponse, stringAmount, player1.getName(), getFormattedBalance(player2));
         if (onlinePlayer2 != null) {
             this.info(onlinePlayer2, player2Message);
         } else {
@@ -398,7 +398,7 @@ public class Console extends DivinityModule {
         // Handles online and offline messages for receiver
         Player onlinePlayer2 = player2.getPlayer();
         MailList playerMailList2 = this.getMailMan().getMailList(player2.getUniqueId().toString());
-        String playerMessage2 = LangEntry.BALANCE_ChangedTargetPlayer.get(getMain(), player1.getName(), stringBalance1, stringBalance2, reason);
+        String playerMessage2 = LangEntry.BALANCE_ChangedTargetPlayer.get(getMain(), stringBalance1, stringBalance2, reason);
         if (onlinePlayer2 != null) {
             this.info(onlinePlayer2, playerMessage2);
         } else {
