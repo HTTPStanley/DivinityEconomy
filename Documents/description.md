@@ -8,6 +8,7 @@
     <p><strong>Dynmap</strong>: <a href="http://Play.DivinityCraft.org:25566" target="_blank" rel="noopener noreferrer">Click To View</a></p>
     <p><strong>Website</strong> <a href="http://DivinityCraft.org" target="_blank" rel="noopener noreferrer">Click To View</a></p>
     <p><strong>Report A Bug</strong>: <a href="https://github.com/HTTPStanley/DivinityEconomy/issues" target="_blank" rel="noopener noreferrer">Click To Report</a></p>
+    <p><strong>bStats</strong>: <a href="https://bstats.org/plugin/bukkit/Divinity%20Economy/22013" target="_blank" rel="noopener noreferrer">Click To View</a></p>
 </ul>
 
 <h2>🔑 Key Features</h2>
