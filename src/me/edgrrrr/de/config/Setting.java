@@ -17,6 +17,7 @@ public enum Setting {
     SECTION_COMMANDS("Commands"),
     SECTION_MARKET("Market"),
     SECTION_WORLDS("Worlds"),
+    SECTION_MAIL("Mail"),
 
     SECTION_COMMANDS_ADMIN(SECTION_COMMANDS.path + ".Admin"),
     SECTION_COMMANDS_MAIL(SECTION_COMMANDS.path + ".Mail"),
@@ -106,6 +107,11 @@ public enum Setting {
     MARKET_EXP_SELL_TAX_FLOAT(SECTION_MARKET_EXP.path + ".Sell Scale"),
     MARKET_EXP_DYN_PRICING_BOOLEAN(SECTION_MARKET_EXP.path + ".Dynamic Pricing"),
     MARKET_EXP_WHOLE_MARKET_INF_BOOLEAN(SECTION_MARKET_EXP.path + ".Whole Market Inflation"),
+
+    // Mail
+    MAIL_ENABLE_BOOLEAN(SECTION_MAIL.path + ".Enable"),
+    MAIL_NOTIFY_BOOLEAN(SECTION_MAIL.path + ".Enable Notifications"),
+    MAIL_NOTIFY_SILENT_BOOLEAN(SECTION_MAIL.path + ".Enable Silent Notifications"),
 
     //Commands Settings
     COMMAND_PING_ENABLE_BOOLEAN(SECTION_COMMANDS_MISC.path + ".Ping"),
