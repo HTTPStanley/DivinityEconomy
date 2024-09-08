@@ -34,6 +34,13 @@ public class ClearMail extends DivinityCommand {
      */
     @Override
     public boolean onPlayerCommand(Player sender, String[] args) {
+        // Check mail is enabled
+        if (!getMain().getMailMan().isMailEnabled())  {
+            returnCommandDisabled(sender);
+            return true;
+        }
+
+
         boolean clearRead = false;
         boolean clearUnread = false;
 
