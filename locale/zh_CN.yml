@@ -131,8 +131,8 @@ VALUE_Response: "价值：%s" # %s = 价值
 # 转账
 TRANSFER_Log: "%s 转账 %s 给 %s" # %s = 玩家名, %s = 数量, %s = 目标玩家名
 TRANSFER_FailedLog: "%s 无法转账 %s 给 %s 因为 %s" # %s = 玩家名, %s = 数量, %s = 目标玩家名, %s = 原因
-TRANSFER_SourceResponse: "发送 %s 给 %s" # %s = 数量, %s = 目标玩家名
-TRANSFER_TargetResponse: "收到 %s 来自 %s" # %s = 数量, %s = 玩家名
+TRANSFER_SourceResponse: "已发送 %s 给 %s。您的余额现在是 %s。" # %s = 金额, %s = 目标玩家名称, %s = 余额
+TRANSFER_TargetResponse: "已收到 %s 来自 %s。您的余额现在是 %s。" # %s = 金额, %s = 发送者玩家名称, %s = 余额
 TRANSFER_FailedResponse: "无法发送 %s 给 %s 因为 %s" # %s = 数量, %s = 目标玩家名, %s = 原因
 
 

@@ -131,8 +131,8 @@ VALUE_Response: "Değer: %s" # %s = değer
 # Transfer
 TRANSFER_Log: "%s, %s'yi %s'ye transfer etti" # %s = oyuncu adı, %s = miktar, %s = hedef oyuncu adı
 TRANSFER_FailedLog: "%s, %s'yi %s'ye %s nedeniyle transfer edemedi" # %s = oyuncu adı, %s = miktar, %s = hedef oyuncu adı, %s = sebep
-TRANSFER_SourceResponse: "%s'yi %s'ye gönderdiniz" # %s = miktar, %s = hedef oyuncu adı
-TRANSFER_TargetResponse: "%s'den %s aldınız" # %s = miktar, %s = oyuncu adı
+TRANSFER_SourceResponse: "%s, %s'ye gönderildi. Bakiyeniz şimdi %s." # %s = miktar, %s = hedef oyuncunun adı, %s = bakiye
+TRANSFER_TargetResponse: "%s, %s'den alındı. Bakiyeniz şimdi %s." # %s = miktar, %s = gönderen oyuncunun adı, %s = bakiye
 TRANSFER_FailedResponse: "%s'yi %s'ye %s nedeniyle gönderemediniz" # %s = miktar, %s = hedef oyuncu adı, %s = sebep
 
 

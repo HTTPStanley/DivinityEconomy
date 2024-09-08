@@ -131,8 +131,8 @@ VALUE_Response: "Valor: %s" # %s = valor
 # Transferencia
 TRANSFER_Log: "%s transfirió %s a %s" # %s = nombre del jugador, %s = cantidad, %s = nombre del jugador objetivo
 TRANSFER_FailedLog: "%s no pudo transferir %s a %s debido a %s" # %s = nombre del jugador, %s = cantidad, %s = nombre del jugador objetivo, %s = motivo
-TRANSFER_SourceResponse: "Enviado %s a %s" # %s = cantidad, %s = nombre del jugador objetivo
-TRANSFER_TargetResponse: "Recibido %s de %s" # %s = cantidad, %s = nombre del jugador
+TRANSFER_SourceResponse: "Enviado %s a %s. Tu saldo ahora es %s." # %s = cantidad, %s = nombre del destinatario, %s = saldo
+TRANSFER_TargetResponse: "Recibido %s de %s. Tu saldo ahora es %s." # %s = cantidad, %s = nombre del remitente, %s = saldo
 TRANSFER_FailedResponse: "No se pudo enviar %s a %s debido a %s" # %s = cantidad, %s = nombre del jugador objetivo, %s = motivo
 
 

@@ -131,8 +131,8 @@ VALUE_Response: "Waarde: %s" # %s = waarde
 # Overdracht
 TRANSFER_Log: "%s heeft %s overgedragen aan %s" # %s = spelersnaam, %s = hoeveelheid, %s = doel speler naam
 TRANSFER_FailedLog: "%s kon %s niet overdragen aan %s vanwege %s" # %s = spelersnaam, %s = hoeveelheid, %s = doel speler naam, %s = reden
-TRANSFER_SourceResponse: "Verzonden %s naar %s" # %s = hoeveelheid, %s = doel speler naam
-TRANSFER_TargetResponse: "Ontvangen %s van %s" # %s = hoeveelheid, %s = spelersnaam
+TRANSFER_SourceResponse: "Verstuurd %s naar %s. Je saldo is nu %s." # %s = bedrag, %s = naam van de ontvanger, %s = saldo
+TRANSFER_TargetResponse: "Ontvangen %s van %s. Je saldo is nu %s." # %s = bedrag, %s = naam van de afzender, %s = saldo
 TRANSFER_FailedResponse: "Kon %s niet verzenden naar %s vanwege %s" # %s = hoeveelheid, %s = doel speler naam, %s = reden
 
 

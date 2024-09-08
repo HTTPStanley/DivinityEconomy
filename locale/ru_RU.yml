@@ -121,8 +121,8 @@ VALUE_Response: "Стоимость: %s"
 # Transfer
 TRANSFER_Log: "%s перевел %s %s"
 TRANSFER_FailedLog: "%s не смог перевести %s %s, потому что %s"
-TRANSFER_SourceResponse: "Отправлено %s %s"
-TRANSFER_TargetResponse: "Получено %s от %s"
+TRANSFER_SourceResponse: "Отправлено %s игроку %s. Ваш баланс теперь %s." # %s = сумма, %s = имя получателя, %s = баланс
+TRANSFER_TargetResponse: "Получено %s от %s. Ваш баланс теперь %s." # %s = сумма, %s = имя отправителя, %s = баланс
 TRANSFER_FailedResponse: "Не удалось отправить %s %s, потому что %s"
 
 # Economy

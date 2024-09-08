@@ -132,8 +132,8 @@ VALUE_Response: "価値：%s" # %s = 価値
 # 転送
 TRANSFER_Log: "%s が %s を %s に転送しました。" # %s = プレイヤー名, %s = 数量, %s = 目標プレイヤー名
 TRANSFER_FailedLog: "%s は %s を %s に転送できませんでした。理由：%s" # %s = プレイヤー名, %s = 数量, %s = 目標プレイヤー名, %s = 理由
-TRANSFER_SourceResponse: "%s を %s に送信しました。" # %s = 数量, %s = 目標プレイヤー名
-TRANSFER_TargetResponse: "%s から %s を受け取りました。" # %s = 数量, %s = プレイヤー名
+TRANSFER_SourceResponse: "%s を %s に送信しました。残高は現在 %s です。" # %s = 金額, %s = 送信先のプレイヤー名, %s = 残高
+TRANSFER_TargetResponse: "%s を %s から受け取りました。残高は現在 %s です。" # %s = 金額, %s = 送信者のプレイヤー名, %s = 残高
 TRANSFER_FailedResponse: "%s を %s に送信できませんでした。理由：%s" # %s = 数量, %s = 目標プレイヤー名, %s = 理由
 
 

@@ -123,8 +123,8 @@ VALUE_Response: "Wert: %s" # %s = Wert
 # Transfer
 TRANSFER_Log: "%s hat %s an %s überwiesen" # %s = Spielername, %s = Menge, %s = Ziel-Spielername
 TRANSFER_FailedLog: "%s konnte %s nicht an %s überweisen, weil %s" # %s = Spielername, %s = Menge, %s = Ziel-Spielername, %s = Grund
-TRANSFER_SourceResponse: "Gesendet: %s an %s" # %s = Menge, %s = Ziel-Spielername
-TRANSFER_TargetResponse: "Empfangen: %s von %s" # %s = Menge, %s = Spielername
+TRANSFER_SourceResponse: "Gesendet %s an %s. Dein Kontostand beträgt nun %s." # %s = Betrag, %s = Name des Empfängers, %s = Kontostand
+TRANSFER_TargetResponse: "Erhalten %s von %s. Dein Kontostand beträgt nun %s." # %s = Betrag, %s = Name des Absenders, %s = Kontostand
 TRANSFER_FailedResponse: "Konnte %s nicht an %s senden, weil %s" # %s = Menge, %s = Ziel-Spielername, %s = Grund
 
 # Wirtschaft

@@ -131,8 +131,8 @@ VALUE_Response: "Værdi: %s" # %s = værdi
 # Overførsel
 TRANSFER_Log: "%s overførte %s til %s" # %s = spillernavn, %s = mængde, %s = mål spillernavn
 TRANSFER_FailedLog: "%s kunne ikke overføre %s til %s på grund af %s" # %s = spillernavn, %s = mængde, %s = mål spillernavn, %s = grund
-TRANSFER_SourceResponse: "Sendt %s til %s" # %s = mængde, %s = mål spillernavn
-TRANSFER_TargetResponse: "Modtaget %s fra %s" # %s = mængde, %s = spillernavn
+TRANSFER_SourceResponse: "Sendte %s til %s. Din saldo er nu %s." # %s = beløb, %s = modtagerens navn, %s = saldo
+TRANSFER_TargetResponse: "Modtog %s fra %s. Din saldo er nu %s." # %s = beløb, %s = afsenderens navn, %s = saldo
 TRANSFER_FailedResponse: "Kunne ikke sende %s til %s på grund af %s" # %s = mængde, %s = mål spillernavn, %s = grund
 
 
