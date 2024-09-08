@@ -2,7 +2,9 @@ package me.edgrrrr.de.mail;
 
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.DivinityModule;
+import me.edgrrrr.de.config.Setting;
 import me.edgrrrr.de.lang.LangEntry;
+import me.edgrrrr.de.mail.events.MailEvent;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 
@@ -16,6 +18,10 @@ public class MailManager extends DivinityModule {
     private Map<String, MailList> mailMap;
     // Where the config is stored
     private FileConfiguration configuration;
+
+    private boolean enableMail;
+    private boolean enableMailNotify;
+    private boolean enableMailNotifySilent;
 
 
     /**
@@ -33,8 +39,21 @@ public class MailManager extends DivinityModule {
      */
     @Override
     public void init() {
-        this.setupMailFile();
-        this.loadAllMail();
+        // Get settings
+        this.enableMail = getMain().getConfMan().getBoolean(Setting.MAIL_ENABLE_BOOLEAN);
+        this.enableMailNotify = getMain().getConfMan().getBoolean(Setting.MAIL_NOTIFY_BOOLEAN);
+        this.enableMailNotifySilent = getMain().getConfMan().getBoolean(Setting.MAIL_NOTIFY_SILENT_BOOLEAN);
+
+        // Load mail
+        if (this.enableMail) {
+            this.setupMailFile();
+            this.loadAllMail();
+        }
+
+        // Create tasks
+        if (this.enableMailNotify && this.enableMail) {
+            getMain().getServer().getPluginManager().registerEvents(new MailEvent(getMain(), enableMailNotifySilent), getMain());
+        }
     }
 
     /**
@@ -42,7 +61,18 @@ public class MailManager extends DivinityModule {
      */
     @Override
     public void deinit() {
-        this.saveAllMail();
+        if (this.enableMail) {
+            this.saveAllMail();
+        }
+    }
+
+    /**
+     * Returns if mail is enabled
+     *
+     * @return boolean - If mail is enabled
+     */
+    public boolean isMailEnabled() {
+        return enableMail;
     }
 
 
@@ -102,6 +132,12 @@ public class MailManager extends DivinityModule {
         return mailList;
     }
 
+    /**
+     * Creates a mail list section in the mail file
+     *
+     * @param uuid - The player to create the mail list for
+     * @return ConfigurationSection - The mail list section
+     */
     public ConfigurationSection createMailListSection(String uuid) {
         return this.configuration.createSection(uuid);
     }
@@ -113,21 +149,43 @@ public class MailManager extends DivinityModule {
      * @return MailList - The mail list for this player
      */
     public MailList getMailList(String uuid) {
+        // If mail system is disabled, return dummy mail list
+        if (!this.enableMail) {
+            return new MailList(uuid, null);
+        }
+
+        // If the player does not have a mail list, create one
         if (!(this.mailMap.containsKey(uuid))) {
             this.addPlayer(uuid);
         }
+
+        // Return the mail list
         return this.mailMap.get(uuid);
     }
 
+    /**
+     * Sets data in the mail file
+     *
+     * @param key   - The key to set
+     * @param value - The value to set
+     */
     private void setData(String key, Object value) {
         this.configuration.set(key, value);
     }
 
+    /**
+     * Saves a mail list to the mail file
+     *
+     * @param mailList - The mail list to save
+     */
     public void saveMailList(MailList mailList) {
         mailList.saveAllMail();
         this.setData(mailList.getPlayer(), mailList.getConfigurationSection());
     }
 
+    /**
+     * Saves the mail file
+     */
     private void saveMailFile() {
         this.getConfMan().saveFile(this.configuration, this.mailFile);
     }
