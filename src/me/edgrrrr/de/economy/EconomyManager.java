@@ -31,6 +31,7 @@ public class EconomyManager extends DivinityModule {
     private final Calendar lastOrderTime = Calendar.getInstance();
     private double totalEconomySize = 0;
     private int totalEconomyPlayers = 0;
+    private int serverEconomyEqualityScore = 0;
 
     private final BukkitRunnable baltopTask = new BukkitRunnable() {
         @Override
@@ -204,6 +205,65 @@ public class EconomyManager extends DivinityModule {
     public int getTotalEconomyPlayers() {
         return this.totalEconomyPlayers;
     }
+
+    /**
+     * Returns the average economy size per player
+     * @return
+     */
+    public double getEconomySizePerCapita() {
+        if (this.totalEconomyPlayers == 0) {
+            return 0;
+        }
+        return this.totalEconomySize / this.totalEconomyPlayers;
+    }
+
+
+    /**
+     * Returns the economy equality score
+     * @return
+     */
+    public int getEconomyEquality() {
+        if (serverEconomyEqualityScore != 0) {
+            return serverEconomyEqualityScore;
+        }
+
+        if (this.totalEconomyPlayers == 0) {
+            return serverEconomyEqualityScore; // No players, no economy equality.
+        }
+
+        double average = getEconomySizePerCapita(); // Get the average balance.
+        double meanDeviation = 0;
+        double allowedDeviation = average * 0.10; // 10% of the average balance.
+
+        for (OfflinePlayer player : getMain().getPlayMan().getPlayers()) {
+            double balance = getBalance(player);
+            double deviation = Math.abs(balance - average); // Deviation from average.
+
+            // If the deviation is larger than allowed, count it fully, otherwise it's reduced.
+            if (deviation > allowedDeviation) {
+                meanDeviation += deviation;
+            } else {
+                meanDeviation += deviation * 0.5; // Apply reduced impact for smaller deviations.
+            }
+        }
+
+        // Normalize the deviation into a 0-100 scale where 0 is worst equality and 100 is perfect equality.
+        double maxDeviation = average * this.totalEconomyPlayers; // Hypothetical maximum deviation.
+        double score = 100 - (meanDeviation / maxDeviation) * 100; // Convert deviation to score out of 100.
+
+        // Ensure the score is between 0 and 100.
+        serverEconomyEqualityScore = Math.max(0, Math.min(100, (int) score));
+        return serverEconomyEqualityScore;
+    }
+
+
+    public String getRichestPerson() {
+        if (this.orderedBalances.isEmpty()) {
+            return "";
+        }
+        return this.orderedBalances.get(0)[0].getName();
+    }
+
 
 
     /**
