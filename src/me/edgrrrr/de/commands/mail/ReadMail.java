@@ -34,6 +34,13 @@ public class ReadMail extends DivinityCommand {
      */
     @Override
     public boolean onPlayerCommand(Player sender, String[] args) {
+        // Check mail is enabled
+        if (!getMain().getMailMan().isMailEnabled())  {
+            returnCommandDisabled(sender);
+            return true;
+        }
+
+
         int page;
         int pageSize = 10;
         switch (args.length) {
