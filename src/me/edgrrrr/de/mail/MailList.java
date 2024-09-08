@@ -3,31 +3,40 @@ package me.edgrrrr.de.mail;
 import me.edgrrrr.de.utils.ArrayUtils;
 import org.bukkit.configuration.ConfigurationSection;
 
+import javax.annotation.Nullable;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class MailList {
     // Variables for the dictionary keys
-    public final String strAmount = "amount";
-    public final String strBalance = "balance";
     public final String strDate = "date";
     public final String strMessage = "message";
-    public final String strSource = "source";
     public final String strRead = "read";
     // Where the mail is stored
     private final Map<String, Mail> mail;
     private final ConfigurationSection configurationSection;
     // The player this mail list belongs to
     private final String playerUUID;
+    private final boolean isDud;
 
     /**
      * Constructor
      */
-    public MailList(String UUID, ConfigurationSection configurationSection) {
+    public MailList(String UUID, @Nullable ConfigurationSection configurationSection) {
         this.playerUUID = UUID;
         this.configurationSection = configurationSection;
         this.mail = new ConcurrentHashMap<>();
 
+        // If the configuration section is null, then this is a dud mail list
+        if (configurationSection == null) {
+            this.isDud = true;
+            return;
+        } // If this is a dud mail list, then return
+        this.isDud = false;
+
+
+
+        // Load all mail from the configuration section
         for (String mailID : this.configurationSection.getKeys(false)) {
             ConfigurationSection mailSection = this.configurationSection.getConfigurationSection(mailID);
             if (mailSection == null) {
@@ -132,7 +141,7 @@ public class MailList {
      * @return boolean - If the user has mail
      */
     public boolean hasMail() {
-        return (this.getMailIDs().size() > 0);
+        return (!this.getMailIDs().isEmpty());
     }
 
     /**
@@ -142,7 +151,7 @@ public class MailList {
      * @return boolean - If the user has unread mail
      */
     public boolean hasNewMail() {
-        return (this.getUnreadMail().size() > 0);
+        return (!this.getUnreadMail().isEmpty());
     }
 
     /**
@@ -152,6 +161,9 @@ public class MailList {
      * @return mailID - The ID of the mail added
      */
     public String addMail(Mail mail) {
+        if (this.isDud) {
+            return null;
+        }
         String mailID = mail.getID();
         this.mail.put(mailID, mail);
         this.setData(mailID, mail.getConfigurationSection());
@@ -171,6 +183,9 @@ public class MailList {
     }
 
     public Mail createMail(String message, Calendar date, boolean read) {
+        if (this.isDud) {
+            return null;
+        }
         ConfigurationSection tempSection = this.createTempMailSection();
         tempSection.set(strMessage, message);
         tempSection.set(strDate, date.getTimeInMillis());
@@ -182,6 +197,9 @@ public class MailList {
     }
 
     public Mail createMail(String message) {
+        if (this.isDud) {
+            return null;
+        }
         return this.createMail(message, Calendar.getInstance(), false);
     }
 
@@ -206,21 +224,6 @@ public class MailList {
         this.setData(mailID, null);
     }
 
-    /**
-     * Removes the given mail from the storage
-     *
-     * @param mail - The mail to remove
-     */
-    public void removeMail(Mail mail) {
-        for (String mailID : this.mail.keySet()) {
-            Mail thisMail = this.mail.get(mailID);
-            if (thisMail == mail) {
-                this.removeMail(thisMail.getID());
-                break;
-            }
-        }
-    }
-
     public ConfigurationSection getConfigurationSection() {
         return this.configurationSection;
     }
@@ -230,6 +233,9 @@ public class MailList {
     }
 
     public void saveAllMail() {
+        if (this.isDud) {
+            return;
+        }
         for (Mail mail : this.getAllMail().values()) {
             this.setData(mail.getID(), mail.getConfigurationSection());
         }
