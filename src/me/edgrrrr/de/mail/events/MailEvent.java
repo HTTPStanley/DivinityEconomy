@@ -13,9 +13,11 @@ import org.bukkit.event.player.PlayerJoinEvent;
  */
 public class MailEvent implements Listener {
     private final DEPlugin main;
+    private final boolean silent;
 
-    public MailEvent(DEPlugin app) {
+    public MailEvent(DEPlugin app, boolean silent) {
         this.main = app;
+        this.silent = silent;
     }
 
     @EventHandler
@@ -24,7 +26,7 @@ public class MailEvent implements Listener {
         MailList mailList = this.main.getMailMan().getMailList(player.getUniqueId().toString());
         if (mailList.hasMail()) {
             this.main.getConsole().info(player, LangEntry.MAIL_MailNotification.get(this.main), mailList.getAllMail().size());
-        } else {
+        } else if (!this.silent) {
             this.main.getConsole().info(player, LangEntry.MAIL_NoMailNotification.get(this.main));
         }
     }
