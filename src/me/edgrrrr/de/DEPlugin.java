@@ -340,6 +340,12 @@ public class DEPlugin extends JavaPlugin {
                 return (int) getEconMan().getTotalEconomySize();
             }));
 
+            // Add custom chart for inflation
+            metrics.addCustomChart(new Metrics.SingleLineChart("economy_inflation", () -> {
+                getConsole().debug("Fetching economy inflation for bStats.");
+                return (int) getMarkMan().getInflation();
+            }));
+
             // Add custom chart for economy size per capita
             metrics.addCustomChart(new Metrics.SingleLineChart("economy_size_per_capita", () -> {
                 getConsole().debug("Fetching economy size per capita for bStats.");

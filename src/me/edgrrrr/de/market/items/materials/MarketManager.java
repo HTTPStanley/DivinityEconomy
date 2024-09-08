@@ -2,6 +2,7 @@ package me.edgrrrr.de.market.items.materials;
 
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.DivinityModule;
+import me.edgrrrr.de.utils.Converter;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.inventory.ItemStack;
 
@@ -177,5 +178,13 @@ public class MarketManager extends DivinityModule {
             return itemStack.getType().name();
         }
         return marketableMaterial.getName();
+    }
+
+    public double getInflation() {
+        double inflation = 0;
+        for (MaterialManager manager : this.managers) {
+            inflation += manager.getInflation();
+        }
+        return Converter.constrainDouble(((inflation * 100) / this.managers.size()), 0, 100);
     }
 }

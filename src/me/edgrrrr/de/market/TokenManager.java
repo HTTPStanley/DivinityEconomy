@@ -438,7 +438,7 @@ public abstract class TokenManager extends DivinityModule {
      */
     public double getInflation() {
         if (this.wholeMarketInflation) {
-            return getInflation(this.defaultTotalItems, this.totalItems);
+            return Converter.constrainDouble(getInflation(this.defaultTotalItems, this.totalItems), 0 , 100);
         } else {
             return 1.0;
         }
