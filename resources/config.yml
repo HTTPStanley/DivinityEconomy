@@ -12,7 +12,7 @@
 #   - mxParser Source: https://github.com/mariuszgromada/MathParser.org-mXparser
 #
 # Officially supported versions: 1.21
-# API version: 1.17
+# API version: 1.20
 #
 # Colours for the chat config can be found here: https://jd.bukkit.org/org/bukkit/ChatColor.html
 # &0 - Black
@@ -98,7 +98,7 @@
 # Main Settings
 Main:
   # This is the plugin config version
-  Version: 3.5.2
+  Version: 3.5.3
   # Should placeholder api support be enabled? ( use "true" / "false" )
   Enable PAPI: true
   # What language file should be used? ( use any string ) | default = en_GB.yml
@@ -141,6 +141,7 @@ Chat:
   Money Plural: "Divinity's"
 
 # Message Ignore Settings
+# These settings relate to the messages that are sent by the plugin into the console on certain events.
 Message Ignore:
   # Should alias errors be ignored? SPAM ( use "true" / "false" )
   Ignore Alias Errors: false
@@ -290,6 +291,21 @@ Market:
 # To change the value of an item, you can use the /setvalue command to change the value of an item.
 # This will approximately change the quantity of an item in the market to be as close as possible to the value you set. It will likely not be exact.
 # Alternatively, you can use the /setstock command to change the quantity of an item in the market.
+
+
+# Mail Settings
+# The mail system tracks transactions between players when they are offline.
+# This means that if a player sends money to another player, and the recipient is offline, upon login they will be notified of the transactions.
+# This system can be navigated in-game using the /readmail and /clearmail commands.
+Mail:
+  # Should mail be enabled? ( use "true" / "false" )
+  Enable: true
+  # Enable mail notifications ( use "true" / "false" )
+  # This means that the player will be notified of mail when they log in.
+  Enable Notifications: true
+  # Enable mail silent notifications ( use "true" / "false" )
+  # This means that the player will only be notified of mail when they log in if they have unread mail.
+  Enable Silent Notifications: true
 
 # Command Settings
 # What commands should be enabled? ( use "true" to enable | "false" to disable)
