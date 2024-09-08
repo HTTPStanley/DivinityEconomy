@@ -83,6 +83,7 @@ public class DEPlugin extends JavaPlugin {
     private ExpansionManager expansionManager;
     // The migration manager
     private MigrationManager migrationManager;
+    private Metrics metrics;
 
 
     /**
@@ -261,7 +262,22 @@ public class DEPlugin extends JavaPlugin {
 
         // Enable bStats
         if (this.getConfMan().getBoolean(Setting.MAIN_ENABLE_BSTATS_BOOLEAN)) {
-            new Metrics(this, bStatsID);
+            metrics = new Metrics(this, bStatsID);
+
+            // Add custom chart for enabled languages
+            metrics.addCustomChart(new Metrics.SimplePie("locale", () -> getLang().getSelectedLangStats()));
+
+            // Add custom chart for economy size
+            metrics.addCustomChart(new Metrics.SimplePie("economy_size", () -> String.valueOf(getEconMan().getTotalEconomySize())));
+
+            // Add custom chart for economy size per capita
+            metrics.addCustomChart(new Metrics.SimplePie("economy_size_per_capita", () -> String.valueOf(getEconMan().getEconomySizePerCapita())));
+
+            // Add custom chart for economy equality
+            metrics.addCustomChart(new Metrics.SimplePie("economy_equality", () -> String.valueOf(getEconMan().getEconomyEquality())));
+
+            // Get the richest person
+            metrics.addCustomChart(new Metrics.SimplePie("richest_person", () -> getEconMan().getRichestPerson()));
         }
 
         // Done :)
@@ -275,6 +291,7 @@ public class DEPlugin extends JavaPlugin {
     @Override
     public void onDisable() {
         DivinityModule.runDeinit();
+        metrics.shutdown();
         this.console.severe(LangEntry.GENERIC_PluginDisabled.get(this));
     }
 
