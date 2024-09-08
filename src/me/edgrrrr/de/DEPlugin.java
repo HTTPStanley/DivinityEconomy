@@ -21,6 +21,7 @@ import me.edgrrrr.de.config.ConfigManager;
 import me.edgrrrr.de.config.Setting;
 import me.edgrrrr.de.console.Console;
 import me.edgrrrr.de.console.LogLevel;
+import me.edgrrrr.de.economy.BaltopPlayer;
 import me.edgrrrr.de.economy.EconomyManager;
 import me.edgrrrr.de.help.HelpManager;
 import me.edgrrrr.de.lang.LangEntry;
@@ -41,6 +42,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * The Main Class of the plugin
@@ -260,24 +262,9 @@ public class DEPlugin extends JavaPlugin {
             this.getConsole().warn(LangEntry.GENERIC_PAPINotFound.get(this));
         }
 
-        // Enable bStats
+        // Metrics
         if (this.getConfMan().getBoolean(Setting.MAIN_ENABLE_BSTATS_BOOLEAN)) {
-            metrics = new Metrics(this, bStatsID);
-
-            // Add custom chart for enabled languages
-            metrics.addCustomChart(new Metrics.SimplePie("locale", () -> getLang().getSelectedLangStats()));
-
-            // Add custom chart for economy size
-            metrics.addCustomChart(new Metrics.SimplePie("economy_size", () -> String.valueOf(getEconMan().getTotalEconomySize())));
-
-            // Add custom chart for economy size per capita
-            metrics.addCustomChart(new Metrics.SimplePie("economy_size_per_capita", () -> String.valueOf(getEconMan().getEconomySizePerCapita())));
-
-            // Add custom chart for economy equality
-            metrics.addCustomChart(new Metrics.SimplePie("economy_equality", () -> String.valueOf(getEconMan().getEconomyEquality())));
-
-            // Get the richest person
-            metrics.addCustomChart(new Metrics.SimplePie("richest_person", () -> getEconMan().getRichestPerson()));
+            this.enableMetrics();
         }
 
         // Done :)
@@ -334,6 +321,76 @@ public class DEPlugin extends JavaPlugin {
         this.console.debug(LangEntry.DESCRIBE_EntitiesMarketInflation.get(this, this.entityManager.getInflation()));
         this.console.debug("");
     }
+
+
+    public void enableMetrics() {
+        // Enable bStats
+        metrics = new Metrics(this, bStatsID);
+
+        // Add custom chart for enabled languages
+        metrics.addCustomChart(new Metrics.SimplePie("locale", () -> {
+            getConsole().debug("Fetching locale for bStats.");
+            return getLang().getSelectedLangStats();
+        }));
+
+        if (getEconMan().getTotalEconomySize() > 0) {
+            // Add custom chart for economy size
+            metrics.addCustomChart(new Metrics.SingleLineChart("economy_size", () -> {
+                getConsole().debug("Fetching economy size for bStats.");
+                return (int) getEconMan().getTotalEconomySize();
+            }));
+
+            // Add custom chart for economy size per capita
+            metrics.addCustomChart(new Metrics.SingleLineChart("economy_size_per_capita", () -> {
+                getConsole().debug("Fetching economy size per capita for bStats.");
+                return (int) getEconMan().getEconomySizePerCapita();
+            }));
+
+            // Add custom chart for economy equality
+            metrics.addCustomChart(new Metrics.SingleLineChart("economy_equality", () -> {
+                getConsole().debug("Fetching economy equality for bStats.");
+                return (int) getEconMan().getEconomyEquality();
+            }));
+
+            // Get the richest person
+            metrics.addCustomChart(new Metrics.AdvancedPie("richest_players", () -> {
+                getConsole().debug("Fetching richest players for bStats.");
+                BaltopPlayer player = getEconMan().getRichestPlayer();
+                if (player != null) return Map.of(player.getName(), (int) player.getBalance());
+                return Map.of("", 0);
+            }));
+
+            // Compare the top 20%, bottom 80% - pie chart
+            metrics.addCustomChart(new Metrics.AdvancedPie("economy_distribution_1", () -> {
+                getConsole().debug("Fetching economy distribution 1 for bStats.");
+                double balance = getEconMan().getTotalEconomySize();
+                double top20 = (getEconMan().getTopPercentileBalance(20) / balance) * 100;
+                double bottom80 = (getEconMan().getBottomPercentileBalance(80) / balance) * 100;
+                return Map.of(
+                        "Top 20%", (int) top20,
+                        "Bottom 80%", (int) bottom80
+                );
+            }));
+
+
+            // Compare the top 1%, top 10%, top 50%, bottom 50% - pie chart
+            metrics.addCustomChart(new Metrics.AdvancedPie("economy_distribution_2", () -> {
+                getConsole().debug("Fetching economy distribution 2 for bStats.");
+                double balance = getEconMan().getTotalEconomySize();
+                double top1 = (getEconMan().getTopPercentileBalance(1) / balance) * 100;
+                double top10 = ((getEconMan().getTopPercentileBalance(10) - top1) / balance) * 100;
+                double top50 = ((getEconMan().getTopPercentileBalance(50) - top10) / balance) * 100;
+                double bottom50 = (getEconMan().getBottomPercentileBalance(50) / balance) * 100;
+                return Map.of(
+                        "Top 1%", (int) top1,
+                        "Top 10%", (int) top10,
+                        "Top 50%", (int) top50,
+                        "Bottom 50%", (int) bottom50
+                );
+            }));
+        }
+    }
+
 
     /**
      * Returns the config manager
