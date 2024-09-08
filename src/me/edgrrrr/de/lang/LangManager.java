@@ -1,13 +1,11 @@
 package me.edgrrrr.de.lang;
 
-import com.tchristofferson.configupdater.ConfigUpdater;
 import me.edgrrrr.de.DEPlugin;
 import me.edgrrrr.de.DivinityModule;
 import me.edgrrrr.de.config.Setting;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.io.File;
-import java.util.Collections;
 
 enum ProvidedLangFile {
     en_GB("en_GB.yml"), // English - UK
@@ -68,6 +66,9 @@ public class LangManager extends DivinityModule {
      */
     @Override
     public void init() {
+        boolean isUpdated = false;
+        boolean isCreated = false;
+
         // Get settings
         translateItems = getMain().getConfig().getBoolean(Setting.MAIN_TRANSLATE_ITEMS_BOOLEAN.path);
         desiredLang = getMain().getConfig().getString(Setting.MAIN_LANG_FILE_STRING.path);
@@ -80,12 +81,39 @@ public class LangManager extends DivinityModule {
             try {
                 // Get the file
                 File thisLangFile = this.getConfMan().getFile(providedLangFile.getFilePath());
+                FileConfiguration thisResourceFile = this.getConfMan().readResource(providedLangFile.getResourcePath());
                 if (!thisLangFile.exists()) {
                     thisLangFile.createNewFile();
+                    isCreated = true;
+                }
+                FileConfiguration thisLangConfig = this.getConfMan().readFile(thisLangFile);
+
+                // Loop through resource file and add missing entries to lang file
+                // Also update any entries that have a different number of '%s' in them
+                for (String key : thisResourceFile.getKeys(true)) {
+                    if (!thisLangConfig.contains(key)) {
+                        thisLangConfig.set(key, thisResourceFile.get(key));
+                        isUpdated = true;
+                    } else {
+                        String resourceString = thisResourceFile.getString(key);
+                        String langString = thisLangConfig.getString(key);
+                        if (resourceString != null && langString != null) {
+                            int resourceCount = resourceString.length() - resourceString.replace("%s", "").length();
+                            int langCount = langString.length() - langString.replace("%s", "").length();
+                            if (resourceCount != langCount) {
+                                thisLangConfig.set(key, resourceString);
+                                isUpdated = true;
+                            }
+                        }
+                    }
                 }
 
-                // Run Update
-                ConfigUpdater.update(getMain(), providedLangFile.getResourcePath(), thisLangFile, Collections.emptyList());
+                thisLangConfig.save(thisLangFile);
+                if (isCreated) {
+                    this.getConsole().info("Created lang file: %s.", providedLangFile.getPath());
+                } else if (isUpdated) {
+                    this.getConsole().info("Updated lang file: %s.", providedLangFile.getPath());
+                }
             }
             catch (Exception e) {
                 this.getConsole().severe("Couldn't update lang file: %s.", providedLangFile.getPath());
