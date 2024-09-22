@@ -7,6 +7,8 @@
     <p><strong>Minecraft Server Java</strong>: DivinityCraft.org:25565</p>
     <p><strong>Dynmap</strong>: <a href="http://Play.DivinityCraft.org:25566" target="_blank" rel="noopener noreferrer">Click To View</a></p>
     <p><strong>Website</strong> <a href="http://DivinityCraft.org" target="_blank" rel="noopener noreferrer">Click To View</a></p>
+    <p><strong>Report A Bug</strong>: <a href="https://github.com/HTTPStanley/DivinityEconomy/issues" target="_blank" rel="noopener noreferrer">Click To Report</a></p>
+    <p><strong>bStats</strong>: <a href="https://bstats.org/plugin/bukkit/Divinity%20Economy/22013" target="_blank" rel="noopener noreferrer">Click To View</a></p>
 </ul>
 
 <h2>🔑 Key Features</h2>
@@ -18,6 +20,8 @@
     <li><p><strong>🚀 Instant Tab Completion:</strong> The plugin offers instant tab completion for all players and items, including hundreds of thousands of item name aliases. This feature allows users to quickly access item valuations without having to press enter, resulting in a more efficient and satisfying experience.</p></li>
     <li><p><strong>🎨 Customizable Items, Prices, and Aliases:</strong> DivinityEconomy provides server owners with the flexibility to customize items, prices, and aliases to better suit their server's unique needs. This feature allows for the creation of a truly personalized in-game economy.</p></li>
     <li><p><strong>🔐 Market Segment and Item Control:</strong> The plugin enables server owners to enable or disable specific market segments, individual items, and commands, giving them complete control over the in-game economy. This feature ensures that the economy can be tailored to suit the preferences and requirements of each server.</p></li>
+    <li><p><strong>🌍 Per-World Customisation:</strong> DivinityEconomy supports per-world customisation, allowing server owners to configure the economy differently in each world. This feature provides greater flexibility and control over the in-game economy, enabling server owners to create unique and engaging experiences for players.</p></li>
+    <li><p><strong>🔖 PlaceholderAPI Support:</strong> DivinityEconomy offers optional support for PlaceholderAPI, a plugin that allows server administrators to customize information displayed to players using placeholders. This feature enhances the plugin's customisation possibilities and versatility, enabling server owners to develop even more captivating and immersive economic experiences.</p></li>
 </ul>
 <p>DivinityEconomy is designed to provide a highly customizable and immersive economic experience for Minecraft players 🎮. With its advanced features and user-friendly interface, this plugin is set to elevate the in-game economy to new levels, offering an engaging and interactive experience for all users.</p>
 
@@ -28,6 +32,27 @@
     <li>Pre-balanced economy setup for survival servers with 'inaccessible' items banned.</li>
     <li>Pre-allocated thousands of item aliases.</li>
     <li>QoL and Admin commands to setup features without touching config files.</li>
+    <li>Support for multiple languages.</li>
+</ul>
+
+<h2>📚 Localisation</h2>
+<p>DivinityEconomy supports localisation for multiple languages, this includes multiple options to enable language support for both commands and items, materials, enchantments and potions. You can also add your own language files, or tweak existing ones. If you would like to contribute to the localisation of DivinityEconomy, please visit our <a href="https://discord.com/invite/K7DY6UD" target="_blank" rel="noopener noreferrer">Discord</a>.</p>
+<strong>Languages Currently Supported:</strong>
+<ul>
+    <li>English.</li>
+    <li>French.</li>
+    <li>Spanish.</li>
+    <li>German.</li>
+    <li>Italian.</li>
+    <li>Russian.</li>
+    <li>Portuguese</li>
+    <li>Dutch</li>
+    <li>Polish</li>
+    <li>Danish</li>
+    <li>Swedish</li>
+    <li>Turkish</li>
+    <li>Chinese (Simplified)</li>
+    <li>Japanese</li>
 </ul>
 
 <h2>⌨ Commands</h2>
@@ -74,6 +99,7 @@
     <li><strong>Clear Mail</strong> - Clear your economy notifications.</li>
     <li><strong>Help</strong> - Command help, parameters, aliases and usage.</li>
     <li><strong>Ping</strong> - Pong!</li>
+    <li><strong>EconomyNotifications</strong> - Toggle economy notifications on join and world change.</li>
 </ul>
 
 <h4>👷‍♂️ Admin Commands</h4>
@@ -82,6 +108,8 @@
     <li><strong>Set Stock</strong> - Set the stock of an item within the market.</li>
     <li><strong>Enchant Set Value</strong> - Set the value of an enchant within the market.</li>
     <li><strong>Enchant Set Stock</strong> - Set the stock of an enchant within the market.</li>
+    <li><strong>Ban Item</strong> - Ban an item from the market.</li>
+    <li><strong>Ban Enchant</strong> - Ban an enchant from the market.</li>
     <li><strong>Set Balance</strong> - Set the balance of a player.</li>
     <li><strong>Edit Balance</strong> - Edit the balance of a player by an amount, supporting both positive and negative numbers.</li>
     <li><strong>Clear Balance</strong> - A shorthand command for setting a players balance to 0.</li>
@@ -95,26 +123,39 @@
 <h2>🔖 PlaceholderAPI Support</h2>
 <p>Our plugin fully integrates with PlaceholderAPI, a plugin that allows server administrators to customize information displayed to players using placeholders. Please note that PlaceholderAPI is a separate plugin that must be installed. <a href="https://www.spigotmc.org/resources/placeholderapi.6245/" target="_blank">Download Here</a>.</p>
 <ul>
-<li><code>%de_material_inflation%</code> - Displays the inflation rate for materials in the market.</li>
+    <li><code>%de_material_inflation%</code> - Displays the inflation rate for materials in the market.</li>
     <li><code>%de_material_total_quantity%</code> - Displays the total quantity of all materials currently in the market.</li>
     <li><code>%de_material_total__default_quantity%</code> - Displays the default total quantity of all materials in the market.</li>
     <li><code>%de_enchant_inflation%</code> - Displays the inflation rate for enchantments in the market.</li>
     <li><code>%de_enchant_total_quantity%</code> - Displays the total quantity of all enchantments currently in the market.</li>
-    <li><code>%de_enchant_total__default_quantity%</code> - Displays the default total quantity of all enchantments in the market.</li>
-    <li><code>%de_format_money_&lt;valueToFormat&gt;%</code> - Returns a formatted money value. This supports variables such as <code>format_money_{placeholderapi_variable}</code>.</li>
-    <li><code>%de_balance_math_&lt;expression&gt;_&lt;value&gt;%</code> - Returns the result of the specified mathematical operation on the player's balance. For example, <code>math_+_1000</code> returns the player's balance plus 1000.</li>
-    <li><code>%de_raw_balance_math_&lt;expression&gt;_&lt;value&gt;%</code> - Returns the raw result of the specified mathematical operation on the player's balance.</li>
+    <li><code>%de_enchant_total_default_quantity%</code> - Displays the default total quantity of all enchantments in the market.</li>
+    <li><code>%de_format_money_{valueToFormat}%</code> - Returns a formatted money value. This supports variables such as <code>format_money_{placeholderapi_variable}</code>.</li>
+    <li><code>%de_balance_math_{expression}_{value}%</code> - Returns the result of the specified mathematical operation on the player's balance. For example, <code>math_+_1000</code> returns the player's balance plus 1000.</li>
+    <li><code>%de_raw_balance_math_{expression}_{value}%</code> - Returns the raw result of the specified mathematical operation on the player's balance.</li>
     <li><code>%de_raw_player_balance%</code> - Displays the raw value of the player's balance.</li>
     <li><code>%de_player_balance%</code> - Displays the player's balance in a formatted manner.</li>
-    <li><code>%de_material_SValue_&lt;materialName&gt;_&lt;amount&gt;%</code> - Returns the formatted sell value of the specified quantity of a material.</li>
-    <li><code>%de_material_BValue_&lt;materialName&gt;_&lt;amount&gt;%</code> - Returns the formatted buy value of the specified quantity of a material.</li>
-    <li><code>%de_raw_material_SValue_&lt;materialName&gt;_&lt;amount&gt;%</code> - Returns the raw sell value of the specified quantity of a material.</li><li><code>%de_raw_material_BValue_&lt;materialName&gt;_&lt;amount&gt;%</code> - Returns the raw buy value of the specified quantity of a material.</li>
-    <li><code>%de_material_stock_&lt;materialName&gt;%</code> - Returns the current stock quantity of a specific material.</li>
-    <li><code>%de_enchant_stock_&lt;enchantName&gt;%</code> - Returns the current stock quantity of a specific enchantment.</li>
-    <li><code>%de_material_stack_&lt;materialName&gt;%</code> - Returns the maximum stack size for a specific material.</li>
-    <li><code>%de_exp_BValue_&lt;amount&gt;%</code> - Returns the formatted buy value of the specified quantity of experience.</li>
-    <li><code>%de_exp_SValue_&lt;amount&gt;%</code> - Returns the formatted sell value of the specified quantity of experience.</li>
+    <li><code>%de_material_SValue_{materialName}_{amount}%</code> - Returns the formatted sell value of the specified quantity of a material.</li>
+    <li><code>%de_material_BValue_{materialName}_{amount}%</code> - Returns the formatted buy value of the specified quantity of a material.</li>
+    <li><code>%de_raw_material_SValue_{materialName}_{amount}%</code> - Returns the raw sell value of the specified quantity of a material.</li>
+    <li><code>%de_raw_material_BValue_{materialName}_{amount}%</code> - Returns the raw buy value of the specified quantity of a material.</li>
+    <li><code>%de_material_stock_{materialName}%</code> - Returns the current stock quantity of a specific material.</li>
+    <li><code>%de_enchant_stock_{enchantName}%</code> - Returns the current stock quantity of a specific enchantment.</li>
+    <li><code>%de_material_stack_{materialName}%</code> - Returns the maximum stack size for a specific material.</li>
+    <li><code>%de_exp_BValue_{amount}%</code> - Returns the formatted buy value of the specified quantity of experience.</li>
+    <li><code>%de_exp_SValue_{amount}%</code> - Returns the formatted sell value of the specified quantity of experience.</li>
+    <li><code>%de_market_enabled_worlds%</code> - Returns a list of enabled worlds for the market.</li>
+    <li><code>%de_economy_enabled_worlds%</code> - Returns a list of enabled worlds for the economy.</li>
+    <li><code>%de_market_disabled_worlds%</code> - Returns a list of disabled worlds for the market.</li>
+    <li><code>%de_economy_disabled_worlds%</code> - Returns a list of disabled worlds for the economy.</li>
+    <li><code>%de_market_enabled_world_{worldName}%</code> - Returns true if the market is enabled in the given world.</li>
+    <li><code>%de_economy_enabled_world_{worldName}%</code> - Returns true if the economy is enabled in the given world.</li>
+    <li><code>%de_market_enabled%</code> - Returns true if the market is enabled in the current world.</li>
+    <li><code>%de_economy_enabled%</code> - Returns true if the economy is enabled in the current world.</li>
+    <li><code>%de_hand_value_total%</code> - Returns the total value of the item in the player's hand.</li>
+    <li><code>%de_hand_value_material%</code> - Returns the material value of the item in the player's hand.</li>
+    <li><code>%de_hand_value_enchant%</code> - Returns the enchant value of the item in the player's hand.</li>
 </ul>
+
 <p>Please ensure that your PlaceholderAPI plugin is up-to-date to guarantee compatibility with our plugin. If you encounter any issues or require additional placeholders, do not hesitate to open an issue on our <a href="https://github.com/HTTPStanley/DivinityEconomy" target="_blank" rel="noopener noreferrer">Github</a>.</p>
 
 <h2>🧾 Permissions</h2>
@@ -123,6 +164,7 @@
 <ul>
     <li><code>de.money.listbalances</code> - Allows the user to view a list of user balances. This permission is granted by default.</li>
     <li><code>de.money.balance</code> - Allows the user to view their balance. This permission is granted by default.</li>
+    <li><code>de.money.balanceOther</code> - Allows the user to view the balance of others. This permission is granted by default.</li>
     <li><code>de.money.sendcash</code> - Allows the user to send cash to others. This permission is granted by default.</li>
 </ul>
 <br>
@@ -187,16 +229,19 @@
     <li><code>de.admin.setValue</code> - Allows the user to set the value of an item. This permission is granted by default to operators.</li>
     <li><code>de.admin.eSetStock</code> - Allows the user to set the stock of an enchant. This permission is granted by default to operators.</li>
     <li><code>de.admin.eSetValue</code> - Allows the user to set the value of an enchant. This permission is granted by default to operators.</li>
+    <li><code>de.admin.banItem</code> - Allows the user to ban an item. This permission is granted by default to operators.</li>
+    <li><code>de.admin.banEnchant</code> - Allows the user to ban an enchant. This permission is granted by default to operators.</li>
 </ul>
 <br>
 
 <h3>Misc</h3>
-<p><code>de.misc</code> - Allows the user to use miscellaneous commands. This permission is not granted by default.</p>
+<p><code>de.misc</code> - Allows the user to use miscellaneous commands. This permission is granted by default.</p>
 <ul>
     <li><code>de.misc.ping</code> - Allows the user to use the ping command. This permission is granted by default.</li>
+    <li><code>de.misc.economyNotifications</code> - Allows the user to toggle economy notifications. This permission is granted by default.</li>
 </ul>
 <br>
 
 <hr>
 
-<a href="https://modrinth.com/plugin/divinity-economy" target="_blank" rel="noopener noreferrer">View On Modrinth</a>
+<a href="https://github.com/HTTPStanley/DivinityEconomy" target="_blank" rel="noopener noreferrer">View On Github</a>
