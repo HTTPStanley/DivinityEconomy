@@ -32,6 +32,7 @@ public enum LangEntry {
     GENERIC_FileSaved(),
     GENERIC_LocaleError(LogLevel.WARNING),
     GENERIC_PlayerNoPermission(LogLevel.WARNING),
+    GENERIC_LanguagePlea(LogLevel.WARNING),
 
 
     // Describe
