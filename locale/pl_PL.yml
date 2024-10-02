@@ -27,6 +27,7 @@ GENERIC_Aliases: "Aliasy: %s" # %s = aliasy
 GENERIC_FileSaved: "%s zapisany." # %s = nazwa pliku
 GENERIC_LocaleError: "Wystąpił błąd podczas ustawiania języka na '%s'. Zobacz szczegóły poniżej¬" # %s = język
 GENERIC_PlayerNoPermission: "Nie masz uprawnień do wykonania tej komendy."
+GENERIC_LanguagePlea: "Rozważ przyczynienie się do plików językowych wtyczki, przesyłając poprawki lub nowe tłumaczenia na GitHubie lub Discordzie(https://Discord.gg/K7DY6UD)"
 
 
 # Opis
@@ -1831,3 +1832,9 @@ ZOMBIE_VILLAGER_SPAWNER: "Spawner osadników zombie"
 ZOMBIE_VILLAGER_SPAWN_EGG: "Jajko przyzywające wieśniaka zombie"
 ZOMBIFIED_PIGLIN_SPAWNER: "Zombi Spawner Piglinów"
 ZOMBIFIED_PIGLIN_SPAWN_EGG: "Zombifikowane jajo przyzywające piglina"
+BREEZE_ROD: "Pręt Breeze"
+WIND_CHARGE: "Opłata za wiatr"
+CRAFTER: "Rzemieślnik"
+TRIAL_KEY: "Klucz próbny"
+OMINOUS_TRIAL_KEY: "Klucz do Złowrogiego Procesu"
+MACE: "Buzdygan"

@@ -27,6 +27,7 @@ GENERIC_Aliases: "Takma Adlar: %s" # %s = takma adlar
 GENERIC_FileSaved: "%s kaydedildi." # %s = dosya adı
 GENERIC_LocaleError: "Yerel ayar '%s' olarak ayarlanırken bir hata oluştu. Aşağıdaki detaylara bakın¬" # %s = yerel ayar
 GENERIC_PlayerNoPermission: "Bu komutu kullanma izniniz yok."
+GENERIC_LanguagePlea: "Lütfen düzeltmeleri veya yeni çevirileri GitHub veya Discord (https://Discord.gg/K7DY6UD) üzerinden sunarak eklentinin dil dosyalarına katkıda bulunmayı düşünün"
 
 
 # Açıklama
@@ -1830,4 +1831,9 @@ ZOMBIE_VILLAGER_SPAWNER: "Zombi Köylü Doğma Yeri"
 ZOMBIE_VILLAGER_SPAWN_EGG: "Zombi Köylü Yumurtlama Yumurtası"
 ZOMBIFIED_PIGLIN_SPAWNER: "Zombileştirilmiş Piglin Yumurtlama Yeri"
 ZOMBIFIED_PIGLIN_SPAWN_EGG: "Zombileştirilmiş Piglin Yumurtlama Yumurtası"
-
+BREEZE_ROD: "Rüzgar Çubuğu"
+WIND_CHARGE: "Rüzgar yükü"
+CRAFTER: "Zanaatkar"
+TRIAL_KEY: "Deneme Anahtarı"
+OMINOUS_TRIAL_KEY: "Uğursuz Deneme Anahtarı"
+MACE: "Topuz"

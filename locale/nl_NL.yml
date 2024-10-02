@@ -27,6 +27,7 @@ GENERIC_Aliases: "Aliassen: %s" # %s = aliassen
 GENERIC_FileSaved: "%s opgeslagen." # %s = bestandsnaam
 GENERIC_LocaleError: "Er is een fout opgetreden bij het instellen van de taal naar '%s'. Zie details hieronder¬" # %s = taal
 GENERIC_PlayerNoPermission: "U hebt geen toestemming om dit te doen."
+GENERIC_LanguagePlea: "Overweeg bij te dragen aan de taalbestanden van de plugin door correcties of nieuwe vertalingen in te dienen op GitHub of Discord(https://Discord.gg/K7DY6UD)"
 
 
 # Beschrijf
@@ -1829,3 +1830,9 @@ ZOMBIE_VILLAGER_SPAWNER: "Zombie dorpelingspawner"
 ZOMBIE_VILLAGER_SPAWN_EGG: "Spawn-ei van een zombiedorpeling"
 ZOMBIFIED_PIGLIN_SPAWNER: "Gezombificeerde Piglin Spawner"
 ZOMBIFIED_PIGLIN_SPAWN_EGG: "Zombified Piglin Spawn-ei"
+BREEZE_ROD: "Breeze hengel"
+WIND_CHARGE: "Windbelasting"
+CRAFTER: "Knutselaar"
+TRIAL_KEY: "Proefsleutel"
+OMINOUS_TRIAL_KEY: "Onheilspellende proefsleutel"
+MACE: "Foelie"

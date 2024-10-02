@@ -27,6 +27,7 @@ GENERIC_Aliases: "Alias: %s" # %s = alias
 GENERIC_FileSaved: "%s sparad." # %s = filnamn
 GENERIC_LocaleError: "Ett fel uppstod när språk sattes till '%s'. Se detaljer nedan¬" # %s = språk
 GENERIC_PlayerNoPermission: "Du har inte tillräckliga behörigheter för att använda detta kommando."
+GENERIC_LanguagePlea: "Vänligen överväg att bidra till pluginens språkfiler genom att skicka in korrigeringar eller nya översättningar på GitHub eller Discord(https://Discord.gg/K7DY6UD)"
 
 
 # Beskriv
@@ -1830,4 +1831,9 @@ ZOMBIE_VILLAGER_SPAWNER: "Zombie Villager Spawner"
 ZOMBIE_VILLAGER_SPAWN_EGG: "Zombie Villager Spawn Egg"
 ZOMBIFIED_PIGLIN_SPAWNER: "Zombifierad Piglin Spawner"
 ZOMBIFIED_PIGLIN_SPAWN_EGG: "Zombifierat piglin spawn egg"
-
+BREEZE_ROD: "Breeze Rod"
+WIND_CHARGE: "Vindladdning"
+CRAFTER: "Hantverkare"
+TRIAL_KEY: "Testnyckel"
+OMINOUS_TRIAL_KEY: "Illavarslande testnyckel"
+MACE: "Mace"

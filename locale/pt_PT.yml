@@ -27,6 +27,7 @@ GENERIC_Aliases: "Aliases: %s" # %s = aliases
 GENERIC_FileSaved: "%s guardado." # %s = nome do ficheiro
 GENERIC_LocaleError: "Ocorreu um erro ao definir o idioma para '%s'. Veja os detalhes abaixo¬" # %s = idioma
 GENERIC_PlayerNoPermission: "Não tem permissão para executar este comando."
+GENERIC_LanguagePlea: "Por favor, considere contribuir para os ficheiros de idioma do plugin, enviando correções ou novas traduções no GitHub ou Discord(https://Discord.gg/K7DY6UD)"
 
 
 # Descrever
@@ -1829,3 +1830,9 @@ ZOMBIE_VILLAGER_SPAWNER: "Gerador de Aldeão Zumbi"
 ZOMBIE_VILLAGER_SPAWN_EGG: "Ovo de geração de aldeão zumbi"
 ZOMBIFIED_PIGLIN_SPAWNER: "Gerador de Piglin Zombificado"
 ZOMBIFIED_PIGLIN_SPAWN_EGG: "Ovo de desova de Piglin zumbificado"
+BREEZE_ROD: "Vara de Brisa"
+WIND_CHARGE: "Carga de Vento"
+CRAFTER: "Artesão"
+TRIAL_KEY: "Chave de teste"
+OMINOUS_TRIAL_KEY: "Chave de julgamento sinistro"
+MACE: "Maça"

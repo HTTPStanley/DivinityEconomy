@@ -27,6 +27,7 @@ GENERIC_Aliases: "Aliases: %s" # %s = aliases
 GENERIC_FileSaved: "%s saved." # %s = file name
 GENERIC_LocaleError: "An error occurred while setting the locale to '%s'. See details below¬" # %s = locale
 GENERIC_PlayerNoPermission: "You do not have permission to use this command."
+GENERIC_LanguagePlea: "Please consider contributing to the plugin's language files by submitting corrections or new translations on GitHub or Discord(https://Discord.gg/K7DY6UD)"
 
 
 # Describe
@@ -1829,3 +1830,9 @@ ZOMBIE_VILLAGER_SPAWNER: "Zombie Villager Spawner"
 ZOMBIE_VILLAGER_SPAWN_EGG: "Zombie Villager Spawn Egg"
 ZOMBIFIED_PIGLIN_SPAWNER: "Zombified Piglin Spawner"
 ZOMBIFIED_PIGLIN_SPAWN_EGG: "Zombified Piglin Spawn Egg"
+BREEZE_ROD: "Breeze Rod"
+WIND_CHARGE: "Wind Charge"
+CRAFTER: "Crafter"
+TRIAL_KEY: "Trial Key"
+OMINOUS_TRIAL_KEY: "Ominous Trial Key"
+MACE: "Mace"

@@ -27,6 +27,7 @@ GENERIC_Aliases: "Aliase: %s" # %s = Aliase
 GENERIC_FileSaved: "%s gespeichert." # %s = Dateiname
 GENERIC_LocaleError: "Ein Fehler ist aufgetreten, während die Sprache auf '%s' gesetzt wurde. Details siehe unten¬" # %s = Sprache
 GENERIC_PlayerNoPermission: "Sie haben keine Berechtigung, diesen Befehl auszuführen."
+GENERIC_LanguagePlea: "Bitte erwägen Sie, zu den Sprachdateien des Plugins beizutragen, indem Sie Korrekturen oder neue Übersetzungen auf GitHub oder Discord einreichen (https://Discord.gg/K7DY6UD)"
 
 
 # Beschreiben
@@ -1811,3 +1812,9 @@ ZOMBIE_VILLAGER_SPAWNER: "Zombie-Dorfbewohner-Spawner"
 ZOMBIE_VILLAGER_SPAWN_EGG: "Zombie-Dorfbewohner-Spawn-Ei"
 ZOMBIFIED_PIGLIN_SPAWNER: "Zombifizierter Piglin-Spawner"
 ZOMBIFIED_PIGLIN_SPAWN_EGG: "Zombifiziertes Piglin-Spawn-Ei"
+BREEZE_ROD: "Brise Stange"
+WIND_CHARGE: "Windladung"
+CRAFTER: "Handwerker"
+TRIAL_KEY: "Testschlüssel"
+OMINOUS_TRIAL_KEY: "Ominöser Testschlüssel"
+MACE: "Keule"

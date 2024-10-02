@@ -27,6 +27,7 @@ GENERIC_Aliases: "别名：%s" # %s = 别名
 GENERIC_FileSaved: "%s 已保存。" # %s = 文件名
 GENERIC_LocaleError: "设置语言为 '%s' 时发生错误。详情如下¬" # %s = 语言
 GENERIC_PlayerNoPermission: "你没有权限执行此命令。"
+GENERIC_LanguagePlea: "请考虑通过在 GitHub 或 Discord(https://Discord.gg/K7DY6UD) 上提交更正或新翻译来为插件的语言文件做出贡献。"
 
 
 # 描述
@@ -1829,4 +1830,10 @@ ZOMBIE_VILLAGER_SPAWNER: "僵尸村民生成器"
 ZOMBIE_VILLAGER_SPAWN_EGG: "僵尸村民刷怪蛋"
 ZOMBIFIED_PIGLIN_SPAWNER: "僵尸猪灵生成器"
 ZOMBIFIED_PIGLIN_SPAWN_EGG: "僵尸猪灵刷怪蛋"
+BREEZE_ROD: "微风之杖"
+WIND_CHARGE: "风之冲击"
+CRAFTER: "工匠"
+TRIAL_KEY: "试用密钥"
+OMINOUS_TRIAL_KEY: "凶险试炼钥匙"
+MACE: "锤"
 

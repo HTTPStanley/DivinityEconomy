@@ -27,6 +27,7 @@ GENERIC_Aliases: "別名：%s" # %s = 別名
 GENERIC_FileSaved: "%s が保存されました。" # %s = ファイル名
 GENERIC_LocaleError: "'%s' のロケール設定中にエラーが発生しました。詳細は以下をご覧ください¬" # %s = ロケール
 GENERIC_PlayerNoPermission: "権限がありません。"
+GENERIC_LanguagePlea: "言語ファイルの修正や新しい翻訳を提出することで、プラグインの言語ファイルに貢献してください。GitHub または Discord(https://Discord.gg/K7DY6UD) で修正や新しい翻訳を提出してください。"
 
 
 # 説明
@@ -1830,4 +1831,9 @@ ZOMBIE_VILLAGER_SPAWNER: "村人ゾンビスポナー"
 ZOMBIE_VILLAGER_SPAWN_EGG: "村人ゾンビのスポーンエッグ"
 ZOMBIFIED_PIGLIN_SPAWNER: "ゾンビ化したピグリンスポナー"
 ZOMBIFIED_PIGLIN_SPAWN_EGG: "ゾンビ化したピグリンのスポーンエッグ"
-
+BREEZE_ROD: "ブリーズロッド"
+WIND_CHARGE: "風のチャージ"
+CRAFTER: "クラフター"
+TRIAL_KEY: "トライアルキー"
+OMINOUS_TRIAL_KEY: "不吉な試練の鍵"
+MACE: "メース"

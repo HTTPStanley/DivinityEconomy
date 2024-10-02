@@ -27,6 +27,7 @@ GENERIC_Aliases: "Alias: %s" # %s = alias
 GENERIC_FileSaved: "%s guardado." # %s = nombre de archivo
 GENERIC_LocaleError: "Ocurrió un error al establecer la configuración regional en '%s'. Ver detalles a continuación"
 GENERIC_PlayerNoPermission: "No tienes permiso para hacer eso."
+GENERIC_LanguagePlea: "Por favor, considera contribuir a los archivos de idioma del plugin enviando correcciones o nuevas traducciones en GitHub o Discord(https://Discord.gg/K7DY6UD)"
 
 
 # Describir
@@ -1829,3 +1830,9 @@ ZOMBIE_VILLAGER_SPAWNER: "Generador de aldeanos zombies"
 ZOMBIE_VILLAGER_SPAWN_EGG: "Huevo de generación de aldeano zombie"
 ZOMBIFIED_PIGLIN_SPAWNER: "Engendro de Piglin zombificado"
 ZOMBIFIED_PIGLIN_SPAWN_EGG: "Huevo de generación de Piglin zombificado"
+BREEZE_ROD: "Varilla de brisa"
+WIND_CHARGE: "Carga de viento"
+CRAFTER: "Artesano"
+TRIAL_KEY: "Clave de prueba"
+OMINOUS_TRIAL_KEY: "Llave de prueba siniestra"
+MACE: "Maza"

@@ -27,6 +27,7 @@ GENERIC_Aliases: "Alias: %s" # %s = alias
 GENERIC_FileSaved: "%s salvato." # %s = nome file
 GENERIC_LocaleError: "Si è verificato un errore durante l'impostazione della localizzazione su '%s'. Vedi i dettagli qui sotto."
 GENERIC_PlayerNoPermission: "Non hai il permesso di eseguire questo comando."
+GENERIC_LanguagePlea: "Si prega di contribuire ai file di lingua del plugin inviando correzioni o nuove traduzioni su GitHub o Discord (https://Discord.gg/K7DY6UD)"
 
 # Descrizione
 DESCRIBE_Header: "===Descrivi==="
@@ -1811,3 +1812,9 @@ ZOMBIE_VILLAGER_SPAWNER: "Generatore di villici zombi"
 ZOMBIE_VILLAGER_SPAWN_EGG: "Uovo di generazione degli abitanti di un villaggio zombi"
 ZOMBIFIED_PIGLIN_SPAWNER: "Generatore di piglin zombificato"
 ZOMBIFIED_PIGLIN_SPAWN_EGG: "Uovo di generazione di Piglin zombificato"
+BREEZE_ROD: "Asta di brezza"
+WIND_CHARGE: "Carica del vento"
+CRAFTER: "Artigiano"
+TRIAL_KEY: "Chiave di prova"
+OMINOUS_TRIAL_KEY: "Chiave minacciosa del processo"
+MACE: "Mazza"
