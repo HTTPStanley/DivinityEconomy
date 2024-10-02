@@ -82,12 +82,13 @@
 # - tr_TR.yml | Turkish
 # - zh_CN.yml | Chinese
 # - ja_JP.yml | Japanese
-#
-# - In progress:
 # - ko_KR.yml | Korean
 # - ar_SA.yml | Arabic
-# - he_IL.yml | Hebrew
 # - hi_IN.yml | Hindi
+# - he_IL.yml | Hebrew
+#
+# - In progress:
+# - pt_BR.yml | Brazilian Portuguese
 #
 # You can add your own locale files by creating a new file in the locale folder and adding the language to the config.yml. Any missing locale will use default en_GB.yml.
 
@@ -98,7 +99,7 @@
 # Main Settings
 Main:
   # This is the plugin config version
-  Version: 3.5.3
+  Version: 3.5.4
   # Should placeholder api support be enabled? ( use "true" / "false" )
   Enable PAPI: true
   # What language file should be used? ( use any string ) | default = en_GB.yml
