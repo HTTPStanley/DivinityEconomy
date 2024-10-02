@@ -53,6 +53,10 @@
     <li>Turkish</li>
     <li>Chinese (Simplified)</li>
     <li>Japanese</li>
+    <li>Arabic</li>
+    <li>Hebrew</li>
+    <li>Hindi</li>
+    <li>Korean</li>
 </ul>
 
 <h2>⌨ Commands</h2>
