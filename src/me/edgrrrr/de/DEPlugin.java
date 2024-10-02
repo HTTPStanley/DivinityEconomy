@@ -157,6 +157,11 @@ public class DEPlugin extends JavaPlugin {
         // Initialisation of all modules
         DivinityModule.runInit();
 
+        // Check if the plugin language is different to english
+        if (!this.getLang().isUsingDefaultLang()) {
+            this.getConsole().warn(LangEntry.GENERIC_LanguagePlea.get(this));
+        };
+
         // Commands
 
         // Admin
