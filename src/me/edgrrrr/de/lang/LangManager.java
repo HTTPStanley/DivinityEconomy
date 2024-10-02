@@ -234,4 +234,23 @@ public class LangManager extends DivinityModule {
     public String getDefaultItemName(String text, String defaultText) {
         return defaultConfig.getString(text, defaultText);
     }
+
+    public String getSelectedLang() {
+        return langFile.getName();
+    }
+
+
+    public String getDesiredLang() {
+        return desiredLang;
+    }
+
+
+    public String getDefaultLang() {
+        return defaultLangStr;
+    }
+
+
+    public boolean isUsingDefaultLang() {
+        return langFile.getName().equals(defaultLangStr);
+    }
 }
