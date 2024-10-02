@@ -25351,3 +25351,11 @@ zvillegg: ZOMBIE_VILLAGER_SPAWN_EGG
 zvillsegg: ZOMBIE_VILLAGER_SPAWN_EGG
 zvillspawn: ZOMBIE_VILLAGER_SPAWN_EGG
 zvillspawnegg: ZOMBIE_VILLAGER_SPAWN_EGG
+breezerod: BREEZE_ROD
+breeze: BREEZE_ROD
+windcharge: WIND_CHARGE
+wind: WIND_CHARGE
+trialkey: TRIAL_KEY
+ominoustrialkey: OMINOUS_TRIAL_KEY
+ominouskey: OMINOUS_TRIAL_KEY
+mace: MACE
