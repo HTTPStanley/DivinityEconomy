@@ -1,6 +1,7 @@
 package me.edgrrrr.de.market.items.materials;
 
 import me.edgrrrr.de.DEPlugin;
+import me.edgrrrr.de.market.MapKeys;
 import me.edgrrrr.de.market.items.ItemManager;
 import me.edgrrrr.de.market.items.MarketableItem;
 import me.edgrrrr.de.player.PlayerManager;
@@ -19,7 +20,9 @@ public abstract class MarketableMaterial extends MarketableItem {
         super(main, itemManager, ID, config, defaultConfig);
         Material material;
         try {
-            material = Material.valueOf(ID);
+            material = Material.valueOf(
+                    config.getString(MapKeys.MATERIAL_ID.key, ID)
+            );
         } catch (IllegalArgumentException | NullPointerException exception) {
             material = null;
         }
