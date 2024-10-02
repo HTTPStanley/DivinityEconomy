@@ -29,6 +29,7 @@ public class EntityManager extends MaterialManager {
      */
     public EntityManager(DEPlugin main) {
         super(main, entitiesFile, aliasesFile, new ConcurrentHashMap<String, MarketableEntity>());
+        new SpawnerPlaceListener(main);
     }
 
     @Override
