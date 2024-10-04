@@ -754,7 +754,6 @@ public abstract class TokenManager extends DivinityModule {
     /**
      * Calculates the scale of a number based on its base value.
      * It's essentially the ratio of base quantity to the current quantity.
-     * Uses caching to store previously calculated values.
      *
      * @param baseQuantity    - Base quantity of the product.
      * @param currentQuantity - Current quantity of the product.
@@ -763,5 +762,4 @@ public abstract class TokenManager extends DivinityModule {
     public double getScale(double baseQuantity, double currentQuantity) {
         return baseQuantity / currentQuantity;
     }
-
 }
