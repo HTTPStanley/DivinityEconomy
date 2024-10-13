@@ -1,7 +1,7 @@
 name: DivinityEconomy
 prefix: DivinityEconomy
 main: org.divinitycraft.divinityeconomy.DEPlugin
-version: 3.5.4
+version: 3.5.5
 author: EDGRRRR
 description: Divinity Economy - The dynamic global economy plugin.
 api-version: 1.20
