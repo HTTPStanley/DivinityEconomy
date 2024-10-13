@@ -1,0 +1,529 @@
+name: DivinityEconomy
+prefix: DivinityEconomy
+main: org.divinitycraft.divinityeconomy.DEPlugin
+version: 3.5.4
+author: EDGRRRR
+description: Divinity Economy - The dynamic global economy plugin.
+api-version: 1.20
+depend: [Vault]
+soft-depend: [PlaceholderAPI]
+load: STARTUP
+
+
+commands:
+  # Help
+  ehelp:
+    description: "Help!"
+    aliases: [ 'de' ]
+    permission: de.help
+    permission-message: "You do not have the permission to use this command"
+    usage: "/ehelp <command name>, /ehelp <page number>, /ehelp <search term> <page number>"
+
+  # Mail commands
+
+  readMail:
+    description: "Reads your economy mail."
+    aliases: [ 'mailread' ]
+    permission: de.mail.readMail
+    permission-message: "You do not have the permission to use this command"
+    usage: "/readmail, /readmail <page number>"
+
+  clearMail:
+    description: "Deletes your economy mail."
+    aliases: [ 'mailclear' ]
+    permission: de.mail.clearMail
+    permission-message: "You do not have the permission to use this command"
+    usage: "/clearmail all, /clearmail unread, /clearmail read"
+
+  # Misc commands
+  ping:
+    description: "Pong!"
+    aliases: []
+    permission: de.misc.ping
+    permission-message: "You do not have the permission to use this command"
+    usage: "/ping"
+
+  economyNotifications:
+    description: "Toggles economy notifications."
+    aliases: []
+    permission: de.misc.economynotifications
+    permission-message: "You do not have the permission to use this command"
+    usage: "/economynotifications, /economynotifications <true|false>, /economynotifications <player name> <true|false>"
+
+  # Money commands
+  balance:
+    description: "Gets the balance of a player."
+    aliases: [ 'bal', 'cash', 'money' ]
+    permission: de.money.balance
+    permission-message: "You do not have the permission to use this command"
+    usage: "/balance, /balance <player name>"
+
+  sendcash:
+    description: "Sends cash to another player."
+    aliases: [ 'transfer', 'pay' ]
+    permission: de.money.sendcash
+    permission-message: "You do not have the permission to use this command"
+    usage: "/sendcash <player name> <amount>"
+
+  listbalances:
+    description: "Lists users by their balances."
+    aliases: [ 'baltop', 'bt', 'listbal' ]
+    permission: de.money.listbalances
+    permission-message: "You do not have the permission to use this command"
+    usage: "/baltop, /baltop <page number>"
+
+  # Market commands
+  listitems:
+    description: "Lists items in the market."
+    aliases: [ 'itemlist', 'itemslist', 'items', 'find', 'search' ]
+    permission: de.market.listitems
+    permission-message: "You do not have the permission to use this command"
+    usage: "/search <item name> <order type> <page number>"
+
+  buy:
+    description: "Buys a material from the market."
+    aliases: []
+    permission: de.market.buy
+    permission-message: "You do not have permission to use this command"
+    usage: "/buy <material name> <amount>"
+
+  sell:
+    description: "Sells a material to the market."
+    aliases: []
+    permission: de.market.sell
+    permission-message: "You do not have permission to use this command"
+    usage: "/sell <material name> <amount>"
+
+  sellall:
+    description: "Sells all items in the user's inventory"
+    aliases: []
+    permission: de.market.sellall
+    permission-message: "You do not have permission to use this command"
+    usage: "/sellall !<items,to,not,sell>, /sellall <items,to,sell>"
+
+  handBuy:
+    description: "Buys the material the user is holding from the market."
+    aliases: [ 'hb' ]
+    permission: de.market.handBuy
+    permission-message: "You do not have permission to use this command"
+    usage: "/handbuy <amount>"
+
+  handSell:
+    description: "Sells the material the user is holding to the market."
+    aliases: [ 'hs' ]
+    permission: de.market.handSell
+    permission-message: "You do not have permission to use this command"
+    usage: "/handsell <amount>"
+
+  value:
+    description: "Gets the buy & sell value of an enchant."
+    aliases: [ 'val' ]
+    permission: de.market.value
+    permission-message: "You do not have permission to use this command"
+    usage: "/value <material name> <amount>"
+
+  information:
+    description: "Gets information about a material"
+    aliases: [ 'materialinfo', 'minfo', 'iteminfo' ]
+    permission: de.market.information
+    permission-message: "You do not have permission to use this command"
+    usage: "/information <material name>"
+
+  handInformation:
+    description: "Gets information about the material the player is holding."
+    aliases: [ 'handinfo' ]
+    permission: de.market.handInformation
+    permission-message: "You do not have permission to use this command"
+    usage: "/handinformation"
+
+  handValue:
+    description: "Gets the value of the material the player is holding."
+    aliases: [ 'hv' ]
+    permission: de.market.handValue
+    permission-message: "You do not have permission to use this command"
+    usage: "/handvalue <amount>"
+
+  eSell:
+    description: "Sells an enchant on an item."
+    aliases: [ 'es' ]
+    permission: de.enchant.eSell
+    permission-messaage: "You do not have permission to use this command"
+    usage: "/esell <enchant> <levels>, /esell <enchant>"
+
+  eBuy:
+    description: "Buys an enchant for an item."
+    aliases: [ 'eb' ]
+    permission: de.enchant.eBuy
+    permission-messaage: "You do not have permission to use this command"
+    usage: "/ebuy <enchant> <levels>"
+
+  eValue:
+    description: "Gets the value of an enchant."
+    aliases: [ 'ev' ]
+    permission: de.enchant.eValue
+    permission-messaage: "You do not have permission to use this command"
+    usage: "/evalue <enchant> <levels>"
+
+  eHandValue:
+    description: "Gets the value of the enchants on the users held item."
+    aliases: [ 'ehv' ]
+    permission: de.enchant.eHandValue
+    permission-messaage: "You do not have permission to use this command"
+    usage: "/ehandvalue"
+
+  eInfo:
+    description: "Gets the information for an enchant."
+    aliases: [ 'ei' ]
+    permission: de.enchant.eInfo
+    permission-messaage: "You do not have permission to use this command"
+    usage: "/einfo <enchant>"
+
+  eSellAll:
+    description: "Sells all enchants in the user's inventory."
+    aliases: []
+    permission: de.enchant.eSellAll
+    permission-messaage: "You do not have permission to use this command"
+    usage: "/esellall"
+
+  xpSell:
+    description: "Sells player experience levels."
+    aliases: ['xps', 'expsell', 'leveldown']
+    permission: de.exp.xpSell
+    permission-messaage: "You do not have permission to use this command"
+    usage: "/xpsell <amount>"
+
+  xpBuy:
+    description: "Buys player experience levels."
+    aliases: ['xpb', 'expbuy', 'levelup']
+    permission: de.exp.xpBuy
+    permission-messaage: "You do not have permission to use this command"
+    usage: "/xpbuy <amount>"
+
+
+  # Admin commands
+  reload:
+    description: "Reloads the respective market file."
+    aliases: []
+    permission: de.admin.reload
+    permission-message: "You do not have the permission to use this command"
+    usage: "/reload materials, /reload enchants, /reload potions, /reload entities, /reload experience, /reload config"
+
+  save:
+    description: "Saves the respective market file."
+    aliases: []
+    permission: de.admin.save
+    permission-message: "You do not have the permission to use this command"
+    usage: "/save materials, /save enchants, /save potions, /save entities, /save experience, /save config"
+
+
+  editbal:
+    description: "Edits the balance of a player."
+    aliases: [ ]
+    permission: de.admin.editbal
+    permission-message: "You do not have the permission to use this command"
+    usage: "/editbal <player name> <amount>, /editbal <amount>"
+
+  setbal:
+    description: "Sets the balance of a player."
+    aliases: [ 'setcash' ]
+    permission: de.admin.setbal
+    permission-message: "You do not have the permission to use this command"
+    usage: "/setbal <player name> <amount>, /setbal <amount>"
+
+  clearbal:
+    description: "Clears the balance of a player."
+    aliases: [ 'clearcash' ]
+    permission: de.admin.clearbal
+    permission-message: "You do not have the permission to use this command"
+    usage: "/clearbal <player name>, /clearbal"
+
+  setValue:
+    description: "Sets the value of an item"
+    aliases: [ ]
+    permission: de.admin.setValue
+    permission-message: "You do not have permission to use this command"
+    usage: "/setvalue <material name> <value>"
+
+  setStock:
+    description: "Sets the stock of an item"
+    aliases: [ ]
+    permission: de.admin.setStock
+    permission-message: "You do not have permission to use this command"
+    usage: "/setstock <material name> <stock>"
+
+  eSetValue:
+    description: "Sets the value of an enchant"
+    aliases: [ ]
+    permission: de.admin.eSetValue
+    permission-message: "You do not have permission to use this command"
+    usage: "/esetvalue <enchant name> <value>"
+
+  eSetStock:
+    description: "Sets the stock of an enchant"
+    aliases: [ ]
+    permission: de.admin.eSetStock
+    permission-message: "You do not have permission to use this command"
+    usage: "/esetstock <enchant name> <stock>"
+
+  banItem:
+    description: "Sets the ban status of a material."
+    aliases: [ ]
+    permission: de.admin.banItem
+    permission-message: "You do not have permission to use this command"
+    usage: "/banitem <material name> <true|false>"
+
+  banEnchant:
+    description: "Sets the ban status of an enchant."
+    aliases: [ ]
+    permission: de.admin.banEnchant
+    permission-message: "You do not have permission to use this command"
+    usage: "/banenchant <enchant name> <true|false>"
+
+
+
+permissions:
+  # Help
+  de.help:
+    description: Allows the user to get help for other commands.
+    default: true
+
+  # Exp
+  de.exp:
+    description: Allows the user to buy and sell exp.
+    default: true
+    children:
+      de.exp.xpSell: true
+      de.exp.xpBuy: true
+
+  de.exp.xpSell:
+    description: Allows the user to sell exp.
+    default: true
+
+  de.exp.xpBuy:
+    description: Allows the user to buy exp.
+    default: true
+
+  # Enchants
+  de.enchant:
+    description: Allows the user to buy and sell enchantments.
+    default: true
+    children:
+      de.enchant.eSell: true
+      de.enchant.eBuy: true
+      de.enchant.eHandValue: true
+      de.enchant.eValue: true
+      de.enchant.eInfo: true
+
+  de.enchant.eSell:
+    description: Allows the user to sell enchants on their held item.
+    default: true
+
+  de.enchant.eBuy:
+    description: Allows the user to buy enchants for their held item.
+    default: true
+
+  de.enchant.eHandValue:
+    description: Allows the user to value enchants on their held item.
+    default: true
+
+  de.enchant.eValue:
+    description: Allows the user to value enchants.
+    default: true
+
+  de.enchant.eInfo:
+    description: Allows the user to get the information for enchants.
+    default: true
+
+  # Mail
+  de.mail:
+    description: Allows the user to use commands relating to their mail
+    default: true
+    children:
+      de.mail.readMail: true
+      de.mail.clearMail: true
+
+  de.mail.readMail:
+    description: Allows the user to read their mail
+    default: true
+
+  de.mail.clearMail:
+    description: Allows the user to clear their mail
+    default: true
+
+  # Misc
+  de.misc:
+    description: Allows the user to use miscellaneous commands.
+    default: true
+    children:
+      de.misc.ping: true
+      de.misc.economynotifications: true
+
+  de.misc.ping:
+    description: Allows the user to use the ping command.
+    default: true
+
+  de.misc.economynotifications:
+    description: Allows the user to toggle economy notifications.
+    default: true
+
+  # Money branch of permissions
+  de.money:
+    description: Allows the user to use all commands under the money branch of permissions.
+    default: true
+    children:
+      de.money.balance: true
+      de.money.balanceOther: true
+      de.money.sendcash: true
+      de.money.listbalances: true
+
+  de.money.listbalances:
+    description: Allows the user to view a list of user balances
+    default: true
+
+  de.money.balance:
+    description: Allows the user to view their balance.
+    default: true
+
+  de.money.balanceOther:
+    description: Allows the user to view the balance of others.
+
+  de.money.sendcash:
+    description: Allows the user to send cash to others.
+    default: true
+
+  # Market branch of permissions
+  de.market:
+    description: Allows the user to use all commands under the market branch of permissions
+    default: true
+    children:
+      de.market.buy: true
+      de.market.handBuy: true
+      de.market.sell: true
+      de.market.handSell: true
+      de.market.search: true
+      de.market.information: true
+      de.market.value: true
+      de.market.handValue: true
+      de.market.handInformation: true
+      de.market.sellall: true
+      de.market.listitems: true
+
+  de.market.listitems:
+      description: Allows the user to list items in the market
+      default: true
+
+  de.market.sellall:
+    description: Allows the user to sell multiple items at once
+    default: true
+
+  de.market.handValue:
+    description: Allows the user to value the item in their hand
+    default: true
+
+  de.market.handInformation:
+    description: Allows the user to get the information for the item in their hand
+    default: true
+
+  de.market.buy:
+    description: Allows the user to purchase items from the market
+    default: true
+
+  de.market.sell:
+    description: Allows the user to sell items to the market
+    default: true
+
+  de.market.handBuy:
+    description: Allows the user to purchase items from the market
+    default: true
+
+  de.market.handSell:
+    description: Allows the user to sell items to the market
+    default: true
+
+  de.market.search:
+    description: Allows the user search for items in the market
+    default: true
+
+  de.market.information:
+    description: Allows the user to get information about items in the market
+    default: true
+
+  de.market.value:
+    description: Allows the user to value items in the market
+    default: true
+
+  # Admin commands
+  de.admin:
+    description: Allows the user to use all commands under the admin branch of permissions.
+    default: op
+    children:
+      de.admin.editbal: true
+      de.admin.setbal: true
+      de.admin.clearbal: true
+      de.admin.reloadEnchants: true
+      de.admin.reloadMaterials: true
+      de.admin.setStock: true
+      de.admin.setValue: true
+      de.admin.eSetStock: true
+      de.admin.eSetValue: true
+      de.admin.saveEnchants: true
+      de.admin.saveMaterials: true
+      de.admin.reload: true
+      de.admin.banEnchant: true
+      de.admin.banItem: true
+
+  de.admin.banItem:
+    description: Allows the user to ban items
+    default: op
+
+  de.admin.banEnchant:
+    description: Allows the user to ban enchants
+    default: op
+
+  de.admin.reload:
+    description: Allows the user to reload the plugin
+    default: op
+
+  de.admin.saveEnchants:
+    description: Allows the user to save enchants from the file.
+    default: op
+
+  de.admin.saveMaterials:
+    description: Allows the user to save materials from the file.
+    default: op
+
+  de.admin.reloadEnchants:
+    description: Allows the user to reload enchants from the file.
+    default: op
+
+  de.admin.reloadMaterials:
+    description: Allows the user to reload materials from the file.
+    default: op
+
+  de.admin.editbal:
+    description: Allows the user to give and take money to themselves and others.
+    default: op
+
+  de.admin.setbal:
+    description: Allows the user to set the the balance of themselves or others.
+    default: op
+
+  de.admin.clearbal:
+    description: Allows the user to clean the balance of themselves or others.
+    default: op
+
+  de.admin.setStock:
+    description: Allows the user to set the stock of an item
+    default: op
+
+  de.admin.setValue:
+    description: Allows the user to set the value of an item
+    default: op
+
+  de.admin.eSetStock:
+    description: Allows the user to set the stock of an enchant
+    default: op
+
+  de.admin.eSetValue:
+    description: Allows the user to set the value of an enchant
+    default: op
