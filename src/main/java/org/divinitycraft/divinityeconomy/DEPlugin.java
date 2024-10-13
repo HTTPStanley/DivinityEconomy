@@ -1,5 +1,8 @@
 package org.divinitycraft.divinityeconomy;
 
+import org.bukkit.configuration.MemorySection;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.divinitycraft.divinityeconomy.commands.admin.*;
 import org.divinitycraft.divinityeconomy.commands.enchants.*;
 import org.divinitycraft.divinityeconomy.commands.experience.ExperienceBuy;
@@ -37,9 +40,6 @@ import org.divinitycraft.divinityeconomy.migrators.MigrationManager;
 import org.divinitycraft.divinityeconomy.placeholders.ExpansionManager;
 import org.divinitycraft.divinityeconomy.player.PlayerManager;
 import org.divinitycraft.divinityeconomy.world.WorldManager;
-import org.bukkit.configuration.MemorySection;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Locale;
 import java.util.Map;
@@ -220,6 +220,7 @@ public class DEPlugin extends JavaPlugin {
         new ReadMailTC(this);
 
         // Market
+        new BuyGui(this);
         new Buy(this);
         new BuyTC(this);
         new HandBuy(this);

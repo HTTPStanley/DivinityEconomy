@@ -87,6 +87,13 @@ commands:
     permission-message: "You do not have permission to use this command"
     usage: "/buy <material name> <amount>"
 
+  buygui:
+    description: "Opens the market GUI to buy items."
+    aliases: ["bg"]
+    permission: de.market.buygui
+    permission-message: "You do not have permission to use this command"
+    usage: "/buygui"
+
   sell:
     description: "Sells a material to the market."
     aliases: []
@@ -397,6 +404,7 @@ permissions:
     default: true
     children:
       de.market.buy: true
+      de.market.buygui: true
       de.market.handBuy: true
       de.market.sell: true
       de.market.handSell: true
@@ -426,6 +434,10 @@ permissions:
 
   de.market.buy:
     description: Allows the user to purchase items from the market
+    default: true
+
+  de.market.buygui:
+    description: Allows the user to purchase items from the market using a GUI
     default: true
 
   de.market.sell:

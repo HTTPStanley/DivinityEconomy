@@ -332,6 +332,7 @@ Commands:
 
   Market:
     Buy: true
+    Buy GUI: true
     Hand Buy: true
     Hand Info: true
     Hand Sell: true
