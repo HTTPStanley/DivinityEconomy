@@ -103,6 +103,14 @@ cowmonsterspawner: COW_SPAWNER
 cowmspawner: COW_SPAWNER
 cowspawner: COW_SPAWNER
 crcage: CREEPER_SPAWNER
+creakingcage: CREAKING_SPAWNER
+creakingmcage: CREAKING_SPAWNER
+creakingmobcage: CREAKING_SPAWNER
+creakingmobspawner: CREAKING_SPAWNER
+creakingmonstercage: CREAKING_SPAWNER
+creakingmonsterspawner: CREAKING_SPAWNER
+creakingmspawner: CREAKING_SPAWNER
+creakingspawner: CREAKING_SPAWNER
 creepercage: CREEPER_SPAWNER
 creepermcage: CREEPER_SPAWNER
 creepermobcage: CREEPER_SPAWNER

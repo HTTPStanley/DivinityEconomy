@@ -126,6 +126,7 @@
 9musicdisk: MUSIC_DISC_STRAD
 9musicrecord: MUSIC_DISC_STRAD
 9record: MUSIC_DISC_STRAD
+a_scute: ARMADILLO_SCUTE
 abarelog: STRIPPED_ACACIA_LOG
 abarewood: STRIPPED_ACACIA_WOOD
 abluet: AZURE_BLUET
@@ -419,6 +420,8 @@ arails: ACTIVATOR_RAIL
 archer_pottery_sherd: ARCHER_POTTERY_SHERD
 archerpotterysherd: ARCHER_POTTERY_SHERD
 archersherd: ARCHER_POTTERY_SHERD
+armadillo_scute: ARMADILLO_SCUTE
+armadilloscute: ARMADILLO_SCUTE
 armor_stand: ARMOR_STAND
 armorstand: ARMOR_STAND
 arms_up_pottery_sherd: ARMS_UP_POTTERY_SHERD
@@ -1300,6 +1303,7 @@ blockmacro: COMMAND_BLOCK
 blockneth: NETHERITE_BLOCK
 blocknether: NETHERITE_BLOCK
 blocknetherite: NETHERITE_BLOCK
+blockofresin: RESIN_BLOCK
 blockr: REDSTONE_BLOCK
 blockred: REDSTONE_BLOCK
 blockreds: REDSTONE_BLOCK
@@ -1541,6 +1545,8 @@ brcp: BROWN_CONCRETE_POWDER
 brcpowder: BROWN_CONCRETE_POWDER
 brdye: BROWN_DYE
 bread: BREAD
+breeze: BREEZE_ROD
+breezerod: BREEZE_ROD
 brewer_pottery_sherd: BREWER_POTTERY_SHERD
 brewerpotterysherd: BREWER_POTTERY_SHERD
 brewersherd: BREWER_POTTERY_SHERD
@@ -3679,6 +3685,7 @@ crdslatebricks: CRACKED_DEEPSLATE_BRICKS
 crdslatetile: CRACKED_DEEPSLATE_TILES
 crdslatetiles: CRACKED_DEEPSLATE_TILES
 crdtrap: CRIMSON_TRAPDOOR
+creakingheart: CREAKING_HEART
 creeper_banner_pattern: CREEPER_BANNER_PATTERN
 creeper_head: CREEPER_HEAD
 creeper_spawn_egg: CREEPER_SPAWN_EGG
@@ -9749,6 +9756,8 @@ exwaxedcutcostairs: WAXED_EXPOSED_CUT_COPPER_STAIRS
 exwaxedcutcostep: WAXED_EXPOSED_CUT_COPPER_SLAB
 eye_armor_trim_smithing_template: EYE_ARMOR_TRIM_SMITHING_TEMPLATE
 eyearmortrimsmithingtemplate: EYE_ARMOR_TRIM_SMITHING_TEMPLATE
+openeyeblossom: OPEN_EYEBLOSSOM
+closedeyeblossom: CLOSED_EYEBLOSSOM
 eyesgozoom: SPYGLASS
 eyetrim: EYE_ARMOR_TRIM_SMITHING_TEMPLATE
 farcd: MUSIC_DISC_FAR
@@ -12619,6 +12628,7 @@ lwslab: BIRCH_SLAB
 lwstair: BIRCH_STAIRS
 lwstairs: BIRCH_STAIRS
 lwstep: BIRCH_SLAB
+mace: MACE
 macroblock: COMMAND_BLOCK
 magenta_banner: MAGENTA_BANNER
 magenta_bed: MAGENTA_BED
@@ -14291,6 +14301,8 @@ ologleaf: OAK_LEAVES
 ologleave: OAK_LEAVES
 ologleaves: OAK_LEAVES
 ologsapling: OAK_SAPLING
+ominouskey: OMINOUS_TRIAL_KEY
+ominoustrialkey: OMINOUS_TRIAL_KEY
 onether_gold: NETHER_GOLD_ORE
 onether_quartz: NETHER_QUARTZ_ORE
 onetherq: NETHER_QUARTZ_ORE
@@ -15753,6 +15765,16 @@ packmudb: PACKED_MUD
 packmudbl: PACKED_MUD
 packmudblock: PACKED_MUD
 painting: PAINTING
+paleoakdoor: PALE_OAK_DOOR
+paleoakfence: PALE_OAK_FENCE
+paleoakfencegate: PALE_OAK_FENCE_GATE
+paleoakhangingsign: PALE_OAK_HANGING_SIGN
+paleoaklog: PALE_OAK_LOG
+paleoakplanks: PALE_OAK_PLANKS
+paleoaksign: PALE_OAK_SIGN
+paleoakslab: PALE_OAK_SLAB
+paleoakstairs: PALE_OAK_STAIRS
+paleoaktrapdoor: PALE_OAK_TRAPDOOR
 pand: POLISHED_ANDESITE
 panda_spawn_egg: PANDA_SPAWN_EGG
 pandaegg: PANDA_SPAWN_EGG
@@ -17500,6 +17522,11 @@ repeater: REPEATER
 repeating_command_block: REPEATING_COMMAND_BLOCK
 repeatingcommandblock: REPEATING_COMMAND_BLOCK
 rerecord: MUSIC_DISC_CHIRP
+resinbricks: RESIN_BRICKS
+resinbrickslab: RESIN_BRICK_SLAB
+resinbrickstairs: RESIN_BRICK_STAIRS
+resinbrickwall: RESIN_BRICK_WALL
+resinclump: RESIN_CLUMP
 respawn_anchor: RESPAWN_ANCHOR
 respawnanc: RESPAWN_ANCHOR
 respawnanchor: RESPAWN_ANCHOR
@@ -17744,12 +17771,6 @@ sculkshriek: SCULK_SHRIEKER
 sculkshrieker: SCULK_SHRIEKER
 sculkvein: SCULK_VEIN
 scute: TURTLE_SCUTE
-turtle_scute: TURTLE_SCUTE
-turtlescute: TURTLE_SCUTE
-t_scute: TURTLE_SCUTE
-armadillo_scute: ARMADILLO_SCUTE
-armadilloscute: ARMADILLO_SCUTE
-a_scute: ARMADILLO_SCUTE
 scvein: SCULK_VEIN
 sdoor: SPRUCE_DOOR
 sdoort: SPRUCE_TRAPDOOR
@@ -19802,6 +19823,7 @@ swslab: SPRUCE_SLAB
 swstair: SPRUCE_STAIRS
 swstairs: SPRUCE_STAIRS
 swstep: SPRUCE_SLAB
+t_scute: TURTLE_SCUTE
 tadpole_bucket: TADPOLE_BUCKET
 tadpole_spawn_egg: TADPOLE_SPAWN_EGG
 tadpolebucket: TADPOLE_BUCKET
@@ -19988,6 +20010,7 @@ trapstoneblock: INFESTED_STONE
 trapstonebr: INFESTED_STONE_BRICKS
 trapstonebrick: INFESTED_STONE_BRICKS
 trapstonebricks: INFESTED_STONE_BRICKS
+trialkey: TRIAL_KEY
 trident: TRIDENT
 triggerrail: ACTIVATOR_RAIL
 triggerrails: ACTIVATOR_RAIL
@@ -20032,9 +20055,11 @@ tulipw: WHITE_TULIP
 tulipwhite: WHITE_TULIP
 turtle_egg: TURTLE_EGG
 turtle_helmet: TURTLE_HELMET
+turtle_scute: TURTLE_SCUTE
 turtle_spawn_egg: TURTLE_SPAWN_EGG
 turtleegg: TURTLE_EGG
 turtlehelmet: TURTLE_HELMET
+turtlescute: TURTLE_SCUTE
 turtlesegg: TURTLE_SPAWN_EGG
 turtlespawn: TURTLE_SPAWN_EGG
 turtlespawnegg: TURTLE_SPAWN_EGG
@@ -24610,6 +24635,8 @@ wildmusicdisk: MUSIC_DISC_5
 wildmusicrecord: MUSIC_DISC_5
 wildrecord: MUSIC_DISC_5
 wildtrim: WILD_ARMOR_TRIM_SMITHING_TEMPLATE
+wind: WIND_CHARGE
+windcharge: WIND_CHARGE
 wing: ELYTRA
 wings: ELYTRA
 witch_spawn_egg: WITCH_SPAWN_EGG
@@ -25351,11 +25378,3 @@ zvillegg: ZOMBIE_VILLAGER_SPAWN_EGG
 zvillsegg: ZOMBIE_VILLAGER_SPAWN_EGG
 zvillspawn: ZOMBIE_VILLAGER_SPAWN_EGG
 zvillspawnegg: ZOMBIE_VILLAGER_SPAWN_EGG
-breezerod: BREEZE_ROD
-breeze: BREEZE_ROD
-windcharge: WIND_CHARGE
-wind: WIND_CHARGE
-trialkey: TRIAL_KEY
-ominoustrialkey: OMINOUS_TRIAL_KEY
-ominouskey: OMINOUS_TRIAL_KEY
-mace: MACE
