@@ -36,7 +36,11 @@ public class EconomyManager extends DivinityModule {
         @Override
         public void run() {
             {
-                fetchBaltop();
+                try {
+                    fetchBaltop();
+                } catch (Exception e) {
+                    getConsole().warn("Failed to fetch baltop (This is likely an issue with your economy provider): %s", e.getMessage());
+                }
             }
         }
     };
@@ -70,7 +74,11 @@ public class EconomyManager extends DivinityModule {
         // Setup baltop task scheduler
         int timer = Converter.getTicks(Converter.constrainInt(getMain().getConfMan().getInt(Setting.ECONOMY_BALTOP_REFRESH_INTEGER), 60, 3600));
         this.baltopTask.runTaskTimerAsynchronously(getMain(), timer, timer);
-        fetchBaltop();
+        try {
+            fetchBaltop();
+        } catch (Exception e) {
+            getConsole().warn("Failed to fetch baltop on startup (This is likely an issue with your economy provider): %s", e.getMessage());
+        }
     }
 
     /**
