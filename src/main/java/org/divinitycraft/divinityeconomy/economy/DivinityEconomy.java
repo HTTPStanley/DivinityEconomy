@@ -460,24 +460,36 @@ public class DivinityEconomy implements net.milkbowl.vault.economy.Economy {
             return;
         }
 
-        // Clear banks
+        // Create a new bank store
+        Set<String> thisBanks = new HashSet<>();
+
+        // Loop through files
+        for (File file : files) {
+            // Ensure is a valid bank file
+            if (!file.isFile() || !file.getName().endsWith(".yml")) {
+                continue;
+            }
+
+            // Load bank
+            EconomyBank bank = new EconomyBank(this.main, file);
+
+            // Check if bank is valid
+            if (!bank.isValid()) {
+                this.main.getConsole().warn("Invalid bank file: " + file.getName() + ". Skipping...");
+                continue;
+            }
+
+            // Add bank
+            thisBanks.add(bank.getName());
+        }
+
+        // Update the banks set
         synchronized (this.banks) {
+            // Clear existing banks
             this.banks.clear();
 
-            // Loop through files
-            for (File file : files) {
-                // Load bank
-                EconomyBank bank = new EconomyBank(this.main, file);
-
-                // Check if bank is valid
-                String name = bank.getName();
-                if (name == null || name.isEmpty()) {
-                    continue;
-                }
-
-                // Add bank
-                this.banks.add(name);
-            }
+            // Add all banks from the new set
+            this.banks.addAll(thisBanks);
         }
     }
 

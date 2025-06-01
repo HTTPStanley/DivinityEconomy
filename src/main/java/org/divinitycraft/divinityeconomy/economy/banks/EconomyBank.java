@@ -109,6 +109,16 @@ public class EconomyBank extends EconomyObject {
         return this;
     }
 
+    public boolean isValid() {
+        // Return true if the bank has all valid keys
+        for (FileKey key : this.keys) {
+            if (!this.config.contains(key.getKey())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     @Override
     public boolean checkKey(@Nonnull String key) {
         return this.keys.contains(FileKey.get(key));
