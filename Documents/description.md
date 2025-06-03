@@ -59,6 +59,10 @@
     <li>Korean</li>
 </ul>
 
+<h2>💾 Vault Dependency 💾</h2>
+<p>DivinityEconomy is reliant on the renowned plugin Vault. Vault is a necessity for DivinityEconomy's functionality, enabling seamless integration amongst various economy plugins 🔁. DivinityEconomy offers full Vault support, including support for player balances and bank accounts, ensuring compatibility with a wide range of plugins and features.</p>
+<p><a href="https://www.spigotmc.org/resources/vault.34315/" target="_blank" rel="noopener noreferrer">Acquire Vault Here 📥</a></p>
+
 <h2>⌨ Commands</h2>
 
 <h4>💰 Money</h4>
