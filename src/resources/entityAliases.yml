@@ -1278,3 +1278,7 @@ zvillmonstercage: ZOMBIE_VILLAGER_SPAWNER
 zvillmonsterspawner: ZOMBIE_VILLAGER_SPAWNER
 zvillmspawner: ZOMBIE_VILLAGER_SPAWNER
 zvillspawner: ZOMBIE_VILLAGER_SPAWNER
+breezespawner: BREEZE_SPAWNER
+breezecage: BREEZE_SPAWNER
+boggedspawner: BOGGED_SPAWNER
+boggedcage: BOGGED_SPAWNER

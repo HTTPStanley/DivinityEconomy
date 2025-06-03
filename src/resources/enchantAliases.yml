@@ -71,3 +71,6 @@ unbre: UNBREAKING
 unbreaking: UNBREAKING
 vaniscurse: VANISHING_CURSE
 vanishingcurse: VANISHING_CURSE
+density: DENSITY
+windburst: WIND_BURST
+breach: BREACH
