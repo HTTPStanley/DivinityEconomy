@@ -57,6 +57,8 @@
     <li>Hebrew</li>
     <li>Hindi</li>
     <li>Korean</li>
+    <li>Ukrainian</li>
+    <li>Brazilian Portuguese</li>
 </ul>
 
 <h2>💾 Vault Dependency 💾</h2>
