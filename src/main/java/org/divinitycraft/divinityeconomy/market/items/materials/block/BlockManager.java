@@ -9,7 +9,6 @@ import org.divinitycraft.divinityeconomy.market.items.materials.MaterialManager;
 import org.divinitycraft.divinityeconomy.market.items.materials.MaterialValueResponse;
 import net.milkbowl.vault.economy.EconomyResponse.ResponseType;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
@@ -90,11 +89,9 @@ public class BlockManager extends MaterialManager {
     @Override
     public Set<String> getLocalKeys() {
         return Arrays.stream(Material.values())
-                .map(Material::getKey)
-                .map(NamespacedKey::getKey)
-                .map(Object::toString)
-                .map(String::toUpperCase)
-                .collect(Collectors.toSet());
+            .map(Material::name)
+            .map(String::toUpperCase)
+            .collect(Collectors.toSet());
     }
 
 

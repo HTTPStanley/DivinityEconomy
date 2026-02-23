@@ -1,6 +1,5 @@
 package org.divinitycraft.divinityeconomy.market;
 
-import com.tchristofferson.configupdater.ConfigUpdater;
 import org.divinitycraft.divinityeconomy.Constants;
 import org.divinitycraft.divinityeconomy.DEPlugin;
 import org.divinitycraft.divinityeconomy.DivinityModule;
@@ -13,6 +12,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
@@ -484,54 +485,83 @@ public abstract class TokenManager extends DivinityModule {
                 aliasFile.createNewFile();
             }
 
-            // Run Update
-            ConfigUpdater.update(getMain(), this.aliasFile, aliasFile, Collections.emptyList());
+            // Run Update via reflection if ConfigUpdater is available; otherwise skip
+            try {
+                Class<?> cfgUpd = Class.forName("com.tchristofferson.configupdater.ConfigUpdater");
+                java.lang.reflect.Method m = cfgUpd.getMethod("update", org.bukkit.plugin.Plugin.class, String.class, java.io.File.class, java.util.List.class);
+                m.invoke(null, getMain(), this.aliasFile, aliasFile, Collections.emptyList());
+            } catch (ClassNotFoundException ignored) {
+            } catch (Exception ignored) {
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        // Load config
-        FileConfiguration config = this.getConfMan().loadFile(this.aliasFile);
+        // Load config with error handling for corrupted YAML
+        FileConfiguration config = null;
+        try {
+            config = this.getConfMan().loadFile(this.aliasFile);
+        } catch (Exception e) {
+            this.getConsole().warn("Failed to load %s (YAML may be corrupted): %s", this.aliasFile, e.getMessage());
+            // Create backup and start fresh
+            try {
+                File backup = new File(this.getConfMan().getFile(this.aliasFile).getAbsolutePath() + ".backup");
+                Files.copy(
+                    this.getConfMan().getFile(this.aliasFile).toPath(),
+                    backup.toPath(),
+                    StandardCopyOption.REPLACE_EXISTING
+                );
+                this.getConsole().warn("Created backup at %s", backup.getAbsolutePath());
+            } catch (Exception ignored) {
+            }
+            config = this.getConfMan().readResource(this.aliasFile);
+        }
 
         // Store the alias -> ItemID pairs
         Map<String, String> values = new ConcurrentHashMap<>();
         // Store ItemID -> arraylist to migrate to ItemID -> String[] pairs
         Map<String, Set<String>> revBuildAliasValues = new ConcurrentHashMap<>();
         Map<String, Set<String>> revResultAliasValues = new ConcurrentHashMap<>();
-        // Loop through keys in config
-        for (String key : config.getKeys(false)) {
-            // Get string item name
-            // Format key/value
-            key = key.toLowerCase().replace(" ", "");
-            String value = config.getString(key);
+        
+        // Loop through keys in config safely
+        try {
+            for (String key : config.getKeys(false)) {
+                // Get string item name
+                // Format key/value
+                key = key.toLowerCase().replace(" ", "");
+                String value = config.getString(key);
 
-            // If value is null, skip
-            if (value == null) {
-                if (!this.getConfMan().getBoolean(Setting.IGNORE_ALIAS_ERRORS_BOOLEAN))
-                    this.getConsole().warn("Bad config value in %s: '%s' - Corresponding value is null", this.aliasFile, key);
-                continue;
+                // If value is null, skip
+                if (value == null) {
+                    if (!this.getConfMan().getBoolean(Setting.IGNORE_ALIAS_ERRORS_BOOLEAN))
+                        this.getConsole().warn("Bad config value in %s: '%s' - Corresponding value is null", this.aliasFile, key);
+                    continue;
+                }
+
+                value = value.toLowerCase().replace(" ", "");
+
+                // If the value is not stored in the items map, skip
+                if (this.getItem(value) == null) {
+                    if (!this.getConfMan().getBoolean(Setting.IGNORE_ALIAS_ERRORS_BOOLEAN))
+                        this.getConsole().warn("Bad config value in %s: '%s' - Corresponding value '%s' does not exist.", this.aliasFile, key, value);
+                    continue;
+                }
+
+                // Store the value under the key
+                values.put(key, value);
+                if (!values.containsKey(key)) values.put(key, key);
+
+                // Store the value under the key (Value = materialID, key = alias)
+                if (!revBuildAliasValues.containsKey(value)) {
+                    revBuildAliasValues.put(value, new HashSet<>());
+                    revBuildAliasValues.get(value).add(value);
+                }
+                revBuildAliasValues.get(value).add(key);
             }
-
-            value = value.toLowerCase().replace(" ", "");
-
-            // If the value is not stored in the items map, skip
-            if (this.getItem(value) == null) {
-                if (!this.getConfMan().getBoolean(Setting.IGNORE_ALIAS_ERRORS_BOOLEAN))
-                    this.getConsole().warn("Bad config value in %s: '%s' - Corresponding value '%s' does not exist.", this.aliasFile, key, value);
-                continue;
-            }
-
-            // Store the value under the key
-            values.put(key, value);
-            if (!values.containsKey(key)) values.put(key, key);
-
-            // Store the value under the key (Value = materialID, key = alias)
-            if (!revBuildAliasValues.containsKey(value)) {
-                revBuildAliasValues.put(value, new HashSet<>());
-                revBuildAliasValues.get(value).add(value);
-            }
-            revBuildAliasValues.get(value).add(key);
+        } catch (Exception e) {
+            this.getConsole().warn("Error loading aliases from %s: %s", this.aliasFile, e.getMessage());
         }
+        
         this.aliasMap = values;
 
         // Migrate all keys-arraylist pairs to key-array pairs
@@ -539,6 +569,67 @@ public abstract class TokenManager extends DivinityModule {
         this.revAliasMap = revResultAliasValues;
 
         this.getConsole().info(LangEntry.MARKET_ItemAliasesLoaded.get(getMain()), values.size(), this.aliasFile);
+    }
+
+    /**
+     * Adds an alias for an item to the runtime alias maps.
+     * The alias will be persisted to file at the next saveAliases() call.
+     * @param alias - The alias name (will be lowercased)
+     * @param itemId - The item ID to point to
+     */
+    public void addAlias(String alias, String itemId) {
+        if (alias == null || itemId == null) return;
+        
+        try {
+            alias = alias.toLowerCase().replace(" ", "");
+            itemId = itemId.toLowerCase().replace(" ", "");
+            
+            // Check if item exists
+            if (this.getItem(itemId) == null) {
+                if (this.getConsole() != null) {
+                    this.getConsole().warn("Cannot add alias '%s': item '%s' does not exist", alias, itemId);
+                }
+                return;
+            }
+            
+            // Add to aliasMap
+            this.aliasMap.put(alias, itemId);
+            
+            // Add to revAliasMap
+            if (!this.revAliasMap.containsKey(itemId)) {
+                this.revAliasMap.put(itemId, new HashSet<>());
+                this.revAliasMap.get(itemId).add(itemId);
+            }
+            this.revAliasMap.get(itemId).add(alias);
+        } catch (Exception e) {
+            if (this.getConsole() != null) {
+                this.getConsole().warn("Failed to add alias '%s': %s", alias, e.getMessage());
+            }
+        }
+    }
+
+    /**
+     * Saves all aliases to the alias config file asynchronously.
+     * This prevents blocking the main server thread.
+     */
+    public void saveAliases() {
+        // Run save in a separate thread to prevent blocking server
+        new Thread(() -> {
+            try {
+                FileConfiguration config = this.getConfMan().loadFile(this.aliasFile);
+                
+                // Write all aliases from the current aliasMap
+                for (String alias : this.aliasMap.keySet()) {
+                    config.set(alias, this.aliasMap.get(alias));
+                }
+                
+                this.getConfMan().saveFile(config, this.aliasFile);
+            } catch (Exception e) {
+                if (this.getConsole() != null) {
+                    this.getConsole().warn("Failed to save aliases: %s", e.getMessage());
+                }
+            }
+        }).start();
     }
 
     /**
@@ -553,8 +644,14 @@ public abstract class TokenManager extends DivinityModule {
                 itemFile.createNewFile();
             }
 
-            // Run Update
-            ConfigUpdater.update(getMain(), this.itemFile, this.getConfMan().getFile(this.itemFile), Collections.emptyList());
+            // Run Update via reflection if ConfigUpdater is available; otherwise skip
+            try {
+                Class<?> cfgUpd = Class.forName("com.tchristofferson.configupdater.ConfigUpdater");
+                java.lang.reflect.Method m = cfgUpd.getMethod("update", org.bukkit.plugin.Plugin.class, String.class, java.io.File.class, java.util.List.class);
+                m.invoke(null, getMain(), this.itemFile, this.getConfMan().getFile(this.itemFile), Collections.emptyList());
+            } catch (ClassNotFoundException ignored) {
+            } catch (Exception ignored) {
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -570,6 +667,7 @@ public abstract class TokenManager extends DivinityModule {
         Map<String, MarketableToken> values = new ConcurrentHashMap<>();
         // Loop through keys and get data
         // Add data to a MaterialData and put in HashMap under key
+        // First load vanilla items from defaultConf
         for (String key : defaultConf.getKeys(false)) {
 
             ConfigurationSection data = this.config.getConfigurationSection(key);
@@ -595,6 +693,33 @@ public abstract class TokenManager extends DivinityModule {
             this.totalItems += itemData.getQuantity();
             values.put(key, itemData);
         }
+        
+        // Also load modded items that exist in config but not in defaultConf
+        // These are items that were dynamically imported and saved to materials.yml
+        for (String key : this.config.getKeys(false)) {
+            if (defaultConf.contains(key)) continue; // Skip vanilla items already loaded
+            
+            ConfigurationSection data = this.config.getConfigurationSection(key);
+            if (data == null) {
+                if (!this.getConfMan().getBoolean(Setting.IGNORE_ITEM_ERRORS_BOOLEAN))
+                    this.getConsole().warn("Bad config value in %s: '%s' - Data is null, skipping modded item.", this.itemFile, key);
+                continue;
+            }
+            
+            // For modded items, use the item config as default since they don't have a vanilla default
+            MarketableToken itemData = this.loadItem(key, data, data);
+            if (!itemData.check()) {
+                if (!this.getConfMan().getBoolean(Setting.IGNORE_ITEM_ERRORS_BOOLEAN))
+                    this.getConsole().warn("Bad config value in %s for '%s': %s (modded item)", this.itemFile, key, itemData.getError());
+                continue;
+            }
+            
+            String formattedKey = key.toLowerCase().replace(" ", "");
+            this.defaultTotalItems += itemData.getDefaultQuantity();
+            this.totalItems += itemData.getQuantity();
+            values.put(formattedKey, itemData);
+        }
+        
         // Copy values into items
         this.itemMap = values;
         this.getConsole().info(LangEntry.MARKET_ItemsLoaded.get(getMain()), values.size(), this.totalItems, this.defaultTotalItems, this.itemFile);
@@ -650,11 +775,24 @@ public abstract class TokenManager extends DivinityModule {
     private void saveFile() {
         // load back all info
         FileConfiguration config = this.getConfMan().loadFile(this.itemFile);
+        
+        // Save all existing keys that are in the itemMap
         for (String key : config.getKeys(false)) {
             String internalKey = key.toLowerCase().replace(" ", "");
             if (!this.itemMap.containsKey(internalKey)) continue;
 
             config.set(key, this.config.get(key));
+        }
+        
+        // Also save any new items that exist in the itemMap but weren't in the original config
+        for (String mapKey : this.itemMap.keySet()) {
+            MarketableToken token = this.itemMap.get(mapKey);
+            String originalKey = token.getID(); // Use original ID as the key in the file
+            
+            // Only add if not already processed above
+            if (!config.contains(originalKey)) {
+                config.set(originalKey, this.config.getConfigurationSection(mapKey));
+            }
         }
 
         this.getConfMan().saveFile(config, this.itemFile);

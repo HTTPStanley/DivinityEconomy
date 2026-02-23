@@ -32,12 +32,20 @@ public class MarketableBlock extends MarketableMaterial {
      */
     @Override
     public boolean check() {
-        return this.material != null;
+        // Allow market entries for modded/non-vanilla items (material may be null)
+        return true;
     }
 
     @Override
     public ItemStack getItemStack(int amount) {
-        return new ItemStack(this.getMaterial(), amount);
+        if (this.getMaterial() != null) {
+            return new ItemStack(this.getMaterial(), amount);
+        }
+
+        // Material couldn't be resolved (modded item). Return a placeholder stack.
+        // Admins can override this in materials.yml to point to a valid material
+        // if they want buy/sell functionality.
+        return new ItemStack(org.bukkit.Material.STONE, amount);
     }
 
     /**
@@ -67,6 +75,7 @@ public class MarketableBlock extends MarketableMaterial {
         if (itemMeta instanceof PotionMeta) {
             return false;
         } else {
+            if (this.getMaterial() == null) return false;
             return itemStack.getType().equals(this.getMaterial());
         }
     }
