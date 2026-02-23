@@ -208,6 +208,13 @@ commands:
     permission-message: "You do not have the permission to use this command"
     usage: "/reload materials, /reload enchants, /reload potions, /reload entities, /reload experience, /reload config"
 
+  modded:
+    description: "Attempts to (re)load modded materials registered after startup."
+    aliases: []
+    permission: de.admin.modded
+    permission-message: "You do not have the permission to use this command"
+    usage: "/modded"
+
   save:
     description: "Saves the respective market file."
     aliases: []

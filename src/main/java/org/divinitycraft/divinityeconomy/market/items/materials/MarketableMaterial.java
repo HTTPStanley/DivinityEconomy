@@ -6,6 +6,7 @@ import org.divinitycraft.divinityeconomy.market.items.ItemManager;
 import org.divinitycraft.divinityeconomy.market.items.MarketableItem;
 import org.divinitycraft.divinityeconomy.player.PlayerManager;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -18,15 +19,69 @@ public abstract class MarketableMaterial extends MarketableItem {
 
     public MarketableMaterial(DEPlugin main, MaterialManager itemManager, String ID, ConfigurationSection config, ConfigurationSection defaultConfig) {
         super(main, itemManager, ID, config, defaultConfig);
-        Material material;
-        try {
-            material = Material.valueOf(
-                    config.getString(MapKeys.MATERIAL_ID.key, ID)
-            );
-        } catch (IllegalArgumentException | NullPointerException exception) {
-            material = null;
+        String materialId = config.getString(MapKeys.MATERIAL_ID.key, ID);
+        Material mat = null;
+        if (materialId != null) {
+            try {
+                mat = Material.valueOf(materialId);
+            } catch (IllegalArgumentException ignored) {
+            }
+
+            if (mat == null) {
+                try {
+                    mat = Material.matchMaterial(materialId);
+                } catch (Throwable ignored) {
+                }
+            }
+
+            if (mat == null) {
+                try {
+                    NamespacedKey key = NamespacedKey.fromString(materialId);
+                    if (key != null) {
+                        try {
+                            mat = Material.matchMaterial(key.toString());
+                        } catch (Throwable ignored) {
+                        }
+                    }
+                } catch (Throwable ignored) {
+                }
+            }
+
+            // Final fallback: iterate registered Materials and match by NamespacedKey or key name (for modded materials)
+            if (mat == null && materialId != null) {
+                for (Material m : Material.values()) {
+                    try {
+                        NamespacedKey mk = m.getKey();
+                        if (mk != null) {
+                            if (mk.toString().equalsIgnoreCase(materialId) || mk.getKey().equalsIgnoreCase(materialId)) {
+                                mat = m;
+                                break;
+                            }
+                        }
+                        if (m.name().equalsIgnoreCase(materialId)) {
+                            mat = m;
+                            break;
+                        }
+                    } catch (Throwable ignored) {
+                    }
+                }
+            }
         }
-        this.material = material;
+
+        this.material = mat;
+
+        // If this material couldn't be resolved to a vanilla Bukkit Material
+        // treat it as a modded/non-vanilla item by defaulting quantity to 0
+        // and disallowing it unless the server admin explicitly sets values
+        // in the materials.yml config.
+        if (this.material == null) {
+            if (!this.itemConfig.contains(MapKeys.QUANTITY.key)) {
+                this.itemConfig.set(MapKeys.QUANTITY.key, 0);
+            }
+            if (!this.itemConfig.contains(MapKeys.ALLOWED.key)) {
+                this.itemConfig.set(MapKeys.ALLOWED.key, false);
+            }
+        }
     }
 
 
@@ -75,6 +130,9 @@ public abstract class MarketableMaterial extends MarketableItem {
      * @return
      */
     public ItemStack[] getItemStacks(int amount) {
+        // If material couldn't be resolved, return empty array
+        if (this.getMaterial() == null) return new ItemStack[0];
+
         // Get the max stack size and the number of stacks
         int maxStackSize = this.getMaterial().getMaxStackSize();
         int stacks = (int) Math.ceil((double) amount / maxStackSize);
@@ -99,6 +157,7 @@ public abstract class MarketableMaterial extends MarketableItem {
      * @return ItemStack[] - An array of the ItemStack's in the player of material
      */
     public ItemStack[] getMaterialSlots(Player player) {
+        if (this.material == null) return new ItemStack[0];
         Map<Integer, ? extends ItemStack> inventory = player.getInventory().all(this.material);
         ArrayList<ItemStack> itemStacks = new ArrayList<>();
         for (ItemStack itemStack : inventory.values()) {
