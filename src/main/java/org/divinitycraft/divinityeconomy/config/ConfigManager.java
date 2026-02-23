@@ -1,13 +1,12 @@
 package org.divinitycraft.divinityeconomy.config;
 
-import com.tchristofferson.configupdater.ConfigUpdater;
 import org.divinitycraft.divinityeconomy.DEPlugin;
 import org.divinitycraft.divinityeconomy.DivinityModule;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
-import java.io.IOException;
+ 
 import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.Collections;
@@ -44,8 +43,13 @@ public class ConfigManager extends DivinityModule {
         this.saveFile(config, configFile);
 
         try {
-            ConfigUpdater.update(getMain(), configFile, this.getFile(configFile), Collections.emptyList());
-        } catch (IOException e) {
+            try {
+                Class<?> cfgUpd = Class.forName("com.tchristofferson.configupdater.ConfigUpdater");
+                java.lang.reflect.Method m = cfgUpd.getMethod("update", org.bukkit.plugin.Plugin.class, String.class, java.io.File.class, java.util.List.class);
+                m.invoke(null, getMain(), configFile, this.getFile(configFile), Collections.emptyList());
+            } catch (ClassNotFoundException ignored) {
+            }
+        } catch (Exception e) {
             e.printStackTrace();
         }
         getMain().reloadConfig();

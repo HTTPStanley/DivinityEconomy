@@ -3,6 +3,7 @@ package org.divinitycraft.divinityeconomy.market.items.materials;
 import org.divinitycraft.divinityeconomy.DEPlugin;
 import org.divinitycraft.divinityeconomy.config.Setting;
 import org.divinitycraft.divinityeconomy.lang.LangEntry;
+import org.divinitycraft.divinityeconomy.market.MapKeys;
 import org.divinitycraft.divinityeconomy.market.MarketableToken;
 import org.divinitycraft.divinityeconomy.market.items.ItemManager;
 import org.divinitycraft.divinityeconomy.utils.Converter;
@@ -13,6 +14,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.NamespacedKey;
+import org.bukkit.Material;
 
 public abstract class MaterialManager extends ItemManager {
 
@@ -56,6 +60,16 @@ public abstract class MaterialManager extends ItemManager {
         this.saveTimer.runTaskTimerAsynchronously(getMain(), timer, timer);
         this.loadItems();
         this.loadAliases();
+        // Schedule a delayed attempt to resolve modded (non-vanilla) materials
+        // Some hybrid servers (NeoForge/Arclight) may register modded materials
+        // after plugin enable; this will re-attempt resolution shortly after.
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                int reloaded = reloadModdedItems();
+                if (reloaded > 0) getConsole().info("Reloaded %d modded materials", reloaded);
+            }
+        }.runTaskLater(getMain(), 200L); // ~10 seconds
         // this.checkLoadedItems(); - This is for internal debugging only. Hi! :)
         this.getMarkMan().addManager(this);
     }
@@ -187,5 +201,148 @@ public abstract class MaterialManager extends ItemManager {
      */
     public Set<String> getLocalKeys() {
         return new HashSet<>();
+    }
+
+    /**
+     * Re-attempt to resolve modded / non-vanilla materials which previously
+     * failed to resolve at load time. This creates fresh MarketableMaterial
+     * instances via {@link #loadItem} and replaces entries that now resolve.
+     *
+     * @return number of items successfully reloaded with a resolved Material
+     */
+    public int reloadModdedItems() {
+        int reloaded = 0;
+        try {
+            // First, attempt to resolve any existing unresolved entries (previous behaviour)
+            // Collect candidates whose Material is currently unresolved
+            Set<String> candidates = new HashSet<>();
+            for (String key : this.itemMap.keySet()) {
+                MarketableToken token = this.itemMap.get(key);
+                if (!(token instanceof MarketableMaterial)) continue;
+                MarketableMaterial mat = (MarketableMaterial) token;
+                if (mat.getMaterial() == null) candidates.add(key);
+            }
+
+            if (candidates.isEmpty()) {
+                this.getConsole().debug("No unresolved modded materials found to reload.");
+                // Continue - even if there were no unresolved entries, we still want to scan for new modded materials
+            } else {
+                this.getConsole().info("Found %d unresolved modded material entries to attempt reload.", candidates.size());
+
+                for (String key : candidates) {
+                    MarketableMaterial token = (MarketableMaterial) this.itemMap.get(key);
+                    String materialId = token.getItemConfig().getString(MapKeys.MATERIAL_ID.key, token.getID());
+                    this.getConsole().info("Attempting to reload '%s' (configured MATERIAL_ID='%s')", key, materialId);
+
+                    MarketableMaterial newMat = (MarketableMaterial) this.loadItem(token.getID(), token.getItemConfig(), token.getDefaultItemConfig());
+                    if (newMat != null && newMat.check() && newMat.getMaterial() != null) {
+                        // adjust totals
+                        this.defaultTotalItems -= token.getDefaultQuantity();
+                        this.totalItems -= token.getQuantity();
+                        this.defaultTotalItems += newMat.getDefaultQuantity();
+                        this.totalItems += newMat.getQuantity();
+
+                        ((Map) this.itemMap).put(key, newMat);
+                        reloaded++;
+                        this.getConsole().info("Successfully reloaded '%s' -> resolved as %s", key, newMat.getMaterial().name());
+                    } else {
+                        this.getConsole().warn("Failed to resolve material for '%s' (MATERIAL_ID='%s')", key, materialId);
+                    }
+                }
+            }
+
+            // Second, scan the current server Material registry for non-vanilla (modded) materials
+            // and import any that are not yet present in the market config.
+            int imported = 0;
+            Set<String> discovered = new HashSet<>();
+            for (Material m : Material.values()) {
+                try {
+                    NamespacedKey k = m.getKey();
+                    if (k == null) continue;
+                    String namespace = k.getNamespace();
+                    if (namespace == null) continue;
+                    if ("minecraft".equals(namespace)) continue; // skip vanilla
+
+                    String nsKey = k.toString(); // modid:item
+                    // avoid duplicates
+                    if (discovered.contains(nsKey)) continue;
+                    discovered.add(nsKey);
+
+                    // Check if already represented in itemMap (by MATERIAL_ID or ID)
+                    // OR if it already exists in the config file (user may have edited it manually)
+                    boolean exists = false;
+                    
+                    // Check itemMap first
+                    for (MarketableToken token : this.itemMap.values()) {
+                        String mid = token.getItemConfig().getString(MapKeys.MATERIAL_ID.key, token.getID());
+                        if (mid == null) continue;
+                        if (mid.equalsIgnoreCase(nsKey) || mid.equalsIgnoreCase(m.name()) || mid.equalsIgnoreCase(k.getKey())) {
+                            exists = true;
+                            break;
+                        }
+                    }
+                    
+                    // Also check the config file itself to avoid overwriting user edits
+                    if (!exists && this.config.contains(nsKey)) {
+                        exists = true;
+                    }
+
+                    if (exists) continue;
+
+                    // Create config section for this modded material with sensible defaults
+                    this.getConsole().info("Importing modded material: %s", nsKey);
+                    this.config.set(nsKey + "." + MapKeys.MATERIAL_ID.key, nsKey);
+                    this.config.set(nsKey + "." + MapKeys.QUANTITY.key, 0);
+                    this.config.set(nsKey + "." + MapKeys.ALLOWED.key, true);
+
+                    // Create a minimal default section for loadItem
+                    YamlConfiguration defaultSec = new YamlConfiguration();
+                    defaultSec.set(MapKeys.QUANTITY.key, 0);
+                    defaultSec.set(MapKeys.ALLOWED.key, true);
+
+                    MarketableMaterial newMat = (MarketableMaterial) this.loadItem(nsKey, this.config.getConfigurationSection(nsKey), defaultSec);
+                    if (newMat != null && newMat.check() && newMat.getMaterial() != null) {
+                        // add into map and adjust totals
+                        this.defaultTotalItems += newMat.getDefaultQuantity();
+                        this.totalItems += newMat.getQuantity();
+                        ((Map) this.itemMap).put(nsKey.toLowerCase().replace(" ", ""), newMat);
+                        imported++;
+                        this.getConsole().info("Imported modded material '%s' -> %s", nsKey, newMat.getMaterial().name());
+                        
+                        // Automatically create an alias using just the key part (after the colon)
+                        // e.g., "cobblemon:mago_berry" -> alias "mago_berry"
+                        // Alias will be saved later in batch
+                        try {
+                            int colonIdx = nsKey.indexOf(':');
+                            if (colonIdx > 0 && colonIdx < nsKey.length() - 1) {
+                                String keyPart = nsKey.substring(colonIdx + 1);
+                                this.addAlias(keyPart, nsKey);
+                            }
+                        } catch (Exception e) {
+                            this.getConsole().warn("Failed to create alias for '%s': %s", nsKey, e.getMessage());
+                        }
+                    } else {
+                        // Rollback config if load failed
+                        this.config.set(nsKey, null);
+                        this.getConsole().warn("Failed to import modded material '%s'", nsKey);
+                    }
+                } catch (Throwable ignored) {
+                }
+            }
+
+            if (imported > 0) {
+                // Persist new entries
+                this.saveItems();
+                this.getConsole().info("Imported %d new modded materials into %s", imported, this.itemFile);
+                reloaded += imported;
+                
+                // Save all created aliases at once
+                this.saveAliases();
+                this.getConsole().info("Saved aliases for imported modded materials");
+            }
+        } catch (Exception e) {
+            this.getConsole().warn("Failed to reload modded materials: %s", e.getMessage());
+        }
+        return reloaded;
     }
 }

@@ -1,7 +1,7 @@
 name: DivinityEconomy
 prefix: DivinityEconomy
 main: org.divinitycraft.divinityeconomy.DEPlugin
-version: 3.5.7
+version: 3.6.Kodak
 author: EDGRRRR
 description: Divinity Economy - The dynamic global economy plugin.
 api-version: 1.20
@@ -207,6 +207,13 @@ commands:
     permission: de.admin.reload
     permission-message: "You do not have the permission to use this command"
     usage: "/reload materials, /reload enchants, /reload potions, /reload entities, /reload experience, /reload config"
+
+  modded:
+    description: "Attempts to (re)load modded materials registered after startup."
+    aliases: []
+    permission: de.admin.modded
+    permission-message: "You do not have the permission to use this command"
+    usage: "/modded"
 
   save:
     description: "Saves the respective market file."
