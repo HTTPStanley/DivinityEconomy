@@ -180,7 +180,8 @@ public class ExpManager extends TokenManager {
             return 0;
         }
 
-        exp.remQuantity(amount);
+        // Update quantity using transaction method (checks for STATIC_BOTTOMLESS internally)
+        this.editQuantityOnTransaction(exp, -amount);
         return changePlayerExp(player, amount);
     }
 
@@ -192,7 +193,8 @@ public class ExpManager extends TokenManager {
             return 0;
         }
 
-        exp.addQuantity(amount);
+        // Update quantity using transaction method (checks for STATIC_BOTTOMLESS internally)
+        this.editQuantityOnTransaction(exp, amount);
         return changePlayerExp(player, -amount);
     }
 

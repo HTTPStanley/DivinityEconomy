@@ -207,10 +207,11 @@ Market:
     # Make sure to scale sales less than purchases or you risk creating an infinite cash bug.
     Buy Scaling: 1
     Sell Scaling: 0.95
-    # What pricing model should be used? ( use "V1", "V2", or "STATIC" )
+    # What pricing model should be used? ( use "V1", "V2", "STATIC", or "STATIC_BOTTOMLESS" )
     # V1 - Linear pricing model (original system with simple inverse relationship)
     # V2 - Elasticity-based pricing with realistic supply-demand curves (recommended)
-    # STATIC - Fixed pricing with no dynamic changes
+    # STATIC - Fixed pricing with no dynamic changes (quantities ARE updated)
+    # STATIC_BOTTOMLESS - Fixed pricing with no quantity updates (infinite supply/demand)
     Pricing Model: "V2"
     # Should the whole market be used to determine the value of items in the form of inflation? ( use "true" / "false" ) | warning, this has not been extensively tested.
     Whole Market Inflation: false
@@ -232,10 +233,11 @@ Market:
     # Higher scaling makes items more expensive
     Buy Scaling: 1.1
     Sell Scaling: 1.0
-    # What pricing model should be used? ( use "V1", "V2", or "STATIC" )
+    # What pricing model should be used? ( use "V1", "V2", "STATIC", or "STATIC_BOTTOMLESS" )
     # V1 - Linear pricing model (original system with simple inverse relationship)
     # V2 - Elasticity-based pricing with realistic supply-demand curves (recommended)
-    # STATIC - Fixed pricing with no dynamic changes
+    # STATIC - Fixed pricing with no dynamic changes (quantities ARE updated)
+    # STATIC_BOTTOMLESS - Fixed pricing with no quantity updates (infinite supply/demand)
     Pricing Model: "V2"
     # Should the whole market be used to determine the value of items in the form of inflation? ( use "true" / "false" ) | warning, this has not been extensively tested.
     Whole Market Inflation: false
@@ -257,10 +259,11 @@ Market:
     # Higher scaling makes items more expensive
     Buy Scaling: 1.1
     Sell Scaling: 1.0
-    # What pricing model should be used? ( use "V1", "V2", or "STATIC" )
+    # What pricing model should be used? ( use "V1", "V2", "STATIC", or "STATIC_BOTTOMLESS" )
     # V1 - Linear pricing model (original system with simple inverse relationship)
     # V2 - Elasticity-based pricing with realistic supply-demand curves (recommended)
-    # STATIC - Fixed pricing with no dynamic changes
+    # STATIC - Fixed pricing with no dynamic changes (quantities ARE updated)
+    # STATIC_BOTTOMLESS - Fixed pricing with no quantity updates (infinite supply/demand)
     Pricing Model: "V2"
     # Should the whole market be used to determine the value of items in the form of inflation? ( use "true" / "false" ) | warning, this has not been extensively tested.
     Whole Market Inflation: false
@@ -280,10 +283,11 @@ Market:
     # Make sure to scale sales less than purchases or you risk creating an infinite cash bug.
     Buy Scaling: 1
     Sell Scaling: 0.95
-    # What pricing model should be used? ( use "V1", "V2", or "STATIC" )
+    # What pricing model should be used? ( use "V1", "V2", "STATIC", or "STATIC_BOTTOMLESS" )
     # V1 - Linear pricing model (original system with simple inverse relationship)
     # V2 - Elasticity-based pricing with realistic supply-demand curves (recommended)
-    # STATIC - Fixed pricing with no dynamic changes
+    # STATIC - Fixed pricing with no dynamic changes (quantities ARE updated)
+    # STATIC_BOTTOMLESS - Fixed pricing with no quantity updates (infinite supply/demand)
     Pricing Model: "V2"
     # Should the whole market be used to determine the value of items in the form of inflation? ( use "true" / "false" ) | warning, this has not been extensively tested.
     Whole Market Inflation: false
@@ -303,10 +307,11 @@ Market:
     # Make sure to scale sales less than purchases or you risk creating an infinite cash bug.
     Buy Scaling: 1.25
     Sell Scaling: 1.20
-    # What pricing model should be used? ( use "V1", "V2", or "STATIC" )
+    # What pricing model should be used? ( use "V1", "V2", "STATIC", or "STATIC_BOTTOMLESS" )
     # V1 - Linear pricing model (original system with simple inverse relationship)
     # V2 - Elasticity-based pricing with realistic supply-demand curves (recommended)
-    # STATIC - Fixed pricing with no dynamic changes
+    # STATIC - Fixed pricing with no dynamic changes (quantities ARE updated)
+    # STATIC_BOTTOMLESS - Fixed pricing with no quantity updates (infinite supply/demand)
     Pricing Model: "V2"
     # Should the whole market be used to determine the value of items in the form of inflation? ( use "true" / "false" ) | warning, this has not been extensively tested.
     Whole Market Inflation: false
@@ -327,7 +332,7 @@ Market:
 # It is recommended to keep this value between 0 and 1, but it can be any number above 0.
 
 # ----- Pricing Model Description -----
-# There are three pricing models available:
+# There are four pricing models available:
 # V1 (Linear) - The original pricing model using simple linear inverse relationship (price = baseQuantity/currentQuantity * 15)
 #   - Simple and predictable
 #   - Can lead to extreme price swings with large supply changes
@@ -338,10 +343,17 @@ Market:
 #   - Prevents extreme price volatility
 #   - Recommended for most servers
 #
-# STATIC (Fixed) - Fixed pricing with no dynamic changes
+# STATIC (Fixed) - Fixed pricing with quantity updates
 #   - Prices remain constant regardless of supply and demand
+#   - Quantities ARE updated during buy/sell transactions
 #   - Useful for servers that want stable, predictable pricing without market dynamics
 #   - All items maintain a constant base price
+#
+# STATIC_BOTTOMLESS (Fixed Infinite) - Fixed pricing without quantity updates
+#   - Prices remain constant regardless of supply and demand
+#   - Quantities are NOT updated during buy/sell transactions (infinite supply/demand)
+#   - Useful for servers that want stable pricing with unlimited availability
+#   - Think of it as a bottomless market with fixed prices
 
 # ----- Base Quantity Description -----
 # The base quantity is the amount of an item that is considered to be the 'base' value of the item.

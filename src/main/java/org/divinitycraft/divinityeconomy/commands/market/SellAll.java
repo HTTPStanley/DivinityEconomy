@@ -126,7 +126,7 @@ public class SellAll extends DivinityCommandMaterials {
         // Loop through all materials and edit their quantity
         for (MarketableToken token : response.getQuantities().keySet()) {
             MarketableMaterial material = (MarketableMaterial) token;
-            material.getManager().editQuantity(material, response.getQuantity(material));
+            material.getManager().editQuantityOnTransaction(material, response.getQuantity(material));
         }
 
         // Handles console, player message and mail

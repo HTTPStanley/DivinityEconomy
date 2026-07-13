@@ -126,7 +126,7 @@ public class Buy extends DivinityCommandMaterials {
 
         // Handle adding items to player and removing quantity from market
         PlayerManager.addPlayerItems(sender, priceResponse.getItemStacksAsArray());
-        manager.editQuantity(marketableMaterial, -priceResponse.getQuantity());
+        manager.editQuantityOnTransaction(marketableMaterial, -priceResponse.getQuantity());
 
         // Handles console, message and mail
         getMain().getConsole().logPurchase(sender, priceResponse.getQuantity(), saleResponse.amount, marketableMaterial.getName());

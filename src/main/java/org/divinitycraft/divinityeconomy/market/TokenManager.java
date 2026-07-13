@@ -7,9 +7,10 @@ import org.divinitycraft.divinityeconomy.DivinityModule;
 import org.divinitycraft.divinityeconomy.config.Setting;
 import org.divinitycraft.divinityeconomy.lang.LangEntry;
 import org.divinitycraft.divinityeconomy.market.pricing.PricingModel;
+import org.divinitycraft.divinityeconomy.market.pricing.StaticBottomlessPricingModel;
+import org.divinitycraft.divinityeconomy.market.pricing.StaticPricingModel;
 import org.divinitycraft.divinityeconomy.market.pricing.V1PricingModel;
 import org.divinitycraft.divinityeconomy.market.pricing.V2PricingModel;
-import org.divinitycraft.divinityeconomy.market.pricing.StaticPricingModel;
 import org.divinitycraft.divinityeconomy.utils.Converter;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -300,9 +301,8 @@ public abstract class TokenManager extends DivinityModule {
      * @return double
      */
     public double getBuyPrice(double stock, MarketableToken itemData) {
-        // For Static pricing, use the item's configured price; otherwise use baseQuantity
-        double baseValue = (this.pricingModel instanceof StaticPricingModel)
-                          ? itemData.getPrice() : this.baseQuantity;
+        // For Static pricing models, use the item's configured price; otherwise use baseQuantity
+        double baseValue = this.pricingModel.isDynamic() ? this.baseQuantity : itemData.getPrice();
         return this.pricingModel.getPrice(baseValue, stock, this.buyScale, this.getInflation(), itemData.getElasticity());
     }
 
@@ -315,12 +315,12 @@ public abstract class TokenManager extends DivinityModule {
      * @param value    - The value to set the price to
      */
     public void setPrice(MarketableToken itemData, double value) {
-        // Always update the PRICE field in config (used by Static pricing model)
+        // Always update the PRICE field in config (used by Static pricing models)
         itemData.setPrice(value);
 
         // For dynamic pricing models (V1, V2), also calculate and set the stock level
         // that would result in this price
-        if (!(this.pricingModel instanceof StaticPricingModel)) {
+        if (this.pricingModel.isDynamic()) {
             itemData.setQuantity(this.pricingModel.calculateStock(this.baseQuantity, value, this.buyScale, this.getInflation()));
         }
     }
@@ -334,6 +334,21 @@ public abstract class TokenManager extends DivinityModule {
     public void editQuantity(MarketableToken itemData, int quantity) {
         itemData.editQuantity(quantity);
         this.editTotalMaterials(quantity);
+    }
+
+    /**
+     * Edits the quantity of an item during a transaction (buy/sell).
+     * This method only updates quantities if the pricing model supports it.
+     * For STATIC_BOTTOMLESS pricing, quantities remain unchanged (infinite supply/demand).
+     *
+     * @param itemData - The item to edit
+     * @param quantity - The quantity to edit by. Can be negative.
+     */
+    public void editQuantityOnTransaction(MarketableToken itemData, int quantity) {
+        // Only update quantity if the pricing model updates quantities on transactions
+        if (this.pricingModel.updatesQuantityOnTransaction()) {
+            this.editQuantity(itemData, quantity);
+        }
     }
 
     /**
@@ -491,6 +506,12 @@ public abstract class TokenManager extends DivinityModule {
                 this.pricingModel = new StaticPricingModel(this.minItemValue, this.maxItemValue);
                 this.getConsole().info("Using Static pricing model");
                 break;
+            case "STATIC_BOTTOMLESS":
+            case "BOTTOMLESS":
+            case "INFINITE":
+                this.pricingModel = new StaticBottomlessPricingModel(this.minItemValue, this.maxItemValue);
+                this.getConsole().info("Using Static Bottomless pricing model");
+                break;
             default:
                 this.pricingModel = new V2PricingModel(this.minItemValue, this.maxItemValue);
                 this.getConsole().warn("Unknown pricing model '%s', defaulting to V2", modelName);
@@ -508,6 +529,8 @@ public abstract class TokenManager extends DivinityModule {
             ((V2PricingModel) this.pricingModel).updateConstraints(this.minItemValue, this.maxItemValue);
         } else if (this.pricingModel instanceof StaticPricingModel) {
             ((StaticPricingModel) this.pricingModel).updateConstraints(this.minItemValue, this.maxItemValue);
+        } else if (this.pricingModel instanceof StaticBottomlessPricingModel) {
+            ((StaticBottomlessPricingModel) this.pricingModel).updateConstraints(this.minItemValue, this.maxItemValue);
         }
     }
 

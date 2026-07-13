@@ -570,6 +570,24 @@ public class EnchantManager extends ItemManager {
         this.editQuantity(enchantData, books);
     }
 
+    /**
+     * Edits the quantity of an enchant during a transaction (buy/sell) by a number of levels.
+     * This method only updates quantities if the pricing model is not STATIC_BOTTOMLESS.
+     * For STATIC_BOTTOMLESS pricing, quantities remain unchanged (infinite supply/demand).
+     *
+     * @param enchantData - The enchant to edit
+     * @param levels      - The quantity to edit by, in levels. Can be negative.
+     */
+    public void editLevelQuantityOnTransaction(MarketableEnchant enchantData, int levels) {
+        int books;
+        if (levels > 0) {
+            books = MarketableEnchant.levelsToBooks(0, levels);
+        } else {
+            books = -MarketableEnchant.levelsToBooks(0, -levels);
+        }
+        this.editQuantityOnTransaction(enchantData, books);
+    }
+
 
     /**
      * Returns the string buy value of an enchant on an item.

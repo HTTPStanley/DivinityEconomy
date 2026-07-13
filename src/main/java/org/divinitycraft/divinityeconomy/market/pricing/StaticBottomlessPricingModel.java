@@ -4,25 +4,27 @@ import org.divinitycraft.divinityeconomy.market.MarketableToken;
 import org.divinitycraft.divinityeconomy.utils.Converter;
 
 /**
- * Static Pricing Model - Fixed Price System
- * This model disables all dynamic pricing and uses configured base prices.
- * Prices remain fixed regardless of supply and demand changes.
+ * Static Bottomless Pricing Model - Fixed Price with Infinite Supply
+ * This model provides fixed pricing like STATIC, but does not update quantities during transactions.
+ * Think of it as a bottomless market with stable prices.
  *
  * Characteristics:
- * - No price changes based on supply
- * - Each item maintains its configured PRICE from the config files
+ * - Fixed prices that don't change based on supply
+ * - Quantities are NOT updated when buying or selling
  * - No inflation calculations
- * - Useful for servers that want stable, predictable pricing
+ * - Useful for servers that want stable pricing with unlimited supply/demand
+ * - Each item maintains its configured PRICE from the config files
  *
- * Note: The basePrice parameter in getPrice() is used as the item's fixed price.
- * This allows each item to have its own configured price from the YAML files.
+ * Difference from STATIC:
+ * - STATIC: Updates quantities during buy/sell transactions
+ * - STATIC_BOTTOMLESS: Does NOT update quantities (infinite supply/demand)
  */
-public class StaticPricingModel implements PricingModel {
+public class StaticBottomlessPricingModel implements PricingModel {
 
     private double minItemValue;
     private double maxItemValue;
 
-    public StaticPricingModel(double minItemValue, double maxItemValue) {
+    public StaticBottomlessPricingModel(double minItemValue, double maxItemValue) {
         this.minItemValue = minItemValue;
         this.maxItemValue = maxItemValue;
     }
@@ -31,8 +33,9 @@ public class StaticPricingModel implements PricingModel {
     public double calculatePrice(MarketableToken token, double baseQuantity, double defaultMarketSize,
                                  double marketSize, double amount, double scale, boolean purchase,
                                  boolean wholeMarketInflation) {
-        // Static pricing: just multiply the fixed price by the amount and scale
+        // Static bottomless pricing: multiply the fixed price by the amount and scale
         // No dynamic price changes during the transaction
+        // No quantity updates occur (handled by the caller checking if model is bottomless)
         double price = token.getPrice() * amount * scale;
         return fitPriceToConstraints(price);
     }
@@ -47,33 +50,40 @@ public class StaticPricingModel implements PricingModel {
 
     @Override
     public int calculateStock(double baseQuantity, double price, double scale, double inflation) {
-        // Since price doesn't change with stock in static mode,
+        // Since price doesn't change with stock in static bottomless mode,
         // we can't meaningfully calculate a stock level from price
-        // Return 0 to indicate stock calculation is not applicable for static pricing
+        // Return 0 to indicate stock calculation is not applicable
         return 0;
     }
 
     @Override
     public double getInflation(double defaultMarketSize, double actualMarketSize) {
-        // No inflation in static pricing
+        // No inflation in static bottomless pricing
         return 1.0;
     }
 
     @Override
     public String getModelName() {
-        return "Static";
+        return "Static Bottomless";
     }
 
     @Override
     public String getDescription() {
-        return "Static pricing model with no dynamic price changes. Each item maintains its " +
-               "configured PRICE from the config files regardless of supply and demand. Useful for " +
-               "servers that want predictable, stable pricing with custom prices per item.";
+        return "Static bottomless pricing model with fixed prices and no quantity updates. " +
+               "Each item maintains its configured PRICE from the config files regardless of " +
+               "supply and demand. Quantities are NOT updated during transactions, providing " +
+               "an infinite supply/demand market. Useful for servers that want predictable, " +
+               "stable pricing with unlimited availability.";
     }
 
     @Override
     public boolean isDynamic() {
         return false;
+    }
+
+    @Override
+    public boolean updatesQuantityOnTransaction() {
+        return false; // STATIC_BOTTOMLESS does not update quantities
     }
 
     /**

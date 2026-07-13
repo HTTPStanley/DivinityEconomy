@@ -99,6 +99,11 @@ public class V1PricingModel implements PricingModel {
                "Price = (baseQuantity/currentQuantity) * 15. Can produce extreme price swings.";
     }
 
+    @Override
+    public boolean isDynamic() {
+        return true;
+    }
+
     /**
      * Calculates the raw price of the product based on base and current quantities.
      * Uses simple linear inverse relationship.

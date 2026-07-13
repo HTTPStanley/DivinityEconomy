@@ -112,7 +112,7 @@ public class EnchantHandBuy extends DivinityCommandEnchant {
 
         // Success
         getMain().getConsole().logPurchase(sender, enchantLevels, evr.getValue(), enchantData.getName());
-        getMain().getEnchMan().editLevelQuantity(enchantData, -enchantLevels);
+        getMain().getEnchMan().editLevelQuantityOnTransaction(enchantData, -enchantLevels);
         return true;
     }
 

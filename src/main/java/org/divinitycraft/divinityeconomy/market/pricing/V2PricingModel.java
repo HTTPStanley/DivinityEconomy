@@ -154,6 +154,11 @@ public class V2PricingModel implements PricingModel {
                "with scarcity premiums and diminishing returns.";
     }
 
+    @Override
+    public boolean isDynamic() {
+        return true;
+    }
+
     /**
      * Calculates the raw price of the product based on base and current quantities.
      * Uses a logarithmic supply-demand curve for more realistic price elasticity.

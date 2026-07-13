@@ -118,7 +118,7 @@ public class EnchantSellAll extends DivinityCommandEnchant {
         // Loop through all tokens and edit their quantity
         for (MarketableToken token : response.getQuantities().keySet()) {
             MarketableEnchant enchant = (MarketableEnchant) token;
-            enchant.getManager().editQuantity(enchant, response.getQuantity(enchant));
+            enchant.getManager().editQuantityOnTransaction(enchant, response.getQuantity(enchant));
         }
 
 

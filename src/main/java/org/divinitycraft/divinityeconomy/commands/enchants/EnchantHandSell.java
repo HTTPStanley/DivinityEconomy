@@ -109,7 +109,7 @@ public class EnchantHandSell extends DivinityCommandEnchant {
             // If successful
             for (String enchantID : evr.getTokenIds()) {
                 MarketableEnchant enchantmentData = getMain().getEnchMan().getEnchant(enchantID);
-                getMain().getEnchMan().editLevelQuantity(enchantmentData, evr.getQuantity(enchantID));
+                getMain().getEnchMan().editLevelQuantityOnTransaction(enchantmentData, evr.getQuantity(enchantID));
                 getMain().getEnchMan().removeEnchantLevelsFromItem(heldItem, enchantmentData.getEnchantment(), evr.getQuantity(enchantID));
             }
 
@@ -165,7 +165,7 @@ public class EnchantHandSell extends DivinityCommandEnchant {
         }
 
         // Edit enchant quantity & log
-        getMain().getEnchMan().editLevelQuantity(enchantData, enchantLevels);
+        getMain().getEnchMan().editLevelQuantityOnTransaction(enchantData, enchantLevels);
         getMain().getConsole().logSale(sender, enchantLevels, evr.getValue(), enchantData.getName());
 
         return true;

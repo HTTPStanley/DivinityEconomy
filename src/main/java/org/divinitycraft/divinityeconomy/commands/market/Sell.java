@@ -128,7 +128,7 @@ public class Sell extends DivinityCommandMaterials {
             getMain().getConsole().logFailedSale(sender, response.getQuantity(), marketableMaterial.getName(), economyResponse.errorMessage);
 
         } else {
-            marketableMaterial.getManager().editQuantity(marketableMaterial, response.getQuantity());
+            marketableMaterial.getManager().editQuantityOnTransaction(marketableMaterial, response.getQuantity());
             // Handles console, player message and mail
             getMain().getConsole().logSale(sender, response.getQuantity(), response.getValue(), marketableMaterial.getName());
         }

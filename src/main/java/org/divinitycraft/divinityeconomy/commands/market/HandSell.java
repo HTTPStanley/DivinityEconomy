@@ -133,7 +133,7 @@ public class HandSell extends DivinityCommandMaterials {
 
 
         // Edit the quantity of the item and send the player a message
-        marketableMaterial.getManager().editQuantity(marketableMaterial, response.getQuantity());
+        marketableMaterial.getManager().editQuantityOnTransaction(marketableMaterial, response.getQuantity());
         getMain().getConsole().logSale(sender, response.getQuantity(), response.getValue(), marketableMaterial.getName());
         return true;
     }

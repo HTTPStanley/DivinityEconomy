@@ -85,4 +85,26 @@ public interface PricingModel {
      * @return String - The model description
      */
     String getDescription();
+
+    /**
+     * Returns whether this pricing model is dynamic (prices change with stock levels).
+     * Dynamic models (V1, V2) adjust stock quantities during transactions.
+     * Static models (STATIC, STATIC_BOTTOMLESS) maintain fixed prices.
+     *
+     * @return boolean - True if the model uses dynamic pricing, false for static pricing
+     */
+    default boolean isDynamic() {
+        return true; // Default to dynamic for backwards compatibility
+    }
+
+    /**
+     * Returns whether this pricing model updates quantities during transactions.
+     * Most models (V1, V2, STATIC) update quantities when items are bought/sold.
+     * STATIC_BOTTOMLESS does not update quantities (infinite supply/demand).
+     *
+     * @return boolean - True if quantities should be updated during transactions, false otherwise
+     */
+    default boolean updatesQuantityOnTransaction() {
+        return true; // Default to updating quantities
+    }
 }
