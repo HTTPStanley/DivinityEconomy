@@ -68,6 +68,26 @@ RELOAD_Potions: "Potions reloaded."
 RELOAD_Entities: "Entities reloaded."
 RELOAD_TypeRequired: "You must specify a type to reload."
 
+# Modded Items
+MODDED_Reloaded: "Imported or resolved %d modded material(s)."
+MODDED_NoneReloaded: "No new modded materials were found."
+MODDED_Pending: "Modded material '%s' (%s) is not available on this server yet and will be retried."
+MODDED_Resolved: "Resolved pending modded material '%s' as %s."
+MODDED_Importing: "Importing modded material: %s"
+MODDED_Imported: "Imported modded material '%s' as %s."
+MODDED_ImportFailed: "Failed to import modded material '%s': %s"
+MODDED_ImportedTotal: "Imported %d new modded material(s) into %s."
+MODDED_AliasesSaved: "Saved aliases for imported modded materials."
+MODDED_AliasItemMissing: "Cannot add alias '%s': item '%s' does not exist."
+MODDED_AliasConflict: "Skipped alias '%s' for '%s': it is already used by '%s'."
+MODDED_AliasAddFailed: "Failed to add alias '%s': %s"
+MODDED_AliasSaveFailed: "Failed to save aliases: %s"
+MODDED_AliasFileCorrupt: "Failed to load %s (the YAML may be corrupted): %s"
+MODDED_AliasBackupCreated: "Created a backup of the corrupted alias file at %s."
+MODDED_AliasBackupFailed: "Failed to back up the corrupted alias file: %s"
+MODDED_AliasLoadError: "Error loading aliases from %s: %s"
+MODDED_ReloadFailed: "Failed to reload modded materials: %s"
+
 
 # Save
 SAVE_Config: "Config saved."

@@ -17,6 +17,8 @@ import java.util.Set;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
 
 public abstract class MaterialManager extends ItemManager {
 
@@ -71,7 +73,7 @@ public abstract class MaterialManager extends ItemManager {
             @Override
             public void run() {
                 int reloaded = reloadModdedItems();
-                if (reloaded > 0) getConsole().info("Reloaded %d modded materials", reloaded);
+                if (reloaded > 0) getConsole().info(LangEntry.MODDED_Reloaded.get(getMain()), reloaded);
             }
         }.runTaskLater(getMain(), 200L); // ~10 seconds
         // this.checkLoadedItems(); - This is for internal debugging only. Hi! :)
@@ -208,145 +210,112 @@ public abstract class MaterialManager extends ItemManager {
     }
 
     /**
-     * Re-attempt to resolve modded / non-vanilla materials which previously
-     * failed to resolve at load time. This creates fresh MarketableMaterial
-     * instances via {@link #loadItem} and replaces entries that now resolve.
+     * Resolves and imports modded (non-vanilla) materials.
+     * <p>
+     * Hybrid servers (Arclight/NeoForge) can register modded materials after plugins enable, so this is run once
+     * shortly after startup and on demand via /modded. It:
+     * <ol>
+     *     <li>loads entries already in the materials file that were skipped because their material wasn't registered yet</li>
+     *     <li>imports registered modded materials that have no entry yet, as disallowed with 0 quantity</li>
+     * </ol>
+     * Only entries whose material resolves are ever added to the market.
      *
-     * @return number of items successfully reloaded with a resolved Material
+     * @return number of modded materials newly resolved or imported
      */
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public int reloadModdedItems() {
-        int reloaded = 0;
+        int resolved = 0;
+        int imported = 0;
         try {
-            // First, attempt to resolve any existing unresolved entries (previous behaviour)
-            // Collect candidates whose Material is currently unresolved
-            Set<String> candidates = new HashSet<>();
-            for (String key : this.itemMap.keySet()) {
-                MarketableToken token = this.itemMap.get(key);
-                if (!(token instanceof MarketableMaterial)) continue;
-                MarketableMaterial mat = (MarketableMaterial) token;
-                if (mat.getMaterial() == null) candidates.add(key);
-            }
+            // Step 1 - entries that exist in the file but aren't loaded yet (material wasn't registered at load time)
+            // Bundled (vanilla) keys are skipped: they were deliberately rejected by loadItems()
+            FileConfiguration bundled = this.getConfMan().readResource(this.itemFile);
+            for (String key : new HashSet<>(this.config.getKeys(false))) {
+                if (bundled.contains(key)) continue;
+                String formattedKey = key.toLowerCase().replace(" ", "");
+                if (this.itemMap.containsKey(formattedKey)) continue;
 
-            if (candidates.isEmpty()) {
-                this.getConsole().debug("No unresolved modded materials found to reload.");
-                // Continue - even if there were no unresolved entries, we still want to scan for new modded materials
-            } else {
-                this.getConsole().info("Found %d unresolved modded material entries to attempt reload.", candidates.size());
+                ConfigurationSection data = this.config.getConfigurationSection(key);
+                if (data == null) continue;
 
-                for (String key : candidates) {
-                    MarketableMaterial token = (MarketableMaterial) this.itemMap.get(key);
-                    String materialId = token.getItemConfig().getString(MapKeys.MATERIAL_ID.key, token.getID());
-                    this.getConsole().info("Attempting to reload '%s' (configured MATERIAL_ID='%s')", key, materialId);
+                try {
+                    MarketableToken token = this.loadItem(key, data, data);
+                    if (token == null || !token.check()) continue;
 
-                    MarketableMaterial newMat = (MarketableMaterial) this.loadItem(token.getID(), token.getItemConfig(), token.getDefaultItemConfig());
-                    if (newMat != null && newMat.check() && newMat.getMaterial() != null) {
-                        // adjust totals
-                        this.defaultTotalItems -= token.getDefaultQuantity();
-                        this.totalItems -= token.getQuantity();
-                        this.defaultTotalItems += newMat.getDefaultQuantity();
-                        this.totalItems += newMat.getQuantity();
-
-                        ((Map) this.itemMap).put(key, newMat);
-                        reloaded++;
-                        this.getConsole().info("Successfully reloaded '%s' -> resolved as %s", key, newMat.getMaterial().name());
-                    } else {
-                        this.getConsole().warn("Failed to resolve material for '%s' (MATERIAL_ID='%s')", key, materialId);
-                    }
+                    this.defaultTotalItems += token.getDefaultQuantity();
+                    this.totalItems += token.getQuantity();
+                    ((Map) this.itemMap).put(formattedKey, token);
+                    resolved++;
+                    this.getConsole().info(LangEntry.MODDED_Resolved.get(getMain()), key, this.describe(token));
+                } catch (Exception e) {
+                    this.getConsole().warn(LangEntry.MODDED_ImportFailed.get(getMain()), key, e.getMessage());
                 }
             }
 
-            // Second, scan the current server Material registry for non-vanilla (modded) materials
-            // and import any that are not yet present in the market config.
-            int imported = 0;
-            Set<String> discovered = new HashSet<>();
-            for (Material m : Material.values()) {
+            // Step 2 - registered modded materials with no entry yet
+            Set<String> seen = new HashSet<>();
+            for (Material material : Material.values()) {
+                String nsKey = null;
                 try {
-                    NamespacedKey k = m.getKey();
-                    if (k == null) continue;
-                    String namespace = k.getNamespace();
-                    if (namespace == null) continue;
-                    if ("minecraft".equals(namespace)) continue; // skip vanilla
+                    NamespacedKey namespacedKey = material.getKey();
+                    if (namespacedKey == null || "minecraft".equals(namespacedKey.getNamespace())) continue;
 
-                    String nsKey = k.toString(); // modid:item
-                    // avoid duplicates
-                    if (discovered.contains(nsKey)) continue;
-                    discovered.add(nsKey);
+                    nsKey = namespacedKey.toString(); // modid:item
+                    if (!seen.add(nsKey)) continue;
 
-                    // Check if already represented in itemMap (by MATERIAL_ID or ID)
-                    // OR if it already exists in the config file (user may have edited it manually)
-                    boolean exists = false;
-                    
-                    // Check itemMap first
-                    for (MarketableToken token : this.itemMap.values()) {
-                        String mid = token.getItemConfig().getString(MapKeys.MATERIAL_ID.key, token.getID());
-                        if (mid == null) continue;
-                        if (mid.equalsIgnoreCase(nsKey) || mid.equalsIgnoreCase(m.name()) || mid.equalsIgnoreCase(k.getKey())) {
-                            exists = true;
-                            break;
-                        }
-                    }
-                    
-                    // Also check the config file itself to avoid overwriting user edits
-                    if (!exists && this.config.contains(nsKey)) {
-                        exists = true;
-                    }
+                    String formattedKey = nsKey.toLowerCase().replace(" ", "");
+                    if (this.itemMap.containsKey(formattedKey) || this.config.contains(nsKey)) continue;
 
-                    if (exists) continue;
+                    this.getConsole().info(LangEntry.MODDED_Importing.get(getMain()), nsKey);
 
-                    // Create config section for this modded material with sensible defaults
-                    this.getConsole().info("Importing modded material: %s", nsKey);
+                    // Disallowed with no stock until an admin sets it up
                     this.config.set(nsKey + "." + MapKeys.MATERIAL_ID.key, nsKey);
                     this.config.set(nsKey + "." + MapKeys.QUANTITY.key, 0);
-                    this.config.set(nsKey + "." + MapKeys.ALLOWED.key, true);
+                    this.config.set(nsKey + "." + MapKeys.ALLOWED.key, false);
 
-                    // Create a minimal default section for loadItem
-                    YamlConfiguration defaultSec = new YamlConfiguration();
-                    defaultSec.set(MapKeys.QUANTITY.key, 0);
-                    defaultSec.set(MapKeys.ALLOWED.key, true);
+                    YamlConfiguration defaultSection = new YamlConfiguration();
+                    defaultSection.set(MapKeys.QUANTITY.key, 0);
+                    defaultSection.set(MapKeys.ALLOWED.key, false);
 
-                    MarketableMaterial newMat = (MarketableMaterial) this.loadItem(nsKey, this.config.getConfigurationSection(nsKey), defaultSec);
-                    if (newMat != null && newMat.check() && newMat.getMaterial() != null) {
-                        // add into map and adjust totals
-                        this.defaultTotalItems += newMat.getDefaultQuantity();
-                        this.totalItems += newMat.getQuantity();
-                        ((Map) this.itemMap).put(nsKey.toLowerCase().replace(" ", ""), newMat);
-                        imported++;
-                        this.getConsole().info("Imported modded material '%s' -> %s", nsKey, newMat.getMaterial().name());
-                        
-                        // Automatically create an alias using just the key part (after the colon)
-                        // e.g., "cobblemon:mago_berry" -> alias "mago_berry"
-                        // Alias will be saved later in batch
-                        try {
-                            int colonIdx = nsKey.indexOf(':');
-                            if (colonIdx > 0 && colonIdx < nsKey.length() - 1) {
-                                String keyPart = nsKey.substring(colonIdx + 1);
-                                this.addAlias(keyPart, nsKey);
-                            }
-                        } catch (Exception e) {
-                            this.getConsole().warn("Failed to create alias for '%s': %s", nsKey, e.getMessage());
-                        }
-                    } else {
-                        // Rollback config if load failed
+                    MarketableToken token = this.loadItem(nsKey, this.config.getConfigurationSection(nsKey), defaultSection);
+                    if (token == null || !token.check()) {
                         this.config.set(nsKey, null);
-                        this.getConsole().warn("Failed to import modded material '%s'", nsKey);
+                        this.getConsole().warn(LangEntry.MODDED_ImportFailed.get(getMain()), nsKey, token == null ? "null" : token.getError());
+                        continue;
                     }
-                } catch (Throwable ignored) {
+
+                    this.defaultTotalItems += token.getDefaultQuantity();
+                    this.totalItems += token.getQuantity();
+                    ((Map) this.itemMap).put(formattedKey, token);
+                    imported++;
+                    this.getConsole().info(LangEntry.MODDED_Imported.get(getMain()), nsKey, this.describe(token));
+
+                    // Alias "modid:item" -> "item" (skipped if it would shadow something else)
+                    int colonIdx = nsKey.indexOf(':');
+                    if (colonIdx > 0 && colonIdx < nsKey.length() - 1) {
+                        this.addAlias(nsKey.substring(colonIdx + 1), nsKey);
+                    }
+                } catch (Throwable e) {
+                    if (nsKey != null) this.config.set(nsKey, null);
+                    this.getConsole().warn(LangEntry.MODDED_ImportFailed.get(getMain()), nsKey, e.toString());
                 }
             }
 
             if (imported > 0) {
-                // Persist new entries
                 this.saveItems();
-                this.getConsole().info("Imported %d new modded materials into %s", imported, this.itemFile);
-                reloaded += imported;
-                
-                // Save all created aliases at once
+                this.getConsole().info(LangEntry.MODDED_ImportedTotal.get(getMain()), imported, this.itemFile);
                 this.saveAliases();
-                this.getConsole().info("Saved aliases for imported modded materials");
+                this.getConsole().info(LangEntry.MODDED_AliasesSaved.get(getMain()));
             }
         } catch (Exception e) {
-            this.getConsole().warn("Failed to reload modded materials: %s", e.getMessage());
+            this.getConsole().warn(LangEntry.MODDED_ReloadFailed.get(getMain()), e.toString());
         }
-        return reloaded;
+        return resolved + imported;
+    }
+
+    private String describe(MarketableToken token) {
+        return token instanceof MarketableMaterial && ((MarketableMaterial) token).getMaterial() != null
+                ? ((MarketableMaterial) token).getMaterial().name()
+                : token.getID();
     }
 }

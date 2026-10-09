@@ -68,6 +68,26 @@ RELOAD_Potions: "ポーションがリロードされました。"
 RELOAD_Entities: "エンティティがリロードされました。"
 RELOAD_TypeRequired: "リロードするタイプを指定する必要があります。"
 
+# Modded Items
+MODDED_Reloaded: "MOD材料を %d 件インポートまたは解決しました。"
+MODDED_NoneReloaded: "新しいMOD材料は見つかりませんでした。"
+MODDED_Pending: "MOD材料 '%s' (%s) はまだこのサーバーで利用できません。後で再試行されます。"
+MODDED_Resolved: "保留中のMOD材料 '%s' を %s として解決しました。"
+MODDED_Importing: "MOD材料をインポート中: %s"
+MODDED_Imported: "MOD材料 '%s' を %s としてインポートしました。"
+MODDED_ImportFailed: "MOD材料 '%s' のインポートに失敗しました: %s"
+MODDED_ImportedTotal: "新しいMOD材料を %d 件 %s にインポートしました。"
+MODDED_AliasesSaved: "インポートしたMOD材料のエイリアスを保存しました。"
+MODDED_AliasItemMissing: "エイリアス '%s' を追加できません: アイテム '%s' は存在しません。"
+MODDED_AliasConflict: "'%s' のエイリアス '%s' はスキップされました: すでに '%s' で使用されています。"
+MODDED_AliasAddFailed: "エイリアス '%s' の追加に失敗しました: %s"
+MODDED_AliasSaveFailed: "エイリアスの保存に失敗しました: %s"
+MODDED_AliasFileCorrupt: "%s の読み込みに失敗しました (YAML が破損している可能性があります): %s"
+MODDED_AliasBackupCreated: "破損したエイリアスファイルのバックアップを %s に作成しました。"
+MODDED_AliasBackupFailed: "破損したエイリアスファイルのバックアップに失敗しました: %s"
+MODDED_AliasLoadError: "%s からのエイリアス読み込み中にエラーが発生しました: %s"
+MODDED_ReloadFailed: "MOD材料の再読み込みに失敗しました: %s"
+
 
 # 保存
 SAVE_Config: "設定が保存されました。"

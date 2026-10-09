@@ -481,6 +481,7 @@ permissions:
       de.admin.saveEnchants: true
       de.admin.saveMaterials: true
       de.admin.reload: true
+      de.admin.modded: true
       de.admin.banEnchant: true
       de.admin.banItem: true
 
@@ -494,6 +495,10 @@ permissions:
 
   de.admin.reload:
     description: Allows the user to reload the plugin
+    default: op
+
+  de.admin.modded:
+    description: Allows the user to rescan for and import modded materials.
     default: op
 
   de.admin.saveEnchants:

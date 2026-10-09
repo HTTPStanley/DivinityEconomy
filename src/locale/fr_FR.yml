@@ -68,6 +68,26 @@ RELOAD_Potions: "Potions rechargées."
 RELOAD_Entities: "Entités rechargées."
 RELOAD_TypeRequired: "Vous devez spécifier un type à recharger."
 
+# Modded Items
+MODDED_Reloaded: "%d matériau(x) modded importé(s) ou résolu(s)."
+MODDED_NoneReloaded: "Aucun nouveau matériau modded n'a été trouvé."
+MODDED_Pending: "Le matériau modded '%s' (%s) n'est pas encore disponible sur ce serveur et sera réessayé."
+MODDED_Resolved: "Matériau modded en attente '%s' résolu en %s."
+MODDED_Importing: "Importation du matériau modded : %s"
+MODDED_Imported: "Matériau modded '%s' importé en tant que %s."
+MODDED_ImportFailed: "Échec de l'importation du matériau modded '%s' : %s"
+MODDED_ImportedTotal: "%d nouveau(x) matériau(x) modded importé(s) dans %s."
+MODDED_AliasesSaved: "Alias enregistrés pour les matériaux modded importés."
+MODDED_AliasItemMissing: "Impossible d'ajouter l'alias '%s' : l'objet '%s' n'existe pas."
+MODDED_AliasConflict: "Alias '%s' ignoré pour '%s' : il est déjà utilisé par '%s'."
+MODDED_AliasAddFailed: "Échec de l'ajout de l'alias '%s' : %s"
+MODDED_AliasSaveFailed: "Échec de l'enregistrement des alias : %s"
+MODDED_AliasFileCorrupt: "Échec du chargement de %s (le YAML est peut-être corrompu) : %s"
+MODDED_AliasBackupCreated: "Une sauvegarde du fichier d'alias corrompu a été créée dans %s."
+MODDED_AliasBackupFailed: "Échec de la sauvegarde du fichier d'alias corrompu : %s"
+MODDED_AliasLoadError: "Erreur lors du chargement des alias depuis %s : %s"
+MODDED_ReloadFailed: "Échec du rechargement des matériaux modded : %s"
+
 
 # Save
 SAVE_Config: "Configuration sauvegardée."

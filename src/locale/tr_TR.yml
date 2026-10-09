@@ -68,6 +68,26 @@ RELOAD_Potions: "İksirler yeniden yüklendi."
 RELOAD_Entities: "Varlıklar yeniden yüklendi."
 RELOAD_TypeRequired: "Yeniden yüklemek için bir tür belirtmelisiniz."
 
+# Modded Items
+MODDED_Reloaded: "%d modlu malzeme içe aktarıldı veya çözümlendi."
+MODDED_NoneReloaded: "Yeni modlu malzeme bulunamadı."
+MODDED_Pending: "'%s' (%s) modlu malzemesi bu sunucuda henüz kullanılabilir değil, yeniden denenecek."
+MODDED_Resolved: "Bekleyen '%s' modlu malzemesi %s olarak çözümlendi."
+MODDED_Importing: "Modlu malzeme içe aktarılıyor: %s"
+MODDED_Imported: "'%s' modlu malzemesi %s olarak içe aktarıldı."
+MODDED_ImportFailed: "'%s' modlu malzemesi içe aktarılamadı: %s"
+MODDED_ImportedTotal: "%d yeni modlu malzeme %s içine içe aktarıldı."
+MODDED_AliasesSaved: "İçe aktarılan modlu malzemeler için takma adlar kaydedildi."
+MODDED_AliasItemMissing: "'%s' takma adı eklenemiyor: '%s' öğesi mevcut değil."
+MODDED_AliasConflict: "'%s' için '%s' takma adı atlandı: zaten '%s' tarafından kullanılıyor."
+MODDED_AliasAddFailed: "'%s' takma adı eklenemedi: %s"
+MODDED_AliasSaveFailed: "Takma adlar kaydedilemedi: %s"
+MODDED_AliasFileCorrupt: "%s yüklenemedi (YAML bozuk olabilir): %s"
+MODDED_AliasBackupCreated: "Bozuk takma ad dosyasının yedeği %s konumunda oluşturuldu."
+MODDED_AliasBackupFailed: "Bozuk takma ad dosyasının yedeği alınamadı: %s"
+MODDED_AliasLoadError: "%s dosyasından takma adlar yüklenirken hata: %s"
+MODDED_ReloadFailed: "Modlu malzemeler yeniden yüklenemedi: %s"
+
 
 # Kaydet
 SAVE_Config: "Yapılandırma kaydedildi."

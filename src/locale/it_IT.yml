@@ -65,6 +65,26 @@ RELOAD_Potions: "Pozioni ricaricate."
 RELOAD_Entities: "Entità ricaricate."
 RELOAD_TypeRequired: "Devi specificare un tipo da ricaricare."
 
+# Modded Items
+MODDED_Reloaded: "Importati o risolti %d materiale/i modded."
+MODDED_NoneReloaded: "Non sono stati trovati nuovi materiali modded."
+MODDED_Pending: "Il materiale modded '%s' (%s) non è ancora disponibile su questo server e verrà riprovato."
+MODDED_Resolved: "Materiale modded in attesa '%s' risolto come %s."
+MODDED_Importing: "Importazione del materiale modded: %s"
+MODDED_Imported: "Materiale modded '%s' importato come %s."
+MODDED_ImportFailed: "Impossibile importare il materiale modded '%s': %s"
+MODDED_ImportedTotal: "Importati %d nuovi materiali modded in %s."
+MODDED_AliasesSaved: "Alias salvati per i materiali modded importati."
+MODDED_AliasItemMissing: "Impossibile aggiungere l'alias '%s': l'oggetto '%s' non esiste."
+MODDED_AliasConflict: "Alias '%s' per '%s' saltato: è già usato da '%s'."
+MODDED_AliasAddFailed: "Impossibile aggiungere l'alias '%s': %s"
+MODDED_AliasSaveFailed: "Impossibile salvare gli alias: %s"
+MODDED_AliasFileCorrupt: "Impossibile caricare %s (il file YAML potrebbe essere danneggiato): %s"
+MODDED_AliasBackupCreated: "Creata una copia di backup del file di alias danneggiato in %s."
+MODDED_AliasBackupFailed: "Impossibile creare il backup del file di alias danneggiato: %s"
+MODDED_AliasLoadError: "Errore nel caricamento degli alias da %s: %s"
+MODDED_ReloadFailed: "Impossibile ricaricare i materiali modded: %s"
+
 
 # Save
 SAVE_Config: "Configurazione salvata."

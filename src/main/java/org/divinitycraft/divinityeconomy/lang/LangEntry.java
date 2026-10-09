@@ -66,6 +66,26 @@ public enum LangEntry {
     RELOAD_Entities(),
     RELOAD_TypeRequired(),
 
+    // Modded Items
+    MODDED_Reloaded(),
+    MODDED_NoneReloaded(),
+    MODDED_Pending(),
+    MODDED_Resolved(),
+    MODDED_Importing(),
+    MODDED_Imported(),
+    MODDED_ImportFailed(),
+    MODDED_ImportedTotal(),
+    MODDED_AliasesSaved(),
+    MODDED_AliasItemMissing(),
+    MODDED_AliasConflict(),
+    MODDED_AliasAddFailed(),
+    MODDED_AliasSaveFailed(),
+    MODDED_AliasFileCorrupt(),
+    MODDED_AliasBackupCreated(),
+    MODDED_AliasBackupFailed(),
+    MODDED_AliasLoadError(),
+    MODDED_ReloadFailed(),
+
 
     // Save
     SAVE_Config(),

@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -35,6 +36,7 @@ public abstract class TokenManager extends DivinityModule {
     // Stores the items and the aliases
     // Aliases are lower case
     // DivinityItem id's are upper case
+    private final Object aliasSaveLock = new Object();
     protected Map<String, String> aliasMap;
     private static final int MAX_SEARCH_DEPTH_INT = 64;
     private static final long MAX_SEARCH_NANO_LONG = 50000000L; // 50ms
@@ -568,7 +570,7 @@ public abstract class TokenManager extends DivinityModule {
         try {
             config = this.getConfMan().loadFile(this.aliasFile);
         } catch (Exception e) {
-            this.getConsole().warn("Failed to load %s (YAML may be corrupted): %s", this.aliasFile, e.getMessage());
+            this.getConsole().warn(LangEntry.MODDED_AliasFileCorrupt.get(getMain()), this.aliasFile, e.getMessage());
             // Create backup and start fresh
             try {
                 File backup = new File(this.getConfMan().getFile(this.aliasFile).getAbsolutePath() + ".backup");
@@ -577,8 +579,9 @@ public abstract class TokenManager extends DivinityModule {
                     backup.toPath(),
                     StandardCopyOption.REPLACE_EXISTING
                 );
-                this.getConsole().warn("Created backup at %s", backup.getAbsolutePath());
-            } catch (Exception ignored) {
+                this.getConsole().warn(LangEntry.MODDED_AliasBackupCreated.get(getMain()), backup.getAbsolutePath());
+            } catch (Exception backupException) {
+                this.getConsole().warn(LangEntry.MODDED_AliasBackupFailed.get(getMain()), backupException.getMessage());
             }
             config = this.getConfMan().readResource(this.aliasFile);
         }
@@ -625,7 +628,7 @@ public abstract class TokenManager extends DivinityModule {
                 revBuildAliasValues.get(value).add(key);
             }
         } catch (Exception e) {
-            this.getConsole().warn("Error loading aliases from %s: %s", this.aliasFile, e.getMessage());
+            this.getConsole().warn(LangEntry.MODDED_AliasLoadError.get(getMain()), this.aliasFile, e.getMessage());
         }
         
         this.aliasMap = values;
@@ -640,64 +643,74 @@ public abstract class TokenManager extends DivinityModule {
     /**
      * Adds an alias for an item to the runtime alias maps.
      * The alias will be persisted to file at the next saveAliases() call.
-     * @param alias - The alias name (will be lowercased)
+     * Aliases that would shadow an existing alias or item are skipped.
+     *
+     * @param alias  - The alias name (will be lowercased)
      * @param itemId - The item ID to point to
      */
     public void addAlias(String alias, String itemId) {
         if (alias == null || itemId == null) return;
-        
+
         try {
             alias = alias.toLowerCase().replace(" ", "");
             itemId = itemId.toLowerCase().replace(" ", "");
-            
+
             // Check if item exists
             if (this.getItem(itemId) == null) {
-                if (this.getConsole() != null) {
-                    this.getConsole().warn("Cannot add alias '%s': item '%s' does not exist", alias, itemId);
-                }
+                this.getConsole().warn(LangEntry.MODDED_AliasItemMissing.get(getMain()), alias, itemId);
                 return;
             }
-            
+
+            // Never shadow an existing alias or item belonging to something else
+            String existing = this.aliasMap.get(alias);
+            if (existing == null && !alias.equals(itemId) && this.getItem(alias) != null) existing = alias;
+            if (existing != null && !existing.equals(itemId)) {
+                this.getConsole().warn(LangEntry.MODDED_AliasConflict.get(getMain()), alias, itemId, existing);
+                return;
+            }
+
             // Add to aliasMap
             this.aliasMap.put(alias, itemId);
-            
+
             // Add to revAliasMap
-            if (!this.revAliasMap.containsKey(itemId)) {
-                this.revAliasMap.put(itemId, new HashSet<>());
-                this.revAliasMap.get(itemId).add(itemId);
-            }
-            this.revAliasMap.get(itemId).add(alias);
+            Set<String> aliases = this.revAliasMap.computeIfAbsent(itemId, id -> ConcurrentHashMap.newKeySet());
+            aliases.add(itemId);
+            aliases.add(alias);
         } catch (Exception e) {
-            if (this.getConsole() != null) {
-                this.getConsole().warn("Failed to add alias '%s': %s", alias, e.getMessage());
-            }
+            this.getConsole().warn(LangEntry.MODDED_AliasAddFailed.get(getMain()), alias, e.getMessage());
         }
     }
 
     /**
-     * Saves all aliases to the alias config file asynchronously.
-     * This prevents blocking the main server thread.
+     * Saves all aliases to the alias config file.
+     * The write runs on an async scheduler task, serialised by a lock so concurrent saves can't interleave.
      */
     public void saveAliases() {
-        // Run save in a separate thread to prevent blocking server
-        new Thread(() -> {
-            try {
-                FileConfiguration config = this.getConfMan().loadFile(this.aliasFile);
-                
-                // Write all aliases from the current aliasMap
-                for (String alias : this.aliasMap.keySet()) {
-                    config.set(alias, this.aliasMap.get(alias));
-                }
-                
-                this.getConfMan().saveFile(config, this.aliasFile);
-            } catch (Exception e) {
-                if (this.getConsole() != null) {
-                    this.getConsole().warn("Failed to save aliases: %s", e.getMessage());
+        // Snapshot on the calling thread so the async task never touches live maps
+        final Map<String, String> snapshot = new HashMap<>(this.aliasMap);
+        final Runnable write = () -> {
+            synchronized (this.aliasSaveLock) {
+                try {
+                    FileConfiguration config = this.getConfMan().loadFile(this.aliasFile);
+                    snapshot.forEach(config::set);
+                    this.getConfMan().saveFile(config, this.aliasFile);
+                } catch (Exception e) {
+                    this.getConsole().warn(LangEntry.MODDED_AliasSaveFailed.get(getMain()), e.getMessage());
                 }
             }
-        }).start();
-    }
+        };
 
+        // The scheduler refuses new tasks once the plugin is disabled, so write inline in that case
+        if (getMain().isEnabled()) {
+            try {
+                getMain().getServer().getScheduler().runTaskAsynchronously(getMain(), write);
+                return;
+            } catch (Exception e) {
+                this.getConsole().warn(LangEntry.MODDED_AliasSaveFailed.get(getMain()), e.getMessage());
+            }
+        }
+        write.run();
+    }
     /**
      * Loads the items from the items file into the items variable
      */
@@ -769,8 +782,9 @@ public abstract class TokenManager extends DivinityModule {
             // For modded items, use the item config as default since they don't have a vanilla default
             MarketableToken itemData = this.loadItem(key, data, data);
             if (!itemData.check()) {
+                // Modded materials may not be registered yet (hybrid servers load them late), so these are retried by /modded
                 if (!this.getConfMan().getBoolean(Setting.IGNORE_ITEM_ERRORS_BOOLEAN))
-                    this.getConsole().warn("Bad config value in %s for '%s': %s (modded item)", this.itemFile, key, itemData.getError());
+                    this.getConsole().info(LangEntry.MODDED_Pending.get(getMain()), key, data.getString(MapKeys.MATERIAL_ID.key, key));
                 continue;
             }
             

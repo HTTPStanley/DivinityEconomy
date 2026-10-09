@@ -65,6 +65,26 @@ RELOAD_Potions: "औषधियाँ को पुनः लोड किय�
 RELOAD_Entities: "संस्थाएँ को पुनः लोड किया गया।"
 RELOAD_TypeRequired: "रीलोड करने के लिए आपको एक प्रकार निर्दिष्ट करना होगा।"
 
+# Modded Items
+MODDED_Reloaded: "%d मोड सामग्री(याँ) आयात या हल की गईं।"
+MODDED_NoneReloaded: "कोई नई मोड सामग्री नहीं मिली।"
+MODDED_Pending: "मोड सामग्री '%s' (%s) अभी इस सर्वर पर उपलब्ध नहीं है और फिर से प्रयास किया जाएगा।"
+MODDED_Resolved: "लंबित मोड सामग्री '%s' को %s के रूप में हल किया गया।"
+MODDED_Importing: "मोड सामग्री आयात की जा रही है: %s"
+MODDED_Imported: "मोड सामग्री '%s' को %s के रूप में आयात किया गया।"
+MODDED_ImportFailed: "मोड सामग्री '%s' आयात करने में विफल: %s"
+MODDED_ImportedTotal: "%d नई मोड सामग्री(याँ) %s में आयात की गईं।"
+MODDED_AliasesSaved: "आयात की गई मोड सामग्री के लिए उपनाम सहेजे गए।"
+MODDED_AliasItemMissing: "उपनाम '%s' नहीं जोड़ा जा सकता: आइटम '%s' मौजूद नहीं है।"
+MODDED_AliasConflict: "'%s' के लिए उपनाम '%s' छोड़ा गया: यह पहले से '%s' द्वारा उपयोग में है।"
+MODDED_AliasAddFailed: "उपनाम '%s' जोड़ने में विफल: %s"
+MODDED_AliasSaveFailed: "उपनाम सहेजने में विफल: %s"
+MODDED_AliasFileCorrupt: "%s लोड करने में विफल (YAML दूषित हो सकती है): %s"
+MODDED_AliasBackupCreated: "दूषित उपनाम फ़ाइल का बैकअप %s पर बनाया गया।"
+MODDED_AliasBackupFailed: "दूषित उपनाम फ़ाइल का बैकअप लेने में विफल: %s"
+MODDED_AliasLoadError: "%s से उपनाम लोड करने में त्रुटि: %s"
+MODDED_ReloadFailed: "मोड सामग्री पुनः लोड करने में विफल: %s"
+
 # सहेजें
 SAVE_Config: "कॉन्फ़िग सहेजा गया।"
 SAVE_Enchants: "एन्कैंट्स सहेजे गए।"

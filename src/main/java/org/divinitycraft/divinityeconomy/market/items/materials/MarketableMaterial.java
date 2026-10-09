@@ -69,19 +69,6 @@ public abstract class MarketableMaterial extends MarketableItem {
         }
 
         this.material = mat;
-
-        // If this material couldn't be resolved to a vanilla Bukkit Material
-        // treat it as a modded/non-vanilla item by defaulting quantity to 0
-        // and disallowing it unless the server admin explicitly sets values
-        // in the materials.yml config.
-        if (this.material == null) {
-            if (!this.itemConfig.contains(MapKeys.QUANTITY.key)) {
-                this.itemConfig.set(MapKeys.QUANTITY.key, 0);
-            }
-            if (!this.itemConfig.contains(MapKeys.ALLOWED.key)) {
-                this.itemConfig.set(MapKeys.ALLOWED.key, false);
-            }
-        }
     }
 
 

@@ -68,6 +68,26 @@ RELOAD_Potions: "Drankjes herladen."
 RELOAD_Entities: "Entiteiten herladen."
 RELOAD_TypeRequired: "U moet een type opgeven om te herladen."
 
+# Modded Items
+MODDED_Reloaded: "%d modded materiaal/materialen geïmporteerd of opgelost."
+MODDED_NoneReloaded: "Er zijn geen nieuwe modded materialen gevonden."
+MODDED_Pending: "Modded materiaal '%s' (%s) is nog niet beschikbaar op deze server en wordt opnieuw geprobeerd."
+MODDED_Resolved: "Wachtend modded materiaal '%s' opgelost als %s."
+MODDED_Importing: "Modded materiaal importeren: %s"
+MODDED_Imported: "Modded materiaal '%s' geïmporteerd als %s."
+MODDED_ImportFailed: "Importeren van modded materiaal '%s' mislukt: %s"
+MODDED_ImportedTotal: "%d nieuwe modded materiaal/materialen geïmporteerd in %s."
+MODDED_AliasesSaved: "Aliassen voor geïmporteerde modded materialen opgeslagen."
+MODDED_AliasItemMissing: "Alias '%s' kan niet worden toegevoegd: item '%s' bestaat niet."
+MODDED_AliasConflict: "Alias '%s' voor '%s' overgeslagen: deze wordt al gebruikt door '%s'."
+MODDED_AliasAddFailed: "Alias '%s' toevoegen mislukt: %s"
+MODDED_AliasSaveFailed: "Opslaan van aliassen mislukt: %s"
+MODDED_AliasFileCorrupt: "Laden van %s mislukt (de YAML is mogelijk beschadigd): %s"
+MODDED_AliasBackupCreated: "Er is een back-up gemaakt van het beschadigde aliasbestand op %s."
+MODDED_AliasBackupFailed: "Back-up maken van het beschadigde aliasbestand mislukt: %s"
+MODDED_AliasLoadError: "Fout bij laden van aliassen uit %s: %s"
+MODDED_ReloadFailed: "Opnieuw laden van modded materialen mislukt: %s"
+
 
 # Opslaan
 SAVE_Config: "Configuratie opgeslagen."
