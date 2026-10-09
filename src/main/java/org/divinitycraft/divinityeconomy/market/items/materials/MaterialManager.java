@@ -3,18 +3,29 @@ package org.divinitycraft.divinityeconomy.market.items.materials;
 import org.divinitycraft.divinityeconomy.DEPlugin;
 import org.divinitycraft.divinityeconomy.config.Setting;
 import org.divinitycraft.divinityeconomy.lang.LangEntry;
+import org.divinitycraft.divinityeconomy.market.MapKeys;
 import org.divinitycraft.divinityeconomy.market.MarketableToken;
 import org.divinitycraft.divinityeconomy.market.items.ItemManager;
+import org.divinitycraft.divinityeconomy.utils.ConfigKeys;
 import org.divinitycraft.divinityeconomy.utils.Converter;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.io.File;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
 
 public abstract class MaterialManager extends ItemManager {
+    // Not initialised inline: init() can run from a superclass constructor, before field initialisers; see the getter
+    private ModdedMaterialProvider moddedMaterialProvider;
 
     /**
      * Constructor You will likely need to call loadMaterials and loadAliases to
@@ -60,6 +71,16 @@ public abstract class MaterialManager extends ItemManager {
         this.saveTimer.runTaskTimerAsynchronously(getMain(), timer, timer);
         this.loadItems();
         this.loadAliases();
+        // Schedule a delayed attempt to resolve modded (non-vanilla) materials
+        // Some hybrid servers (NeoForge/Arclight) may register modded materials
+        // after plugin enable; this will re-attempt resolution shortly after.
+        if (this.supportsModdedItems()) new BukkitRunnable() {
+            @Override
+            public void run() {
+                int reloaded = reloadModdedItems();
+                if (reloaded > 0) getConsole().info(LangEntry.MODDED_Reloaded.get(getMain()), reloaded);
+            }
+        }.runTaskLater(getMain(), 200L); // ~10 seconds
         // this.checkLoadedItems(); - This is for internal debugging only. Hi! :)
         this.getMarkMan().addManager(this);
     }
@@ -191,5 +212,184 @@ public abstract class MaterialManager extends ItemManager {
      */
     public Set<String> getLocalKeys() {
         return new HashSet<>();
+    }
+
+    /**
+     * Modded entries exist only in the server's materials file (they are not in the bundled one), so they are
+     * identified by a namespaced MATERIAL_ID that has no bundled counterpart.
+     */
+    @Override
+    protected Map<String, Object> getPreservedItemEntries(File file) {
+        if (!this.supportsModdedItems() || !file.exists()) return Collections.emptyMap();
+
+        FileConfiguration current = YamlConfiguration.loadConfiguration(file);
+        FileConfiguration bundled = this.getConfMan().readResource(this.itemFile);
+        Map<String, Object> preserved = new LinkedHashMap<>();
+        for (String key : current.getKeys(false)) {
+            if (bundled.contains(key)) continue;
+            String materialId = current.getString(key + "." + MapKeys.MATERIAL_ID.key);
+            if (materialId != null && materialId.contains(":")) preserved.put(key, current.get(key));
+        }
+        return preserved;
+    }
+
+    /**
+     * Aliases for modded items (value is a namespaced item key) have no bundled counterpart either
+     */
+    @Override
+    protected Map<String, Object> getPreservedAliasEntries(File file) {
+        if (!this.supportsModdedItems() || !file.exists()) return Collections.emptyMap();
+
+        FileConfiguration current = YamlConfiguration.loadConfiguration(file);
+        FileConfiguration bundled = this.getConfMan().readResource(this.aliasFile);
+        Map<String, Object> preserved = new LinkedHashMap<>();
+        for (String key : current.getKeys(false)) {
+            if (bundled.contains(key)) continue;
+            String target = current.getString(key);
+            if (target != null && target.contains(":")) preserved.put(key, target);
+        }
+        return preserved;
+    }
+    /**
+     * Returns the source of modded materials
+     */
+    public ModdedMaterialProvider getModdedMaterialProvider() {
+        if (this.moddedMaterialProvider == null) this.moddedMaterialProvider = new BukkitModdedMaterialProvider();
+        return this.moddedMaterialProvider;
+    }
+
+    /**
+     * Replaces the source of modded materials (used by tests to simulate a hybrid server)
+     */
+    public void setModdedMaterialProvider(ModdedMaterialProvider provider) {
+        this.moddedMaterialProvider = provider == null ? new BukkitModdedMaterialProvider() : provider;
+    }
+
+    /**
+     * Whether this manager imports modded materials.
+     * The scan walks Bukkit's Material registry, so only the manager that represents plain materials (blocks/items)
+     * should opt in; potions and entities are keyed by PotionType/EntityType and can't be built from a Material.
+     *
+     * @return false by default
+     */
+    public boolean supportsModdedItems() {
+        return false;
+    }
+
+    /**
+     * Resolves and imports modded (non-vanilla) materials.
+     * <p>
+     * Hybrid servers (Arclight/NeoForge) can register modded materials after plugins enable, so this is run once
+     * shortly after startup and on demand via /modded. It:
+     * <ol>
+     *     <li>loads entries already in the materials file that were skipped because their material wasn't registered yet</li>
+     *     <li>imports registered modded materials that have no entry yet, as disallowed with 0 quantity</li>
+     * </ol>
+     * Only entries whose material resolves are ever added to the market.
+     *
+     * @return number of modded materials newly resolved or imported
+     */
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    public int reloadModdedItems() {
+        if (!this.supportsModdedItems()) return 0;
+        int resolved = 0;
+        int imported = 0;
+        try {
+            // Step 1 - entries that exist in the file but aren't loaded yet (material wasn't registered at load time)
+            // Bundled (vanilla) keys are skipped: they were deliberately rejected by loadItems()
+            FileConfiguration bundled = this.getConfMan().readResource(this.itemFile);
+            for (String key : new HashSet<>(this.config.getKeys(false))) {
+                if (bundled.contains(key)) continue;
+                String formattedKey = key.toLowerCase().replace(" ", "");
+                if (this.itemMap.containsKey(formattedKey)) continue;
+
+                ConfigurationSection data = this.config.getConfigurationSection(key);
+                if (data == null) continue;
+
+                try {
+                    MarketableToken token = this.loadItem(key, data, data);
+                    if (token == null || !token.check()) continue;
+
+                    this.defaultTotalItems += token.getDefaultQuantity();
+                    this.totalItems += token.getQuantity();
+                    ((Map) this.itemMap).put(formattedKey, token);
+                    resolved++;
+                    this.getConsole().info(LangEntry.MODDED_Resolved.get(getMain()), key, this.describe(token));
+                } catch (Exception e) {
+                    this.getConsole().warn(LangEntry.MODDED_ImportFailed.get(getMain()), key, e.getMessage());
+                }
+            }
+
+            // Step 2 - registered modded materials with no entry yet
+            for (String moddedId : this.getModdedMaterialProvider().getModdedMaterials().keySet()) {
+                String nsKey = null;
+                try {
+                    nsKey = moddedId; // modid:item
+
+                    // '.' is a config path separator, so ids containing one are stored under an encoded key
+                    // (the real id is kept in the entry's material field)
+                    String configKey = ConfigKeys.safe(nsKey);
+                    String formattedKey = configKey.toLowerCase().replace(" ", "");
+                    if (this.itemMap.containsKey(formattedKey)) continue;
+                    if (this.config.contains(configKey)) {
+                        // Already imported, unless a different id encodes to the same key
+                        String existingId = this.config.getString(configKey + "." + MapKeys.MATERIAL_ID.key);
+                        if (existingId != null && !existingId.equalsIgnoreCase(nsKey)) {
+                            this.getConsole().warn(LangEntry.MODDED_ImportFailed.get(getMain()), nsKey, configKey + " -> " + existingId);
+                        }
+                        continue;
+                    }
+
+                    this.getConsole().info(LangEntry.MODDED_Importing.get(getMain()), nsKey);
+
+                    // Disallowed with no stock until an admin sets it up
+                    this.config.set(configKey + "." + MapKeys.MATERIAL_ID.key, nsKey);
+                    this.config.set(configKey + "." + MapKeys.QUANTITY.key, 0);
+                    this.config.set(configKey + "." + MapKeys.ALLOWED.key, false);
+
+                    YamlConfiguration defaultSection = new YamlConfiguration();
+                    defaultSection.set(MapKeys.QUANTITY.key, 0);
+                    defaultSection.set(MapKeys.ALLOWED.key, false);
+
+                    MarketableToken token = this.loadItem(configKey, this.config.getConfigurationSection(configKey), defaultSection);
+                    if (token == null || !token.check()) {
+                        this.config.set(configKey, null);
+                        this.getConsole().warn(LangEntry.MODDED_ImportFailed.get(getMain()), nsKey, token == null ? "null" : token.getError());
+                        continue;
+                    }
+
+                    this.defaultTotalItems += token.getDefaultQuantity();
+                    this.totalItems += token.getQuantity();
+                    ((Map) this.itemMap).put(formattedKey, token);
+                    imported++;
+                    this.getConsole().info(LangEntry.MODDED_Imported.get(getMain()), nsKey, this.describe(token));
+
+                    // Alias "modid:item" -> "item" (skipped if it would shadow something else)
+                    int colonIdx = nsKey.indexOf(':');
+                    if (colonIdx > 0 && colonIdx < nsKey.length() - 1) {
+                        this.addAlias(nsKey.substring(colonIdx + 1), configKey);
+                    }
+                } catch (Throwable e) {
+                    if (nsKey != null) this.config.set(ConfigKeys.safe(nsKey), null);
+                    this.getConsole().warn(LangEntry.MODDED_ImportFailed.get(getMain()), nsKey, e.toString());
+                }
+            }
+
+            if (imported > 0) {
+                this.saveItems();
+                this.getConsole().info(LangEntry.MODDED_ImportedTotal.get(getMain()), imported, this.itemFile);
+                this.saveAliases();
+                this.getConsole().info(LangEntry.MODDED_AliasesSaved.get(getMain()));
+            }
+        } catch (Exception e) {
+            this.getConsole().warn(LangEntry.MODDED_ReloadFailed.get(getMain()), e.toString());
+        }
+        return resolved + imported;
+    }
+
+    private String describe(MarketableToken token) {
+        return token instanceof MarketableMaterial && ((MarketableMaterial) token).getMaterial() != null
+                ? ((MarketableMaterial) token).getMaterial().name()
+                : token.getID();
     }
 }

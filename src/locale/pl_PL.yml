@@ -68,6 +68,26 @@ RELOAD_Potions: "Mikstury przeładowane."
 RELOAD_Entities: "Byty przeładowane."
 RELOAD_TypeRequired: "Musisz podać typ do przeładowania."
 
+# Modded Items
+MODDED_Reloaded: "Zaimportowano lub rozpoznano %d materiał(ów) modded."
+MODDED_NoneReloaded: "Nie znaleziono nowych materiałów modded."
+MODDED_Pending: "Materiał modded '%s' (%s) nie jest jeszcze dostępny na tym serwerze i zostanie ponownie sprawdzony."
+MODDED_Resolved: "Rozpoznano oczekujący materiał modded '%s' jako %s."
+MODDED_Importing: "Importowanie materiału modded: %s"
+MODDED_Imported: "Zaimportowano materiał modded '%s' jako %s."
+MODDED_ImportFailed: "Nie udało się zaimportować materiału modded '%s': %s"
+MODDED_ImportedTotal: "Zaimportowano %d nowych materiałów modded do %s."
+MODDED_AliasesSaved: "Zapisano aliasy dla zaimportowanych materiałów modded."
+MODDED_AliasItemMissing: "Nie można dodać aliasu '%s': przedmiot '%s' nie istnieje."
+MODDED_AliasConflict: "Pominięto alias '%s' dla '%s': jest już używany przez '%s'."
+MODDED_AliasAddFailed: "Nie udało się dodać aliasu '%s': %s"
+MODDED_AliasSaveFailed: "Nie udało się zapisać aliasów: %s"
+MODDED_AliasFileCorrupt: "Nie udało się wczytać %s (plik YAML może być uszkodzony): %s"
+MODDED_AliasBackupCreated: "Utworzono kopię zapasową uszkodzonego pliku aliasów w %s."
+MODDED_AliasBackupFailed: "Nie udało się utworzyć kopii zapasowej uszkodzonego pliku aliasów: %s"
+MODDED_AliasLoadError: "Błąd wczytywania aliasów z %s: %s"
+MODDED_ReloadFailed: "Nie udało się przeładować materiałów modded: %s"
+
 
 # Zapisz
 SAVE_Config: "Konfiguracja zapisana."

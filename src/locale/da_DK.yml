@@ -68,6 +68,26 @@ RELOAD_Potions: "Drikke genindlæst."
 RELOAD_Entities: "Enheder genindlæst."
 RELOAD_TypeRequired: "Du skal angive en type at genindlæse."
 
+# Modded Items
+MODDED_Reloaded: "Importerede eller løste %d modded-materiale(r)."
+MODDED_NoneReloaded: "Der blev ikke fundet nye modded-materialer."
+MODDED_Pending: "Modded-materialet '%s' (%s) er endnu ikke tilgængeligt på denne server og forsøges igen."
+MODDED_Resolved: "Det ventende modded-materiale '%s' er løst som %s."
+MODDED_Importing: "Importerer modded-materiale: %s"
+MODDED_Imported: "Importerede modded-materialet '%s' som %s."
+MODDED_ImportFailed: "Kunne ikke importere modded-materialet '%s': %s"
+MODDED_ImportedTotal: "Importerede %d nye modded-materiale(r) til %s."
+MODDED_AliasesSaved: "Gemte aliasser for importerede modded-materialer."
+MODDED_AliasItemMissing: "Kan ikke tilføje alias '%s': varen '%s' findes ikke."
+MODDED_AliasConflict: "Sprang alias '%s' over for '%s': det bruges allerede af '%s'."
+MODDED_AliasAddFailed: "Kunne ikke tilføje alias '%s': %s"
+MODDED_AliasSaveFailed: "Kunne ikke gemme aliasser: %s"
+MODDED_AliasFileCorrupt: "Kunne ikke indlæse %s (YAML-filen er muligvis beskadiget): %s"
+MODDED_AliasBackupCreated: "Oprettede en backup af den beskadigede aliasfil på %s."
+MODDED_AliasBackupFailed: "Kunne ikke lave backup af den beskadigede aliasfil: %s"
+MODDED_AliasLoadError: "Fejl ved indlæsning af aliasser fra %s: %s"
+MODDED_ReloadFailed: "Kunne ikke genindlæse modded-materialer: %s"
+
 
 # Gem
 SAVE_Config: "Konfiguration gemt."

@@ -68,6 +68,26 @@ RELOAD_Potions: "Drycker omladdade."
 RELOAD_Entities: "Enheter omladdade."
 RELOAD_TypeRequired: "Du måste ange en typ att ladda om."
 
+# Modded Items
+MODDED_Reloaded: "Importerade eller löste %d modded-material."
+MODDED_NoneReloaded: "Inga nya modded-material hittades."
+MODDED_Pending: "Modded-materialet '%s' (%s) är inte tillgängligt på den här servern än och kommer att försökas igen."
+MODDED_Resolved: "Löste väntande modded-material '%s' som %s."
+MODDED_Importing: "Importerar modded-material: %s"
+MODDED_Imported: "Importerade modded-material '%s' som %s."
+MODDED_ImportFailed: "Misslyckades med att importera modded-material '%s': %s"
+MODDED_ImportedTotal: "Importerade %d nya modded-material till %s."
+MODDED_AliasesSaved: "Sparade alias för importerade modded-material."
+MODDED_AliasItemMissing: "Kan inte lägga till alias '%s': föremålet '%s' finns inte."
+MODDED_AliasConflict: "Hoppade över alias '%s' för '%s': det används redan av '%s'."
+MODDED_AliasAddFailed: "Misslyckades med att lägga till alias '%s': %s"
+MODDED_AliasSaveFailed: "Misslyckades med att spara alias: %s"
+MODDED_AliasFileCorrupt: "Misslyckades med att läsa in %s (YAML-filen kan vara skadad): %s"
+MODDED_AliasBackupCreated: "Skapade en säkerhetskopia av den skadade aliasfilen på %s."
+MODDED_AliasBackupFailed: "Misslyckades med att säkerhetskopiera den skadade aliasfilen: %s"
+MODDED_AliasLoadError: "Fel vid inläsning av alias från %s: %s"
+MODDED_ReloadFailed: "Misslyckades med att ladda om modded-material: %s"
+
 
 # Spara
 SAVE_Config: "Konfiguration sparad."

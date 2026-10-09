@@ -68,6 +68,26 @@ RELOAD_Potions: "Poções recarregadas."
 RELOAD_Entities: "Entidades recarregadas."
 RELOAD_TypeRequired: "Você deve especificar um tipo para recarregar."
 
+# Modded Items
+MODDED_Reloaded: "%d material(is) modded importado(s) ou resolvido(s)."
+MODDED_NoneReloaded: "Nenhum novo material modded foi encontrado."
+MODDED_Pending: "O material modded '%s' (%s) ainda não está disponível neste servidor e será tentado novamente."
+MODDED_Resolved: "Material modded pendente '%s' resolvido como %s."
+MODDED_Importing: "Importando material modded: %s"
+MODDED_Imported: "Material modded '%s' importado como %s."
+MODDED_ImportFailed: "Falha ao importar o material modded '%s': %s"
+MODDED_ImportedTotal: "%d novo(s) material(is) modded importado(s) para %s."
+MODDED_AliasesSaved: "Apelidos dos materiais modded importados salvos."
+MODDED_AliasItemMissing: "Não é possível adicionar o apelido '%s': o item '%s' não existe."
+MODDED_AliasConflict: "Apelido '%s' para '%s' ignorado: ele já está sendo usado por '%s'."
+MODDED_AliasAddFailed: "Falha ao adicionar o apelido '%s': %s"
+MODDED_AliasSaveFailed: "Falha ao salvar os apelidos: %s"
+MODDED_AliasFileCorrupt: "Falha ao carregar %s (o YAML pode estar corrompido): %s"
+MODDED_AliasBackupCreated: "Foi criado um backup do arquivo de apelidos corrompido em %s."
+MODDED_AliasBackupFailed: "Falha ao criar backup do arquivo de apelidos corrompido: %s"
+MODDED_AliasLoadError: "Erro ao carregar apelidos de %s: %s"
+MODDED_ReloadFailed: "Falha ao recarregar materiais modded: %s"
+
 
 # Salvar
 SAVE_Config: "Configuração salva."

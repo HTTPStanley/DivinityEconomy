@@ -68,6 +68,26 @@ RELOAD_Potions: "药水已重新加载。"
 RELOAD_Entities: "实体已重新加载。"
 RELOAD_TypeRequired: "您必须指定要重新加载的类型。"
 
+# Modded Items
+MODDED_Reloaded: "已导入或解析 %d 个模组材料。"
+MODDED_NoneReloaded: "未找到新的模组材料。"
+MODDED_Pending: "模组材料 '%s' (%s) 尚未在此服务器上可用，将重试。"
+MODDED_Resolved: "已将待处理的模组材料 '%s' 解析为 %s。"
+MODDED_Importing: "正在导入模组材料: %s"
+MODDED_Imported: "已将模组材料 '%s' 导入为 %s。"
+MODDED_ImportFailed: "导入模组材料 '%s' 失败: %s"
+MODDED_ImportedTotal: "已导入 %d 个新模组材料到 %s。"
+MODDED_AliasesSaved: "已保存导入的模组材料的别名。"
+MODDED_AliasItemMissing: "无法添加别名 '%s': 物品 '%s' 不存在。"
+MODDED_AliasConflict: "已跳过 '%s' 的别名 '%s': 该别名已被 '%s' 使用。"
+MODDED_AliasAddFailed: "添加别名 '%s' 失败: %s"
+MODDED_AliasSaveFailed: "保存别名失败: %s"
+MODDED_AliasFileCorrupt: "加载 %s 失败 (YAML 可能已损坏): %s"
+MODDED_AliasBackupCreated: "已在 %s 创建损坏别名文件的备份。"
+MODDED_AliasBackupFailed: "备份损坏的别名文件失败: %s"
+MODDED_AliasLoadError: "从 %s 加载别名时出错: %s"
+MODDED_ReloadFailed: "重新加载模组材料失败: %s"
+
 
 # 保存
 SAVE_Config: "配置已保存。"

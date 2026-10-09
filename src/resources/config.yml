@@ -402,6 +402,7 @@ Commands:
     Edit Bal: true
     Set Bal: true
     Reload: true
+    Modded: true
     Save: true
     Set Stock: true
     Set Value: true

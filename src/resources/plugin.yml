@@ -1,9 +1,9 @@
 name: DivinityEconomy
 prefix: DivinityEconomy
 main: org.divinitycraft.divinityeconomy.DEPlugin
-version: 4.0.0
+version: 4.0.0-arclight
 author: EDGRRRR
-description: Divinity Economy - The dynamic global economy plugin.
+description: Divinity Economy - The dynamic global economy plugin. EXPERIMENTAL Arclight/hybrid-server build with modded item support.
 api-version: 26.2
 depend: [Vault]
 soft-depend: [PlaceholderAPI]
@@ -207,6 +207,13 @@ commands:
     permission: de.admin.reload
     permission-message: "You do not have the permission to use this command"
     usage: "/reload materials, /reload enchants, /reload potions, /reload entities, /reload experience, /reload config"
+
+  modded:
+    description: "Attempts to (re)load modded materials registered after startup."
+    aliases: []
+    permission: de.admin.modded
+    permission-message: "You do not have the permission to use this command"
+    usage: "/modded"
 
   save:
     description: "Saves the respective market file."
@@ -474,6 +481,7 @@ permissions:
       de.admin.saveEnchants: true
       de.admin.saveMaterials: true
       de.admin.reload: true
+      de.admin.modded: true
       de.admin.banEnchant: true
       de.admin.banItem: true
 
@@ -487,6 +495,10 @@ permissions:
 
   de.admin.reload:
     description: Allows the user to reload the plugin
+    default: op
+
+  de.admin.modded:
+    description: Allows the user to rescan for and import modded materials.
     default: op
 
   de.admin.saveEnchants:

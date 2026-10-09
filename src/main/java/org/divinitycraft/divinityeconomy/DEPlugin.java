@@ -174,6 +174,7 @@ public class DEPlugin extends JavaPlugin {
         new ESetValue(this);
         new ESetValueTC(this);
         new Reload(this);
+        new Modded(this);
         new ReloadTC(this);
         new Save(this);
         new SaveTC(this);

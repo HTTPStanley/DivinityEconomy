@@ -5,9 +5,10 @@
 
   <groupId>org.divinitycraft</groupId>
   <artifactId>DivinityEconomy</artifactId>
-  <version>4.0.0</version>
+  <!-- Experimental hybrid-server (Arclight) build. The jar is DivinityEconomy-4.0.0-arclight.jar -->
+  <version>4.0.0-arclight</version>
 
-  <name>DivinityEconomy - The Global Market</name>
+  <name>DivinityEconomy - The Global Market (Arclight Experimental)</name>
   <url>https://divinitycraft.org</url>
 
   <properties>

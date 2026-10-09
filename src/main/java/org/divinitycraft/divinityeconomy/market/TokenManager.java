@@ -11,14 +11,19 @@ import org.divinitycraft.divinityeconomy.market.pricing.StaticBottomlessPricingM
 import org.divinitycraft.divinityeconomy.market.pricing.StaticPricingModel;
 import org.divinitycraft.divinityeconomy.market.pricing.V1PricingModel;
 import org.divinitycraft.divinityeconomy.market.pricing.V2PricingModel;
+import org.divinitycraft.divinityeconomy.utils.ConfigKeys;
 import org.divinitycraft.divinityeconomy.utils.Converter;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -33,6 +38,7 @@ public abstract class TokenManager extends DivinityModule {
     // Stores the items and the aliases
     // Aliases are lower case
     // DivinityItem id's are upper case
+    private final Object aliasSaveLock = new Object();
     protected Map<String, String> aliasMap;
     private static final int MAX_SEARCH_DEPTH_INT = 64;
     private static final long MAX_SEARCH_NANO_LONG = 50000000L; // 50ms
@@ -544,6 +550,47 @@ public abstract class TokenManager extends DivinityModule {
     }
 
     /**
+     * Entries in the items file that ConfigUpdater would delete but must be kept.
+     * ConfigUpdater rewrites a file from the bundled resource and drops every key that isn't in it, so entries that
+     * only exist in the server's file (e.g. imported modded items) are read beforehand and put back afterwards.
+     * (Its "ignored sections" feature can't be used: it only supports sections, not plain key/value pairs.)
+     *
+     * @param file - The items file on disk
+     * @return Top-level key to value (a map for sections), to restore after the update
+     */
+    protected Map<String, Object> getPreservedItemEntries(File file) {
+        return Collections.emptyMap();
+    }
+
+    /**
+     * Entries in the alias file that must be kept. See {@link #getPreservedItemEntries(File)}
+     *
+     * @param file - The alias file on disk
+     * @return Top-level key to value, to restore after the update
+     */
+    protected Map<String, Object> getPreservedAliasEntries(File file) {
+        return Collections.emptyMap();
+    }
+
+    /**
+     * Appends preserved entries back onto a file after ConfigUpdater has rewritten it.
+     * Appending (rather than re-saving the YAML) leaves the updater's formatting and comments untouched.
+     */
+    private void restoreEntries(File file, Map<String, Object> preserved) throws IOException {
+        if (preserved.isEmpty()) return;
+
+        FileConfiguration current = YamlConfiguration.loadConfiguration(file);
+        YamlConfiguration missing = new YamlConfiguration();
+        preserved.forEach((key, value) -> {
+            if (!current.contains(key)) missing.set(key, value);
+        });
+        if (missing.getKeys(false).isEmpty()) return;
+
+        String existing = Files.readString(file.toPath());
+        String separator = existing.isEmpty() || existing.endsWith("\n") ? "" : System.lineSeparator();
+        Files.writeString(file.toPath(), existing + separator + missing.saveToString());
+    }
+    /**
      * Loads aliases from the aliases file into the aliases variable
      */
     public void loadAliases() {
@@ -556,53 +603,79 @@ public abstract class TokenManager extends DivinityModule {
             }
 
             // Run Update
+            Map<String, Object> preserved = this.getPreservedAliasEntries(aliasFile);
             ConfigUpdater.update(getMain(), this.aliasFile, aliasFile, Collections.emptyList());
+            this.restoreEntries(aliasFile, preserved);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        // Load config
-        FileConfiguration config = this.getConfMan().loadFile(this.aliasFile);
+        // Load config with error handling for corrupted YAML
+        FileConfiguration config = null;
+        try {
+            config = this.getConfMan().loadFile(this.aliasFile);
+        } catch (Exception e) {
+            this.getConsole().warn(LangEntry.MODDED_AliasFileCorrupt.get(getMain()), this.aliasFile, e.getMessage());
+            // Create backup and start fresh
+            try {
+                File backup = new File(this.getConfMan().getFile(this.aliasFile).getAbsolutePath() + ".backup");
+                Files.copy(
+                    this.getConfMan().getFile(this.aliasFile).toPath(),
+                    backup.toPath(),
+                    StandardCopyOption.REPLACE_EXISTING
+                );
+                this.getConsole().warn(LangEntry.MODDED_AliasBackupCreated.get(getMain()), backup.getAbsolutePath());
+            } catch (Exception backupException) {
+                this.getConsole().warn(LangEntry.MODDED_AliasBackupFailed.get(getMain()), backupException.getMessage());
+            }
+            config = this.getConfMan().readResource(this.aliasFile);
+        }
 
         // Store the alias -> ItemID pairs
         Map<String, String> values = new ConcurrentHashMap<>();
         // Store ItemID -> arraylist to migrate to ItemID -> String[] pairs
         Map<String, Set<String>> revBuildAliasValues = new ConcurrentHashMap<>();
         Map<String, Set<String>> revResultAliasValues = new ConcurrentHashMap<>();
-        // Loop through keys in config
-        for (String key : config.getKeys(false)) {
-            // Get string item name
-            // Format key/value
-            key = key.toLowerCase().replace(" ", "");
-            String value = config.getString(key);
+        
+        // Loop through keys in config safely
+        try {
+            for (String key : config.getKeys(false)) {
+                // Get string item name
+                // Format key/value
+                key = key.toLowerCase().replace(" ", "");
+                String value = config.getString(key);
 
-            // If value is null, skip
-            if (value == null) {
-                if (!this.getConfMan().getBoolean(Setting.IGNORE_ALIAS_ERRORS_BOOLEAN))
-                    this.getConsole().warn("Bad config value in %s: '%s' - Corresponding value is null", this.aliasFile, key);
-                continue;
+                // If value is null, skip
+                if (value == null) {
+                    if (!this.getConfMan().getBoolean(Setting.IGNORE_ALIAS_ERRORS_BOOLEAN))
+                        this.getConsole().warn("Bad config value in %s: '%s' - Corresponding value is null", this.aliasFile, key);
+                    continue;
+                }
+
+                value = value.toLowerCase().replace(" ", "");
+
+                // If the value is not stored in the items map, skip
+                if (this.getItem(value) == null) {
+                    if (!this.getConfMan().getBoolean(Setting.IGNORE_ALIAS_ERRORS_BOOLEAN))
+                        this.getConsole().warn("Bad config value in %s: '%s' - Corresponding value '%s' does not exist.", this.aliasFile, key, value);
+                    continue;
+                }
+
+                // Store the value under the key
+                values.put(key, value);
+                if (!values.containsKey(key)) values.put(key, key);
+
+                // Store the value under the key (Value = materialID, key = alias)
+                if (!revBuildAliasValues.containsKey(value)) {
+                    revBuildAliasValues.put(value, new HashSet<>());
+                    revBuildAliasValues.get(value).add(value);
+                }
+                revBuildAliasValues.get(value).add(key);
             }
-
-            value = value.toLowerCase().replace(" ", "");
-
-            // If the value is not stored in the items map, skip
-            if (this.getItem(value) == null) {
-                if (!this.getConfMan().getBoolean(Setting.IGNORE_ALIAS_ERRORS_BOOLEAN))
-                    this.getConsole().warn("Bad config value in %s: '%s' - Corresponding value '%s' does not exist.", this.aliasFile, key, value);
-                continue;
-            }
-
-            // Store the value under the key
-            values.put(key, value);
-            if (!values.containsKey(key)) values.put(key, key);
-
-            // Store the value under the key (Value = materialID, key = alias)
-            if (!revBuildAliasValues.containsKey(value)) {
-                revBuildAliasValues.put(value, new HashSet<>());
-                revBuildAliasValues.get(value).add(value);
-            }
-            revBuildAliasValues.get(value).add(key);
+        } catch (Exception e) {
+            this.getConsole().warn(LangEntry.MODDED_AliasLoadError.get(getMain()), this.aliasFile, e.getMessage());
         }
+        
         this.aliasMap = values;
 
         // Migrate all keys-arraylist pairs to key-array pairs
@@ -612,6 +685,78 @@ public abstract class TokenManager extends DivinityModule {
         this.getConsole().info(LangEntry.MARKET_ItemAliasesLoaded.get(getMain()), values.size(), this.aliasFile);
     }
 
+    /**
+     * Adds an alias for an item to the runtime alias maps.
+     * The alias will be persisted to file at the next saveAliases() call.
+     * Aliases that would shadow an existing alias or item are skipped.
+     *
+     * @param alias  - The alias name (will be lowercased)
+     * @param itemId - The item ID to point to
+     */
+    public void addAlias(String alias, String itemId) {
+        if (alias == null || itemId == null) return;
+
+        try {
+            // Aliases are top-level config keys, so they can't contain the path separator
+            alias = ConfigKeys.safe(alias.toLowerCase().replace(" ", ""));
+            itemId = itemId.toLowerCase().replace(" ", "");
+
+            // Check if item exists
+            if (this.getItem(itemId) == null) {
+                this.getConsole().warn(LangEntry.MODDED_AliasItemMissing.get(getMain()), alias, itemId);
+                return;
+            }
+
+            // Never shadow an existing alias or item belonging to something else
+            String existing = this.aliasMap.get(alias);
+            if (existing == null && !alias.equals(itemId) && this.getItem(alias) != null) existing = alias;
+            if (existing != null && !existing.equals(itemId)) {
+                this.getConsole().warn(LangEntry.MODDED_AliasConflict.get(getMain()), alias, itemId, existing);
+                return;
+            }
+
+            // Add to aliasMap
+            this.aliasMap.put(alias, itemId);
+
+            // Add to revAliasMap
+            Set<String> aliases = this.revAliasMap.computeIfAbsent(itemId, id -> ConcurrentHashMap.newKeySet());
+            aliases.add(itemId);
+            aliases.add(alias);
+        } catch (Exception e) {
+            this.getConsole().warn(LangEntry.MODDED_AliasAddFailed.get(getMain()), alias, e.getMessage());
+        }
+    }
+
+    /**
+     * Saves all aliases to the alias config file.
+     * The write runs on an async scheduler task, serialised by a lock so concurrent saves can't interleave.
+     */
+    public void saveAliases() {
+        // Snapshot on the calling thread so the async task never touches live maps
+        final Map<String, String> snapshot = new HashMap<>(this.aliasMap);
+        final Runnable write = () -> {
+            synchronized (this.aliasSaveLock) {
+                try {
+                    FileConfiguration config = this.getConfMan().loadFile(this.aliasFile);
+                    snapshot.forEach(config::set);
+                    this.getConfMan().saveFile(config, this.aliasFile);
+                } catch (Exception e) {
+                    this.getConsole().warn(LangEntry.MODDED_AliasSaveFailed.get(getMain()), e.getMessage());
+                }
+            }
+        };
+
+        // The scheduler refuses new tasks once the plugin is disabled, so write inline in that case
+        if (getMain().isEnabled()) {
+            try {
+                getMain().getServer().getScheduler().runTaskAsynchronously(getMain(), write);
+                return;
+            } catch (Exception e) {
+                this.getConsole().warn(LangEntry.MODDED_AliasSaveFailed.get(getMain()), e.getMessage());
+            }
+        }
+        write.run();
+    }
     /**
      * Loads the items from the items file into the items variable
      */
@@ -625,7 +770,10 @@ public abstract class TokenManager extends DivinityModule {
             }
 
             // Run Update
-            ConfigUpdater.update(getMain(), this.itemFile, this.getConfMan().getFile(this.itemFile), Collections.emptyList());
+            File itemFileOnDisk = this.getConfMan().getFile(this.itemFile);
+            Map<String, Object> preserved = this.getPreservedItemEntries(itemFileOnDisk);
+            ConfigUpdater.update(getMain(), this.itemFile, itemFileOnDisk, Collections.emptyList());
+            this.restoreEntries(itemFileOnDisk, preserved);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -641,6 +789,7 @@ public abstract class TokenManager extends DivinityModule {
         Map<String, MarketableToken> values = new ConcurrentHashMap<>();
         // Loop through keys and get data
         // Add data to a MaterialData and put in HashMap under key
+        // First load vanilla items from defaultConf
         for (String key : defaultConf.getKeys(false)) {
 
             ConfigurationSection data = this.config.getConfigurationSection(key);
@@ -666,6 +815,34 @@ public abstract class TokenManager extends DivinityModule {
             this.totalItems += itemData.getQuantity();
             values.put(key, itemData);
         }
+        
+        // Also load modded items that exist in config but not in defaultConf
+        // These are items that were dynamically imported and saved to materials.yml
+        for (String key : this.config.getKeys(false)) {
+            if (defaultConf.contains(key)) continue; // Skip vanilla items already loaded
+            
+            ConfigurationSection data = this.config.getConfigurationSection(key);
+            if (data == null) {
+                if (!this.getConfMan().getBoolean(Setting.IGNORE_ITEM_ERRORS_BOOLEAN))
+                    this.getConsole().warn("Bad config value in %s: '%s' - Data is null, skipping modded item.", this.itemFile, key);
+                continue;
+            }
+            
+            // For modded items, use the item config as default since they don't have a vanilla default
+            MarketableToken itemData = this.loadItem(key, data, data);
+            if (!itemData.check()) {
+                // Modded materials may not be registered yet (hybrid servers load them late), so these are retried by /modded
+                if (!this.getConfMan().getBoolean(Setting.IGNORE_ITEM_ERRORS_BOOLEAN))
+                    this.getConsole().info(LangEntry.MODDED_Pending.get(getMain()), key, data.getString(MapKeys.MATERIAL_ID.key, key));
+                continue;
+            }
+            
+            String formattedKey = key.toLowerCase().replace(" ", "");
+            this.defaultTotalItems += itemData.getDefaultQuantity();
+            this.totalItems += itemData.getQuantity();
+            values.put(formattedKey, itemData);
+        }
+        
         // Copy values into items
         this.itemMap = values;
         this.getConsole().info(LangEntry.MARKET_ItemsLoaded.get(getMain()), values.size(), this.totalItems, this.defaultTotalItems, this.itemFile);
@@ -721,11 +898,24 @@ public abstract class TokenManager extends DivinityModule {
     private void saveFile() {
         // load back all info
         FileConfiguration config = this.getConfMan().loadFile(this.itemFile);
+        
+        // Save all existing keys that are in the itemMap
         for (String key : config.getKeys(false)) {
             String internalKey = key.toLowerCase().replace(" ", "");
             if (!this.itemMap.containsKey(internalKey)) continue;
 
             config.set(key, this.config.get(key));
+        }
+        
+        // Also save any new items that exist in the itemMap but weren't in the original config
+        for (String mapKey : this.itemMap.keySet()) {
+            MarketableToken token = this.itemMap.get(mapKey);
+            String originalKey = token.getID(); // Use original ID as the key in the file
+            
+            // Only add if not already processed above
+            if (!config.contains(originalKey)) {
+                config.set(originalKey, this.config.getConfigurationSection(mapKey));
+            }
         }
 
         this.getConfMan().saveFile(config, this.itemFile);
