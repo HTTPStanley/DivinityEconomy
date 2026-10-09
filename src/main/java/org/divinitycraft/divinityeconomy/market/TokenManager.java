@@ -15,6 +15,7 @@ import org.divinitycraft.divinityeconomy.utils.ConfigKeys;
 import org.divinitycraft.divinityeconomy.utils.Converter;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
@@ -549,6 +550,47 @@ public abstract class TokenManager extends DivinityModule {
     }
 
     /**
+     * Entries in the items file that ConfigUpdater would delete but must be kept.
+     * ConfigUpdater rewrites a file from the bundled resource and drops every key that isn't in it, so entries that
+     * only exist in the server's file (e.g. imported modded items) are read beforehand and put back afterwards.
+     * (Its "ignored sections" feature can't be used: it only supports sections, not plain key/value pairs.)
+     *
+     * @param file - The items file on disk
+     * @return Top-level key to value (a map for sections), to restore after the update
+     */
+    protected Map<String, Object> getPreservedItemEntries(File file) {
+        return Collections.emptyMap();
+    }
+
+    /**
+     * Entries in the alias file that must be kept. See {@link #getPreservedItemEntries(File)}
+     *
+     * @param file - The alias file on disk
+     * @return Top-level key to value, to restore after the update
+     */
+    protected Map<String, Object> getPreservedAliasEntries(File file) {
+        return Collections.emptyMap();
+    }
+
+    /**
+     * Appends preserved entries back onto a file after ConfigUpdater has rewritten it.
+     * Appending (rather than re-saving the YAML) leaves the updater's formatting and comments untouched.
+     */
+    private void restoreEntries(File file, Map<String, Object> preserved) throws IOException {
+        if (preserved.isEmpty()) return;
+
+        FileConfiguration current = YamlConfiguration.loadConfiguration(file);
+        YamlConfiguration missing = new YamlConfiguration();
+        preserved.forEach((key, value) -> {
+            if (!current.contains(key)) missing.set(key, value);
+        });
+        if (missing.getKeys(false).isEmpty()) return;
+
+        String existing = Files.readString(file.toPath());
+        String separator = existing.isEmpty() || existing.endsWith("\n") ? "" : System.lineSeparator();
+        Files.writeString(file.toPath(), existing + separator + missing.saveToString());
+    }
+    /**
      * Loads aliases from the aliases file into the aliases variable
      */
     public void loadAliases() {
@@ -561,7 +603,9 @@ public abstract class TokenManager extends DivinityModule {
             }
 
             // Run Update
+            Map<String, Object> preserved = this.getPreservedAliasEntries(aliasFile);
             ConfigUpdater.update(getMain(), this.aliasFile, aliasFile, Collections.emptyList());
+            this.restoreEntries(aliasFile, preserved);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -726,7 +770,10 @@ public abstract class TokenManager extends DivinityModule {
             }
 
             // Run Update
-            ConfigUpdater.update(getMain(), this.itemFile, this.getConfMan().getFile(this.itemFile), Collections.emptyList());
+            File itemFileOnDisk = this.getConfMan().getFile(this.itemFile);
+            Map<String, Object> preserved = this.getPreservedItemEntries(itemFileOnDisk);
+            ConfigUpdater.update(getMain(), this.itemFile, itemFileOnDisk, Collections.emptyList());
+            this.restoreEntries(itemFileOnDisk, preserved);
         } catch (IOException e) {
             e.printStackTrace();
         }

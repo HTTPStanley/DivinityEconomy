@@ -27,6 +27,11 @@ public abstract class MarketableMaterial extends MarketableItem {
             } catch (IllegalArgumentException ignored) {
             }
 
+            // Modded materials the server exposes (hybrid servers)
+            if (mat == null) {
+                mat = itemManager.getModdedMaterialProvider().resolve(materialId);
+            }
+
             if (mat == null) {
                 try {
                     mat = Material.matchMaterial(materialId);

@@ -36,6 +36,7 @@ MaterialManager.init()
 |------|-------|
 | **Unresolved materials never enter the market.** `MarketableBlock.check()` is `material != null`; there is no placeholder item. | `MarketableBlock` |
 | **Only the block/item manager imports.** `MaterialManager.supportsModdedItems()` is `false` by default and `BlockManager` overrides it to `true`; the startup scan and `reloadModdedItems()` are no-ops for potions and entities (they are keyed by `PotionType`/`EntityType`, not `Material`). Modded potions, entities and enchants are not supported. | `MaterialManager`, `BlockManager`, `ModdedItemSupportTest` |
+| **Modded entries survive reloads.** ConfigUpdater rewrites materials.yml/materialAliases.yml from the bundled files on every load and drops keys not in them, so modded entries/aliases (namespaced MATERIAL_ID/target, no bundled counterpart) are read beforehand and appended back (getPreservedItemEntries, getPreservedAliasEntries, estoreEntries). | TokenManager, MaterialManager |
 | **Imports are disabled with 0 stock**, admins opt in. `ALLOWED` is the same flag `/banitem` toggles (`/banitem <item> false` enables), so the normal ban/unban workflow applies; unbanning does not set stock. | `reloadModdedItems`, `BanItem` |
 | **`.` is a config path separator**, so keys go through `ConfigKeys.safe()` (`.` → `_`); the real id lives in `MATERIAL_ID`. Key collisions are logged and skipped. | `ConfigKeys`, `reloadModdedItems`, `addAlias` |
 | **Aliases never shadow** an existing alias or item. | `TokenManager.addAlias` |
@@ -61,6 +62,15 @@ MaterialManager.init()
 2. Add the key to `src/locale/en_GB.yml` and every other locale (keep `%s`/`%d` placeholders in the same order – the
    arguments are passed to `String.format`).
 3. Use it with `getConsole().info(LangEntry.MODDED_Something.get(getMain()), args...)`.
+
+## Testing
+
+Real mod items only exist on a hybrid server, so tests simulate one: `MaterialManager.setModdedMaterialProvider(...)`
+swaps the `ModdedMaterialProvider` (default `BukkitModdedMaterialProvider` reads Bukkit's `Material` registry) and
+each fake modded id is backed by a vanilla `Material`. See `SimulatedHybridServerTest` (import, aliases, dotted ids,
+collisions, late-loading mods, `/banitem`, surviving reloads) and `ModdedItemSupportTest` (only the block manager
+imports). This verifies our logic, not how Arclight itself populates `Material`; that still needs a manual check on a
+real hybrid server.
 
 ## Known limitations
 

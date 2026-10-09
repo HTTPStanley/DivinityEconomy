@@ -12,16 +12,20 @@ import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.io.File;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.NamespacedKey;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 
 public abstract class MaterialManager extends ItemManager {
+    // Not initialised inline: init() can run from a superclass constructor, before field initialisers; see the getter
+    private ModdedMaterialProvider moddedMaterialProvider;
 
     /**
      * Constructor You will likely need to call loadMaterials and loadAliases to
@@ -211,6 +215,57 @@ public abstract class MaterialManager extends ItemManager {
     }
 
     /**
+     * Modded entries exist only in the server's materials file (they are not in the bundled one), so they are
+     * identified by a namespaced MATERIAL_ID that has no bundled counterpart.
+     */
+    @Override
+    protected Map<String, Object> getPreservedItemEntries(File file) {
+        if (!this.supportsModdedItems() || !file.exists()) return Collections.emptyMap();
+
+        FileConfiguration current = YamlConfiguration.loadConfiguration(file);
+        FileConfiguration bundled = this.getConfMan().readResource(this.itemFile);
+        Map<String, Object> preserved = new LinkedHashMap<>();
+        for (String key : current.getKeys(false)) {
+            if (bundled.contains(key)) continue;
+            String materialId = current.getString(key + "." + MapKeys.MATERIAL_ID.key);
+            if (materialId != null && materialId.contains(":")) preserved.put(key, current.get(key));
+        }
+        return preserved;
+    }
+
+    /**
+     * Aliases for modded items (value is a namespaced item key) have no bundled counterpart either
+     */
+    @Override
+    protected Map<String, Object> getPreservedAliasEntries(File file) {
+        if (!this.supportsModdedItems() || !file.exists()) return Collections.emptyMap();
+
+        FileConfiguration current = YamlConfiguration.loadConfiguration(file);
+        FileConfiguration bundled = this.getConfMan().readResource(this.aliasFile);
+        Map<String, Object> preserved = new LinkedHashMap<>();
+        for (String key : current.getKeys(false)) {
+            if (bundled.contains(key)) continue;
+            String target = current.getString(key);
+            if (target != null && target.contains(":")) preserved.put(key, target);
+        }
+        return preserved;
+    }
+    /**
+     * Returns the source of modded materials
+     */
+    public ModdedMaterialProvider getModdedMaterialProvider() {
+        if (this.moddedMaterialProvider == null) this.moddedMaterialProvider = new BukkitModdedMaterialProvider();
+        return this.moddedMaterialProvider;
+    }
+
+    /**
+     * Replaces the source of modded materials (used by tests to simulate a hybrid server)
+     */
+    public void setModdedMaterialProvider(ModdedMaterialProvider provider) {
+        this.moddedMaterialProvider = provider == null ? new BukkitModdedMaterialProvider() : provider;
+    }
+
+    /**
      * Whether this manager imports modded materials.
      * The scan walks Bukkit's Material registry, so only the manager that represents plain materials (blocks/items)
      * should opt in; potions and entities are keyed by PotionType/EntityType and can't be built from a Material.
@@ -266,15 +321,10 @@ public abstract class MaterialManager extends ItemManager {
             }
 
             // Step 2 - registered modded materials with no entry yet
-            Set<String> seen = new HashSet<>();
-            for (Material material : Material.values()) {
+            for (String moddedId : this.getModdedMaterialProvider().getModdedMaterials().keySet()) {
                 String nsKey = null;
                 try {
-                    NamespacedKey namespacedKey = material.getKey();
-                    if (namespacedKey == null || "minecraft".equals(namespacedKey.getNamespace())) continue;
-
-                    nsKey = namespacedKey.toString(); // modid:item
-                    if (!seen.add(nsKey)) continue;
+                    nsKey = moddedId; // modid:item
 
                     // '.' is a config path separator, so ids containing one are stored under an encoded key
                     // (the real id is kept in the entry's material field)
