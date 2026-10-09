@@ -124,7 +124,7 @@
 <h4>How it works</h4>
 <ul>
     <li>About 10 seconds after startup (hybrid servers register modded items late) and whenever an admin runs <code>/modded</code>, DivinityEconomy scans every registered material outside the <code>minecraft</code> namespace.</li>
-    <li>Each new modded item is added to <code>materials.yml</code> as <code>ALLOWED: false</code> with <code>QUANTITY: 0</code>, so <strong>nothing is tradable until you set it up</strong>.</li>
+    <li>Each new modded item is added to <code>materials.yml</code> as <code>ALLOWED: false</code> (i.e. banned, see <code>/banitem</code>) with <code>QUANTITY: 0</code>, so <strong>nothing is tradable until you set it up</strong>.</li>
     <li>A short alias is created automatically, e.g. <code>cobblemon:mago_berry</code> can be used as <code>mago_berry</code>. Aliases never replace an existing alias or item, and are saved to <code>materialAliases.yml</code>.</li>
     <li>Entries already in <code>materials.yml</code> whose mod was not loaded yet are skipped quietly and picked up by the next <code>/modded</code>.</li>
     <li>If a mod ID contains a <code>.</code>, the config key uses <code>_</code> instead (<code>mod:item.v2</code> becomes <code>mod:item_v2</code>); the real ID is kept in <code>MATERIAL_ID</code>.</li>
@@ -138,7 +138,7 @@
   QUANTITY: 10000      # must be above 0
   PRICE: 5.0           # used by the Static pricing model
   ELASTICITY: 0.7      # optional</code></pre>
-<p>Then run <code>/reload materials</code>. Setting a value with <code>/setvalue</code> and <code>/setstock</code> also works once the item is listed.</p>
+<p>Then run <code>/reload materials</code>. You can also do this in-game: <code>/setstock</code> and <code>/setvalue</code> set the stock and price, and <code>/banitem &lt;item&gt; false</code> enables the item (<code>true</code> disables it again), exactly like any vanilla item. Imported items are "banned" (<code>ALLOWED: false</code>) by default, and the alias works wherever an item name is accepted, e.g. <code>/banitem mago_berry false</code>. Unbanning does not set stock, so give the item a <code>QUANTITY</code> above 0 as well.</p>
 
 <h4>Settings</h4>
 <ul>

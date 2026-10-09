@@ -35,7 +35,7 @@ MaterialManager.init()
 | Rule | Where |
 |------|-------|
 | **Unresolved materials never enter the market.** `MarketableBlock.check()` is `material != null`; there is no placeholder item. | `MarketableBlock` |
-| **Imports are disabled with 0 stock**, admins opt in. | `reloadModdedItems` |
+| **Imports are disabled with 0 stock**, admins opt in. `ALLOWED` is the same flag `/banitem` toggles (`/banitem <item> false` enables), so the normal ban/unban workflow applies; unbanning does not set stock. | `reloadModdedItems`, `BanItem` |
 | **`.` is a config path separator**, so keys go through `ConfigKeys.safe()` (`.` → `_`); the real id lives in `MATERIAL_ID`. Key collisions are logged and skipped. | `ConfigKeys`, `reloadModdedItems`, `addAlias` |
 | **Aliases never shadow** an existing alias or item. | `TokenManager.addAlias` |
 | **Alias writes are async but serialised**: snapshot the map on the calling thread, write via the Bukkit scheduler under `aliasSaveLock`; inline if the plugin is disabled. | `TokenManager.saveAliases` |
