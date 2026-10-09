@@ -115,6 +115,42 @@
     <li><strong>Clear Balance</strong> - A shorthand command for setting a players balance to 0.</li>
     <li><strong>Reload</strong> - Reload the enchants, items or config.</li>
     <li><strong>Save</strong> - Save the enchants or items to disk.</li>
+    <li><strong>Modded</strong> - Rescan the server for modded items (hybrid servers) and import any new ones. See <a href="#modded-items">Modded Items</a>.</li>
+</ul>
+
+<h2 id="modded-items">🧩 Modded Items (Hybrid Servers)</h2>
+<p>On hybrid servers such as Arclight (Forge/NeoForge/Fabric plus Bukkit), items added by mods can be added to the market. <em>This is experimental and only applies to servers that register modded materials with Bukkit; it does nothing on vanilla Paper/Spigot.</em></p>
+
+<h4>How it works</h4>
+<ul>
+    <li>About 10 seconds after startup (hybrid servers register modded items late) and whenever an admin runs <code>/modded</code>, DivinityEconomy scans every registered material outside the <code>minecraft</code> namespace.</li>
+    <li>Each new modded item is added to <code>materials.yml</code> as <code>ALLOWED: false</code> with <code>QUANTITY: 0</code>, so <strong>nothing is tradable until you set it up</strong>.</li>
+    <li>A short alias is created automatically, e.g. <code>cobblemon:mago_berry</code> can be used as <code>mago_berry</code>. Aliases never replace an existing alias or item, and are saved to <code>materialAliases.yml</code>.</li>
+    <li>Entries already in <code>materials.yml</code> whose mod was not loaded yet are skipped quietly and picked up by the next <code>/modded</code>.</li>
+    <li>If a mod ID contains a <code>.</code>, the config key uses <code>_</code> instead (<code>mod:item.v2</code> becomes <code>mod:item_v2</code>); the real ID is kept in <code>MATERIAL_ID</code>.</li>
+</ul>
+
+<h4>Enabling an imported item</h4>
+<p>Edit its entry in <code>materials.yml</code>:</p>
+<pre><code>cobblemon:mago_berry:
+  MATERIAL_ID: cobblemon:mago_berry
+  ALLOWED: true
+  QUANTITY: 10000      # must be above 0
+  PRICE: 5.0           # used by the Static pricing model
+  ELASTICITY: 0.7      # optional</code></pre>
+<p>Then run <code>/reload materials</code>. Setting a value with <code>/setvalue</code> and <code>/setstock</code> also works once the item is listed.</p>
+
+<h4>Settings</h4>
+<ul>
+    <li><code>Commands.Admin.Modded: true</code> in <code>config.yml</code> enables or disables the <code>/modded</code> command.</li>
+    <li>Permission: <code>de.admin.modded</code> (operators by default).</li>
+</ul>
+
+<h4>Troubleshooting</h4>
+<ul>
+    <li><strong>"is not available on this server yet"</strong> in the console - the mod's item is not registered; run <code>/modded</code> after the server finishes starting.</li>
+    <li><strong>No items found</strong> - your server software does not expose modded materials to Bukkit.</li>
+    <li><strong>Alias skipped</strong> - another item or alias already uses that name; add your own in <code>materialAliases.yml</code>.</li>
 </ul>
 
 <h2>💾 Vault Dependency 💾</h2>
@@ -222,6 +258,7 @@
 <ul>
     <li><code>de.admin.reload</code> - Allows the user to reload aspects of the plugin. This permission is granted by default to operators.</li>
     <li><code>de.admin.save</code> - Allows the user to save aspects of the plugin. This permission is granted by default to operators.</li>
+    <li><code>de.admin.modded</code> - Allows the user to rescan for and import modded items. This permission is granted by default to operators.</li>
     <li><code>de.admin.editbal</code> - Allows the user to give and take money to themselves and others. This permission is granted by default to operators.</li>
     <li><code>de.admin.setbal</code> - Allows the user to set the balance of themselves or others. This permission is granted by default to operators.</li>
     <li><code>de.admin.clearbal</code> - Allows the user to clean the balance of themselves or others. This permission is granted by default to operators.</li>
