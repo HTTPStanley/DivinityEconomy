@@ -70,7 +70,7 @@ public abstract class MaterialManager extends ItemManager {
         // Schedule a delayed attempt to resolve modded (non-vanilla) materials
         // Some hybrid servers (NeoForge/Arclight) may register modded materials
         // after plugin enable; this will re-attempt resolution shortly after.
-        new BukkitRunnable() {
+        if (this.supportsModdedItems()) new BukkitRunnable() {
             @Override
             public void run() {
                 int reloaded = reloadModdedItems();
@@ -211,6 +211,17 @@ public abstract class MaterialManager extends ItemManager {
     }
 
     /**
+     * Whether this manager imports modded materials.
+     * The scan walks Bukkit's Material registry, so only the manager that represents plain materials (blocks/items)
+     * should opt in; potions and entities are keyed by PotionType/EntityType and can't be built from a Material.
+     *
+     * @return false by default
+     */
+    public boolean supportsModdedItems() {
+        return false;
+    }
+
+    /**
      * Resolves and imports modded (non-vanilla) materials.
      * <p>
      * Hybrid servers (Arclight/NeoForge) can register modded materials after plugins enable, so this is run once
@@ -225,6 +236,7 @@ public abstract class MaterialManager extends ItemManager {
      */
     @SuppressWarnings({"unchecked", "rawtypes"})
     public int reloadModdedItems() {
+        if (!this.supportsModdedItems()) return 0;
         int resolved = 0;
         int imported = 0;
         try {

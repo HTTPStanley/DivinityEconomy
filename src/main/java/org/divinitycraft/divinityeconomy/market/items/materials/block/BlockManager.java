@@ -86,6 +86,14 @@ public class BlockManager extends MaterialManager {
     }
 
 
+    /**
+     * Blocks/items are the only market segment backed directly by Bukkit Materials, so modded items are imported here
+     */
+    @Override
+    public boolean supportsModdedItems() {
+        return true;
+    }
+
     @Override
     public Set<String> getLocalKeys() {
         Set<String> entityKeys = new HashSet<>();

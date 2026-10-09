@@ -35,6 +35,7 @@ MaterialManager.init()
 | Rule | Where |
 |------|-------|
 | **Unresolved materials never enter the market.** `MarketableBlock.check()` is `material != null`; there is no placeholder item. | `MarketableBlock` |
+| **Only the block/item manager imports.** `MaterialManager.supportsModdedItems()` is `false` by default and `BlockManager` overrides it to `true`; the startup scan and `reloadModdedItems()` are no-ops for potions and entities (they are keyed by `PotionType`/`EntityType`, not `Material`). Modded potions, entities and enchants are not supported. | `MaterialManager`, `BlockManager`, `ModdedItemSupportTest` |
 | **Imports are disabled with 0 stock**, admins opt in. `ALLOWED` is the same flag `/banitem` toggles (`/banitem <item> false` enables), so the normal ban/unban workflow applies; unbanning does not set stock. | `reloadModdedItems`, `BanItem` |
 | **`.` is a config path separator**, so keys go through `ConfigKeys.safe()` (`.` → `_`); the real id lives in `MATERIAL_ID`. Key collisions are logged and skipped. | `ConfigKeys`, `reloadModdedItems`, `addAlias` |
 | **Aliases never shadow** an existing alias or item. | `TokenManager.addAlias` |
