@@ -69,6 +69,7 @@ public abstract class DivinityModule {
                 e.printStackTrace();
             }
         }
+        DivinityModule.modules.clear();
     }
 
     /**

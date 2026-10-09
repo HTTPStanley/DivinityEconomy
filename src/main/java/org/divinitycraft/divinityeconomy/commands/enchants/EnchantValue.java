@@ -75,7 +75,8 @@ public class EnchantValue extends DivinityCommandEnchant {
             return true;
         }
 
-        ItemStack itemStack = new ItemStack(Material.DIAMOND_SWORD);
+        // Use a book as the reference item, as books accept every enchant (unlike a sword, which rejects e.g. Lunge)
+        ItemStack itemStack = new ItemStack(Material.BOOK);
 
         // Get value
         // Remove enchants, add quantity and add cash
@@ -87,7 +88,7 @@ public class EnchantValue extends DivinityCommandEnchant {
         } else {
             getMain().getConsole().info(sender, LangEntry.VALUE_BuyResponse.get(getMain()), enchantLevels, enchantData.getName(), getMain().getConsole().formatMoney(evr1.getValue()));
         }
-        if (evr1.isFailure()) {
+        if (evr2.isFailure()) {
             getMain().getConsole().warn(sender, LangEntry.VALUE_SellFailedResponse.get(getMain()), enchantLevels, enchantData.getName(), evr2.getErrorMessage());
         } else {
             getMain().getConsole().info(sender, LangEntry.VALUE_SellResponse.get(getMain()), enchantLevels, enchantData.getName(), getMain().getConsole().formatMoney(evr2.getValue()));

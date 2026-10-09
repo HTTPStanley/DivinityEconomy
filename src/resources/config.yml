@@ -11,8 +11,8 @@
 #   - Vault Source: https://github.com/milkbowl/Vault
 #   - mxParser Source: https://github.com/mariuszgromada/MathParser.org-mXparser
 #
-# Officially supported versions: 1.21.10
-# API version: 1.21.10
+# Officially supported versions: 26.2
+# API version: 26.2
 #
 # Colours for the chat config can be found here: https://jd.bukkit.org/org/bukkit/ChatColor.html
 # &0 - Black
@@ -98,7 +98,7 @@
 # Main Settings
 Main:
   # This is the plugin config version
-  Version: 3.6.0-beta2
+  Version: 4.0.0
   # Should placeholder api support be enabled? ( use "true" / "false" )
   Enable PAPI: true
   # What language file should be used? ( use any string ) | default = en_GB.yml

@@ -1,10 +1,10 @@
 name: DivinityEconomy
 prefix: DivinityEconomy
 main: org.divinitycraft.divinityeconomy.DEPlugin
-version: 3.6.0-beta2
+version: 4.0.0
 author: EDGRRRR
 description: Divinity Economy - The dynamic global economy plugin.
-api-version: 1.21.10
+api-version: 26.2
 depend: [Vault]
 soft-depend: [PlaceholderAPI]
 load: STARTUP
@@ -147,56 +147,56 @@ commands:
     description: "Sells an enchant on an item."
     aliases: [ 'es' ]
     permission: de.enchant.eSell
-    permission-messaage: "You do not have permission to use this command"
+    permission-message: "You do not have permission to use this command"
     usage: "/esell <enchant> <levels>, /esell <enchant>"
 
   eBuy:
     description: "Buys an enchant for an item."
     aliases: [ 'eb' ]
     permission: de.enchant.eBuy
-    permission-messaage: "You do not have permission to use this command"
+    permission-message: "You do not have permission to use this command"
     usage: "/ebuy <enchant> <levels>"
 
   eValue:
     description: "Gets the value of an enchant."
     aliases: [ 'ev' ]
     permission: de.enchant.eValue
-    permission-messaage: "You do not have permission to use this command"
+    permission-message: "You do not have permission to use this command"
     usage: "/evalue <enchant> <levels>"
 
   eHandValue:
     description: "Gets the value of the enchants on the users held item."
     aliases: [ 'ehv' ]
     permission: de.enchant.eHandValue
-    permission-messaage: "You do not have permission to use this command"
+    permission-message: "You do not have permission to use this command"
     usage: "/ehandvalue"
 
   eInfo:
     description: "Gets the information for an enchant."
     aliases: [ 'ei' ]
     permission: de.enchant.eInfo
-    permission-messaage: "You do not have permission to use this command"
+    permission-message: "You do not have permission to use this command"
     usage: "/einfo <enchant>"
 
   eSellAll:
     description: "Sells all enchants in the user's inventory."
     aliases: []
     permission: de.enchant.eSellAll
-    permission-messaage: "You do not have permission to use this command"
+    permission-message: "You do not have permission to use this command"
     usage: "/esellall"
 
   xpSell:
     description: "Sells player experience levels."
     aliases: ['xps', 'expsell', 'leveldown']
     permission: de.exp.xpSell
-    permission-messaage: "You do not have permission to use this command"
+    permission-message: "You do not have permission to use this command"
     usage: "/xpsell <amount>"
 
   xpBuy:
     description: "Buys player experience levels."
     aliases: ['xpb', 'expbuy', 'levelup']
     permission: de.exp.xpBuy
-    permission-messaage: "You do not have permission to use this command"
+    permission-message: "You do not have permission to use this command"
     usage: "/xpbuy <amount>"
 
 
@@ -313,6 +313,7 @@ permissions:
       de.enchant.eHandValue: true
       de.enchant.eValue: true
       de.enchant.eInfo: true
+      de.enchant.eSellAll: true
 
   de.enchant.eSell:
     description: Allows the user to sell enchants on their held item.
@@ -332,6 +333,10 @@ permissions:
 
   de.enchant.eInfo:
     description: Allows the user to get the information for enchants.
+    default: true
+
+  de.enchant.eSellAll:
+    description: Allows the user to sell all enchants in their inventory.
     default: true
 
   # Mail
