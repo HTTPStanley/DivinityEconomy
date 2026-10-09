@@ -1,9 +1,9 @@
 name: DivinityEconomy
 prefix: DivinityEconomy
 main: org.divinitycraft.divinityeconomy.DEPlugin
-version: 4.0.0
+version: 4.0.0-arclight
 author: EDGRRRR
-description: Divinity Economy - The dynamic global economy plugin.
+description: Divinity Economy - The dynamic global economy plugin. EXPERIMENTAL Arclight/hybrid-server build with modded item support.
 api-version: 26.2
 depend: [Vault]
 soft-depend: [PlaceholderAPI]
