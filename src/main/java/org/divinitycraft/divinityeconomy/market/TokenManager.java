@@ -11,6 +11,7 @@ import org.divinitycraft.divinityeconomy.market.pricing.StaticBottomlessPricingM
 import org.divinitycraft.divinityeconomy.market.pricing.StaticPricingModel;
 import org.divinitycraft.divinityeconomy.market.pricing.V1PricingModel;
 import org.divinitycraft.divinityeconomy.market.pricing.V2PricingModel;
+import org.divinitycraft.divinityeconomy.utils.ConfigKeys;
 import org.divinitycraft.divinityeconomy.utils.Converter;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -652,7 +653,8 @@ public abstract class TokenManager extends DivinityModule {
         if (alias == null || itemId == null) return;
 
         try {
-            alias = alias.toLowerCase().replace(" ", "");
+            // Aliases are top-level config keys, so they can't contain the path separator
+            alias = ConfigKeys.safe(alias.toLowerCase().replace(" ", ""));
             itemId = itemId.toLowerCase().replace(" ", "");
 
             // Check if item exists

@@ -6,6 +6,7 @@ import org.divinitycraft.divinityeconomy.lang.LangEntry;
 import org.divinitycraft.divinityeconomy.market.MapKeys;
 import org.divinitycraft.divinityeconomy.market.MarketableToken;
 import org.divinitycraft.divinityeconomy.market.items.ItemManager;
+import org.divinitycraft.divinityeconomy.utils.ConfigKeys;
 import org.divinitycraft.divinityeconomy.utils.Converter;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.inventory.ItemStack;
@@ -263,23 +264,34 @@ public abstract class MaterialManager extends ItemManager {
                     nsKey = namespacedKey.toString(); // modid:item
                     if (!seen.add(nsKey)) continue;
 
-                    String formattedKey = nsKey.toLowerCase().replace(" ", "");
-                    if (this.itemMap.containsKey(formattedKey) || this.config.contains(nsKey)) continue;
+                    // '.' is a config path separator, so ids containing one are stored under an encoded key
+                    // (the real id is kept in the entry's material field)
+                    String configKey = ConfigKeys.safe(nsKey);
+                    String formattedKey = configKey.toLowerCase().replace(" ", "");
+                    if (this.itemMap.containsKey(formattedKey)) continue;
+                    if (this.config.contains(configKey)) {
+                        // Already imported, unless a different id encodes to the same key
+                        String existingId = this.config.getString(configKey + "." + MapKeys.MATERIAL_ID.key);
+                        if (existingId != null && !existingId.equalsIgnoreCase(nsKey)) {
+                            this.getConsole().warn(LangEntry.MODDED_ImportFailed.get(getMain()), nsKey, configKey + " -> " + existingId);
+                        }
+                        continue;
+                    }
 
                     this.getConsole().info(LangEntry.MODDED_Importing.get(getMain()), nsKey);
 
                     // Disallowed with no stock until an admin sets it up
-                    this.config.set(nsKey + "." + MapKeys.MATERIAL_ID.key, nsKey);
-                    this.config.set(nsKey + "." + MapKeys.QUANTITY.key, 0);
-                    this.config.set(nsKey + "." + MapKeys.ALLOWED.key, false);
+                    this.config.set(configKey + "." + MapKeys.MATERIAL_ID.key, nsKey);
+                    this.config.set(configKey + "." + MapKeys.QUANTITY.key, 0);
+                    this.config.set(configKey + "." + MapKeys.ALLOWED.key, false);
 
                     YamlConfiguration defaultSection = new YamlConfiguration();
                     defaultSection.set(MapKeys.QUANTITY.key, 0);
                     defaultSection.set(MapKeys.ALLOWED.key, false);
 
-                    MarketableToken token = this.loadItem(nsKey, this.config.getConfigurationSection(nsKey), defaultSection);
+                    MarketableToken token = this.loadItem(configKey, this.config.getConfigurationSection(configKey), defaultSection);
                     if (token == null || !token.check()) {
-                        this.config.set(nsKey, null);
+                        this.config.set(configKey, null);
                         this.getConsole().warn(LangEntry.MODDED_ImportFailed.get(getMain()), nsKey, token == null ? "null" : token.getError());
                         continue;
                     }
@@ -293,10 +305,10 @@ public abstract class MaterialManager extends ItemManager {
                     // Alias "modid:item" -> "item" (skipped if it would shadow something else)
                     int colonIdx = nsKey.indexOf(':');
                     if (colonIdx > 0 && colonIdx < nsKey.length() - 1) {
-                        this.addAlias(nsKey.substring(colonIdx + 1), nsKey);
+                        this.addAlias(nsKey.substring(colonIdx + 1), configKey);
                     }
                 } catch (Throwable e) {
-                    if (nsKey != null) this.config.set(nsKey, null);
+                    if (nsKey != null) this.config.set(ConfigKeys.safe(nsKey), null);
                     this.getConsole().warn(LangEntry.MODDED_ImportFailed.get(getMain()), nsKey, e.toString());
                 }
             }
